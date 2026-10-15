@@ -1,0 +1,14 @@
+/* Reserve the intro while the game boots; the loading footer stays below the first screen. */
+#episodeIntro{min-height:calc(100vh - 80px);min-height:calc(100svh - 80px)}
+.scene-loading :is(.room-hotspot,.studio-spot,.oh-hotspot){pointer-events:none}
+@media(max-width:700px){
+ body>header{min-width:0;flex-wrap:wrap;column-gap:12px;row-gap:8px}
+ body>header>nav[aria-label="사이트 메뉴"]{flex:1 1 100%;min-width:0;justify-content:space-between;gap:10px}
+ body>header>nav[aria-label="사이트 메뉴"] button{white-space:nowrap}
+}
+@media(max-width:700px){
+ html[data-theme=hub] body>header{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;grid-template-rows:44px 49px!important;min-height:121px!important;padding:10px 16px!important;gap:8px 16px!important;align-items:center!important}
+ html[data-theme=hub] body>header>.logo-link{grid-column:1;grid-row:1;min-width:0}
+ html[data-theme=hub] body>header>.game-audio{grid-column:2;grid-row:1;justify-self:end;padding:0!important;border:0!important;margin:0!important;min-height:40px!important}
+ html[data-theme=hub] body>header>nav{grid-column:1 / 3;grid-row:2;width:100%!important;min-width:0!important;justify-content:space-between!important;gap:10px!important}
+}

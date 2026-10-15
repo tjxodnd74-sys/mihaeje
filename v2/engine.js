@@ -1,0 +1,314 @@
+// 미해제 v2 엔진. 한 편의 내용은 v2/episodes/<id>.js 한 파일에 있고, 이 파일은 그 구조를 화면으로 만듭니다.
+const qs = new URLSearchParams(location.search);
+const id = (qs.get('case') || '').replace(/[^a-z-]/g, '');
+const root = document.getElementById('app');
+
+const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; };
+const btn = (cls, text, fn, aria) => { const b = el('button', cls, text); b.type = 'button'; if (aria) b.setAttribute('aria-label', aria); b.onclick = fn; return b; };
+const pic = (img, src) => { img.src = src; const base = src.replace(/\.webp$/, ''); if (/assets\/v2\//.test(src)) { img.srcset = `${base}-960.webp 960w, ${src} 1024w`; img.sizes = '(max-width: 640px) 100vw, 1180px'; } return img; };
+const html = (tag, cls, markup) => { const n = el(tag, cls); n.innerHTML = markup; return n; };
+
+const sounds = {
+  paper: 'assets/sounds/paper-turn-v23.wav', lock: 'assets/sounds/lock-v24.wav', keys: 'assets/sounds/keys-v24.wav',
+  door: 'assets/sounds/door-open-v23.wav', drawer: 'assets/sounds/drawer-open-v23.wav', on: 'assets/sounds/switch-on-v24.wav',
+};
+let audioOn = false;
+try { audioOn = localStorage.getItem('mihaeje-v2-sound') === '1'; } catch {}
+function play(name) { if (!audioOn || !sounds[name]) return; try { const a = new Audio(sounds[name]); a.volume = 0.5; a.play().catch(() => {}); } catch {} }
+let music = null;
+function syncMusic(ep) {
+  if (!ep.music) return;
+  if (!audioOn) { if (music) { music.pause(); } return; }
+  if (!music) { music = new Audio(ep.music); music.loop = true; music.volume = 0.25; }
+  music.play().catch(() => {});
+}
+
+async function main() {
+  if (!id) { root.append(el('p', 'v2-error', '어느 이야기인지 알 수 없습니다.')); return; }
+  let ep;
+  try { ep = (await import(`./episodes/${id}.js`)).default; } catch (e) { root.append(el('p', 'v2-error', '이야기를 불러오지 못했습니다.')); console.error(e); return; }
+  document.title = `${ep.title} — 미해제`;
+  document.documentElement.dataset.case = ep.id;
+
+  const KEY = ep.storageKey || 'mihaeje-v2-' + ep.id;
+  const fresh = () => ({ v: 2, screen: 'intro', scene: ep.scenes[0].id, read: [], visited: [], solved: [], drafts: {}, hints: {}, seen: [] });
+  let S = fresh();
+  try { const raw = JSON.parse(localStorage.getItem(KEY) || 'null'); if (raw && raw.v === 2) S = { ...fresh(), ...raw }; } catch {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
+
+  const docIds = Object.keys(ep.docs);
+  const openDocs = () => docIds.filter((d) => !ep.docs[d].locked || S.screen === 'ending' || S.ended);
+  const unlockedScenes = () => ep.scenes.filter((s) => !s.unlockedBy || S.solved.includes(s.unlockedBy));
+  const sceneById = (sid) => ep.scenes.find((s) => s.id === sid);
+  const deviceOf = (did) => ep.devices[did];
+  const activeDevices = () => Object.keys(ep.devices).filter((did) => !S.solved.includes(did) && unlockedScenes().some((s) => s.id === ep.devices[did].scene));
+
+  // ---------- 공통 틀 ----------
+  let dialog = null;
+  function openDialog(node, { label, onClose } = {}) {
+    closeDialog();
+    dialog = el('dialog', 'v2-dialog');
+    if (label) dialog.setAttribute('aria-label', label);
+    const box = el('div', 'v2-dialog-box');
+    const bar = el('div', 'v2-dialog-bar');
+    bar.append(btn('v2-close', '닫기', () => closeDialog(), '닫기'));
+    box.append(bar, node);
+    dialog.append(box);
+    const me = dialog;
+    me.addEventListener('close', () => { me.remove(); if (dialog === me) { dialog = null; onClose?.(); } });
+    me.addEventListener('click', (e) => { if (e.target === me) me.close(); });
+    document.body.append(dialog);
+    dialog.showModal();
+    box.scrollTop = 0;
+  }
+  function closeDialog() { if (dialog?.open) dialog.close(); }
+
+  function header() {
+    const h = el('header', 'v2-header');
+    const logo = html('a', 'v2-logo', '<img src="assets/mihaeje-logo-v2.webp" alt="미해제" width="1983" height="793" decoding="async">'); logo.href = 'index.html';
+    const right = el('div', 'v2-header-right');
+    const back = el('a', 'v2-back', '← 테마 로비'); back.href = 'index.html';
+    const snd = btn('v2-sound' + (audioOn ? ' on' : ''), audioOn ? '소리 켜짐' : '소리 꺼짐', () => { audioOn = !audioOn; try { localStorage.setItem('mihaeje-v2-sound', audioOn ? '1' : '0'); } catch {} snd.textContent = audioOn ? '소리 켜짐' : '소리 꺼짐'; snd.classList.toggle('on', audioOn); syncMusic(ep); if (audioOn) play('on'); }, '배경음과 효과음 켜고 끄기');
+    right.append(back, snd);
+    h.append(logo, right);
+    return h;
+  }
+
+  function render() {
+    root.replaceChildren(header());
+    if (S.screen === 'intro') root.append(intro());
+    else if (S.screen === 'opening') root.append(opening());
+    else if (S.screen === 'ending') root.append(ending());
+    else root.append(playScreen());
+    syncMusic(ep);
+  }
+
+  // ---------- 1. 표지 ----------
+  function intro() {
+    const sec = el('section', 'v2-intro');
+    const cover = pic(el('img', 'v2-cover'), ep.cover); cover.alt = ep.coverAlt || ''; cover.decoding = 'async'; sec.append(cover);
+    const card = el('div', 'v2-intro-card');
+    card.append(el('p', 'v2-eyebrow', `${ep.number} · ${ep.genre}`));
+    card.append(el('h1', 'v2-title', ep.title));
+    card.append(el('p', 'v2-subtitle', ep.subtitle));
+    card.append(html('p', 'v2-tagline', ep.tagline.replace(/\n/g, '<br>')));
+    card.append(html('p', 'v2-blurb', ep.blurb.replace(/\n/g, '<br>')));
+    const meta = el('p', 'v2-meta', `약 ${ep.minutes}분 · 난이도 ${'★'.repeat(ep.difficulty)}${'☆'.repeat(5 - ep.difficulty)} · 자료 ${docIds.length}장 · 1인`);
+    card.append(meta);
+    const row = el('div', 'v2-row');
+    const started = S.visited.length > 0 || S.solved.length > 0;
+    if (started) row.append(btn('v2-primary', '이어서 하기', () => { S.screen = 'play'; save(); render(); }));
+    row.append(btn(started ? 'v2-secondary' : 'v2-primary', '처음부터 하기', () => { if (started && !confirm('지금까지의 진행을 지우고 처음부터 할까요?')) return; S = fresh(); S.screen = 'opening'; S.started = true; save(); render(); }));
+    card.append(row);
+    card.append(el('p', 'v2-fine', '가상의 이야기 · 진행은 이 브라우저에 저장됩니다'));
+    sec.append(card);
+    return sec;
+  }
+
+  // ---------- 2. 오프닝 ----------
+  function opening() {
+    const sec = el('section', 'v2-opening');
+    const paper = el('article', 'v2-paper v2-opening-paper');
+    paper.append(el('p', 'v2-eyebrow', ep.opening.eyebrow));
+    ep.opening.paragraphs.forEach((p) => paper.append(el('p', 'v2-line', p)));
+    paper.append(btn('v2-primary', ep.opening.cta + ' →', () => { S.screen = 'play'; save(); render(); }));
+    sec.append(paper);
+    return sec;
+  }
+
+  // ---------- 3. 플레이 ----------
+  function playScreen() {
+    const scene = sceneById(S.scene) || ep.scenes[0];
+    const sec = el('section', 'v2-play');
+    // 장면 선택
+    const nav = el('nav', 'v2-scenes'); nav.setAttribute('aria-label', '장소');
+    unlockedScenes().forEach((s, i) => {
+      const b = btn('v2-scene-chip' + (s.id === scene.id ? ' on' : ''), `${i + 1}. ${s.name}`, () => { S.scene = s.id; save(); render(); });
+      if (s.id === scene.id) b.setAttribute('aria-current', 'page');
+      nav.append(b);
+    });
+    sec.append(nav);
+    // 무대
+    const stage = el('div', 'v2-stage');
+    const img = pic(el('img', 'v2-stage-img'), scene.image); img.alt = scene.name; img.decoding = 'async';
+    stage.append(img);
+    const seenSet = new Set(S.seen);
+    scene.hotspots.forEach((h) => {
+      if (h.visible && !h.visible(S)) return;
+      const done = h.kind === 'doc' ? S.read.includes(h.doc) : h.kind === 'device' ? S.solved.includes(h.device) : false;
+      const b = btn('v2-hotspot' + (done ? ' done' : '') + (h.kind === 'device' ? ' device' : ''), '', () => act(h), h.label);
+      b.style.left = h.x + '%'; b.style.top = h.y + '%';
+      b.append(el('i'), el('span', 'v2-hotspot-label', h.label));
+      stage.append(b);
+    });
+    sec.append(stage);
+    // 처음 도착 문장
+    const firstVisit = !S.visited.includes(scene.id);
+    if (firstVisit) { S.visited.push(scene.id); save(); }
+    const arrive = el('p', 'v2-arrive', scene.arrive);
+    sec.append(arrive);
+    // 핫스팟 목록(작은 화면·접근성)
+    const list = el('div', 'v2-spotlist');
+    scene.hotspots.forEach((h) => {
+      if (h.visible && !h.visible(S)) return;
+      const done = h.kind === 'doc' ? S.read.includes(h.doc) : h.kind === 'device' ? S.solved.includes(h.device) : false;
+      list.append(btn('v2-spot' + (done ? ' done' : '') + (h.kind === 'device' ? ' device' : ''), (h.kind === 'device' ? '⚙ ' : '') + h.label + (done ? ' ✓' : ''), () => act(h)));
+    });
+    sec.append(list);
+    // 하단 바
+    const bar = el('div', 'v2-bar');
+    const n = S.read.filter((d) => openDocs().includes(d)).length, m = openDocs().length;
+    bar.append(btn('v2-bar-btn', `자료 ${n} / ${m}`, () => openIndex()));
+    bar.append(btn('v2-bar-btn', '힌트', () => openHints()));
+    bar.append(btn('v2-bar-btn subtle', '처음 화면', () => { S.screen = 'intro'; save(); render(); }));
+    sec.append(bar);
+    return sec;
+  }
+
+  function act(h) {
+    if (h.kind === 'doc') openDoc(h.doc);
+    else if (h.kind === 'device') openDevice(h.device);
+  }
+
+  // ---------- 자료 ----------
+  function openDoc(did, { from } = {}) {
+    const d = ep.docs[did]; if (!d) return;
+    if (!S.read.includes(did)) { S.read.push(did); save(); }
+    play('paper');
+    const node = el('article', 'v2-paper v2-doc');
+    node.append(el('p', 'v2-eyebrow', d.kind || '자료'));
+    node.append(el('h2', 'v2-doc-title', d.title));
+    node.append(html('div', 'v2-doc-body', d.html));
+    if (from) node.append(btn('v2-secondary', '← ' + from.label, from.fn));
+    openDialog(node, { label: d.title, onClose: () => render() });
+  }
+  function openIndex() {
+    const node = el('article', 'v2-paper v2-index');
+    node.append(el('p', 'v2-eyebrow', '읽은 자료'));
+    node.append(el('h2', 'v2-doc-title', '자료 목록'));
+    const ul = el('div', 'v2-index-list');
+    const unread = [];
+    openDocs().forEach((did) => {
+      const d = ep.docs[did], read = S.read.includes(did);
+      const where = ep.scenes.find((s) => s.hotspots.some((h) => h.doc === did));
+      const avail = read || (where && unlockedScenes().includes(where)) || d.locked;
+      if (!avail) return;
+      if (!read) unread.push(did);
+      const b = btn('v2-index-item' + (read ? ' read' : ''), '', () => openDoc(did, { label: '자료 목록', fn: openIndex }));
+      b.append(el('b', '', d.title), el('small', '', (read ? '읽음' : '아직') + (where ? ' · ' + where.name : '')));
+      ul.append(b);
+    });
+    node.append(ul);
+    if (unread.length) node.append(el('p', 'v2-note', `아직 읽지 않은 자료 ${unread.length}장`));
+    openDialog(node, { label: '자료 목록', onClose: () => render() });
+  }
+
+  // ---------- 장치 ----------
+  function openDevice(did) {
+    const dev = deviceOf(did); if (!dev) return;
+    S.drafts[did] ??= dev.initial();
+    const d = S.drafts[did];
+    const solved = S.solved.includes(did);
+    const node = el('article', 'v2-device');
+    const head = el('div', 'v2-device-head');
+    head.append(el('p', 'v2-eyebrow', (solved ? '해결한 장치 · ' : '') + (dev.hintCode || '')));
+    head.append(el('h2', 'v2-doc-title', dev.title));
+    head.append(el('p', 'v2-device-intro', dev.intro));
+    if (dev.docs?.length) {
+      const refs = el('div', 'v2-refs');
+      refs.append(el('span', 'v2-refs-label', '관련 자료'));
+      dev.docs.forEach((r) => { const dd = ep.docs[r]; if (!dd) return; refs.append(btn('v2-ref' + (S.read.includes(r) ? ' read' : ''), dd.title, () => openDoc(r, { label: dev.title, fn: () => openDevice(did) }))); });
+      head.append(refs);
+    }
+    node.append(head);
+    const body = el('div', 'v2-device-body');
+    const status = el('p', 'v2-status'); status.setAttribute('role', 'status');
+    const ctx = { d, el, save: () => { save(); status.textContent = ''; status.classList.remove('wrong'); draw(); }, status: (m) => { status.textContent = m; } };
+    function draw() { body.replaceChildren(dev.render(ctx)); }
+    draw();
+    node.append(body);
+    const actions = el('div', 'v2-actions');
+    if (solved) {
+      actions.append(el('p', 'v2-solved', '이미 해결했습니다.'));
+    } else {
+      actions.append(btn('v2-primary', dev.commitLabel || '확인', () => {
+        const r = dev.check(d); save();
+        if (r.ok) { solve(did); return; }
+        status.textContent = r.msg; status.classList.add('wrong'); play('lock'); draw();
+      }));
+    }
+    node.append(status, actions);
+    openDialog(node, { label: dev.title, onClose: () => render() });
+  }
+  function solve(did) {
+    const dev = deviceOf(did);
+    if (!S.solved.includes(did)) S.solved.push(did);
+    save();
+    play(dev.reveal?.ending ? 'door' : 'keys');
+    const node = el('article', 'v2-paper v2-reveal');
+    node.append(el('p', 'v2-eyebrow', '풀렸다'));
+    node.append(el('h2', 'v2-doc-title', dev.reveal.title));
+    node.append(el('p', 'v2-line', dev.reveal.text));
+    const target = dev.reveal.unlock && sceneById(dev.reveal.unlock);
+    if (dev.reveal.ending) node.append(btn('v2-primary', '대문 안으로 →', () => { S.screen = 'ending'; S.ended = true; S.solved = true; save(); closeDialog(); }));
+    else if (target) node.append(btn('v2-primary', target.name + '으로 →', () => { S.scene = target.id; save(); closeDialog(); }));
+    else node.append(btn('v2-primary', '계속', () => closeDialog()));
+    openDialog(node, { label: dev.reveal.title, onClose: () => render() });
+  }
+
+  // ---------- 힌트 ----------
+  function openHints(pick) {
+    const node = el('article', 'v2-paper v2-hints');
+    node.append(el('p', 'v2-eyebrow', '역무실 무전기'));
+    node.append(el('h2', 'v2-doc-title', '힌트'));
+    const ids = Object.keys(ep.devices);
+    const open = ids.filter((d) => unlockedScenes().some((s) => s.id === ep.devices[d].scene));
+    const cur = pick || activeDevices()[0] || open[open.length - 1];
+    const tabs = el('div', 'v2-hint-tabs');
+    open.forEach((d) => { const dev = ep.devices[d]; tabs.append(btn('v2-chip' + (d === cur ? ' on' : '') + (S.solved.includes(d) ? ' done' : ''), `${dev.hintCode} ${dev.title}`, () => openHints(d))); });
+    node.append(tabs);
+    if (cur) {
+      const dev = ep.devices[cur];
+      const tier = S.hints[cur] || 0;
+      const box = el('div', 'v2-hint-box');
+      if (S.solved.includes(cur)) {
+        box.append(el('p', 'v2-note', '이미 해결한 장치입니다. 풀이를 다시 볼 수 있습니다.'));
+        dev.hints.forEach((h, i) => box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${h}`)));
+      } else {
+        for (let i = 0; i < tier; i++) box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${dev.hints[i]}`));
+        if (tier < 3) box.append(btn('v2-secondary', ['첫 힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { S.hints[cur] = tier + 1; save(); openHints(cur); }));
+        else box.append(el('p', 'v2-note', '힌트를 전부 받았습니다.'));
+      }
+      node.append(box);
+    }
+    openDialog(node, { label: '힌트', onClose: () => render() });
+  }
+
+  // ---------- 4. 엔딩 ----------
+  function ending() {
+    const e = ep.ending;
+    const sec = el('section', 'v2-ending');
+    const fig = el('figure', 'v2-ending-figure');
+    const img = pic(el('img'), e.image); img.alt = e.imageAlt || ''; img.decoding = 'async';
+    fig.append(img);
+    sec.append(fig);
+    const paper = el('article', 'v2-paper v2-ending-paper');
+    paper.append(el('p', 'v2-eyebrow', e.eyebrow));
+    paper.append(el('h2', 'v2-ending-title', e.title));
+    e.paragraphs.forEach((p) => paper.append(el('p', 'v2-line', p)));
+    if (e.afterword) paper.append(el('p', 'v2-afterword', e.afterword));
+    if (e.unlockDoc && ep.docs[e.unlockDoc]) paper.append(btn('v2-secondary', ep.docs[e.unlockDoc].title + ' 읽기', () => openDoc(e.unlockDoc)));
+    const row = el('div', 'v2-row');
+    if (e.next) { const a = el('a', 'v2-primary', `다음 이야기 · ${e.next.title} →`); a.href = e.next.href; row.append(a); }
+    row.append(btn('v2-secondary', '자료 다시 보기', () => openIndex()));
+    row.append(btn('v2-secondary subtle', '처음 화면', () => { S.screen = 'intro'; save(); render(); }));
+    paper.append(row);
+    if (e.next?.line) paper.append(el('p', 'v2-fine', e.next.line));
+    sec.append(paper);
+    return sec;
+  }
+
+  render();
+  window.MihaejeV2 = { get state() { return S; }, episode: ep, render, reset() { S = fresh(); save(); render(); } };
+}
+main();

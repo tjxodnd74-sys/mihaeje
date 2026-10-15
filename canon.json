@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "consentDates": {
+    "garage": "2026.09.19",
+    "apartment": "2026.09.23",
+    "radio": "2026.09.27",
+    "station": "2026.10.01"
+  },
+  "fiction": true,
+  "collection": "MR-17",
+  "keeper": "정해린",
+  "address": {
+    "old": "미루동 17-4",
+    "current": "미루기록길 12"
+  },
+  "dates": {
+    "garage": "2026.09.18",
+    "apartment": "2026.09.22",
+    "radio": "2026.09.26",
+    "station": "2026.09.30",
+    "letter": "2026.10.04"
+  },
+  "connectionRule": "사건이 해결된 뒤 동의를 받아 보관한 종이 사본만 연결함 SD카드 데이터나 공범 설정은 없음"
+}

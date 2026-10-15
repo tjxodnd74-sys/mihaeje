@@ -1,0 +1,31 @@
+/* Match ink to the physical surface, including collected objects and notices. */
+.escape-scene[data-journey-view] .room-art{aspect-ratio:auto!important;height:auto!important;object-fit:contain}
+html[data-theme] body .inspection-dialog[data-surface][data-case][data-artifact] .inspection-body .physical-room-detail:not(.room-panel-lock,.room-panel-clue,.room-panel-target){--panel-ink:#302e27;--panel-muted:#575347;background:#eee7d7 url('assets/surfaces/invitation-paper-v1.webp') center/cover!important;color:#302e27!important;padding:24px!important}
+html[data-theme] body .inspection-dialog[data-surface][data-case][data-artifact] .inspection-body .physical-room-detail:not(.room-panel-lock,.room-panel-clue,.room-panel-target) :is(h3,h4,p,small){color:#302e27!important;line-height:1.75}
+html[data-theme] body .inspection-dialog[data-surface] .inspection-body .physical-room-detail:not(.room-panel-lock,.room-panel-clue,.room-panel-target) :is(.primary,.quiet,.discovered-record){background:#394d40!important;color:#fff7e7!important;border:1px solid #6c7965;min-height:48px;font-size:16px;padding:12px 18px;margin:6px 8px 6px 0}
+html[data-theme] body .inspection-dialog .room-panel-item-part-0>.object-zoom,html[data-theme] body .inspection-dialog .room-panel-item-part-1>.object-zoom{width:100%;max-width:420px;height:230px;min-height:180px;background-repeat:no-repeat}
+html[data-theme] body .inspection-dialog .physical-room-detail>img.object-zoom{display:block;width:100%;max-width:420px;max-height:250px;object-fit:cover}
+html[data-theme] body .inspection-dialog[data-surface][data-case][data-artifact] .inspection-body .room-inventory{background:#eee7d7!important;color:#302e27!important;padding:20px!important}
+html[data-theme] body .inspection-dialog[data-surface] .inspection-body .room-inventory :is(h3,p,small){color:#302e27!important}
+html[data-theme] body .inspection-dialog[data-surface] .inspection-body .room-inventory .inventory-item:not(.selected){background:#faf5e8;color:#302e27}
+html[data-theme] body .inspection-dialog[data-surface] .inspection-body .room-inventory .inventory-item.selected{background:#394d40;color:#fff7e7}
+html[data-theme] body .inspection-dialog .room-inventory :is(.combine-items,.primary){color:#fff7e7;background:#394d40;min-height:48px}
+/* Put reusable clues before the device on every theme, with one compact row. */
+html[data-theme] body dialog.inspection-dialog[data-surface] [data-story-device] .story-evidence-tray{margin:0 0 18px!important;padding:14px 16px!important;background:#eee5d3!important;color:#302e27!important;border:1px solid #c2b294!important}
+html[data-theme] body dialog.inspection-dialog[data-surface] [data-story-device] .story-evidence-tray :is(h3,p,span){color:#302e27!important}
+html[data-theme] body dialog.inspection-dialog[data-surface] [data-story-device] .story-evidence-link{background:#fcf7e9!important;color:#302e27!important;border:1px solid #afa184!important;min-height:44px}
+html[data-theme] body dialog.inspection-dialog[data-surface] [data-story-device] .story-look-around{background:#394d40!important;color:#fff7e7!important;border:1px solid #a9b09d!important;margin:9px 0 0!important;min-height:44px}
+html[data-theme] body dialog.inspection-dialog[data-surface] [data-journey-final]{padding:24px!important;--desk-ink:#f5efe2;--panel-ink:#f5efe2;background:#242b27!important;color:#f5efe2!important;font-family:SUIT,sans-serif!important}
+html[data-theme] body dialog.inspection-dialog [data-journey-final] .journey-final-header{display:block!important;background:none!important;color:inherit!important;padding:0!important;border:0!important;margin-bottom:18px}
+html[data-theme] body dialog.inspection-dialog [data-journey-final] :is(h2,p,li,span){color:#f5efe2!important}
+.journey-final-photo{width:100%;max-height:240px;object-fit:cover;display:block;border:1px solid #9a927c;margin:16px 0}
+.journey-final-progress{padding:0;list-style:none;display:grid;gap:9px;margin:16px 0}.journey-final-progress li{border-left:2px solid #777965;padding:5px 12px;font:16px/1.6 SUIT,sans-serif}.journey-final-progress li.done{opacity:.65}
+.journey-act,.journey-primary{min-height:58px;width:100%;padding:16px;background:#eee4ca;color:#26362c!important;border:1px solid #b6aa8e;font:650 18px/1.5 SUIT,sans-serif;cursor:pointer;box-shadow:inset 0 0 0 2px #ffffff33,0 3px 5px #0005}
+.journey-act:disabled{opacity:.5;cursor:default}.journey-slide{width:100%;min-height:48px;accent-color:#d6b36c;margin:12px 0}
+.journey-act-disconnect,.journey-act-unplug{background:linear-gradient(90deg,#39473f,#849181);border:3px solid #1b211d;color:#fff6de!important}
+.journey-act-stamp,.journey-act-postmark{border:3px solid #b1785b;background:#eee0c9;color:#6a3d2c!important}
+.journey-act-invite,.journey-act-stand{background:#f4ecd9;color:#554434!important;letter-spacing:.02em;border-color:#bc9980}
+.journey-act-seal{background:repeating-linear-gradient(45deg,#cdb46f 0 8px,#d9c389 8px 16px);color:#332e23!important}
+.journey-final-status{margin-top:14px;min-height:30px;font-size:16px}.escape-stages{overflow-x:auto;flex-wrap:nowrap!important}.escape-stages li{white-space:nowrap}
+.journey-blanket-corners{display:flex;gap:12px;margin:12px 0}.journey-blanket-corner{flex:1;padding:16px 10px;min-height:60px;border:2px solid #aaa98d;background:linear-gradient(#253b2ddb,#253b2dbb),url('assets/photoreal/pet-blanket-v2.webp') center/cover;color:#fff7e9!important;font:650 16px/1.5 SUIT,sans-serif}.journey-blanket-corner:disabled{filter:brightness(.75)}
+@media(max-width:700px){html[data-theme] body .inspection-dialog[data-surface][data-case][data-artifact] .inspection-body .physical-room-detail:not(.room-panel-lock,.room-panel-clue,.room-panel-target){padding:18px 16px!important}html[data-theme] body dialog.inspection-dialog[data-surface] [data-story-device] .story-evidence-tray{padding:12px!important;margin-bottom:14px!important}.story-evidence-links{display:flex;gap:7px;flex-wrap:wrap}.journey-final-photo{max-height:180px}.journey-act,.journey-primary{font-size:17px;padding:13px}html[data-theme] body dialog.inspection-dialog[data-surface] [data-journey-final]{padding:18px 16px!important}}

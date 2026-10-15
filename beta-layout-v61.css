@@ -1,0 +1,38 @@
+/* Footer entries remain separate at narrow widths on every game page. */
+html body>footer{display:flex!important;flex-wrap:wrap!important;align-items:center!important;justify-content:center!important;gap:16px 24px!important;padding:28px 24px!important;text-align:center!important;background:#141b18!important;color:#edf0e6!important}
+html body>footer>.brand,html body>footer>p{flex-basis:100%;margin:0!important}
+html body>footer>p{color:#cbd1c9!important}
+html body>footer>span{color:#cbd1c9!important;font:14px/1.7 SUIT,sans-serif!important}
+html body>footer>small{display:block;font:14px/1.7 SUIT,sans-serif!important;color:#cbd1c9!important}
+html body>footer>.music-credit-link{display:inline-flex;align-items:center;min-height:44px;padding:8px 4px!important;margin:0!important;color:#e9eddc!important;font:14px/1.7 SUIT,sans-serif!important}
+html body>footer>button.beta-feedback-trigger{margin:0!important;padding:10px 18px!important;font:600 15px/1.5 SUIT,sans-serif!important;white-space:normal}
+/* Scope form spacing so document and clue styles cannot flatten its labels. */
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback{display:block!important;box-sizing:border-box;width:100%;max-width:660px;padding:24px!important;margin:0 auto!important;background:#f4ecda!important;color:#30271e!important;font:16px/1.7 SUIT,sans-serif!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback>p{margin:0 0 20px!important;padding:0!important;line-height:1.7!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback .field{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:9px!important;margin:0 0 20px!important;padding:0!important;width:100%;font:600 16px/1.6 SUIT,sans-serif!important;letter-spacing:0!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback :is(select,textarea){box-sizing:border-box;width:100%!important;min-width:0!important;max-width:100%!important;min-height:48px!important;padding:12px 14px!important;margin:0!important;border-radius:3px!important;color:#30271e!important;background:#fffaf0!important;font:16px/1.7 SUIT,sans-serif!important;text-shadow:none!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback textarea{height:132px!important;resize:vertical;overflow:auto}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback textarea::placeholder{color:#70614e!important;opacity:1!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback .beta-optional{border-top:1px solid #b6a88e!important;border-bottom:1px solid #b6a88e!important;padding:12px 0!important;margin:4px 0 20px!important;background:transparent!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback .beta-optional summary{padding:4px 0!important;min-height:44px;font:600 16px/1.7 SUIT,sans-serif!important;cursor:pointer;color:#30271e!important;background:transparent!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback .beta-optional[open] summary{margin-bottom:14px!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback .small{font:14px/1.7 SUIT,sans-serif!important;color:#544635!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback .beta-actions{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 16px}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback button{margin:0!important;min-height:48px!important;padding:12px 20px!important;font:600 16px/1.5 SUIT,sans-serif!important;border-radius:3px!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback button.quiet{background:#f4ecda!important;color:#30271e!important;border:1px solid #807055!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback :is(button,select,textarea,summary):focus-visible{outline:3px solid #816024!important;outline-offset:3px}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback [role=status]:empty{display:none}
+html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback [role=status]{margin:0!important;font-weight:600;color:#30271e!important}
+html body>.feedback-owner-entry{box-sizing:border-box;max-width:1000px;margin:24px auto;padding:24px;background:#21372a;color:#fff6e5;border:1px solid #a4b696;font:16px/1.7 SUIT,sans-serif}
+html body>.feedback-owner-entry h2{font:700 22px/1.5 SUIT,sans-serif;color:#fff6e5!important;margin:0 0 8px}
+html body>.feedback-owner-entry p{font:16px/1.7 SUIT,sans-serif;color:#e4eadb!important;margin:0 0 16px}
+html body>.feedback-owner-entry a{display:inline-flex;align-items:center;min-height:48px;padding:10px 16px;color:#30271e!important;background:#f4ecda;text-decoration:none;font-weight:650}
+html body>header nav .feedback-owner-shortcut{display:inline-flex;align-items:center;min-height:44px;padding:8px 12px;background:#21372a;color:#fff6e5!important;border:1px solid #a4b696;font:600 14px/1.5 SUIT,sans-serif;text-decoration:none}
+html body>header nav:has(.feedback-owner-shortcut){flex-wrap:wrap;align-items:center;gap:12px 20px}
+@media(max-width:600px){
+ html body>footer{gap:14px 20px!important;padding:24px 18px!important}
+ html body>footer>small{flex-basis:100%;font-size:14px!important}
+ html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback{padding:18px 16px!important}
+ html[data-theme] body dialog.inspection-dialog .inspection-body .beta-feedback .beta-actions button{flex:1 1 140px}
+ html body>.feedback-owner-entry{margin:20px 16px;padding:20px}
+}
