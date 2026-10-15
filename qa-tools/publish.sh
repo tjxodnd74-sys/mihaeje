@@ -22,7 +22,7 @@ git add -A
 git diff --cached --quiet || git commit -qm "$MSG
 
 $TRAILER"
-git fetch -q origin main && git push -q origin main
+git fetch -q origin main && (git merge-base --is-ancestor FETCH_HEAD HEAD || git -c user.name=claude -c user.email=noreply@anthropic.com merge -q FETCH_HEAD -m "merge: 원격 main의 다른 커밋과 합침") && git push -q origin main
 
 # 2) 사이트
 cd "$PAGES"
