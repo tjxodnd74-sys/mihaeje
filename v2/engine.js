@@ -153,9 +153,11 @@ async function main() {
     stage.append(img);
     (scene.overlays || []).forEach((o) => { const n = html('div', 'v2-stage-ov ' + (o.cls || ''), o.html); n.style.cssText = `left:${o.x}%;top:${o.y}%;width:${o.w}%;height:${o.h}%;${o.style || ''}`; n.setAttribute('aria-hidden', 'true'); stage.append(n); });
     const seenSet = new Set(S.seen);
-    scene.hotspots.forEach((h) => {
+    const autoTravel = ep.scenes.filter((sc) => sc.unlockedBy && S.solved.includes(sc.unlockedBy) && ep.devices[sc.unlockedBy]?.scene === scene.id && !S.visited.includes(sc.id)).map((sc) => ({ id: 'go-' + sc.id, x: 50, y: 92, label: sc.name + '(으)로 가기', kind: 'travel', to: sc.id, auto: true }));
+    [...scene.hotspots, ...autoTravel].forEach((h) => {
       if (h.visible && !h.visible(S)) return;
       const done = h.kind === 'doc' ? S.read.includes(h.doc) : h.kind === 'device' ? S.solved.includes(h.device) : false;
+      if (h.auto) h.label = josa(h.label.replace('(으)로 가기', ''), '으로', '로') + ' 가기';
       const b = btn('v2-hotspot' + (done ? ' done' : '') + (h.kind === 'device' ? ' device' : '') + (h.kind === 'travel' ? ' travel' : ''), '', () => act(h), h.label);
       b.style.left = h.x + '%'; b.style.top = h.y + '%';
       b.append(el('i'), el('span', 'v2-hotspot-label', h.label));
@@ -169,7 +171,7 @@ async function main() {
     sec.append(arrive);
     // 핫스팟 목록(작은 화면·접근성)
     const list = el('div', 'v2-spotlist');
-    scene.hotspots.forEach((h) => {
+    [...scene.hotspots, ...autoTravel].forEach((h) => {
       if (h.visible && !h.visible(S)) return;
       const done = h.kind === 'doc' ? S.read.includes(h.doc) : h.kind === 'device' ? S.solved.includes(h.device) : false;
       list.append(btn('v2-spot' + (done ? ' done' : '') + (h.kind === 'device' ? ' device' : ''), (h.kind === 'device' ? '⚙ ' : h.kind === 'travel' ? '→ ' : '') + h.label + (done ? ' ✓' : ''), () => act(h)));
@@ -310,7 +312,7 @@ async function main() {
     if (dev.reveal.ending) node.append(btn('v2-primary', (dev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; S.solved = true; save(); closeDialog(); }));
     else if (target) node.append(btn('v2-primary', josa(target.name, '으로', '로') + ' →', () => { S.scene = target.id; save(); closeDialog(); }));
     else node.append(btn('v2-primary', '계속', () => closeDialog()));
-    openDialog(node, { label: dev.reveal.title, onClose: () => render() });
+    openDialog(node, { label: dev.reveal.title, onClose: () => { if (target && S.scene !== target.id) { S.scene = target.id; save(); window.scrollTo({ top: 0 }); } render(); } });
   }
 
   // ---------- 힌트 ----------
