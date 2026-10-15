@@ -232,3 +232,9 @@ a{color:inherit}
   .v2-spotlist{display:none}
 }
 .v2-error{padding:40px;text-align:center;color:var(--fog)}
+
+/* 의견 남기기 */
+.v2-feedback-lead{color:#5a5446;margin:0 0 12px}
+.v2-textarea,.v2-input{display:block;width:100%;font:inherit;color:var(--paper-ink);background:#fff9;border:1px solid var(--paper-line);border-radius:4px;padding:10px 12px;margin:0 0 10px;resize:vertical}
+.v2-feedback .v2-status{color:#5a5446}
+.v2-feedback .v2-primary{background:var(--paper-ink);color:var(--paper)}
