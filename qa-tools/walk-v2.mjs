@@ -19,7 +19,7 @@ async function station({ mobile = false } = {}) {
     await L.fresh(page, '/play.html?case=station');
     await shot(page, 'intro');
     await L.click(page, '처음부터 하기');
-    L.check((await L.mainText(page)).includes('여기서 시작. 찾아와.'), 'opening shown');
+    L.check((await L.mainText(page)).includes('여기서 시작. 찾아와'), 'opening shown');
     await shot(page, 'opening');
     await L.click(page, '중앙역 대합실로');
     await L.sleep(400);

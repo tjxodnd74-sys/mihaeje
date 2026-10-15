@@ -87,24 +87,55 @@ const ANSWER_HOUSE = 'H3';
 const postcardImg = `<figure class="postcard-photo"><img src="assets/v2/station/postcard.webp" srcset="assets/v2/station/postcard-960.webp 960w, assets/v2/station/postcard.webp 1024w" sizes="(max-width: 640px) 100vw, 640px" alt="민서가 보낸 엽서 사진: 작은 역사, 벤치에서 조는 사람, 하늘의 새" decoding="async"><figcaption>수림역. 네가 내릴 역. — 민서</figcaption></figure>`;
 
 const LANE_END = { L: { x: 0, y: 30 }, R: { x: 48, y: 30 }, GL: { x: 40, y: 56 }, X: { x: 0, y: 74 }, FL: { x: 96, y: 56 } };
+// 볼펜으로 영수증 뒷면에 그린 손지도. 길·집 좌표는 WALK/LANES 판정과 같아야 합니다.
+const INK = '#2f3a7a';
 function svgMap(path = [], picked = null) {
   const n = MAP.nodes;
-  const road = (a, b) => `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#b9a98a" stroke-width="2.2" stroke-linecap="round"/>`;
-  const lanes = [
-    road({ x: 0, y: 74 }, { x: 96, y: 74 }),
-    road(n.B, n.G), road(n.C, n.D), road(n.D, n.E), road({ x: 0, y: 30 }, { x: 48, y: 30 }),
-    road(n.F, n.FE), road(n.FE, { x: 96, y: 56 }),
-    `<path d="M0 42 C 20 36, 40 48, 60 40 S 90 34, 100 42" fill="none" stroke="#9fc3d8" stroke-width="4"/>`,
-    `<rect x="21" y="38" width="6" height="8" fill="#8c5a3c"/>`,
+  // 두 번 긋는 볼펜 선(살짝 어긋나게)
+  const pen = (d, w = 0.9, extra = '') => `<path d="${d}" fill="none" stroke="${INK}" stroke-width="${(w * 1.6).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round" ${extra}/>`;
+  const road = (a, b) => {
+    const dx = b.x - a.x, dy = b.y - a.y, len = Math.hypot(dx, dy) || 1, nx = -dy / len * 1.6, ny = dx / len * 1.6;
+    return pen(`M${a.x + nx} ${a.y + ny} L${b.x + nx} ${b.y + ny}`, 0.7) + pen(`M${a.x - nx} ${a.y - ny} L${b.x - nx} ${b.y - ny}`, 0.7);
+  };
+  const roads = [
+    road({ x: -2, y: 74 }, { x: 98, y: 74 }),
+    road(n.B, n.G), road(n.C, n.D), road(n.D, n.E), road({ x: -2, y: 30 }, { x: 48, y: 30 }),
+    road(n.F, n.FE), road(n.FE, { x: 98, y: 56 }),
   ].join('');
-  const walked = path.map(([a, b]) => `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#d9872b" stroke-width="3" stroke-linecap="round"/>`).join('');
-  const houses = MAP.houses.map((h) => `<g class="map-house${picked === h.id ? ' picked' : ''}"><rect x="${h.x - 3.5}" y="${h.y - 2.5}" width="7" height="5" fill="#efe3c9" stroke="#5c4b32" stroke-width="0.7"/><path d="M${h.x - 4.5} ${h.y - 2.5} L${h.x} ${h.y - 6} L${h.x + 4.5} ${h.y - 2.5} Z" fill="#8c5a3c" stroke="#5c4b32" stroke-width="0.7"/></g>`).join('');
+  // 개울: 겹친 물결 두 줄 + 다리 널빤지
+  const stream = pen('M-2 41 C 15 36, 30 47, 50 41 S 85 35, 102 41', 0.8, 'stroke="#4a6fa5"') + pen('M-2 44 C 15 39, 30 50, 50 44 S 85 38, 102 44', 0.6, 'stroke="#4a6fa5" stroke-dasharray="3 1.5"')
+    + pen('M20 37.5 L28 37.5 M20 39.5 L28 39.5 M20 41.5 L28 41.5 M20 43.5 L28 43.5 M20 45.5 L28 45.5', 0.6) + pen('M19.5 36.5 L19.5 46.5 M28.5 36.5 L28.5 46.5', 0.8);
+  // 집: 지붕 선 + 벽 + 창 하나, 집마다 조금씩 다르게
+  const house = (h, i) => {
+    const w = 6 + (i % 3), hh = 4 + (i % 2), r = 2.5 + (i % 2);
+    const x = h.x - w / 2, y = h.y - hh / 2;
+    const roof = i % 2 ? `M${x - 0.8} ${y} L${h.x} ${y - r} L${x + w + 0.8} ${y}` : `M${x - 0.8} ${y} L${x + w * 0.35} ${y - r} L${x + w + 0.8} ${y}`;
+    const hatch = Array.from({ length: 3 }, (_, k) => `M${x + 1 + k * (w / 3)} ${y + 0.6} l${w / 4} ${hh - 1.2}`).join(' ');
+    const sel = picked === h.id ? `<circle cx="${h.x}" cy="${h.y}" r="${w * 0.8}" fill="none" stroke="#d9872b" stroke-width="1.2" stroke-dasharray="2 1"/>` : '';
+    return `<g class="map-house${picked === h.id ? ' picked' : ''}">${sel}${pen(`M${x} ${y} h${w} v${hh} h${-w} z`, 0.7)}${pen(roof, 0.8)}${pen(hatch, 0.35)}${pen(`M${x + w - 2.2} ${y + 1} h1.4 v1.2 h-1.4 z`, 0.4)}</g>`;
+  };
+  const houses = MAP.houses.map(house).join('');
+  // 논 빗금, 나무 낙서
+  const field = (x, y, w, h) => pen(Array.from({ length: Math.floor(h / 1.6) }, (_, k) => `M${x} ${y + k * 1.6} h${w}`).join(' '), 0.3, 'opacity=".7"');
+  const tree = (x, y, r = 2.2) => pen(`M${x} ${y + r} v${-r * 0.9} M${x - r} ${y - r * 0.2} c${r * 0.3} ${-r * 1.4}, ${r * 1.7} ${-r * 1.4}, ${r * 2} 0 c${r * 0.4} ${r}, ${-r * 2.4} ${r}, ${-r * 2} 0 z`, 0.5);
+  const scenery = field(56, 8, 40, 16) + field(4, 80, 30, 10) + field(60, 80, 34, 10)
+    + tree(8, 56) + tree(14, 60, 1.8) + tree(90, 30, 2.6) + tree(84, 24, 2) + tree(50, 62, 1.6) + tree(70, 66, 2)
+    + pen('M60 60 c-2 -3, 2 -6, 4 -3 c2 -3, 5 1, 2 3 c2 2, -3 4, -3 2 c-2 2, -5 -1, -3 -2 z', 0.6) + pen('M62 66 v-6', 0.6)
+    + `<circle cx="61" cy="59" r="0.9" fill="#d9872b"/><circle cx="64" cy="60.5" r="0.9" fill="#d9872b"/><circle cx="63" cy="57.5" r="0.8" fill="#d9872b"/>`;
+  // 걸어온 길(형광펜)
+  const walked = path.map(([a, b]) => `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#f2c14e" stroke-opacity=".75" stroke-width="3.2" stroke-linecap="round"/>`).join('');
+  // 글씨
+  const label = (x, y, t, size = 3.4, anchor = 'start', rot = 0) => `<text x="${x}" y="${y}" font-size="${size * 1.3}" font-family="MihaejeHand, MihaejeSerif, serif" fill="${INK}" text-anchor="${anchor}" transform="rotate(${rot} ${x} ${y})">${t}</text>`;
+  const notes = label(50, 97, '수림역', 4, 'middle') + label(67, 70, '감나무', 2.8, 'middle') + label(34, 36.5, '개울', 2.8) + label(24, 52, '다리', 2.6, 'middle', -4)
+    + label(82, 12, '논', 3) + label(10, 86, '논', 3) + label(6, 24, '여기 개 있음 조심', 2.4) + label(86, 50, '언덕', 2.6);
+  // 나침반 낙서
+  const compass = pen('M91 6 v8 M91 6 l-2 3 M91 6 l2 3', 0.8) + label(93.5, 9.5, 'N', 3.6) + pen('M91 10 m-3 0 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0', 0.4);
   return `<svg viewBox="0 0 100 100" class="village-map" role="img" aria-label="민서의 손지도">
-   <rect width="100" height="100" fill="#f6efdc"/>
-   <text x="90" y="8" font-size="4" fill="#5c4b32">N ↑</text>
-   ${lanes}${walked}${houses}
-   <rect x="44" y="80" width="12" height="8" fill="#5c4b32"/><text x="50" y="94" font-size="3.6" text-anchor="middle" fill="#5c4b32">수림역</text>
-   <ellipse cx="60" cy="64" rx="3" ry="2.4" fill="#d9872b" opacity=".8"/><text x="60" y="70.5" font-size="2.8" text-anchor="middle" fill="#5c4b32">감나무</text>
+   <defs>
+    <filter id="pen" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="0.6" xChannelSelector="R" yChannelSelector="G"/></filter>
+   </defs>
+   <g filter="url(#pen)">${scenery}${roads}${stream}${houses}${pen('M44 80 h12 v8 h-12 z', 0.9)}${pen('M44 80 l6 -3 l6 3', 0.9)}${compass}${notes}</g>
+   ${walked}
   </svg>`;
 }
 
@@ -200,12 +231,12 @@ export default {
     message: {
       title: '민서의 마지막 메시지',
       kind: '휴대폰 · 01:14',
-      html: `<div class="phone-msg"><div class="bubble photo"><div class="enamel">3번 승강장</div><p class="scrawl">여기서 시작. 찾아와.</p></div><div class="bubble-time">오전 1:14</div><div class="bubble mine">민서야 어디야</div><div class="bubble mine">전화 좀 받아</div><p class="sys">상대방이 전화를 받을 수 없습니다 · 전원이 꺼져 있음</p></div>`,
+      html: `<div class="phone-msg"><div class="bubble photo"><img class="msg-photo" src="assets/v2/station/cover-960.webp" alt="낡은 3번 승강장 표지판 사진" decoding="async"><p class="scrawl">여기서 시작. 찾아와.</p></div><div class="bubble-time">오전 1:14</div><div class="bubble mine">민서야 어디야</div><div class="bubble mine">전화 좀 받아</div><p class="sys">상대방이 전화를 받을 수 없습니다 · 전원이 꺼져 있음</p></div>`,
     },
     sign: {
       title: '벽에 기댄 옛 표지판',
       kind: '법랑 · 모서리가 깨짐',
-      html: `<p>흰 바탕에 검은 글씨. <b>3번 승강장</b>. 개편 전에 떼어 낸 것을 역무원이 버리지 못하고 벽에 세워 두었다고 한다.</p><p>뒷면 아래쪽에 투명 테이프로 종이 한 장이 붙어 있다. 구간권이다. 네모난 구멍이 여섯 개 뚫려 있고, 위쪽 여백에 민서 글씨.</p><blockquote class="hand">시간표에 대 봐. 화살표는 위로.</blockquote><div class="ticket-prop"><span class="arrow">▲</span><div class="holes"><i style="--r:0;--c:0"></i><i style="--r:0;--c:3"></i><i style="--r:1;--c:1"></i><i style="--r:1;--c:3"></i><i style="--r:2;--c:2"></i><i style="--r:3;--c:1"></i></div><small>미루선 구간권 · 800원</small></div><p class="aside">구간권은 열차 안내판(대합실 위쪽)의 글자판과 같은 크기의 칸으로 나뉘어 있다.</p>`,
+      html: `<p>흰 바탕에 검은 글씨. <b>3번 승강장</b>. 개편 전에 떼어 낸 것을 역무원이 버리지 못하고 벽에 세워 두었다고 한다.</p><p>뒷면 아래쪽에 투명 테이프로 종이 한 장이 붙어 있다. 구간권이다. 네모난 구멍이 여섯 개 뚫려 있고, 위쪽 여백에 민서 글씨.</p><figure class="prop ticket"><img src="assets/v2/station/props/ticket.webp" alt="구멍 뚫린 구간권" decoding="async"><div class="ticket-holes"><i style="--r:0;--c:0"></i><i style="--r:0;--c:3"></i><i style="--r:1;--c:1"></i><i style="--r:1;--c:3"></i><i style="--r:2;--c:2"></i><i style="--r:3;--c:1"></i></div><span class="ticket-arrow">▲</span><span class="ticket-print">미루선 구간권<br>800원</span><span class="ticket-hand">시간표에 대 봐. 화살표는 위로</span></figure><p class="aside">구간권은 열차 안내판(대합실 위쪽)의 글자판과 같은 크기의 칸으로 나뉘어 있다.</p>`,
     },
     clerk: {
       title: '매표창구의 역무원',
@@ -225,12 +256,12 @@ export default {
     strip: {
       title: '기둥에 붙은 네컷사진',
       kind: '앞면 · 뒷면',
-      html: `<div class="strip-prop"><div class="frames"><i></i><i></i><i></i><i></i></div><p class="aside">4년 전 역 앞 사진 부스. 둘 다 눈을 감은 컷이 하나 있다.</p></div><p>뒷면에 민서 글씨가 있다. 그런데 글자가 전부 뒤집혀 있다. 왼손으로 쓴 것처럼 삐뚤고, 자음이 거꾸로다.</p><p class="mirror-text">우리가 처음 만난 그 시간 열차. 종점까지 와.</p><p class="aside">승강장 끝에 볼록거울이 있다.</p>`,
+      html: `<figure class="prop stripphoto"><img src="assets/v2/station/props/strip.webp" alt="기둥에 붙은 네컷사진" decoding="async"></figure><p class="aside">4년 전 역 앞 사진 부스. 둘 다 눈을 감은 컷이 하나 있다.</p><p>뒷면에 민서 글씨가 있다. 그런데 글자가 전부 뒤집혀 있다. 왼손으로 쓴 것처럼 삐뚤고, 자음이 거꾸로다.</p><figure class="prop stripback"><p class="mirror-text">우리가 처음 만난 그 시간 열차. 종점까지 와.</p></figure><p class="aside">승강장 끝에 볼록거울이 있다.</p>`,
     },
     timetable: {
       title: '기둥의 출발 시각표',
       kind: '2번 승강장 · 북행',
-      html: `<table><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_2.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="aside">맞은편 1번 승강장(남행)의 시각표도 보인다.</p><table class="dim"><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_1.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table>`,
+      html: `<figure class="prop laminated"><img src="assets/v2/station/props/timetable.webp" alt="기둥에 핀으로 꽂힌 시각표" decoding="async"><div class="laminated-sheet"><p class="sheet-title">2번 승강장 출발 시각 (북행)</p><table><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_2.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="sheet-title dim">맞은편 1번 승강장 (남행)</p><table class="dim"><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_1.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="sheet-foot">미루선 · 수림역무관리소</p></div></figure>`,
     },
     postcard: {
       title: '게시판의 그림엽서',
@@ -245,12 +276,12 @@ export default {
     letter: {
       title: '민서의 편지',
       kind: '보관함 안 · 봉투 없이',
-      html: `<div class="letter-paper"><p>왔네.</p><p>여기까지 왔으면 반은 온 거야. 열쇠는 우리 집 대문 열쇠. 지도는 내가 그렸는데 좀 못 그렸어.</p><p>역을 등지고 서. 그 상태에서 <b>왼쪽</b>으로 가.<br><b>두 번째 골목</b>에서 <b>오른쪽</b>으로 꺾어.<br>다리를 건너. 건너자마자 <b>왼쪽</b>.<br>그 길에서 <b>세 번째 집</b>. 파란 대문.</p><p>대문 색은 지도에 안 그렸어. 그려 놓으면 네가 지도만 보고 올 거잖아.</p><p>— 민서</p></div>`,
+      html: `<figure class="prop letterphoto"><img src="assets/v2/station/props/letter.webp" alt="보관함에서 나온 편지" decoding="async"><div class="letter-hand"><p>왔네.</p><p>여기까지 왔으면 반은 온 거야. 열쇠는 우리 집 대문 열쇠. 지도는 내가 그렸는데 좀 못 그렸어.</p><p>역을 등지고 서. 그 상태에서 <b>왼쪽</b>으로 가.<br><b>두 번째 골목</b>에서 <b>오른쪽</b>으로 꺾어.<br>다리를 건너. 건너자마자 <b>왼쪽</b>.<br>그 길에서 <b>세 번째 집</b>. 파란 대문.</p><p>대문 색은 지도에 안 그렸어. 그려 놓으면 네가 지도만 보고 올 거잖아.</p><p class="sign">— 민서</p></div></figure>`,
     },
     handmap: {
       title: '접힌 손지도',
-      kind: '볼펜 · 뒷면은 영수증',
-      html: `${svgMap()}<p class="aside">위가 북쪽. 역은 지도 아래쪽에 있다. 집들은 전부 같은 모양으로 그려져 있고 대문 색은 없다.</p>`,
+      kind: '종이봉투 조각에 볼펜',
+      html: `<figure class="prop kraft"><img src="assets/v2/station/props/kraft.webp" alt="종이봉투를 찢어 그린 손지도" decoding="async"><div class="kraft-map">${svgMap()}</div></figure><p class="aside">위가 북쪽. 역은 지도 아래쪽에 있다. 집은 전부 비슷하게 그려져 있고 대문 색은 없다.</p>`,
     },
     final: {
       title: '민서의 편지 · 마지막 장',
@@ -276,6 +307,7 @@ export default {
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'grille');
+        const frame = el('div', 'grille-frame'); const bg = el('img'); bg.src = 'assets/v2/station/props/board.webp'; bg.alt = ''; frame.append(bg);
         const board = el('div', 'grille-board');
         board.style.setProperty('--dx', d.dx);
         board.style.setProperty('--dy', d.dy);
@@ -295,7 +327,7 @@ export default {
         ticket.style.setProperty('--turn', d.turn || 0);
         ticket.append(el('span', 'arrow', '▲'));
         board.append(ticket);
-        wrap.append(board);
+        frame.append(board); wrap.append(frame);
         const ctl = el('div', 'grille-controls');
         const mk = (label, fn, aria) => { const b = el('button', 'ctl', label); b.type = 'button'; b.setAttribute('aria-label', aria); b.onclick = () => { fn(); save(); }; return b; };
         ctl.append(
@@ -354,7 +386,7 @@ export default {
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'mirror');
-        const glass = el('div', 'mirror-glass' + (d.held ? ' held' : ''));
+        const glass = el('div', 'mirror-glass' + (d.held ? ' held' : '')); const mimg = el('img'); mimg.src = 'assets/v2/station/props/mirror.webp'; mimg.alt = ''; glass.append(mimg);
         const paper = el('p', 'mirror-paper', '우리가 처음 만난 그 시간 열차. 종점까지 와.');
         glass.append(paper);
         wrap.append(glass);
@@ -402,7 +434,7 @@ export default {
       initial: () => ({ dial: [0, 0, 0, 0], fails: 0, lockedUntil: 0 }),
       render(ctx) {
         const { d, el, save } = ctx;
-        const wrap = el('div', 'locker');
+        const wrap = el('div', 'locker'); const limg = el('img'); limg.src = 'assets/v2/station/props/locker.webp'; limg.alt = ''; wrap.append(limg);
         const row = el('div', 'dials');
         ['새', '창', '등', '의자'].forEach((lab, i) => {
           const col = el('div', 'dial');
@@ -457,7 +489,7 @@ export default {
         const wrap = el('div', 'walk');
         const segs = d.path.map(([a, b]) => [MAP.nodes[a] || LANE_END[a], MAP.nodes[b] || LANE_END[b]]);
         const mapBox = el('div', 'walk-map');
-        mapBox.innerHTML = svgMap(segs, d.house);
+        mapBox.innerHTML = `<img src="assets/v2/station/props/kraft.webp" alt="" decoding="async"><div class="kraft-map">${svgMap(segs, d.house)}</div>`; mapBox.classList.add('prop', 'kraft');
         wrap.append(mapBox);
         const here = el('p', 'walk-here');
         const headingName = { N: '북쪽(역을 등진 방향)', S: '남쪽(역 쪽)', E: '동쪽', W: '서쪽' }[d.heading];
