@@ -386,6 +386,78 @@ async function petHome({ mobile = false } = {}) {
   await browser.close();
 }
 
+async function studio({ mobile = false } = {}) {
+  const { browser, page, errors } = await L.launch({ mobile });
+  console.log('=== studio v2' + (mobile ? ' (mobile)' : ''));
+  const setRange = async (label, v) => { await page.evaluate(({ label, v }) => { const r = [...document.querySelectorAll('dialog[open] input[type=range]')].find((x) => x.getAttribute('aria-label') === label); r.value = v; r.dispatchEvent(new Event('input', { bubbles: true })); }, { label, v }); await L.sleep(200); };
+  try {
+    await L.fresh(page, '/play.html?case=studio');
+    await L.click(page, '처음부터 하기');
+    L.check((await L.mainText(page)).includes('2006년 3월 것이었다'), 'opening shown');
+    await L.click(page, '접수대의 봉투 보기'); await L.sleep(400);
+    for (const [d, t] of [['접수대의 할아버지 쪽지', '암실 열쇠는 필름 봉투 안에'], ['접수 장부', 'D열로 옮겨 꽂음'], ['벽의 사진들', '8×10']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '보관함에서 꺼낸 필름 봉투'))), 'sleeve hidden before lockers');
+    // lamp
+    await hotspot(page, '초록 등 밑의 봉투');
+    await commit(page); L.check((await status(page)).includes('더 기울이자'), 'lamp: flat explained');
+    await setRange('봉투 기울기', 60); await commit(page); L.check((await status(page)).includes('조금 내리자'), 'lamp: too steep explained');
+    await setRange('봉투 기울기', 36); await shot(page, 'st-lamp'); await commit(page); L.check(await dlgHas(page, 'C3 · 23 · 8×10 · 12초'), 'lamp solved');
+    await L.click(page, '계속'); await L.sleep(300);
+    // lockers
+    await hotspot(page, '필름 보관함');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .locker-cell').length === 16), 'lockers: 16 cells');
+    await L.click(page, 'C3 서랍 열기', { exact: true }); await commit(page); L.check((await status(page)).includes('2012년 봉투뿐'), 'lockers: C3 decoy explained');
+    await L.click(page, 'D2 서랍 열기', { exact: true }); await commit(page); L.check((await status(page)).includes('번호는 그대로'), 'lockers: wrong D explained');
+    await L.click(page, 'D3 서랍 열기', { exact: true }); await shot(page, 'st-lockers'); await commit(page); L.check(await dlgHas(page, '꼬리표 달린 작은 열쇠'), 'lockers solved');
+    await L.closeDialog(page); await L.sleep(400);
+    L.check((await L.mainText(page)).includes('라이트박스를 켜자'), 'moved to table');
+    await L.click(page, '1. 접수실'); await L.sleep(300); await hotspot(page, '보관함에서 꺼낸 필름 봉투'); L.check(await dlgHas(page, '노출 12초'), 'doc: sleeve'); await L.closeDialog(page);
+    await L.click(page, '2. 작업대'); await L.sleep(300);
+    await hotspot(page, '루페로 본 필름 가장자리'); await L.closeDialog(page);
+    // lightbox
+    await hotspot(page, '라이트박스 위 필름');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .strip').length === 4 && document.querySelectorAll('dialog[open] .strip.flipped').length === 2), 'lightbox: 4 strips, 2 flipped');
+    await commit(page); L.check((await status(page)).includes('뒤집혀 있다'), 'lightbox: flipped explained');
+    // initial order c,a,d,b; flips a,c. Fix flips: rows 1 (c) and 2 (a)
+    await L.click(page, '1번째 줄 뒤집기', { exact: true }); await L.click(page, '2번째 줄 뒤집기', { exact: true });
+    await commit(page); L.check((await status(page)).includes('이어지지 않는다'), 'lightbox: order explained');
+    // order c,a,d,b -> a,b,c,d: move a(2) up; then d(3) down; order a,c,b,d -> move b(3) up
+    await L.click(page, '2번째 줄 위로', { exact: true }); // a,c,d,b
+    await L.click(page, '4번째 줄 위로', { exact: true }); // a,c,b,d
+    await L.click(page, '3번째 줄 위로', { exact: true }); // a,b,c,d
+    await commit(page); L.check((await status(page)).includes('안 짚었다'), 'lightbox: no frame explained');
+    await L.click(page, '4번째 줄 2번째 컷 짚기', { exact: true }); await commit(page); L.check((await status(page)).includes('동그라미'), 'lightbox: wrong frame explained');
+    await L.click(page, '4번째 줄 5번째 컷 짚기', { exact: true }); await shot(page, 'st-lightbox'); await commit(page); L.check(await dlgHas(page, '23컷'), 'lightbox solved');
+    await L.closeDialog(page); await L.sleep(400);
+    L.check((await L.mainText(page)).includes('약품 냄새와 어둠'), 'moved to darkroom');
+    await hotspot(page, '벽의 순서표'); await L.closeDialog(page);
+    // print
+    await hotspot(page, '확대기와 트레이');
+    await L.click(page, '인화지 꺼내 올리기'); L.check((await status(page)).includes('불부터'), 'print: white light explained');
+    await L.click(page, '흰 불 스위치', { exact: true }); await L.click(page, '붉은 등 스위치', { exact: true }); await L.click(page, '인화지 꺼내 올리기');
+    await L.click(page, '타이머 누르기', { exact: true }); L.check((await status(page)).includes('흐리다'), 'print: focus explained');
+    await setRange('초점 손잡이', 65); await L.click(page, '타이머 누르기', { exact: true }); L.check((await status(page)).includes('봉투에 적힌 초'), 'print: timer explained');
+    await setRange('타이머', 12); await L.click(page, '타이머 누르기', { exact: true });
+    await L.click(page, '2번째 트레이에 담그기', { exact: true }); await L.click(page, '1번째 트레이에 담그기', { exact: true }); await L.click(page, '3번째 트레이에 담그기', { exact: true }); await commit(page);
+    L.check((await status(page)).includes('순서가 틀렸다'), 'print: bath order explained');
+    await L.click(page, '인화지 버리고 처음부터'); await L.click(page, '인화지 꺼내 올리기'); await L.click(page, '타이머 누르기', { exact: true });
+    for (const n of [1, 2, 3]) await L.click(page, `${n}번째 트레이에 담그기`, { exact: true });
+    await shot(page, 'st-print'); await commit(page); L.check(await dlgHas(page, '스무 해 만의 한 장'), 'print solved');
+    await L.click(page, '붉은 등 아래로'); await L.sleep(500);
+    L.check((await L.mainText(page)).includes('처음으로 할아버지가 사진 안에'), 'ending reached');
+    await L.click(page, '사진 뒷면의 글씨 읽기'); L.check(await dlgHas(page, '돌아오면 같이 찾으러 오자'), 'final unlocked'); await L.closeDialog(page);
+    await L.click(page, '자료 다시 보기'); L.check(!(await L.dialogText(page)).includes('아직 읽지 않은'), 'all docs read');
+  } catch (e) {
+    console.log('FAIL exception', e.message);
+    console.log('buttons now', JSON.stringify(await L.buttons(page)));
+    console.log('dialog', (await L.dialogText(page)).replace(/\n+/g, ' | ').slice(0, 400));
+    process.exitCode = 1;
+  }
+  const bad = errors.filter((e) => !/woff2/.test(e));
+  L.check(!bad.length, 'no page errors ' + JSON.stringify(bad));
+  await browser.close();
+}
+
 const which = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 const mobile = process.argv.includes('--mobile');
 await L.ensureServer();
@@ -393,3 +465,4 @@ if (!which.length || which.includes('station')) await station({ mobile });
 if (!which.length || which.includes('cat-invite')) await catInvite({ mobile });
 if (!which.length || which.includes('ohang')) await ohang({ mobile });
 if (!which.length || which.includes('pet-home')) await petHome({ mobile });
+if (!which.length || which.includes('studio')) await studio({ mobile });

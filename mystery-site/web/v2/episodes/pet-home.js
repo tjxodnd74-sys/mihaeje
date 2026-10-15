@@ -453,6 +453,6 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
     ],
     afterword: '엄마는 앨범에서 그 사진을 빼서 내 집 현관에 걸어 줬다 루미 방석에서 보이는 자리다',
     unlockDoc: 'final',
-    next: { href: 'studio.html', title: '사진관', line: '다음은 오래된 사진관 이야기입니다' },
+    next: { href: 'play.html?case=studio', title: '비가 그친 사진관', line: '다음은 오래된 사진관 이야기입니다' },
   },
 };
