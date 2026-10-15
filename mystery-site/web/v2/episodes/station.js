@@ -65,6 +65,7 @@ const MAP = {
   ],
 };
 
+const PLACE_NAMES = { S: '수림역 앞', B: '첫째 골목 입구', C: '둘째 골목 입구', D: '둘째 골목, 다리 앞', E: '다리 건넌 뒤 갈림길', F: '동쪽 골목 입구' };
 const WALK = {
   // 현재 위치 → 갈림길 선택지. 진행 방향을 기억해 "왼쪽/오른쪽"을 지도 방향으로 바꿉니다.
   S: { choices: [{ dir: '왼쪽', to: 'B', heading: 'W' }, { dir: '오른쪽', to: 'F', heading: 'E' }] },
@@ -186,13 +187,16 @@ export default {
       id: 'hall',
       name: '중앙역 대합실',
       image: 'assets/v2/station/hall.webp',
+      overlays: [
+        { x: 2.6, y: 8, w: 22.5, h: 38, cls: 'ov-notice', style: 'transform:perspective(900px) rotateY(5deg);transform-origin:left center', html: '<b>승강장 번호 변경 안내</b><table><tr><th>개편 전</th><th>현재</th></tr><tr><td>3번</td><td>2번 (북행)</td></tr><tr><td>2번</td><td>1번 (남행)</td></tr><tr><td>1번</td><td>폐쇄</td></tr></table><small>미루선 중앙역 · 역무관리소</small>' },
+      ],
       arrive: '여섯 시 반의 대합실. 전광판은 아직 어제 날짜를 넘기지 못한 것처럼 느리게 깜빡인다. 안내판 아래, 벽에 기대 둔 흰 표지판이 보인다. 사진 속 그것이다. 숨이 짧아졌다. 커피를 사려다 말았다.',
       hotspots: [
-        { id: 'sign', x: 30, y: 70, label: '벽에 기댄 옛 표지판', kind: 'doc', doc: 'sign' },
-        { id: 'clerk', x: 62, y: 52, label: '매표창구의 역무원', kind: 'doc', doc: 'clerk' },
-        { id: 'notice', x: 17, y: 40, label: '승강장 개편 안내', kind: 'doc', doc: 'notice' },
-        { id: 'board', x: 42, y: 28, label: '열차 안내판', kind: 'device', device: 'grille' },
-        { id: 'tophone', x: 86, y: 84, label: '민서의 마지막 메시지', kind: 'doc', doc: 'message' },
+        { id: 'sign', x: 36, y: 63, label: '벽에 기댄 옛 표지판', kind: 'doc', doc: 'sign' },
+        { id: 'clerk', x: 66, y: 40, label: '매표창구의 역무원', kind: 'doc', doc: 'clerk' },
+        { id: 'notice', x: 13, y: 34, label: '승강장 개편 안내', kind: 'doc', doc: 'notice' },
+        { id: 'board', x: 42, y: 24, label: '열차 안내판', kind: 'device', device: 'grille' },
+        { id: 'tophone', x: 20, y: 84, label: '민서의 마지막 메시지', kind: 'doc', doc: 'message' },
       ],
     },
     {
@@ -217,7 +221,7 @@ export default {
       hotspots: [
         { id: 'postcard', x: 60, y: 30, label: '게시판의 그림엽서', kind: 'doc', doc: 'postcard' },
         { id: 'lockerrule', x: 12, y: 24, label: '보관함 이용 안내', kind: 'doc', doc: 'lockerrule' },
-        { id: 'locker', x: 30, y: 52, label: '별 스티커가 붙은 보관함', kind: 'device', device: 'locker' },
+        { id: 'locker', x: 52, y: 47, label: '별 스티커가 붙은 보관함', kind: 'device', device: 'locker' },
       ],
     },
     {
@@ -293,7 +297,7 @@ export default {
     },
     final: {
       title: '민서의 편지 · 마지막 장',
-      kind: '봉투 안에 한 장 더',
+      kind: '편지의 접힌 뒷장 · 마당에서 읽음',
       locked: true,
       html: `<div class="letter-paper"><p>할머니가 겨울에 넘어지셨어. 아무한테도 말 안 하고 혼자 석 달을 누워 계셨대. 그 얘기를 듣고 그날 사표 냈어.</p><p>너한테는 말을 못 했어. 말하면 네가 말릴 것 같았고, 안 말리면 그게 더 서운할 것 같았어. 그래서 네가 직접 오게 만들었어. 넌 길 찾는 거 잘하잖아. 그리고 여기까지 온 사람은 그냥 못 돌아가.</p><p>휴대폰은 보관함에 넣어 뒀어. 들고 있으면 네가 걸 때마다 받을 것 같아서. 받으면 말할 것 같고, 말하면 넌 안 올 것 같아서.</p><p>수박 잘라 놨어.</p></div>`,
     },
@@ -386,20 +390,29 @@ export default {
       docs: ['strip', 'timetable', 'brief'],
       hintCode: 'T-S02',
       hints: [
-        '민서의 쪽지는 거울 글씨입니다. 거울에 비추면 읽힙니다. 읽은 문장 안에 “시간”과 “종점”이 있습니다.',
+        '민서의 쪽지는 거울 글씨입니다. 사진을 거울 앞에 들고 나란히 맞추면 읽힙니다. 읽은 문장 안에 “시간”과 “종점”이 있습니다.',
         '민서와 처음 만난 시간은 「민서와 나」에 적혀 있습니다. 같은 시간 열차가 두 승강장에 하나씩 있는데, 지금 서 있는 곳은 2번 승강장입니다.',
         '09:40 수림행 급행입니다. 종점은 수림.',
       ],
-      initial: () => ({ held: false, train: null }),
+      initial: () => ({ held: false, tilt: 0, train: null }),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'mirror');
-        const glass = el('div', 'mirror-glass' + (d.held ? ' held' : '')); const mimg = el('img'); mimg.src = 'assets/v2/station/props/mirror.webp'; mimg.alt = ''; glass.append(mimg);
+        const aligned = d.held && Math.abs((d.tilt || 0) - 50) <= 8;
+        const glass = el('div', 'mirror-glass' + (d.held ? ' held' : '') + (aligned ? ' aligned' : '')); const mimg = el('img'); mimg.src = 'assets/v2/station/props/mirror.webp'; mimg.alt = ''; glass.append(mimg);
         const paper = el('p', 'mirror-paper', '우리가 처음 만난 그 시간 열차. 종점까지 와.');
+        paper.style.setProperty('--tilt', String(((d.tilt || 0) - 50) * 1.1));
         glass.append(paper);
         wrap.append(glass);
-        const b = el('button', 'ctl wide', d.held ? '사진 내리기' : '네컷사진을 거울 앞에 들기'); b.type = 'button'; b.onclick = () => { d.held = !d.held; save(); };
+        const b = el('button', 'ctl wide', d.held ? '사진 내리기' : '네컷사진 뒷면을 거울 앞에 들기'); b.type = 'button'; b.onclick = () => { d.held = !d.held; if (d.held && d.tilt == null) d.tilt = 0; save(); };
         wrap.append(b);
+        if (d.held) {
+          const lab = el('label', 'mirror-tilt'); lab.append(el('span', '', aligned ? '거울과 나란하다. 글씨가 읽힌다.' : '사진을 거울과 나란하게 맞춘다'));
+          const r = el('input'); r.type = 'range'; r.min = '0'; r.max = '100'; r.value = String(d.tilt || 0); r.setAttribute('aria-label', '사진 기울이기');
+          r.oninput = () => { d.tilt = Number(r.value); paper.style.setProperty('--tilt', String((d.tilt - 50) * 1.1)); const ok = Math.abs(d.tilt - 50) <= 8; glass.classList.toggle('aligned', ok); lab.firstChild.textContent = ok ? '거울과 나란하다. 글씨가 읽힌다.' : '사진을 거울과 나란하게 맞춘다'; };
+          r.onchange = () => { save(); };
+          lab.append(r); wrap.append(lab);
+        }
         const list = el('div', 'train-list');
         list.append(el('p', 'pick-label', '탈 열차 고르기 · 2번 승강장'));
         TRAINS_2.forEach((t) => { const c = el('button', 'train' + (d.train === t.id ? ' on' : '')); c.type = 'button'; c.innerHTML = `<b>${t.time}</b> ${t.to}행 <small>${t.stops} · ${t.kind}</small>`; c.onclick = () => { d.train = t.id; save(); }; list.append(c); });
@@ -413,7 +426,7 @@ export default {
         if (!d.train) return { ok: false, msg: '열차를 하나 골라야 합니다.' };
         if (d.train === 'n0940') return { ok: true };
         if (d.train === 's0940') return { ok: false, msg: '09:40은 두 승강장에 하나씩 있다. 민서가 사진을 붙인 기둥은 어느 쪽 승강장이었지.' };
-        if (!d.held) return { ok: false, msg: '뒷면 글씨를 아직 읽지 않았습니다. 거울에 비춰 보면 “시간”이 적혀 있습니다.' };
+        if (!d.held || Math.abs((d.tilt || 0) - 50) > 8) return { ok: false, msg: '뒷면 글씨를 아직 제대로 읽지 않았다. 사진을 거울과 나란히 맞추면 글자가 바로 보인다.' };
         const t = [...TRAINS_2, ...TRAINS_1].find((x) => x.id === d.train);
         return { ok: false, msg: `${t.time} ${t.to}행은 “처음 만난 그 시간”이 아닙니다. 「민서와 나」에 그 시간이 있습니다.` };
       },
@@ -552,14 +565,14 @@ export default {
         const headingName = { N: '북쪽(역을 등진 방향)', S: '남쪽(역 쪽)', E: '동쪽', W: '서쪽' }[d.heading];
         if (d.lane) {
           const lane = LANES[d.lane];
-          here.innerHTML = `<b>${lane.name}</b>에 들어섰다. 집이 ${lane.houses.length}채 늘어서 있다. 보는 방향: ${headingName}`;
+          here.innerHTML = `<b>${lane.name}</b>에 들어섰다. 집이 ${lane.houses.length}채 늘어서 있다. 보는 방향: ${headingName}. 집을 고르면 대문 앞에 선다.`;
           wrap.append(here);
           const row = el('div', 'pick-row');
           lane.houses.forEach((hid, i) => { const b = el('button', 'chip' + (d.house === hid ? ' on' : ''), `${['첫', '둘', '셋', '넷'][i]}째 집`); b.type = 'button'; b.onclick = () => { d.house = hid; save(); }; row.append(b); });
           wrap.append(row);
         } else {
           const node = WALK[d.at];
-          here.innerHTML = `<b>${d.at === 'S' ? '수림역 앞' : '갈림길'}</b> — 보는 방향: ${headingName}${d.at === 'D' ? '. 앞에 개울과 다리가 있다.' : ''}`;
+          here.innerHTML = `<b>${PLACE_NAMES[d.at] || '갈림길'}</b> — ${d.path.length ? '지금까지 ' + d.path.length + '번 꺾었다. ' : ''}보는 방향: ${headingName}${d.at === 'D' ? '. 앞에 개울과 다리가 있다.' : ''}`;
           wrap.append(here);
           const row = el('div', 'pick-row');
           node.choices.forEach((c) => { const b = el('button', 'chip', c.dir + (c.bridge ? ' (다리 건너기)' : '')); b.type = 'button'; b.onclick = () => { d.path.push([d.at, c.to]); if (LANES[c.to]) { d.lane = c.to; } else { d.at = c.to; } d.heading = c.heading; save(); }; row.append(b); });
@@ -570,6 +583,7 @@ export default {
         return wrap;
       },
       commitLabel: '이 집 대문에 열쇠 넣기',
+      canCommit: (d) => !!d.house,
       check(d) {
         if (!d.lane) return { ok: false, msg: '아직 집이 늘어선 길까지 가지 않았습니다. 갈림길에서 방향을 고르세요.' };
         if (!d.house) return { ok: false, msg: '집을 하나 골라야 합니다.' };
@@ -601,6 +615,7 @@ export default {
     paragraphs: [
       '평상 위에 수박이 잘려 있었다. 할머니가 먼저 손을 흔들었다. 민서는 일어나지 않았다. 일어나면 울 것 같은 얼굴이었다.',
       '“왔네” “왔지”',
+      '“무서웠어” “알아” “진짜로 무서웠다고. 네가 어디 가서 안 돌아오는 줄 알았어” 민서가 수박을 내려놓았다. “미안. 그건 미안해. 그래도 왔잖아” “그래서 더 화나”',
       '“전화는 왜 보관함에 넣어” “들고 있으면 받을 것 같아서” “받지” “받으면 네가 안 오잖아”',
       '할머니가 수박을 하나 더 잘랐다. “얘가 겨울 내내 그 얘기만 했어. 걔는 길 잘 찾아, 걔는 길 잘 찾아”',
       '나는 열쇠를 돌려주려다 말았다. 민서가 “그건 네 거야” 했다. “다음엔 그냥 말로 해” “그럼 재미없잖아”',

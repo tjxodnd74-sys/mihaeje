@@ -65,8 +65,11 @@ async function station({ mobile = false } = {}) {
     L.check((await status(page)).includes('두 승강장'), 'mirror: other platform explained — ' + (await status(page)));
     await page.evaluate(() => [...document.querySelectorAll('dialog[open] .train:not(.dim)')].find((b) => b.textContent.includes('09:25'))?.click());
     await commit(page);
-    L.check((await status(page)).includes('아직 읽지'), 'mirror: unread back side explained — ' + (await status(page)));
-    await L.click(page, '네컷사진을 거울 앞에 들기');
+    L.check((await status(page)).includes('제대로 읽지'), 'mirror: unread back side explained — ' + (await status(page)));
+    await L.click(page, '거울 앞에 들기');
+    await commit(page);
+    L.check((await status(page)).includes('나란히'), 'mirror: not aligned explained — ' + (await status(page)));
+    await L.setRange(page, '사진 기울이기', 50);
     await commit(page);
     L.check((await status(page)).includes('처음 만난 그 시간'), 'mirror: wrong time explained — ' + (await status(page)));
     await page.evaluate(() => [...document.querySelectorAll('dialog[open] .train:not(.dim)')].find((b) => b.textContent.includes('09:40'))?.click());
@@ -88,7 +91,7 @@ async function station({ mobile = false } = {}) {
     await shot(page, 'locker');
     await commit(page);
     L.check(await dlgHas(page, '3 · 4 · 2 · 1'), 'locker solved');
-    await L.click(page, '수림 마을길으로');
+    await L.click(page, '수림 마을길로');
     await L.sleep(400);
     for (const d of ['민서의 편지', '접힌 손지도']) { await hotspot(page, d); await L.closeDialog(page); }
     // notes: deduction (walk hidden until solved)
