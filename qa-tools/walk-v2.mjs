@@ -227,6 +227,7 @@ async function ohang({ mobile = false } = {}) {
     await L.click(page, '접수표 내기'); await L.sleep(1500);
     const lightText = await page.evaluate(() => document.querySelector('.slip-light b')?.textContent || '');
     L.check(/[木火土金水]/.test(lightText), 'intake: light computed — ' + lightText);
+    L.check((await L.mainText(page)).includes('할머니라면 이렇게 읽는다'), 'intake: reading shown');
     const EL = { '木': { id: 'blue', code: [5, 0, 0, 0], lantern: '파란 등' }, '火': { id: 'red', code: [4, 5, 0, 0], lantern: '붉은 등' }, '土': { id: 'yellow', code: [4, 0, 0, 0], lantern: '노란 등' }, '金': { id: 'white', code: [3, 5, 0, 0], lantern: '흰 등' }, '水': { id: 'black', code: [6, 0, 0, 0], lantern: '검은 등' } };
     const NEXT = { blue: 'red', red: 'yellow', yellow: 'white', white: 'black', black: 'blue' };
     const LAN = { blue: '파란 등', red: '붉은 등', yellow: '노란 등', white: '흰 등', black: '검은 등' };
@@ -249,6 +250,7 @@ async function ohang({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('약재 냄새'), 'auto-moved inside after closing reveal');
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '찬장 맨 아래 서랍'))), 'drawer hidden before bowls');
     for (const d of ['벽에 걸린 사진', '메뉴판', '찬장에 붙은 메모']) { await hotspot(page, d); L.check(await dlgHas(page, d), 'doc: ' + d); await L.closeDialog(page); }
+    await hotspot(page, '접수대 서랍의 공책'); L.check(await dlgHas(page, '손님 빛 읽는 법') && await page.evaluate(() => !!document.querySelector('dialog[open] .reading-item.mine')), 'notebook doc highlights my light'); await L.closeDialog(page);
     // bowls
     await hotspot(page, '찬장과 다섯 그릇');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .cabinet .niche').length === 5 && document.querySelectorAll('dialog[open] .bowl-pick').length === 5), 'bowls: 5 niches + 5 bowls');
@@ -290,7 +292,7 @@ async function ohang({ mobile = false } = {}) {
     await L.click(page, '다음 날 아침, 병원으로'); await L.sleep(500);
     L.check((await L.mainText(page)).includes('돌아오는 계절') && (await L.mainText(page)).includes('비어 있는 칸에'), 'ending reached with choice');
     await L.click(page, '다음 손님은 내가 받을게'); await L.sleep(400);
-    L.check((await L.mainText(page)).includes('첫 손님은 이모였다'), 'ending varies by choice');
+    L.check((await L.mainText(page)).includes('첫 손님은 이모였다') && (await L.mainText(page)).includes('말이다" 할머니가 찻잔을'), 'ending varies by choice and reads my light');
     await L.click(page, '접수함 속 접수표 읽기');
     L.check(await dlgHas(page, '가게는 네 거다') && await dlgHas(page, '챙겨 뒀다'), 'final letter unlocked, personalized');
     await L.closeDialog(page);
