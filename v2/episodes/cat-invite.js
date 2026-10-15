@@ -346,6 +346,6 @@ export default {
     ],
     afterword: '봄이는 여전히 창턱에서 잔다. 아침마다 나는 병원, 빵집, 꽃집 순서로 골목을 한 바퀴 돌고 가게 문을 연다. 작년까지 봄이가 돌던 길이다',
     unlockDoc: 'final',
-    next: { href: 'ohang.html', title: '돌아오는 계절', line: '다음은 오행당의 다섯 그릇 이야기입니다' },
+    next: { href: 'play.html?case=ohang', title: '돌아오는 계절', line: '다음은 오행당의 다섯 그릇 이야기입니다' },
   },
 };

@@ -264,29 +264,31 @@
     "id": "ohang",
     "number": "010",
     "title": "돌아오는 계절",
-    "subtitle": "오행당에 맡겨둔 마음",
-    "genre": "오행 · 선택형 힐링 방탈출",
+    "subtitle": "오행당에 맡겨둔 것",
+    "genre": "찻집 · 가족 미스터리",
     "minutes": 20,
     "difficulty": "★★",
     "difficultyLevel": 2,
     "image": "assets/covers/ohang-v1.webp",
-    "href": "ohang.html",
-    "storageKey": "mihaeje-ohang-v1",
-    "description": "그릇과 등불을 돌아보는 짧은 이야기\n오늘 적은 말과 챙길 물건을 직접 고르세요",
-    "docCount": 7,
+    "href": "play.html?case=ohang",
+    "storageKey": "mihaeje-v2-ohang",
+    "description": "외할머니가 마흔 해 넘게 지킨 약차집 오행당\n입원한 할머니의 문자 한 통에 지원은 여섯 해 만에 그 골목으로 갑니다",
+    "docCount": 8,
     "docNames": {
-      "brief": "접수대의 부탁",
-      "symbols": "다섯 빛의 원리",
-      "reserve": "접어둔 예약",
-      "circle": "상생의 고리",
-      "directions": "오방의 자리",
-      "reveal": "관리인이 보관한 접수표",
-      "letter": "나에게 남긴 편지"
+      "chat": "할머니의 문자",
+      "doorpaper": "문에 붙은 종이",
+      "oldphoto": "벽에 걸린 사진",
+      "board": "메뉴판",
+      "memo": "찬장에 붙은 메모",
+      "drawernote": "서랍 손잡이의 쪽지",
+      "slips": "서랍 속 접수표 묶음",
+      "deskmemo": "책상 위 메모",
+      "final": "접수함 속 접수표"
     },
-    "imageAlt": "새벽 한옥 문턱에 남은 봉인된 편지와 오방색 천",
+    "imageAlt": "비 오는 저녁, 불 켜진 오행당 문 앞에 선 사람",
     "fragment": {
-      "label": "오행당의 편지 · 다음 계절",
-      "text": "다음 손님의 접수함에는 보내는 사람과 받는 사람의 글씨가 서로 달랐습니다"
+      "label": "오행당 · 다시 연 날",
+      "text": "일주일 뒤 오행당은 다시 문을 열었습니다. 지원이 할머니 자리에 앉아 남쪽을 보고 차를 끓입니다"
     }
   }
 ]
