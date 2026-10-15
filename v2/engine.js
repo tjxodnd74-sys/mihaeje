@@ -5,7 +5,11 @@ const root = document.getElementById('app');
 
 const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; };
 const btn = (cls, text, fn, aria) => { const b = el('button', cls, text); b.type = 'button'; if (aria) b.setAttribute('aria-label', aria); b.onclick = fn; return b; };
-const pic = (img, src) => { img.src = src; const base = src.replace(/\.webp$/, ''); if (/assets\/v2\//.test(src)) { img.srcset = `${base}-960.webp 960w, ${src} 1024w`; img.sizes = '(max-width: 640px) 100vw, 1180px'; } return img; };
+const VER = new URL(import.meta.url).searchParams.get('v') || String(Date.now());
+const bustUrl = (u) => (/^assets\/v2\//.test(u) && !/\?/.test(u) ? u + '?v=' + VER : u);
+const pic = (img, src) => { img.src = bustUrl(src); const base = src.replace(/\.webp$/, ''); if (/assets\/v2\//.test(src)) { img.srcset = `${bustUrl(base + '-960.webp')} 960w, ${bustUrl(src)} 1024w`; img.sizes = '(max-width: 640px) 100vw, 1180px'; } return img; };
+// 사진이 바뀌어도 브라우저가 옛 파일을 쓰지 않도록 버전을 붙입니다.
+const bust = (node) => { node.querySelectorAll?.('img').forEach((i) => { const src = i.getAttribute('src') || ''; if (/^assets\/v2\//.test(src)) { i.src = bustUrl(src); const ss = i.getAttribute('srcset'); if (ss) i.srcset = ss.split(',').map((part) => { const [u, w] = part.trim().split(/\s+/); return bustUrl(u) + (w ? ' ' + w : ''); }).join(', '); } }); return node; };
 const josa = (w, a, b) => { const c = w.charCodeAt(w.length - 1); if (c < 0xac00 || c > 0xd7a3) return w + b; const t = (c - 0xac00) % 28; return w + (t === 0 || t === 8 ? b : a); }; // 받침 없음·ㄹ받침 → '로'
 const html = (tag, cls, markup) => { const n = el(tag, cls); n.innerHTML = markup; return n; };
 
@@ -35,7 +39,7 @@ function syncMusic(ep) {
 async function main() {
   if (!id) { location.replace('index.html#cases'); return; }
   let ep;
-  try { ep = (await import(`./episodes/${id}.js`)).default; } catch (e) { const p = el('p', 'v2-error', '이 주소의 이야기를 찾지 못했습니다. '); const a = el('a', '', '테마 로비로 가기'); a.href = 'index.html#cases'; p.append(a); root.append(p); console.error(e); return; }
+  try { ep = (await import(`./episodes/${id}.js?v=${VER}`)).default; } catch (e) { const p = el('p', 'v2-error', '이 주소의 이야기를 찾지 못했습니다. '); const a = el('a', '', '테마 로비로 가기'); a.href = 'index.html#cases'; p.append(a); root.append(p); console.error(e); return; }
   document.title = `${ep.title} — 미해제`;
   document.documentElement.dataset.case = ep.id;
 
@@ -195,7 +199,7 @@ async function main() {
     const node = el('article', 'v2-paper v2-doc');
     node.append(el('p', 'v2-eyebrow', d.kind || '자료'));
     node.append(el('h2', 'v2-doc-title', d.title));
-    node.append(html('div', 'v2-doc-body', d.html));
+    node.append(bust(html('div', 'v2-doc-body', d.html)));
     if (from) node.append(btn('v2-secondary', '← ' + from.label, from.fn));
     openDialog(node, { label: d.title, onClose: () => render() });
   }
@@ -242,7 +246,7 @@ async function main() {
     const body = el('div', 'v2-device-body');
     const status = el('p', 'v2-status'); status.setAttribute('role', 'status');
     const ctx = { d, el, save: () => { save(); status.textContent = ''; status.classList.remove('wrong'); draw(); }, status: (m) => { status.textContent = m; } };
-    let draw = () => { body.replaceChildren(dev.render(ctx)); };
+    let draw = () => { body.replaceChildren(bust(dev.render(ctx))); };
     draw();
     node.append(body);
     const actions = el('div', 'v2-actions');
@@ -275,7 +279,7 @@ async function main() {
         if (!r) { const any = refs.some((x) => S.read.includes(x)); panel.replaceChildren(el('p', 'v2-bench-empty', any ? '위에서 자료를 고르면 여기 펼쳐집니다.' : '장면에서 자료를 먼저 찾아 읽으면, 여기에 펼쳐 둘 수 있습니다.')); return; }
         const dd = ep.docs[r];
         const paper = el('div', 'v2-paper v2-bench-paper');
-        paper.append(el('p', 'v2-eyebrow', dd.kind || '자료'), el('h3', 'v2-bench-title', dd.title), html('div', 'v2-doc-body', dd.html));
+        paper.append(el('p', 'v2-eyebrow', dd.kind || '자료'), el('h3', 'v2-bench-title', dd.title), bust(html('div', 'v2-doc-body', dd.html)));
         panel.replaceChildren(paper); panel.scrollTop = 0;
       };
       // 장면에서 직접 찾아 읽은 자료만 옆에 펼칠 수 있습니다. 아직 못 찾은 것은 자물쇠로 표시합니다.
