@@ -102,7 +102,7 @@ a{color:inherit}
 .v2-doc-body{font-size:16px;line-height:1.8}
 .v2-doc-body p{margin:0 0 .9em}
 .v2-doc-body blockquote{margin:12px 0;padding:10px 16px;border-left:3px solid var(--lamp);background:rgba(227,166,74,.08);font-family:var(--serif)}
-.v2-doc-body blockquote.hand{font-family:var(--serif);font-size:18px;border-left-color:#5c4b32;background:transparent;padding-left:12px}
+.v2-doc-body blockquote.hand{font-family:var(--hand);font-size:23px;line-height:1.4;color:#2f3a7a;border-left-color:#5c4b32;background:#fbf6e7;padding:10px 14px}
 .v2-doc-body table{width:100%;border-collapse:collapse;margin:8px 0 14px;font-size:15px}
 .v2-doc-body th,.v2-doc-body td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--paper-line)}
 .v2-doc-body th{font-weight:700;color:#5a5446}
@@ -360,3 +360,11 @@ a{color:inherit}
 .ov-notice th,.ov-notice td{border-bottom:1px solid #c9c3b4;padding:.25em .3em;text-align:left;font-weight:500}
 .ov-notice th{font-weight:700;border-bottom:2px solid #333}
 .ov-notice small{display:block;font-size:1cqw;color:#666}
+.letterphoto.back>img{transform:scaleX(-1)}
+.letterphoto.back .letter-hand{left:28%;width:62%}
+.noticephoto{max-width:520px}
+.postcard-photo figcaption{font-family:var(--hand);font-size:20px;color:#2f3a7a}
+.sticker{background:#fff;border:2px solid #c23a2b;border-radius:6px;padding:14px 16px;max-width:360px;font-family:var(--sans);color:#222;box-shadow:0 3px 10px rgba(0,0,0,.2);transform:rotate(-1deg);margin:0 0 14px}
+.sticker b{display:block;color:#c23a2b;font-size:17px;margin:0 0 6px}
+.sticker ol{margin:0 0 8px;padding-left:20px;font-size:15px;line-height:1.5}
+.sticker small{font-size:12px;color:#777}

@@ -54,7 +54,7 @@ async function station({ mobile = false } = {}) {
     await shot(page, 'reveal1');
     await L.click(page, '2번 승강장 · 둘째 기둥으로');
     await L.sleep(400);
-    L.check((await L.mainText(page)).includes('둘째 기둥. 눈높이에'), 'platform scene reached');
+    L.check((await L.mainText(page)).includes('둘째 기둥 눈높이에'), 'platform scene reached');
     await shot(page, 'platform');
     for (const d of ['기둥에 붙은 네컷사진', '기둥의 출발 시각표', '벤치 — 민서와 나']) { await hotspot(page, d); await L.closeDialog(page); }
     // mirror
