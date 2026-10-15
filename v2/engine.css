@@ -502,3 +502,12 @@ a{color:inherit}
 .v2-ending-paper .pick-row{margin:8px 0 14px}
 .v2-ending-paper .chip{border-color:#6b6253;color:#2b2620;padding:10px 16px;font-size:15px;text-align:left}
 .v2-ending-paper .chip:hover,.v2-ending-paper .chip:focus-visible{background:rgba(43,38,32,.08);outline:none}
+.slip-reading{margin:12px 0 0;border-top:1px dashed #b9ae96;padding-top:8px}
+.slip-reading p{margin:4px 0;font-family:var(--hand);font-size:19px;line-height:1.35;color:#2f3a7a}
+.slip-reading .slip-sub{font-family:var(--sans);font-size:12px;color:#8a8070;margin:0 0 4px}
+.slip-reading .slip-note{font-family:var(--sans);font-size:13px;color:#5b5245;margin-top:8px}
+.reading-list{display:grid;gap:10px}
+.reading-item{padding:8px 10px;border:1px solid rgba(70,60,40,.2);border-radius:4px;background:rgba(255,255,255,.35)}
+.reading-item.mine{border-color:#b23b2e;box-shadow:inset 3px 0 0 #b23b2e;background:rgba(178,59,46,.06)}
+.reading-item b{display:block;font-family:var(--sans);font-size:13px;color:#5b5245;margin:0 0 4px}
+.reading-item p{font-size:18px;margin:2px 0}
