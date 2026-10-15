@@ -125,4 +125,5 @@ async function station({ mobile = false } = {}) {
 }
 
 const mobile = process.argv.includes('--mobile');
+await L.ensureServer();
 await station({ mobile });

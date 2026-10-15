@@ -170,6 +170,13 @@ export default {
     cta: '중앙역 대합실로',
   },
 
+  traces: [
+    { device: 'grille', label: '구멍 뚫린 구간권' },
+    { device: 'mirror', label: '네컷사진' },
+    { device: 'locker', label: '파란 리본 열쇠' },
+    { device: 'walk', label: '파란 대문' },
+  ],
+
   scenes: [
     {
       id: 'hall',
@@ -191,9 +198,9 @@ export default {
       unlockedBy: 'grille',
       arrive: '안개가 선로 위에 낮게 깔려 있다. 둘째 기둥. 눈높이에 네컷사진 한 장이 테이프로 붙어 있다. 사진 속 두 사람 중 하나는 나다.',
       hotspots: [
-        { id: 'strip', x: 30, y: 46, label: '기둥에 붙은 네컷사진', kind: 'doc', doc: 'strip' },
-        { id: 'table', x: 34, y: 66, label: '기둥의 출발 시각표', kind: 'doc', doc: 'timetable' },
-        { id: 'mirror', x: 62, y: 42, label: '승강장 끝의 볼록거울', kind: 'device', device: 'mirror' },
+        { id: 'strip', x: 27, y: 34, label: '기둥에 붙은 네컷사진', kind: 'doc', doc: 'strip' },
+        { id: 'table', x: 29, y: 57, label: '기둥의 출발 시각표', kind: 'doc', doc: 'timetable' },
+        { id: 'mirror', x: 60, y: 40, label: '승강장 끝의 볼록거울', kind: 'device', device: 'mirror' },
         { id: 'brief', x: 37, y: 60, label: '벤치 — 민서와 나', kind: 'doc', doc: 'brief' },
       ],
     },
@@ -358,6 +365,10 @@ export default {
       reveal: {
         title: '2번 승강장, 둘째 기둥',
         text: '역무원이 개찰구를 열어 준다. “북쪽 가는 쪽이요. 기둥은 선로 쪽에서 세요.”',
+        scene: [
+          '구간권을 주머니에 넣었다. 구멍 여섯 개. 민서가 이걸 칼로 하나씩 뚫고 있었을 생각을 하니 조금 화가 났다. 조금.',
+          '개찰구를 지나며 역무원이 덧붙였다. “그 여자분, 웃고 있었어요. 걱정은 안 하셔도 될 것 같던데.”',
+        ],
         unlock: 'platform',
       },
     },
@@ -402,7 +413,11 @@ export default {
       },
       reveal: {
         title: '09:40 수림행 급행',
-        text: '둘째 칸에 탔다. 자리에 이름은 적혀 있지 않았다. 열차는 북문을 서지 않고 지나쳤다.',
+        text: '둘째 칸에 탔다. 자리에 이름은 적혀 있지 않았다.',
+        scene: [
+          '네컷사진을 창틀에 세워 뒀다. 눈 감은 컷에서 민서는 웃고 있다. 나는 그 컷을 제일 싫어했고, 민서는 제일 좋아했다.',
+          '열차는 북문을 서지 않고 지나쳤다. 창밖이 산으로 바뀌는 동안 휴대폰을 세 번 봤다. 여전히 꺼져 있었다.',
+        ],
         unlock: 'surim',
       },
     },
@@ -451,6 +466,10 @@ export default {
       reveal: {
         title: '3 · 4 · 2 · 1',
         text: '문이 열린다. 파란 리본을 맨 열쇠, 접은 종이, 편지. 봉투는 없다. 민서는 봉투를 산 적이 없다.',
+        scene: [
+          '엽서를 떼어 뒤집어 보니 연필로 쓴 글씨가 한 줄 더 있었다. “세는 동안 네 얼굴 상상했어. 또 입 삐죽했지.”',
+          '입을 삐죽했다.',
+        ],
         unlock: 'village',
       },
     },
@@ -511,7 +530,8 @@ export default {
       },
       reveal: {
         title: '파란 대문',
-        text: '열쇠가 돌아간다. 마당 안쪽에서 매미 소리보다 큰 웃음소리가 난다.',
+        text: '열쇠가 돌아간다.',
+        scene: ['마당 안쪽에서 매미 소리보다 큰 웃음소리가 난다. 두 사람 몫이다.'],
         unlock: null,
         ending: true,
       },

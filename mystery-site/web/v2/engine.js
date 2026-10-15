@@ -53,9 +53,9 @@ async function main() {
 
   // ---------- 공통 틀 ----------
   let dialog = null;
-  function openDialog(node, { label, onClose } = {}) {
+  function openDialog(node, { label, onClose, wide } = {}) {
     closeDialog();
-    dialog = el('dialog', 'v2-dialog');
+    dialog = el('dialog', 'v2-dialog' + (wide ? ' wide' : ''));
     if (label) dialog.setAttribute('aria-label', label);
     const box = el('div', 'v2-dialog-box');
     const bar = el('div', 'v2-dialog-bar');
@@ -136,6 +136,11 @@ async function main() {
       if (s.id === scene.id) b.setAttribute('aria-current', 'page');
       nav.append(b);
     });
+    if (ep.traces?.length) {
+      const tr = el('div', 'v2-traces'); tr.setAttribute('aria-label', '민서가 남긴 것');
+      ep.traces.forEach((t) => { const got = S.solved.includes(t.device); const i = el('span', 'v2-trace' + (got ? ' got' : ''), got ? t.label : '· · ·'); i.setAttribute('aria-label', got ? t.label : '아직 찾지 못함'); tr.append(i); });
+      nav.append(tr);
+    }
     sec.append(nav);
     // 무대
     const stage = el('div', 'v2-stage');
@@ -214,21 +219,22 @@ async function main() {
   }
 
   // ---------- 장치 ----------
-  function openDevice(did) {
+  function openDevice(did, opts = {}) {
     const dev = deviceOf(did); if (!dev) return;
     S.drafts[did] ??= dev.initial();
     const d = S.drafts[did];
     const solved = S.solved.includes(did);
-    const node = el('article', 'v2-device');
+    S.benchTab ??= {};
+    const bench = el('article', 'v2-bench');
+    // 왼쪽: 장치
+    const node = el('section', 'v2-device');
     const head = el('div', 'v2-device-head');
     head.append(el('p', 'v2-eyebrow', (solved ? '해결한 장치 · ' : '') + (dev.hintCode || '')));
     head.append(el('h2', 'v2-doc-title', dev.title));
     head.append(el('p', 'v2-device-intro', dev.intro));
-    if (dev.docs?.length) {
-      const refs = el('div', 'v2-refs');
-      refs.append(el('span', 'v2-refs-label', '관련 자료'));
-      dev.docs.forEach((r) => { const dd = ep.docs[r]; if (!dd) return; refs.append(btn('v2-ref' + (S.read.includes(r) ? ' read' : ''), dd.title, () => openDoc(r, { label: dev.title, fn: () => openDevice(did) }))); });
-      head.append(refs);
+    // 쉬운 편(★3 이하)은 첫 안내를 장치 안에 바로 보여줍니다. 어려운 편은 무전기로만.
+    if (!solved && ep.difficulty <= 3 && dev.hints?.[0]) {
+      const g = el('details', 'v2-guide'); const sm = el('summary', '', '어떻게 하는 거지?'); g.append(sm, el('p', '', dev.hints[0])); head.append(g);
     }
     node.append(head);
     const body = el('div', 'v2-device-body');
@@ -248,7 +254,31 @@ async function main() {
       }));
     }
     node.append(status, actions);
-    openDialog(node, { label: dev.title, onClose: () => render() });
+    bench.append(node);
+    // 오른쪽: 관련 자료를 옆에 펼쳐 둡니다. 창을 오갈 필요가 없습니다.
+    const refs = (dev.docs || []).filter((r) => ep.docs[r]);
+    if (refs.length) {
+      const side = el('aside', 'v2-bench-docs'); side.setAttribute('aria-label', '관련 자료');
+      const tabs = el('div', 'v2-bench-tabs');
+      const panel = el('div', 'v2-bench-panel');
+      let cur = S.benchTab[did] && refs.includes(S.benchTab[did]) ? S.benchTab[did] : null;
+      const show = (r) => {
+        cur = r; S.benchTab[did] = r;
+        if (r && !S.read.includes(r)) { S.read.push(r); play('paper'); }
+        save();
+        [...tabs.children].forEach((t) => { t.classList.toggle('on', t.dataset.doc === r); t.classList.toggle('read', S.read.includes(t.dataset.doc)); });
+        if (!r) { panel.replaceChildren(el('p', 'v2-bench-empty', '위에서 자료를 고르면 여기 펼쳐집니다.')); return; }
+        const dd = ep.docs[r];
+        const paper = el('div', 'v2-paper v2-bench-paper');
+        paper.append(el('p', 'v2-eyebrow', dd.kind || '자료'), el('h3', 'v2-bench-title', dd.title), html('div', 'v2-doc-body', dd.html));
+        panel.replaceChildren(paper); panel.scrollTop = 0;
+      };
+      refs.forEach((r) => { const t = btn('v2-bench-tab', ep.docs[r].title, () => show(cur === r && window.innerWidth < 900 ? null : r)); t.dataset.doc = r; tabs.append(t); });
+      side.append(el('p', 'v2-bench-label', '옆에 펼쳐 둔 자료'), tabs, panel);
+      bench.append(side);
+      show(cur ?? (window.innerWidth >= 900 ? refs[0] : null));
+    }
+    openDialog(bench, { label: dev.title, wide: refs.length > 0, onClose: () => render() });
   }
   function solve(did) {
     const dev = deviceOf(did);
@@ -259,6 +289,7 @@ async function main() {
     node.append(el('p', 'v2-eyebrow', '풀렸다'));
     node.append(el('h2', 'v2-doc-title', dev.reveal.title));
     node.append(el('p', 'v2-line', dev.reveal.text));
+    (dev.reveal.scene || []).forEach((line) => node.append(el('p', 'v2-line', line)));
     const target = dev.reveal.unlock && sceneById(dev.reveal.unlock);
     if (dev.reveal.ending) node.append(btn('v2-primary', '대문 안으로 →', () => { S.screen = 'ending'; S.ended = true; S.solved = true; save(); closeDialog(); }));
     else if (target) node.append(btn('v2-primary', target.name + '으로 →', () => { S.scene = target.id; save(); closeDialog(); }));
@@ -349,6 +380,6 @@ async function main() {
   }
 
   render();
-  window.MihaejeV2 = { get state() { return S; }, episode: ep, render, reset() { S = fresh(); save(); render(); } };
+  window.MihaejeV2 = { get state() { return S; }, get music() { return music; }, episode: ep, render, reset() { S = fresh(); save(); render(); } };
 }
 main();

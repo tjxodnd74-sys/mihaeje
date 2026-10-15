@@ -5,6 +5,17 @@ const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 
 export const BASE = process.env.MIHAEJE_BASE || 'http://127.0.0.1:8790';
+// 미리보기 서버가 없으면 띄웁니다(이 프로세스가 끝나도 남게).
+export async function ensureServer() {
+  if (process.env.MIHAEJE_BASE) return;
+  try { await fetch(BASE + '/cases.json'); return; } catch {}
+  const { spawn } = await import('node:child_process');
+  const path = (await import('node:path')).default;
+  const here = path.dirname(new URL(import.meta.url).pathname);
+  spawn(process.execPath, [path.join(here, 'preview.mjs')], { detached: true, stdio: 'ignore' }).unref();
+  for (let i = 0; i < 20; i++) { await sleep(300); try { await fetch(BASE + '/cases.json'); return; } catch {} }
+  throw new Error('preview server did not start');
+}
 
 export async function launch({ mobile = false } = {}) {
   const browser = await chromium.launch();

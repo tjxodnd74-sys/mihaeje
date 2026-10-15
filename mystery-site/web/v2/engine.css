@@ -238,3 +238,37 @@ a{color:inherit}
 .v2-textarea,.v2-input{display:block;width:100%;font:inherit;color:var(--paper-ink);background:#fff9;border:1px solid var(--paper-line);border-radius:4px;padding:10px 12px;margin:0 0 10px;resize:vertical}
 .v2-feedback .v2-status{color:#5a5446}
 .v2-feedback .v2-primary{background:var(--paper-ink);color:var(--paper)}
+
+/* 작업대: 장치 + 옆에 펼쳐 둔 자료 */
+.v2-dialog.wide{max-width:min(96vw,1180px)}
+.v2-bench{display:grid;grid-template-columns:1fr;gap:0}
+.v2-bench-docs{background:#171e27;border-top:1px solid #2a333e;padding:12px clamp(12px,2vw,20px) 20px}
+.v2-bench-label{margin:0 0 8px;font-size:12px;color:var(--fog)}
+.v2-bench-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.v2-bench-tab{background:transparent;border:1px solid #3a4552;border-radius:999px;padding:6px 12px;font-size:13px;color:#d5dbe2}
+.v2-bench-tab.read{border-style:dashed;color:#aab2bb}
+.v2-bench-tab.on{background:var(--paper);color:var(--paper-ink);border-color:var(--paper);border-style:solid}
+.v2-bench-panel{min-height:0}
+.v2-bench-paper{padding:16px 18px;min-height:0;box-shadow:none}
+.v2-bench-paper::before{display:none}
+.v2-bench-title{margin:0 0 10px;font-size:19px}
+.v2-bench-empty{color:var(--fog);font-size:14px;margin:4px 0}
+.v2-guide{margin:0 0 12px;border:1px dashed #3a4552;border-radius:6px;padding:6px 12px;color:#c9d0d8;font-size:14px}
+.v2-guide summary{cursor:pointer;font-weight:600;color:var(--lamp)}
+.v2-guide p{margin:6px 0 2px}
+@media (max-width:899px){
+  .v2-bench-docs{order:-1;border-top:0;border-bottom:1px solid #2a333e;padding-top:44px}
+  .v2-bench-paper{max-height:50vh;overflow:auto}
+}
+@media (min-width:900px){
+  .v2-bench{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:start}
+  .v2-bench-docs{border-top:0;border-left:1px solid #2a333e;position:sticky;top:0;max-height:92vh;overflow:auto;padding-top:48px}
+  .v2-device{padding-top:4px}
+}
+
+/* 남긴 것(이야기 진행) */
+.v2-scenes{align-items:center}
+.v2-traces{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.v2-trace{font-size:12px;color:#5d6873;border:1px dashed #3a4552;border-radius:999px;padding:4px 10px;letter-spacing:.1em}
+.v2-trace.got{color:var(--lamp);border-style:solid;border-color:var(--lamp-deep);letter-spacing:0}
+@media (max-width:640px){.v2-traces{margin-left:0;width:100%}}
