@@ -239,7 +239,15 @@ export default {
     message: {
       title: '민서의 마지막 메시지',
       kind: '휴대폰 · 01:14',
-      html: `<div class="phone-msg"><div class="bubble photo"><img class="msg-photo" src="assets/v2/station/cover-960.webp" alt="낡은 3번 승강장 표지판 사진" decoding="async"><p class="scrawl">여기서 시작. 찾아와</p></div><div class="bubble-time">오전 1:14</div><div class="bubble mine">민서야 어디야</div><div class="bubble mine">전화 좀 받아</div><p class="sys">상대방이 전화를 받을 수 없습니다 · 전원이 꺼져 있음</p></div>`,
+      html: `<div class="chat"><div class="chat-head"><span class="chat-back">‹</span><b>민서</b><span class="chat-icons">☰</span></div><div class="chat-date">2026년 8월 14일 목요일</div>
+<div class="chat-row them"><span class="chat-avatar">★</span><div class="chat-col"><span class="chat-name">민서</span><div class="chat-bubble photo"><img src="assets/v2/station/cover-960.webp" alt="낡은 3번 승강장 표지판 사진" decoding="async"></div><div class="chat-bubble">여기서 시작. 찾아와</div></div><span class="chat-time">오전 1:14</span></div>
+<div class="chat-row me"><span class="chat-meta"><i>1</i>오전 1:15</span><div class="chat-bubble">뭐야 이 시간에</div></div>
+<div class="chat-row me"><span class="chat-meta"><i>1</i>오전 1:15</span><div class="chat-bubble">민서야 어디야</div></div>
+<div class="chat-row me"><span class="chat-meta"><i>1</i>오전 1:22</span><div class="chat-bubble">전화 좀 받아</div></div>
+<div class="chat-row me"><span class="chat-meta"><i>1</i>오전 1:40</span><div class="chat-bubble">장난이면 지금 말해</div></div>
+<div class="chat-sys">음성통화 연결 안 됨 · 전원이 꺼져 있습니다</div>
+<div class="chat-row me"><span class="chat-meta"><i>1</i>오전 6:02</span><div class="chat-bubble">첫차 탄다</div></div>
+<div class="chat-input"><span>+</span><span class="chat-field">메시지 입력</span><span>#</span></div></div>`,
     },
     sign: {
       title: '벽에 기댄 옛 표지판',
