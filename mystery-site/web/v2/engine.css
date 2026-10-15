@@ -414,7 +414,8 @@ a{color:inherit}
 /* 평상 위 자리표 */
 .paperchart{max-width:560px;margin:0 auto 14px;aspect-ratio:66/56;overflow:hidden;border-radius:8px}
 .paperchart>img{position:absolute;width:151.5%;max-width:none;height:auto;left:-18.2%;top:-42.9%}
-.chart-on-paper{position:absolute;left:16.7%;top:22.3%;width:60.6%;aspect-ratio:3/2;mix-blend-mode:multiply;transform:rotate(-.6deg)}
+.chart-on-paper{position:absolute;left:15.2%;top:23.2%;width:63.6%;aspect-ratio:120/100;mix-blend-mode:multiply;transform:rotate(-.6deg)}
+@media (max-width:600px){.paperchart{aspect-ratio:52/46}.paperchart>img{width:192.3%;left:-34.6%;top:-60.9%}.chart-on-paper{left:7.7%;top:19.6%;width:80.8%}}
 .chart-on-paper svg{width:100%;height:100%;display:block}
 .seat-box{cursor:pointer;outline:none} .seat-box:hover rect,.seat-box:focus-visible rect{fill:rgba(227,166,74,.25)}
 .notes-list p{margin:0 0 6px;font-family:var(--hand);font-size:21px;color:#2f3a7a}
