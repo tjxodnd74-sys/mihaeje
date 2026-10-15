@@ -272,3 +272,8 @@ a{color:inherit}
 .v2-trace{font-size:12px;color:#5d6873;border:1px dashed #3a4552;border-radius:999px;padding:4px 10px;letter-spacing:.1em}
 .v2-trace.got{color:var(--lamp);border-style:solid;border-color:var(--lamp-deep);letter-spacing:0}
 @media (max-width:640px){.v2-traces{margin-left:0;width:100%}}
+.v2-bench-tab.locked{opacity:.5;cursor:not-allowed;border-style:dotted}
+.v2-bench-tab.locked::before{content:"🔒 ";font-size:11px}
+.postcard-photo{margin:0 0 12px;background:#fff;padding:10px 10px 8px;box-shadow:0 6px 18px rgba(0,0,0,.18);border:1px solid var(--paper-line)}
+.postcard-photo img{width:100%;height:auto;display:block}
+.postcard-photo figcaption{font-family:var(--serif);font-size:15px;color:#5c4b32;padding:8px 2px 0}

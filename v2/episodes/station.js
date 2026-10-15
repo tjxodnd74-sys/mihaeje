@@ -84,41 +84,7 @@ const LANES = {
 };
 const ANSWER_HOUSE = 'H3';
 
-const svgPostcard = `
-<svg viewBox="0 0 360 240" class="postcard" role="img" aria-label="민서가 그린 수림역 엽서">
- <rect x="0" y="0" width="360" height="240" fill="#f6efdc"/>
- <rect x="10" y="10" width="340" height="220" fill="none" stroke="#b9a98a" stroke-dasharray="4 3"/>
- <!-- 산 -->
- <path d="M20 150 L90 80 L140 130 L190 70 L260 140 L330 95 L340 150 Z" fill="#cfd8c3" stroke="#6d7d5e" stroke-width="2"/>
- <!-- 역사 -->
- <rect x="110" y="120" width="150" height="70" fill="#f1e2c6" stroke="#5c4b32" stroke-width="2"/>
- <path d="M100 120 L185 92 L270 120 Z" fill="#8c5a3c" stroke="#5c4b32" stroke-width="2"/>
- <!-- 창문 4개 -->
- <g fill="#9fc3d8" stroke="#5c4b32" stroke-width="2">
-  <rect x="122" y="136" width="20" height="18"/><rect x="152" y="136" width="20" height="18"/>
-  <rect x="200" y="136" width="20" height="18"/><rect x="230" y="136" width="20" height="18"/>
- </g>
- <!-- 문 -->
- <rect x="176" y="150" width="20" height="40" fill="#7a5436" stroke="#5c4b32" stroke-width="2"/>
- <!-- 가로등 2개 -->
- <g stroke="#333" stroke-width="3" stroke-linecap="round">
-  <line x1="60" y1="190" x2="60" y2="130"/><circle cx="60" cy="126" r="6" fill="#f3c969" stroke="#333"/>
-  <line x1="300" y1="190" x2="300" y2="130"/><circle cx="300" cy="126" r="6" fill="#f3c969" stroke="#333"/>
- </g>
- <!-- 의자 1개와 조는 사람 -->
- <g stroke="#5c4b32" stroke-width="2" fill="#c98e5a">
-  <rect x="28" y="172" width="34" height="8"/><line x1="32" y1="180" x2="32" y2="190"/><line x1="58" y1="180" x2="58" y2="190"/>
- </g>
- <g fill="none" stroke="#5c4b32" stroke-width="2"><circle cx="45" cy="158" r="7" fill="#f1e2c6"/><path d="M38 172 Q45 160 52 172"/><path d="M52 160 l6 -4 M54 164 l6 -3" stroke-dasharray="2 2"/></g>
- <text x="56" y="156" font-size="9" fill="#5c4b32" font-family="serif">zz</text>
- <!-- 새 3마리 -->
- <g fill="none" stroke="#2f2f2f" stroke-width="2" stroke-linecap="round">
-  <path d="M40 50 q6 -6 12 0 q6 -6 12 0"/><path d="M80 38 q6 -6 12 0 q6 -6 12 0"/><path d="M290 48 q6 -6 12 0 q6 -6 12 0"/>
- </g>
- <!-- 땅 -->
- <line x1="10" y1="190" x2="350" y2="190" stroke="#6d7d5e" stroke-width="3"/>
- <text x="20" y="214" font-size="12" fill="#5c4b32" font-family="MihaejeSerif, serif">수림역. 네가 내릴 역. — 민서</text>
-</svg>`;
+const postcardImg = `<figure class="postcard-photo"><img src="assets/v2/station/postcard.webp" srcset="assets/v2/station/postcard-960.webp 960w, assets/v2/station/postcard.webp 1024w" sizes="(max-width: 640px) 100vw, 640px" alt="민서가 보낸 엽서 사진: 작은 역사, 벤치에서 조는 사람, 하늘의 새" decoding="async"><figcaption>수림역. 네가 내릴 역. — 민서</figcaption></figure>`;
 
 const LANE_END = { L: { x: 0, y: 30 }, R: { x: 48, y: 30 }, GL: { x: 40, y: 56 }, X: { x: 0, y: 74 }, FL: { x: 96, y: 56 } };
 function svgMap(path = [], picked = null) {
@@ -162,7 +128,7 @@ export default {
     paragraphs: [
       '민서가 사진 한 장을 보냈다.',
       '낡은 법랑 표지판. 「3번 승강장」. 밑에 매직으로 쓴 한 줄.',
-      '「여기서 시작. 찾아와.」',
+      '「여기서 시작. 찾아와」',
       '전화는 바로 꺼졌다. 다시 걸어도 꺼져 있었다.',
       '민서는 두 달 전 회사를 그만뒀다. 방을 뺐다는 말은 지난주에 들었다. 어디로 가는지는 묻지 못했다. 묻기 전에 먼저 말해 줄 줄 알았다.',
       '중앙역에 3번 승강장은 없다. 1번과 2번뿐이다. 나는 아침 첫차를 탔다.',
@@ -244,7 +210,7 @@ export default {
     clerk: {
       title: '매표창구의 역무원',
       kind: '박종길 · 야간 근무',
-      html: `<p>창구 안의 남자는 커피를 반쯤 남긴 채 신문을 접었다.</p><blockquote>“새벽에 여자분 하나가 저 표지판 앞에 한참 서 있다가, 뭘 붙이고 갔어요. 떼려다 뒀습니다. ‘사람이 올 거예요’ 하길래.”</blockquote><blockquote>“3번? 지금은 없어요. 작년에 개편하면서 번호를 바꿨어요. 저 표지판이 서 있던 자리는 지금 2번이에요. 북쪽 가는 쪽.”</blockquote><blockquote>“그 여자분, 첫차 타고 올라갔어요. 어느 열차였는지는… 승강장 가서 물어보시든가. 기둥에도 뭘 붙였을걸요. 테이프 소리가 들렸으니까.”</blockquote>`,
+      html: `<p>창구 안의 남자는 커피를 반쯤 남긴 채 신문을 접었다.</p><blockquote>“새벽에 여자분 하나가 저 표지판 앞에 한참 서 있다가, 뭘 붙이고 갔어요. 떼려다 뒀습니다. ‘사람이 올 거예요’ 하길래”</blockquote><blockquote>“3번? 지금은 없어요. 작년에 개편하면서 번호를 바꿨어요. 저 표지판이 서 있던 자리는 지금 2번이에요. 북쪽 가는 쪽”</blockquote><blockquote>“그 여자분, 첫차 타고 올라갔어요. 어느 열차였는지는… 승강장 가서 물어보시든가. 기둥에도 뭘 붙였을걸요. 테이프 소리가 들렸으니까”</blockquote>`,
     },
     notice: {
       title: '승강장 개편 안내',
@@ -268,8 +234,8 @@ export default {
     },
     postcard: {
       title: '게시판의 그림엽서',
-      kind: '민서의 손그림',
-      html: `${svgPostcard}<p>뒷면.</p><blockquote class="hand">보관함 번호는 그림 안에 있어.<br>새, 창, 등, 의자 순서로.<br>벤치에서 조는 사람은 세지 마. 그거 너야.</blockquote>`,
+      kind: '민서가 찍은 사진 엽서',
+      html: `${postcardImg}<p>뒷면.</p><blockquote class="hand">보관함 번호는 그림 안에 있어.<br>새, 창, 등, 의자 순서로.<br>벤치에서 조는 사람은 세지 마. 그거 너야.</blockquote>`,
     },
     lockerrule: {
       title: '보관함 이용 안내',
@@ -364,10 +330,10 @@ export default {
       },
       reveal: {
         title: '2번 승강장, 둘째 기둥',
-        text: '역무원이 개찰구를 열어 준다. “북쪽 가는 쪽이요. 기둥은 선로 쪽에서 세요.”',
+        text: '역무원이 개찰구를 열어 준다. “북쪽 가는 쪽이요. 기둥은 선로 쪽에서 세요”',
         scene: [
           '구간권을 주머니에 넣었다. 구멍 여섯 개. 민서가 이걸 칼로 하나씩 뚫고 있었을 생각을 하니 조금 화가 났다. 조금.',
-          '개찰구를 지나며 역무원이 덧붙였다. “그 여자분, 웃고 있었어요. 걱정은 안 하셔도 될 것 같던데.”',
+          '개찰구를 지나며 역무원이 덧붙였다. “그 여자분, 웃고 있었어요. 걱정은 안 하셔도 될 것 같던데”',
         ],
         unlock: 'platform',
       },
@@ -467,7 +433,7 @@ export default {
         title: '3 · 4 · 2 · 1',
         text: '문이 열린다. 파란 리본을 맨 열쇠, 접은 종이, 편지. 봉투는 없다. 민서는 봉투를 산 적이 없다.',
         scene: [
-          '엽서를 떼어 뒤집어 보니 연필로 쓴 글씨가 한 줄 더 있었다. “세는 동안 네 얼굴 상상했어. 또 입 삐죽했지.”',
+          '엽서를 떼어 뒤집어 보니 연필로 쓴 글씨가 한 줄 더 있었다. “세는 동안 네 얼굴 상상했어. 또 입 삐죽했지”',
           '입을 삐죽했다.',
         ],
         unlock: 'village',
@@ -545,10 +511,10 @@ export default {
     title: '없는 승강장에서 온 초대',
     paragraphs: [
       '평상 위에 수박이 잘려 있었다. 할머니가 먼저 손을 흔들었다. 민서는 일어나지 않았다. 일어나면 울 것 같은 얼굴이었다.',
-      '“왔네.” “왔지.”',
-      '“전화는 왜 꺼.” “안 터져. 진짜야.” “그래도.” “그래도 뭐.”',
-      '할머니가 수박을 하나 더 잘랐다. “얘가 겨울 내내 그 얘기만 했어. 걔는 길 잘 찾아, 걔는 길 잘 찾아.”',
-      '나는 열쇠를 돌려주려다 말았다. 민서가 “그건 네 거야” 했다. “다음엔 그냥 말로 해.” “그럼 재미없잖아.”',
+      '“왔네” “왔지”',
+      '“전화는 왜 꺼” “안 터져. 진짜야” “그래도” “그래도 뭐”',
+      '할머니가 수박을 하나 더 잘랐다. “얘가 겨울 내내 그 얘기만 했어. 걔는 길 잘 찾아, 걔는 길 잘 찾아”',
+      '나는 열쇠를 돌려주려다 말았다. 민서가 “그건 네 거야” 했다. “다음엔 그냥 말로 해” “그럼 재미없잖아”',
     ],
     afterword: '민서는 수림에 남았다. 나는 토요일마다 09:40 열차를 탄다. 둘째 칸, 자리에 이름은 없다.',
     unlockDoc: 'final',

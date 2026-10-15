@@ -266,17 +266,23 @@ async function main() {
         cur = r; S.benchTab[did] = r;
         if (r && !S.read.includes(r)) { S.read.push(r); play('paper'); }
         save();
-        [...tabs.children].forEach((t) => { t.classList.toggle('on', t.dataset.doc === r); t.classList.toggle('read', S.read.includes(t.dataset.doc)); });
-        if (!r) { panel.replaceChildren(el('p', 'v2-bench-empty', '위에서 자료를 고르면 여기 펼쳐집니다.')); return; }
+        [...tabs.children].forEach((t) => { if (t.disabled) return; t.classList.toggle('on', t.dataset.doc === r); t.classList.toggle('read', S.read.includes(t.dataset.doc)); });
+        if (!r) { const any = refs.some((x) => S.read.includes(x)); panel.replaceChildren(el('p', 'v2-bench-empty', any ? '위에서 자료를 고르면 여기 펼쳐집니다.' : '장면에서 자료를 먼저 찾아 읽으면, 여기에 펼쳐 둘 수 있습니다.')); return; }
         const dd = ep.docs[r];
         const paper = el('div', 'v2-paper v2-bench-paper');
         paper.append(el('p', 'v2-eyebrow', dd.kind || '자료'), el('h3', 'v2-bench-title', dd.title), html('div', 'v2-doc-body', dd.html));
         panel.replaceChildren(paper); panel.scrollTop = 0;
       };
-      refs.forEach((r) => { const t = btn('v2-bench-tab', ep.docs[r].title, () => show(cur === r && window.innerWidth < 900 ? null : r)); t.dataset.doc = r; tabs.append(t); });
+      // 장면에서 직접 찾아 읽은 자료만 옆에 펼칠 수 있습니다. 아직 못 찾은 것은 자물쇠로 표시합니다.
+      refs.forEach((r) => {
+        const found = S.read.includes(r);
+        const t = btn('v2-bench-tab' + (found ? '' : ' locked'), found ? ep.docs[r].title : '아직 찾지 못한 자료', () => { if (!found) return; show(cur === r && window.innerWidth < 900 ? null : r); });
+        t.dataset.doc = r; if (!found) { t.disabled = true; const where = ep.scenes.find((sc) => sc.hotspots.some((h) => h.doc === r)); t.title = where ? where.name + '에서 찾을 수 있습니다' : ''; }
+        tabs.append(t);
+      });
       side.append(el('p', 'v2-bench-label', '옆에 펼쳐 둔 자료'), tabs, panel);
       bench.append(side);
-      show(cur ?? (window.innerWidth >= 900 ? refs[0] : null));
+      show(cur ?? (window.innerWidth >= 900 ? refs.find((x) => S.read.includes(x)) ?? null : null));
     }
     openDialog(bench, { label: dev.title, wide: refs.length > 0, onClose: () => render() });
   }
