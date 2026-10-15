@@ -381,3 +381,25 @@ a{color:inherit}
 .sticker b{display:block;color:#c23a2b;font-size:17px;margin:0 0 6px}
 .sticker ol{margin:0 0 8px;padding-left:20px;font-size:15px;line-height:1.5}
 .sticker small{font-size:12px;color:#777}
+
+/* 이동 표식 */
+.v2-hotspot.travel i{border-radius:0;transform:rotate(45deg);border-color:#9fd3c7;box-shadow:0 0 0 4px rgba(159,211,199,.18),0 0 24px rgba(159,211,199,.5);background:rgba(159,211,199,.2)}
+/* 고양이의 초대장 소품 */
+.envelope{max-width:420px}
+.env-to{position:absolute;left:36%;top:38%;font-family:var(--hand);font-size:6cqw;color:#2f3a7a;transform:rotate(-2deg)}
+.charm{display:flex;gap:10px;margin:0 0 12px}
+.charm-tag{display:grid;place-items:center;width:64px;height:64px;border-radius:12px;background:#d9b36a;box-shadow:inset 0 -4px 0 #b08a3c,0 4px 10px rgba(0,0,0,.25);font-size:30px}
+.photo-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}
+.photo-slot{aspect-ratio:1;border:2px dashed #3a4552;border-radius:6px;background:#1a222c;padding:0;overflow:hidden;display:grid;place-items:center;color:var(--fog);font-size:20px;font-weight:700}
+.photo-slot.filled{border-style:solid;border-color:var(--lamp)}
+.photo-slot img{width:100%;height:100%;object-fit:cover}
+.photo-tray{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.photo-pick{padding:0;background:#fff;border:0;border-radius:4px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.35);display:grid;gap:4px;padding-bottom:6px;color:#333;font-size:13px}
+.photo-pick img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.gift-row{display:grid;gap:4px;margin:0 0 10px;padding:10px 12px;background:#1a222c;border-radius:6px}
+.gift-name{font-weight:700}
+.paperchart{max-width:380px;margin:0 auto 14px}
+.chart-on-paper{position:absolute;left:12%;top:10%;width:76%;aspect-ratio:1;mix-blend-mode:multiply}
+.chart-on-paper svg{width:100%;height:100%;display:block}
+.notes-list p{margin:0 0 6px;font-family:var(--hand);font-size:21px;color:#2f3a7a}
+.notes-list b{font-family:var(--sans);font-size:13px;color:#7a7462;margin-right:6px}

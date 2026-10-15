@@ -235,29 +235,29 @@
     "id": "cat-invite",
     "number": "009",
     "title": "고양이의 초대장",
-    "subtitle": "리본 아래 숨긴 이름",
-    "genre": "반려동물 · 감동 미스터리",
-    "minutes": 17,
+    "subtitle": "봄이 앞으로 온 봉투",
+    "genre": "반려동물 · 따뜻한 미스터리",
+    "minutes": 15,
     "difficulty": "★",
     "image": "assets/covers/cat-invite-v1.webp",
-    "description": "고양이 봄이의 축하 자리를 준비하는 다은\n선물과 자리표를 맞춰 마지막 봉투를 여세요",
+    "description": "작년 여름, 골목 고양이 봄이를 집에 들인 다은\n어느 아침 가게 문 밑으로 봄이 앞으로 온 봉투가 들어왔습니다",
     "fragment": {
       "label": "이웃들과 남긴 사진",
       "text": "다은과 봄이, 네 이웃이 한 식탁에 모였습니다. 미정은 다음에도 이 자리에서 만나자며 사진을 남겼습니다."
     },
-    "href": "episode.html?case=cat-invite",
-    "storageKey": "mihaeje-cat-invite-v1",
+    "href": "play.html?case=cat-invite",
+    "storageKey": "mihaeje-v2-cat-invite",
     "docCount": 7,
     "docNames": {
-      "brief": "봄이 앞으로 온 선물",
-      "gifts": "리본 아래 이름표",
-      "room": "포장 가게의 자리표",
-      "notes": "이웃들이 보낸 쪽지",
-      "date": "봄이를 돌보던 달력",
-      "card": "접힌 감사 카드",
-      "invitation": "빈칸에 들어간 이름"
+      "invite": "문 밑으로 들어온 봉투",
+      "charm": "봄이 목걸이의 참",
+      "vetnote": "병원 유리문의 쪽지",
+      "colors": "골목에서 본 것",
+      "basketnote": "바구니의 쪽지",
+      "mail": "우체통의 봉투",
+      "final": "평상 밑 상자의 초대장"
     },
-    "imageAlt": "햇살 가게의 창가에서 쉬는 고양이",
+    "imageAlt": "포장 가게 창턱에서 자는 고양이와 바닥의 봉투",
     "difficultyLevel": 1
   },
   {

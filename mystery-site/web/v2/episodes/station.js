@@ -606,6 +606,7 @@ export default {
         scene: ['마당 안쪽에서 매미 소리보다 큰 웃음소리가 났다. 두 사람 몫이었다'],
         unlock: null,
         ending: true,
+        endingLabel: '대문 안으로',
       },
     },
   },

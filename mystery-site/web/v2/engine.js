@@ -156,7 +156,7 @@ async function main() {
     scene.hotspots.forEach((h) => {
       if (h.visible && !h.visible(S)) return;
       const done = h.kind === 'doc' ? S.read.includes(h.doc) : h.kind === 'device' ? S.solved.includes(h.device) : false;
-      const b = btn('v2-hotspot' + (done ? ' done' : '') + (h.kind === 'device' ? ' device' : ''), '', () => act(h), h.label);
+      const b = btn('v2-hotspot' + (done ? ' done' : '') + (h.kind === 'device' ? ' device' : '') + (h.kind === 'travel' ? ' travel' : ''), '', () => act(h), h.label);
       b.style.left = h.x + '%'; b.style.top = h.y + '%';
       b.append(el('i'), el('span', 'v2-hotspot-label', h.label));
       stage.append(b);
@@ -172,7 +172,7 @@ async function main() {
     scene.hotspots.forEach((h) => {
       if (h.visible && !h.visible(S)) return;
       const done = h.kind === 'doc' ? S.read.includes(h.doc) : h.kind === 'device' ? S.solved.includes(h.device) : false;
-      list.append(btn('v2-spot' + (done ? ' done' : '') + (h.kind === 'device' ? ' device' : ''), (h.kind === 'device' ? '⚙ ' : '') + h.label + (done ? ' ✓' : ''), () => act(h)));
+      list.append(btn('v2-spot' + (done ? ' done' : '') + (h.kind === 'device' ? ' device' : ''), (h.kind === 'device' ? '⚙ ' : h.kind === 'travel' ? '→ ' : '') + h.label + (done ? ' ✓' : ''), () => act(h)));
     });
     sec.append(list);
     // 하단 바
@@ -189,6 +189,7 @@ async function main() {
   function act(h) {
     if (h.kind === 'doc') openDoc(h.doc);
     else if (h.kind === 'device') openDevice(h.device);
+    else if (h.kind === 'travel') { S.scene = h.to; save(); play('door'); render(); window.scrollTo({ top: 0 }); }
   }
 
   // ---------- 자료 ----------
@@ -240,7 +241,7 @@ async function main() {
     head.append(el('p', 'v2-device-intro', dev.intro));
     // 쉬운 편(★3 이하)은 첫 안내를 장치 안에 바로 보여줍니다. 어려운 편은 무전기로만.
     if (!solved && ep.difficulty <= 3 && dev.hints?.[0]) {
-      const g = el('details', 'v2-guide'); const sm = el('summary', '', '어떻게 하는 거지?'); g.append(sm, el('p', '', dev.hints[0])); head.append(g);
+      const g = el('details', 'v2-guide'); if (ep.difficulty <= 2) g.open = true; const sm = el('summary', '', '어떻게 하는 거지?'); g.append(sm, el('p', '', dev.hints[0])); head.append(g);
     }
     node.append(head);
     const body = el('div', 'v2-device-body');
@@ -306,7 +307,7 @@ async function main() {
     node.append(el('p', 'v2-line', dev.reveal.text));
     (dev.reveal.scene || []).forEach((line) => node.append(el('p', 'v2-line', line)));
     const target = dev.reveal.unlock && sceneById(dev.reveal.unlock);
-    if (dev.reveal.ending) node.append(btn('v2-primary', '대문 안으로 →', () => { S.screen = 'ending'; S.ended = true; S.solved = true; save(); closeDialog(); }));
+    if (dev.reveal.ending) node.append(btn('v2-primary', (dev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; S.solved = true; save(); closeDialog(); }));
     else if (target) node.append(btn('v2-primary', josa(target.name, '으로', '로') + ' →', () => { S.scene = target.id; save(); closeDialog(); }));
     else node.append(btn('v2-primary', '계속', () => closeDialog()));
     openDialog(node, { label: dev.reveal.title, onClose: () => render() });
