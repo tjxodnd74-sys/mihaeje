@@ -210,8 +210,87 @@ async function catInvite({ mobile = false } = {}) {
   await browser.close();
 }
 
+async function ohang({ mobile = false } = {}) {
+  const { browser, page, errors } = await L.launch({ mobile });
+  console.log('=== ohang v2' + (mobile ? ' (mobile)' : ''));
+  try {
+    await L.fresh(page, '/play.html?case=ohang');
+    await L.click(page, '처음부터 하기');
+    L.check((await L.mainText(page)).includes('화분 다섯 개가 그대로'), 'opening shown');
+    await L.click(page, '오행당 문 앞에 서기'); await L.sleep(400);
+    for (const [d, t] of [['주머니 속 휴대폰', '불 낳는 놈 밑에'], ['문에 붙은 종이', '서로 낳는 순서']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    L.check(await page.evaluate(() => !!document.querySelector('.cycle-chart')) === false, 'chart only inside dialog');
+    // pots
+    await hotspot(page, '섬돌 위 화분');
+    L.check(await page.evaluate(() => document.querySelector('dialog[open] .v2-guide')?.open === true), '★2: guide open by default');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .potstep .pot').length === 5), 'pots: 5 pots on photo');
+    L.check(!(await L.buttons(page)).some((b) => b === '화분 들어 보기'), 'pots: no commit before pick');
+    await L.click(page, '붉은 화분', { exact: true }); await commit(page);
+    L.check((await status(page)).includes('낳아지는 쪽'), 'pots: red explained — ' + (await status(page)));
+    await L.click(page, '청자 빛 화분', { exact: true }); await commit(page);
+    L.check(await dlgHas(page, '나무가 불을 낳는다'), 'pots solved');
+    await shot(page, 'ohang-pots');
+    await L.closeDialog(page); await L.sleep(400);
+    L.check((await L.mainText(page)).includes('약재 냄새'), 'auto-moved inside after closing reveal');
+    L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '찬장 맨 아래 서랍'))), 'drawer hidden before bowls');
+    for (const d of ['벽에 걸린 사진', '메뉴판', '찬장에 붙은 메모']) { await hotspot(page, d); L.check(await dlgHas(page, d), 'doc: ' + d); await L.closeDialog(page); }
+    // bowls
+    await hotspot(page, '찬장과 다섯 그릇');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .cabinet .niche').length === 5 && document.querySelectorAll('dialog[open] .bowl-pick').length === 5), 'bowls: 5 niches + 5 bowls');
+    const put = async (bowl, niche) => { await L.click(page, bowl + ' 집기', { exact: true }); await L.click(page, niche + ' (비어 있음)', { exact: true }); };
+    await put('검은 그릇', '위 칸'); await put('흰 그릇', '왼쪽 칸'); await put('노란 그릇', '가운데 칸'); await put('청자 빛 그릇', '오른쪽 칸'); await commit(page);
+    L.check((await status(page)).includes('비어 있다'), 'bowls: empty niche explained');
+    await put('붉은 그릇', '아래 칸'); await commit(page);
+    L.check((await status(page)).includes('위 칸이 북쪽'), 'bowls: naive north explained — ' + (await status(page)));
+    // take back all and redo
+    for (const n of ['위 칸: 검은 그릇', '왼쪽 칸: 흰 그릇', '오른쪽 칸: 청자 빛 그릇', '아래 칸: 붉은 그릇']) { await L.click(page, n, { exact: true }); await L.click(page, n.split(': ')[1] + ' 집기', { exact: true }); } // 집었다가 도로 쟁반에
+    await put('붉은 그릇', '위 칸'); await put('청자 빛 그릇', '왼쪽 칸'); await put('흰 그릇', '오른쪽 칸'); await put('검은 그릇', '아래 칸'); await commit(page);
+    L.check(await dlgHas(page, '남쪽을 보고 서서'), 'bowls solved');
+    await shot(page, 'ohang-bowls');
+    await L.click(page, '계속'); await L.sleep(300);
+    await hotspot(page, '서랍 손잡이의 쪽지'); await L.closeDialog(page);
+    // drawer
+    await hotspot(page, '찬장 맨 아래 서랍');
+    const setDial = async (digits) => { for (let i = 0; i < 4; i++) { const cur = await page.evaluate((i) => Number(document.querySelectorAll('dialog[open] .dial .num')[i].textContent), i); const up = (digits[i] - cur + 10) % 10; for (let k = 0; k < up; k++) await L.click(page, `${i + 1}번째 다이얼 올리기`); } };
+    await setDial([5, 5, 0, 0]); await commit(page);
+    L.check((await status(page)).includes('지금 값'), 'drawer: current price explained');
+    await setDial([4, 5, 0, 0]); await commit(page);
+    L.check(await dlgHas(page, '4 · 5 · 0 · 0'), 'drawer solved');
+    await L.closeDialog(page); await L.sleep(400);
+    L.check((await L.mainText(page)).includes('장부를 쓰던 방'), 'auto-moved to back room');
+    for (const [d, t] of [['가져온 접수표 묶음', '2007. 12'], ['책상 위 메모', '낳는 순서로 다섯 개']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    // lanterns
+    await hotspot(page, '장대에 걸린 등 다섯');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .lanternpole .lantern').length === 5), 'lanterns: 5 on photo');
+    for (const l of ['붉은 등', '노란 등', '흰 등', '검은 등', '파란 등']) await L.click(page, l, { exact: true });
+    await commit(page);
+    L.check((await status(page)).includes('여름이 처음이 아니다'), 'lanterns: summer start explained');
+    await L.click(page, '다 끄고 다시');
+    for (const l of ['검은 등', '파란 등', '붉은 등', '노란 등', '흰 등']) await L.click(page, l, { exact: true });
+    await shot(page, 'ohang-lanterns');
+    await commit(page);
+    L.check(await dlgHas(page, '겨울에서 시작해서'), 'lanterns solved');
+    await L.click(page, '다음 날 아침, 병원으로'); await L.sleep(500);
+    L.check((await L.mainText(page)).includes('돌아오는 계절'), 'ending reached');
+    await L.click(page, '접수함 속 접수표 읽기');
+    L.check(await dlgHas(page, '가게는 네 거다'), 'final letter unlocked');
+    await L.closeDialog(page);
+    await L.click(page, '자료 다시 보기');
+    L.check(!(await L.dialogText(page)).includes('아직 읽지 않은'), 'all docs read');
+  } catch (e) {
+    console.log('FAIL exception', e.message);
+    console.log('buttons now', JSON.stringify(await L.buttons(page)));
+    console.log('dialog', (await L.dialogText(page)).replace(/\n+/g, ' | ').slice(0, 400));
+    process.exitCode = 1;
+  }
+  const bad = errors.filter((e) => !/woff2/.test(e));
+  L.check(!bad.length, 'no page errors ' + JSON.stringify(bad));
+  await browser.close();
+}
+
 const which = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 const mobile = process.argv.includes('--mobile');
 await L.ensureServer();
 if (!which.length || which.includes('station')) await station({ mobile });
 if (!which.length || which.includes('cat-invite')) await catInvite({ mobile });
+if (!which.length || which.includes('ohang')) await ohang({ mobile });
