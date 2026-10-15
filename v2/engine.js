@@ -47,6 +47,8 @@ async function main() {
   const fresh = () => ({ v: 2, screen: 'intro', scene: ep.scenes[0].id, read: [], visited: [], solved: [], drafts: {}, hints: {}, seen: [] });
   let S = fresh();
   try { const raw = JSON.parse(localStorage.getItem(KEY) || 'null'); if (raw && raw.v === 2) S = { ...fresh(), ...raw }; } catch {}
+  // 예전 저장본은 엔딩에서 solved를 true로 덮어썼다 — 배열로 되돌린다
+  if (!Array.isArray(S.solved)) { S.ended = true; S.solved = Object.keys(ep.devices); }
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
 
   const docIds = Object.keys(ep.docs);
@@ -153,7 +155,7 @@ async function main() {
       nav.append(b);
     });
     if (ep.traces?.length) {
-      const tr = el('div', 'v2-traces'); tr.setAttribute('aria-label', '민서가 남긴 것');
+      const tr = el('div', 'v2-traces'); tr.setAttribute('aria-label', ep.tracesLabel || '남긴 것');
       ep.traces.forEach((t) => { const got = S.solved.includes(t.device); const i = el('span', 'v2-trace' + (got ? ' got' : ''), got ? t.label : '· · ·'); i.setAttribute('aria-label', got ? t.label : '아직 찾지 못함'); tr.append(i); });
       nav.append(tr);
     }
@@ -322,7 +324,7 @@ async function main() {
     (dev.reveal.scene || []).forEach((line) => node.append(el('p', 'v2-line', line)));
     const target = dev.reveal.unlock && sceneById(dev.reveal.unlock);
     if (dev.reveal.unlockDoc && ep.docs[dev.reveal.unlockDoc]) { S.found = S.found || []; if (!S.found.includes(dev.reveal.unlockDoc)) S.found.push(dev.reveal.unlockDoc); save(); node.append(btn('v2-secondary', ep.docs[dev.reveal.unlockDoc].title + ' 보기', () => openDoc(dev.reveal.unlockDoc))); }
-    if (dev.reveal.ending) node.append(btn('v2-primary', (dev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; S.solved = true; save(); closeDialog(); }));
+    if (dev.reveal.ending) node.append(btn('v2-primary', (dev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; save(); closeDialog(); }));
     else if (target) node.append(btn('v2-primary', josa(target.name, '으로', '로') + ' →', () => { S.scene = target.id; save(); closeDialog(); }));
     else node.append(btn('v2-primary', '계속', () => closeDialog()));
     openDialog(node, { label: dev.reveal.title, onClose: () => { if (target && S.scene !== target.id) { S.scene = target.id; save(); window.scrollTo({ top: 0 }); } render(); } });

@@ -58,7 +58,7 @@ function cycleSvg() {
   return s;
 }
 
-// 할머니식 풀이 — 이야기용 해석. 좋고 나쁜 판정은 없다
+// 할머니식 풀이 — 이야기용 해석 좋고 나쁜 판정은 없다
 const READ = {
   blue: { me: '자라는 쪽을 보는 사람이다 시작은 잘하는데 가지치기를 못 한다 위로만 크다가 바람 맞는 날이 있다', many: '木이 많으면 일을 자꾸 벌린다 심은 건 많은데 거둔 게 없다', none: '木이 없으면 시작이 어렵다 남이 밀어 줘야 움직인다', tea: '유자차는 가지를 쳐 주는 차다 신맛이 위로만 크는 걸 잡는다' },
   red: { me: '밝고 금방 뜨거워지는 사람이다 사람을 모으는데, 혼자 타다 꺼지는 날이 있다', many: '火가 많으면 급하다 말이 손보다 먼저 나간다', none: '火가 없으면 뜨거워지는 게 없다 오래 가는 대신 재미가 없다', tea: '오미자차는 다섯 맛이 한 잔에 있는 차다 한 가지로 타오르지 말라고 준다' },
@@ -80,11 +80,14 @@ function reading(profile) {
   const missing = E.filter((e, i) => profile.counts[i] === 0);
   let other = comp;
   if (comp.id === seed.id) { let best = -1; E.forEach((e, i) => { if (i !== profile.seed && profile.counts[i] > best) { best = profile.counts[i]; other = e; } }); }
-  const strong = profile.counts[profile.companion] >= 3;
+  const max = Math.max(...profile.counts);
+  const tops = E.filter((e, i) => profile.counts[i] === max);
+  const strong = max >= 3;
+  const topLine = tops.length > 1 ? `제일 많은 빛은 ${tops.map((t) => t.han).join('·')} 같이 많다` : comp.id === seed.id ? `네 빛 ${hj(seed.id, '이', '가')} 제일 많기도 하다` : `제일 많은 빛은 ${hj(comp.id, '이다', '다')}`;
   return {
-    seed, comp, missing, other,
+    seed, comp, missing, other, tops,
     me: READ[seed.id].me,
-    many: comp.id === seed.id ? `네 빛 ${hj(seed.id, '이', '가')} 제일 많기도 하다 ${strong ? READ[seed.id].many : '많다고 센 건 아니다 고르게 있는 쪽이다'}` : READ[comp.id].many,
+    many: `${topLine} ${strong ? READ[comp.id].many : '많다고 센 건 아니다 고르게 있는 쪽이다'}`,
     none: missing.length ? missing.map((e) => READ[e.id].none).join(' ') : '다섯 빛이 다 있다 빠진 게 없으니 뭐 하나가 모자라서 그런 거라는 핑계는 못 댄다',
     relation: (comp.id === seed.id ? `그다음이 ${other.han}인데, ` : '') + relationLine(seed.id, other.id),
     tea: READ[seed.id].tea,
@@ -99,7 +102,7 @@ function resultCard(profile, el, btn, next) {
 <div class="pillars">${profile.pillars.map((p) => `<div class="pillar"><small>${p.label}</small><b>${p.text}</b><span>${p.elements.map((i) => E[i].han).join('') || '—'}</span></div>`).join('')}</div>
 <div class="counts">${E.map((e, i) => `<div class="count"><i style="background:${fills[e.id]}"></i><b>${e.han}</b><span>${'●'.repeat(profile.counts[i])}${'○'.repeat(Math.max(0, 4 - profile.counts[i]))}</span><small>${profile.counts[i]}</small></div>`).join('')}</div>
 <p class="slip-light">네 빛은 <b style="color:${fills[seed.id] === '#eee8dc' ? '#9a8f70' : fills[seed.id]}">${seed.han} ${seed.el} · ${seed.color}색</b> <small>(태어난 날의 천간)</small></p>
-<p class="slip-light">가장 많은 빛은 <b>${comp.han} ${comp.el}</b>${profile.unknown ? ' <small>(시각을 몰라 시주는 뺐다)</small>' : ''}${profile.ambiguous ? ' <small>(절기 바뀌는 날이라 연·월은 미확정)</small>' : ''}</p>
+<p class="slip-light">가장 많은 빛은 <b>${reading(profile).tops.map((t) => `${t.han} ${t.el}`).join(' · ')}</b>${profile.unknown ? ' <small>(시각을 몰라 시주는 뺐다)</small>' : ''}${profile.ambiguous ? ' <small>(절기 바뀌는 날이라 연·월은 미확정)</small>' : ''}</p>
 <div class="slip-reading"><p class="slip-sub">할머니라면 이렇게 읽는다</p><p>${reading(profile).me}</p><p>${reading(profile).many}</p><p>${reading(profile).none}</p><p class="slip-note">좋고 나쁜 건 없다 할머니는 이 빛으로 차를 골랐고, 오늘은 이 빛이 열쇠가 된다 나머지 풀이는 가게 안에 있다</p></div>`;
   card.append(btn('v2-primary', '접수표 들고 문 앞으로 →', next));
   return card;
@@ -120,12 +123,13 @@ export default {
   blurb: '외할머니가 마흔 해 넘게 지킨 약차집 오행당\n입원한 할머니의 문자 한 통에 지원은 여섯 해 만에 그 골목으로 갑니다\n당신의 생년월일시로 다섯 빛을 세고, 그 빛대로 문이 열립니다',
   hintTitle: '할머니의 귀띔',
   storageKey: 'mihaeje-v2-ohang',
+  tracesLabel: '할머니가 남긴 것',
 
   opening: {
     eyebrow: '3월 2일, 저녁',
     paragraphs: [
       '할머니가 넘어졌다는 연락은 이모한테서 왔고, 할머니한테서는 문자가 왔다 가게 좀 봐 달라는 거였다 찬장 맨 아래 서랍에 둔 걸 꼭 가져오라고',
-      '오행당 외할머니가 마흔두 해 동안 약차를 끓인 가게다 손님이 오면 생일하고 난 시부터 묻고, 다섯 빛을 세어서 차를 골라 줬다 초등학교 때는 여름방학마다 거기서 살았는데 대학에 들어간 뒤로는 명절에 얼굴만 비쳤다',
+      '오행당 외할머니가 마흔두 해 동안 약차를 끓인 가게다 손님이 오면 생일하고 난 시부터 묻고, 다섯 빛을 세어서 차를 골라 줬다 학교 다닐 때는 여름방학마다 거기서 살았는데 대학에 들어간 뒤로는 명절에 얼굴만 비쳤다',
       '열쇠는 늘 두던 데 있다고 했다 어디였더라 되물으려는데 할머니 휴대폰이 꺼졌다',
       '골목에 비가 조금 왔다 문 앞 섬돌에 화분 다섯 개가 그대로 있고, 문 옆 작은 선반에 접수표 묶음이 놓여 있었다 손님은 먼저 접수표부터 쓴다 할머니 가게의 규칙이다',
     ],
@@ -138,7 +142,7 @@ export default {
       const sheet = el('div', 'slip-form');
       sheet.innerHTML = `<p class="slip-head">오행당 접수표</p>
 <p class="slip-note">손님 생일과 난 시를 적습니다 할머니는 이걸로 다섯 빛을 셉니다<br><small>적은 생일은 저장하지 않고, 센 결과만 이 브라우저에 남습니다</small></p>
-<label class="slip-row"><span>생일 (양력)</span><input type="date" name="date" min="1901-01-01" max="2026-12-31" required></label>
+<label class="slip-row"><span>생일 (양력)</span><input type="date" name="date" min="1901-01-01" max="2026-03-02" required></label>
 <label class="slip-row"><span>난 시각</span><input type="time" name="time"></label>
 <label class="slip-check"><input type="checkbox" name="unknown"> 시각은 모름</label>
 <p class="slip-err" aria-live="polite"></p>`;
@@ -156,7 +160,7 @@ export default {
           const profile = { version: 1, pillars: pr.pillars, counts: pr.counts, seed: pr.seed, companion: pr.companion, unknown: pr.unknown, ambiguous: pr.ambiguous };
           wrap.replaceChildren(resultCard(profile, el, btn, () => done(profile)));
           window.scrollTo({ top: 0 });
-        } catch (e) { err.textContent = e.message; }
+        } catch (e) { err.textContent = e.message.replace(/을 입력해주세요$/, '을 적어야 한다').replace(/를 입력해주세요$/, '를 적어야 한다').replace(/을 확인해주세요$/, '을 다시 본다'); }
       });
       wrap.append(el('p', 'v2-eyebrow', '문 옆 선반 · 접수표'), sheet, go);
       return wrap;
@@ -258,15 +262,15 @@ export default {
     slips: {
       title: '서랍 속 접수표 묶음',
       kind: '할머니 장부',
-      html: `<figure class="prop slips"><img src="${P}props/slips.webp" alt="집게로 묶은 접수표 묶음" decoding="async"></figure><p>장부라기보다 쪽지 묶음이다 손님 이름 대신 내 이름이 제일 많다</p><div class="slip-list">
+      html: (S) => `<figure class="prop slips"><img src="${P}props/slips.webp" alt="집게로 묶은 접수표 묶음" decoding="async"></figure><p>장부라기보다 쪽지 묶음이다 손님 이름 대신 내 이름이 제일 많다</p><div class="slip-list">
 <p><b>2007. 12</b> 지원 첫 방문 감기 생강차 안 마시려고 울었음</p>
 <p><b>2008. 8</b> 지원 수박 차는 안 마심</p>
-<p><b>2009. 8</b> 지원 오미자 세 잔째 수박은 안 먹음</p>
+<p><b>2009. 8</b> 지원 ${seedOf(S).tea} 세 잔째 수박은 안 먹음</p>
 <p><b>2011. 8</b> 지원 대추차 숙제 안 함</p>
 <p><b>2014. 2</b> 지원 쌍화차 수능 끝</p>
 <p><b>2020. 9</b> 지원 유자차 취직했다고 함</p>
 <p><b>2026. 3</b> 지원 (비어 있음)</p>
-</div><p>맨 아래 접수표 밑에 열쇠가 하나 더 있었다 꼬리표에 「뒷방」</p>`,
+</div><p class="aside">2026년 3월 칸은 비어 있다 오늘 내가 쓴 접수표가 들어갈 자리다</p>`,
     },
     deskmemo: {
       title: '책상 위 메모',
@@ -314,11 +318,11 @@ export default {
         if (d.pick === 'blue') return { ok: true };
         const e = byId[d.pick];
         if (d.pick === 'red') return { ok: false, msg: '붉은 화분 밑은 젖은 흙뿐이다 불은 "낳는 놈"이 아니라 낳아지는 쪽이다 불 앞의 화살표를 보자' };
-        return { ok: false, msg: `${e.pot} 밑에는 지렁이 한 마리 ${e.han}(${e.el})이 낳는 건 불이 아니다 종이의 화살표를 한 번 더` };
+        return { ok: false, msg: `${e.pot} 밑에는 지렁이 한 마리 ${hj(e.id, '이', '가')} 낳는 건 불이 아니다 종이의 화살표를 한 번 더` };
       },
       reveal: {
         title: '나무가 불을 낳는다',
-        text: '청자 빛 화분을 들자 비닐에 싼 열쇠가 있었다 초등학교 때 내가 숨겨 두던 바로 그 자리다',
+        text: '청자 빛 화분을 들자 비닐에 싼 열쇠가 있었다 어릴 때 내가 숨겨 두던 바로 그 자리다',
         scene: ['자물쇠가 뻑뻑했다 두 번 돌려서 문을 열었다 안은 캄캄하고, 약재 냄새가 났다'],
         unlock: 'inside',
       },
@@ -369,6 +373,7 @@ export default {
         if (NICHES.every((n) => d.placed[n.id] === NICHE_ANSWER[n.id])) return { ok: true };
         if (NICHES.every((n) => d.placed[n.id] === NAIVE[n.id])) return { ok: false, msg: '쇠가 꿈쩍 않는다 위 칸이 북쪽이라고 누가 그랬나 창이 어느 쪽에 있는지 다시 보자 해 뜨는 쪽이 왼쪽이면 나는 어디를 보고 서 있나' };
         if (d.placed.center !== 'yellow') return { ok: false, msg: '가운데는 방향이 없는 자리다 종이에서 "중앙"이 어느 색인지 보자' };
+        if (d.placed.left === 'blue' && d.placed.right === 'white') return { ok: false, msg: '좌우는 맞다 해 뜨는 쪽이 왼손이면 나는 어디를 보고 서 있나 위 칸은 내가 보는 쪽이다' };
         const wrong = NICHES.find((n) => d.placed[n.id] !== NICHE_ANSWER[n.id]);
         return { ok: false, msg: `${wrong.label}의 ${byId[d.placed[wrong.id]].name}이 어긋난다 창(동쪽)이 왼쪽에 있다는 걸 기준으로 방향을 다시 잡자` };
       },
@@ -388,7 +393,7 @@ export default {
       hintCode: 'O-S03',
       hints: (S) => { const e = seedOf(S); return [
         '접수표에 나온 내 빛이 무슨 글자였는지 떠올리세요 메뉴판의 차 이름 옆에 그 글자가 있습니다',
-        `내 빛은 ${e.han}(${e.el}) 메뉴판에서 ${e.han}이 적힌 차의 값을 보세요`,
+        `내 빛은 ${e.han}(${e.el}) 메뉴판에서 ${hj(e.id, '이', '가')} 적힌 차의 값을 보세요`,
         `${e.tea} ${e.price.join('')}`,
       ]; },
       initial: () => ({ dial: [0, 0, 0, 0], fails: 0 }),
@@ -411,9 +416,8 @@ export default {
         const e = seedOf(S); const code = e.price; const s = d.dial.join('');
         if (s === code.join('')) return { ok: true };
         const other = E.find((x) => x.price.join('') === s);
-        if (other) return { ok: false, msg: `안 열린다 ${s.slice(0, 1)},${s.slice(1)}원은 ${other.tea}(${other.han}) 값이다 내 빛은 ${other.han}이 아니다 접수표를 다시 보자` };
-        const right = d.dial.filter((v, i) => v === code[i]).length;
-        return { ok: false, msg: right ? `걸린다 ${right}자리는 맞는 것 같다` : '걸린다 차 값은 네 자리다 천 원 단위부터' };
+        if (other) return { ok: false, msg: `안 열린다 ${s.slice(0, 1)},${s.slice(1)}원은 ${other.tea}(${other.han}) 값이다 내 빛은 ${hj(other.id, '이', '가')} 아니다 접수표를 다시 보자` };
+        return { ok: false, msg: '걸린다 차 값은 네 자리다 천 원 단위부터 그대로' };
       },
       reveal: {
         title: '내 빛의 차 값',
@@ -431,7 +435,7 @@ export default {
       hintCode: 'O-S04',
       hints: (S) => { const o = orderFrom(seedOf(S).id); return [
         '접수표의 내 빛이 첫 등입니다 그다음은 문에 붙은 종이의 화살표를 따라갑니다',
-        `내 빛 ${seedOf(S).han}은 ${seedOf(S).color}색 등 거기서 화살표를 네 번 따라가면 다섯 개`,
+        `내 빛 ${hj(seedOf(S).id, '은', '는')} ${seedOf(S).lantern} 거기서 화살표를 네 번 따라가면 다섯 개`,
         o.map((id) => byId[id].lantern).join(' → '),
       ]; },
       initial: () => ({ lit: [] }),
@@ -459,14 +463,15 @@ export default {
         const ORDER = orderFrom(seedOf(S).id);
         if (d.lit.length < 5) return { ok: false, msg: `${d.lit.length}개만 켜져 있다 다섯 개 다 켜야 한다` };
         if (d.lit.every((id, i) => id === ORDER[i])) return { ok: true };
-        if (d.lit[0] !== ORDER[0]) { const c = compOf(S); return { ok: false, msg: d.lit[0] === c.id && c.id !== seedOf(S).id ? `${byId[d.lit[0]].lantern}부터 켰다 ${c.han}은 제일 많은 빛이지 내 빛이 아니다 접수표의 "네 빛"을 다시 보자` : `${byId[d.lit[0]].lantern}부터 켰다 내 빛이 ${byId[d.lit[0]].el}이었나 접수표를 다시 보자` }; }
+        if (d.lit[0] !== ORDER[0]) { const c = compOf(S); return { ok: false, msg: d.lit[0] === c.id && c.id !== seedOf(S).id ? `${byId[d.lit[0]].lantern}부터 켰다 ${hj(c.id, '은', '는')} 제일 많은 빛이지 내 빛이 아니다 접수표의 "네 빛"을 다시 보자` : `${byId[d.lit[0]].lantern}부터 켰다 내 빛이 ${byId[d.lit[0]].el}이었나 접수표를 다시 보자` }; }
         const i = d.lit.findIndex((id, k) => id !== ORDER[k]);
-        return { ok: false, msg: `시작은 맞다 ${i + 1}번째가 어긋난다 ${byId[d.lit[i - 1]].han}이 낳는 건 뭐였나, 종이의 화살표를 따라가자` };
+        return { ok: false, msg: `시작은 맞다 ${i + 1}번째가 어긋난다 ${hj(d.lit[i - 1], '이', '가')} 낳는 건 뭐였나, 종이의 화살표를 따라가자` };
       },
       reveal: {
         title: '내 빛에서 시작해서',
         text: '다섯 번째 등이 켜지자 접수함 뚜껑이 딸깍 열렸다 안에는 접수표가 딱 한 장 받는 사람 칸에 「지원」',
         scene: ['등 다섯 개가 한 바퀴 돌아 다시 내 빛으로 이어졌다 할머니가 손님마다 이걸 해 줬다는 걸, 내 차례가 되어서야 알았다'],
+        unlockDoc: 'final',
         ending: true,
         endingLabel: '다음 날 아침, 병원으로',
       },
@@ -484,9 +489,8 @@ export default {
         `보온병에 ${e.tea}를 담아 갔다 내 빛의 차다 가게 불은 다 끄고, 등도 끄고, 열쇠 뭉치와 ${js(e.gift, '은', '는')} 가방에 넣었다`,
         '"서랍 것 가져왔냐" "뒷방까지 가게 해 놓고" 할머니가 웃었다 "니가 길을 잊었나 보려고"',
         `"접수표는 썼고?" "썼어 ${e.han}, ${js(e.el, '이래', '래')}" "그래, ${js(e.el, '이지', '지')} 애 때부터 ${js(e.el, '이었다', '였다')}" 할머니는 내 빛을 알고 있었다 마흔두 해 동안 손님 빛을 세던 사람이 손녀 빛을 모를 리가 없었다`,
-        `"${hj(e.id, '은', '는')} 말이다" 할머니가 찻잔을 든 채로 시작했다 "${r.me}" 병실 옆 침대 아주머니가 듣다가 웃었다 "${r.many.replace(/^.*?많으면 /, '').replace(/^.*?많기도 하다 /, '')}"`,
-        `"${r.none}" "그건 어떻게 알아" "네 접수표에 다 있다 세어 보면 나온다" ${r.missing.length ? `없는 빛 얘기를 할 때 할머니는 목소리를 낮췄다` : `다섯이 다 있다는 말을 할 때 할머니는 조금 자랑스러워 보였다`}`,
-        `"${r.relation}" 그러고는 보온병 쪽으로 턱짓을 했다 "그래서 ${e.tea}다 ${r.tea}" 이모한테 가게 얘기를 들었냐고 물었더니 할머니는 대답 대신 찻잔을 받았다`,
+        `"${hj(e.id, '은', '는')} 말이다" 할머니가 찻잔을 든 채로 접수표에 쓴 풀이를 처음부터 다시 했다 토씨 하나 안 틀렸다 병실 옆 침대 아주머니가 듣다가 웃었다 "손녀 사주를 병실에서 보시네"`,
+        `"접수표에 다 적어 놓고 왜 또 해" "적은 거랑 듣는 건 다르다" ${r.missing.length ? '없는 빛 얘기를 할 때 할머니는 목소리를 낮췄다' : '다섯이 다 있다는 대목에서 할머니는 조금 자랑스러워 보였다'} 그러고는 보온병 쪽으로 턱짓을 했다 "그래서 ${e.tea}다" 이모한테 가게 얘기를 들었냐고 물었더니 할머니는 대답 대신 찻잔을 받았다`,
       ];
       if (!S.choice) return base;
       const tail = {
@@ -504,7 +508,7 @@ export default {
         { id: 'share', label: '다음 손님은 내가 받을게' },
       ],
     },
-    afterword: (S) => `${seedOf(S).gift}는 ${seedOf(S).id === 'blue' ? '가게 창가' : seedOf(S).id === 'white' ? '우리 집 문 앞' : '내 책상 위'}에 있다 ${seedOf(S).giftLine}`,
+    afterword: (S) => `${js(seedOf(S).gift, '은', '는')} ${seedOf(S).id === 'blue' ? '내 방 창가' : seedOf(S).id === 'white' ? '우리 집 문 앞' : '내 책상 위'}에 있다 ${seedOf(S).giftLine}`,
     unlockDoc: 'final',
     next: { href: 'play.html?case=pet-home', title: '첫 번째 보호자', line: '다음은 동물병원 접수대 이야기입니다' },
   },

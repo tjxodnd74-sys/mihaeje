@@ -1,4 +1,4 @@
-// 첫 번째 보호자 — ★2. 이야기·자료·장치가 전부 이 파일에 있습니다.
+// 첫 번째 보호자 — ★2 이야기·자료·장치가 전부 이 파일에 있습니다
 const P = 'assets/v2/pet-home/';
 const js = (w, a, b) => { const c = w.charCodeAt(w.length - 1); if (c < 0xac00 || c > 0xd7a3) return w + a; return w + ((c - 0xac00) % 28 ? a : b); };
 
@@ -13,7 +13,7 @@ const stampSvg = (id, cls = '') => `<svg class="stamp ${cls}" viewBox="0 0 32 32
 
 // 기념품 네 개: 뒷면에 남은 것(날짜/도장)이 다 다르다
 const ITEMS = [
-  { id: 'blanket', name: '접힌 담요', img: 'blanket', stamp: null, date: '2016. 7. 18', dateNote: '', back: '세탁 라벨 안쪽 날짜는 또렷한데 도장은 물에 번져서 초록 얼룩만 남았다' },
+  { id: 'blanket', name: '접힌 담요', img: 'blanket', stamp: null, date: '2016. 7. 18', dateNote: '', back: '세탁 라벨 안쪽 날짜는 또렷한데 도장은 물에 번져서 무슨 모양인지 읽을 수 없다' },
   { id: 'lanyard', name: '파란 명찰 끈', img: 'lanyard', stamp: null, date: '2016. 7. 16', dateNote: '', back: '도장은 없다 끈 안쪽에 볼펜으로 적은 날짜 하나 글씨가 어리다' },
   { id: 'envelope', name: '진료 봉투', img: 'envelope', stamp: 'cross', date: '2016. 7. 17', dateNote: '', back: '빨간 십자 도장과 날짜 「접수 27 · 진료 V-6384 · 담담동물병원」' },
   { id: 'cert', name: '입양 확인서', img: 'cert', stamp: 'house', date: null, dateNote: '날짜 칸이 찢어져 없다', back: '집 모양 도장만 남았다 위쪽 이름 칸과 날짜 칸은 찢어져 없다' },
@@ -35,11 +35,11 @@ const DRAWER_ANSWER = '7-3'; // 2017년 정리 때 V-6350 이후를 7-3으로 �
 const DESK_CODE = [7, 1, 6];
 const BOX_ANSWER = { rescue: 'lanyard', clinic: 'envelope', foster: 'blanket', adopt: 'cert' };
 
-// 병원 카드 서랍: 비슷한 카드 다섯. 봉투의 V-6384와 계약서의 등록번호가 둘 다 맞는 건 하나
+// 병원 카드 서랍: 비슷한 카드 다섯 V-6384가 둘인데, 계약서의 등록번호까지 맞는 건 하나
 const CARDS = [
   { id: 'c1', v: 'V-6381', name: '보리', date: '2016. 7. 15', reg: '941372608154209' },
   { id: 'c2', v: 'V-6382', name: '콩', date: '2016. 7. 17', reg: '941372680154902' },
-  { id: 'c3', v: 'V-6383', name: '콩이', date: '2016. 7. 17', reg: '941372608145902' },
+  { id: 'c3', v: 'V-6384', name: '콩이', date: '2016. 7. 17', reg: '941372608145902' }, // 접수 실수로 번호가 겹친 카드
   { id: 'c4', v: 'V-6384', name: '콩이', date: '2016. 7. 17', reg: '941372608154902' },
   { id: 'c5', v: 'V-6385', name: '코코', date: '2016. 7. 18', reg: '941327608154902' },
 ];
@@ -79,6 +79,7 @@ export default {
   blurb: '열 살 강아지 루미를 입양한 유나\n전 보호자 정우가 건넨 낡은 상자에는 십 년 전 물건 네 개와 파란 끈이 들어 있었습니다',
   storageKey: 'mihaeje-v2-pet-home',
   hintTitle: '정우의 메시지',
+  tracesLabel: '루미를 거쳐 간 사람들이 남긴 것',
 
   opening: {
     eyebrow: '10월 9일, 이사 다음 날',
@@ -116,7 +117,7 @@ export default {
       name: '담담동물병원',
       image: P + 'clinic.webp',
       unlockedBy: 'box',
-      arrive: '봉투에 적힌 병원은 아직 같은 자리에 있었다 접수대 뒤로 나무 카드 서랍장이 벽 하나를 채우고 있다 "2016년이요? 전산 전이라 카드로 남아 있을 거예요" 수의사가 서랍 하나를 열어 줬다',
+      arrive: '봉투에 적힌 병원은 아직 같은 자리에 있었다 접수대 뒤로 나무 카드 서랍장이 벽 하나를 채우고 있다 "2016년이요? 전산 전이라 카드로 남아 있을 거예요" 수의사가 서랍장 쪽을 가리켰다 찾아보라고',
       hotspots: [
         { id: 'vet', x: 50, y: 56, label: '접수대의 수의사', kind: 'doc', doc: 'vet' },
         { id: 'rule', x: 85, y: 34, label: '게시판의 카드 보관 안내', kind: 'doc', doc: 'rule' },
@@ -167,7 +168,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
     vet: {
       title: '접수대의 수의사',
       kind: '들은 말',
-      html: `<blockquote>“2016년 7월이면 카드예요 V 번호 순으로 서랍에 꽂혀 있고요 같은 주에 온 애들은 번호가 붙어 있어서 헷갈려요 이름도 비슷한 애들이 많고”</blockquote><blockquote>“V 번호만 보지 말고 등록번호까지 맞춰 보세요 그때 칩 넣으면서 등록한 번호가 카드에 적혀 있거든요 그게 지금 서류하고 같아야 같은 개예요”</blockquote><blockquote>“찾으면 카드 뒷면도 보세요 신고자 메모를 거기 적었어요”</blockquote>`,
+      html: `<blockquote>"2016년 7월이면 카드예요 V 번호 순으로 서랍에 꽂혀 있고요 같은 주에 온 애들은 번호가 붙어 있어서 헷갈려요 이름도 비슷한 애들이 많고, 그때 접수를 손으로 해서 번호가 겹친 카드도 있어요"</blockquote><blockquote>"V 번호만 보지 말고 등록번호까지 맞춰 보세요 그때 칩 넣으면서 등록한 번호가 카드에 적혀 있거든요 그게 지금 서류하고 같아야 같은 개예요"</blockquote><blockquote>"찾으면 카드 뒷면도 보세요 신고자 메모를 거기 적었어요"</blockquote>`,
     },
     rule: {
       title: '게시판의 카드 보관 안내',
@@ -209,7 +210,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       title: '정우가 남긴 편지',
       kind: '상자 맨 밑에 있던 것',
       locked: true,
-      html: `<blockquote class="hand">유나 씨께<br><br>이 편지는 끈 주인을 찾고 나서 읽으시라고 밑에 깔아 뒀어요<br>사실 입양 상담 때 유나 씨 이름을 보고 혹시나 했어요 센터 원본에 「햇살중 학생, 어머니 동반」이라고만 있었고, 유나 씨가 햇살동 출신이라길래요<br>그래도 말 안 했어요 유나 씨가 찾아야 유나 씨 거니까요<br><br>콩이는 십 년 동안 잘 살았어요 이제 루미로 유나 씨한테 돌아간 거예요<br>끈은 루미 목줄에 묶어 주세요 처음 묶였던 자리로요<br>— 정우</blockquote>`,
+      html: `<blockquote class="hand">유나 씨께<br><br>이 편지는 끈 주인을 찾고 나서 읽으시라고 밑에 깔아 뒀어요<br>사실 입양 상담 때 유나 씨 이름을 보고 혹시나 했어요 센터 사본에는 「보호자 동반 학생」뿐이었는데, 유나 씨가 햇살동 출신이라길래요<br>그래도 말 안 했어요 유나 씨가 찾아야 유나 씨 거니까요<br><br>콩이는 십 년 동안 잘 살았어요 이제 루미로 유나 씨한테 돌아간 거예요<br>끈은 루미 목줄에 묶어 주세요 처음 묶였던 자리로요<br>— 정우</blockquote>`,
     },
   },
 
@@ -222,7 +223,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       hintCode: 'P-S01',
       hints: [
         '물건을 누르면 뒷면이 보입니다 도장이 있는 건 도장으로 기록 줄을 찾고, 도장이 없는 둘은 날짜 순서로 앞뒤를 정합니다',
-        '십자=진료(2번째), 집=입양(4번째) 끈 7.16과 담요 7.18은 도장이 없지만 발견이 임시보호보다 먼저이니 끈이 1번째, 담요가 3번째 끝자리: 6 · 7 · 8 · 2',
+        '십자=진료, 집=입양 도장 없는 둘은 뒷면 날짜로 앞뒤를 정합니다 발견이 임시보호보다 먼저입니다 그다음 네 날의 끝자리를 기록 순서대로',
         '6782',
       ],
       initial: () => ({ placed: {}, held: null, flip: null, dial: [0, 0, 0, 0] }),
@@ -263,15 +264,14 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       commitLabel: '자물쇠 당기기',
       check(d) {
         const code = d.dial.join('');
-        if (code === TIN_CODE.join('')) return { ok: true };
         const filled = STAGES.filter((s) => d.placed[s.id]).length;
         if (filled < 4) return { ok: false, msg: `자물쇠가 안 열린다 기록 사본은 날짜가 뭉개져 있다 물건 뒷면으로 네 날부터 채우자 (지금 ${filled}/4)` };
         if (!STAGES.every((s) => d.placed[s.id] === BOX_ANSWER[s.id])) {
           if (d.placed.rescue === 'blanket' && d.placed.foster === 'lanyard') return { ok: false, msg: '안 열린다 도장 없는 둘의 앞뒤가 바뀌었다 발견이 임시보호보다 먼저다 날짜가 빠른 쪽이 발견한 날' };
           return { ok: false, msg: '안 열린다 놓은 물건이 기록 줄과 어긋난다 도장이 있는 둘은 도장으로, 없는 둘은 날짜 순서로' };
         }
-        const right = d.dial.filter((v, i) => v === TIN_CODE[i]).length;
-        return { ok: false, msg: `네 날은 맞췄다 번호는 끝자리다 ${right}자리는 맞는 것 같다` };
+        if (code === TIN_CODE.join('')) return { ok: true };
+        return { ok: false, msg: '네 날은 맞췄다 번호는 네 날의 끝자리, 기록 순서대로다' };
       },
       reveal: {
         title: '6 · 7 · 8 · 2',
@@ -289,7 +289,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       hintCode: 'P-S02',
       hints: [
         '게시판 안내에서 V-6384가 어느 서랍 범위인지 봅니다 그런데 밑에 볼펜으로 덧쓴 줄이 있습니다',
-        '2017년 정리 때 V-6350 이후는 7-3으로 옮겼습니다 7-3을 열면 카드 다섯 장이 올라와 있고, 그중 V-6384가 둘 아닌 하나, 등록번호까지 맞는 건 하나',
+        '2017년 정리 때 V-6350 이후는 7-3으로 옮겼습니다 7-3을 열면 카드 다섯 장이 올라와 있고, V-6384가 둘입니다 계약서의 등록번호와 열다섯 자리가 다 같은 쪽이 루미입니다',
         '7-3 서랍 · 네 번째 카드 (V-6384 · 콩이 · 941372608154902)',
       ],
       initial: () => ({ drawer: null, open: null }),
@@ -333,7 +333,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       check(d) {
         if (d.open === CARD_ANSWER) return { ok: true };
         const c = CARDS.find((x) => x.id === d.open);
-        if (c.v !== 'V-6384') return { ok: false, msg: `${c.v}는 봉투의 번호가 아니다 봉투에는 V-6384라고 적혀 있다` };
+        if (c.v !== 'V-6384') return { ok: false, msg: `${c.v} 번호는 봉투의 번호가 아니다 봉투에는 V-6384라고 적혀 있다` };
         return { ok: false, msg: '번호는 맞는데 등록번호가 계약서와 다르다 열다섯 자리를 세 자리씩 끊어서 다시 대 보자' };
       },
       reveal: {
@@ -352,7 +352,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       hintCode: 'P-S03',
       hints: [
         '콩이를 만난 날은 일기 첫 줄에 있습니다 세 자리',
-        '7월 16일 → 7 1 6',
+        '일기 첫 줄의 날짜를 월 한 자리, 일 두 자리로 넣습니다',
         '716',
       ],
       initial: () => ({ dial: [0, 0, 0] }),
@@ -370,9 +370,8 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
         const code = d.dial.join('');
         if (code === DESK_CODE.join('')) return { ok: true };
         if (code === '816' || code === '802') return { ok: false, msg: '안 열린다 콩이를 "만난" 날이다 입양된 날이 아니라' };
-        if (code === '717') return { ok: false, msg: '안 열린다 병원 간 날이 아니라 만난 날 하루 전이다' };
-        const right = d.dial.filter((v, i) => v === DESK_CODE[i]).length;
-        return { ok: false, msg: right ? `걸린다 ${right}자리는 맞는 것 같다 월 하나, 일 둘` : '걸린다 월 한 자리, 일 두 자리다' };
+        if (code === '717') return { ok: false, msg: '안 열린다 그날은 병원에 간 날이지 만난 날이 아니다' };
+        return { ok: false, msg: '걸린다 월 한 자리, 일 두 자리다' };
       },
       reveal: {
         title: '7 · 1 · 6',
@@ -390,7 +389,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       hintCode: 'P-S04',
       hints: [
         '명찰 끈에는 명찰과 같은 글자가 찍힙니다 서랍에서 나온 명찰을 보세요',
-        '햇살중학교 · 2학년 3반 · 김유나 끈에는 줄여서 찍힙니다',
+        '명찰의 학교·학년 반·이름이 끈에는 줄여서 찍힙니다 "중학교"는 한 글자로, 학년 반은 숫자만',
         '햇살중 · 2-3 · 김유나',
       ],
       initial: () => ({ fill: {}, pick: null }),
@@ -412,7 +411,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
           const bl = BLANKS.find((x) => x.id === d.pick);
           wrap.append(el('p', 'pick-label', `${bl.label} 칸에 들어갈 글자`));
           const row = el('div', 'pick-row');
-          bl.opts.forEach((o) => { const c = el('button', 'chip' + (d.fill[bl.id] === o ? ' on' : ''), o); c.type = 'button'; c.setAttribute('aria-label', `${bl.label}은 ${o}`); c.onclick = () => { d.fill[bl.id] = o; d.pick = null; save(); }; row.append(c); });
+          bl.opts.forEach((o) => { const c = el('button', 'chip' + (d.fill[bl.id] === o ? ' on' : ''), o); c.type = 'button'; c.setAttribute('aria-label', `${js(bl.label, '은', '는')} ${o}`); c.onclick = () => { d.fill[bl.id] = o; d.pick = null; save(); }; row.append(c); });
           wrap.append(row);
         } else wrap.append(el('p', 'pick-label', '끈의 지워진 자리를 누르면 글자를 넣을 수 있다'));
         return wrap;
@@ -443,7 +442,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
   ending: {
     image: P + 'ending.webp',
     imageAlt: '가을 공원에서 루미를 산책시키는 유나와 정우',
-    eyebrow: '그 주 토요일',
+    eyebrow: '다음 주 토요일',
     title: '그날의 콩이가 지금의 루미였다',
     paragraphs: [
       '정우 씨한테 전화했다 "찾았어요 저였어요" 수화기 너머가 한참 조용하다가 "그럴 줄 알았어요" 했다 "상담 때 햇살동이라고 하셔서요 근데 제가 말하면 안 되는 거잖아요"',

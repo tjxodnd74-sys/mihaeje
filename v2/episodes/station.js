@@ -157,18 +157,19 @@ export default {
   cover: 'assets/v2/station/cover.webp',
   coverAlt: '새벽 대합실 벽에 기대 둔 낡은 3번 승강장 표지',
   music: 'assets/music/station-v33.mp3',
-  tagline: '새벽 1시 14분, 사진 한 장.\n중앙역에 3번 승강장은 없다',
+  tagline: '새벽 1시 14분, 사진 한 장\n중앙역에 3번 승강장은 없다',
   blurb: '회사를 그만두고 방을 뺀 친구가 보낸 마지막 사진은\n지금은 없는 승강장이었습니다 친구가 남긴 길을 따라가세요',
   storageKey: 'mihaeje-v2-station',
+  tracesLabel: '민서가 남긴 것',
 
   opening: {
     eyebrow: '새벽 1시 14분',
     paragraphs: [
-      '민서가 사진 한 장을 보냈다 낡은 법랑 표지판에 「3번 승강장」이라고 적혀 있고, 그 밑에 매직으로 쓴 한 줄이 있었다',
+      '민서가 사진 한 장을 보냈다 낡은 법랑 표지판에 「3번 승강장」이라고 적혀 있었다 사진 밑에 말풍선이 둘',
       '「여기서 시작」 「찾아와」',
       '바로 전화를 걸었지만 꺼져 있었고, 몇 번을 다시 걸어도 마찬가지였다',
       '민서는 두 달 전에 회사를 그만뒀고 방을 뺐다는 말은 지난주에야 들었다 어디로 가는지는 묻지 못했는데, 묻기 전에 먼저 말해 줄 거라고 생각했기 때문이다',
-      '중앙역에 3번 승강장은 없다 1번과 2번뿐이라는 걸 알면서도 나는 아침 첫차를 탔다',
+      '중앙역에 3번 승강장은 없다 1번과 2번뿐이라는 걸 알면서도 나는 첫차를 타고 중앙역으로 갔다',
     ],
     cta: '중앙역 대합실로',
   },
@@ -213,7 +214,7 @@ export default {
       name: '수림역 · 보관함',
       image: 'assets/v2/station/surim.webp',
       unlockedBy: 'mirror',
-      arrive: '열차는 북문을 서지 않고 지나쳤고, 수림역에는 역무원이 없었다 문 옆에 보관함이 열두 칸 있었는데 그중 한 칸에만 노란 별 스티커가 붙어 있었다 민서는 뭐든 별 스티커를 붙이는 애였고, 그 노란 별을 보는데 왜 목이 메는지 알 수 없었다',
+      arrive: '열차는 북문을 서지 않고 지나쳤고, 수림역에는 역무원이 없었다 문 옆에 보관함이 열두 칸 있었는데 그중 한 칸에만 노란 별 스티커가 붙어 있었다 민서는 뭐든 별 스티커를 붙이는 애였고, 그 노란 별을 보고 나서야 민서가 정말 여기까지 왔다는 게 실감이 났다',
       hotspots: [
         { id: 'postcard', x: 86, y: 32, label: '게시판의 그림엽서', kind: 'doc', doc: 'postcard' },
         { id: 'lockerrule', x: 42, y: 28, label: '보관함 이용 안내', kind: 'doc', doc: 'lockerrule' },
@@ -225,7 +226,7 @@ export default {
       name: '수림 마을길',
       image: 'assets/v2/station/village.webp',
       unlockedBy: 'locker',
-      arrive: '보관함 안에는 파란 리본을 맨 열쇠와 접은 종이, 편지, 쪽지 세 장, 그리고 꺼진 채 들어 있는 민서의 휴대폰이 있었다 그래서 안 받은 거였다 화가 나야 하는데 나지 않았다 역 밖은 매미 소리로 꽉 차 있었고 길은 왼쪽과 오른쪽으로 갈라져 있었다',
+      arrive: '보관함에서 꺼낸 것들을 가방에 넣고 역을 나왔다 휴대폰은 켜지 않았다 그래서 안 받은 거였다 화가 나야 하는데 나지 않았다 역 밖은 매미 소리로 꽉 차 있었고 길은 왼쪽과 오른쪽으로 갈라져 있었다',
       hotspots: [
         { id: 'letter', x: 24, y: 70, label: '민서의 편지', kind: 'doc', doc: 'letter' },
         { id: 'handmap', x: 46, y: 74, label: '접힌 손지도', kind: 'doc', doc: 'handmap' },
@@ -239,7 +240,7 @@ export default {
     message: {
       title: '민서의 마지막 메시지',
       kind: '휴대폰 · 01:14',
-      html: `<div class="chat"><div class="chat-head"><span class="chat-back">‹</span><b>민서</b><span class="chat-icons">☰</span></div><div class="chat-date">2026년 8월 14일 목요일</div>
+      html: `<div class="chat"><div class="chat-head"><span class="chat-back">‹</span><b>민서</b><span class="chat-icons">☰</span></div><div class="chat-date">2026년 8월 14일 금요일</div>
 <div class="chat-row them"><span class="chat-avatar">★</span><div class="chat-col"><span class="chat-name">민서</span><div class="chat-bubble photo"><img src="assets/v2/station/cover-960.webp" alt="낡은 3번 승강장 표지판 사진" decoding="async"></div><div class="chat-bubble">여기서 시작</div><div class="chat-bubble">찾아와</div></div><span class="chat-time">오전 1:14</span></div>
 <div class="chat-row me"><span class="chat-meta"><i>1</i>오전 1:15</span><div class="chat-bubble">뭐야 이 시간에</div></div>
 <div class="chat-row me"><span class="chat-meta"><i>1</i>오전 1:15</span><div class="chat-bubble">민서야 어디야</div></div>
@@ -252,12 +253,12 @@ export default {
     sign: {
       title: '벽에 기댄 옛 표지판',
       kind: '법랑 · 모서리가 깨짐',
-      html: `<p>흰 바탕에 검은 글씨로 <b>3번 승강장</b>이라고 적혀 있다 개편 때 떼어 낸 것을 역무원이 버리지 못하고 벽에 세워 두었다고 한다</p><p>뒷면 아래쪽에는 투명 테이프로 구간권 한 장이 붙어 있는데, 네모난 구멍이 여섯 개 뚫려 있고 위쪽 여백에 민서 글씨가 있다</p><figure class="prop ticket"><img src="assets/v2/station/props/ticket.webp" alt="구멍 뚫린 구간권" decoding="async"><div class="ticket-holes"><i style="--r:0;--c:0"></i><i style="--r:0;--c:3"></i><i style="--r:1;--c:1"></i><i style="--r:1;--c:3"></i><i style="--r:2;--c:2"></i><i style="--r:3;--c:1"></i></div><span class="ticket-arrow">▲</span><span class="ticket-print">미루선 구간권<br>800원</span><span class="ticket-hand">시간표에 대 봐</span></figure><p class="aside">구간권의 칸은 대합실 위쪽 열차 안내판의 글자판과 크기가 같다</p>`,
+      html: `<p>흰 바탕에 검은 글씨로 <b>3번 승강장</b>이라고 적혀 있다 개편 때 떼어 낸 것을 역무원이 버리지 못하고 벽에 세워 두었다고 한다</p><p>뒷면 아래쪽에는 투명 테이프로 구간권 한 장이 붙어 있는데, 네모난 구멍이 여섯 개 뚫려 있고 위쪽 여백에 민서 글씨가 있다</p><figure class="prop ticket"><img src="assets/v2/station/props/ticket.webp" alt="구멍 뚫린 구간권" decoding="async"><div class="ticket-holes"><i style="--r:0;--c:0"></i><i style="--r:0;--c:3"></i><i style="--r:1;--c:1"></i><i style="--r:1;--c:3"></i><i style="--r:2;--c:2"></i><i style="--r:3;--c:1"></i></div><span class="ticket-arrow">▲</span><span class="ticket-print">미루선 구간권<br>800원</span><span class="ticket-hand">안내판에 대 봐</span></figure><p class="aside">구간권의 칸은 대합실 위쪽 열차 안내판의 글자판과 크기가 같다</p>`,
     },
     clerk: {
       title: '매표창구의 역무원',
       kind: '박종길 · 야간 근무',
-      html: `<p>창구 안의 남자는 커피를 반쯤 남긴 채 신문을 접었다</p><blockquote>“새벽에 여자분 하나가 저 표지판 앞에 한참 서 있다가, 뭘 붙이고 갔어요 떼려다 뒀습니다 ‘사람이 올 거예요’ 하길래”</blockquote><blockquote>“3번? 지금은 없어요 작년에 개편하면서 번호를 바꿨어요 저 표지판이 서 있던 자리는 지금 2번이에요 북쪽 가는 쪽”</blockquote><blockquote>“그 여자분, 첫차 타고 올라갔어요 어느 열차였는지는… 승강장 가서 물어보시든가 기둥에도 뭘 붙였을걸요 테이프 소리가 들렸으니까”</blockquote>`,
+      html: `<p>창구 안의 남자는 커피를 반쯤 남긴 채 신문을 접었다</p><blockquote>“새벽에 여자분 하나가 저 표지판 앞에 한참 서 있다가, 뭘 붙이고 갔어요 떼려다 뒀습니다 ‘사람이 올 거예요’ 하길래”</blockquote><blockquote>“3번? 지금은 없어요 작년에 개편하면서 번호를 바꿨어요 저 표지판이 서 있던 자리는 지금 2번이에요 북쪽 가는 쪽”</blockquote><blockquote>“그 여자분, 아침에 북쪽 가는 열차 타고 올라갔어요 어느 열차였는지는… 승강장 가서 물어보시든가 기둥에도 뭘 붙였을걸요 테이프 소리가 들렸으니까”</blockquote>`,
     },
     notice: {
       title: '승강장 개편 안내',
@@ -282,7 +283,7 @@ export default {
     postcard: {
       title: '게시판의 그림엽서',
       kind: '민서가 찍은 사진 엽서',
-      html: `${postcardImg}<p class="aside">뒷면에 적힌 글</p><blockquote class="hand">보관함 번호는 그림 안에 있어<br>새, 창, 등, 의자 순서로<br>벤치에서 조는 사람은 세지 마 그거 너야</blockquote>`,
+      html: `${postcardImg}<p class="aside">뒷면에 적힌 글</p><blockquote class="hand">다이얼 숫자는 그림 안에 있어<br>새, 창, 등, 의자 순서로<br>벤치에서 조는 사람은 세지 마 그거 너야</blockquote>`,
     },
     lockerrule: {
       title: '보관함 이용 안내',
@@ -292,7 +293,7 @@ export default {
     letter: {
       title: '민서의 편지',
       kind: '보관함 안 · 봉투 없이',
-      html: `<figure class="prop letterphoto"><img src="assets/v2/station/props/letter.webp" alt="보관함에서 나온 편지" decoding="async"><div class="letter-hand"><p>왔네</p><p>여기까지 왔으면 반은 온 거야 열쇠는 우리 집 대문 열쇠고, 지도는 내가 그렸는데 좀 못 그렸어</p><p>역을 등지고 서 그 상태에서 <b>왼쪽</b>으로 가<br><b>두 번째 골목</b>에서 <b>오른쪽</b>으로 꺾어<br>다리를 건너 건너자마자 <b>왼쪽</b>.<br>그 길에 집이 <b>네 채</b>. 몇 번째인지는 안 적을래 쪽지 세 장 중 <b>하나만 거짓말</b>이야 우리 중학교 때 하던 거</p><p>대문 색은 지도에 안 그렸어 그려 놓으면 네가 지도만 보고 올 거잖아</p><p class="sign">— 민서</p></div></figure>`,
+      html: `<figure class="prop letterphoto"><img src="assets/v2/station/props/letter.webp" alt="보관함에서 나온 편지" decoding="async"><div class="letter-hand"><p>왔네</p><p>여기까지 왔으면 반은 온 거야 열쇠는 우리 집 대문 열쇠고, 지도는 내가 그렸는데 좀 못 그렸어</p><p>역을 등지고 서 그 상태에서 <b>왼쪽</b>으로 가<br><b>두 번째 골목</b>에서 <b>오른쪽</b>으로 꺾어<br>다리를 건너 건너자마자 <b>왼쪽</b><br>그 길에 집이 <b>네 채</b> 몇 번째인지는 안 적을래 쪽지 세 장 중 <b>하나만 거짓말</b>이야 우리 중학교 때 하던 거</p><p>대문 색은 지도에 안 그렸어 그려 놓으면 네가 지도만 보고 올 거잖아</p><p class="sign">— 민서</p></div></figure>`,
     },
     handmap: {
       title: '접힌 손지도',
@@ -303,7 +304,7 @@ export default {
       title: '민서의 편지 · 마지막 장',
       kind: '편지의 접힌 뒷장 · 마당에서 읽음',
       locked: true,
-      html: `<figure class="prop letterphoto back"><img src="assets/v2/station/props/letter.webp" alt="편지의 접힌 뒷장" decoding="async"><div class="letter-hand"><p>할머니가 겨울에 넘어지셨어 아무한테도 말 안 하고 혼자 석 달을 누워 계셨대 그 얘기를 듣고 그날 사표 냈어</p><p>너한테는 말을 못 했어 말하면 네가 말릴 것 같았고, 안 말리면 그게 더 서운할 것 같았어 그래서 네가 직접 오게 만들었어 넌 길 찾는 거 잘하잖아 그리고 여기까지 온 사람은 그냥 못 돌아가</p><p>휴대폰은 보관함에 넣어 뒀어 들고 있으면 네가 걸 때마다 받을 것 같아서 받으면 말할 것 같고, 말하면 넌 안 올 것 같아서</p><p>수박 잘라 놨어</p></div></figure>`,
+      html: `<figure class="prop letterphoto back"><img src="assets/v2/station/props/letter.webp" alt="편지의 접힌 뒷장" decoding="async"><div class="letter-hand"><p>할머니가 겨울에 넘어지셨어 아무한테도 말 안 하고 혼자 석 달을 누워 계셨대 그 얘기를 듣고 그날 사표 냈어</p><p>너한테는 말을 못 했어 말하면 네가 말릴 것 같았고, 안 말리면 그게 더 서운할 것 같았어 그래서 네가 직접 오게 만들었어 넌 길 찾는 거 잘하잖아 그리고 여기까지 온 사람은 그냥 못 돌아가</p><p>휴대폰을 보관함에 넣어 둔 건, 거기까지 온 너라면 그다음은 안 봐도 믿을 수 있어서야</p><p>수박 잘라 놨어</p></div></figure>`,
     },
   },
 
@@ -370,11 +371,11 @@ export default {
       commitLabel: '그 기둥으로 가기',
       check(d) {
         if (!d.platform || !d.pillar) return { ok: false, msg: '승강장과 기둥을 하나씩 골라야 합니다' };
-        if (d.platform === 2 && d.pillar === 2) return { ok: true };
         const txt = readHoles(d);
-        if (txt === '2번둘째기둥') return { ok: false, msg: `구멍으로는 「${txt}」이 읽힙니다 고른 곳이 그 글자와 다릅니다` };
+        if (txt !== '2번둘째기둥') return { ok: false, msg: `구멍으로 읽히는 글자가 아직 말이 안 된다 「${txt}」 구간권을 움직이거나 돌려서 말이 되는 자리를 먼저 찾는다` };
+        if (d.platform === 2 && d.pillar === 2) return { ok: true };
         if (d.platform === 1) return { ok: false, msg: '1번 승강장 그 기둥엔 아무것도 붙어 있지 않았다 구멍으로 읽힌 글자가 정말 말이 됐는지 다시 본다' };
-        return { ok: false, msg: `기둥이 다릅니다 지금 구멍으로 읽히는 글자는 「${txt}」 말이 되는 자리를 찾을 때까지 구간권을 움직여 보세요` };
+        return { ok: false, msg: `기둥이 다릅니다 구멍으로 읽힌 글자 「${txt}」을 다시 본다` };
       },
       reveal: {
         title: '2번 승강장, 둘째 기둥',
@@ -428,9 +429,9 @@ export default {
       commitLabel: '이 열차 타기',
       check(d) {
         if (!d.train) return { ok: false, msg: '열차를 하나 골라야 합니다' };
+        if (!d.held || Math.abs((d.tilt || 0) - 50) > 8) return { ok: false, msg: '뒷면 글씨를 아직 제대로 읽지 않았다 사진을 거울과 나란히 맞추면 글자가 바로 보인다' };
         if (d.train === 'n0940') return { ok: true };
         if (d.train === 's0940') return { ok: false, msg: '09:40은 두 승강장에 하나씩 있다 민서가 사진을 붙인 기둥은 어느 쪽 승강장이었지' };
-        if (!d.held || Math.abs((d.tilt || 0) - 50) > 8) return { ok: false, msg: '뒷면 글씨를 아직 제대로 읽지 않았다 사진을 거울과 나란히 맞추면 글자가 바로 보인다' };
         const t = [...TRAINS_2, ...TRAINS_1].find((x) => x.id === d.train);
         return { ok: false, msg: `${t.time} ${t.to}행은 “처음 만난 그 시간”이 아닙니다 「민서와 나」에 그 시간이 있습니다` };
       },
@@ -483,8 +484,7 @@ export default {
         if (right === 4) return { ok: true };
         d.fails = (d.fails || 0) + 1;
         if (d.fails >= 3) { d.fails = 0; d.lockedUntil = now + 30000; return { ok: false, msg: '세 번 틀렸습니다 30초 동안 잠깁니다 그동안 엽서를 다시 세어 보세요' }; }
-        const wrong = ['새', '창', '등', '의자'].filter((_, i) => d.dial[i] !== ans[i]);
-        return { ok: false, msg: `손잡이가 걸린다 ${right}자리는 맞다 나머지는 다시 센다` };
+        return { ok: false, msg: '손잡이가 걸린다 네 자리 어딘가가 다르다 엽서를 다시 센다' };
       },
       reveal: {
         title: '3 · 4 · 2 · 1',
@@ -506,7 +506,7 @@ export default {
       hintCode: 'T-S04',
       hints: [
         '쪽지 하나를 거짓이라고 가정하고, 나머지 둘이 전부 참이 되는지 봅니다 거짓이 둘이 되면 그 가정은 틀린 겁니다',
-        '나 쪽지가 거짓이면 가 쪽지는 참(둘째 집이 아님)이고 다 쪽지도 참(셋째 집) 거짓이 하나뿐입니다',
+        '가 쪽지가 거짓이라고 해 보세요 그러면 둘째 집인데, 그때 다 쪽지는 참인가요 거짓인가요 셋 다 그렇게 따져 봅니다',
         '거짓말은 나 집은 셋째',
       ],
       initial: () => ({ lie: null, house: null }),
@@ -568,7 +568,7 @@ export default {
         const headingName = { N: '북쪽(역을 등진 방향)', S: '남쪽(역 쪽)', E: '동쪽', W: '서쪽' }[d.heading];
         if (d.lane) {
           const lane = LANES[d.lane];
-          here.innerHTML = `<b>${lane.name}</b>에 들어섰다 집이 ${lane.houses.length}채 늘어서 있다 보는 방향: ${headingName}. 집을 고르면 대문 앞에 선다`;
+          here.innerHTML = `<b>${lane.name}</b>에 들어섰다 집이 ${lane.houses.length}채 늘어서 있다 보는 방향 ${headingName} · 집을 고르면 대문 앞에 선다`;
           wrap.append(here);
           const row = el('div', 'pick-row');
           lane.houses.forEach((hid, i) => { const b = el('button', 'chip' + (d.house === hid ? ' on' : ''), `${['첫', '둘', '셋', '넷'][i]}째 집`); b.type = 'button'; b.onclick = () => { d.house = hid; save(); }; row.append(b); });
@@ -593,7 +593,7 @@ export default {
         if (d.house === ANSWER_HOUSE) return { ok: true };
         const first = d.path[0]?.[1];
         if (first === 'F') return { ok: false, msg: '열쇠가 안 들어간다 첫 방향부터 틀렸나 편지는 “역을 등지고”로 시작한다 그렇게 서면 어디가 왼쪽이지' };
-        if (d.lane === 'X') return { ok: false, msg: '여긴 둘째 골목 끝 집 편지는 둘째 골목에서 오른쪽으로 꺾어 다리를 건너라고 했다' };
+        if (d.lane === 'X') return { ok: false, msg: '둘째 골목을 지나쳐 버렸다 편지는 둘째 골목에서 오른쪽으로 꺾어 다리를 건너라고 했다' };
         if (d.lane === 'R') return { ok: false, msg: '다리는 건넜는데, 건너자마자 왼쪽이었다 이 길은 오른쪽 길이다' };
         if (d.lane === 'FL') return { ok: false, msg: '동쪽 언덕길이다 편지의 첫 방향부터 다시 보자' };
         if (d.lane === 'GL') return { ok: false, msg: '여긴 첫째 골목 편지는 두 번째 골목에서 꺾으라고 했다' };
@@ -621,7 +621,7 @@ export default {
       '“왔네” “왔지”',
       '“무서웠어” “알아” “진짜로 무서웠다고 네가 어디 가서 안 돌아오는 줄 알았어” 민서가 수박을 내려놓았다 “미안 그건 미안해 그래도 왔잖아” “그래서 더 화나”',
       '“전화는 왜 보관함에 넣어” “들고 있으면 받을 것 같아서” “받지” “받으면 네가 안 오잖아”',
-      '할머니가 수박을 하나 더 자르며 말했다 “얘가 겨울 내내 그 얘기만 했어 걔는 길 잘 찾아, 걔는 길 잘 찾아”',
+      '할머니가 수박을 하나 더 자르며 말했다 “얘가 여름 내내 그 얘기만 했어 걔는 길 잘 찾아, 걔는 길 잘 찾아”',
       '열쇠를 돌려주려다 말았다 민서가 그건 네 거라고 했다 “다음엔 그냥 말로 해” “그럼 재미없잖아”',
     ],
     afterword: '민서는 수림에 남았고 나는 토요일마다 09:40 열차를 탄다 둘째 칸이고, 자리에 이름은 없다',
