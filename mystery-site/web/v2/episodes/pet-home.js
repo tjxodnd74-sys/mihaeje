@@ -13,17 +13,26 @@ const stampSvg = (id, cls = '') => `<svg class="stamp ${cls}" viewBox="0 0 32 32
 
 // 기념품 네 개: 뒷면에 남은 것(날짜/도장)이 다 다르다
 const ITEMS = [
-  { id: 'blanket', name: '접힌 담요', img: 'blanket', stamp: 'sprout', date: null, dateNote: '7.1? — 번져서 끝자리가 안 보인다', back: '세탁 라벨 안쪽, 초록 잉크로 찍은 새싹 도장 날짜는 물에 번졌다' },
-  { id: 'lanyard', name: '파란 명찰 끈', img: 'lanyard', stamp: null, date: '2016. 7. 16', dateNote: '끈 안쪽에 볼펜으로', back: '도장은 없다 끈 안쪽에 볼펜으로 적은 날짜 하나 글씨가 어리다' },
-  { id: 'envelope', name: '진료 봉투', img: 'envelope', stamp: 'cross', date: '2016. 7. 17', dateNote: '접수 27 · 진료 V-6384', back: '빨간 십자 도장과 날짜 「접수 27 · 진료 V-6384 · 담담동물병원」' },
+  { id: 'blanket', name: '접힌 담요', img: 'blanket', stamp: null, date: '2016. 7. 18', dateNote: '', back: '세탁 라벨 안쪽 날짜는 또렷한데 도장은 물에 번져서 초록 얼룩만 남았다' },
+  { id: 'lanyard', name: '파란 명찰 끈', img: 'lanyard', stamp: null, date: '2016. 7. 16', dateNote: '', back: '도장은 없다 끈 안쪽에 볼펜으로 적은 날짜 하나 글씨가 어리다' },
+  { id: 'envelope', name: '진료 봉투', img: 'envelope', stamp: 'cross', date: '2016. 7. 17', dateNote: '', back: '빨간 십자 도장과 날짜 「접수 27 · 진료 V-6384 · 담담동물병원」' },
   { id: 'cert', name: '입양 확인서', img: 'cert', stamp: 'house', date: null, dateNote: '날짜 칸이 찢어져 없다', back: '집 모양 도장만 남았다 위쪽 이름 칸과 날짜 칸은 찢어져 없다' },
 ];
 const STAGES = [
-  { id: 'rescue', n: 1, name: '처음 발견한 날', date: '2016. 7. 16', stamp: 'sun', who: '보호자 동반 학생 (이름 없음)' },
-  { id: 'clinic', n: 2, name: '진료받은 날', date: '2016. 7. 17', stamp: 'cross', who: '담담동물병원' },
-  { id: 'foster', n: 3, name: '잠깐 머문 날', date: '2016. 7. 18', stamp: 'sprout', who: '햇살 임시보호집' },
-  { id: 'adopt', n: 4, name: '오래 살 집이 생긴 날', date: '2016. 8. 2', stamp: 'house', who: '박정우' },
+  { id: 'rescue', n: 1, name: '처음 발견한 날', date: '2016. 7. 16', shown: '2016. 7. ▒▒', stamp: 'sun', who: '보호자 동반 학생 (이름 없음)' },
+  { id: 'clinic', n: 2, name: '진료받은 날', date: '2016. 7. 17', shown: '2016. 7. ▒▒', stamp: 'cross', who: '담담동물병원' },
+  { id: 'foster', n: 3, name: '잠깐 머문 날', date: '2016. 7. 18', shown: '2016. 7. ▒▒', stamp: 'sprout', who: '햇살 임시보호집' },
+  { id: 'adopt', n: 4, name: '오래 살 집이 생긴 날', date: '2016. 8. 2', shown: '2016. 8. 2', stamp: 'house', who: '박정우' },
 ];
+const TIN_CODE = [6, 7, 8, 2]; // 네 날의 끝자리, 기록 순서대로
+const DRAWERS = [
+  ['6-1', 'V-5900~5999'], ['6-2', 'V-6000~6099'], ['6-3', 'V-6100~6199'],
+  ['7-1', 'V-6200~6299'], ['7-2', 'V-6300~6399'], ['7-3', 'V-6400~6499'],
+  ['8-1', 'V-6500~6599'], ['8-2', 'V-6600~6699'], ['8-3', 'V-6700~6799'],
+  ['9-1', 'V-6800~6899'], ['9-2', 'V-6900~6999'], ['9-3', 'V-7000~7099'],
+];
+const DRAWER_ANSWER = '7-3'; // 2017년 정리 때 V-6350 이후를 7-3으로 옮김
+const DESK_CODE = [7, 1, 6];
 const BOX_ANSWER = { rescue: 'lanyard', clinic: 'envelope', foster: 'blanket', adopt: 'cert' };
 
 // 병원 카드 서랍: 비슷한 카드 다섯. 봉투의 V-6384와 계약서의 등록번호가 둘 다 맞는 건 하나
@@ -42,6 +51,18 @@ const BLANKS = [
   { id: 'cls', label: '학년 반', opts: ['1-3', '2-3', '3-2', '2-1'], ans: '2-3' },
   { id: 'name', label: '이름', opts: ['김유나', '김유진', '이유나', '김유리'], ans: '김유나' },
 ];
+
+const dialRow = (el, save, d, n, labels) => {
+  const row = el('div', 'dials');
+  for (let i = 0; i < n; i++) {
+    const col = el('div', 'dial');
+    const up = el('button', 'ctl', '▲'); up.type = 'button'; up.setAttribute('aria-label', `${i + 1}번째 다이얼 올리기`); up.onclick = () => { d.dial[i] = (d.dial[i] + 1) % 10; save(); };
+    const num = el('b', 'num', String(d.dial[i]));
+    const dn = el('button', 'ctl', '▼'); dn.type = 'button'; dn.setAttribute('aria-label', `${i + 1}번째 다이얼 내리기`); dn.onclick = () => { d.dial[i] = (d.dial[i] + 9) % 10; save(); };
+    col.append(up, num, dn); row.append(col);
+  }
+  return row;
+};
 
 export default {
   id: 'pet-home',
@@ -72,6 +93,7 @@ export default {
   traces: [
     { device: 'box', label: '기념품 네 개' },
     { device: 'cards', label: '진료 카드' },
+    { device: 'desk', label: '책상 서랍' },
     { device: 'strap', label: '끈의 글자' },
   ],
 
@@ -111,7 +133,10 @@ export default {
         { id: 'phone', x: 10, y: 88, label: '엄마와 주고받은 문자', kind: 'doc', doc: 'momchat' },
         { id: 'diary', x: 62, y: 88, label: '앨범에 끼워진 일기 한 장', kind: 'doc', doc: 'diary' },
         { id: 'album', x: 36, y: 62, label: '앨범과 사진 세 장', kind: 'doc', doc: 'album' },
-        { id: 'strap', x: 90, y: 66, label: '상자에서 가져온 파란 끈', kind: 'device', device: 'strap' },
+        { id: 'sticky', x: 18, y: 52, label: '내 옛 방 책상의 포스트잇', kind: 'doc', doc: 'sticky' },
+        { id: 'desk', x: 24, y: 60, label: '내 옛 방 책상 서랍', kind: 'device', device: 'desk' },
+        { id: 'badge', x: 24, y: 70, label: '서랍 속 명찰', kind: 'doc', doc: 'badge', visible: (S) => S.solved.includes('desk') },
+        { id: 'strap', x: 90, y: 66, label: '상자에서 가져온 파란 끈', kind: 'device', device: 'strap', visible: (S) => S.solved.includes('desk') },
       ],
     },
   ],
@@ -126,8 +151,8 @@ export default {
       title: '상자 바닥의 기록 사본',
       kind: '보호센터 접수 27번 · 2016년',
       html: `<div class="paper-table"><p class="pt-head">햇살구 동물보호센터 · 접수번호 27</p><table><tr><th>날짜</th><th>도장</th><th>처리</th><th>담당</th></tr>
-${STAGES.map((s) => `<tr><td>${s.date}</td><td>${stampSvg(s.stamp, 'ink')} ${STAMP[s.stamp].name}</td><td>${s.name}</td><td>${s.who}</td></tr>`).join('')}
-</table><p class="pt-foot">※ 원본에는 신고자가 「보호자 동반 학생」으로만 적혀 있음 · 진료 연계는 담담동물병원</p></div><p>네 줄 다 접수번호 27이다 발견 → 진료 → 임시보호 → 입양 처음 발견한 사람 칸만 이름이 없다</p>`,
+${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${s.shown}</td><td>${stampSvg(s.stamp, 'ink')} ${STAMP[s.stamp].name}</td><td>${s.name}</td><td>${s.who}</td></tr>`).join('')}
+</table><p class="pt-foot">※ 원본에는 신고자가 「보호자 동반 학생」으로만 적혀 있음 · 진료 연계는 담담동물병원</p></div><p>네 줄 다 접수번호 27이다 발견 → 진료 → 임시보호 → 입양 순서다 복사가 잘못돼서 날짜 끝자리가 세 줄이나 뭉개졌다 처음 발견한 사람 칸만 이름이 없다</p><p class="aside">상자 바닥에는 자물쇠 달린 양철통이 하나 더 있었다 정우 씨 쪽지: 「통 번호는 네 날의 끝자리, 기록 순서대로」</p>`,
     },
     contract: {
       title: '입양 계약서 봉투',
@@ -147,7 +172,7 @@ ${STAGES.map((s) => `<tr><td>${s.date}</td><td>${stampSvg(s.stamp, 'ink')} ${STA
     rule: {
       title: '게시판의 카드 보관 안내',
       kind: '오래된 안내문',
-      html: `<div class="paper-table"><p class="pt-head">진료 카드 보관 안내 (2014~2018 전산 전 기록)</p><table><tr><th>서랍</th><th>번호</th></tr><tr><td>7-2</td><td>V-6300 ~ V-6399</td></tr><tr><td>7-3</td><td>V-6400 ~ V-6499</td></tr></table></div><p>카드 앞면: V 번호 · 이름 · 첫 진료일 · 동물등록번호 / 뒷면: 메모</p>`,
+      html: `<div class="paper-table"><p class="pt-head">진료 카드 보관 안내 (2014~2018 전산 전 기록)</p><table><tr><th>서랍</th><th>번호</th></tr>${DRAWERS.map(([id, r]) => `<tr><td>${id}</td><td class="mono">${r}</td></tr>`).join('')}</table><p class="pt-foot hand-note">※ 2017년 정리 — 7-2가 꽉 차서 V-6350 이후는 7-3 앞쪽으로 옮겨 꽂음 (손글씨 추가)</p></div><p>카드 앞면: V 번호 · 이름 · 첫 진료일 · 동물등록번호 / 뒷면: 메모 안내문 밑에 볼펜으로 덧쓴 줄이 하나 있다</p>`,
     },
     momchat: {
       title: '엄마와 주고받은 문자',
@@ -170,6 +195,16 @@ ${STAGES.map((s) => `<tr><td>${s.date}</td><td>${stampSvg(s.stamp, 'ink')} ${STA
       kind: '엄마가 꺼내 둔 것',
       html: `<figure class="prop album"><img src="${P}props/album.webp" alt="펼쳐 둔 앨범과 뒤집힌 사진 세 장" decoding="async"></figure><p>세 장 중 한 장을 뒤집었다</p><figure class="prop oldphoto"><img src="${P}props/photo2016.webp" alt="2016년 정류장에서 강아지를 안은 중학생 유나" decoding="async"></figure><p>정류장 벤치 앞에 쪼그려 앉은 중학생이 손바닥만 한 강아지를 안고 있다 강아지 목에 파란 끈 뒷면에 엄마 글씨로 「2016. 7. 16 햇살동 정류장 유나 콩이」</p><p class="aside">사진 속 강아지 코가 까맸다 루미는 지금 코끝이 하얗다 십 년이면 그렇다</p>`,
     },
+    sticky: {
+      title: '책상 서랍의 포스트잇',
+      kind: '중2 때 내 글씨',
+      html: `<div class="sticky-note">비번 = 콩이 만난 날<br><small>(까먹지 말 것!!)</small></div><p>콩이를 만난 날이 언제인지는 일기에 있다 세 자리 자물쇠다</p>`,
+    },
+    badge: {
+      title: '서랍 속 명찰',
+      kind: '2016년 · 햇살중',
+      html: `<figure class="prop badgephoto"><img src="${P}props/badge.webp" alt="서랍 속 명찰" decoding="async"><div class="on-badge"><b>햇살중학교</b><span>2학년 3반</span><strong>김유나</strong></div></figure><p>명찰에 끈이 없다 끈은 지금 내 가방에 있다 십 년 전에 강아지 목에 묶었던 그 끈이</p>`,
+    },
     final: {
       title: '정우가 남긴 편지',
       kind: '상자 맨 밑에 있던 것',
@@ -180,17 +215,17 @@ ${STAGES.map((s) => `<tr><td>${s.date}</td><td>${stampSvg(s.stamp, 'ink')} ${STA
 
   devices: {
     box: {
-      title: '기념품 상자',
+      title: '기념품 상자와 양철통',
       scene: 'home',
-      intro: '물건 네 개를 기록 사본의 네 날에 맞춰 놓는다 뒷면에 남은 게 날짜뿐인 것도, 도장뿐인 것도 있다',
+      intro: '상자 밑에 자물쇠 달린 양철통 번호는 "네 날의 끝자리, 기록 순서대로" 기록 사본은 날짜가 뭉개져서, 물건 뒷면의 날짜와 도장으로 네 날을 먼저 맞춰야 한다',
       docs: ['center', 'jnote'],
       hintCode: 'P-S01',
       hints: [
-        '물건을 누르면 뒷면이 보입니다 날짜가 있으면 날짜로, 없으면 도장으로 기록 사본과 맞춥니다',
-        '끈은 도장이 없지만 날짜가 7월 16일입니다 담요는 날짜가 번졌지만 새싹 도장이 있습니다 확인서는 집 도장뿐입니다',
-        '발견(7.16)=파란 끈 · 진료(7.17)=진료 봉투 · 임시보호(7.18, 새싹)=담요 · 입양(8.2, 집)=입양 확인서',
+        '물건을 누르면 뒷면이 보입니다 도장이 있는 건 도장으로 기록 줄을 찾고, 도장이 없는 둘은 날짜 순서로 앞뒤를 정합니다',
+        '십자=진료(2번째), 집=입양(4번째) 끈 7.16과 담요 7.18은 도장이 없지만 발견이 임시보호보다 먼저이니 끈이 1번째, 담요가 3번째 끝자리: 6 · 7 · 8 · 2',
+        '6782',
       ],
-      initial: () => ({ placed: {}, held: null, flip: null }),
+      initial: () => ({ placed: {}, held: null, flip: null, dial: [0, 0, 0, 0] }),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'box-wrap');
@@ -207,36 +242,41 @@ ${STAGES.map((s) => `<tr><td>${s.date}</td><td>${stampSvg(s.stamp, 'ink')} ${STA
         wrap.append(box);
         if (d.flip) {
           const it = ITEMS.find((x) => x.id === d.flip);
-          const back = el('div', 'prop keep-back'); back.innerHTML = `<img src="${P}props/${it.img}.webp" alt="${it.name} 뒷면" decoding="async"><div class="keep-back-note ${it.id}">${it.stamp ? stampSvg(it.stamp, 'ink big') : ''}<span class="keep-date">${it.date || it.dateNote}</span>${it.id === 'envelope' ? '<span class="keep-sub">접수 27 · 진료 V-6384 · 담담동물병원</span>' : ''}</div>`;
+          const back = el('div', 'prop keep-back'); back.innerHTML = `<img src="${P}props/${it.img}.webp" alt="${it.name} 뒷면" decoding="async"><div class="keep-back-note ${it.id}">${it.stamp ? stampSvg(it.stamp, 'ink big') : ''}<span class="keep-date">${it.date || it.dateNote}</span>${it.id === 'envelope' ? '<span class="keep-sub">접수 27 · 진료 V-6384 · 담담동물병원</span>' : ''}${it.id === 'blanket' ? '<span class="smudge" aria-hidden="true"></span>' : ''}</div>`;
           wrap.append(el('p', 'pick-label', `${it.name} 뒷면 — ${it.back}`), back);
         }
         const sheet = el('div', 'record-sheet');
-        sheet.append(el('p', 'pt-head', '접수 27 · 네 날'));
+        sheet.append(el('p', 'pt-head', '접수 27 · 네 날 (물건을 놓아 날짜를 채운다)'));
         STAGES.forEach((s) => {
           const pid = d.placed[s.id]; const it = pid && ITEMS.find((x) => x.id === pid);
           const row = el('button', 'record-row' + (pid ? ' filled' : '') + (d.held && !pid ? ' open' : '')); row.type = 'button';
           row.setAttribute('aria-label', `${s.name}${it ? ': ' + it.name : ' (비어 있음)'}`);
-          row.innerHTML = `<span class="rr-date">${s.date}</span><span class="rr-stamp">${stampSvg(s.stamp, 'ink')}</span><span class="rr-name">${s.name}</span><span class="rr-item">${it ? it.name : '—'}</span>`;
+          row.innerHTML = `<span class="rr-date">${it && it.date ? it.date : s.shown}</span><span class="rr-stamp">${stampSvg(s.stamp, 'ink')}</span><span class="rr-name">${s.name}</span><span class="rr-item">${it ? it.name : '—'}</span>`;
           row.onclick = () => { if (pid) { delete d.placed[s.id]; d.held = pid; d.flip = pid; save(); return; } if (d.held) { d.placed[s.id] = d.held; d.held = null; d.flip = null; save(); } };
           sheet.append(row);
         });
-        wrap.append(el('p', 'pick-label', d.held ? `${ITEMS.find((x) => x.id === d.held).name} 들고 있다 기록의 날을 누르면 거기 놓는다` : '상자 속 물건을 누르면 뒷면이 보이고, 그 상태로 아래 기록의 날을 누르면 놓인다'), sheet);
+        wrap.append(el('p', 'pick-label', d.held ? `${ITEMS.find((x) => x.id === d.held).name} 들고 있다 기록의 날을 누르면 거기 놓는다` : '상자 속 물건을 누르면 뒷면이 보이고, 그 상태로 기록의 날을 누르면 놓인다'), sheet);
+        const tin = el('div', 'prop tinlock'); const ti = el('img'); ti.src = P + 'props/tin.webp'; ti.alt = '네 자리 자물쇠가 달린 양철통'; tin.append(ti);
+        wrap.append(el('p', 'pick-label', '상자 밑의 양철통 — 자물쇠 네 자리'), tin, dialRow(el, save, d, 4));
         return wrap;
       },
-      commitLabel: '네 개 다 맞췄다',
+      commitLabel: '자물쇠 당기기',
       check(d) {
-        const empty = STAGES.filter((s) => !d.placed[s.id]);
-        if (empty.length) return { ok: false, msg: `「${empty[0].name}」 줄이 비어 있다 네 줄 다 채워야 한다` };
-        if (STAGES.every((s) => d.placed[s.id] === BOX_ANSWER[s.id])) return { ok: true };
-        if (d.placed.foster === 'cert' || d.placed.adopt === 'blanket') return { ok: false, msg: '도장을 다시 보자 담요는 새싹, 확인서는 집이다 기록 사본의 도장 칸과 맞춰야 한다' };
-        if (d.placed.rescue !== 'lanyard') return { ok: false, msg: `처음 발견한 날에 ${ITEMS.find((x) => x.id === d.placed.rescue).name}? 그날 날짜가 적힌 물건은 하나뿐이다 도장이 없는 것` };
-        const wrong = STAGES.find((s) => d.placed[s.id] !== BOX_ANSWER[s.id]);
-        return { ok: false, msg: `「${wrong.name}」에 놓은 ${ITEMS.find((x) => x.id === d.placed[wrong.id]).name}이 안 맞는다 뒷면의 날짜나 도장을 그 줄과 다시 대 보자` };
+        const code = d.dial.join('');
+        if (code === TIN_CODE.join('')) return { ok: true };
+        const filled = STAGES.filter((s) => d.placed[s.id]).length;
+        if (filled < 4) return { ok: false, msg: `자물쇠가 안 열린다 기록 사본은 날짜가 뭉개져 있다 물건 뒷면으로 네 날부터 채우자 (지금 ${filled}/4)` };
+        if (!STAGES.every((s) => d.placed[s.id] === BOX_ANSWER[s.id])) {
+          if (d.placed.rescue === 'blanket' && d.placed.foster === 'lanyard') return { ok: false, msg: '안 열린다 도장 없는 둘의 앞뒤가 바뀌었다 발견이 임시보호보다 먼저다 날짜가 빠른 쪽이 발견한 날' };
+          return { ok: false, msg: '안 열린다 놓은 물건이 기록 줄과 어긋난다 도장이 있는 둘은 도장으로, 없는 둘은 날짜 순서로' };
+        }
+        const right = d.dial.filter((v, i) => v === TIN_CODE[i]).length;
+        return { ok: false, msg: `네 날은 맞췄다 번호는 끝자리다 ${right}자리는 맞는 것 같다` };
       },
       reveal: {
-        title: '네 사람, 네 날',
-        text: '끈은 발견한 날, 봉투는 진료받은 날, 담요는 임시보호집, 확인서는 정우 씨 상자 바닥 종이를 들추자 진료 봉투 안에 작은 메모가 하나 더 있었다 「신고자 이름은 병원 카드에 물어보세요 — 센터」',
-        scene: ['진료 봉투의 병원은 햇살동에 아직 있다 루미를 데리고 갈까 하다가, 열 살짜리를 끌고 다니기 미안해서 혼자 나섰다'],
+        title: '6 · 7 · 8 · 2',
+        text: '자물쇠가 툭 하고 빠졌다 양철통 안에는 병원 접수증 원본과 사진 한 장 접수증에 「V-6384 · 카드실 보관」 사진은 센터에서 찍은 어린 콩이, 목에 파란 끈',
+        scene: ['접수증의 병원은 햇살동에 아직 있다 루미를 데리고 갈까 하다가, 열 살짜리를 끌고 다니기 미안해서 혼자 나섰다'],
         unlock: 'clinic',
       },
     },
@@ -244,26 +284,42 @@ ${STAGES.map((s) => `<tr><td>${s.date}</td><td>${stampSvg(s.stamp, 'ink')} ${STA
     cards: {
       title: '카드 서랍장',
       scene: 'clinic',
-      intro: '7-2 서랍에서 카드 다섯 장이 올라와 있다 봉투의 V 번호와 계약서의 등록번호, 둘 다 맞는 카드를 꺼낸다',
-      docs: ['vet', 'contract', 'rule'],
+      intro: '서랍 열두 개, 번호판은 서랍 번호뿐이다 게시판의 안내로 V-6384가 든 서랍을 열고, 봉투의 V 번호와 계약서의 등록번호가 둘 다 맞는 카드를 꺼낸다',
+      docs: ['rule', 'vet', 'contract'],
       hintCode: 'P-S02',
       hints: [
-        '봉투에 적힌 V 번호는 V-6384입니다 그런데 V-6384가 한 장만 있는 게 아닐 수도 있고, 이름이 같은 카드도 있습니다',
-        '계약서의 등록번호 열다섯 자리를 카드와 한 자리씩 대 보세요 두 자리가 바뀐 카드가 섞여 있습니다',
-        'V-6384 · 콩이 · 941372608154902 — 네 번째 카드',
+        '게시판 안내에서 V-6384가 어느 서랍 범위인지 봅니다 그런데 밑에 볼펜으로 덧쓴 줄이 있습니다',
+        '2017년 정리 때 V-6350 이후는 7-3으로 옮겼습니다 7-3을 열면 카드 다섯 장이 올라와 있고, 그중 V-6384가 둘 아닌 하나, 등록번호까지 맞는 건 하나',
+        '7-3 서랍 · 네 번째 카드 (V-6384 · 콩이 · 941372608154902)',
       ],
-      initial: () => ({ open: null }),
+      initial: () => ({ drawer: null, open: null }),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'cards-wrap');
-        const drawer = el('div', 'prop carddrawer'); const im = el('img'); im.src = P + 'props/drawer.webp'; im.alt = '열린 카드 서랍, 카드 다섯 장이 올라와 있다'; drawer.append(im);
+        const cab = el('div', 'prop cardcabinet'); const im = el('img'); im.src = P + 'props/cabinet.webp'; im.alt = '서랍 열두 개짜리 카드 서랍장'; cab.append(im);
+        const cols = [24.5, 41.5, 58.5], rows = [12.5, 32.5, 52.5, 72.5];
+        DRAWERS.forEach(([id], i) => {
+          const b = el('button', 'drawer-btn' + (d.drawer === id ? ' picking' : '')); b.type = 'button';
+          b.style.left = cols[i % 3] + '%'; b.style.top = rows[Math.floor(i / 3)] + '%';
+          b.setAttribute('aria-label', `${id} 서랍 열기`); b.innerHTML = `<span class="plate">${id}</span>`;
+          b.onclick = () => { d.drawer = d.drawer === id ? null : id; d.open = null; save(); };
+          cab.append(b);
+        });
+        wrap.append(cab);
+        if (!d.drawer) { wrap.append(el('p', 'pick-label', '번호판을 보고 서랍을 하나 연다')); return wrap; }
+        if (d.drawer !== DRAWER_ANSWER) {
+          const r = DRAWERS.find(([id]) => id === d.drawer)[1];
+          wrap.append(el('p', 'pick-label', `${d.drawer} 서랍 — ${r} 카드들이다 ${d.drawer === '7-2' ? '앞쪽은 V-6300부터인데 뒤로 넘기니 V-6349에서 끝난다 그 뒤가 비어 있다' : '봉투의 번호는 이 범위가 아니다'}`));
+          return wrap;
+        }
+        const drawer = el('div', 'prop carddrawer'); const di = el('img'); di.src = P + 'props/drawer.webp'; di.alt = '열린 7-3 서랍, 앞쪽에 카드 다섯 장이 올라와 있다'; drawer.append(di);
         const xs = [26, 32.5, 39, 45.5, 52];
         CARDS.forEach((c, i) => {
           const b = el('button', 'card-tab' + (d.open === c.id ? ' picking' : '')); b.type = 'button'; b.style.left = xs[i] + '%';
           b.setAttribute('aria-label', `${i + 1}번째 카드 보기`); b.onclick = () => { d.open = d.open === c.id ? null : c.id; save(); };
           drawer.append(b);
         });
-        wrap.append(drawer);
+        wrap.append(el('p', 'pick-label', '7-3 서랍 — 앞쪽에 옮겨 꽂은 카드 다섯 장이 올라와 있다'), drawer);
         if (d.open) {
           const c = CARDS.find((x) => x.id === d.open);
           const card = el('div', 'index-card');
@@ -273,7 +329,7 @@ ${STAGES.map((s) => `<tr><td>${s.date}</td><td>${stampSvg(s.stamp, 'ink')} ${STA
         return wrap;
       },
       commitLabel: '이 카드 꺼내기',
-      canCommit: (d) => !!d.open,
+      canCommit: (d) => d.drawer === DRAWER_ANSWER && !!d.open,
       check(d) {
         if (d.open === CARD_ANSWER) return { ok: true };
         const c = CARDS.find((x) => x.id === d.open);
@@ -288,15 +344,53 @@ ${STAGES.map((s) => `<tr><td>${s.date}</td><td>${stampSvg(s.stamp, 'ink')} ${STA
       },
     },
 
+    desk: {
+      title: '내 옛 방 책상 서랍',
+      scene: 'mom',
+      intro: '중학교 때 쓰던 책상 서랍에 세 자리 자물쇠 옆에 붙은 포스트잇: "비번 = 콩이 만난 날"',
+      docs: ['sticky', 'diary', 'momchat'],
+      hintCode: 'P-S03',
+      hints: [
+        '콩이를 만난 날은 일기 첫 줄에 있습니다 세 자리',
+        '7월 16일 → 7 1 6',
+        '716',
+      ],
+      initial: () => ({ dial: [0, 0, 0] }),
+      render(ctx) {
+        const { d, el, save } = ctx;
+        const wrap = el('div', 'desk-wrap');
+        const desk = el('div', 'prop deskphoto'); const im = el('img'); im.src = P + 'props/desk.webp'; im.alt = '스티커가 바랜 옛 책상, 서랍에 세 자리 자물쇠와 포스트잇'; desk.append(im);
+        const lock = el('div', 'prop desklock'); lock.innerHTML = `<img src="${P}props/desk-lock.webp" alt="세 자리 자물쇠와 포스트잇" decoding="async"><div class="on-sticky">비번 = 콩이 만난 날<br><small>까먹지 말 것!!</small></div>`;
+        lock.append(dialRow(el, save, d, 3));
+        wrap.append(desk, lock);
+        return wrap;
+      },
+      commitLabel: '서랍 당기기',
+      check(d) {
+        const code = d.dial.join('');
+        if (code === DESK_CODE.join('')) return { ok: true };
+        if (code === '816' || code === '802') return { ok: false, msg: '안 열린다 콩이를 "만난" 날이다 입양된 날이 아니라' };
+        if (code === '717') return { ok: false, msg: '안 열린다 병원 간 날이 아니라 만난 날 하루 전이다' };
+        const right = d.dial.filter((v, i) => v === DESK_CODE[i]).length;
+        return { ok: false, msg: right ? `걸린다 ${right}자리는 맞는 것 같다 월 하나, 일 둘` : '걸린다 월 한 자리, 일 두 자리다' };
+      },
+      reveal: {
+        title: '7 · 1 · 6',
+        text: '서랍이 열렸다 연필, 지우개, 머리끈 사이에 명찰이 하나 끈이 없는 명찰 「햇살중학교 2학년 3반 김유나」',
+        scene: ['명찰은 있는데 끈이 없다 끈은 지금 내 가방 속에 있다 상자에서 꺼내 온, 십 년 전 강아지 목에 묶였던 파란 끈'],
+        unlock: null,
+      },
+    },
+
     strap: {
       title: '파란 끈의 지워진 글자',
       scene: 'mom',
-      intro: '끈의 인쇄 글자가 세 군데 지워져 있다 학교, 학년 반, 이름 앨범과 일기로 채운다',
-      docs: ['album', 'diary', 'momchat'],
-      hintCode: 'P-S03',
+      intro: '끈의 인쇄 글자가 세 군데 지워져 있다 학교, 학년 반, 이름 서랍에서 나온 명찰과 대 본다',
+      docs: ['badge', 'diary', 'album'],
+      hintCode: 'P-S04',
       hints: [
-        '명찰 끈에는 보통 학교, 학년 반, 이름이 찍힙니다 일기 끝에 쓴 사람이 누구인지 보세요',
-        '일기: 햇살중 2학년 3반 사진 뒷면의 이름과 일기의 이름이 같습니다',
+        '명찰 끈에는 명찰과 같은 글자가 찍힙니다 서랍에서 나온 명찰을 보세요',
+        '햇살중학교 · 2학년 3반 · 김유나 끈에는 줄여서 찍힙니다',
         '햇살중 · 2-3 · 김유나',
       ],
       initial: () => ({ fill: {}, pick: null }),
@@ -323,19 +417,19 @@ ${STAGES.map((s) => `<tr><td>${s.date}</td><td>${stampSvg(s.stamp, 'ink')} ${STA
         } else wrap.append(el('p', 'pick-label', '끈의 지워진 자리를 누르면 글자를 넣을 수 있다'));
         return wrap;
       },
-      commitLabel: '끈 주인 확인',
+      commitLabel: '명찰에 끈 끼우기',
       check(d) {
         const empty = BLANKS.filter((b) => !d.fill[b.id]);
         if (empty.length) return { ok: false, msg: `${empty[0].label} 칸이 아직 비어 있다` };
         if (BLANKS.every((b) => d.fill[b.id] === b.ans)) return { ok: true };
         const w = BLANKS.find((b) => d.fill[b.id] !== b.ans);
-        if (w.id === 'name') return { ok: false, msg: `${d.fill.name}? 일기 끝에 쓴 이름을 다시 보자 사진 뒷면에도 있다` };
-        if (w.id === 'cls') return { ok: false, msg: '학년 반이 다르다 일기 끝에 학교 이름 뒤에 적혀 있다' };
-        return { ok: false, msg: '학교가 다르다 병원 카드 뒷면과 일기에 같은 학교가 나온다' };
+        if (w.id === 'name') return { ok: false, msg: `${d.fill.name}? 명찰의 이름을 다시 보자` };
+        if (w.id === 'cls') return { ok: false, msg: '학년 반이 다르다 명찰에 적힌 대로' };
+        return { ok: false, msg: '학교가 다르다 명찰과 병원 카드 뒷면에 같은 학교가 나온다' };
       },
       reveal: {
         title: '첫 번째 보호자',
-        text: '햇살중 2-3 김유나 끈의 지워진 자리에 글자가 다 들어갔다 콩이를 처음 데려온 아이는 나였다',
+        text: '끈을 명찰 구멍에 끼웠다 딱 맞는다 햇살중 2-3 김유나 콩이를 처음 데려온 아이는 나였다',
         scene: [
           '엄마가 보리차를 내려놓으며 말했다 "그때 네가 사흘을 울어서 아빠가 다시는 강아지 얘기 꺼내지 말라고 했잖아 그래서 다 잊은 척했지"',
           '루미가 지금 내 집 방석에서 자고 있다 십 년을 돌아서 정우 씨 편지가 상자 맨 밑에 한 장 더 있었다',

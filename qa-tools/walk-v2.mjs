@@ -318,41 +318,54 @@ async function petHome({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('파란 끈 얘기를 했다'), 'opening shown');
     await L.click(page, '상자 열어 보기'); await L.sleep(400);
     for (const [d, t] of [['뚜껑 안쪽 정우의 쪽지', '파란 끈만 주인을 몰라요'], ['상자 바닥의 기록 사본', '접수번호 27'], ['입양 계약서 봉투', '941372608154902'], ['방석의 루미', '코끝이 하얗게']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
-    // box
+    // box + tin lock
     await hotspot(page, '기념품 상자');
-    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .keepbox .keep-item').length === 4 && document.querySelectorAll('dialog[open] .record-row').length === 4), 'box: 4 items + 4 record rows');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .keepbox .keep-item').length === 4 && document.querySelectorAll('dialog[open] .record-row').length === 4 && document.querySelectorAll('dialog[open] .box-wrap .dial').length === 4), 'box: 4 items + 4 rows + 4 dials');
+    const setDial = async (digits) => { for (let i = 0; i < digits.length; i++) { const cur = await page.evaluate((i) => Number(document.querySelectorAll('dialog[open] .dial .num')[i].textContent), i); const up = (digits[i] - cur + 10) % 10; for (let k = 0; k < up; k++) await L.click(page, `${i + 1}번째 다이얼 올리기`); } };
+    await setDial([6, 7, 8, 2]); // 코드만 바로 넣어도 열려야 한다 (워크시트는 도우미)
     const put = async (item, stage) => { await L.click(page, item + ' 집어 뒷면 보기', { exact: true }); await L.click(page, stage + ' (비어 있음)', { exact: true }); };
+    await setDial([0, 0, 0, 0]); await commit(page);
+    L.check((await status(page)).includes('네 날부터'), 'box: asks to fill days first');
     await L.click(page, '파란 명찰 끈 집어 뒷면 보기', { exact: true });
     L.check(await dlgHas(page, '글씨가 어리다') && await page.evaluate(() => !!document.querySelector('dialog[open] .keep-back img')), 'box: back side shown with photo');
-    await L.click(page, '처음 발견한 날 (비어 있음)', { exact: true });
-    await put('진료 봉투', '진료받은 날'); await put('입양 확인서', '잠깐 머문 날'); await commit(page);
-    L.check((await status(page)).includes('비어 있다'), 'box: empty row explained');
-    await put('접힌 담요', '오래 살 집이 생긴 날'); await commit(page);
-    L.check((await status(page)).includes('도장을 다시'), 'box: swapped stamps explained — ' + (await status(page)));
-    await L.click(page, '잠깐 머문 날: 입양 확인서', { exact: true }); await L.click(page, '오래 살 집이 생긴 날: 접힌 담요', { exact: true }); // 둘 다 집어 올림 (마지막 든 것만 손에)
-    await L.click(page, '오래 살 집이 생긴 날 (비어 있음)', { exact: true }); // 손에 든 담요 → 잘못 놓기 대신 확인서부터
-    await L.click(page, '오래 살 집이 생긴 날: 접힌 담요', { exact: true }); await L.click(page, '잠깐 머문 날 (비어 있음)', { exact: true });
-    await put('입양 확인서', '오래 살 집이 생긴 날'); await commit(page);
-    L.check(await dlgHas(page, '네 사람, 네 날'), 'box solved');
-    await shot(page, 'pet-box');
+    await L.click(page, '잠깐 머문 날 (비어 있음)', { exact: true });
+    await put('접힌 담요', '처음 발견한 날'); await put('진료 봉투', '진료받은 날'); await put('입양 확인서', '오래 살 집이 생긴 날'); await commit(page);
+    L.check((await status(page)).includes('앞뒤가 바뀌었다'), 'box: swapped order explained — ' + (await status(page)));
+    await L.click(page, '처음 발견한 날: 접힌 담요', { exact: true }); await L.click(page, '잠깐 머문 날: 파란 명찰 끈', { exact: true });
+    await L.click(page, '처음 발견한 날 (비어 있음)', { exact: true }); await put('접힌 담요', '잠깐 머문 날');
+    await commit(page);
+    L.check((await status(page)).includes('번호는 끝자리다'), 'box: days right, code wrong explained');
+    await setDial([6, 7, 8, 2]); await shot(page, 'pet-box'); await commit(page);
+    L.check(await dlgHas(page, '6 · 7 · 8 · 2'), 'box solved');
     await L.closeDialog(page); await L.sleep(400);
     L.check((await L.mainText(page)).includes('카드 서랍장이 벽 하나를'), 'moved to clinic');
-    for (const [d, t] of [['접수대의 수의사', '등록번호까지 맞춰'], ['게시판의 카드 보관 안내', 'V-6300']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    for (const [d, t] of [['접수대의 수의사', '등록번호까지 맞춰'], ['게시판의 카드 보관 안내', '7-3 앞쪽으로 옮겨']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     await hotspot(page, '카드 서랍장');
-    L.check(!(await L.buttons(page)).some((b) => b === '이 카드 꺼내기'), 'cards: no commit before pick');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .drawer-btn').length === 12), 'cards: 12 drawers');
+    await L.click(page, '7-2 서랍 열기', { exact: true });
+    L.check(await dlgHas(page, 'V-6349에서 끝난다'), 'cards: 7-2 decoy explained');
+    L.check(!(await L.buttons(page)).some((b) => b === '이 카드 꺼내기'), 'cards: no commit on wrong drawer');
+    await L.click(page, '7-3 서랍 열기', { exact: true });
     await L.click(page, '3번째 카드 보기', { exact: true }); L.check(await dlgHas(page, 'V-6383'), 'cards: card face shown'); await commit(page);
     L.check((await status(page)).includes('봉투의 번호가 아니다'), 'cards: wrong V explained');
-    await L.click(page, '4번째 카드 보기', { exact: true }); await commit(page);
+    await L.click(page, '4번째 카드 보기', { exact: true }); await shot(page, 'pet-cards'); await commit(page);
     L.check(await dlgHas(page, '콩이 = 루미'), 'cards solved');
-    await shot(page, 'pet-cards');
     await L.closeDialog(page); await L.sleep(400);
     L.check((await L.mainText(page)).includes('보리차를 끓이고'), 'moved to mom');
-    for (const [d, t] of [['엄마와 주고받은 문자', '명찰끈으로 묶어서'], ['앨범에 끼워진 일기 한 장', '2학년 3반 김유나'], ['앨범과 사진 세 장', '햇살동 정류장']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '서랍 속 명찰'))), 'badge hidden before desk');
+    for (const [d, t] of [['엄마와 주고받은 문자', '명찰끈으로 묶어서'], ['앨범에 끼워진 일기 한 장', '2학년 3반 김유나'], ['앨범과 사진 세 장', '햇살동 정류장'], ['내 옛 방 책상의 포스트잇', '콩이 만난 날']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    await hotspot(page, '내 옛 방 책상 서랍');
+    await setDial([7, 1, 7]); await commit(page);
+    L.check((await status(page)).includes('하루 전'), 'desk: clinic day explained');
+    await setDial([7, 1, 6]); await shot(page, 'pet-desk'); await commit(page);
+    L.check(await dlgHas(page, '7 · 1 · 6'), 'desk solved');
+    await L.click(page, '계속'); await L.sleep(300);
+    await hotspot(page, '서랍 속 명찰'); L.check(await dlgHas(page, '끈이 없는') || await dlgHas(page, '끈이 없다'), 'doc: 명찰'); await L.closeDialog(page);
     await hotspot(page, '상자에서 가져온 파란 끈');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .strapimg .strap-slot').length === 3), 'strap: 3 blanks on photo');
     const fill = async (lab, v) => { await L.click(page, lab + ' 칸'); await L.click(page, lab + '은 ' + v, { exact: true }); };
     await fill('학교', '햇살중'); await fill('학년 반', '2-3'); await fill('이름', '김유진'); await commit(page);
-    L.check((await status(page)).includes('일기 끝에 쓴 이름'), 'strap: wrong name explained');
+    L.check((await status(page)).includes('명찰의 이름'), 'strap: wrong name explained');
     await fill('이름', '김유나'); await shot(page, 'pet-strap'); await commit(page);
     L.check(await dlgHas(page, '콩이를 처음 데려온 아이는 나였다'), 'strap solved');
     await L.click(page, '상자 맨 밑의 편지를 꺼내러'); await L.sleep(500);
