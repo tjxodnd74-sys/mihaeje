@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-10",
+  "model": "seedance1_5",
+  "jobs": [
+    {
+      "id": "0275b635-30df-46c3-a08a-d8236b48b655",
+      "estimatedCredits": 9.6,
+      "status": "completed",
+      "used": false,
+      "reason": "incorrect reference scene"
+    },
+    {
+      "id": "e36f2ea8-951c-4845-8f83-3807a44bbd27",
+      "estimatedCredits": 4.8,
+      "status": "failed",
+      "used": false
+    },
+    {
+      "id": "d89b4555-f148-4be4-8151-64ec3ebc30fc",
+      "estimatedCredits": 4.8,
+      "status": "completed",
+      "used": true
+    }
+  ],
+  "estimatedAttemptTotal": 19.2,
+  "actualBilling": "not verified; failed job refund not verified",
+  "visualInspectionSeconds": [
+    1,
+    2,
+    3
+  ],
+  "duration": 4.042,
+  "bytes": 269370,
+  "asset": "assets/dashcam-v36.mp4",
+  "scope": "entry only; departure remains explicitly labeled written observation",
+  "processing": "door crop removes static source artifact and generated corrupt timestamp; own fictional entry label; mute H264 faststart",
+  "source": "user attachment c63f0ec5-97bd-4a56-8a80-3a4cc911505c, resized for model input"
+}

@@ -1,0 +1,24 @@
+﻿미해제 — Claude 인수인계 / 2026-10-14 / v79
+
+1. 이 압축 전체를 한 폴더에 풀어 주세요. mystery-site가 실제 사이트 소스입니다.
+2. 01-HANDOFF.txt, 02-DEPLOYMENT.txt, 03-QA-CHECKLIST.csv를 먼저 읽으세요.
+3. Claude에 04-CLAUDE-PROMPT.txt를 전달하고 이 폴더에 접근하도록 해 주세요.
+4. 터미널에서 mystery-site로 이동해 npm ci, npm run build를 실행하세요.
+5. 압축을 푼 최상위 폴더에서 node qa-tools/preview.mjs 실행 후
+   http://127.0.0.1:8790/ 에서 확인하세요. 종료는 Ctrl+C입니다.
+
+공개 사이트: https://last-garage-case.wowowowoong.chatgpt.site
+기준 커밋: e816ad150c5a469da586dc34243d332e0f3cdf18
+원본 소스는 이 커밋 그대로이며 인수인계 자료는 소스 바깥에 추가했습니다.
+현재 배포 소스 전체, 이미지·음악·영상·글꼴, Worker, DB 마이그레이션,
+lockfile, 과거 설계 자료와 검사 스크립트를 포함합니다.
+
+포함하지 않은 것: .git, node_modules, 재생성 가능한 dist, 인증 토큰,
+실제 피드백 DB 및 사용자 의견, 호스팅 환경 변수의 실제 값.
+따라서 기존 피드백 데이터가 Claude에게 전달되지는 않습니다.
+기존 URL로 재배포하려면 원래 프로젝트에 접근 가능한 Sites 환경이 필요합니다.
+공개 링크나 소스 ZIP만으로 관리 권한이 이전되지는 않습니다.
+
+주의: mystery-site/design/BUILD.md는 옛 구조를 설명하므로 따르지 마세요.
+현재 수정 대상은 web/과 worker/이며 현재 빌드는 npm run build입니다.
+검증 결과는 05-PACKAGE-VERIFICATION.txt를 보세요.

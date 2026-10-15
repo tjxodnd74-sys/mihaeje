@@ -1,0 +1,244 @@
+{
+  "version": 37,
+  "coordinateUnits": "percentage of natural 1536x1024 image; entry order brief,part0,part1,target,entrancelock; inner order recordgroup0,recordgroup1,recordgroup2,recorddevice,finalaction",
+  "themes": [
+    {
+      "id": "station",
+      "entry": [
+        [
+          15,
+          23
+        ],
+        [
+          33,
+          79
+        ],
+        [
+          50,
+          84
+        ],
+        [
+          67,
+          26
+        ],
+        [
+          86,
+          59
+        ]
+      ],
+      "inner": [
+        [
+          20,
+          74
+        ],
+        [
+          54,
+          67
+        ],
+        [
+          34,
+          37
+        ],
+        [
+          75,
+          47
+        ],
+        [
+          85,
+          72
+        ]
+      ],
+      "entryDescriptions": [
+        "Shelter route map",
+        "Torn map left half",
+        "Torn map right half",
+        "Central post maintenance panel",
+        "Green ticket validator"
+      ],
+      "innerDescriptions": [
+        "Handover clipboard",
+        "Ticket clips rack",
+        "Lost-property pigeonholes",
+        "Locker console",
+        "Brass handover tray"
+      ],
+      "assets": {
+        "entry": "assets/photoreal/station-entry-v37.webp",
+        "empty": "assets/photoreal/station-entry-empty-v37.webp",
+        "inner": "assets/photoreal/station-inner-v37.webp"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "prompts": {
+          "entry": "Use case: photorealistic-natural. Asset type: one landscape 1536x1024 immersive browser escape-game scene, no interface. A real rural Korean railway platform under an open wooden shelter in warm overcast morning light, seen diagonally along tracks rather than an office. Composition five clearly separated believable interaction props: at upper left wall (x22% y30%) a framed muted schematic route map without readable words; on foreground wooden bench, one torn old cream map half at x34% y74% and its other half at x52% y75%, non-overlapping; at x69% y39% a wall mounted closed maintenance panel; at right foreground x84% y61% a compact green railway ticket validator mounted on the bench end. Real tracks and low hills extend behind. Detailed weathered wood, metal screws, worn paint, photographic natural light, cohesive scene with real depth. No people, no numbers, no readable generated text, no graphical overlays, no glowing markers, no exit door, no office desk. Landscape photograph, all target objects sharp enough to click, 3:2 frame.",
+          "empty": "Use case: precise-object-edit. This is the exact edit target image. Remove ONLY the two torn cream map paper pieces lying on the foreground wooden railway platform bench. Reconstruct natural weathered bench wood exactly where the papers were. Keep EVERY other object, the bench shape, railway landscape, perspective, crop, light, route map on left wall, gray panel on central post and green ticket validator on right EXACTLY unchanged. No additional changes. Preserve 1536x1024 landscape.",
+          "inner": "Use case: photorealistic-natural. Asset type: single 1536x1024 landscape immersive browser game scene. A small real Korean railway lost-property handover counter seen from passenger side beneath a wide blank black departure board in a bright station concourse. Distinct objects for investigation: a receipt clipboard with faint illegible writing on counter LEFT foreground x22% y73%, a rack of differently colored ticket clips near counter CENTER x47% y69%, a wall of dark wooden pigeonholes at upper LEFT-middle x34% y36%, a closed small keyed metal locker console on upper RIGHT x79% y38%, and a shallow brass handover tray on counter far RIGHT x83% y76%. No office desk or exit door. Real worn laminate counter, faded railway-green paint, soft warm late afternoon light, atmospheric authentic photography, empty room without people. In the background a railway platform visible through high glazing, no legible text or numbers, no overlays or artificial marker dots. All five objects separated and clearly visible. 3:2 frame."
+        },
+        "originalPaths": [
+          "C:/Users/PC/.codex/generated_images/01a1264e-db78-7291-9a9c-9cead07bf61a/exec-3b2de045-151b-469d-b14c-6ac55fad4a6c.png",
+          "C:/Users/PC/.codex/generated_images/01a1264e-db78-7291-9a9c-9cead07bf61a/exec-1b57d352-bd52-4d15-b0db-443751a6d429.png",
+          "C:/Users/PC/.codex/generated_images/01a1264e-db78-7291-9a9c-9cead07bf61a/exec-77871992-8a6f-413f-9d45-40e15dc0eefd.png"
+        ]
+      }
+    },
+    {
+      "id": "letter",
+      "entry": [
+        [
+          52,
+          42
+        ],
+        [
+          32,
+          75
+        ],
+        [
+          52,
+          74
+        ],
+        [
+          20,
+          36
+        ],
+        [
+          80,
+          34
+        ]
+      ],
+      "inner": [
+        [
+          15,
+          65
+        ],
+        [
+          45,
+          72
+        ],
+        [
+          33,
+          34
+        ],
+        [
+          81,
+          30
+        ],
+        [
+          84,
+          81
+        ]
+      ],
+      "entryDescriptions": [
+        "Classification reference card",
+        "Amber viewing filter",
+        "Unused bare wood, single-tool theme",
+        "Dusty glass viewing frame",
+        "Brass classification dial"
+      ],
+      "innerDescriptions": [
+        "Letter tray",
+        "Catalogue ledger",
+        "Sorting pigeonholes",
+        "Sorting control dial",
+        "Brass posting slot"
+      ],
+      "assets": {
+        "entry": "assets/photoreal/letter-entry-v37.webp",
+        "empty": "assets/photoreal/letter-entry-empty-v37.webp",
+        "inner": "assets/photoreal/letter-inner-v37.webp"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "prompts": {
+          "entry": "Use case: photorealistic-natural. Asset type: single 1536x1024 landscape overhead browser escape-game photo. Direct bird's-eye view of an old postal mail sorting workbench with warm real wood grain, cream paper envelopes and shallow green sorting trays around edges. Five separated believable targets: a broad intact classification reference card with faded abstract typographic lines and tiny geometric marks CENTER x51% y37%; a single small rectangular amber transparent sheet FILTER left lower x27% y73%, resting loose on bare wood and clearly collectible; another empty bare tabletop target space at x51% y74% (no second collectible); a closed glass viewing frame on desk upper left x23% y30%, opaque beneath old dust; a robust small brass-and-green three-position cabinet combination dial built into wood upper right x81% y31%. Different from roomfront and deskoffice shots: true overhead table fills image, no wall, no door. Real photographic detail, bent envelope corners, brass wear, afternoon natural side light. No hands, no readable words or numbers, no graphical overlays or marker circles, no giant modern UI, coherent photo 3:2.",
+          "empty": "Use case: precise-object-edit. Edit this exact overhead postal sorting table photograph. Remove ONLY the single loose amber transparent rectangular filter sheet on bare wood at the lower-left-middle (about x32% y75%). Replace its footprint with matching natural wood grain and matching light. Preserve every other element exactly: glass frame on left, central cream classification card, brass-green dial on upper right, envelopes, trays, stamps, camera overhead composition, shadows and dimensions. Do not remove or change anything else. 1536x1024 landscape.",
+          "inner": "Use case: photorealistic-natural. One 1536x1024 landscape immersive escape browser-game photograph. A traditional small postal sorting area viewed sideways past a long green counter into a huge wall of small aged postbox compartments, composition entirely different from office desk and door. Five objects separated: at x20% y73% a shallow letter tray containing a neat stack of cream envelopes; at x49% y74% a dark green archive catalogue ledger open with illegible abstract lines; at x28% y33% old pigeonhole sorting compartments filled with paper; at x75% y40% a compact brass-and-wood sorting control with several unmarked dials mounted beside shelves; at x84% y74% a bright polished brass posting slot inset into counter with hinged cover, wide enough to insert a letter. Warm daylight through side window, tactile worn real wood and brass, eye-level 35mm photo. No office chair, no generic exit door, no people, no interface circles, no readable words or numbers, no collage or multiple views. All interaction props clear and separate, photographic authenticity."
+        },
+        "originalPaths": [
+          "C:/Users/PC/.codex/generated_images/01a1264e-db78-7291-9a9c-9cead07bf61a/exec-66b5f503-398d-48bb-afb0-1765d0e774df.png",
+          "C:/Users/PC/.codex/generated_images/01a1264e-db78-7291-9a9c-9cead07bf61a/exec-54452bc9-e506-47ff-b1fc-94d52bfbf1db.png",
+          "C:/Users/PC/.codex/generated_images/01a1264e-db78-7291-9a9c-9cead07bf61a/exec-9417c6e8-4ecf-4989-b9b8-b7f5491e3bd8.png"
+        ]
+      }
+    },
+    {
+      "id": "laundry",
+      "entry": [
+        [
+          11,
+          17
+        ],
+        [
+          25,
+          70
+        ],
+        [
+          40,
+          77
+        ],
+        [
+          65,
+          29
+        ],
+        [
+          87,
+          12
+        ]
+      ],
+      "inner": [
+        [
+          15,
+          45
+        ],
+        [
+          58,
+          20
+        ],
+        [
+          50,
+          85
+        ],
+        [
+          77,
+          70
+        ],
+        [
+          83,
+          24
+        ]
+      ],
+      "entryDescriptions": [
+        "Clipped service chart",
+        "Brass service key",
+        "Unused counter, single-tool theme",
+        "Frosted machine service cover",
+        "Rotary machine controls"
+      ],
+      "innerDescriptions": [
+        "Coat with clipped receipt",
+        "Wallclock",
+        "Registry clipboard",
+        "Evidence box rotary latch",
+        "Empty coat hanger"
+      ],
+      "assets": {
+        "entry": "assets/photoreal/laundry-entry-v37.webp",
+        "empty": "assets/photoreal/laundry-entry-empty-v37.webp",
+        "inner": "assets/photoreal/laundry-inner-v37.webp"
+      },
+      "generation": {
+        "tool": "built-in image_gen",
+        "prompts": {
+          "entry": "Use case: photorealistic-natural. Single 1536x1024 landscape immersive browser-game photograph of a real small neighborhood Korean laundromat, diagonal SIDE VIEW at waist height along a line of round glass-door commercial washing machines. Warm late evening fluorescent light, cyan worn machine paint, wet tiled floor, linen basket, no humans. Foreground narrow reception counter has a single loose small brass SERVICE KEY clearly visible at x29% y73%, nothing beside it to collect. Five distinct interaction locations: upper left x18% y30% a clipped cream service chart with faint unreadable abstract lines on tiled wall; key at x29% y73%; bare unused counter space at x53% y74%; dusty hinged frosted-glass service chart cover mounted on first machine near x57% y38%; physical small analog machine control buttons and rotary dial upper right x81% y35%, several separated colored push buttons unmarked. Strong asymmetrical depth down row of machines, no deskoffice composition, no human exitdoor. Real photographic materials, scratches, condensation and machine reflections, all interaction props cleanly visible. No readable text/numbers, no game UI, no interfacecircles, no drawn graphic symbols, 3:2.",
+          "empty": "Use case: precise-object-edit. Edit exact supplied photograph of laundromat side view. Remove ONLY the small loose brass service key on the cream reception countertop at x25% y70%. Fill its footprint with perfectly matching stained laminate and reflected warm light. Preserve all other fixtures exactly: the clipped cream chart at left wall, frosted glass service cover on front washing machine, upperright controls, machines, laundry basket, plants, tiles, framing, camera, shadows. No other changes. Preserve 1536x1024 landscape.",
+          "inner": "Use case: photorealistic-natural. Asset type one single 1536x1024 landscape immersive browser-game photograph, no UI. An authentic small Korean laundry garment collection alcove, camera looks diagonally across a hanging rack with a single navy wool coat and clipped receipts. Different composition from all office rooms: upright racks and clothing dominate, just a narrow side workbench. Five clearly separated interaction objects: x24% y39% the navy coat hanging with cream receipt clipped to sleeve; x51% y20% a real round analog wallclock with subdued conventional face; x36% y75% a wooden clipboard registry ledger on narrow workbench; x73% y57% a squat closed brushed metal evidence box with small unmarked rotary latch; x85% y26% an empty natural wood coat hanger prominently hanging on rack ready for returned coat. Warm soft skylight, real cloth texture, slightly worn pale tiled walls and timber rack, hanging clothing bags in background. No people, no office chair or desk, no generic exit door, no readable words, no game markers, no generated text overlays, fully photoreal 3:2."
+        },
+        "originalPaths": [
+          "C:/Users/PC/.codex/generated_images/01a1264e-db78-7291-9a9c-9cead07bf61a/exec-022b7b33-4a08-4b0d-b674-e619458125f1.png",
+          "C:/Users/PC/.codex/generated_images/01a1264e-db78-7291-9a9c-9cead07bf61a/exec-763c1a69-c8b1-4814-9476-01c01055b83e.png",
+          "C:/Users/PC/.codex/generated_images/01a1264e-db78-7291-9a9c-9cead07bf61a/exec-81043407-69e7-47d8-9501-46e254c42449.png"
+        ]
+      }
+    }
+  ],
+  "validation": "All nine images visually inspected. Empty variants generated by precise-object-edit remove only collected map halves/filter/key; other fixtures and camera remain consistent. No generic human exit door in any transport scene."
+}

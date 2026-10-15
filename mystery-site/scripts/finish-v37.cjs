@@ -1,0 +1,6 @@
+const fs=require('fs');
+let p='web/episode.js',s=fs.readFileSync(p,'utf8').replace('function finishEpisode(){if(!state.unlocked)return;',"function finishEpisode(){if(!state.unlocked)return;const last=episode.docs.find(d=>d.locked);if(last&&!state.read.includes(last.id)){openDoc(last.id);inspectView('records');return}");fs.writeFileSync(p,s);
+p='web/app.js';s=fs.readFileSync(p,'utf8').replace("function finishGarage(){if(!state.unlocked)return;","function finishGarage(){if(!state.unlocked)return;if(!state.read.includes('backup')){openDoc('backup');inspectGarage('evidence');return}").replace('src="assets/photoreal/garage-entry-v2.webp" loading="lazy"','src="assets/photoreal/garage-entry-v37.webp" loading="lazy"');fs.writeFileSync(p,s);
+p='web/physical-entry-v36.css';s=fs.readFileSync(p,'utf8').replace(/-entry-v2\.webp/g,'-entry-v37.webp');fs.writeFileSync(p,s);
+p='web/ending-scenes.js';s=fs.readFileSync(p,'utf8').replace("id+'-inner-v2'","id+(id==='ohang'?'-inner-v2':'-inner-v37')");fs.writeFileSync(p,s);
+for(const page of ['case','episode','studio','ohang']){p='web/'+page+'.html';s=fs.readFileSync(p,'utf8').replace('ending-scenes.js?v=36','ending-scenes.js?v=37');fs.writeFileSync(p,s)}

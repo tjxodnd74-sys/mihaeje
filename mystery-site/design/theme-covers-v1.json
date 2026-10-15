@@ -1,0 +1,83 @@
+{
+  "method": "Built-in image_gen imagegen, seven original photoreal theme covers",
+  "references": [
+    "https://www.playstation.com/ko-kr/games/",
+    "https://store.steampowered.com/",
+    "https://www.netflix.com/kr/"
+  ],
+  "fontSource": "https://github.com/sun-typeface/SUIT",
+  "prompts": [
+    {
+      "id": "garage",
+      "prompt": "Generate one ORIGINAL photorealistic photographic key art for a Korean mystery browser game. Landscape 3:2, no collage, no borders, no typography, NO readable writing, numerals, logos, watermark or UI. Professional real photography, optically believable materials and lighting, restrained cinematic color, no illustration, no 3D render, no AI-looking symmetrical office room. Single clear storytelling subject readable at thumbnail scale. Not a desk-and-door interior. Low curb-height viewpoint of a weathered dark burgundy 1990s sedan with a single red rear lamp glowing, wet concrete and scattered tools under the partly lowered shutter of a small shuttered Korean car repair shop at blue twilight. Cropped car rear occupies left foreground, garage light cuts diagonally from upper right. Rain droplets, oily reflections, tense abandoned last-night mood, blue and crimson palette. No visible brand badge or license plate text. Original scene, no people."
+    },
+    {
+      "id": "apartment",
+      "prompt": "Generate one ORIGINAL photorealistic photographic key art for a Korean mystery browser game. Landscape 3:2, no collage, no borders, no typography, NO readable writing, numerals, logos, watermark or UI. Professional real photography, optically believable materials and lighting, restrained cinematic color, no illustration, no 3D render, no AI-looking symmetrical office room. Single clear storytelling subject readable at thumbnail scale. Not a desk-and-door interior. Telephoto night photograph upward toward a worn Korean four-story brick apartment facade. All windows dark except ONE small bright warm rectangle high right. Tangled utility wires silhouette against cobalt night, narrow wall perspective, peeling pale concrete, slight mist. Strong vertical facade pattern and negative sky. No ghosts, no desk, no interior, no visible house numerals. Cold sapphire black and single amber light palette."
+    },
+    {
+      "id": "radio",
+      "prompt": "Generate one ORIGINAL photorealistic photographic key art for a Korean mystery browser game. Landscape 3:2, no collage, no borders, no typography, NO readable writing, numerals, logos, watermark or UI. Professional real photography, optically believable materials and lighting, restrained cinematic color, no illustration, no 3D render, no AI-looking symmetrical office room. Single clear storytelling subject readable at thumbnail scale. Not a desk-and-door interior. Extreme intimate side closeup of a vintage black and brushed chrome broadcast microphone in a silent abandoned radio booth. Microphone grille occupies right foreground in sharp focus; red signal lamp reflected on metal and blurred analog reel tape movement behind left. Authentic shallow depth of field, velvet burgundy shadows, hard red edge lighting. No wide room overview, no desk-and-door composition, no words on equipment. Analog acoustic grain."
+    },
+    {
+      "id": "station",
+      "prompt": "Generate one ORIGINAL photorealistic photographic key art for a Korean mystery browser game. Landscape 3:2, no collage, no borders, no typography, NO readable writing, numerals, logos, watermark or UI. Professional real photography, optically believable materials and lighting, restrained cinematic color, no illustration, no 3D render, no AI-looking symmetrical office room. Single clear storytelling subject readable at thumbnail scale. Not a desk-and-door interior. Wide lonely railway platform shot from the platform edge looking into receding parallel tracks and thick early morning fog. An unbranded teal train tail far away, fluorescent canopy lamps reflected on wet pavement, one empty burnt-orange metal bench at left, strong diagonal vanishing point toward pale fog at upper right. No humans, no text, no station numbers. Cinematic silver grey, teal and tiny orange color, plausible Korean commuter station."
+    },
+    {
+      "id": "letter",
+      "prompt": "Generate one ORIGINAL photorealistic photographic key art for a Korean mystery browser game. Landscape 3:2, no collage, no borders, no typography, NO readable writing, numerals, logos, watermark or UI. Professional real photography, optically believable materials and lighting, restrained cinematic color, no illustration, no 3D render, no AI-looking symmetrical office room. Single clear storytelling subject readable at thumbnail scale. Not a desk-and-door interior. Overhead editorial photograph of four weathered envelopes tied by frayed dark blue string on a plum-colored woven cloth, one torn-open envelope at a diagonal revealing a small unmarked yellowed paper edge. Faded postage stamp shapes without readable text, authentic creases and paper fibers, old brass key partly visible at extreme corner. Raking soft daylight from left, burgundy cream and faded indigo, intimate archival mystery. No readable addresses, no digits, no desk/room overview."
+    },
+    {
+      "id": "pet-home",
+      "prompt": "Generate one ORIGINAL photorealistic photographic key art for a Korean mystery browser game. Landscape 3:2, no collage, no borders, no typography, NO readable writing, numerals, logos, watermark or UI. Professional real photography, optically believable materials and lighting, restrained cinematic color, no illustration, no 3D render, no AI-looking symmetrical office room. Single clear storytelling subject readable at thumbnail scale. Not a desk-and-door interior. Ground-level warm emotional close portrait of a fictional ten-year-old small cream-colored mixed-breed dog with gentle alert eyes and slightly greying muzzle, paws resting beside a worn cobalt-blue ribbon on a pale pink cotton blanket. Dog looking toward sunlight and an unseen trusted person beyond camera. Real fur, real dog anatomy, cozy airy window daylight, pale peach and sky blue accents. No furniture-room overview, no words, no people, no other animals. Gentle emotional mystery without sadness cliché."
+    },
+    {
+      "id": "studio",
+      "prompt": "Generate one ORIGINAL photorealistic photographic key art for a Korean mystery browser game. Landscape 3:2, no collage, no borders, no typography, NO readable writing, numerals, logos, watermark or UI. Professional real photography, optically believable materials and lighting, restrained cinematic color, no illustration, no 3D render, no AI-looking symmetrical office room. Single clear storytelling subject readable at thumbnail scale. Not a desk-and-door interior. Intimate realistic photograph of older Korean photographer's hands, age lines visible, carefully holding a strip of blank indistinct 35mm negatives against late afternoon honey sunlight from a rain-wet window. Hands and thin translucent amber film form diagonal foreground left to upper right. Warm unfocused wooden studio background with a few indistinct hanging photographic prints, no recognizable faces in negatives or prints, no frame numbers or words. Macro tactile analog-photography mood, honey-gold and dark espresso. NO view of a studio counter or door, no face, no collage."
+    }
+  ],
+  "assets": [
+    {
+      "id": "garage",
+      "original": "C:\\Users\\PC\\.codex\\generated_images\\01a11480-2e41-7ce1-9854-b20029fcd18b\\exec-c766bd59-5e3f-4e58-b71a-ca2f02c9fd5f.png",
+      "savedPath": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\covers\\garage-v1.webp",
+      "alt": "젖은 정비소 앞에 멈춘 붉은 자동차"
+    },
+    {
+      "id": "apartment",
+      "original": "C:\\Users\\PC\\.codex\\generated_images\\01a11480-2e41-7ce1-9854-b20029fcd18b\\exec-470115ed-8c8f-4dc3-9cba-4568e18f8c06.png",
+      "savedPath": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\covers\\apartment-v1.webp",
+      "alt": "어두운 연립주택에 홀로 켜진 창문"
+    },
+    {
+      "id": "radio",
+      "original": "C:\\Users\\PC\\.codex\\generated_images\\01a11480-2e41-7ce1-9854-b20029fcd18b\\exec-03efd317-8998-499a-a459-7985e80d0b50.png",
+      "savedPath": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\covers\\radio-v1.webp",
+      "alt": "붉은 빛을 받는 오래된 방송 마이크"
+    },
+    {
+      "id": "station",
+      "original": "C:\\Users\\PC\\.codex\\generated_images\\01a11480-2e41-7ce1-9854-b20029fcd18b\\exec-40101981-2269-4af6-aaa5-7294cf992430.png",
+      "savedPath": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\covers\\station-v1.webp",
+      "alt": "안개 속 빈 승강장과 주황색 벤치"
+    },
+    {
+      "id": "letter",
+      "original": "C:\\Users\\PC\\.codex\\generated_images\\01a11480-2e41-7ce1-9854-b20029fcd18b\\exec-2157a409-abd1-419e-ae00-12acd35f3396.png",
+      "savedPath": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\covers\\letter-v1.webp",
+      "alt": "파란 끈으로 묶은 오래된 편지와 열쇠"
+    },
+    {
+      "id": "pet-home",
+      "original": "C:\\Users\\PC\\.codex\\generated_images\\01a11480-2e41-7ce1-9854-b20029fcd18b\\exec-23552712-926a-4940-ba8e-4cd857287595.png",
+      "savedPath": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\covers\\pet-home-v1.webp",
+      "alt": "파란 끈을 한 노견 루미의 얼굴"
+    },
+    {
+      "id": "studio",
+      "original": "C:\\Users\\PC\\.codex\\generated_images\\01a11480-2e41-7ce1-9854-b20029fcd18b\\exec-50eb7d75-c077-4bdb-b319-7ad9a410af03.png",
+      "savedPath": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\covers\\studio-v1.webp",
+      "alt": "빗물 맺힌 창 앞에서 필름을 들여다보는 손"
+    }
+  ]
+}

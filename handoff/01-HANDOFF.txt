@@ -1,0 +1,185 @@
+﻿미해제 전체 소스 인수인계
+기준일 2026-10-14 / 공개본 v79
+
+■ 1. 목표와 사용자 요구
+10개 추리·탐색 게임을 처음 방문한 사람이 설명 없이 진행할 수 있게 만드는 것이 목표입니다.
+사용자는 메인 장면 사진의 분위기에는 비교적 만족하지만, 주변 UI·힌트·결말이
+모든 테마에서 같은 네모 패널과 색상으로 반복되는 점을 계속 지적했습니다.
+배경색만 바꾸는 수준으로 완료 처리하지 마세요. 테마마다 물건의 재질, 글꼴,
+글씨 색, 배치, 힌트를 받는 방식, 직접 조작하는 장치를 구분해야 합니다.
+
+중요한 요구:
+- 10개 전부 확인. 첨부된 사례 몇 개만 고치고 전체 완료라고 말하지 않기.
+- 흰 글씨/밝은 종이, 안 보이는 비활성 문구, 잘림, 긴 숫자의 어색한 줄바꿈 제거.
+- 장면 속 실제 물건과 핫스폿 위치 일치. 이동 버튼은 이동임을 알 수 있게 배치.
+- 풀지 않은 다음 구역은 선행 조건에 따라 잠겨 있어야 함.
+- 기록의 우상단 뒤로 가기는 방 첫 화면이 아니라 바로 직전 물건 화면으로 복귀.
+- 마지막 힌트는 실제 정답과 정확한 조작 순서·버튼명을 제공. 다시 추측시키지 않기.
+- 스토리는 자연스러운 한국어와 구체적인 명칭. '상자 속 네 물건'처럼 오해되는
+  제목, 추상적인 연결/기록 표현, 중복 문장, 불필요한 어려운 표현 재검토.
+- 피드백은 방문자가 제출할 수 있지만 내용은 소유자만 열람.
+- PC와 모바일 모두. 실제 휴대폰이 연결되지 않았으므로 실기기 확인으로 말하지 않기.
+- 사용자에게 존댓말을 쓰고 검증한 범위와 미확인 사항을 구체적으로 보고.
+
+■ 2. 스냅샷과 디렉터리
+공개 URL https://last-garage-case.wowowowoong.chatgpt.site
+project_id appgprj_6ac632a29bdc81918d06f3a212f59014
+commit e816ad150c5a469da586dc34243d332e0f3cdf18
+version_id appgprj_6ac632a29bdc81918d06f3a212f59014~appgver_11f188dd56d081919ac3eb6eb0b09e36
+deployment_id appgdep_6acf3e69eb788191ba8582560a4cebb2
+배포 성공 기록 2026-10-14T08:34:23.680059+00:00
+인수인계 준비 시 로컬 HEAD 일치, 작업 트리 변경 없음 확인.
+파일명 v36/v44 등은 구성 요소 도입 당시 이름이며 현재 배포 버전과 다릅니다.
+
+mystery-site/web/                 실제 프런트엔드 원본과 전체 정적 자산
+mystery-site/web/episodes/        7개 사건 데이터 JSON
+mystery-site/web/assets/          이미지·영상·음악·글꼴
+mystery-site/web/game-bundles/    빌드가 재생성하는 산출물. 직접 수정 금지
+mystery-site/worker/index.js     피드백 API·소유자 인증·미디어 Range 응답
+mystery-site/drizzle/            D1 beta_feedback 테이블 마이그레이션
+mystery-site/.openai/hosting.json 기존 프로젝트·D1 바인딩. 반드시 보존
+mystery-site/scripts/            빌드·검사·과거 일회성 생성 스크립트
+mystery-site/design/             과거 설계/QA/프롬프트 자료. 최신 상태 보증 아님
+qa/                              v79 검사 기록·측정 JSON·화면 캡처
+qa-tools/                        로컬 UI 검사 보조 도구. 사이트에 배포하지 말 것
+
+■ 3. 10개 게임 진입점
+garage      마지막 정비소          /case
+apartment   404호의 불빛            /episode?case=apartment
+radio       끝나지 않은 방송        /episode?case=radio
+station     세 번째 승강장          /episode?case=station
+laundry     자정의 무인 세탁소      /episode?case=laundry
+letter      반송된 편지             /episode?case=letter
+pet-home    첫 번째 보호자          /episode?case=pet-home
+cat-invite  고양이의 초대장         /episode?case=cat-invite
+studio      비가 그친 사진관        /studio
+ohang       돌아오는 계절           /ohang
+허브 / 또는 /#cases. 실제 UI 문구를 바꾸기 전 원본 데이터와 실행 화면도 확인하세요.
+
+■ 4. 주요 코드 위치와 누적 수정 구조
+app.js: 정비소 메인, episode.js + episodes/*.json: 7개 사건.
+studio.js / studio-rules.js, ohang.js / ohang-rules.js: 별도 네이티브 게임.
+story-devices-v36.js / story-adventure-v36.js: 장치·진행 체계.
+experience-v56.js / experience-controls-v56.js: 구역 및 진행 제어.
+theme-mechanics-v62.js: 테마별 조작. '기능 존재'와 '재미있음'은 별도 평가 필요.
+inspection.js: 조사 오버레이와 복귀 동작. 중첩 화면에서 복귀 경로 회귀 확인.
+copy-editor-v74.js: 문구 수정 계층.
+answer-actions-v77.js: 장치별 정답/조작 순서. 실제 컨트롤과 함께 검증할 것.
+hint-device.js / hints-identity-v77.css: 힌트 UI 및 테마별 모양.
+theme-chrome-v63.css / player-polish-v64.css: 화면 주변 UI와 조작성.
+journeys-v37.js: 8개 테마의 물건 마무리 행동.
+ending-scenes.js: 엔딩과 해설/다른 이야기 연결. 정비소 영상 엔딩은 별도 고려.
+finale-v79.css: 최신 마무리·엔딩·모바일 힌트·일부 기록 화면 수정.
+surface-ui.js: 기록·테마 표현 관련 공통 UI.
+
+CSS와 전역 JS 계층이 누적되어 있습니다. 공통 규칙/!important/실행 순서가
+다른 테마 글씨까지 덮어쓰는 문제가 반복되었습니다. 한 곳 수정 후 10개를 다시
+살펴야 합니다. 새 CSS만 끝없이 추가하기보다 영향 범위를 확인하여 정리하세요.
+단, 구조 정리는 진행 저장·퍼즐 정답·복귀 동작의 회귀 검사를 동반해야 합니다.
+
+■ 5. v79에서 실제 수정한 내용
+1) 8개 물건 마무리: 긴 미래 행동 목록을 현재 단계와 완료 행동으로 분리.
+   테마별 재질/색과 사진 배치를 조정. 의자·지퍼 등 기존 조작은 보존.
+2) 10개 엔딩: 사진과 본문을 분리하고 큰 추천 상자를 제거.
+   '다른 이야기'는 짧은 연결로, 피드백은 별도 링크로 배치. 모바일은 세로 배치.
+3) 10개 힌트: 중첩된 바탕을 줄이고 모바일 본문 16px와 줄 간격을 조정.
+4) 방송국 첫 의뢰문의 제목·본문·시작 버튼 대비 수정.
+5) 아파트 호수 안내와 방송 보관 음성의 넓은 표를 모바일 전용 기록 배치로 변경.
+6) 글꼴 서브셋 및 번들 재생성, 공개 사이트 v79 배포.
+
+이전 누적 작업에는 테마별 장치, 구역 선행 조건, 정답 조작 설명, 소유자 전용
+피드백함, 반응형 이미지·글꼴 최적화 등이 포함됩니다. 이전 보고서의 완료 표시는
+현재 모든 화면이 완벽하다는 뜻이 아닙니다. 이번 사용자 지적이 우선입니다.
+
+■ 6. 확인한 범위와 한계
+v79 검사 기록은 qa/QA-ui79.txt 및 qa79-matrix.json에 있습니다.
+PC 1365×850, 모바일 뷰포트 360×800에서 구성 요소별 검사:
+- 10개 첫 의뢰문.
+- 34개 장치 시작·정답 제출·성공 화면, 실제 콜백을 사용하는 보조 도구.
+- 10개 힌트 대기 및 1~3단계 응답.
+- 8개 물건 마무리 모든 단계 및 엔딩 연결. 나머지 2개는 고유 장치/엔딩.
+- 10개 엔딩 및 해설. 정비소는 요약 엔딩 검사.
+- 8개 사건 기록 본문 52개 × 2개 너비. 원본 본문 + 배포 CSS 렌더링 검사이며
+  동적 기록 위젯 전체 동작 검사는 아닙니다.
+- audit-playability-v64.cjs 통과: 34장치 콜백, 오답·저장 재개·힌트·진행 호환 등.
+- 공개 사이트에서 방송 첫 의뢰문 모바일 가독성 및 고양이 이어하기 진입 확인.
+
+미확인: v79의 새 10개 전체 수동 완주, 실제 iPhone Safari/Android Chrome 및
+스피커, 현재 공개본의 첫 방문 속도 수치, 실제 방문자 계정별 피드백 접근 회귀.
+대비 측정기는 가까운 배경색을 기준으로 하므로 사진·그라데이션·불투명도는
+완전하게 평가하지 못합니다. 자동 수치만으로 가독성 통과 판정하지 마세요.
+측정 JSON에는 수정 전/후 기록이 섞여 있습니다. 동일 label의 마지막 기록이
+최종 상태입니다. 과거 실패·측정 잡음을 삭제하거나 전체 PASS로 포장하지 마세요.
+
+■ 7. 남은 작업 — 우선순위
+P0 / 실제 사용자 진행:
+03-QA-CHECKLIST.csv의 10개×PC/모바일을 새 저장 상태로 처음부터 엔딩까지
+직접 플레이하세요. 깨끗한 별도 브라우저 프로필을 쓰고 기존 사용자 저장은 지우지
+마세요. 단서 위치, 막힘, 복귀, 다음 방 잠금, 저장 복귀, 최종 답지의 조작 일치를
+확인하고 문제마다 테마/장면/재현/수정/재검사 증거를 남기세요.
+
+P0 / 가독성과 화면:
+힌트 대기·비활성·성공·오류·답지·엔딩·다음 게임 연결까지 모든 상태를 확인.
+360/390/430px와 PC를 포함하고 320px 및 가로 화면도 좁은 경계 검사에 사용.
+사진관/오행당의 별도 기록 위젯과 정비소 영상 엔딩은 별도 수동 확인 필요.
+
+P0 / 속도와 버벅임:
+실제 공개 URL의 새 프로필·캐시 없는 첫 방문에서 모바일/PC를 측정.
+측정 기기·네트워크·캐시 조건과 LCP/긴 작업/초기 전송량/장면 전환 지연을 기록.
+이미지 decode, 여러 오디오 동시 로딩, 엔딩 영상, 전역 이벤트 중복 등록을 점검.
+ZIP 전체 크기는 첫 방문 다운로드 크기가 아닙니다. 수치 없이 '빨라졌다' 금지.
+
+P0 / 피드백 비공개:
+익명·다른 로그인 사용자·소유자 각각에서 관리자 페이지/API 권한을 확인.
+로컬 미리보기의 owner:false 응답은 인증 검증이 아닙니다.
+
+P1 / 재미·스토리:
+테마별 문체/힌트 양식/글꼴/색/직접 행동의 차이를 설명 가능할 정도로 검토.
+자료 열기→답 고르기의 반복이 남으면 퍼즐의 실제 행동과 결과 피드백을 개선.
+인과관계·필요한 근거·단서 발견 보상을 검토하고 실제 테스터 의견으로 재평가.
+사용자가 올린 캡처만 확인하는 방식은 금지. 미확인 행은 그대로 남길 것.
+
+■ 8. 로컬 개발과 주의점
+검증 환경 Node v24.18.1, npm 11.16.0. package-lock.json을 보존.
+cd mystery-site
+npm ci
+npm run build
+node scripts/audit-playability-v64.cjs
+node scripts/check-hint-entries-v77.cjs
+
+npm run build는 scripts/build-v44.mjs → build-performance-v53.mjs를 실행합니다.
+web/game-bundles 및 dist/client, dist/server/index.js, dist/.openai 등을 생성합니다.
+web/*.html의 CSS/JS 순서가 중요합니다. 최신 finale-v79.css는 해당 4개 진입점의
+마지막 수정 계층입니다. 생성된 dist 또는 game-bundles만 수정하면 다음 빌드에 사라집니다.
+
+글꼴에 새로운 한글이 필요할 때(기존 완성 자산으로 빌드만 하면 Python 불필요):
+python -m pip install fonttools brotli Pillow
+python scripts/prepare-performance-assets.py --font-only
+npm run build
+원본 SUIT-Variable.woff2는 포함되어 있습니다.
+
+design/BUILD.md의 'dist를 수정' 안내는 오래되어 현재에는 맞지 않습니다.
+build-episodes, implement-*, refine-*, integrate-* 등 과거 생성/일회성 스크립트는
+현재 문구/스타일을 덮어쓸 수 있습니다. 전체 스크립트를 일괄 실행하지 마세요.
+오래된 검사도 예전 기대값을 가질 수 있습니다. 실패 이유를 읽고 현재 요구와 비교.
+
+qa-tools/preview.mjs는 정적 프런트엔드 및 구성 요소 확인용입니다.
+피드백 DB 쓰기/소유자 인증/운영 Worker 전체는 실행하지 않습니다.
+node qa-tools/preview.mjs (압축 최상위에서 실행)
+http://127.0.0.1:8790/audit79?case=garage
+다른 case 값도 위 10개 ID를 사용합니다. 검사 도구가 URL을 /mechanics-preview로
+바꾸면 새로고침 대신 /audit79?case=...를 다시 여세요. /audit79는 실제 빌드 CSS를 주입.
+QA 버튼은 플레이를 건너뛰어 상태를 여는 도구입니다. 완주 검사의 대체물이 아닙니다.
+
+■ 9. 피드백/보안 경계
+hosting.json: project_id 보존, d1: DB, r2: null.
+worker는 oai-authenticated-user-email 헤더와 FEEDBACK_OWNER_EMAIL 환경 변수를
+비교해 관리자 권한을 결정합니다. 이 헤더는 신뢰할 수 있는 호스팅 인증 계층이
+설정해야 합니다. 다른 호스팅에 옮기면서 외부 요청 헤더를 그대로 신뢰하면 안 됩니다.
+GET /api/feedback-access: 소유자 여부.
+POST /api/feedback: 의견 제출.
+GET/PATCH /api/admin/feedback: 소유자만 조회/처리 표시.
+/feedback-admin: 로그인 및 소유자 확인 후 관리자 UI.
+D1 beta_feedback에는 사용자 원문이 저장됩니다. 값/DB 덤프는 이 패키지에 없음.
+실제 FEEDBACK_OWNER_EMAIL 값은 기존 환경에서 유지하고 문서나 ZIP에 적지 마세요.
+배포 방법과 이전 프로젝트 연결 주의사항은 02-DEPLOYMENT.txt를 따르세요.

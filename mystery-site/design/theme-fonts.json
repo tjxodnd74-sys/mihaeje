@@ -1,0 +1,37 @@
+[
+  {
+    "family": "Gowun Dodum",
+    "weight": 400,
+    "characters": 762,
+    "bytes": 66260,
+    "file": "MihaejePet-400.woff2"
+  },
+  {
+    "family": "Gowun Batang",
+    "weight": 400,
+    "characters": 762,
+    "bytes": 84356,
+    "file": "MihaejeLetter-400.woff2"
+  },
+  {
+    "family": "Gowun Batang",
+    "weight": 700,
+    "characters": 762,
+    "bytes": 72548,
+    "file": "MihaejeLetter-700.woff2"
+  },
+  {
+    "family": "Nanum Myeongjo",
+    "weight": 400,
+    "characters": 762,
+    "bytes": 120688,
+    "file": "MihaejeArchive-400.woff2"
+  },
+  {
+    "family": "Nanum Myeongjo",
+    "weight": 700,
+    "characters": 762,
+    "bytes": 128752,
+    "file": "MihaejeArchive-700.woff2"
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "theme": "garage",
+  "model": "seedance_2_5",
+  "job_id": "01aafe6b-88d5-4741-b701-3df5eba35399",
+  "credits": 56,
+  "duration": 8.042,
+  "resolution": "1280x720",
+  "bytes": 1033302,
+  "asset": "assets/endings/garage-film-v42.mp4",
+  "reference": "assets/endings/garage-v35.webp",
+  "notes": [
+    "Single pilot generation.",
+    "Optional video entry; separate canonical story explanation.",
+    "No video element or prefetch until user opens film.",
+    "Faststart H264/AAC; compression CRF24, audio64k.",
+    "Reviewed generated frames and mobile playback to end; Claude reviewed design only."
+  ]
+}

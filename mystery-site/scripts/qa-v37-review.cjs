@@ -1,0 +1,6 @@
+const fs=require('fs');
+let p='web/escape-kit.js',s=fs.readFileSync(p,'utf8');s=s.replace("(t.groupLabels||['책상','벽면 기록','서가'])[Number(this.panel.slice(-1))]", "(j?.groups||t.groupLabels||['책상','벽면 기록','서가'])[Number(this.panel.slice(-1))]");fs.writeFileSync(p,s);
+// This isolated preview fixture exercises real controllers with authored, non-user data.
+const states=['garage','apartment','radio','station','laundry','letter','pet-home','cat-invite'];
+const buttons=states.map(id=>'<button onclick="openFinal(\''+id+'\')">'+id+'</button>').join(' ');
+fs.writeFileSync('web/qa-v37.html','<!doctype html><html data-theme="garage"><head><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="site-episode-v37.css"></head><body style="padding:20px"><h1>Local physical finale verification</h1>'+buttons+'<p id="out" role="status"></p><script src="surface-ui.js"></script><script src="inspection.js"></script><script src="journeys-v37.js"></script><script>function openFinal(id){history.replaceState(null,"","?case="+id);document.documentElement.dataset.theme=id;window.MihaejeJourneys.finish({id,state:{},save(){},onDone(){document.getElementById("out").textContent=id+" ending reached"}})}</script></body></html>');

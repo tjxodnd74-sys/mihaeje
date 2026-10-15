@@ -1,0 +1,11 @@
+.ending-film[data-mode="summary"] .ending-film-image{animation:none}
+.ending-film[data-mode] .ending-film-top{z-index:2;background:linear-gradient(#000b,transparent)}
+.ending-film[data-mode="video"]{background:#101312}
+.ending-video-stage{position:absolute;inset:82px 24px 20px;max-width:1120px;margin:auto;overflow:auto;display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:12px}
+.ending-video-stage h2{margin:0;color:#f6f0e3;font:500 clamp(21px,3vw,30px)/1.5 SUIT,sans-serif}
+.ending-video-stage h2:focus{outline:none}
+.ending-video-player{display:block;width:100%;max-height:calc(100dvh - 230px);aspect-ratio:16/9;object-fit:contain;background:#000;border:1px solid #53594f;border-radius:2px}
+.ending-video-status{min-height:1.6em;margin:0;font:400 15px/1.6 SUIT,sans-serif;color:#e5dfd1}
+.ending-video-stage .ending-film-actions{margin:0}
+.ending-film[data-mode="summary"] .ending-film-explanation{margin-top:18px}
+@media(max-width:600px){.ending-video-stage{inset:78px 16px 20px;justify-content:center}.ending-video-player{max-height:65dvh}.ending-video-stage .ending-film-actions{flex-direction:column}.ending-video-stage .ending-film-actions button{width:100%}}

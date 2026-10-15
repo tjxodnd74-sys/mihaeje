@@ -1,0 +1,23 @@
+Generated with the built-in imagegen tool on 2026-10-10
+All three assets are original generations for the Mihaeje project
+All originals are RGB 1536 x 1024 PNG, separately generated and visually inspected
+No existing cover or room was reused
+
+Cover prompt: Cinematic photoreal Korean hanok threshold at dawn, five separately visible cloth ties blue red yellow white black near the partly open timber door, sealed blank cream letter on the threshold, welcoming healing mood, natural sunrise, no people/text/logos/UI, landscape 3:2
+Original: ohang-cover-original.png
+Exports: dist/assets/covers/ohang-v1.webp (1536x1024), ohang-480-v2.webp (480x320), ohang-960-v2.webp (960x640)
+
+Entry prompt: Photoreal welcoming hanok consultation room, low wooden desk, blank letter on left, five blue red yellow white black ceramic bowls at center, folded five-color textile and round brass compass on right, wooden cabinet behind, soft morning light, no people/readable text/UI, landscape 3:2
+Original: ohang-entry-original.png
+Export: dist/assets/photoreal/ohang-entry-v2.webp (1536x1024)
+Suggested hotspot centers in percentages: letter 18,76; bowls 51,67; textile 86,67; compass 88,79; cabinet drawer 73,35
+
+Inner prompt: Photoreal moonlit quiet hanok courtyard, tree left, warm lantern and blank folded letter on low stone center, winding stone path foreground, closed wooden garden gate right, hopeful healing atmosphere, no people/ghosts/text/UI, landscape 3:2
+Original: ohang-inner-original.png
+Export: dist/assets/photoreal/ohang-inner-v2.webp (1536x1024)
+Suggested hotspot centers in percentages: tree 31,44; lantern 49,61; folded letter 54,65; gate 81,51; path 66,81
+
+Generated source directory: C:/Users/PC/.codex/generated_images/01a124b9-6025-72e2-86b7-7cd1701a6a1e
+Cover source: exec-976103be-b356-4666-b2fb-7395a7a2090c.png
+Entry source: exec-a05d3052-9c89-40e4-a2ce-f94e2771a64d.png
+Inner source: exec-d049453b-ff44-4c84-8d36-8638ed3bb669.png

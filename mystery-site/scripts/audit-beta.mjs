@@ -1,0 +1,21 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';
+import {clockFacts,checkClock,seatingFacts,checkSeating} from '../dist/puzzle-rules.js';
+const load=id=>JSON.parse(fs.readFileSync('web/episodes/'+id+'.json'));
+const laundry=load('laundry'),cat=load('cat-invite');
+assert.deepEqual(clockFacts(laundry.gate),{code:'2356'});
+assert.deepEqual(clockFacts({...laundry.gate,terminalTime:'00:01',offset:2}),{code:'2359'});
+assert.equal(clockFacts({...laundry.gate,terminalTime:'25:00'}),null);
+let count=0;for(const machine of laundry.gate.machines)for(let n=0;n<10000;n++)if(checkClock(laundry.gate,{machine,code:String(n).padStart(4,'0')}))count++;
+assert.equal(count,1);assert(!checkClock(laundry.gate,{machine:'2',code:'0020'}));assert(!checkClock(laundry.gate,{machine:'2',code:'0008'}));
+const g=cat.gate;assert.deepEqual(seatingFacts(g),{code:'2571'});
+const perm=(xs,n)=>n?[...xs.flatMap(x=>perm(xs.filter(y=>y!==x),n-1).map(rest=>[x,...rest]))]:[[]];
+const assignments=perm(g.guests.map(p=>p.id),4).map(xs=>Object.fromEntries(g.seats.map((s,i)=>[s.id,xs[i]])));
+assert.equal(assignments.filter(placements=>checkSeating(g,{placements,code:'2571'})).length,1);
+assert(!checkSeating(g,{placements:{north:'vet',east:'vet',south:'post',west:'florist'},code:'2571'}));
+assert(!checkSeating(g,{placements:g.placements,code:'1527'}));
+let codes=0;for(let n=0;n<10000;n++)if(checkSeating(g,{placements:g.placements,code:String(n).padStart(4,'0')}))codes++;assert.equal(codes,1);
+const cases=JSON.parse(fs.readFileSync('web/cases.json'));const collections=JSON.parse(fs.readFileSync('web/collections.json'));
+for(const e of [laundry,cat]){const c=cases.find(c=>c.id===e.id);assert(c);assert.equal(c.storageKey,'mihaeje-'+e.id+'-v1');assert.equal(c.docCount,e.docs.length);assert(collections.assignments[e.id]);for(const suffix of ['entry-v2','inner-v2','tool-v2'])assert(fs.existsSync('web/assets/photoreal/'+e.id+'-'+suffix+'.webp'));for(const d of e.docs)assert.equal(c.docNames[d.id],d.title);const locked=e.docs.find(d=>d.locked);assert(locked&&locked.id===e.lockedDoc)}
+assert(cat.docs.find(d=>d.id==='invitation').body.includes('받는 사람: 다은'));
+assert(!cat.docs.filter(d=>!d.locked).some(d=>d.body.includes('받는 사람: 다은')));
+console.log('Two new games: 30,000 clock candidates, 120 seating arrangements, 10,000 codes; unique solutions, locked reveal, independent saves and assets verified');

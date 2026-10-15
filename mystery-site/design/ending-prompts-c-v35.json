@@ -1,0 +1,94 @@
+{
+  "mode": "built-in image_gen",
+  "assets": [
+    {
+      "id": "pet-home",
+      "description": "노령견 루미가 열린 새집 문턱에서 보호자를 바라보며 산책을 기다리는 장면 새 목줄 손잡이에만 낡은 파란 끈을 묶음",
+      "prompt": "Use case: photorealistic-natural. Asset type: final cinematic ending still for a Korean mystery browser game called First Guardian. One warm candid Korean independent-film photograph, widescreen landscape 16:9. Foreground low camera at dog eye height: a small ten-year-old cream and sandy-golden mixed breed dog with a gently gray muzzle, slightly floppy tan ears and expressive dark brown eyes pauses peacefully at an OPEN front doorway of its new Korean home. Not a puppy. Sunlight falls across its face and paws, showing lived-in soft fur. At right edge a young adult Korean woman's natural hand and forearm gently holds a new simple dog leash handle; tied to the HANDLE is a small weathered familiar BLUE school lanyard ribbon, clearly visible. The old blue cloth must NOT be tied around dog's neck or body. Dog looks toward its guardian, safe and calm, as if about to take their first walk together. Open doorway and bright quiet neighborhood path visible beyond, soft late afternoon golden light, unposed intimate tenderness, realistic ordinary home rather than luxurious stock interior. Emotional closure through a concrete shared action, not an empty office or posed greeting card. Muted natural colors, real lens rendering, skin and fur detail, gentle film grain. No writing, readable school marks, numbers, logo, watermark, subtitles, UI, collage, sad injury, exaggerated anthropomorphic expression, fantasy glow, duplicate dog or malformed hand. Keep essential dog, hand and blue leash ribbon within central crop-safe area.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12515-36f5-7082-baa9-17c5431cb819/exec-fb0fbe4b-5101-442c-bd53-bf39576c3bdc.png",
+      "archived_source": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\endings-c-v35\\pet-home-original.png",
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "outputs": [
+        {
+          "path": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\endings\\pet-home-v35.webp",
+          "bytes": 57042,
+          "size": [
+            960,
+            540
+          ]
+        },
+        {
+          "path": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\endings\\pet-home-480-v35.webp",
+          "bytes": 18424,
+          "size": [
+            480,
+            270
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cat-invite",
+      "description": "고양이 봄이가 분홍 리본을 건드리는 포장대 위 네 선물 뒤에서 다은을 맞이하는 네 이웃",
+      "prompt": "Use case: photorealistic-natural. Asset type: final cinematic ending still for a Korean mystery browser game called The Cat's Invitation. One warm genuinely candid Korean independent-film photograph, widescreen landscape 16:9. A small friendly ginger tabby cat sits comfortably on the near edge of a wooden gift-wrapping shop table and casually taps a loose pink ribbon with one paw. On the table exactly FOUR distinctly different modest wrapped gifts gathered for its human guardian: cream box with blue ribbon, small bakery kraft box with yellow ribbon, flat parcel with green ribbon, pastel gift with pink ribbon. Tiny bouquet and blank opened invitation envelope nearby, no legible writing. In the background softly out of focus, a young adult Korean woman opens the shop door and is warmly welcomed by four ordinary adult Korean neighbors, two women and two men, subtle natural smiles and relaxed candid gestures, faces secondary to cat and gifts. This is the guardian's first adoption anniversary, a small human neighborhood gathering made possible by the cat, not a pet birthday party. Window sunshine, real worn wrapping counter, soft floral shelf and practical paper rolls, cozy natural lived-in Korean neighborhood shop. Natural amber and cream colors, sunlight, realistic cat fur and casual documentary lens rendering, mild film grain. No candles, birthday hats, cake text, balloons, writing, numerals, logos, captions, watermark, UI, collage, perfect symmetrical staging, fantasy glow, duplicated animals or malformed paws. Cat and four color-distinct gifts should be unmistakable and prominent in the central crop-safe area.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12515-36f5-7082-baa9-17c5431cb819/exec-3c11949c-0602-4afb-bee7-b3a0b30bcd6a.png",
+      "archived_source": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\endings-c-v35\\cat-invite-original.png",
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "outputs": [
+        {
+          "path": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\endings\\cat-invite-v35.webp",
+          "bytes": 94802,
+          "size": [
+            960,
+            540
+          ]
+        },
+        {
+          "path": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\endings\\cat-invite-480-v35.webp",
+          "bytes": 29972,
+          "size": [
+            480,
+            270
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ohang",
+      "description": "아침 한옥 정원으로 열린 문턱에 새싹·등불·흙그릇·종·물잔과 빈 편지가 놓인 장면",
+      "prompt": "Use case: photorealistic-natural. Asset type: final cinematic ending still for a Korean traditional healing mystery browser game Five Lights Letter. One quiet intimate Korean independent-film photograph, widescreen landscape 16:9. Viewed from inside a real timber hanok, an OPEN wooden doorway frames a lush modest hanok garden in gentle morning sunlight, dew on leaves, pale stone path leading away. In the foreground along the low wooden threshold there are exactly five small ordinary meaningful objects together, not ritualistic decoration: a fresh green seedling in a tiny natural planter, a small red warm oil lantern with a restrained real flame, an earthy yellow-brown shallow clay resting bowl, a small pale brass hand bell, and a dark charcoal ceramic water cup holding clear still water. Their natural modest materials subtly correspond to wood, fire, earth, metal, water. A simple folded blank cream letter placed near the objects, no words or seal. The objects share the same quiet warm morning light; soft garden depth beyond conveys leaving with permission to rest and begin again. Natural tactile old wood, real mulberry-paper texture, muted green and sunlight, dignified gentle atmosphere, authentic candid location still rather than luxurious staged showroom. No people, text, characters, numbers, calligraphy, brands, logo, watermark, UI, collage, ghosts, altar, supernatural magic, ominous shadow, colored aura, decorative colored tassels, aggressive saturated five-color effects. Make the five objects distinct and readable without dominating the garden; keep all essential objects central crop-safe. Real photography, gentle lens depth, subtle film grain.",
+      "edit_prompt": "Precise-object-edit. Change ONLY the paper letter on the wooden threshold: remove all writing, faint marks, line patterns, drawings and any characters from its surface. Make the paper completely blank warm cream, with real natural fiber texture and its existing folds and stacked edges. Keep EVERYTHING else exactly as it is: hanok doorway framing, morning garden, seedling, lantern with small flame, clay bowl, brass hand bell, dark water cup, wood texture, shadows, composition, color, lighting and dimensions. No new text or symbols anywhere.",
+      "initial_source": "C:/Users/PC/.codex/generated_images/01a12515-36f5-7082-baa9-17c5431cb819/exec-4dd3281f-22f3-4068-9d50-40269ff38ae5.png",
+      "source": "C:/Users/PC/.codex/generated_images/01a12515-36f5-7082-baa9-17c5431cb819/exec-8c9ddc1a-79f0-431b-928b-9c66db651a79.png",
+      "archived_source": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\endings-c-v35\\ohang-original.png",
+      "source_dimensions": [
+        1672,
+        941
+      ],
+      "outputs": [
+        {
+          "path": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\endings\\ohang-v35.webp",
+          "bytes": 94480,
+          "size": [
+            960,
+            540
+          ]
+        },
+        {
+          "path": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\endings\\ohang-480-v35.webp",
+          "bytes": 29168,
+          "size": [
+            480,
+            270
+          ]
+        }
+      ]
+    }
+  ]
+}

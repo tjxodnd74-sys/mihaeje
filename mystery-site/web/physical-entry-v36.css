@@ -1,0 +1,53 @@
+/* Room objects only: photographed material, independent source clue and lock. */
+[data-room-case=garage]{--room-photo:url('assets/photoreal/garage-entry-v37.webp');--room-metal:#777866;--room-rim:#b8b59d}
+[data-room-case=apartment]{--room-photo:url('assets/photoreal/apartment-entry-v37.webp');--room-metal:#48615e;--room-rim:#a8bdb6}
+[data-room-case=radio]{--room-photo:url('assets/photoreal/radio-entry-v37.webp');--room-metal:#736047;--room-rim:#c1ad7e}
+[data-room-case=station]{--room-photo:url('assets/photoreal/station-entry-v37.webp');--room-metal:#476658;--room-rim:#bac6ac}
+[data-room-case=letter]{--room-photo:url('assets/photoreal/letter-entry-v37.webp');--room-metal:#806b4f;--room-rim:#d0ba90}
+[data-room-case=laundry]{--room-photo:url('assets/photoreal/laundry-entry-v37.webp');--room-metal:#57737a;--room-rim:#b9d0d2}
+[data-room-case=pet-home]{--room-photo:url('assets/photoreal/pet-home-entry-v37.webp');--room-metal:#69785a;--room-rim:#c2cba7}
+[data-room-case=cat-invite]{--room-photo:url('assets/photoreal/cat-invite-entry-v37.webp');--room-metal:#947257;--room-rim:#d5bda0}
+html[data-theme] body .escape-experience .room-hotspot .hotspot-label{background:#181e1deb;color:#fff7e6;border-color:#c9bea3;font:500 14px/1.5 SUIT,sans-serif;max-width:210px}
+html[data-theme] body .escape-experience .room-inventory .inventory-name,
+html[data-theme] body .inspection-body .room-inventory .inventory-name{color:#29352c;background:transparent;font:600 16px/1.5 SUIT,sans-serif}
+html[data-theme] body .escape-experience .room-inventory .inventory-item.selected .inventory-name,
+html[data-theme] body .inspection-body .room-inventory .inventory-item.selected .inventory-name{color:#fff8e8}
+html[data-theme] body .physical-room-detail{--room-ink:#f6efe0;--room-paper-ink:#292d28;--room-paper:#f0ead9;--panel-ink:var(--room-ink);--panel-muted:#d5cfbd;min-width:0;box-sizing:border-box}
+html[data-theme] body .inspection-dialog[data-surface][data-case][data-artifact] .inspection-body .physical-room-detail:is(.room-panel-clue,.room-panel-lock,.room-panel-target){display:grid;grid-template-columns:minmax(0,.38fr) minmax(0,.62fr);gap:14px 24px;max-width:none;padding:24px!important;border:1px solid #938977;background:linear-gradient(90deg,#171b19c7,#171b19ed),var(--room-photo) center 70%/cover!important;box-shadow:inset 0 0 0 3px #ffffff0a;color:var(--room-ink)}
+html[data-theme] body .physical-room-detail:is(.room-panel-clue,.room-panel-lock,.room-panel-target)>.object-zoom{grid-column:1;grid-row:1 / span 14;align-self:start;aspect-ratio:1;min-height:160px;max-height:360px;border:1px solid var(--room-rim);box-shadow:0 8px 24px #0005;background-color:#1f2421;background-repeat:no-repeat;filter:none}
+html[data-theme] body .physical-room-detail:is(.room-panel-clue,.room-panel-lock,.room-panel-target)>:not(.object-zoom){grid-column:2;min-width:0;margin-top:0}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail:is(.room-panel-clue,.room-panel-lock,.room-panel-target) :is(h3,h4){color:var(--room-ink)!important;font-family:SUIT,sans-serif!important}
+html[data-theme] body .inspection-dialog[data-surface][data-case][data-artifact] .inspection-body .physical-room-detail:is(.room-panel-clue,.room-panel-lock,.room-panel-target)>p{color:var(--room-ink)!important;font:17px/1.8 SUIT,sans-serif!important;margin:0 0 10px!important}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .puzzle-tag-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:6px 0 16px}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .puzzle-tag{min-width:0;padding:16px 8px;border:1px solid #a79c7d;background:var(--room-paper) url('assets/surfaces/invitation-paper-v1.webp') center/cover;box-shadow:1px 3px 4px #0004;transform:rotate(-1deg);color:var(--room-paper-ink)!important}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .puzzle-tag:nth-child(even){transform:rotate(1deg)}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .puzzle-tag :is(strong,small){color:var(--room-paper-ink)!important;overflow-wrap:anywhere;text-align:center}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .puzzle-tag strong{font:700 25px/1.5 SUIT,sans-serif}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .puzzle-tag small{font:600 14px/1.5 SUIT,sans-serif}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .puzzle-clue-document{background:var(--room-paper) url('assets/surfaces/invitation-paper-v1.webp') center/cover;color:var(--room-paper-ink);border:0;border-left:3px solid var(--room-rim);padding:18px;margin:8px 0 14px;box-shadow:0 4px 9px #0003}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .puzzle-clue-document :is(p,h4,summary,td,th){color:var(--room-paper-ink)!important;line-height:1.8;font-family:SUIT,sans-serif!important;white-space:pre-line}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .puzzle-clue-document p{font-size:17px!important;margin:0!important}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .puzzle-clue-document table{width:100%;table-layout:fixed;border-collapse:collapse}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .puzzle-clue-document :is(td,th){font-size:16px;padding:8px;border-bottom:1px solid #9b978a;overflow-wrap:anywhere;background:transparent}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .room-lock-slots{display:flex;flex-wrap:wrap;gap:8px;padding:18px 12px;margin:8px 0 14px;background:linear-gradient(135deg,#777b75,#424943 50%,#686e64);border:3px solid var(--room-metal);border-radius:6px;box-shadow:inset 0 0 0 1px var(--room-rim),0 5px 12px #0006}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail :is(.lock-slot,.channel-switch){background:linear-gradient(#212923,#101713);border:1px solid var(--room-rim);border-bottom:3px solid #0a110d;border-radius:3px;color:#f4ecd2;min-width:54px;min-height:54px;font:600 19px/1.4 SUIT,sans-serif;box-shadow:inset 0 1px 3px #0009;padding:10px}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .room-lock-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 14px}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .symbol-key{color:#28322a;background:linear-gradient(#eee8d6,#d4ceb9);border:1px solid #a79f89;border-bottom:3px solid #938c78;border-radius:3px;min-width:0;min-height:48px;padding:9px 6px;font:600 18px/1.5 SUIT,sans-serif;box-shadow:0 3px 5px #0004}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail:is(.room-panel-clue,.room-panel-lock,.room-panel-target) :is(.primary,.quiet){background:#e4d8b6;color:#232d26!important;border:1px solid #c6bc9d;min-height:48px;padding:10px 14px;font:600 16px/1.5 SUIT,sans-serif;margin:4px 0}
+html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .room-find-clue{background:transparent!important;color:#eae3d0!important;border-color:#a9a58e!important;font-size:15px}
+html[data-theme] body .inspection-dialog[data-surface][data-case][data-artifact] .inspection-body .physical-room-detail.room-panel-lock .room-find-clue{background:transparent!important;color:#eae3d0!important;border:1px solid #a9a58e!important}
+html[data-theme] body .inspection-dialog[data-surface][data-case][data-artifact] .inspection-body .physical-room-detail.room-panel-lock .room-feedback{background:#16251fd9!important;color:#f1eedf!important;border-left:3px solid var(--room-rim);padding:12px 14px!important}
+html[data-theme] body .inspection-dialog[data-surface][data-case][data-artifact] .inspection-body .physical-room-detail .room-source-location{font-size:14px!important;color:#d2cbb9!important}
+html[data-theme] body .physical-room-detail :focus-visible{outline:3px solid #f1d698;outline-offset:3px}
+@media(max-width:700px){
+ html[data-theme] body .inspection-dialog[data-surface][data-case][data-artifact] .inspection-body .physical-room-detail:is(.room-panel-clue,.room-panel-lock,.room-panel-target){display:block;padding:18px 14px!important}
+ html[data-theme] body .physical-room-detail:is(.room-panel-clue,.room-panel-lock,.room-panel-target)>.object-zoom{width:100%;aspect-ratio:2.4;min-height:105px;max-height:150px;margin:0 0 18px}
+ html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .puzzle-tag-row{gap:8px}
+ html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .puzzle-tag{padding:12px 5px}
+ html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .puzzle-clue-document{padding:14px}
+ html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .room-lock-slots{gap:6px;padding:12px 8px}
+ html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail :is(.lock-slot,.channel-switch){min-width:48px;font-size:17px;padding:9px 7px}
+ html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .channel-switch{flex:1;font-size:15px}
+ html[data-theme] body .inspection-dialog .inspection-body .physical-room-detail .symbol-key{font-size:16px}
+ html[data-theme] body .escape-experience .room-hotspot .hotspot-label{font-size:13px;max-width:160px}
+}

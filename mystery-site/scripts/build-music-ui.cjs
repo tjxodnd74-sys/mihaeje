@@ -1,0 +1,7 @@
+const fs=require('node:fs'),path=require('node:path');const root=path.resolve(__dirname,'..'),dist=path.join(root,'dist');
+const catalog=JSON.parse(fs.readFileSync(path.join(dist,'assets/music/catalog-v33.json'),'utf8')),tracks={};
+for(const t of catalog.tracks)tracks[t.case]={file:t.file,title:t.title,mood:t.mood,sourcePage:'https://incompetech.com/music/royalty-free/index.html?isrc='+t.isrc};
+const player=path.join(dist,'background-music.js');const code=fs.readFileSync(player,'utf8').replace(/const tracks=\/\* MUSIC_CATALOG \*\/(?:null|\{[^\n]+\});/,'const tracks=/* MUSIC_CATALOG */'+JSON.stringify(tracks)+';');fs.writeFileSync(player,code);
+const configFile=path.join(root,'design/style-entries.json'),config=JSON.parse(fs.readFileSync(configFile,'utf8'));
+for(const [page,styles] of Object.entries(config)){if(!styles.includes('background-music.css'))styles.push('background-music.css');const file=path.join(dist,page);let html=fs.readFileSync(file,'utf8').replace(/audio-ui\.js\?v=\d+/g,'audio-ui.js?v=34');html=html.replace(/background-music\.js\?v=\d+/g,'background-music.js?v=34');if(!html.includes('background-music.js'))html=html.replace('<script src="audio-ui.js?v=34"></script>','<script src="audio-ui.js?v=34"></script><script src="background-music.js?v=34"></script>');fs.writeFileSync(file,html);}
+fs.writeFileSync(configFile,JSON.stringify(config,null,2)+'\n');const bundle=path.join(root,'scripts/build-static-styles.cjs');fs.writeFileSync(bundle,fs.readFileSync(bundle,'utf8').replace(/-v\d+\.css/,'-v34.css'));

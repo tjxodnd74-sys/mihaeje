@@ -1,0 +1,8 @@
+/* Display the approved transparent artwork without its outer canvas margins. */
+.logo-link{display:inline-flex;align-items:center;vertical-align:middle;text-decoration:none}
+.brand-logo{--logo-content-width:146px;display:block;position:relative;flex:none;overflow:hidden;width:calc(var(--logo-content-width) + 4px);height:calc(var(--logo-content-width) * .246277 + 4px)}
+.brand-logo img{display:block;position:absolute;width:calc(var(--logo-content-width) * 1.135738);height:auto;max-width:none;left:calc(2px - var(--logo-content-width) * .068728);top:calc(2px - var(--logo-content-width) * .097938)}
+#brand:before{display:none}
+footer .brand-logo{--logo-content-width:108px}
+.site-footer{display:flex;align-items:center;justify-content:center;gap:14px}
+@media(max-width:700px){header .brand-logo{--logo-content-width:110px}}

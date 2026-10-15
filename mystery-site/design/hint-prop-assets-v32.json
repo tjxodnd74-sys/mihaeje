@@ -1,0 +1,96 @@
+{
+  "mode": "built-in image_gen",
+  "coordinate_units": "percent of complete image; visually measured actual generated assets rather than requested prompt positions",
+  "assets": [
+    {
+      "name": "radio-front-v32",
+      "prompt": "Use case: photorealistic-natural. Asset type: directly interactive photographic prop for an immersive browser escape game, HTML input will be precisely overlaid on actual LCD in the photo. One real vintage black handheld walkie-talkie lies FLAT face-up upright vertically on a dark charcoal fine concrete tabletop. Camera exactly 90 degrees overhead, orthographic top-down, no perspective tilt, all front surfaces parallel to camera, no diagonals. Portrait 4:5 photograph. Device centered, approximately 85 percent of frame height including antenna and 55 percent of frame width. Antenna points straight upward and device body below it. A simple empty pale olive-green rectangular LCD is on upper body with its center at image x50 percent y43 percent. LCD is large enough for a short four character input, approximately 31 percent of image width and 9 percent of image height, completely blank with NO letters or numbers. Below LCD in middle body a realistic dark speaker grille. One large worn unmarked physical rectangular push button in lower body, with front-facing flat surface, center near image x50 percent y77 percent. Authentic worn rubber black body and aged plastic, quiet subdued light, detailed tactile realism. No other devices, loose accessories, hands, logos, branding, numerals, labels, printed letters, UI or watermark. Antenna entirely in frame. Concrete background very dark and unobtrusive. Use a clear unambiguous LCD and button shape for precise HTML overlays.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12515-36f5-7082-baa9-17c5431cb819/exec-59d21e35-4111-43ff-b30d-572d8b783e78.png",
+      "lcd": {
+        "left": 37.9,
+        "top": 44.8,
+        "width": 23.8,
+        "height": 7.2,
+        "center": [
+          49.8,
+          48.4
+        ]
+      },
+      "lcd_safe": {
+        "left": 38.5,
+        "top": 45.2,
+        "width": 22.6,
+        "height": 6.4
+      },
+      "button": {
+        "left": 41.1,
+        "top": 72.4,
+        "width": 17.3,
+        "height": 10,
+        "center": [
+          49.75,
+          77.4
+        ]
+      },
+      "button_safe": {
+        "left": 42,
+        "top": 73,
+        "width": 15.5,
+        "height": 8.8
+      },
+      "archived_source": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\hint-prop-assets-v32\\radio-front-v32-original.png",
+      "final": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\hints\\radio-front-v32.webp",
+      "bytes": 149982,
+      "size": [
+        1024,
+        1280
+      ],
+      "webp_quality": 70
+    },
+    {
+      "name": "intercom-front-v32",
+      "prompt": "Use case: photorealistic-natural. Asset type: directly interactive photographic console prop for an immersive browser escape game, actual HTML LCD input and click button will be precisely overlaid on photo. Create one true 90-degree overhead flat-lay photograph, camera exactly above and parallel to top face, no angle or perspective distortion. Portrait 4:5. A single vintage rectangular desktop intercom console made of worn brushed stainless steel on unobtrusive very dark wood tabletop, console occupies approximately central 80 percent of frame. Console top face oriented squarely horizontally/vertically with image, not diagonal. Top-left section has a perforated speaker grille. Top-right section has a completely blank rectangular near-black LCD display with muted grey interior, center exactly near image x63 percent y37 percent, dimensions approximately 25 percent of total image width by 10 percent total image height. Lower-right section has a single large blank round physical press-to-talk button, center near image x67 percent y69 percent, diameter approximately 15 percent of image width. A long black flexible gooseneck microphone is attached to the left side of console and gently curved along left edge, entirely within frame and not covering controls. Authentic scratched stainless metal, aged rubber, real ordinary broadcast equipment, subtle subdued photographic light. No words, numbers, markings, labels, brands, logos, hands, extra equipment, separate accessories, watermark, UI. Rectangular console face and LCD perfectly parallel to camera for precise HTML overlays.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12515-36f5-7082-baa9-17c5431cb819/exec-82bc6df3-b4e7-4693-b2fe-c5ecb1013cba.png",
+      "lcd": {
+        "left": 50.8,
+        "top": 39.3,
+        "width": 34,
+        "height": 8.9,
+        "center": [
+          67.8,
+          43.75
+        ]
+      },
+      "lcd_safe": {
+        "left": 51.6,
+        "top": 39.8,
+        "width": 32.4,
+        "height": 7.9
+      },
+      "button": {
+        "center": [
+          67.4,
+          67.6
+        ],
+        "width": 18.9,
+        "height": 15.1
+      },
+      "button_safe": {
+        "center": [
+          67.4,
+          67.6
+        ],
+        "width": 12.5,
+        "height": 10
+      },
+      "archived_source": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\hint-prop-assets-v32\\intercom-front-v32-original.png",
+      "final": "C:\\Users\\PC\\Documents\\Codex\\2026-10-07\\new-chat\\work\\mystery-site\\dist\\assets\\hints\\intercom-front-v32.webp",
+      "bytes": 119212,
+      "size": [
+        1024,
+        1280
+      ],
+      "webp_quality": 78
+    }
+  ]
+}

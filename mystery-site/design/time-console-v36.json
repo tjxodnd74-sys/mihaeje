@@ -1,0 +1,26 @@
+{
+  "mode": "built-in image_gen",
+  "prompt": "Use case: photorealistic-natural. Asset type: physical timestamp-calibration puzzle prop background photo for a Korean mystery game, landscape 3:2. A real repair workbench photographed from exactly directly overhead, stable orthographic-feeling top-down photographic perspective. Centered on a worn warm wooden bench is ONE vintage compact brushed-steel timestamp calibration console, a physical rectangular instrument with rounded metal corners and small real screws. Across the middle of its face are EXACTLY FOUR large separate dark rectangular display windows in one straight horizontal row; all four are completely blank, unmarked, dark nearly black, evenly spaced, with thin metal bezels. Immediately above each window a small blank tarnished brass label plate, no engraving at all. Below EACH of the four display windows are EXACTLY TWO small tactile rotary brass knobs arranged side-by-side, eight knobs total, entirely below and not covering the windows. Believable real knobs, brushed metal scratches and mild edge wear, screw fasteners, light traces of workshop use. A small narrow blank receipt paper lies at left margin of the workbench outside console. Console occupies central 80 percent of the landscape frame and all four windows, brass plates and eight knobs stay completely visible inside the image, with generous black window space for future interactive overlays. Warm daylight from workshop window, softly neutral shadows, real editorial product photograph with naturally tactile metal and wood detail, crisp focus across instrument, no dramatic night atmosphere. No text, no numbers, no markings, no letters, no logo, no watermark, no UI, no drawn buttons, no illustration, no generic digital dashboard, no CGI, no perspective tilt, no hands, no background night room.",
+  "source": "C:/Users/PC/.codex/generated_images/01a12608-f810-7fe2-af2f-ac99ef374eda/exec-6fdd0456-9a52-4e96-bc51-54d94a6746b9.png",
+  "source_dimensions": [
+    1536,
+    1024
+  ],
+  "outputs": [
+    {
+      "path": "dist/assets/props/time-console-v36.webp",
+      "size": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "dist/assets/props/time-console-480-v36.webp",
+      "size": [
+        480,
+        320
+      ]
+    }
+  ],
+  "inspection": "Actual generated photograph inspected: top-down steel instrument, four blank dark windows, four blank brass plates, eight rotary brass knobs (two per window), blank receipt at left. No readable text or digits. Suggested overlay centers: windows x22.5%,42.5%,62.5%,82.5% and y46%; label plates same x and y30.7%; knobs y62.5%."
+}

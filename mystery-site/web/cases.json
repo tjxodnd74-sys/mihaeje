@@ -1,0 +1,292 @@
+[
+  {
+    "id": "garage",
+    "number": "001",
+    "title": "마지막 정비소",
+    "subtitle": "사라진 SD카드",
+    "genre": "미스터리 추리",
+    "minutes": 15,
+    "difficulty": "★★★★",
+    "image": "assets/covers/garage-v1.webp",
+    "href": "case.html",
+    "storageKey": "garage-case-v1",
+    "description": "폐업 전날 밤 사라진 고객의 기록\n세 사람의 진술과 남겨진 자료를 대조하세요",
+    "docCount": 7,
+    "docNames": {
+      "brief": "조사 의뢰",
+      "people": "세 사람의 진술",
+      "clock": "점검 영수증",
+      "video": "블랙박스 영상",
+      "entry": "출입 서버 기록",
+      "backup": "잠긴 백업",
+      "memo": "폐업 인계 문서"
+    },
+    "fragment": {
+      "label": "분류 조각 M",
+      "text": "사건 해결 후 등록한 폐업 인계 종이 사본의 분류 조각 M"
+    },
+    "imageAlt": "젖은 정비소 앞에 멈춘 붉은 자동차",
+    "difficultyLevel": 4
+  },
+  {
+    "id": "apartment",
+    "number": "002",
+    "title": "404호의 불빛",
+    "subtitle": "아무도 살지 않는 창문",
+    "genre": "도시괴담 · 공간 추리",
+    "minutes": 17,
+    "difficulty": "★★★",
+    "image": "assets/covers/apartment-v1.webp",
+    "href": "episode.html?case=apartment",
+    "storageKey": "mihaeje-apartment-v1",
+    "description": "철거를 앞둔 연립주택의 불빛\n사진과 평면도로 소문의 방을 찾아보세요",
+    "docCount": 6,
+    "docNames": {
+      "brief": "불빛 제보",
+      "films": "불빛을 찍은 필름",
+      "plan": "건물 배치도",
+      "agreement": "관리인의 점검 공책",
+      "power": "철거 전 점검 일지",
+      "inspection": "봉인된 점검함"
+    },
+    "fragment": {
+      "label": "분류 조각 R",
+      "text": "점검 자료의 보관 사본에 남은 분류 조각 R"
+    },
+    "imageAlt": "어두운 연립주택에 홀로 켜진 창문",
+    "difficultyLevel": 3
+  },
+  {
+    "id": "radio",
+    "number": "003",
+    "title": "끝나지 않은 방송",
+    "subtitle": "꺼진 마이크의 새벽 두 시",
+    "genre": "방송 미스터리 · 조각 복원",
+    "minutes": 17,
+    "difficulty": "★★★★★",
+    "image": "assets/covers/radio-v1.webp",
+    "href": "episode.html?case=radio",
+    "storageKey": "mihaeje-radio-v1",
+    "description": "폐국한 방송국에서 흘러나온 목소리\n조각을 이어 송출 경로를 복원하세요",
+    "docCount": 6,
+    "docNames": {
+      "brief": "택시 기사의 제보",
+      "transcript": "수신 기록",
+      "archive": "보관 음성 조각",
+      "rules": "편집자의 연결 표식표",
+      "power": "폐국 확인서",
+      "transmission": "복원된 송출 로그"
+    },
+    "fragment": {
+      "label": "분류 조각 17",
+      "text": "송출 점검 종이 사본의 분류 조각 17"
+    },
+    "imageAlt": "붉은 빛을 받는 오래된 방송 마이크",
+    "difficultyLevel": 5
+  },
+  {
+    "id": "station",
+    "number": "004",
+    "title": "세 번째 승강장",
+    "subtitle": "없는 승강장에서 온 사진",
+    "genre": "실종 미스터리 · 길 찾기",
+    "minutes": 25,
+    "difficulty": "★★★",
+    "image": "assets/covers/station-v1.webp",
+    "href": "play.html?case=station",
+    "storageKey": "mihaeje-v2-station",
+    "description": "회사를 그만두고 방을 뺀 친구가 보낸 마지막 사진은\n지금은 없는 승강장이었습니다. 친구가 남긴 길을 따라가세요",
+    "docCount": 12,
+    "docNames": {
+      "message": "민서의 마지막 메시지",
+      "sign": "벽에 기댄 옛 표지판",
+      "clerk": "매표창구의 역무원",
+      "notice": "승강장 개편 안내",
+      "brief": "민서와 나",
+      "strip": "기둥에 붙은 네컷사진",
+      "timetable": "기둥의 출발 시각표",
+      "postcard": "게시판의 그림엽서",
+      "lockerrule": "보관함 이용 안내",
+      "letter": "민서의 편지",
+      "handmap": "접힌 손지도",
+      "final": "민서의 편지 · 마지막 장"
+    },
+    "fragment": {
+      "label": "분류 조각 04",
+      "text": "도착 확인 종이 사본의 분류 조각 04"
+    },
+    "imageAlt": "새벽 대합실 벽에 기대 둔 낡은 3번 승강장 표지",
+    "difficultyLevel": 3
+  },
+  {
+    "id": "letter",
+    "number": "005",
+    "title": "반송된 편지",
+    "subtitle": "받는 사람 없는 보관함",
+    "genre": "기록 미스터리 · 서가 해제",
+    "minutes": 20,
+    "difficulty": "★★★",
+    "image": "assets/covers/letter-v1.webp",
+    "href": "episode.html?case=letter",
+    "storageKey": "mihaeje-letter-v1",
+    "description": "서로 다른 네 사건의 반송 봉투\n주소와 우체국 날짜 도장을 대조해 마지막 기록을 여세요",
+    "docCount": 6,
+    "docNames": {
+      "brief": "반송된 네 봉투",
+      "envelopes": "봉투 앞뒤",
+      "address": "주소 변경 공고",
+      "classification": "사서의 분류 메모",
+      "catalogue": "보존서고 목록",
+      "register": "사서의 인수 기록"
+    },
+    "fragment": {
+      "label": "MR-17 기록군 해제",
+      "text": "MR-17-04 · 기록의 연결은 사건이 끝난 뒤 시작됐습니다"
+    },
+    "imageAlt": "파란 끈으로 묶은 오래된 편지와 열쇠",
+    "difficultyLevel": 3
+  },
+  {
+    "id": "pet-home",
+    "number": "006",
+    "title": "첫 번째 보호자",
+    "subtitle": "파란 끈을 버리지 않은 이유",
+    "genre": "반려동물 · 감동 미스터리",
+    "minutes": 17,
+    "difficulty": "★★",
+    "image": "assets/covers/pet-home-v1.webp",
+    "href": "episode.html?case=pet-home",
+    "storageKey": "mihaeje-pet-home-v1",
+    "description": "열 살 강아지 루미와 함께 도착한 작은 상자\n오래된 기념품에서 처음 만난 날을 찾아보세요",
+    "docCount": 7,
+    "docNames": {
+      "brief": "유나의 의뢰",
+      "objects": "루미의 기념품",
+      "records": "보호센터의 돌봄 기록",
+      "rule": "정우의 정리 메모",
+      "photos": "유나의 오래된 사진첩",
+      "identity": "루미의 진료·입양 기록",
+      "letter": "정우가 남긴 편지"
+    },
+    "fragment": {
+      "label": "포장 가게의 지난 모임",
+      "text": "포장 가게에서 지난 6월의 모임 사진을 보내왔습니다. 봄이 이름이 적힌 선물과 접힌 초대장이 함께 보입니다."
+    },
+    "imageAlt": "파란 끈을 한 노견 루미의 얼굴",
+    "difficultyLevel": 2
+  },
+  {
+    "id": "studio",
+    "number": "007",
+    "title": "비가 그친 사진관",
+    "subtitle": "스무 해 동안 기다린 한 장",
+    "genre": "감동 미스터리 · 사물 조작",
+    "minutes": 25,
+    "difficulty": "★★",
+    "image": "assets/covers/studio-v1.webp",
+    "href": "studio.html",
+    "storageKey": "mihaeje-studio-v1",
+    "description": "스무 해 전에 맡긴 필름\n빛에 비춰 글씨를 읽고 함께 인화를 준비하세요",
+    "docCount": 9,
+    "docNames": {
+      "brief": "할아버지의 부탁",
+      "paper": "빛에 드러난 글씨",
+      "drawer": "C3 서랍의 필름 슬리브",
+      "wall": "전시 액자",
+      "film": "정리한 필름",
+      "procedure": "암실 공정표",
+      "portrait": "인화한 사진",
+      "portrait-back": "사진 뒷면",
+      "ending": "사진관의 새 작품"
+    },
+    "imageAlt": "빗물 맺힌 창 앞에서 필름을 들여다보는 손",
+    "difficultyLevel": 2
+  },
+  {
+    "id": "laundry",
+    "number": "008",
+    "title": "자정의 무인 세탁소",
+    "subtitle": "손님보다 먼저 끝난 세탁",
+    "genre": "생활 미스터리 · 시간 추리",
+    "minutes": 19,
+    "difficulty": "★★★★",
+    "image": "assets/covers/laundry-v1.webp",
+    "description": "비어 있는 세탁기와 사라진 고객의 코트\n자정을 넘긴 두 시계를 맞춰 수령 기록을 여세요",
+    "fragment": {
+      "label": "다음 주문의 영수증",
+      "text": "출력구에 N-09 영수증이 끼워져 있습니다. 발행 날짜는 아직 오지 않은 내일입니다."
+    },
+    "href": "episode.html?case=laundry",
+    "storageKey": "mihaeje-laundry-v1",
+    "docCount": 7,
+    "docNames": {
+      "brief": "이미 수령했다는 코트",
+      "order": "코트 접수표",
+      "receipt": "다음 날의 영수증",
+      "clock": "시계 점검 스티커",
+      "entry": "밤의 출입 목록",
+      "note": "운영자에게 남긴 문의",
+      "audit": "봉인된 수령 원장"
+    },
+    "imageAlt": "야간 무인 세탁소의 차가운 불빛",
+    "difficultyLevel": 4
+  },
+  {
+    "id": "cat-invite",
+    "number": "009",
+    "title": "고양이의 초대장",
+    "subtitle": "리본 아래 숨긴 이름",
+    "genre": "반려동물 · 감동 미스터리",
+    "minutes": 17,
+    "difficulty": "★",
+    "image": "assets/covers/cat-invite-v1.webp",
+    "description": "고양이 봄이의 축하 자리를 준비하는 다은\n선물과 자리표를 맞춰 마지막 봉투를 여세요",
+    "fragment": {
+      "label": "이웃들과 남긴 사진",
+      "text": "다은과 봄이, 네 이웃이 한 식탁에 모였습니다. 미정은 다음에도 이 자리에서 만나자며 사진을 남겼습니다."
+    },
+    "href": "episode.html?case=cat-invite",
+    "storageKey": "mihaeje-cat-invite-v1",
+    "docCount": 7,
+    "docNames": {
+      "brief": "봄이 앞으로 온 선물",
+      "gifts": "리본 아래 이름표",
+      "room": "포장 가게의 자리표",
+      "notes": "이웃들이 보낸 쪽지",
+      "date": "봄이를 돌보던 달력",
+      "card": "접힌 감사 카드",
+      "invitation": "빈칸에 들어간 이름"
+    },
+    "imageAlt": "햇살 가게의 창가에서 쉬는 고양이",
+    "difficultyLevel": 1
+  },
+  {
+    "id": "ohang",
+    "number": "010",
+    "title": "돌아오는 계절",
+    "subtitle": "오행당에 맡겨둔 마음",
+    "genre": "오행 · 선택형 힐링 방탈출",
+    "minutes": 20,
+    "difficulty": "★★",
+    "difficultyLevel": 2,
+    "image": "assets/covers/ohang-v1.webp",
+    "href": "ohang.html",
+    "storageKey": "mihaeje-ohang-v1",
+    "description": "그릇과 등불을 돌아보는 짧은 이야기\n오늘 적은 말과 챙길 물건을 직접 고르세요",
+    "docCount": 7,
+    "docNames": {
+      "brief": "접수대의 부탁",
+      "symbols": "다섯 빛의 원리",
+      "reserve": "접어둔 예약",
+      "circle": "상생의 고리",
+      "directions": "오방의 자리",
+      "reveal": "관리인이 보관한 접수표",
+      "letter": "나에게 남긴 편지"
+    },
+    "imageAlt": "새벽 한옥 문턱에 남은 봉인된 편지와 오방색 천",
+    "fragment": {
+      "label": "오행당의 편지 · 다음 계절",
+      "text": "다음 손님의 접수함에는 보내는 사람과 받는 사람의 글씨가 서로 달랐습니다"
+    }
+  }
+]

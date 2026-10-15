@@ -1,0 +1,88 @@
+﻿인수인계 패키지 검사 / 2026-10-14
+
+기준: v79 / e816ad150c5a469da586dc34243d332e0f3cdf18
+1. Git HEAD 일치 및 원본 작업 트리 변경 없음 확인.
+2. git archive로 현재 커밋의 전체 추적 소스 683개 파일을 추출.
+3. 별도 추출 폴더에서 npm ci --no-audit --no-fund 성공.
+   초기 제한 환경의 설치 대기를 중단하고 네트워크 허용 환경에서 완료.
+   npm은 esbuild 설치 스크립트 승인 경고를 냈지만 설치와 빌드는 성공.
+4. 해당 추출 폴더의 node_modules/esbuild를 명시하여 npm run build 성공.
+   Node v24.18.1 / npm 11.16.0. 기존 work/perf-tools 의존 없이 확인.
+5. node scripts/audit-playability-v64.cjs 통과: 10게임 34장치 실제 콜백,
+   오답/저장 재개/정답 힌트/진행 및 기존 저장 호환 검사.
+6. node scripts/check-hint-entries-v77.cjs 통과: 4개 진입점의 문구·답지·힌트 로딩 순서.
+7. 포함한 qa-tools/preview.mjs 실행 후 8개 URL HTTP 200 확인. 서버 종료.
+   이는 서버/경로 검사이며 새 브라우저 시각 검사나 전체 수동 완주가 아님.
+8. 20행(10개 게임×PC/모바일)의 후속 완주 검사표 형식 확인.
+9. 소스와 QA 텍스트에서 대표적인 토큰/개인키/자격 증명 포함 URL 패턴 검사.
+   해당 패턴 검출 없음. 모든 종류의 비밀을 탐지한다는 보장은 아님.
+10. 최종 ZIP은 원본 Git 소스를 그대로 포함. node_modules/dist/.git/실제 피드백
+    DB/환경 변수 파일을 제외. SOURCE-MANIFEST.json은 원본 683개 파일별 SHA-256.
+
+현재 턴은 인수인계 작업이며 사이트 기능 변경이나 재배포를 하지 않았습니다.
+v79의 구성 요소별 화면 검사 결과는 qa/QA-ui79.txt를 참조하세요.
+실제 기기/현재 첫 방문 속도/10게임 새 수동 완주는 이번 패키징 검사 범위가 아닙니다.
+
+재빌드 후 원본 추적 파일과 바이트가 다른 파일 수: 17
+빌드 재생성 차이(최종 ZIP은 원본 커밋 사용):
+mystery-site/design/performance-bundles-v53.json
+mystery-site/web/game-bundles/case-v53.css
+mystery-site/web/game-bundles/case-v53.js
+mystery-site/web/game-bundles/case.html
+mystery-site/web/game-bundles/episode-v53.css
+mystery-site/web/game-bundles/episode-v53.js
+mystery-site/web/game-bundles/episode.html
+mystery-site/web/game-bundles/index-v53.css
+mystery-site/web/game-bundles/index-v53.js
+mystery-site/web/game-bundles/index.html
+mystery-site/web/game-bundles/ohang-v53.css
+mystery-site/web/game-bundles/ohang-v53.js
+mystery-site/web/game-bundles/ohang.html
+mystery-site/web/game-bundles/performance-entry-v58.js
+mystery-site/web/game-bundles/studio-v53.css
+mystery-site/web/game-bundles/studio-v53.js
+mystery-site/web/game-bundles/studio.html
+
+로컬 HTTP 검사:
+[
+  {
+    "path": "/",
+    "status": 200,
+    "bytes": 163365
+  },
+  {
+    "path": "/case",
+    "status": 200,
+    "bytes": 463903
+  },
+  {
+    "path": "/episode?case=letter",
+    "status": 200,
+    "bytes": 452097
+  },
+  {
+    "path": "/studio",
+    "status": 200,
+    "bytes": 426681
+  },
+  {
+    "path": "/ohang",
+    "status": 200,
+    "bytes": 395919
+  },
+  {
+    "path": "/audit79?case=radio",
+    "status": 200,
+    "bytes": 443018
+  },
+  {
+    "path": "/qa-all79.js",
+    "status": 200,
+    "bytes": 39687
+  },
+  {
+    "path": "/api/feedback-access",
+    "status": 200,
+    "bytes": 15
+  }
+]

@@ -1,0 +1,173 @@
+{
+  "mode": "built-in image_gen",
+  "assets": [
+    {
+      "id": "letter",
+      "prompt": "Use case: photorealistic-natural. Asset type: narrative ending detail still for a Korean mystery game, landscape 3:2. Intimate close-up of a naturally aged cream paper envelope gently being passed from one adult hand to another across a warm worn wooden archive reading table. An unmarked cream forwarding slip tucked under the envelope lip has only a simple hand drawn route line and two plain circles, no address, no letters or digits. The original envelope remains preserved and intact, bent edges and paper fibers visible. Early morning window light across fingers and paper, a muted red old rubber stamp resting softly out of focus at the table edge. A story of a letter finding its changed receiving location and being cared for, calm warm closure. Candid real documentary photograph, natural hand anatomy, shallow depth of field, subtle analog grain and realistic skin and paper. Keep hands and envelope within central safe area for 3:2 crop. No readable text anywhere, no logos, no watermark, no UI, no montage, no CGI, no symbols implying prophecy.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12608-f810-7fe2-af2f-ac99ef374eda/exec-49c895a6-120a-40c4-9de9-22436d5cf624.png",
+      "outputs": [
+        {
+          "path": "dist/assets/endings/letter-detail-v36.webp",
+          "size": [
+            960,
+            640
+          ],
+          "bytes": 74306
+        },
+        {
+          "path": "dist/assets/endings/letter-detail-480-v36.webp",
+          "size": [
+            480,
+            320
+          ],
+          "bytes": 26738
+        }
+      ],
+      "inspection": "Generated photo visually inspected: required objects and natural material detail present; no readable text, logos or UI.",
+      "source_dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "pet-home",
+      "prompt": "Use case: photorealistic-natural. Asset type: narrative ending detail still for a Korean mystery game, landscape 3:2. Tender tabletop-height close-up in a modest warm Korean family home: the visible cream and sandy-golden front paw and softly gray fur of an elderly small mixed-breed dog resting beside and partly on a familiar folded pale blanket. An old worn wooden photo frame stands immediately behind the paw on a low wooden surface. In the small faded photograph inside the frame, only a childhood hand and a small puppy paw are seen, no human face or recognizable person. The dog is peaceful and at home, only its lower foreleg and paw in close focus, with tactile lived-in fur, knitted blanket fibers and scuffed frame. Soft morning sunlight, emotionally reassuring reunion, real 35mm documentary detail photo, mild grain and natural warm colors. No injury, no grief, no birthday decorations, no writing, readable numbers, logos, watermark, UI, collage, CGI or fantasy light. Main paw, blanket and frame crop safe within central region.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12608-f810-7fe2-af2f-ac99ef374eda/exec-6f64a8ea-a586-44c7-8add-95924d9c0f1d.png",
+      "outputs": [
+        {
+          "path": "dist/assets/endings/pet-home-detail-v36.webp",
+          "size": [
+            960,
+            640
+          ],
+          "bytes": 104398
+        },
+        {
+          "path": "dist/assets/endings/pet-home-detail-480-v36.webp",
+          "size": [
+            480,
+            320
+          ],
+          "bytes": 37284
+        }
+      ],
+      "inspection": "Generated photo visually inspected: required objects and natural material detail present; no readable text, logos or UI.",
+      "source_dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "cat-invite",
+      "prompt": "Use case: photorealistic-natural. Asset type: narrative ending detail still for a Korean mystery game, landscape 3:2. Close-up at a shared wooden neighborhood dining table in a modest Korean wrapping shop. A blank ivory invitation is unfolded beside its opened envelope, loose untied pink satin ribbon curling gently across the paper. The friendly front paw of a ginger tabby cat softly touches the ribbon, only its foreleg and paw visible at right. A tiny informal bunch of fresh flowers in a simple glass jar sits near the invitation; an adult neighbor's relaxed hand at far edge lightly steadies the opened envelope. This invitation celebrates the human guardian's first adoption anniversary and the neighbors meeting together, subtle evidence of shared table places softly blurred beyond. Natural afternoon window light, tactile paper and ribbon, warm candid documentary photography, delicate film grain, no posed greeting card. Landscape 3:2 crop safe central composition. Paper genuinely blank; no visible words, handwriting, digits, logos, watermark, UI, birthday cake, party hat, fantasy, CGI or extra paws.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12608-f810-7fe2-af2f-ac99ef374eda/exec-ec959523-f20b-44e4-b109-085539d6f7bf.png",
+      "outputs": [
+        {
+          "path": "dist/assets/endings/cat-invite-detail-v36.webp",
+          "size": [
+            960,
+            640
+          ],
+          "bytes": 84402
+        },
+        {
+          "path": "dist/assets/endings/cat-invite-detail-480-v36.webp",
+          "size": [
+            480,
+            320
+          ],
+          "bytes": 31794
+        }
+      ],
+      "inspection": "Generated photo visually inspected: required objects and natural material detail present; no readable text, logos or UI.",
+      "source_dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "studio",
+      "prompt": "Use case: photorealistic-natural. Asset type: narrative ending detail still for a Korean mystery game, landscape 3:2. Extremely tactile close-up of one freshly developed silver gelatin black-and-white photographic print hanging from two modest wooden clips on a darkroom drying line. The paper is still slightly wet, with tiny droplets along its lower curled edge. The actual image on the print is a natural portrait of an elderly Korean photographer in profile, mostly a softly silhouetted head and shoulders with weathered hands holding an old camera at chest height; a fictional anonymous subject. His first portrait taken by his former student, quiet completed promise. Warm red-amber darkroom glow on the surrounding physical print, black and white photo within it, blurred second line and a tray in background. Naturally analogue emulsion grain, fine paper surface and soft photographic contrast, grounded independent film still, not a digital scan. Print dominates center in landscape 3:2 crop. No writing, letters, numbers, brands, logos, watermark, UI, glowing magic, CGI or collage.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12608-f810-7fe2-af2f-ac99ef374eda/exec-d865b965-7f8c-43e5-8ac0-ad1667e69307.png",
+      "outputs": [
+        {
+          "path": "dist/assets/endings/studio-detail-v36.webp",
+          "size": [
+            960,
+            640
+          ],
+          "bytes": 49792
+        },
+        {
+          "path": "dist/assets/endings/studio-detail-480-v36.webp",
+          "size": [
+            480,
+            320
+          ],
+          "bytes": 16492
+        }
+      ],
+      "inspection": "Generated photo visually inspected: required objects and natural material detail present; no readable text, logos or UI.",
+      "source_dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "ohang",
+      "prompt": "Use case: photorealistic-natural. Asset type: narrative ending detail still for a Korean mystery game, landscape 3:2. Warm close-up on a worn honey-colored wooden desk against translucent hanji paper screens in a peaceful Korean traditional room. A folded self-addressed personal letter made of textured pale hanji rests beside a matching pale receipt sheet and a small dark carbon-copy paper corner, all visibly blank without any writing. Beside the carefully folded papers is one humble earthenware bowl and a small warm oil-style lamp with a plain frosted shade. The letter is an ordinary choice left by the present person for their future self, grounded and reassuring. Gentle morning light and a restrained amber lamp glow, rich fibrous paper, clay pores, wood grain, candid real-life analog photographic rendering with subtle film grain. Landscape 3:2 close composition, letter and bowl central crop safe. No prophecy, divination symbols, mystical geometry, supernatural glow, text, calligraphy, numerals, logos, watermark, UI, CGI or collage.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12608-f810-7fe2-af2f-ac99ef374eda/exec-ef6e122a-f50a-481b-b510-ed1150e3ed6e.png",
+      "outputs": [
+        {
+          "path": "dist/assets/endings/ohang-detail-v36.webp",
+          "size": [
+            960,
+            640
+          ],
+          "bytes": 88234
+        },
+        {
+          "path": "dist/assets/endings/ohang-detail-480-v36.webp",
+          "size": [
+            480,
+            320
+          ],
+          "bytes": 30570
+        }
+      ],
+      "inspection": "Generated photo visually inspected: required objects and natural material detail present; no readable text, logos or UI.",
+      "source_dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "balance-board",
+      "prompt": "Use case: photorealistic-natural. Asset type: physical puzzle prop background photograph for a Korean mystery game, landscape 3:2. One real antique compact brass beam balance centered on a warm worn wooden desk, camera straight front view slightly above tabletop, symmetrical clear presentation with enough breathing room. A single horizontal brass beam on a vertical brass central pillar; exactly two separate physically suspended shallow brass pans clearly visible, one on the left and one on the right, both empty and at equal height. Five small separate brass cylindrical weights arranged neatly in a straight row on the tabletop BELOW the beam between and in front of the pans; shapes and sizes distinct but absolutely no engraved markings or digits. Real tarnish, thin chain suspensions, physically believable connected balance structure and gentle reflections, fully in focus, soft natural warm window light, hanji neutral blurred wall behind. This must look like an actual photographed working antique balance, tangible and quiet. Each pan and all five weights entirely inside crop-safe central 80 percent; unobstructed broad shallow pan surfaces for future UI overlays. No human, no text, labels, numerals, logos, watercolor, illustration, game UI, buttons, glowing outlines, fantasy, CGI or watermark.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12608-f810-7fe2-af2f-ac99ef374eda/exec-c8beeca6-dfab-4f5a-a91d-dd6ef3b0e4be.png",
+      "outputs": [
+        {
+          "path": "dist/assets/props/balance-board-v36.webp",
+          "size": [
+            960,
+            640
+          ],
+          "bytes": 85992
+        },
+        {
+          "path": "dist/assets/props/balance-board-480-v36.webp",
+          "size": [
+            480,
+            320
+          ],
+          "bytes": 27986
+        }
+      ],
+      "inspection": "Generated photo visually inspected: required objects and natural material detail present; no readable text, logos or UI.",
+      "source_dimensions": [
+        1536,
+        1024
+      ]
+    }
+  ]
+}

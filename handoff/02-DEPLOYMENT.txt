@@ -1,0 +1,67 @@
+﻿기존 공개 사이트 배포 인수인계 — v79 기준
+
+기존 프로젝트를 유지해야 합니다. 새 사이트를 만들거나 정적 사이트로 바꾸면
+기존 URL·피드백 DB·소유자 인증을 그대로 이어받는다는 보장이 없습니다.
+
+project_id: appgprj_6ac632a29bdc81918d06f3a212f59014
+URL: https://last-garage-case.wowowowoong.chatgpt.site
+소스 기준 commit: e816ad150c5a469da586dc34243d332e0f3cdf18
+현재 version_id: appgprj_6ac632a29bdc81918d06f3a212f59014~appgver_11f188dd56d081919ac3eb6eb0b09e36
+공개 상태는 마지막 배포 기준 public. 재배포 전 실제 프로젝트 상태를 읽고 보존.
+
+1. 권한과 최신 소스 확인
+원래 프로젝트에 접근 가능한 Sites 커넥터로 get_site를 호출합니다.
+최신 커밋이 이 패키지와 다르면 변경분을 먼저 병합합니다. 오래된 패키지로 덮지 마세요.
+create_source_repository_write_credential로 프로젝트 쓰기 자격을 얻고,
+설치된 Sites의 최신 SKILL.md와 site-workflow.mjs 절차를 따릅니다.
+이 ZIP에는 .git이나 원격 저장소 자격 증명이 없습니다. 기존 프로젝트 저장소를
+워크플로로 열고 패키지/Claude 수정분을 그 작업 트리에 반영하는 방식으로 이어갑니다.
+토큰은 프로세스 메모리와 숨겨진 stdin으로만 전달. 파일·명령 인자·로그에 쓰지 마세요.
+
+2. 수정과 빌드
+원본 web/, worker/, 필요 시 drizzle/를 수정합니다.
+npm ci
+npm run build
+node scripts/audit-playability-v64.cjs
+node scripts/check-hint-entries-v77.cjs
+PC/모바일 실제 화면 및 전체 진행을 확인합니다.
+.openai/hosting.json의 project_id와 d1: DB를 보존합니다.
+기존 D1 데이터를 지우거나 초기 SQL을 수동 재실행하지 마세요.
+FEEDBACK_OWNER_EMAIL을 기존 환경에 유지합니다.
+
+3. 소스 제출 및 런타임 패키지
+Sites 플러그인의 site-workflow.mjs가 소스 커밋·push·런타임 패키지를 처리합니다.
+기존 작업 환경의 플러그인 경로(다른 컴퓨터에서는 설치 위치를 찾아야 함):
+C:/Users/PC/.codex/plugins/cache/openai-curated-remote/sites/1.0.1
+node <plugin-root>/scripts/site-workflow.mjs --project-id <project_id>
+TTY로 실행 후 안내되는 숨겨진 stdin에 credential/source/commands/archivePath JSON을
+전달합니다. source는 앞서 저장소를 여는 단계에서 반환한 값을 사용합니다.
+현재 설치 버전의 스키마를 읽고 따르세요. 자격 증명 예시는 문서에 넣지 않았습니다.
+
+이 환경에서 Windows 패키징 명령이 실패해도 Git commit/push는 이미 끝난 경우가
+있었습니다. 실패 후 무작정 재실행하거나 성공으로 간주하지 말고 HEAD·작업 트리와
+원격 최신 커밋을 확인하세요. 동일 커밋으로 빌드를 마친 뒤 필요했던 복구 절차:
+node <plugin-root>/skills/sites/scripts/prepare-site-build.cjs <repo> <staging>/dist
+tar -czf <runtime-archive.tar.gz> -C <staging> dist
+실제 플러그인 문서와 출력에 맞게 경로를 지정하세요.
+이 인수인계 ZIP은 소스 ZIP입니다. 배포 API의 런타임 archive에 그대로 넣지 마세요.
+
+4. 버전 저장/배포
+save_site_version(project_id, commit_sha=<실제로 push된 전체 SHA>,
+                  archive=<위 커밋과 일치하는 런타임 tar.gz 절대 경로>)
+반환된 version_id를 사용해 deploy_site_version(project_id, version_id)를 호출.
+project_id를 version_id에 넣으면 안 됩니다.
+상태가 대기/빌드/게시 중이면 get_deployment_status로 완료까지 확인.
+실패하면 원인을 기록하고 성공했다고 보고하지 마세요.
+
+5. 공개본 확인
+익명 첫 진입과 기존 저장 이어하기, 변경한 테마 PC/모바일 화면,
+다음 구역 잠금·뒤로 가기·최종 답지·엔딩, 오디오 시작/정지와 동영상,
+익명/타 사용자/소유자의 피드백 접근을 확인합니다.
+수정 파일·배포 SHA·버전·검사 조건·미확인 범위를 함께 보고합니다.
+
+Claude에서 Sites 권한/도구를 사용할 수 없는 경우:
+이 소스로 로컬 실행·수정·검사는 할 수 있습니다. 변경 소스와 검사 결과를
+기존 Sites 권한이 연결된 환경에 돌려주어 배포해야 합니다.
+공개 URL만으로 기존 사이트를 수정·배포할 수 있다고 약속하지 마세요.
+호스팅 이전은 별도 작업이며 D1·인증 헤더 신뢰·환경 변수·미디어 처리를 재설계해야 합니다.

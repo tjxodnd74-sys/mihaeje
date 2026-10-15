@@ -1,0 +1,32 @@
+{
+  "index": {
+    "classicScripts": 5,
+    "moduleEntries": 1,
+    "jsBytes": 47086,
+    "cssBytes": 151205
+  },
+  "case": {
+    "classicScripts": 36,
+    "moduleEntries": 1,
+    "jsBytes": 488978,
+    "cssBytes": 449634
+  },
+  "episode": {
+    "classicScripts": 36,
+    "moduleEntries": 1,
+    "jsBytes": 487307,
+    "cssBytes": 441854
+  },
+  "studio": {
+    "classicScripts": 29,
+    "moduleEntries": 1,
+    "jsBytes": 461475,
+    "cssBytes": 417695
+  },
+  "ohang": {
+    "classicScripts": 30,
+    "moduleEntries": 1,
+    "jsBytes": 454004,
+    "cssBytes": 387179
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "composer": "Kevin MacLeod",
+  "catalog": "https://incompetech.com/music/royalty-free/pieces.json",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "licenseEvidence": "https://incompetech.com/agent-section/",
+  "processing": "Excerpt, circular crossfade, loudness normalization and MP3 compression; no added instruments",
+  "tracks": [
+    {"case":"hub","title":"Comfortable Mystery 2","filename":"Comfortable Mystery 2.mp3","isrc":"USUAN1100537","mood":"조용히 펼치는 이야기","seconds":48},
+    {"case":"garage","title":"Night on the Docks - Piano","filename":"Night on the Docks.mp3","isrc":"USUAN1100135","mood":"밤의 정비소 · 느린 탐정 피아노","seconds":144},
+    {"case":"apartment","title":"Lightless Dawn","filename":"Lightless Dawn.mp3","isrc":"USUAN1100655","mood":"빈 건물 · 낮게 깔리는 긴장감","seconds":144},
+    {"case":"radio","title":"Blue Sizzle","filename":"Blue Sizzle.mp3","isrc":"USUAN1100385","mood":"끊긴 방송 · 흐릿한 전자음","seconds":120},
+    {"case":"station","title":"Lost Frontier","filename":"Lost Frontier.mp3","isrc":"USUAN1300039","mood":"마지막 승강장 · 멀어지는 현악","seconds":144},
+    {"case":"laundry","title":"Comfortable Mystery","filename":"Comfortable Mystery.mp3","isrc":"USUAN1100287","mood":"자정의 세탁소 · 고요한 전자 피아노","seconds":144},
+    {"case":"pet-home","title":"Wholesome","filename":"Wholesome.mp3","isrc":"USUAN1900022","mood":"루미의 기록 · 마림바와 따뜻한 현악","seconds":144},
+    {"case":"cat-invite","title":"Light Thought var 1","filename":"Light Thought var 1.mp3","isrc":"USUAN1200006","mood":"봄이의 초대 · 밝고 부드러운 피아노","seconds":128},
+    {"case":"letter","title":"On the Shore","filename":"On the Shore.mp3","isrc":"USUAN1200016","mood":"오래된 편지 · 잔잔한 현악과 플루트","seconds":96},
+    {"case":"studio","title":"Luminous Rain","filename":"Luminous Rain.mp3","isrc":"USUAN1100169","mood":"비가 그친 사진관 · 따뜻한 피아노","seconds":96},
+    {"case":"ohang","title":"White Lotus","filename":"White Lotus.mp3","isrc":"USUAN1300044","mood":"오행당 · 여백이 있는 명상 음색","seconds":144}
+  ]
+}

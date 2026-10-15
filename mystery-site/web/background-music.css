@@ -1,0 +1,30 @@
+body>header .game-audio{position:relative;flex-shrink:0;margin-left:0;font-family:SUIT,'Malgun Gothic',sans-serif;z-index:50}
+body>header .audio-summary{display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid currentColor;border-radius:4px;font:500 14px/1.4 SUIT,sans-serif;color:inherit;cursor:pointer;list-style:none;white-space:nowrap;box-sizing:border-box;opacity:.9}
+.audio-summary::-webkit-details-marker{display:none}.audio-indicator{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.3}.audio-indicator.active{opacity:1;background:#8caa6b}
+body>header .game-audio .audio-controls{position:absolute;right:0;top:calc(100% + 10px);width:318px;max-width:calc(100vw - 32px);box-sizing:border-box;padding:24px;background:#1d2421;color:#e9e9df;border:1px solid #4d574e;box-shadow:0 12px 36px #0006;border-radius:6px;text-align:left;font:16px/1.6 SUIT,sans-serif}
+body>header .game-audio .audio-settings-title{font:600 20px/1.5 SUIT,sans-serif;color:#f1f0e7;margin:0 0 18px;letter-spacing:0}
+.audio-switches{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+body>header .game-audio .audio-enable{display:block;width:100%;min-height:46px;margin:0 0 12px;padding:10px;border:1px solid #90a57f;border-radius:3px;background:#344232;color:#edf1e3;font:600 15px/1.5 SUIT,sans-serif;cursor:pointer}
+body>header .game-audio .audio-enable[hidden]{display:none}
+body>header .game-audio :is(.effects-toggle,.music-toggle){font:500 15px/1.4 SUIT,sans-serif!important;border:1px solid #657064;background:transparent;color:#dce1d2;border-radius:3px;padding:10px!important;min-height:46px;margin:0;cursor:pointer;text-align:center;white-space:normal}
+body>header .game-audio :is(.effects-toggle,.music-toggle)[aria-pressed=true]{background:#344232;border-color:#90a57f;color:#edf1e3}
+body>header .game-audio button:disabled{opacity:.5;cursor:default}
+body>header .game-audio .music-status{font:13px/1.65 SUIT,sans-serif;color:#acb4a9;margin:14px 0 4px;letter-spacing:0}
+body>header .game-audio .music-mood{font:15px/1.65 SUIT,sans-serif;color:#dee2d5;margin:0 0 22px;letter-spacing:0;overflow-wrap:anywhere}
+body>header .game-audio .music-volume-label{display:block;font:14px/1.5 SUIT,sans-serif;color:#c9d0c1;margin:0 0 10px}
+.music-volume-row{display:flex;align-items:center;gap:12px}
+body>header .game-audio .music-volume{min-width:0;flex:1;width:auto;height:44px;padding:0;margin:0;border:0;accent-color:#9fb18b;background:transparent;cursor:pointer}
+.music-percent{min-width:36px;font:14px/1.4 SUIT,sans-serif;color:#cbd5bf;text-align:right;white-space:nowrap}
+body>header .game-audio .music-credits{border-top:1px solid #414d41;margin-top:18px;padding-top:14px}
+body>header .game-audio .music-credits summary{font:13px/1.5 SUIT,sans-serif;color:#a9b5a2;cursor:pointer;min-height:32px;padding:4px 0;background:transparent;border:0}
+body>header .game-audio .music-credits :is(p,a){font:12px/1.7 SUIT,sans-serif;color:#b9c6b1;letter-spacing:0;margin:8px 0;text-transform:none}
+body>header .game-audio .music-credits a{text-decoration:underline;text-underline-offset:3px}
+.music-credit-link{font:13px/1.6 SUIT,sans-serif;text-decoration:underline;text-underline-offset:3px}
+.game-audio :is(summary,button,input):focus-visible{outline:2px solid #b9d29c;outline-offset:4px}
+@media(max-width:700px){
+ body>header .game-audio{margin:0;grid-column:1;grid-row:2;justify-self:start}
+ body>header .audio-summary{font-size:13px;min-height:40px;padding:6px 10px}
+ body>header .game-audio .audio-controls{position:fixed;left:16px;right:16px;top:116px;width:auto;max-width:none;max-height:calc(100dvh - 138px);overflow:auto;padding:22px}
+ body>header:not(:has(.session-menu-toggle)) .game-audio .audio-controls{top:78px;max-height:calc(100dvh - 100px)}
+}
+@media(prefers-reduced-motion:reduce){.game-audio *{scroll-behavior:auto}}

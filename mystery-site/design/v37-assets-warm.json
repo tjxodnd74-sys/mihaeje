@@ -1,0 +1,126 @@
+{
+  "mode": "built-in image_gen",
+  "created": "2026-10-10",
+  "themes": {
+    "pet-home": {
+      "entry": {
+        "path": "assets/photoreal/pet-home-entry-v37.webp",
+        "perspective": "low porch",
+        "coordinates": {
+          "brief": [
+            27,
+            28
+          ],
+          "part0": [
+            45,
+            77
+          ],
+          "part1": [
+            65,
+            77
+          ],
+          "target": [
+            83,
+            64
+          ],
+          "lock": [
+            86,
+            44
+          ]
+        },
+        "prompt": "Use case: photorealistic-natural. Single landscape 16:9 background photograph for a Korean healing mystery browser game, no interface or lettering. LOW camera at knee height, wide sunlit small Korean home porch, warm afternoon air, linen curtains softly along left, wood floor and garden greenery beyond, NO visible door. On left middle a cream closed envelope on a low plant stand is the briefing object. At floor foreground x35% y77% and x59% y77% are TWO distinct small torn halves of one old picture postcard, spaced apart, both visible. A pet keepsake chest is at right low x80% y60%, featuring a small empty rectangular photo inset at its front and a realistic aged brass embossed stamp dial on its lid x79% y48%. On the far left foreground an empty comfortable old dog bed with plaid blanket (no animal). Show real worn materials and gentle natural imperfections, photographic realism, no office desk, no wall bulletin board, no generic room door, no humans, no animals, no UI, no readable text, no numbers, no drawn labels. 5 game click target objects are clearly separated, enough detail to crop each."
+      },
+      "entryEmpty": {
+        "path": "assets/photoreal/pet-home-entry-empty-v37.webp",
+        "prompt": "Use case: precise-object-edit. Edit target is the supplied warm porch photograph. Remove ONLY the two small torn picture postcard halves lying on the wooden floor in the lower middle. Reconstruct identical wood grain beneath. Keep EVERYTHING else identical: camera, framing, envelope on plant stand, dog bed, curtains, garden, keepsake chest, photo inset, brass stamp dial, lighting, textures, colors. No new objects or text. Output same 16:9 photograph."
+      },
+      "inner": {
+        "path": "assets/photoreal/pet-home-inner-v37.webp",
+        "perspective": "overhead keepsake rug",
+        "coordinates": {
+          "group0": [
+            23,
+            24
+          ],
+          "group1": [
+            77,
+            22
+          ],
+          "group2": [
+            18,
+            73
+          ],
+          "recorddevice": [
+            48,
+            64
+          ],
+          "finalaction": [
+            86,
+            76
+          ]
+        },
+        "prompt": "Use case: photorealistic-natural. Single wide 16:9 real photograph game background, STRAIGHT OVERHEAD of a home keepsake area on a warm natural woven rug, pastel soothing daylight Korean home. Five separated groups for clicking: group0 upperleft x22 y25 old pet belongings wooden brush and blue lanyard; group1 upperright x72 y24 cream rescue record folder with clipped papers (no readable text); group2 lowleft x22 y68 scattered childhood printed snapshots face not visible; group3 central x49 y44 a beautifully worn wooden keepsake box open with small dark brass inset combination lock on front; group4 lowright x76 y72 cozy empty old dog bed with only a folded plaid blanket lying nearby ready to spread. Real lanyard metal hook, paper creases, wear, wood knots, softness and emotional lived-in warmth. No humans, no animal, no office, no generic door, no dashboard, no labels, no UI, no text or numbers. Use clear physical objects and generous spacing, pleasant healing not scary."
+      }
+    },
+    "cat-invite": {
+      "entry": {
+        "path": "assets/photoreal/cat-invite-entry-v37.webp",
+        "perspective": "overhead wrapping table",
+        "coordinates": {
+          "brief": [
+            24,
+            27
+          ],
+          "part0": [
+            36,
+            77
+          ],
+          "part1": [
+            62,
+            77
+          ],
+          "target": [
+            50,
+            38
+          ],
+          "lock": [
+            80,
+            25
+          ]
+        },
+        "prompt": "Use case: photorealistic-natural. Single 16:9 landscape STRAIGHT OVERHEAD photograph of a beautiful real Korean home gift wrapping workspace for a cat-themed healing mystery game. Light warm oak surface with pink and sage wrapping papers, cotton ribbons, cozy celebratory feeling, real material texture, not commercial product catalog. Clear separated gameplay props: upperleft at22%24% closed cream briefing envelope with delicate waxseal; lowerleft at31%77% one half torn floral invitation and lowerright at68%77% its matching torn second half; center at50%43% square cream physical seatingplan board with four blank placement patches at cardinal directions, pretty small pressed flowers; upperright at80%26% small aged brass rotarystamp wheel on pink velvet cushion. Decorativegiftwrapping ribbons onlyaroundedges no extra torn paper. Keep all five objects clear and separated. No cats, no humans, no door, no room office, no monitor, no UI, no rendered arrows or symbols, no lettering, no readable text, no numbers. Must feel real contemporary home photography and a different viewpoint from every other scene, refined gently happy warm natural window lighting."
+      },
+      "entryEmpty": {
+        "path": "assets/photoreal/cat-invite-entry-empty-v37.webp",
+        "prompt": "Use case: precise-object-edit. Edit target is supplied overhead floral invitation workspace photograph. Remove ONLY the two torn floral invitation halves located at lower-left and lower-right. Reconstruct exactly the wooden grain underneath. Keep everything else identical: camera/framing, closedwaxseal envelope, central four-place seatingplan, all flowers and wrappingpaper and ribbon, brass rotarystamp on pinkcushion, lighting, textures, color. No added objects. Same 16:9."
+      },
+      "inner": {
+        "path": "assets/photoreal/cat-invite-inner-v37.webp",
+        "perspective": "oblique anniversary dining table",
+        "coordinates": {
+          "group0": [
+            20,
+            44
+          ],
+          "group1": [
+            53,
+            42
+          ],
+          "group2": [
+            72,
+            27
+          ],
+          "recorddevice": [
+            43,
+            69
+          ],
+          "finalaction": [
+            72,
+            75
+          ]
+        },
+        "prompt": "Use case: photorealistic-natural. Single landscape 16:9 natural real photograph of a bright intimate modern Korean home dining table prepared for a small family anniversary. Camera OBLIQUE from standing next to the table looking down at roughly fortyfive degrees, a beautiful different perspective than flat overhead invitation workspace, no generic door. Paleoak roundrectangular table in sunlit room, linen curtains farbackground, sage and blush soft decor. Five distinct physical clicktargets well separated: group0 gift basket atleftmid x18% y43%, containing four modest gifts; group1 three correspondencecards atuppermiddle x47% y32%, no readable text; group2 small standing blank anniversarydatecalendar atupperright x78% y26%; group3 a closed floral invitation folder with plain decorative clip near lowleftcenter x40% y70%; group4 an empty cream dinnerplate/place setting atlowright x77% y69%, ready for placing invitation. Four place settings total, naturally arranged, but lasttargetplate larger closer tocamera. Show tactile ceramic, woven placemats, cream paper, tiny pressedflowers, warm natural shadows, believable candidhomephotography, refinedjoyful healing, no humans no animals no UI no lettering no numbers no signs, no impossiblegeometry."
+      }
+    }
+  }
+}

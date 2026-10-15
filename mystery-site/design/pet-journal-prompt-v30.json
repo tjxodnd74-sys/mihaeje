@@ -1,0 +1,12 @@
+{
+  "mode": "built-in image_gen",
+  "prompt": "Use case: photorealistic-natural. Asset type: quiet paper surface background behind HTML lettering in a heartfelt pet scrapbook browser game. Create one genuine front-facing flat-lay photograph, portrait 4:5, of an entirely blank light ivory matte paper page in a handmade pet journal. Paper fills the frame. Camera exactly parallel to paper, no tilt or perspective. Central writing area completely empty and uniformly pale with extremely subtle natural low-contrast matte paper fibers, excellent readability for later dark text. Only at far left edge is a thin warm natural linen book spine with delicate real stitch sewing, occupying no more than 5 percent of width. At the very top right corner only, one tiny faint translucent old tape residue mark, close to the edge. Warm daylight, soft believable paper and linen textures, calm intimate real stationery photograph. No dog, cat, other animal, paws, faces, letters, handwriting, numerals, logos, stamp, frames, objects in center, black or green decorations, dark borders, strong shadows, pattern, collage, watermark or UI. Avoid beige color-block appearance and excessive grain; make actual photographed paper with understated tactile details.",
+  "generated_source": "C:/Users/PC/.codex/generated_images/01a12515-36f5-7082-baa9-17c5431cb819/exec-a27ae7ba-dcdc-4bc3-95ec-b96d3ae9920d.png",
+  "archived_source": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/pet-journal-assets/pet-journal-v30-original.png",
+  "final": "dist/assets/surfaces/pet-journal-v30.webp",
+  "bytes": 68920,
+  "size": [
+    1024,
+    1280
+  ]
+}

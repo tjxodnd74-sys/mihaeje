@@ -1,0 +1,24 @@
+/* Keep the artwork's crop and scale driven by the same variable. */
+body>header .logo-link{flex-shrink:0;min-height:44px;gap:14px}
+body>header .brand-logo{width:calc(var(--logo-content-width) + 4px)!important;height:calc(var(--logo-content-width) * .246277 + 4px)!important;flex-shrink:0}
+body>header{gap:20px;height:auto;min-height:78px}
+body>header>a:not(.logo-link){white-space:nowrap;margin-left:auto;min-height:44px;display:inline-flex;align-items:center}
+.session-menu-toggle,.session-restart,.session-panel button{font:600 15px/1.5 SUIT,system-ui,sans-serif;min-height:44px;padding:10px 16px;border:1px solid currentColor;border-radius:4px;background:transparent;color:inherit;cursor:pointer}
+.session-restart{margin:10px 0 10px 12px!important}
+.session-menu-toggle{white-space:nowrap}
+.session-panel{max-width:600px;margin:auto;font:18px/1.8 SUIT,system-ui,sans-serif;color:var(--panel-ink,#29352f)}
+.session-panel h2{font:700 25px/1.5 SUIT,system-ui,sans-serif}
+.session-panel p{white-space:pre-line}
+.session-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.oh-header .brand-logo{--logo-content-width:108px}
+@media(max-width:700px){
+ body>header:has(.session-menu-toggle){display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;padding:12px 18px}
+ body>header:has(.session-menu-toggle)>.logo-link{grid-column:1;grid-row:1}
+ body>header:has(.session-menu-toggle)>a:not(.logo-link){grid-column:2;grid-row:1;font-size:14px;margin:0}
+ body>header:has(.session-menu-toggle)>.sound-toggle{grid-column:1;grid-row:2;justify-self:start;margin:0;font-size:13px;min-height:40px}
+ body>header:has(.session-menu-toggle)>.session-menu-toggle{grid-column:2;grid-row:2;font-size:14px;padding:8px 12px}
+ body>header #brand span{display:none}
+ .session-restart{display:inline-block;margin-left:8px!important}
+ .session-actions{display:grid;grid-template-columns:1fr;width:100%}
+ .session-panel{font-size:18px}
+}

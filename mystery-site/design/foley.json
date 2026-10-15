@@ -1,0 +1,92 @@
+{
+  "kind": "Real object recordings replacing retired procedural effects",
+  "license": "CC0",
+  "sources": [
+    {
+      "author": "laleksic",
+      "url": "https://opengameart.org/node/143670"
+    },
+    {
+      "author": "Luckius",
+      "url": "https://opengameart.org/content/various-paper-sound-effects"
+    }
+  ],
+  "processing": "45Hz rumble reduction, level matching, edge fades, 24kHz mono WAV; alternate MP3 unmodified",
+  "effects": [
+    {
+      "file": "paper-turn-v23.wav",
+      "recording": "turn_page.wav",
+      "seconds": 0.702,
+      "bytes": 33756,
+      "source": "laleksic"
+    },
+    {
+      "file": "drawer-open-v23.wav",
+      "recording": "drawer_open.wav",
+      "seconds": 0.872,
+      "bytes": 41914,
+      "source": "laleksic"
+    },
+    {
+      "file": "door-open-v23.wav",
+      "recording": "door_open.wav",
+      "seconds": 0.736,
+      "bytes": 35368,
+      "source": "laleksic"
+    },
+    {
+      "file": "door-creak-v23.wav",
+      "recording": "door_creak_open.wav",
+      "seconds": 1.4,
+      "bytes": 67228,
+      "source": "laleksic"
+    },
+    {
+      "file": "door-close-v24.wav",
+      "recording": "door_close.wav",
+      "seconds": 0.659,
+      "bytes": 31696,
+      "source": "laleksic"
+    },
+    {
+      "file": "door-creak-close-v24.wav",
+      "recording": "door_creak_close.wav",
+      "seconds": 1.154,
+      "bytes": 55424,
+      "source": "laleksic"
+    },
+    {
+      "file": "keys-v24.wav",
+      "recording": "pickup_keys.wav",
+      "seconds": 0.275,
+      "bytes": 13238,
+      "source": "laleksic"
+    },
+    {
+      "file": "switch-on-v24.wav",
+      "recording": "switch_on.wav",
+      "seconds": 0.2,
+      "bytes": 9656,
+      "source": "laleksic"
+    },
+    {
+      "file": "switch-off-v24.wav",
+      "recording": "switch_off.wav",
+      "seconds": 0.255,
+      "bytes": 12296,
+      "source": "laleksic"
+    },
+    {
+      "file": "lock-v24.wav",
+      "recording": "lock.wav",
+      "seconds": 0.642,
+      "bytes": 30850,
+      "source": "laleksic"
+    },
+    {
+      "file": "paper-turn-alt-v23.mp3",
+      "recording": "paper_sound_-_2.mp3",
+      "source": "Luckius"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+/* Detailed records are available only after the fourth consecutive photograph. */
+.ending-film .ending-film-copy{max-width:1000px;max-height:72dvh;padding:10px 12px 12px 0}
+.ending-film .ending-film-story{max-width:780px;font:400 clamp(16px,1.65vw,19px)/1.85 SUIT,sans-serif;color:#f5f1e7;margin:0 0 16px;word-break:keep-all;overflow-wrap:break-word;text-shadow:0 2px 9px #000}
+.ending-film .ending-film-shade{background:linear-gradient(#0008,transparent 22%,#0008 42%,#000f)}
+.ending-film .ending-film-explanation{max-width:780px;margin:12px 0 22px;padding:0 18px;background:#111b19ed;border:1px solid #cbbd9659;border-radius:5px}
+.ending-film .ending-film-explanation summary{min-height:48px;box-sizing:border-box;padding:12px 0;cursor:pointer;font:600 16px/1.6 SUIT,sans-serif;color:#f5e5c6}
+.ending-film .ending-film-reason{padding:14px 0;border-top:1px solid #b8ae9150}
+.ending-film .ending-film-reason h3{font:600 18px/1.6 SUIT,sans-serif;color:#f6eedc;margin:0 0 8px}
+.ending-film .ending-film-reason p,.ending-film .ending-film-chosen{font:400 16px/1.85 SUIT,sans-serif;color:#ece9df;margin:0 0 10px;word-break:keep-all;overflow-wrap:break-word}
+.ending-film .ending-film-reason .ending-film-evidence{font-size:13px;color:#d0c7ae}
+.ending-film .ending-film-dots button:disabled{opacity:.35;cursor:default}
+.ending-film .ending-film-copy h2:focus{outline:none}
+@media(max-width:600px){
+ .ending-film .ending-film-copy{left:18px;right:18px;bottom:18px;max-height:calc(100dvh - 106px);padding-right:3px}
+ .ending-film .ending-film-copy h2{font-size:24px!important;line-height:1.45!important;margin-bottom:14px!important}
+ .ending-film .ending-film-story{font-size:16px;line-height:1.85}
+ .ending-film .ending-film-dots{margin:8px 0 10px}
+ .ending-film .ending-film-explanation{padding:0 14px}
+}
+@media(prefers-reduced-motion:reduce){.ending-film .ending-film-image{animation:none}}

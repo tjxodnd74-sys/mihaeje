@@ -1,0 +1,12 @@
+{
+  "mode": "built-in image_gen",
+  "prompt": "Use case: photorealistic-natural. Asset type: subtle actual Korean hanji paper surface background behind HTML text in a traditional healing letter browser game. Create one completely front-facing orthographic flat-lay photograph, portrait 4:5 approximately 1024 by 1280. The entire image is one blank premium warm ivory traditional Korean hanji sheet, with very fine natural mulberry paper fibers and gently irregular organic texture confined mostly to the very outer edge region. Central 95 percent is completely blank and uniformly light, extremely low contrast for readable overlaid dark text. Camera exactly parallel to paper, absolutely no tilt, no perspective, no crop-angle. Soft even warm daylight and authentic quiet tactile fine-art stationery photography. Not a flat digital beige color fill. No flowers, botanical decoration, embossing motifs, book spine, sewing, borders, letterforms, white letters, handwriting, numbers, stamps, seals, rolls, wood rods, tabletop, objects, hands, animals, logos, strong shadows, watermark, collage, illustration, UI or bright markings. Minimal traditional letter paper surface only.",
+  "generated_source": "C:/Users/PC/.codex/generated_images/01a12515-36f5-7082-baa9-17c5431cb819/exec-36f835f4-7f28-4fba-9218-005e8c90184d.png",
+  "archived_source": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/hanji-assets/hanji-v30-original.png",
+  "final": "dist/assets/surfaces/hanji-v30.webp",
+  "bytes": 34170,
+  "size": [
+    1024,
+    1280
+  ]
+}

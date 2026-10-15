@@ -1,0 +1,33 @@
+{
+  "mode": "built-in image_gen",
+  "assets": [
+    {
+      "id": "garage",
+      "input": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/photoreal/garage-entry-v2.webp",
+      "generatedCopy": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/empty-scenes-a/garage-empty-generated.png",
+      "final": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/photoreal/garage-entry-empty-v3.webp",
+      "prompt": "Use case: precise-object-edit. Edit target: the provided exact escape-room garage photograph. Remove ONLY the amber translucent screwdriver handle centered at x29% y69%, AND the separate short silver Phillips screwdriver bit centered at x46.5% y69%, both lying on the foreground metal desk. Restore their tiny footprint and shadows with seamless matching worn metal desk texture. Preserve EVERY OTHER pixel/room object as closely as possible, camera framing, 1536x1024 landscape composition, perspective, lighting, colors, furniture, cup, documents, books, cloth, lamp, shelf and closed door exactly unchanged. Do not change image tone or resolution. No text, overlays, replacement objects. This is the identical game room after those two items were picked up. Photorealistic localized removal, no creative changes."
+    },
+    {
+      "id": "radio",
+      "input": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/photoreal/radio-entry-v2.webp",
+      "generatedCopy": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/empty-scenes-a/radio-empty-generated.png",
+      "final": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/photoreal/radio-entry-empty-v3.webp",
+      "prompt": "Use case: precise-object-edit. Edit target: the exact provided vintage radio studio photograph. Remove ONLY the TWO curled loose brown magnetic tape strips on the front desk at x27% y66% and x46% y66%. Seamlessly reconstruct those small footprints and cast shadows with matching wood desk grain. Preserve entire camera viewpoint, framing, 1536x1024 landscape dimensions, lighting, colors, room composition, large foreground chair, mixing desk, lamp, mug, papers, left shelf, reel recorder, books and door EXACTLY unchanged. No creative room changes or replacement objects. No text or overlays. This identical game room now has the two collected tape pieces gone."
+    },
+    {
+      "id": "station",
+      "input": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/photoreal/station-entry-v2.webp",
+      "generatedCopy": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/empty-scenes-a/station-empty-generated.png",
+      "final": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/photoreal/station-entry-empty-v3.webp",
+      "prompt": "Use case: precise-object-edit. Edit target: exact provided old train station office photograph. Remove ONLY the two loose torn pale map pieces on the foreground desk, one centered x33% y79% and one centered x55% y80%. Fill their footprints and shadows with seamless matching aged polished wooden desk surface. Preserve every other room object, chair, lamp, window, sunlight, station view, noticeboards, plant, cabinets, books, closed door, rubber stamp, all camera framing/perspective/composition/colors exactly unchanged. Keep 1536x1024 landscape. No added props, no text or overlays, no creative changes. The same room after collecting both map parts, only those two parts gone."
+    },
+    {
+      "id": "cat-invite",
+      "input": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/photoreal/cat-invite-entry-v2.webp",
+      "generatedCopy": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/empty-scenes-a/cat-invite-empty-generated.png",
+      "final": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/photoreal/cat-invite-entry-empty-v3.webp",
+      "prompt": "Use case: precise-object-edit. Edit target: exact provided warm sunny Korean gift shop photograph with sleeping orange cat. Remove ONLY the two pale torn invitation halves with blue wax seal halves on the foreground wooden desk, one centered x26% y87% and one centered x44% y85%. Remove wax seal halves as parts of those paper pieces too. Seamlessly restore their footprints/shadows with matching wood grain. Preserve EVERY other object exactly including scattered tiny flower petals, loose branch at right, ribbon/cloth at left, wax stamping handles and golden tray at upper left of desk, sleeping cat, flowers, gift packages, cupboards, wall illustration, door, sunlight, camera angle and framing, original colors. Keep1536x1024 landscape. No replacements or added objects. Same room after collecting the two invitation parts; only paper/seal halves gone."
+    }
+  ]
+}

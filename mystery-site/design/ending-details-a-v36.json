@@ -1,0 +1,262 @@
+{
+  "version": "v36",
+  "generator": "built-in image_gen",
+  "conversion": "Pillow RGB LANCZOS resize, WebP quality 88 method 6",
+  "assets": [
+    {
+      "id": "garage",
+      "useCase": "photorealistic-natural",
+      "prompt": "Use case: photorealistic-natural. Asset type: evidence resolution photograph for a Korean mystery game ending. Create a landscape 3:2 realistic closeup documentary photograph at desk level inside a real small mechanic workshop. A single gloved adult hand slides a thin manila envelope containing a paper photocopy of a closure handover document across a worn mechanic's workbench; only paper edges peek out, all document faces turned down or blurred, no readable writing. A few ordinary tools pushed to the rear, workshop shelves soft out of focus. The paper envelope is the clearly dominant subject, showing the original closure document and its paper preservation copy are being handed over, NOT recovery of a missing storage device. Quiet resolution, soft practical daylight, tactile grease marks and paper fibers, credible candid 50mm camera photograph, detailed natural texture, muted gray steel and brown paper. No SD card, no memory card, no computer, no artificial UI, no graphics, no readable text, no numbers, no logos, no ominous unrelated objects, no supernatural elements. Opaque image.",
+      "sourcePath": "C:\\Users\\PC\\.codex\\generated_images\\01a12608-accd-79e3-b64e-9796e2d5e6ca\\exec-6f8dc222-820e-461d-8ce1-718023b2ebd0.png",
+      "finalPaths": [
+        "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/garage-detail-v36.webp",
+        "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/garage-detail-480-v36.webp"
+      ],
+      "dimensions": [
+        [
+          960,
+          640
+        ],
+        [
+          480,
+          320
+        ]
+      ],
+      "inspection": "Viewed built-in generated image; checked requested evidence subject, opaque photographic composition, no legible text or synthetic UI.",
+      "sourceDimensions": [
+        1536,
+        1024
+      ],
+      "outputs": [
+        {
+          "path": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/garage-detail-v36.webp",
+          "width": 960,
+          "height": 640,
+          "mode": "RGB",
+          "bytes": 67084
+        },
+        {
+          "path": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/garage-detail-480-v36.webp",
+          "width": 480,
+          "height": 320,
+          "mode": "RGB",
+          "bytes": 25342
+        }
+      ]
+    },
+    {
+      "id": "apartment",
+      "useCase": "photorealistic-natural",
+      "prompt": "Use case: photorealistic-natural. Asset type: evidence resolution photograph for a Korean apartment mystery game ending. Landscape 3:2 closeup documentary photograph of a maintenance inspection desk in a vacated apartment building. A physically detached small battery pack rests beside a simple electromechanical timer relay module and a small unplugged inspection lamp. The battery's two wire leads are visibly separated from the timer, connectors resting apart on the desk, proving the independent power has been safely disconnected. A shallow open inspection box sits behind them. Blank surfaces, timer markings too soft to read, no display characters. Main objects centered and tactile, worn pale laminate surface, dusty real hardware, low oblique desk level camera angle with close framing, neutral late morning window light, grounded calm resolution, natural photographic imperfections. No person, no windows as subject, no glowing specter, no dramatic spooky prop, no UI, no lettering, numbers, logos, diagrams, or watermarks. Opaque photograph.",
+      "sourcePath": "C:\\Users\\PC\\.codex\\generated_images\\01a12608-accd-79e3-b64e-9796e2d5e6ca\\exec-0ba19bee-9def-47b6-b9cd-dc9246a166de.png",
+      "finalPaths": [
+        "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/apartment-detail-v36.webp",
+        "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/apartment-detail-480-v36.webp"
+      ],
+      "dimensions": [
+        [
+          960,
+          640
+        ],
+        [
+          480,
+          320
+        ]
+      ],
+      "inspection": "Viewed built-in generated image; checked requested evidence subject, opaque photographic composition, no legible text or synthetic UI.",
+      "sourceDimensions": [
+        1536,
+        1024
+      ],
+      "outputs": [
+        {
+          "path": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/apartment-detail-v36.webp",
+          "width": 960,
+          "height": 640,
+          "mode": "RGB",
+          "bytes": 71172
+        },
+        {
+          "path": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/apartment-detail-480-v36.webp",
+          "width": 480,
+          "height": 320,
+          "mode": "RGB",
+          "bytes": 25770
+        }
+      ]
+    },
+    {
+      "id": "radio",
+      "useCase": "photorealistic-natural",
+      "prompt": "Use case: photorealistic-natural. Asset type: evidence resolution photograph for a Korean radio mystery game ending. Landscape 3:2 realistic closeup documentary photograph on a worn wooden recording console desk in a closed small broadcast studio. An original analog magnetic audio tape reel rests safely in its open plain archival case beside an old compact reel-to-reel recording machine; the machine's reels are completely still. One patch cable is clearly unplugged from the console and lies loose on the desk, metallic jack visible, conveying the old recording is preserved and the output path disconnected. Tape, case and disconnected cable dominate the image; recording controls and an unlit microphone are soft focus behind. All labels absent or unmarked, all hardware unlit, no visible words. Soft practical light with gentle warm wood and cool gray metal, authentic photo grain, desk height 50mm closeup, quiet conclusion not horror. No artificial UI, text, dates, readable numbers, logos, glowing waveform, supernatural figure or unrelated clue prop. Opaque photo.",
+      "sourcePath": "C:\\Users\\PC\\.codex\\generated_images\\01a12608-accd-79e3-b64e-9796e2d5e6ca\\exec-0584ae0a-981d-442c-977d-867d695381be.png",
+      "finalPaths": [
+        "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/radio-detail-v36.webp",
+        "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/radio-detail-480-v36.webp"
+      ],
+      "dimensions": [
+        [
+          960,
+          640
+        ],
+        [
+          480,
+          320
+        ]
+      ],
+      "inspection": "Viewed built-in generated image; checked requested evidence subject, opaque photographic composition, no legible text or synthetic UI.",
+      "sourceDimensions": [
+        1536,
+        1024
+      ],
+      "outputs": [
+        {
+          "path": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/radio-detail-v36.webp",
+          "width": 960,
+          "height": 640,
+          "mode": "RGB",
+          "bytes": 91934
+        },
+        {
+          "path": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/radio-detail-480-v36.webp",
+          "width": 480,
+          "height": 320,
+          "mode": "RGB",
+          "bytes": 32010
+        }
+      ]
+    },
+    {
+      "id": "station",
+      "useCase": "photorealistic-natural",
+      "prompt": "Use case: photorealistic-natural. Asset type: evidence resolution photograph for a Korean station mystery game ending. Landscape 3:2 authentic closeup documentary photograph of a real old metal station locker, door open, photographed at the height of its lower shelf. Inside the locker a beige plain envelope holds a folded old route map with only colored path lines visible and absolutely no words, characters, or numbers. A smartphone is partially cropped in the extreme foreground on the locker ledge, only a dark reflective glass screen visible, with no readable display, no text and no fabricated app interface. Locker scuffs, envelope edges and folded map are crisp dominant objects; a little ordinary folded clothing sits behind in soft focus. The scene quietly conveys personal property ready to return after safe arrival has been confirmed, no missing-person horror atmosphere. Natural station window light, true-life textures, subtle green-gray metal, desk-level close view rather than a wide platform panorama. No signs, logos, readable text, numbers, ghosts, police tape, faces or unrelated spooky props. Opaque photograph.",
+      "sourcePath": "C:\\Users\\PC\\.codex\\generated_images\\01a12608-accd-79e3-b64e-9796e2d5e6ca\\exec-34608494-b981-4a49-bb68-669024163ac5.png",
+      "finalPaths": [
+        "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/station-detail-v36.webp",
+        "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/station-detail-480-v36.webp"
+      ],
+      "dimensions": [
+        [
+          960,
+          640
+        ],
+        [
+          480,
+          320
+        ]
+      ],
+      "inspection": "Viewed built-in generated image; checked requested evidence subject, opaque photographic composition, no legible text or synthetic UI.",
+      "sourceDimensions": [
+        1536,
+        1024
+      ],
+      "outputs": [
+        {
+          "path": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/station-detail-v36.webp",
+          "width": 960,
+          "height": 640,
+          "mode": "RGB",
+          "bytes": 51640
+        },
+        {
+          "path": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/station-detail-480-v36.webp",
+          "width": 480,
+          "height": 320,
+          "mode": "RGB",
+          "bytes": 19312
+        }
+      ]
+    },
+    {
+      "id": "laundry",
+      "useCase": "photorealistic-natural",
+      "prompt": "Use case: photorealistic-natural. Asset type: evidence resolution photograph for a Korean laundry mystery game ending. Landscape 3:2 authentic closeup candid documentary photograph of a recovered charcoal gray wool coat being handed across the clean but worn laminate counter of a small neighborhood laundromat. Only two adults' hands and small cropped portions of sleeves are visible: one pair passes the neatly folded substantial charcoal coat to the receiving hands on the opposite side. The dense wool weave, lapel and one natural black button dominate the frame. An unprinted handover tag is tucked under the garment, blank face turned away; washing machines are barely discernible and out of focus in the background. Calm tangible restitution, practical neutral overhead light with soft daylight, real human hands and photo texture, low desk-level 50mm camera view. No text, receipt numbers, logos, interface overlays, unnatural fingers, spooky props, vanished coat, dramatic horror or wide exit vista. Opaque photo.",
+      "sourcePath": "C:\\Users\\PC\\.codex\\generated_images\\01a12608-accd-79e3-b64e-9796e2d5e6ca\\exec-9539a677-ddb8-4892-9704-88fda4fd924f.png",
+      "finalPaths": [
+        "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/laundry-detail-v36.webp",
+        "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/laundry-detail-480-v36.webp"
+      ],
+      "dimensions": [
+        [
+          960,
+          640
+        ],
+        [
+          480,
+          320
+        ]
+      ],
+      "inspection": "Viewed built-in generated image; checked requested evidence subject, opaque photographic composition, no legible text or synthetic UI.",
+      "sourceDimensions": [
+        1536,
+        1024
+      ],
+      "outputs": [
+        {
+          "path": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/laundry-detail-v36.webp",
+          "width": 960,
+          "height": 640,
+          "mode": "RGB",
+          "bytes": 94940
+        },
+        {
+          "path": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/endings/laundry-detail-480-v36.webp",
+          "width": 480,
+          "height": 320,
+          "mode": "RGB",
+          "bytes": 30304
+        }
+      ]
+    },
+    {
+      "id": "wire",
+      "useCase": "photorealistic-natural",
+      "prompt": "Use case: photorealistic-natural. Asset type: blank photographic background for an interactive hardware puzzle, HTML controls will be overlaid separately. Landscape 3:2 photoreal overhead closeup of an old unplugged electrical terminal unit opened flat on a worn steel workbench. It is a single shallow rectangular gray metal housing. Its interior contains exactly SIX small unmarked circular metal sockets: exactly THREE in one evenly spaced vertical column near the LEFT interior edge and exactly THREE in a matching vertical column near the RIGHT interior edge. Bare uncluttered dark metal between the two socket columns, generous clear space in the center for later controls. No other sockets, no knobs, no buttons, no switches, no printed circuit board exposed, no screen. A few loose disconnected insulated wires lie outside the housing near the bottom edge of the photograph, not connected and not crossing the central space. Real steel scuffs, age and dust, neutral practical workshop light, fully top-down camera, credible old mechanical hardware, clean legibility of physical structure. No glyphs, colored symbols, labels, letters, numbers, arrows, drawn lines, UI, logos, watermark, cartoon or 3D render. Opaque realistic photograph.",
+      "sourcePath": "C:\\Users\\PC\\.codex\\generated_images\\01a12608-accd-79e3-b64e-9796e2d5e6ca\\exec-41876d51-ce24-478d-be96-892e37f81c68.png",
+      "finalPaths": [
+        "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/props/wire-board-v36.webp",
+        "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/props/wire-board-480-v36.webp"
+      ],
+      "dimensions": [
+        [
+          960,
+          640
+        ],
+        [
+          480,
+          320
+        ]
+      ],
+      "inspection": "Viewed built-in generated image; checked requested evidence subject, opaque photographic composition, no legible text or synthetic UI.",
+      "overlaySocketCentersPercent": {
+        "leftX": 14.8,
+        "rightX": 85.1,
+        "rowsY": [
+          25,
+          43.5,
+          62
+        ]
+      },
+      "sourceDimensions": [
+        1536,
+        1024
+      ],
+      "outputs": [
+        {
+          "path": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/props/wire-board-v36.webp",
+          "width": 960,
+          "height": 640,
+          "mode": "RGB",
+          "bytes": 147636
+        },
+        {
+          "path": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/props/wire-board-480-v36.webp",
+          "width": 480,
+          "height": 320,
+          "mode": "RGB",
+          "bytes": 35122
+        }
+      ]
+    }
+  ]
+}

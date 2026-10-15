@@ -1,0 +1,12 @@
+{
+  "mode": "built-in image_gen",
+  "prompt": "Use case: photorealistic-natural. Asset type: background surface for a Korean invitation letter in an immersive heartfelt browser game, with real HTML text overlaid later. Create one true front-facing flat-lay photograph of a single premium warm ivory cotton-paper invitation sheet, portrait 4:5 composition, approximately 1024 by 1280. Paper fills nearly the entire frame. Camera perfectly parallel to sheet with no tilt or perspective distortion. Central 80 percent is entirely blank, quietly even and light for readable dark text. Visible subtle natural cotton fibers, fine organic paper grain, gently soft deckled edge texture and very faint warm cast shadow near edges. At just one upper corner a tiny almost invisible blind-embossed botanical sprig impression is allowed, no colored decoration. Warm refined genuine tactile stationery, sophisticated restrained photography, not a uniform beige rectangle or digitally illustrated texture. No writing, letters, numerals, logo, stamp, watermark, cat face, animals, hands, tabletop pattern, illustration, border graphics, collage or UI. Avoid large decoration, strong gradients, dark shadows or marks in the central writing area.",
+  "generated_source": "C:/Users/PC/.codex/generated_images/01a12515-36f5-7082-baa9-17c5431cb819/exec-b54b521c-c128-451c-8d5b-2340beee3292.png",
+  "archived_source": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/invitation-paper-assets/invitation-paper-original.png",
+  "final": "dist/assets/surfaces/invitation-paper-v1.webp",
+  "bytes": 93580,
+  "size": [
+    1024,
+    1280
+  ]
+}

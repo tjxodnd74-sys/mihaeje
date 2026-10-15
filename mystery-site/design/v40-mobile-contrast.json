@@ -1,0 +1,180 @@
+{
+  "viewport": 390,
+  "stages": [
+    {
+      "bad": [],
+      "game": "garage",
+      "stage": "0"
+    },
+    {
+      "bad": [],
+      "game": "garage",
+      "stage": "1"
+    },
+    {
+      "bad": [],
+      "game": "garage",
+      "stage": "2"
+    },
+    {
+      "bad": [],
+      "game": "garage",
+      "stage": "3"
+    },
+    {
+      "bad": [],
+      "game": "apartment",
+      "stage": "0"
+    },
+    {
+      "bad": [],
+      "game": "apartment",
+      "stage": "1"
+    },
+    {
+      "bad": [],
+      "game": "apartment",
+      "stage": "2"
+    },
+    {
+      "bad": [],
+      "game": "apartment",
+      "stage": "3"
+    },
+    {
+      "bad": [],
+      "game": "radio",
+      "stage": "0"
+    },
+    {
+      "bad": [],
+      "game": "radio",
+      "stage": "1"
+    },
+    {
+      "bad": [],
+      "game": "radio",
+      "stage": "2"
+    },
+    {
+      "bad": [],
+      "game": "radio",
+      "stage": "3"
+    },
+    {
+      "bad": [],
+      "game": "station",
+      "stage": "0"
+    },
+    {
+      "bad": [],
+      "game": "station",
+      "stage": "1"
+    },
+    {
+      "bad": [],
+      "game": "station",
+      "stage": "2"
+    },
+    {
+      "bad": [],
+      "game": "station",
+      "stage": "3"
+    },
+    {
+      "bad": [],
+      "game": "laundry",
+      "stage": "0"
+    },
+    {
+      "bad": [],
+      "game": "laundry",
+      "stage": "1"
+    },
+    {
+      "bad": [],
+      "game": "laundry",
+      "stage": "2"
+    },
+    {
+      "bad": [],
+      "game": "laundry",
+      "stage": "3"
+    },
+    {
+      "bad": [],
+      "game": "letter",
+      "stage": "0"
+    },
+    {
+      "bad": [],
+      "game": "letter",
+      "stage": "1"
+    },
+    {
+      "bad": [],
+      "game": "letter",
+      "stage": "2"
+    },
+    {
+      "bad": [],
+      "game": "pet-home",
+      "stage": "0"
+    },
+    {
+      "bad": [],
+      "game": "pet-home",
+      "stage": "1"
+    },
+    {
+      "bad": [],
+      "game": "pet-home",
+      "stage": "2"
+    },
+    {
+      "bad": [],
+      "game": "cat-invite",
+      "stage": "0"
+    },
+    {
+      "bad": [],
+      "game": "cat-invite",
+      "stage": "1"
+    },
+    {
+      "bad": [],
+      "game": "cat-invite",
+      "stage": "2"
+    },
+    {
+      "bad": [],
+      "game": "studio",
+      "stage": "0"
+    },
+    {
+      "bad": [],
+      "game": "studio",
+      "stage": "1"
+    },
+    {
+      "bad": [],
+      "game": "ohang",
+      "stage": "0"
+    },
+    {
+      "bad": [],
+      "game": "ohang",
+      "stage": "1"
+    },
+    {
+      "bad": [],
+      "game": "ohang",
+      "stage": "2"
+    }
+  ],
+  "fixes": [
+    "Initial dark travelled station label corrected to cream ink on green and rechecked separately.",
+    "Bowl names explicitly use cream ink on green tags; audited after the fix."
+  ],
+  "scope": "Leaf text nodes with computed opaque ancestor backgrounds, including small names and numeric outputs; photo backgrounds visually checked separately."
+}

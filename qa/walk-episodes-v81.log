@@ -1,0 +1,117 @@
+=== station
+PASS wrong feedback "두 표지의 방향이 맞지 않습니다. 뒷면의 「북쪽은 현재 2번」 표기를 다시 보세요." ~ 방향
+PASS stage 1 solved (승강장 개편 안내판)
+PASS next device visible: 역무실 노선 모형 in ["처음 물건 다시보기","중앙역 안내판","중앙역 역무실","구간 운행표","휴대폰 이용내역","역무실 노선 모형","승강장 개편 안내"]
+PASS wrong feedback "지금까지 5분·300원입니다. 기록의 합계가 될 때까지 더 운행하세요." ~ 더 운행
+PASS stage 2 solved (역무실 노선 모형)
+PASS next device visible: 오른쪽 소형 사물함 살펴보기 in ["처음 물건 다시보기","중앙역 안내판","중앙역 역무실","수림역 보관함","구간 운행표","휴대폰 이용내역","승강장 개편 안내","오른쪽 소형 사물함 살펴보기"]
+PASS wrong feedback "3개 눈금 중 1개가 맞습니다. 틀린 눈금을 자료와 다시 대조하세요." ~ 눈금
+PASS stage 3 solved (오른쪽 소형 사물함 살펴보기)
+PASS next device visible: 안내소 전화 in ["처음 물건 다시보기","중앙역 안내판","중앙역 역무실","수림역 보관함","수림역 안내소","친구의 의뢰","사물함 예약표","안내소 전화"]
+PASS wrong feedback "아직 안내소에 연결하지 않았습니다. 「안내소에 연결 요청」을 누르세요." ~ 연결
+PASS wrong feedback "민서에게 아직 묻지 않은 질문이 있습니다. 두 질문을 모두 물어보세요." ~ 질문
+PASS stage 4 solved (안내소 전화)
+PASS ending reached
+docCount 6 / 6
+PASS no page errors []
+=== garage
+PASS wrong feedback "입장 장면은 잡았습니다. 「시간축 보정 분」이 점검 영수증의 두 시계 차이와 다릅니다. 어느 시계가 앞서 있었는지 방향도 확인하세요." ~ 보정
+PASS stage 1 solved (블랙박스 재생기)
+PASS next device visible: 노트북 출입 기록 살펴보기 in ["처음 물건 다시보기","차량 앞 작업대","직원 출입 단말","세 사람의 진술","노트북 출입 기록 살펴보기"]
+PASS wrong feedback "이 번호는 영상 속 시각에 찍힌 카드가 아닙니다. 보정한 입장 시각의 출입 기록을 보세요." ~ 카드
+PASS stage 2 solved (노트북 출입 기록 살펴보기)
+PASS next device visible: 진술철 in ["처음 물건 다시보기","차량 앞 작업대","직원 출입 단말","야간 접수대","블랙박스 영상","탁자 위 진술철 살펴보기"]
+PASS wrong feedback "「외부 결제 창구 영상 시각」을 출입 영상에서 찾은 입장 순간(서버 시각)에 맞추세요." ~ 결제 창구
+PASS stage 3 solved (진술철)
+PASS next device visible: 선반의 보존 문서 살펴보기 in ["처음 물건 다시보기","차량 앞 작업대","직원 출입 단말","야간 접수대","폐업 서류 보존대","출입 서버 기록","선반의 보존 문서 살펴보기"]
+PASS wrong feedback "맞게 놓인 자리가 아직 없습니다. 자료를 다시 대조해 보세요." ~ 자리
+PASS stage 4 solved (선반의 보존 문서 살펴보기)
+PASS ending reached
+docCount 
+PASS no page errors []
+=== apartment
+PASS wrong feedback "제보자는 건물 뒤편에서 찍었습니다. 「뒤쪽 도면 보기」로 바꾼 뒤 창을 고르세요." ~ 뒤편
+PASS wrong feedback "층이 맞지 않습니다. 창문 첫 줄 아래의 주차층을 세어보세요." ~ 층
+PASS stage 1 solved (제보 사진과 건물 도면)
+PASS next device visible: 502호 평면도 in ["처음 물건 다시보기","건물 뒤편","502호 복도","건물 배치도","불빛을 찍은 필름","502호 평면도"]
+PASS wrong feedback "3자리 중 1자리가 맞습니다. 어느 자리가 어긋났는지 자료와 대조하세요." ~ 자리
+PASS stage 2 solved (502호 평면도)
+PASS next device visible: 조명 점검함 in ["처음 물건 다시보기","건물 뒤편","502호 복도","관리실 기록 탁자","불빛을 찍은 필름","탁자 위 점검 자료 살펴보기","조명 점검함"]
+PASS wrong feedback "4개 눈금 중 2개가 맞습니다. 틀린 눈금을 자료와 다시 대조하세요." ~ 눈금
+PASS stage 3 solved (조명 점검함)
+PASS next device visible: 관리인의 조명 모형 in ["처음 물건 다시보기","건물 뒤편","502호 복도","관리실 기록 탁자","비상 조명 설비","불빛 제보","철거 전 점검 일지","관리인의 조명 모형"]
+PASS wrong feedback "현관 봉인이 열려 있습니다. 점검 일지대로 봉인은 정상으로 두세요." ~ 봉인
+PASS wrong feedback "주전원을 끄고 별도 전원만 켠 상태의 점등 시험 기록이 없습니다." ~ 별도 전원만
+PASS stage 4 solved (관리인의 조명 모형)
+PASS ending reached
+docCount 6 / 6
+PASS no page errors []
+=== radio
+PASS wrong feedback "J09 뒤로 이어질 조각이 없습니다. 마지막 연결을 풀고 다른 녹음 버전을 살펴보세요." ~ J09
+PASS wrong feedback "아직 조각 2개만 이었습니다. START에서 END까지 네 조각이 이어져야 합니다." ~ 조각
+PASS stage 1 solved (재생 데크 살펴보기)
+PASS next device visible: 녹음 보관 라벨 in ["처음 물건 다시보기","편집실","녹음 보관실","보관 음성 조각","수신 기록","녹음 보관 라벨"]
+PASS wrong feedback "3개 눈금 중 2개가 맞습니다. 틀린 눈금을 자료와 다시 대조하세요." ~ 눈금
+PASS stage 2 solved (녹음 보관 라벨)
+PASS next device visible: 패치 연결부 살펴보기 in ["처음 물건 다시보기","편집실","녹음 보관실","중계소 연결 패널","택시 기사의 제보","패치 연결부 살펴보기"]
+PASS wrong feedback "아직 케이블을 연결하지 않은 설비가 있습니다. 전원 잭을 고른 뒤 설비 잭을 누르세요." ~ 케이블
+PASS stage 3 solved (패치 연결부 살펴보기)
+PASS next device visible: 송출 점검 기록 in ["처음 물건 다시보기","편집실","녹음 보관실","중계소 연결 패널","송출 콘솔","폐국 확인서","수신 기록","송출 점검 기록"]
+PASS wrong feedback "아직 비어 있는 자리가 있습니다: 「출력 대조」" ~ 자리
+PASS stage 4 solved (송출 점검 기록)
+PASS ending reached
+docCount 6 / 6
+PASS no page errors []
+=== laundry
+PASS wrong feedback "아직 비어 있는 자리가 있습니다: 「2번 기계」·「3번 기계」" ~ 비어
+PASS stage 1 solved (기계의 작업표)
+PASS next device visible: 영수증과 시계 점검 스티커 in ["처음 물건 다시보기","세탁소 기계 앞","직원 점검 탁자","영수증과 시계 점검 스티커","다음 날의 영수증","시계 점검 스티커"]
+PASS wrong feedback "현장 단말은 서버보다 앞서 있었습니다. 보정은 빼는 쪽입니다." ~ 빼는
+PASS stage 2 solved (영수증과 시계 점검 스티커)
+PASS next device visible: 직원 출입 명부 in ["처음 물건 다시보기","세탁소 기계 앞","직원 점검 탁자","출입문 안쪽","밤의 출입 목록","시계 점검 스티커","다음 날의 영수증","직원 출입 명부"]
+PASS wrong feedback "아직 비어 있는 자리가 있습니다: 「그 뒤 도착한 사람」" ~ 비어
+PASS stage 3 solved (직원 출입 명부)
+PASS next device visible: 접수 단말 모형 in ["처음 물건 다시보기","세탁소 기계 앞","직원 점검 탁자","출입문 안쪽","직원 보관 행거","다음 날의 영수증","운영자에게 남긴 문의","접수 단말 모형"]
+PASS wrong feedback "아직 수령 표시를 찍지 않았습니다. 띠를 보정한 실제 수령 시각에 놓고 「고객 수령 표시 찍기」를 누르세요." ~ 찍지
+PASS wrong feedback "표시를 찍은 시각(23:59)이 보정한 수령 시각과 다릅니다. 띠를 옮겨 다시 찍으세요." ~ 수령 시각
+PASS stage 4 solved (접수 단말 모형)
+PASS ending reached
+docCount 7 / 7
+PASS no page errors []
+=== letter
+PASS wrong feedback "돌아온 봉투의 경로를 먼저 살펴보세요" ~ 경로
+PASS wrong feedback "선택한 표찰은 겉봉의 옛 지번과 다른 곳입니다. 수신처가 맞지 않아 봉투가 다시 돌아왔습니다." ~ 옛 지번
+PASS stage 1 solved (사서의 우편 분류 모형)
+PASS next device visible: 탁자에 펼친 봉투 살펴보기 in ["처음 물건 다시보기","주소 변경 공고","우편 분류 탁자","탁자에 펼친 봉투 살펴보기","사서의 분류 메모"]
+PASS stage 2 solved (탁자에 펼친 봉투 살펴보기)
+PASS next device visible: 보존 서가 in ["처음 물건 다시보기","주소 변경 공고","우편 분류 탁자","보존 서가","사서의 분류 메모","봉투 앞뒤","보존서고 목록","보존 서가"]
+PASS wrong feedback "아직 비어 있는 자리가 있습니다: 「단」·「칸」" ~ 자리
+PASS stage 3 solved (보존 서가)
+PASS ending reached
+docCount 6 / 6
+PASS no page errors []
+=== pet-home
+PASS wrong feedback "아직 비어 있는 자리가 있습니다: 「장기 입양」" ~ 비어
+PASS stage 1 solved (기억 상자)
+PASS next device visible: 탁자에 펼친 인계서류 살펴보기 in ["처음 물건 다시보기","거실의 담요","거실 식탁","루미의 기념품","탁자에 펼친 인계서류 살펴보기"]
+PASS wrong feedback "서류 1장만 이었습니다. 번호가 이어지는 네 장이 모두 연결돼야 합니다." ~ 서류
+PASS stage 2 solved (탁자에 펼친 인계서류 살펴보기)
+PASS next device visible: 유나의 사진첩 in ["처음 물건 다시보기","거실의 담요","거실 식탁","유나의 사진첩","루미의 기념품","유나의 오래된 사진첩","유나의 사진첩"]
+PASS wrong feedback "아직 보관하지 않은 흔적이 있습니다: 「사진 원본 정보 펼치기」·「정류장 주변 보기」" ~ 흔적
+PASS stage 3 solved (유나의 사진첩)
+PASS ending reached
+docCount 7 / 7
+PASS no page errors []
+=== cat-invite
+PASS wrong feedback "아직 빈 의자가 있습니다. 네 선물을 모두 놓으세요." ~ 빈 의자
+PASS stage 1 solved (식탁 중앙의 쪽지 살펴보기)
+PASS next device visible: 리본을 묶은 선물 상자 살펴보기 in ["처음 물건 다시보기","포장 가게 식탁","선물 포장대","포장 가게의 자리표","리본을 묶은 선물 상자 살펴보기","이웃들이 보낸 쪽지"]
+PASS wrong feedback "아직 풀지 않은 리본이 있습니다: 소연·지후·미정" ~ 리본
+PASS stage 2 solved (리본을 묶은 선물 상자 살펴보기)
+PASS next device visible: 탁자 위 감사 카드 살펴보기 in ["처음 물건 다시보기","포장 가게 식탁","선물 포장대","돌봄 달력 앞","봄이를 돌보던 달력","탁자 위 감사 카드 살펴보기"]
+PASS wrong feedback "「기념 일」 눈금이 아직 맞지 않습니다. 나머지 1개는 맞습니다." ~ 눈금
+PASS stage 3 solved (탁자 위 감사 카드 살펴보기)
+PASS ending reached
+docCount 7 / 7
+PASS no page errors []
+done

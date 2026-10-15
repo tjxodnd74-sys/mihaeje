@@ -1,0 +1,1 @@
+{"private":true,"scripts":{"build":"node scripts/build-v44.mjs"},"devDependencies":{"esbuild":"0.28.2"}}

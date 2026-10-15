@@ -1,0 +1,36 @@
+/* Keep the scene and its interaction points in the first desktop view. */
+@media(min-width:701px){
+ html[data-theme] body .escape-experience{display:grid!important;grid-template-columns:230px minmax(0,1fr)!important;gap:12px 22px!important;align-items:start!important}
+ html[data-theme] body .escape-experience>:not(.escape-scene){grid-column:1!important;margin:0!important;min-width:0}
+ html[data-theme] body .escape-experience>.escape-heading h2{font-size:21px!important;margin:0 0 10px!important;line-height:1.45!important}
+ html[data-theme] body .escape-experience>.scene-cropped{grid-column:2!important;grid-row:1/span 8!important;align-self:start!important;width:min(100%,calc(var(--scene-available,65svh)*var(--scene-ratio,1.5)))!important}
+ html[data-theme] body .escape-experience .place-route{display:flex!important;flex-direction:column!important;gap:6px!important}
+ html[data-theme] body .escape-experience .place-link{width:100%;text-align:left;line-height:1.5!important;min-height:40px!important;padding:8px 11px!important}
+ html[data-theme] body .escape-experience .room-quick-links{display:flex;flex-wrap:wrap;gap:6px!important}
+ html[data-theme] body .escape-experience .scene-tray{display:flex;flex-wrap:wrap;gap:6px;padding:12px!important}
+}
+@media(max-width:700px){
+ html[data-theme] body .place-route{flex-wrap:nowrap!important;overflow-x:auto!important;scroll-snap-type:x proximity;gap:6px!important;padding:5px 2px 10px!important}
+ html[data-theme] body .place-route .place-link{flex:0 0 auto!important;white-space:nowrap!important;scroll-snap-align:center;min-height:44px!important;font-size:14px!important}
+}
+/* Reading and choosing stay on the same paper; the controls begin sooner. */
+html[data-theme] body dialog.inspection-dialog .inspection-body .story-device{padding:18px!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .story-desk-heading h2{font:700 23px/1.4 SUIT,sans-serif!important;margin:7px 0 12px!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .story-device .stage-context{font:16px/1.7 MihaejeNote,SUIT,sans-serif!important;padding:12px 14px!important;margin:0 0 12px!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .story-device .story-evidence-tray{padding:10px 12px!important;margin:0 0 14px!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .story-evidence-tray h3{font:700 16px/1.5 SUIT,sans-serif!important;margin:0 0 7px!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .story-evidence-link{min-height:40px!important;padding:7px 10px!important;font:600 14px/1.5 SUIT,sans-serif!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .story-look-around{padding:7px 10px!important;min-height:40px!important;font:600 14px/1.5 SUIT,sans-serif!important;margin:6px 0 0!important}
+html[data-theme] body dialog.inspection-dialog .inspection-body .story-device>.hint-request{padding:8px 12px!important;min-height:50px!important;margin:0 0 10px!important}
+.staff-card{max-width:360px;margin:12px auto 22px;padding:22px;background:#eee3c9;border:1px solid #a28b63;border-left:7px solid #907452;transform:rotate(-2deg);box-shadow:3px 6px 0 #0004;color:#30271e;line-height:1.7}
+.staff-number{display:block;font:700 30px/1.7 monospace;letter-spacing:.12em;border-bottom:1px solid #a28b63;margin:10px 0}
+.coat-machine{max-width:380px;display:flex;flex-direction:column;align-items:center;gap:14px;margin:18px auto;padding:22px;background:#34544f;border:8px solid #718378;border-radius:9px;box-shadow:inset 0 0 0 2px #142c29}
+.machine-drum{display:grid;place-items:center;width:150px;height:150px;border:16px solid #8f9d90;border-radius:50%;background:radial-gradient(circle,#263e37 0 55%,#081613 57%);font-size:90px;color:#acbaa7!important}
+.machine-tags{display:flex;gap:10px;flex-wrap:wrap}.machine-tags .laundry-tag{flex:1 1 90px;border-top:8px solid #a48a5d!important;min-height:74px!important;box-shadow:2px 3px 0 #101d15}
+.registration-papers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}.record-leaf{margin:0;padding:16px;background:#f4e8cc;color:#30271e;border:1px solid #b49b72;border-left:5px solid #a58d5e;box-shadow:2px 4px 0 #0004;overflow-wrap:anywhere;line-height:1.7}
+.record-leaf strong,.record-leaf small{display:block}.record-leaf small{white-space:pre-line;margin-top:10px;font-family:monospace!important;font-size:14px!important}
+.registration-chain{margin:0;padding-left:26px;display:grid;gap:10px}.calendar-page{padding:18px;background:#f4e8ce;color:#30271e;border-top:8px solid #856341;line-height:1.8}.calendar-page>output{display:block;text-align:center;margin:15px 0 0;font-weight:700}
+.family-calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.experience-apparatus .family-calendar button.calendar-date{padding:8px 0!important;min-width:0!important;min-height:44px!important;font-size:15px!important;border:1px solid #b6a380!important}
+@media(max-width:600px){.registration-papers{grid-template-columns:1fr}.staff-card{padding:18px}.coat-machine{padding:16px}.calendar-page{padding:10px}.machine-drum{width:125px;height:125px;font-size:70px}}
+html[data-theme] body dialog.inspection-dialog::backdrop{backdrop-filter:none!important;background:#101813ce!important}
+@media(prefers-reduced-motion:reduce){.staff-card{transform:none}.room-hotspot{transition:none!important}}

@@ -1,0 +1,19 @@
+미해제 v80 검증 기록 — 2026-10-14 (Claude)
+
+환경: Linux 컨테이너, Node v22, Playwright 1.59 + 번들 Chromium(헤드리스), 로컬 preview(qa-tools/preview.mjs, dist/client).
+실기기 아님. 공개 사이트 아님. 피드백 DB/소유자 인증은 실행하지 않음.
+
+자동 완주 (새 저장 상태에서 시작 → 엔딩, 장치마다 오답 1회 이상 입력해 메시지 확인):
+  qa-tools/walk-episodes.mjs : garage, apartment, radio, station, laundry, letter, pet-home, cat-invite
+  qa-tools/walk-native.mjs   : studio, ohang
+  결과: PC 1280×900 10/10 통과, 모바일 375×812 10/10 통과, 콘솔 에러 0, 실패 요청 0(폰트 preload 취소 제외).
+  자료 카운터: station 6/6, apartment 6/6, radio 6/6, laundry 7/7, letter 6/6, pet-home 7/7, cat-invite 7/7, garage 7/7.
+
+정적 검사:
+  node scripts/audit-playability-v64.cjs  PASS
+  node scripts/check-hint-entries-v77.cjs PASS
+
+화면 확인(스크린샷, 헤드리스): 오답 상태 문구(PC/모바일), 읽지 않은 자료 안내(PC/모바일).
+
+미확인:
+  iPhone Safari / Android Chrome 실기기, 스피커·배경음, 공개 URL 첫 방문 속도, 익명/타 사용자/소유자 피드백 권한, 정비소 영상 엔딩 재생.

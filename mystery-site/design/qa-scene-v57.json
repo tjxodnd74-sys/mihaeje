@@ -1,0 +1,139 @@
+{
+  "version": 57,
+  "genericPhotoViewsVisuallyCompared": 29,
+  "nativePhotoViewsVisuallyCompared": 11,
+  "correctedSourceAnchors": [
+    {
+      "theme": "garage",
+      "place": 3,
+      "objects": [
+        "people",
+        "DEVICE"
+      ],
+      "sourcePoint": [
+        27,
+        70
+      ]
+    },
+    {
+      "theme": "garage",
+      "place": 4,
+      "objects": [
+        "memo",
+        "DEVICE"
+      ],
+      "sourcePoint": [
+        35,
+        28
+      ]
+    },
+    {
+      "theme": "apartment",
+      "place": 3,
+      "objects": [
+        "agreement"
+      ],
+      "sourcePoint": [
+        24,
+        75
+      ]
+    },
+    {
+      "theme": "radio",
+      "place": 2,
+      "objects": [
+        "archive"
+      ],
+      "sourcePoint": [
+        8,
+        36
+      ]
+    },
+    {
+      "theme": "station",
+      "place": 4,
+      "objects": [
+        "locker"
+      ],
+      "sourcePoint": [
+        30,
+        64
+      ]
+    },
+    {
+      "theme": "station",
+      "place": 4,
+      "objects": [
+        "DEVICE"
+      ],
+      "sourcePoint": [
+        9,
+        60
+      ]
+    },
+    {
+      "theme": "laundry",
+      "place": 2,
+      "objects": [
+        "receipt"
+      ],
+      "sourcePoint": [
+        23,
+        72
+      ]
+    },
+    {
+      "theme": "letter",
+      "place": 1,
+      "objects": [
+        "envelopes"
+      ],
+      "sourcePoint": [
+        10,
+        75
+      ]
+    },
+    {
+      "theme": "letter",
+      "place": 2,
+      "objects": [
+        "envelopes",
+        "DEVICE"
+      ],
+      "sourcePoint": [
+        24,
+        73
+      ]
+    },
+    {
+      "theme": "letter",
+      "place": 2,
+      "objects": [
+        "classification"
+      ],
+      "sourcePoint": [
+        42,
+        73
+      ]
+    },
+    {
+      "theme": "cat-invite",
+      "place": 2,
+      "objects": [
+        "DEVICE"
+      ],
+      "sourcePoint": [
+        32,
+        75
+      ]
+    }
+  ],
+  "otherCorrections": [
+    "Studio bath marker on actual middle tray",
+    "Ohang final envelope marker off bare stone onto folded envelope",
+    "Already carried classification memo moved to top paper tray",
+    "Letter opening marker moved from bare wood to envelope pile"
+  ],
+  "method": "Crop-aware contact sheet of every scene with plotted record/device coordinates; live mobile screenshot confirmed the opening mismatch",
+  "totalSceneViews": 40
+}

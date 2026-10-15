@@ -1,0 +1,108 @@
+{
+  "version": 50,
+  "method": "정상 UI의 새 게임으로 시작, 이야기 읽기, 단서 열람, 장치 직접 조작, 3단계 힌트, 장소 이동, 마지막 행동, 모든 엔딩 장면과 풀이 확인. 진행 상태 주입 없이 실행.",
+  "completed": {
+    "mobile_390x844": 10,
+    "pc_1366x900": 10
+  },
+  "evidence": {
+    "mobile_snapshots": 436,
+    "pc_snapshots": 282,
+    "audio_checks": 20,
+    "rechecks": 10
+  },
+  "games": [
+    {
+      "id": "garage",
+      "title": "마지막 정비소",
+      "mobile": "ending and explanation reached",
+      "pc": "ending and explanation reached",
+      "story_review": "출입 카드와 실제 반출을 구분하고 백업 센서로 결론 확인"
+    },
+    {
+      "id": "apartment",
+      "title": "404호의 불빛",
+      "mobile": "ending and explanation reached",
+      "pc": "ending and explanation reached",
+      "story_review": "필로티·뒤편 좌우·창문 배치에서 독립 배터리의 원인까지 연결"
+    },
+    {
+      "id": "radio",
+      "title": "끝나지 않은 방송",
+      "mobile": "ending and explanation reached",
+      "pc": "ending and explanation reached",
+      "story_review": "연결 큐·녹음일·별도 중계 전원·예약 출력의 인과 확인"
+    },
+    {
+      "id": "station",
+      "title": "세 번째 승강장",
+      "mobile": "ending and explanation reached",
+      "pc": "ending and explanation reached",
+      "story_review": "옛 승강장과 경로를 복원한 뒤 현재 안부를 통화로 별도 확인"
+    },
+    {
+      "id": "laundry",
+      "title": "자정의 무인 세탁소",
+      "mobile": "ending and explanation reached",
+      "pc": "ending and explanation reached",
+      "story_review": "자정 보정·출입·보관 센서의 순서를 대조하고 출입문 의미 명확화"
+    },
+    {
+      "id": "letter",
+      "title": "반송된 편지",
+      "mobile": "ending and explanation reached",
+      "pc": "ending and explanation reached",
+      "story_review": "주소 변경·소인·분류 표찰이 한 보존 위치를 가리키는지 확인"
+    },
+    {
+      "id": "pet-home",
+      "title": "첫 번째 보호자",
+      "mobile": "ending and explanation reached",
+      "pc": "ending and explanation reached",
+      "story_review": "돌봄 역할·같은 개체의 등록 연결·옛 발견자와 현재 입양을 구분"
+    },
+    {
+      "id": "cat-invite",
+      "title": "고양이의 초대장",
+      "mobile": "ending and explanation reached",
+      "pc": "ending and explanation reached",
+      "story_review": "자리와 리본에서 입양 기념일·다은의 초대까지 연결"
+    },
+    {
+      "id": "studio",
+      "title": "비가 그친 사진관",
+      "mobile": "ending and explanation reached",
+      "pc": "ending and explanation reached",
+      "story_review": "빛·서랍·필름·암실·현상·전시·함께 인화할 약속까지 진행"
+    },
+    {
+      "id": "ohang",
+      "title": "오행당",
+      "mobile": "ending and explanation reached",
+      "pc": "ending and explanation reached",
+      "story_review": "접수한 마음·상생 순환·방위·상극·먹지 원본·선택한 결말까지 진행"
+    }
+  ],
+  "fixes": [
+    "완료 화면의 이동 버튼이 현재 장소로만 돌아오던 동작을 다음 장소로 직접 연결했습니다.",
+    "사진관은 인화 뒤 다음 전시 작업을 바로 펼치며, 같은 사진을 반복해서 열 필요가 없습니다.",
+    "초기 상태 문구가 진행 후에도 계속 남던 문제를 수정했습니다.",
+    "장소 전환 문장과 실제 장소 이름을 맞췄습니다. 읽는 기록·힌트·엔딩의 물건 이름도 통일했습니다.",
+    "백업 완료 표시와 숫자, 필름의 지면 표기, 상자 뚜껑 버튼, 의견 버튼의 대비를 수정하고 재검사했습니다.",
+    "사진관에서 아직 발견하지 않은 기록으로 잘못 연결되던 힌트를 현재 봉투·필름 또는 암실 작업의 힌트로 연결했습니다.",
+    "승강장 엔딩의 근거 없는 분실물 설정을 제거하고 역의 안내 노선도와 확인한 통화 기록을 보관하도록 바꿨습니다.",
+    "세탁소 원장의 문은 세탁소 출입문임을 명확히 했으며 날짜·시각·숫자의 띄어쓰기를 정리했습니다.",
+    "오행당의 상생 원문은 실제 그릇 단서로 열렸습니다. 막힌 경로로 오인했던 판단은 수정했습니다.",
+    "클로드에 실제 발견 사항과 수정안을 보내 설계 피드백을 받았습니다. 클로드가 플레이했다는 의미는 아닙니다."
+  ],
+  "limits": [
+    "실제 아이폰·안드로이드 기기가 연결되어 있지 않습니다. Safari/WebKit·Android Chrome 실기기와 스피커 출력은 확인하지 못했습니다.",
+    "브라우저 오디오 재생·효과음 신호 검증이며 실제 청취 테스트를 대신하지 않습니다.",
+    "속도는 로컬 서버 측정입니다. 실제 통신망과 보급형 휴대폰 성능을 보장하지 않습니다."
+  ],
+  "extra_mobile": {
+    "360": "루미 상자 버튼과 도입 글씨 대비 재검사",
+    "430": "사진관을 처음부터 다시 시작하여 수정된 초기·암실 힌트와 엔딩 확인",
+    "film_scroll": "같은 필름 뒤집기 두 번에서 내부 스크롤 393px 유지"
+  }
+}

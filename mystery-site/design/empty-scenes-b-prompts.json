@@ -1,0 +1,33 @@
+{
+  "mode": "built-in imagegen edits; sharp format conversion only",
+  "assets": [
+    {
+      "id": "apartment",
+      "prompt": "Use case: precise-object-edit\nAsset type: photorealistic escape room scene after collectible item pickup\nInput image: exact edit target, not a style reference\nPrimary request: Remove ONLY the small black flashlight lying on the foreground wooden reception counter at x26%, y68%. Reconstruct the bare wood grain and natural light where it was. Keep every plant, paper stack, door, wall notice, cabinet and chair identical.\nConstraints: Match input's 1536x1024 landscape framing, exact camera viewpoint, perspective, room composition, color, light direction and all other props. This is an extremely localized object removal, no redesign, no new elements, no text, no border, no watermark. Preserve the rest of image as closely as possible.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12513-b4ad-7242-b30f-5daef134cef7/exec-62808286-3cdc-49ad-8fda-b2c3c81715e7.png",
+      "output": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/photoreal/apartment-entry-empty-v3.webp",
+      "bytes": 123586
+    },
+    {
+      "id": "letter",
+      "prompt": "Use case: precise-object-edit\nAsset type: photorealistic escape room scene after collectible item pickup\nInput image: exact edit target, not a style reference\nPrimary request: Remove ONLY the rectangular red translucent filter in its brass/wood frame resting on the foreground desk at x30%, y84%. Reconstruct bare worn wooden desktop and its natural lighting. Keep every envelope, lamp, ink stamp, chair, sorting cabinet, door, plant and wall decoration identical.\nConstraints: Match input's 1536x1024 landscape framing, exact camera viewpoint, perspective, room composition, color, light direction and all other props. This is an extremely localized object removal, no redesign, no new elements, no text, no border, no watermark. Preserve the rest of image as closely as possible.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12513-b4ad-7242-b30f-5daef134cef7/exec-8fbff742-708b-4cb0-b08f-95cd0c52033d.png",
+      "output": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/photoreal/letter-entry-empty-v3.webp",
+      "bytes": 166248
+    },
+    {
+      "id": "pet-home",
+      "prompt": "Use case: precise-object-edit\nAsset type: photorealistic escape room scene after collectible item pickup\nInput image: exact edit target, not a style reference\nPrimary request: Remove ONLY BOTH torn postcard halves lying side by side on the center foreground wooden dining table, at x45%,y79% and x61%,y79%. Reconstruct uninterrupted bare natural wood grain in both places. Preserve mug and coaster, vase and flowers, table runner, yarn bowl,chair, pet bed, cabinet, door, plants and photos exactly.\nConstraints: Match input's 1536x1024 landscape framing, exact camera viewpoint, perspective, room composition, color, light direction and all other props. This is an extremely localized object removal, no redesign, no new elements, no text, no border, no watermark. Preserve the rest of image as closely as possible.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12513-b4ad-7242-b30f-5daef134cef7/exec-ff47dae2-14de-4868-b51d-e1d954aca157.png",
+      "output": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/photoreal/pet-home-entry-empty-v3.webp",
+      "bytes": 219416
+    },
+    {
+      "id": "laundry",
+      "prompt": "Use case: precise-object-edit\nAsset type: photorealistic escape room scene after collectible item pickup\nInput image: exact edit target, not a style reference\nPrimary request: Remove ONLY the small brass service key lying on the foreground left wooden bench at x14%, y83%. Reconstruct the bare bench planks under it. Keep the towel stack, laundry basket, washing machines, doors, plants, rainy glass, pavement and every other element identical.\nConstraints: Match input's 1536x1024 landscape framing, exact camera viewpoint, perspective, room composition, color, light direction and all other props. This is an extremely localized object removal, no redesign, no new elements, no text, no border, no watermark. Preserve the rest of image as closely as possible.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12513-b4ad-7242-b30f-5daef134cef7/exec-da99fa98-0da2-4837-858a-9683d3f4754f.png",
+      "output": "C:/Users/PC/Documents/Codex/2026-10-07/new-chat/work/mystery-site/dist/assets/photoreal/laundry-entry-empty-v3.webp",
+      "bytes": 301600
+    }
+  ]
+}

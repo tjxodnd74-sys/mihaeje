@@ -1,0 +1,197 @@
+{
+  "version": 56,
+  "date": "2026-10-12",
+  "browser": "Codex in-app Chromium",
+  "mode": "Compiled local preview, UI clicks/keyboard only; isolated browser-save namespaces; no solved-state injection",
+  "plays": [
+    {
+      "id": "garage",
+      "title": "마지막 정비소",
+      "pc": {
+        "width": 1280,
+        "height": 720,
+        "newStartToEnding": true
+      },
+      "mobile": {
+        "width": 390,
+        "height": 844,
+        "newStartToEnding": true
+      },
+      "flow": "카메라 시각 보정 → 카드 조회 → 두 영상 대조 → 백업 기록 인계"
+    },
+    {
+      "id": "apartment",
+      "title": "404호의 불빛",
+      "pc": {
+        "width": 1280,
+        "height": 720,
+        "newStartToEnding": true
+      },
+      "mobile": {
+        "width": 390,
+        "height": 844,
+        "newStartToEnding": true
+      },
+      "flow": "건물에서 집 선택 → 세 창의 방 이름 회전 → 공책 잠금 → 배터리 점검"
+    },
+    {
+      "id": "radio",
+      "title": "끝나지 않은 방송",
+      "pc": {
+        "width": 1280,
+        "height": 720,
+        "newStartToEnding": true
+      },
+      "mobile": {
+        "width": 390,
+        "height": 844,
+        "newStartToEnding": true
+      },
+      "flow": "테이프 조각 이동 → 녹음 날짜 → 별도 전원 연결 → 파일 재생 경로 확인"
+    },
+    {
+      "id": "station",
+      "title": "세 번째 승강장",
+      "pc": {
+        "width": 1280,
+        "height": 720,
+        "newStartToEnding": true
+      },
+      "mobile": {
+        "width": 390,
+        "height": 844,
+        "newStartToEnding": true
+      },
+      "flow": "옛 표지 비교 → 지도에서 역 이동 → 예약 보관함 → 친구와 통화"
+    },
+    {
+      "id": "laundry",
+      "title": "자정의 무인 세탁소",
+      "pc": {
+        "width": 1280,
+        "height": 720,
+        "newStartToEnding": true
+      },
+      "mobile": {
+        "width": 390,
+        "height": 844,
+        "newStartToEnding": true
+      },
+      "flow": "접수 태그와 기계 → 자정 전후 날짜 보정 → 출입 시간 → 코트 인계"
+    },
+    {
+      "id": "letter",
+      "title": "반송된 편지",
+      "pc": {
+        "width": 1280,
+        "height": 720,
+        "newStartToEnding": true
+      },
+      "mobile": {
+        "width": 390,
+        "height": 844,
+        "newStartToEnding": true
+      },
+      "flow": "봉투 주소 → 앞뒤 뒤집기·날짜 정렬 → 서가 열·단·칸 직접 선택"
+    },
+    {
+      "id": "pet-home",
+      "title": "첫 번째 보호자",
+      "pc": {
+        "width": 1280,
+        "height": 720,
+        "newStartToEnding": true
+      },
+      "mobile": {
+        "width": 390,
+        "height": 844,
+        "newStartToEnding": true
+      },
+      "flow": "물건의 돌봄 기록 → 같은 번호의 서류 연결 → 사진과 파란 끈 대조"
+    },
+    {
+      "id": "cat-invite",
+      "title": "고양이의 초대장",
+      "pc": {
+        "width": 1280,
+        "height": 720,
+        "newStartToEnding": true
+      },
+      "mobile": {
+        "width": 390,
+        "height": 844,
+        "newStartToEnding": true
+      },
+      "flow": "식탁의 네 자리 배치 → 리본 바퀴 → 기념 날짜 → 빈 의자 준비"
+    },
+    {
+      "id": "studio",
+      "title": "비가 그친 사진관",
+      "pc": {
+        "width": 1280,
+        "height": 720,
+        "newStartToEnding": true
+      },
+      "mobile": {
+        "width": 390,
+        "height": 844,
+        "newStartToEnding": true
+      },
+      "flow": "봉투 기울기 → 필름 앞뒤·순서 → 조명·초점·노출 → 현상 → 전시"
+    },
+    {
+      "id": "ohang",
+      "title": "돌아오는 계절",
+      "pc": {
+        "width": 1280,
+        "height": 720,
+        "newStartToEnding": true
+      },
+      "mobile": {
+        "width": 390,
+        "height": 844,
+        "newStartToEnding": true
+      },
+      "flow": "접수표 마음 선택 → 그릇 고리 회전 → 방향 배치 → 등불 → 편지·물건 선택"
+    }
+  ],
+  "deviceStagesPerViewport": 34,
+  "nativeStudioOperationsAlsoPlayed": true,
+  "nativeOhangExampleProfile": "fictional 1995-06-15 14:30",
+  "observedFinalHorizontalOverflow": 0,
+  "finalLowContrastFindingsInSampledStageText": 0,
+  "correctedFindings": [
+    "Opening object was only listed below image",
+    "Scene frame pushed opening marker below first screen",
+    "Stage explanation inherited white ink on pale paper",
+    "Apartment window button background overrode its dark glass",
+    "Ohang chosen object did not match ending summary",
+    "Outdated technical words in document/hint/ending/catalogue",
+    "Unreachable bespoke console branch behind generic choices",
+    "Repeated evidence-insertion and counter-evidence attachment gates"
+  ],
+  "limitations": [
+    "No physical iPhone/Android speaker or Safari execution",
+    "Contrast sampling uses computed solid backgrounds, not a full image-background accessibility audit",
+    "Fun and desire to recommend are qualitative editorial judgments; no beta-user retention results"
+  ],
+  "branchControllerChecks": {
+    "canonicalStages": 34,
+    "reverseStages": 34,
+    "games": 10,
+    "prerequisitesPreserved": true,
+    "saveReopenPreserved": true
+  },
+  "additionalReverseOrderUiPlays": {
+    "pc": [
+      "letter",
+      "garage",
+      "apartment",
+      "radio",
+      "station"
+    ],
+    "mobile": [
+      "ohang"
+    ]
+  }
+}

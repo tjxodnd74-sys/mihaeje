@@ -1,0 +1,29 @@
+{
+  "mode": "built-in image_gen",
+  "assets": [
+    {
+      "name": "radio",
+      "prompt": "Use case: photorealistic-natural. Asset type: immersive Korean browser escape game clue help device photograph. Create one cinematic but authentic editorial photograph, landscape 3:2. A single old handheld workshop walkie-talkie with black rubber body, worn push-to-talk button, long antenna and simple unlit screen rests diagonally on a scratched gray steel garage work table. The walkie-talkie is the prominent central subject and entirely inside frame. Low warm side light and neutral workshop shadows, highly realistic materials and lived-in texture, quietly reassuring atmosphere. Close tabletop composition, shallow background but sharp complete device. No hands, people, brand names, labels, legible text, numerals, watermark, logos, decorative symbols, UI or collage. Make it believable everyday equipment rather than futuristic prop.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12515-36f5-7082-baa9-17c5431cb819/exec-ea3e3498-c805-4ad8-9237-7b4a0d7ae179.png",
+      "final": "dist/assets/hints/radio-v1.webp"
+    },
+    {
+      "name": "note",
+      "prompt": "Use case: photorealistic-natural. Asset type: immersive Korean browser escape game clue help device photograph. Create one refined natural close-up photograph, landscape 3:2. A small folded cream-colored paper note opened halfway on an old honey-colored wooden desk, a few tiny blurred illegible handwritten ink strokes on its inside face, with the visible outside entirely blank. The folded note is the prominent central subject, not an envelope, and fills about two thirds of image width. Warm late afternoon window light reveals paper grain and softly worn tabletop texture. Quiet gentle human atmosphere, exceptionally believable real photograph rather than stylized render. No hands, people, readable writing, numerals, brands, watermark, UI, collage, extra decorations. The paper should stay pale and light, distinct from the dark table device photographs.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12515-36f5-7082-baa9-17c5431cb819/exec-7befb6ec-d4a8-4692-a9fc-ccf7582e0e17.png",
+      "final": "dist/assets/hints/note-v1.webp"
+    },
+    {
+      "name": "pigeon",
+      "prompt": "Use case: photorealistic-natural. Asset type: immersive Korean browser escape game clue help device photograph. Create one beautifully authentic wildlife and architectural photograph, landscape 3:2. A calm healthy gray carrier pigeon with subtle iridescent neck feathers perches naturally on a weathered Korean hanok wooden veranda railing. Beside the bird rests a small folded blank cream paper note tied loosely with thin natural twine; the note is NOT attached to the bird. The bird and note are prominent centered subjects, full pigeon including both feet and tail inside frame. Gentle pale morning light, softly blurred traditional courtyard and tiled eaves in background, peaceful healing mood. Photographic feather detail, natural proportions and worn wood. No people, hands, injury, distress, cage, readable writing, numerals, brands, watermark, UI, collage, supernatural effects or decoration.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12515-36f5-7082-baa9-17c5431cb819/exec-4b3d5d05-bbeb-4c69-9587-892aff17b915.png",
+      "final": "dist/assets/hints/pigeon-v1.webp"
+    },
+    {
+      "name": "intercom",
+      "prompt": "Use case: photorealistic-natural. Asset type: immersive Korean browser escape game clue help device photograph. Create one realistic close-up tabletop photograph, landscape 3:2. A vintage analog desk intercom with short gooseneck microphone, rectangular worn dark olive metal base, a single large push button and small perforated speaker sits on a dark wooden broadcast studio console. The complete intercom and microphone are prominent in the center, entirely inside frame. Warm tungsten studio lamp light across brushed worn metal, softly blurred acoustic wood panel background, quiet late-night radio station mood. Strong real photographic materials, balanced composition, no futuristic equipment. No hands, people, legible text, numerals, brands, logos, watermark, UI, collage, decorative symbols. Distinct silhouette from a handheld walkie-talkie.",
+      "source": "C:/Users/PC/.codex/generated_images/01a12515-36f5-7082-baa9-17c5431cb819/exec-7fef8343-8cca-4a7d-ba45-4e3bab33fe08.png",
+      "final": "dist/assets/hints/intercom-v1.webp"
+    }
+  ]
+}

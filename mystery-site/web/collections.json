@@ -1,0 +1,108 @@
+{
+  "categories": [
+    {
+      "id": "mystery",
+      "title": "추리·미스터리",
+      "description": "기록의 틈을 찾아 숨겨진 진실을 여는 이야기"
+    },
+    {
+      "id": "heartwarming",
+      "title": "감동·힐링",
+      "description": "작은 단서 끝에서 뜻밖의 마음을 만나는 이야기"
+    }
+  ],
+  "series": [
+    {
+      "id": "miru",
+      "title": "미루의 기록",
+      "description": "정비소에서 보존서고까지, 같은 동네에 남은 서로 다른 사건",
+      "tone": "서늘한 미스터리",
+      "standalone": true,
+      "categoryId": "mystery"
+    },
+    {
+      "id": "footsteps",
+      "title": "돌아오는 발자국",
+      "description": "함께 사는 작은 존재들이 남긴, 뜻밖의 따뜻한 이야기",
+      "tone": "따뜻한 미스터리",
+      "standalone": true,
+      "categoryId": "heartwarming"
+    },
+    {
+      "id": "afterlight",
+      "title": "빛을 남기는 사람들",
+      "description": "사진관에서 시작되는, 기록 뒤에 남은 사람들의 이야기",
+      "tone": "따뜻한 감동 미스터리",
+      "standalone": true,
+      "categoryId": "heartwarming"
+    },
+    {
+      "id": "night-shift",
+      "title": "자정 이후",
+      "description": "불이 꺼진 동네의 생활 공간에 남은 이상한 기록",
+      "tone": "밤의 미스터리",
+      "standalone": true,
+      "categoryId": "mystery"
+    },
+    {
+      "id": "five-lights",
+      "title": "오행당의 편지",
+      "description": "전통의 다섯 빛에서 시작하는, 선택으로 완성하는 다정한 이야기",
+      "tone": "선택형 힐링 방탈출",
+      "standalone": true,
+      "categoryId": "heartwarming"
+    }
+  ],
+  "assignments": {
+    "garage": {
+      "categoryId": "mystery",
+      "seriesId": "miru",
+      "seriesEpisode": 1
+    },
+    "apartment": {
+      "categoryId": "mystery",
+      "seriesId": "miru",
+      "seriesEpisode": 2
+    },
+    "radio": {
+      "categoryId": "mystery",
+      "seriesId": "miru",
+      "seriesEpisode": 3
+    },
+    "station": {
+      "categoryId": "mystery",
+      "seriesId": "miru",
+      "seriesEpisode": 4
+    },
+    "letter": {
+      "categoryId": "mystery",
+      "seriesId": "miru",
+      "seriesEpisode": 5
+    },
+    "pet-home": {
+      "categoryId": "heartwarming",
+      "seriesId": "footsteps",
+      "seriesEpisode": 1
+    },
+    "studio": {
+      "categoryId": "heartwarming",
+      "seriesId": "afterlight",
+      "seriesEpisode": 1
+    },
+    "laundry": {
+      "categoryId": "mystery",
+      "seriesId": "night-shift",
+      "seriesEpisode": 1
+    },
+    "cat-invite": {
+      "categoryId": "heartwarming",
+      "seriesId": "footsteps",
+      "seriesEpisode": 2
+    },
+    "ohang": {
+      "categoryId": "heartwarming",
+      "seriesId": "five-lights",
+      "seriesEpisode": 1
+    }
+  }
+}

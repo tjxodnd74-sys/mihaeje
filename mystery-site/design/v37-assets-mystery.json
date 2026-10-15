@@ -1,0 +1,249 @@
+{
+  "version": 37,
+  "generationMode": "built-in image_gen",
+  "themes": [
+    {
+      "id": "garage",
+      "entry": [
+        [
+          23,
+          72
+        ],
+        [
+          42,
+          74
+        ],
+        [
+          61,
+          76
+        ],
+        [
+          78,
+          76
+        ],
+        [
+          82,
+          20
+        ]
+      ],
+      "inner": [
+        [
+          32,
+          54
+        ],
+        [
+          40,
+          21
+        ],
+        [
+          77,
+          12
+        ],
+        [
+          61,
+          56
+        ],
+        [
+          85,
+          59
+        ]
+      ],
+      "entryDescriptions": [
+        "서비스 클립보드",
+        "드라이버 손잡이",
+        "십자 비트",
+        "트롤리 점검판",
+        "공구 반납판"
+      ],
+      "innerDescriptions": [
+        "진단 노트북 · SD 리더",
+        "출입 기록 모니터",
+        "백업 보관 선반",
+        "봉인된 기록 상자",
+        "원본·사본 보관함"
+      ],
+      "assets": [
+        {
+          "kind": "entry",
+          "path": "dist/assets/photoreal/garage-entry-v37.webp",
+          "source": "C:\\Users\\PC\\.codex\\generated_images\\01a1264f-7e45-7921-9821-3a0d308f14a0\\exec-cfb776be-027b-4a73-ba95-fc534b91c599.png",
+          "prompt": "Use case: photorealistic-natural. Asset: landscape 1536x1024 interactive escape-game photographic location, one coherent image. Wide side-on view inside a real small Korean auto repair service bay at night. An actual older sedan fills LEFT half with raised hood, vehicle lifts and oil-stained concrete visible; NO office desk, bookshelf, wall corkboard or door focal point. Foreground waist-height metal parts trolley across lower center. Five precisely identifiable interactive props: service clipboard with blank paper at x18%,y44%; separated amber screwdriver HANDLE at x42%,y75%; separate short steel crosshead BIT at x63%,y77%; rectangular screwed inspection plate at x76%,y48%; small metal tool-return board with empty shaped hooks at x83%,y26%. Real scuffed metal, oily surfaces, subdued cool overhead fluorescent and warm hood tasklight, crisp physical details. No people, readable text, numbers, labels, arrows, UI, watermarks. Full photographic realism, genuine industrial location, no fantasy illustration."
+        },
+        {
+          "kind": "entry-empty",
+          "path": "dist/assets/photoreal/garage-entry-empty-v37.webp",
+          "source": "C:\\Users\\PC\\.codex\\generated_images\\01a1264f-7e45-7921-9821-3a0d308f14a0\\exec-088249a9-2dbd-4a9d-a930-88030b424e65.png",
+          "prompt": "Use case: precise-object-edit. The attached photograph is the edit target. Remove ONLY the amber screwdriver handle lying in the middle of the foreground trolley, and the short loose steel crosshead screwdriver bit lying to its right. Fill those two small spots with the same worn metal trolley texture. Preserve exactly the original camera framing, car raised hood, clipboard on left, rectangular screwed inspection plate on right, upper-right metal tool hook board, workshop equipment, lighting and all geometry. Do not move or remove any other object. No new text or objects. Photo remains 1536x1024."
+        },
+        {
+          "kind": "inner",
+          "path": "dist/assets/photoreal/garage-inner-v37.webp",
+          "source": "C:\\Users\\PC\\.codex\\generated_images\\01a1264f-7e45-7921-9821-3a0d308f14a0\\exec-5ee883f7-c787-4023-91a7-602e4de073b6.png",
+          "prompt": "Use case: photorealistic-natural. Asset landscape 1536x1024 interactive escape-game photograph. Close SIDE view of an actual car service diagnostic work area beside an older car, industrial not office. A metal mechanic's workbench spans foreground, rear workshop racks and vehicle body detail. Five separated identifiable prop groups: x19%,y62% open diagnostic laptop with neutral blank unlettered darkscreen and attached tiny SD card USB reader; x43%,y32% separate small industrial server-accesslog monitor above workbench (no readable text); x76%,y22% records backupstorage rack with archive containers; x52%,y76% closed rectangular sealed metal recordcase with small blank lock panel; x84%,y67% TWO side-by-side small distinct storageboxes with blank tags for preserving originals separately from copies. No door focal point, no wall noticeboard, no wood office desk, no people, text, letters, digits, labels, UI, watermarks. Real metalwork, patina, oil, cables, cool shop light and warm tasklight, coherent 28mm editorial photograph."
+        }
+      ]
+    },
+    {
+      "id": "apartment",
+      "entry": [
+        [
+          11,
+          37
+        ],
+        [
+          27,
+          69
+        ],
+        [
+          52,
+          73
+        ],
+        [
+          57,
+          25
+        ],
+        [
+          94,
+          44
+        ]
+      ],
+      "inner": [
+        [
+          12,
+          54
+        ],
+        [
+          38,
+          34
+        ],
+        [
+          66,
+          33
+        ],
+        [
+          38,
+          67
+        ],
+        [
+          83,
+          47
+        ]
+      ],
+      "entryDescriptions": [
+        "관리 메모",
+        "비상용 손전등",
+        "사용하지 않음",
+        "어두운 방향 안내판",
+        "관리 점검 스위치"
+      ],
+      "innerDescriptions": [
+        "필름 기록기",
+        "건물 도면",
+        "분전반 전력 기록",
+        "봉인된 기록 상자",
+        "조명 타이머 스위치"
+      ],
+      "assets": [
+        {
+          "kind": "entry",
+          "path": "dist/assets/photoreal/apartment-entry-v37.webp",
+          "source": "C:\\Users\\PC\\.codex\\generated_images\\01a1264f-7e45-7921-9821-3a0d308f14a0\\exec-613af7d8-6124-43b3-a923-ebca311a00bd.png",
+          "prompt": "Use case: photorealistic-natural. Asset: landscape 1536x1024 interactive game room photograph. DIM real apartment shared corridor viewed obliquely along rows of metal mailboxes, deep diagonal composition, NO desk-office, bookshelf, corkboard, centered escape door. Five identifiable props: blank maintenance clipboard on left wall x18%,y35%; one emergency flashlight on narrow ledge below mailboxes x26%,y73%; leave x52%,y73% clear (no second collectible); dark unlit direction panel x62%,y35%; rectangular small switch bank utility access box x82%,y57%. Real modest Korean apartment painted concrete corridor, cool pale walls, subtle tungsten bulb near mailboxes, realistic worn brushed metal. Objects must be recognizable without textual captions, environment bright enough to inspect but atmospheric. No people, text, letters, numbers, arrows, UI, watermarks. Camera architectural photography 28mm, realistic geometry, no illustration."
+        },
+        {
+          "kind": "entry-empty",
+          "path": "dist/assets/photoreal/apartment-entry-empty-v37.webp",
+          "source": "C:\\Users\\PC\\.codex\\generated_images\\01a1264f-7e45-7921-9821-3a0d308f14a0\\exec-2ff34f46-ce25-49d7-a0a9-6fe3fee8eed6.png",
+          "prompt": "Use case: precise-object-edit. The attached photo is edit target. Remove ONLY the orange-and-black emergency flashlight sitting on the mailbox ledge at lower-left. Reconstruct its small former footprint with the same stone ledge surface. Preserve exactly framing, corridor perspective, all mailboxes, clipboard left, dark direction panel upper-middle, utility switchbox right, light, wall geometry and every other object. No additional edits or text. Full realistic photograph, same 1536x1024 framing."
+        },
+        {
+          "kind": "inner",
+          "path": "dist/assets/photoreal/apartment-inner-v37.webp",
+          "source": "C:\\Users\\PC\\.codex\\generated_images\\01a1264f-7e45-7921-9821-3a0d308f14a0\\exec-d35f6938-e18f-4075-97de-ea2217c1e5ce.png",
+          "prompt": "Use case: photorealistic-natural. Asset landscape 1536x1024 interactive room photograph. Close wide view of an apartment building's actual spacious electrical maintenance utility corner, no office desk or bookshelf, no escape door. Distinct industrial location with open distributionpanel on right, ducts above, utility trolley and conduit, dim cool overhead bulb with readable details. Five identifiable clickable prop groups: x17%,y52% small archive-film recorder with tiny spool/player equipment on industrial ledge; x38%,y25% hanging clipboard with blank unlettered building floorplan-like linework; x64%,y25% power record electrical distributionpanel open showing breakers and tidy wires; x43%,y73% closed sealed recordcase on utility trolley with blank small inputpanel; x84%,y66% large simple actual electrical timer switch/control with blank rounddial on distributionpanel (final action). No people, legible numbers, letters, text, labels, arrows, UI, logos or watermark. Real lived-in apartment utility hardware, worn plaster, steel conduits, photography no illustration."
+        }
+      ]
+    },
+    {
+      "id": "radio",
+      "entry": [
+        [
+          14,
+          53
+        ],
+        [
+          34,
+          56
+        ],
+        [
+          51,
+          61
+        ],
+        [
+          64,
+          51
+        ],
+        [
+          93,
+          34
+        ]
+      ],
+      "inner": [
+        [
+          22,
+          69
+        ],
+        [
+          10,
+          24
+        ],
+        [
+          88,
+          26
+        ],
+        [
+          47,
+          55
+        ],
+        [
+          91,
+          68
+        ]
+      ],
+      "entryDescriptions": [
+        "부스 점검 메모",
+        "테이프 앞조각",
+        "테이프 뒷조각",
+        "테이프 데크",
+        "채널 스위치"
+      ],
+      "innerDescriptions": [
+        "대본 기록",
+        "보존 규칙 바인더",
+        "전력 패치패널",
+        "봉인된 아카이브 플레이어",
+        "테이프 백업 케이스"
+      ],
+      "assets": [
+        {
+          "kind": "entry",
+          "path": "dist/assets/photoreal/radio-entry-v37.webp",
+          "source": "C:\\Users\\PC\\.codex\\generated_images\\01a1264f-7e45-7921-9821-3a0d308f14a0\\exec-11001bd3-a4ff-455b-9215-f6e899e825b8.png",
+          "prompt": "Use case: photorealistic-natural. Asset: landscape 1536x1024 game location photograph. Side-view inside vintage radio sound recording booth, large acoustic glass window across upper center revealing empty sound recording area, microphone arm and thick audio cables, NO piano, desk office, corkboard, wall door focal point. Lower foreground real sloped sound console. Five identifiable props: clipboard blankpaper at x17%,y37%; one torn narrow printed test-tape ribbon at x30%,y76%; matching second torn test-tape ribbon at x55%,y78%; compact tabletop cassette test deck at x61%,y43%; separate metal box with three plain toggle switches on upper-right equipmentrack x83%,y32%. Printed tape patterns abstract not letters. Real charcoal acoustic felt, dark cherry trim, warm console worklight, subtle blue control-room glow. One continuous photographic scene, crisp tactile equipment detail, no humans, legible text, numbers, labels, arrows, UI, watermarks, no 3D render."
+        },
+        {
+          "kind": "entry-empty",
+          "path": "dist/assets/photoreal/radio-entry-empty-v37.webp",
+          "source": "C:\\Users\\PC\\.codex\\generated_images\\01a1264f-7e45-7921-9821-3a0d308f14a0\\exec-56321633-1679-419d-b8e9-e3e85ec49478.png",
+          "prompt": "Use case: precise-object-edit. Attached recording-booth photograph is edit target. Remove ONLY the TWO torn printed paper test-tape ribbon pieces lying on the middle of the foreground black sound-console surface. Restore their small footprint to the same black textured surface. Keep exactly the glass studio view, microphone stands, paper clipboard left, cassette deck center-right, three-switch box right, mixing console knobs, cables, lighting, camera angle and all geometry. Do not modify any other object, no added text, same framing."
+        },
+        {
+          "kind": "inner",
+          "path": "dist/assets/photoreal/radio-inner-v37.webp",
+          "source": "C:\\Users\\PC\\.codex\\generated_images\\01a1264f-7e45-7921-9821-3a0d308f14a0\\exec-77fc81eb-6410-44fc-8659-2aa78ba31f83.png",
+          "prompt": "Use case: photorealistic-natural. Asset landscape 1536x1024 game location real photograph. CONSOLE POINT OF VIEW in vintage radio broadcast-control room, looking down slightly toward a wide analog mixingdesk in foreground, rack of reel-to-reel tape archive LEFT, wired patchbay RIGHT, charcoal acoustic wall, no escape-door focal point, no generic desk office. Five identifiable clickable prop groups: x18%,y76% two blank transcript sheets on console near big reel deck; x25%,y28% archive rules physical binder tucked on left taperack; x76%,y23% power patchpanel with cables and blank toggles upperright; x49%,y57% closed sealed rectangular archive cassette-player device with no legible lettering; x82%,y73% separate small protective tape-backup case with visible blank spool tray for final preservation action. Warm amber worklight, soft cool studio glow, old metal buttons and knobs, realistic equipment proportions. No humans, readable text, letters, numbers, labels, arrows, UI, watermark. Crisp coherent editorial architectural photography."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1012 @@
+{
+  "font": {
+    "originalBytes": 624536,
+    "subsetBytes": 180508,
+    "glyphs": 863
+  },
+  "images": {
+    "assets/photoreal/apartment-entry-empty-v3.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/apartment-entry-empty-v3-480-perf53.webp",
+          480,
+          14840
+        ],
+        [
+          "assets/photoreal/apartment-entry-empty-v3-960-perf53.webp",
+          960,
+          46456
+        ]
+      ],
+      "originalBytes": 123586
+    },
+    "assets/photoreal/apartment-entry-empty-v37.webp": {
+      "width": 1440,
+      "height": 960,
+      "variants": [
+        [
+          "assets/photoreal/apartment-entry-empty-v37-480-perf53.webp",
+          480,
+          23620
+        ],
+        [
+          "assets/photoreal/apartment-entry-empty-v37-960-perf53.webp",
+          960,
+          69566
+        ]
+      ],
+      "originalBytes": 106970
+    },
+    "assets/photoreal/apartment-entry-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/apartment-entry-v2-480-perf53.webp",
+          480,
+          14904
+        ],
+        [
+          "assets/photoreal/apartment-entry-v2-960-perf53.webp",
+          960,
+          50188
+        ]
+      ],
+      "originalBytes": 121554
+    },
+    "assets/photoreal/apartment-entry-v37.webp": {
+      "width": 1440,
+      "height": 960,
+      "variants": [
+        [
+          "assets/photoreal/apartment-entry-v37-480-perf53.webp",
+          480,
+          24658
+        ],
+        [
+          "assets/photoreal/apartment-entry-v37-960-perf53.webp",
+          960,
+          79288
+        ]
+      ],
+      "originalBytes": 122582
+    },
+    "assets/photoreal/apartment-inner-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/apartment-inner-v2-480-perf53.webp",
+          480,
+          22438
+        ],
+        [
+          "assets/photoreal/apartment-inner-v2-960-perf53.webp",
+          960,
+          65180
+        ]
+      ],
+      "originalBytes": 131184
+    },
+    "assets/photoreal/apartment-inner-v37.webp": {
+      "width": 1440,
+      "height": 960,
+      "variants": [
+        [
+          "assets/photoreal/apartment-inner-v37-480-perf53.webp",
+          480,
+          32964
+        ],
+        [
+          "assets/photoreal/apartment-inner-v37-960-perf53.webp",
+          960,
+          106922
+        ]
+      ],
+      "originalBytes": 161572
+    },
+    "assets/photoreal/apartment-observation-v40.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/apartment-observation-v40-480-perf53.webp",
+          480,
+          20924
+        ],
+        [
+          "assets/photoreal/apartment-observation-v40-960-perf53.webp",
+          960,
+          55730
+        ]
+      ],
+      "originalBytes": 97108
+    },
+    "assets/photoreal/cat-invite-entry-empty-v3.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/cat-invite-entry-empty-v3-480-perf53.webp",
+          480,
+          51058
+        ],
+        [
+          "assets/photoreal/cat-invite-entry-empty-v3-960-perf53.webp",
+          960,
+          149506
+        ]
+      ],
+      "originalBytes": 328376
+    },
+    "assets/photoreal/cat-invite-entry-empty-v37.webp": {
+      "width": 1672,
+      "height": 941,
+      "variants": [
+        [
+          "assets/photoreal/cat-invite-entry-empty-v37-480-perf53.webp",
+          480,
+          26228
+        ],
+        [
+          "assets/photoreal/cat-invite-entry-empty-v37-960-perf53.webp",
+          960,
+          76912
+        ]
+      ],
+      "originalBytes": 146428
+    },
+    "assets/photoreal/cat-invite-entry-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/cat-invite-entry-v2-480-perf53.webp",
+          480,
+          52610
+        ],
+        [
+          "assets/photoreal/cat-invite-entry-v2-960-perf53.webp",
+          960,
+          157470
+        ]
+      ],
+      "originalBytes": 290430
+    },
+    "assets/photoreal/cat-invite-entry-v37.webp": {
+      "width": 1672,
+      "height": 941,
+      "variants": [
+        [
+          "assets/photoreal/cat-invite-entry-v37-480-perf53.webp",
+          480,
+          30768
+        ],
+        [
+          "assets/photoreal/cat-invite-entry-v37-960-perf53.webp",
+          960,
+          95934
+        ]
+      ],
+      "originalBytes": 188506
+    },
+    "assets/photoreal/cat-invite-inner-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/cat-invite-inner-v2-480-perf53.webp",
+          480,
+          43948
+        ],
+        [
+          "assets/photoreal/cat-invite-inner-v2-960-perf53.webp",
+          960,
+          129244
+        ]
+      ],
+      "originalBytes": 226494
+    },
+    "assets/photoreal/cat-invite-inner-v37.webp": {
+      "width": 1672,
+      "height": 941,
+      "variants": [
+        [
+          "assets/photoreal/cat-invite-inner-v37-480-perf53.webp",
+          480,
+          35390
+        ],
+        [
+          "assets/photoreal/cat-invite-inner-v37-960-perf53.webp",
+          960,
+          101278
+        ]
+      ],
+      "originalBytes": 179486
+    },
+    "assets/photoreal/garage-entry-empty-v3.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/garage-entry-empty-v3-480-perf53.webp",
+          480,
+          22538
+        ],
+        [
+          "assets/photoreal/garage-entry-empty-v3-960-perf53.webp",
+          960,
+          63482
+        ]
+      ],
+      "originalBytes": 145024
+    },
+    "assets/photoreal/garage-entry-empty-v37.webp": {
+      "width": 1440,
+      "height": 960,
+      "variants": [
+        [
+          "assets/photoreal/garage-entry-empty-v37-480-perf53.webp",
+          480,
+          39150
+        ],
+        [
+          "assets/photoreal/garage-entry-empty-v37-960-perf53.webp",
+          960,
+          113070
+        ]
+      ],
+      "originalBytes": 160406
+    },
+    "assets/photoreal/garage-entry-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/garage-entry-v2-480-perf53.webp",
+          480,
+          22958
+        ],
+        [
+          "assets/photoreal/garage-entry-v2-960-perf53.webp",
+          960,
+          68360
+        ]
+      ],
+      "originalBytes": 142608
+    },
+    "assets/photoreal/garage-entry-v37.webp": {
+      "width": 1440,
+      "height": 960,
+      "variants": [
+        [
+          "assets/photoreal/garage-entry-v37-480-perf53.webp",
+          480,
+          40292
+        ],
+        [
+          "assets/photoreal/garage-entry-v37-960-perf53.webp",
+          960,
+          123948
+        ]
+      ],
+      "originalBytes": 185948
+    },
+    "assets/photoreal/garage-inner-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/garage-inner-v2-480-perf53.webp",
+          480,
+          23988
+        ],
+        [
+          "assets/photoreal/garage-inner-v2-960-perf53.webp",
+          960,
+          73580
+        ]
+      ],
+      "originalBytes": 154814
+    },
+    "assets/photoreal/garage-inner-v37.webp": {
+      "width": 1440,
+      "height": 960,
+      "variants": [
+        [
+          "assets/photoreal/garage-inner-v37-480-perf53.webp",
+          480,
+          44596
+        ],
+        [
+          "assets/photoreal/garage-inner-v37-960-perf53.webp",
+          960,
+          132786
+        ]
+      ],
+      "originalBytes": 190336
+    },
+    "assets/photoreal/laundry-entry-empty-v3.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/laundry-entry-empty-v3-480-perf53.webp",
+          480,
+          37026
+        ],
+        [
+          "assets/photoreal/laundry-entry-empty-v3-960-perf53.webp",
+          960,
+          123172
+        ]
+      ],
+      "originalBytes": 301600
+    },
+    "assets/photoreal/laundry-entry-empty-v37.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/laundry-entry-empty-v37-480-perf53.webp",
+          480,
+          36394
+        ],
+        [
+          "assets/photoreal/laundry-entry-empty-v37-960-perf53.webp",
+          960,
+          103202
+        ]
+      ],
+      "originalBytes": 179906
+    },
+    "assets/photoreal/laundry-entry-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/laundry-entry-v2-480-perf53.webp",
+          480,
+          39362
+        ],
+        [
+          "assets/photoreal/laundry-entry-v2-960-perf53.webp",
+          960,
+          143544
+        ]
+      ],
+      "originalBytes": 294834
+    },
+    "assets/photoreal/laundry-entry-v37.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/laundry-entry-v37-480-perf53.webp",
+          480,
+          37618
+        ],
+        [
+          "assets/photoreal/laundry-entry-v37-960-perf53.webp",
+          960,
+          104690
+        ]
+      ],
+      "originalBytes": 197424
+    },
+    "assets/photoreal/laundry-inner-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/laundry-inner-v2-480-perf53.webp",
+          480,
+          24804
+        ],
+        [
+          "assets/photoreal/laundry-inner-v2-960-perf53.webp",
+          960,
+          69386
+        ]
+      ],
+      "originalBytes": 129022
+    },
+    "assets/photoreal/laundry-inner-v37.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/laundry-inner-v37-480-perf53.webp",
+          480,
+          37810
+        ],
+        [
+          "assets/photoreal/laundry-inner-v37-960-perf53.webp",
+          960,
+          110370
+        ]
+      ],
+      "originalBytes": 205490
+    },
+    "assets/photoreal/letter-entry-empty-v3.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/letter-entry-empty-v3-480-perf53.webp",
+          480,
+          28050
+        ],
+        [
+          "assets/photoreal/letter-entry-empty-v3-960-perf53.webp",
+          960,
+          78974
+        ]
+      ],
+      "originalBytes": 166248
+    },
+    "assets/photoreal/letter-entry-empty-v37.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/letter-entry-empty-v37-480-perf53.webp",
+          480,
+          46686
+        ],
+        [
+          "assets/photoreal/letter-entry-empty-v37-960-perf53.webp",
+          960,
+          142444
+        ]
+      ],
+      "originalBytes": 260152
+    },
+    "assets/photoreal/letter-entry-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/letter-entry-v2-480-perf53.webp",
+          480,
+          27794
+        ],
+        [
+          "assets/photoreal/letter-entry-v2-960-perf53.webp",
+          960,
+          81782
+        ]
+      ],
+      "originalBytes": 163720
+    },
+    "assets/photoreal/letter-entry-v37.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/letter-entry-v37-480-perf53.webp",
+          480,
+          49018
+        ],
+        [
+          "assets/photoreal/letter-entry-v37-960-perf53.webp",
+          960,
+          169144
+        ]
+      ],
+      "originalBytes": 346392
+    },
+    "assets/photoreal/letter-inner-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/letter-inner-v2-480-perf53.webp",
+          480,
+          27406
+        ],
+        [
+          "assets/photoreal/letter-inner-v2-960-perf53.webp",
+          960,
+          87072
+        ]
+      ],
+      "originalBytes": 189438
+    },
+    "assets/photoreal/letter-inner-v37.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/letter-inner-v37-480-perf53.webp",
+          480,
+          44560
+        ],
+        [
+          "assets/photoreal/letter-inner-v37-960-perf53.webp",
+          960,
+          123986
+        ]
+      ],
+      "originalBytes": 225266
+    },
+    "assets/photoreal/lobby-doors-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/lobby-doors-v2-480-perf53.webp",
+          480,
+          20970
+        ],
+        [
+          "assets/photoreal/lobby-doors-v2-960-perf53.webp",
+          960,
+          70698
+        ]
+      ],
+      "originalBytes": 156724
+    },
+    "assets/photoreal/ohang-cloth-v40.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/ohang-cloth-v40-480-perf53.webp",
+          480,
+          37948
+        ],
+        [
+          "assets/photoreal/ohang-cloth-v40-960-perf53.webp",
+          960,
+          106210
+        ]
+      ],
+      "originalBytes": 173902
+    },
+    "assets/photoreal/ohang-entry-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/ohang-entry-v2-480-perf53.webp",
+          480,
+          32138
+        ],
+        [
+          "assets/photoreal/ohang-entry-v2-960-perf53.webp",
+          960,
+          86498
+        ]
+      ],
+      "originalBytes": 138776
+    },
+    "assets/photoreal/ohang-inner-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/ohang-inner-v2-480-perf53.webp",
+          480,
+          51402
+        ],
+        [
+          "assets/photoreal/ohang-inner-v2-960-perf53.webp",
+          960,
+          165576
+        ]
+      ],
+      "originalBytes": 282832
+    },
+    "assets/photoreal/ohang-lantern-v40.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/ohang-lantern-v40-480-perf53.webp",
+          480,
+          33684
+        ],
+        [
+          "assets/photoreal/ohang-lantern-v40-960-perf53.webp",
+          960,
+          88936
+        ]
+      ],
+      "originalBytes": 146962
+    },
+    "assets/photoreal/pet-home-entry-empty-v3.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/pet-home-entry-empty-v3-480-perf53.webp",
+          480,
+          29712
+        ],
+        [
+          "assets/photoreal/pet-home-entry-empty-v3-960-perf53.webp",
+          960,
+          94200
+        ]
+      ],
+      "originalBytes": 219416
+    },
+    "assets/photoreal/pet-home-entry-empty-v37.webp": {
+      "width": 1672,
+      "height": 941,
+      "variants": [
+        [
+          "assets/photoreal/pet-home-entry-empty-v37-480-perf53.webp",
+          480,
+          50218
+        ],
+        [
+          "assets/photoreal/pet-home-entry-empty-v37-960-perf53.webp",
+          960,
+          147572
+        ]
+      ],
+      "originalBytes": 266326
+    },
+    "assets/photoreal/pet-home-entry-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/pet-home-entry-v2-480-perf53.webp",
+          480,
+          30158
+        ],
+        [
+          "assets/photoreal/pet-home-entry-v2-960-perf53.webp",
+          960,
+          100586
+        ]
+      ],
+      "originalBytes": 203044
+    },
+    "assets/photoreal/pet-home-entry-v37.webp": {
+      "width": 1672,
+      "height": 941,
+      "variants": [
+        [
+          "assets/photoreal/pet-home-entry-v37-480-perf53.webp",
+          480,
+          49942
+        ],
+        [
+          "assets/photoreal/pet-home-entry-v37-960-perf53.webp",
+          960,
+          150962
+        ]
+      ],
+      "originalBytes": 282950
+    },
+    "assets/photoreal/pet-home-inner-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/pet-home-inner-v2-480-perf53.webp",
+          480,
+          34896
+        ],
+        [
+          "assets/photoreal/pet-home-inner-v2-960-perf53.webp",
+          960,
+          100298
+        ]
+      ],
+      "originalBytes": 198428
+    },
+    "assets/photoreal/pet-home-inner-v37.webp": {
+      "width": 1672,
+      "height": 941,
+      "variants": [
+        [
+          "assets/photoreal/pet-home-inner-v37-480-perf53.webp",
+          480,
+          55802
+        ],
+        [
+          "assets/photoreal/pet-home-inner-v37-960-perf53.webp",
+          960,
+          186170
+        ]
+      ],
+      "originalBytes": 364326
+    },
+    "assets/photoreal/radio-entry-empty-v3.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/radio-entry-empty-v3-480-perf53.webp",
+          480,
+          20564
+        ],
+        [
+          "assets/photoreal/radio-entry-empty-v3-960-perf53.webp",
+          960,
+          52636
+        ]
+      ],
+      "originalBytes": 114900
+    },
+    "assets/photoreal/radio-entry-empty-v37.webp": {
+      "width": 1440,
+      "height": 960,
+      "variants": [
+        [
+          "assets/photoreal/radio-entry-empty-v37-480-perf53.webp",
+          480,
+          35174
+        ],
+        [
+          "assets/photoreal/radio-entry-empty-v37-960-perf53.webp",
+          960,
+          96926
+        ]
+      ],
+      "originalBytes": 142526
+    },
+    "assets/photoreal/radio-entry-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/radio-entry-v2-480-perf53.webp",
+          480,
+          20512
+        ],
+        [
+          "assets/photoreal/radio-entry-v2-960-perf53.webp",
+          960,
+          57318
+        ]
+      ],
+      "originalBytes": 108944
+    },
+    "assets/photoreal/radio-entry-v37.webp": {
+      "width": 1440,
+      "height": 960,
+      "variants": [
+        [
+          "assets/photoreal/radio-entry-v37-480-perf53.webp",
+          480,
+          36348
+        ],
+        [
+          "assets/photoreal/radio-entry-v37-960-perf53.webp",
+          960,
+          103320
+        ]
+      ],
+      "originalBytes": 156036
+    },
+    "assets/photoreal/radio-inner-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/radio-inner-v2-480-perf53.webp",
+          480,
+          25534
+        ],
+        [
+          "assets/photoreal/radio-inner-v2-960-perf53.webp",
+          960,
+          79372
+        ]
+      ],
+      "originalBytes": 167474
+    },
+    "assets/photoreal/radio-inner-v37.webp": {
+      "width": 1440,
+      "height": 960,
+      "variants": [
+        [
+          "assets/photoreal/radio-inner-v37-480-perf53.webp",
+          480,
+          42830
+        ],
+        [
+          "assets/photoreal/radio-inner-v37-960-perf53.webp",
+          960,
+          125636
+        ]
+      ],
+      "originalBytes": 187804
+    },
+    "assets/photoreal/station-entry-empty-v3.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/station-entry-empty-v3-480-perf53.webp",
+          480,
+          18890
+        ],
+        [
+          "assets/photoreal/station-entry-empty-v3-960-perf53.webp",
+          960,
+          53276
+        ]
+      ],
+      "originalBytes": 121360
+    },
+    "assets/photoreal/station-entry-empty-v37.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/station-entry-empty-v37-480-perf53.webp",
+          480,
+          47832
+        ],
+        [
+          "assets/photoreal/station-entry-empty-v37-960-perf53.webp",
+          960,
+          155230
+        ]
+      ],
+      "originalBytes": 282368
+    },
+    "assets/photoreal/station-entry-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/station-entry-v2-480-perf53.webp",
+          480,
+          19266
+        ],
+        [
+          "assets/photoreal/station-entry-v2-960-perf53.webp",
+          960,
+          56386
+        ]
+      ],
+      "originalBytes": 114094
+    },
+    "assets/photoreal/station-entry-v37.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/station-entry-v37-480-perf53.webp",
+          480,
+          48970
+        ],
+        [
+          "assets/photoreal/station-entry-v37-960-perf53.webp",
+          960,
+          163032
+        ]
+      ],
+      "originalBytes": 322722
+    },
+    "assets/photoreal/station-inner-v2.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/station-inner-v2-480-perf53.webp",
+          480,
+          25614
+        ],
+        [
+          "assets/photoreal/station-inner-v2-960-perf53.webp",
+          960,
+          84060
+        ]
+      ],
+      "originalBytes": 187084
+    },
+    "assets/photoreal/station-inner-v37.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/station-inner-v37-480-perf53.webp",
+          480,
+          29318
+        ],
+        [
+          "assets/photoreal/station-inner-v37-960-perf53.webp",
+          960,
+          84188
+        ]
+      ],
+      "originalBytes": 148946
+    },
+    "assets/photoreal/studio-darkroom-v1.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/studio-darkroom-v1-480-perf53.webp",
+          480,
+          17446
+        ],
+        [
+          "assets/photoreal/studio-darkroom-v1-960-perf53.webp",
+          960,
+          50460
+        ]
+      ],
+      "originalBytes": 107234
+    },
+    "assets/photoreal/studio-enlarger-v40.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/studio-enlarger-v40-480-perf53.webp",
+          480,
+          16154
+        ],
+        [
+          "assets/photoreal/studio-enlarger-v40-960-perf53.webp",
+          960,
+          42136
+        ]
+      ],
+      "originalBytes": 73658
+    },
+    "assets/photoreal/studio-portrait-v1.webp": {
+      "width": 1448,
+      "height": 1086,
+      "variants": [
+        [
+          "assets/photoreal/studio-portrait-v1-480-perf53.webp",
+          480,
+          26582
+        ],
+        [
+          "assets/photoreal/studio-portrait-v1-960-perf53.webp",
+          960,
+          66064
+        ]
+      ],
+      "originalBytes": 113728
+    },
+    "assets/photoreal/studio-room-v1.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/studio-room-v1-480-perf53.webp",
+          480,
+          31198
+        ],
+        [
+          "assets/photoreal/studio-room-v1-960-perf53.webp",
+          960,
+          103970
+        ]
+      ],
+      "originalBytes": 224946
+    },
+    "assets/photoreal/studio-trays-v40.webp": {
+      "width": 1536,
+      "height": 1024,
+      "variants": [
+        [
+          "assets/photoreal/studio-trays-v40-480-perf53.webp",
+          480,
+          22232
+        ],
+        [
+          "assets/photoreal/studio-trays-v40-960-perf53.webp",
+          960,
+          59016
+        ]
+      ],
+      "originalBytes": 98802
+    }
+  }
+}
