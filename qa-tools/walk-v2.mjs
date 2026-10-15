@@ -458,6 +458,74 @@ async function studio({ mobile = false } = {}) {
   await browser.close();
 }
 
+async function garage({ mobile = false } = {}) {
+  const { browser, page, errors } = await L.launch({ mobile });
+  console.log('=== garage v2' + (mobile ? ' (mobile)' : ''));
+  const setDial = async (digits) => { for (let i = 0; i < digits.length; i++) { const cur = await page.evaluate((i) => Number(document.querySelectorAll('dialog[open] .dial .num')[i].textContent), i); const up = (digits[i] - cur + 10) % 10; for (let k = 0; k < up; k++) await L.click(page, `${i + 1}번째 다이얼 올리기`); } };
+  try {
+    await L.fresh(page, '/play.html?case=garage');
+    L.check((await L.mainText(page)).includes('★★★★★'), '5 stars shown');
+    await L.click(page, '처음부터 하기');
+    L.check((await L.mainText(page)).includes('세 사람 다 나와 있다'), 'opening shown');
+    await L.click(page, '앞마당으로'); await L.sleep(400);
+    L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '서연에게 보고'))), 'report hidden at start');
+    for (const [d, t] of [['서연과 주고받은 문자', '비번은 0000'], ['앞유리에 끼워진 점검 영수증', '20:07:00'], ['셔터 앞의 세 사람', '07-B']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    // cam
+    await hotspot(page, '서연 차의 블랙박스');
+    L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), '★5: no guide');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .cam-thumb').length === 6), 'cam: 6 frames');
+    await L.click(page, '프레임 2 (21:47:05)', { exact: true }); await L.click(page, '프레임 2 표시', { exact: true });
+    await L.click(page, '프레임 3 (21:53:20)', { exact: true }); await L.click(page, '프레임 3 표시', { exact: true }); await commit(page);
+    L.check((await status(page)).includes('재고 점검 끝내고 나간'), 'cam: f1 decoy explained');
+    await L.click(page, '프레임 4 (21:55:20)', { exact: true }); await L.click(page, '프레임 4 표시', { exact: true }); await shot(page, 'g-cam'); await commit(page);
+    L.check(await dlgHas(page, '21:53:20 → 21:55:20'), 'cam solved');
+    await L.click(page, '계속'); await L.sleep(300);
+    // hints: only 2 tiers
+    await L.click(page, '힌트'); await L.click(page, '첫 힌트 받기'); await L.click(page, '풀이 방향 받기');
+    L.check(!(await L.buttons(page)).includes('정답 보기') && await dlgHas(page, '정답 힌트가 없습니다'), '★5: only two hint tiers'); await L.closeDialog(page);
+    // shop → terminal
+    await hotspot(page, '작업장으로'); await L.sleep(300);
+    await hotspot(page, '직원 보관함과 SD 슬롯'); await L.closeDialog(page);
+    await hotspot(page, '보관함 백업 단말');
+    await setDial([2, 1, 5, 3]); await commit(page); L.check((await status(page)).includes('표시 시각이다'), 'terminal: display time explained');
+    await setDial([2, 1, 4, 6]); await shot(page, 'g-terminal'); await commit(page); L.check(await dlgHas(page, '07-A다'), 'terminal solved');
+    await L.click(page, '백업 단말의 보관함 기록 보기'); L.check(await dlgHas(page, '21:47:10'), 'lockerlog doc via reveal'); await L.closeDialog(page);
+    await L.closeDialog(page).catch(() => {}); await L.sleep(300);
+    // office
+    await hotspot(page, '앞마당으로'); await L.sleep(300); await hotspot(page, '사무실로'); await L.sleep(300);
+    for (const [d, t] of [['출입 서버 화면', '암호화'], ['폐업 인계 문서', '개업일 네 자리'], ['서류함의 분실 신고서', '정지 처리 안 함'], ['강민호의 면담 기록', '21:44:12'], ['벽의 기념패', '2009년 4월 7일']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    await hotspot(page, '책상 밑 금고');
+    await setDial([0, 3, 3, 0]); await commit(page); L.check((await status(page)).includes('사업자등록일'), 'safe: registration date decoy');
+    await setDial([0, 4, 0, 7]); await shot(page, 'g-safe'); await commit(page); L.check(await dlgHas(page, '봉투만 비어 있다'), 'safe solved');
+    await L.click(page, '금고 안의 봉투들 보기'); L.check(await dlgHas(page, '07-A 분실'), 'safedoc via reveal'); await L.closeDialog(page); await L.closeDialog(page).catch(() => {}); await L.sleep(300);
+    await hotspot(page, '걸려 있는 재킷 세 벌');
+    await L.click(page, '진회색 재킷 칼라 보기', { exact: true }); L.check(await dlgHas(page, '강민호'), 'jackets: collar tag shown'); await commit(page);
+    L.check((await status(page)).includes('면담 중이었다'), 'jackets: charcoal explained');
+    await L.click(page, '회색 재킷 · 왼 소매 반사띠 칼라 보기', { exact: true }); await shot(page, 'g-jackets'); await commit(page); L.check(await dlgHas(page, '박정호'), 'jackets solved');
+    await L.closeDialog(page); await L.sleep(300);
+    await hotspot(page, '앞마당으로'); await L.sleep(300);
+    await hotspot(page, '서연에게 보고');
+    const pick = async (q, v) => L.click(page, q + ': ' + v, { exact: true });
+    await pick('카드를 반출한 사람', '한지수 (07)'); await pick('그때 쓰인 출입 카드', '07-A (지수 분실 카드, 금고 보관분)'); await pick('실제 반출 시각 (서버 기준)', '21:47'); await pick('그 사람이라는 결정적 근거', '지수가 동의 없이 부품을 바꿨다는 메모'); await commit(page);
+    L.check((await status(page)).includes('지수 씨요?'), 'report: jisu explained');
+    await pick('카드를 반출한 사람', '박정호 (09)'); await commit(page); L.check((await status(page)).includes('증거가 아니에요'), 'report: motive explained');
+    await pick('그 사람이라는 결정적 근거', '반사띠 재킷이 22:07(표시) 최종 점검 입장 때와 같다 = 22:00에 들어온 사장'); await shot(page, 'g-report'); await commit(page);
+    L.check(await dlgHas(page, '경찰 불렀어요'), 'report solved');
+    await L.click(page, '폐업 당일 아침으로'); await L.sleep(500);
+    L.check((await L.mainText(page)).includes('열 시에 셔터가 내려갔다'), 'ending reached');
+    await L.click(page, '서연에게 보낸 보고 읽기'); L.check(await dlgHas(page, '사장 박정호입니다'), 'final unlocked'); await L.closeDialog(page);
+    await L.click(page, '자료 다시 보기'); L.check(!(await L.dialogText(page)).includes('아직 읽지 않은'), 'all docs read');
+  } catch (e) {
+    console.log('FAIL exception', e.message);
+    console.log('buttons now', JSON.stringify(await L.buttons(page)));
+    console.log('dialog', (await L.dialogText(page)).replace(/\n+/g, ' | ').slice(0, 400));
+    process.exitCode = 1;
+  }
+  const bad = errors.filter((e) => !/woff2/.test(e));
+  L.check(!bad.length, 'no page errors ' + JSON.stringify(bad));
+  await browser.close();
+}
+
 const which = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 const mobile = process.argv.includes('--mobile');
 await L.ensureServer();
@@ -466,3 +534,4 @@ if (!which.length || which.includes('cat-invite')) await catInvite({ mobile });
 if (!which.length || which.includes('ohang')) await ohang({ mobile });
 if (!which.length || which.includes('pet-home')) await petHome({ mobile });
 if (!which.length || which.includes('studio')) await studio({ mobile });
+if (!which.length || which.includes('garage')) await garage({ mobile });

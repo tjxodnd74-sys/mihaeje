@@ -226,7 +226,7 @@ async function main() {
     openDocs().forEach((did) => {
       const d = ep.docs[did], read = S.read.includes(did);
       const where = ep.scenes.find((s) => s.hotspots.some((h) => h.doc === did));
-      const avail = read || (where && unlockedScenes().includes(where)) || d.locked;
+      const avail = read || (where && unlockedScenes().includes(where)) || d.locked || (S.found || []).includes(did);
       if (!avail) return;
       if (!read) unread.push(did);
       const b = btn('v2-index-item' + (read ? ' read' : ''), '', () => openDoc(did, { label: '자료 목록', fn: openIndex }));
@@ -321,6 +321,7 @@ async function main() {
     node.append(el('p', 'v2-line', dev.reveal.text));
     (dev.reveal.scene || []).forEach((line) => node.append(el('p', 'v2-line', line)));
     const target = dev.reveal.unlock && sceneById(dev.reveal.unlock);
+    if (dev.reveal.unlockDoc && ep.docs[dev.reveal.unlockDoc]) { S.found = S.found || []; if (!S.found.includes(dev.reveal.unlockDoc)) S.found.push(dev.reveal.unlockDoc); save(); node.append(btn('v2-secondary', ep.docs[dev.reveal.unlockDoc].title + ' 보기', () => openDoc(dev.reveal.unlockDoc))); }
     if (dev.reveal.ending) node.append(btn('v2-primary', (dev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; S.solved = true; save(); closeDialog(); }));
     else if (target) node.append(btn('v2-primary', josa(target.name, '으로', '로') + ' →', () => { S.scene = target.id; save(); closeDialog(); }));
     else node.append(btn('v2-primary', '계속', () => closeDialog()));
@@ -347,7 +348,9 @@ async function main() {
         (typeof dev.hints === 'function' ? dev.hints(S) : dev.hints).forEach((h, i) => box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${h}`)));
       } else {
         const hs = typeof dev.hints === 'function' ? dev.hints(S) : dev.hints; for (let i = 0; i < tier; i++) box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${hs[i]}`));
-        if (tier < 3) box.append(btn('v2-secondary', ['첫 힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { S.hints[cur] = tier + 1; save(); openHints(cur); }));
+        const maxTier = Math.min(3, hs.length);
+        if (tier < maxTier) box.append(btn('v2-secondary', ['첫 힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { S.hints[cur] = tier + 1; save(); openHints(cur); }));
+        else if (hs.length < 3) box.append(el('p', 'v2-note', '이 편은 정답 힌트가 없습니다 여기까지가 전부입니다'));
         else box.append(el('p', 'v2-note', '힌트를 전부 받았습니다'));
       }
       node.append(box);
