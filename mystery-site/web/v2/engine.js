@@ -32,9 +32,9 @@ function syncMusic(ep) {
 }
 
 async function main() {
-  if (!id) { root.append(el('p', 'v2-error', '어느 이야기인지 알 수 없습니다.')); return; }
+  if (!id) { location.replace('index.html#cases'); return; }
   let ep;
-  try { ep = (await import(`./episodes/${id}.js`)).default; } catch (e) { root.append(el('p', 'v2-error', '이야기를 불러오지 못했습니다.')); console.error(e); return; }
+  try { ep = (await import(`./episodes/${id}.js`)).default; } catch (e) { const p = el('p', 'v2-error', '이 주소의 이야기를 찾지 못했습니다. '); const a = el('a', '', '테마 로비로 가기'); a.href = 'index.html#cases'; p.append(a); root.append(p); console.error(e); return; }
   document.title = `${ep.title} — 미해제`;
   document.documentElement.dataset.case = ep.id;
 
