@@ -42,19 +42,20 @@ function seatChart(d = {}) {
   const ink = '#3a3a3a';
   const names = Object.fromEntries(PEOPLE.map((p) => [p.id, p.name]));
   const pen = (dd, w = 1) => `<path d="${dd}" fill="none" stroke="${ink}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const txt = (x, y, size, t, fill = ink) => `<text x="${x}" y="${y}" font-size="${size}" text-anchor="middle" fill="${fill}" font-family="MihaejeHand, serif">${t}</text>`;
   const seat = (id, x, y, label) => {
     const who = d[id]; const on = d._pick === id;
-    return `<g class="seat-box${who ? ' named' : ''}${on ? ' picking' : ''}" data-seat="${id}" role="button" tabindex="0" aria-label="${label} 자리${who ? ': ' + names[who] : ' (비어 있음)'}"><rect x="${x - 9}" y="${y - 5.5}" width="18" height="11" rx="1" fill="${on ? 'rgba(227,166,74,.35)' : 'rgba(255,255,255,.01)'}"/>${pen(`M${x - 7} ${y - 4} h14 v8 h-14 z`, on ? 1.4 : 0.9)}<text x="${x}" y="${y + 1.8}" font-size="${who ? 5.6 : 4.4}" text-anchor="middle" fill="${who ? '#b23b2e' : ink}" font-family="MihaejeHand, serif">${who ? names[who] : label}</text></g>`;
+    return `<g class="seat-box${who ? ' named' : ''}${on ? ' picking' : ''}" data-seat="${id}" role="button" tabindex="0" aria-label="${label} 자리${who ? ': ' + names[who] : ' (비어 있음)'}"><rect x="${x - 15}" y="${y - 8}" width="30" height="16" rx="1" fill="${on ? 'rgba(227,166,74,.35)' : 'rgba(255,255,255,.01)'}"/>${pen(`M${x - 13} ${y - 6} h26 v12 h-26 z`, on ? 1.6 : 1.1)}${txt(x, y + (who ? 2.6 : 2), who ? 7.5 : 5.2, who ? names[who] : label, who ? '#b23b2e' : ink)}</g>`;
   };
-  return `<svg viewBox="0 0 150 100" class="seat-chart" role="img" aria-label="평상 자리표">
-   ${pen('M45 30 h60 v40 h-60 z', 1.3)}${pen('M48 36 h54 M48 42 h54 M48 48 h54 M48 54 h54 M48 60 h54 M48 66 h54', 0.4)}
-   <text x="75" y="52" font-size="5" text-anchor="middle" fill="${ink}" font-family="MihaejeHand, serif">평상</text>
-   ${pen('M75 4 v8 M69 9 c2 -6 10 -6 12 0 c3 -4 6 2 2 4 c-5 3 -11 3 -16 0 c-4 -2 -1 -8 2 -4 z', 0.7)}<text x="75" y="20" font-size="4.1" text-anchor="middle" fill="${ink}" font-family="MihaejeHand, serif">감나무</text>
-   ${pen('M130 42 h8 v12 h-8 z M134 54 v8 M131 46 h6', 0.7)}<text x="134" y="68" font-size="4.1" text-anchor="middle" fill="${ink}" font-family="MihaejeHand, serif">우체통</text>
-   ${pen('M60 90 h30 v8 h-30 z M72 90 v8 M60 90 l15 -5 l15 5', 0.7)}<text x="75" y="87" font-size="4.1" text-anchor="middle" fill="${ink}" font-family="MihaejeHand, serif">꽃집 문</text>
-   ${pen('M8 40 l8 10 l-8 10 M20 40 l8 10 l-8 10', 0.6)}<text x="18" y="66" font-size="4.1" text-anchor="middle" fill="${ink}" font-family="MihaejeHand, serif">골목 입구</text>
-   ${pen('M118 14 a22 22 0 0 1 10 14', 0.5)}${pen('M126 24 l2 4 l-4 1', 0.5)}<text x="112" y="12" font-size="3" fill="${ink}" font-family="MihaejeHand, serif">시계 방향</text>
-   ${seat('tree', 75, 26, '감나무 쪽')}${seat('post', 113, 50, '우체통 쪽')}${seat('shop', 75, 76, '꽃집 쪽')}${seat('lane', 37, 50, '골목 입구 쪽')}
+  return `<svg viewBox="0 0 120 100" class="seat-chart" role="img" aria-label="평상 자리표">
+   ${pen('M32 34 h56 v32 h-56 z', 1.7)}${pen('M35 40 h50 M35 46 h50 M35 52 h50 M35 58 h50', 0.45)}
+   ${txt(60, 52, 6, '평상')}
+   ${pen('M60 3 v6 M53 7 c2 -6 12 -6 14 0 c3 -3 5 2 1 4 c-5 2 -11 2 -16 0 c-4 -2 -2 -7 1 -4 z', 0.8)}${txt(60, 15.5, 5, '감나무')}
+   ${pen('M111 42 h8 v12 h-8 z M115 54 v8 M112 46 h6', 0.8)}${txt(114, 68, 5, '우체통')}
+   ${pen('M46 93 h28 v6 h-28 z M60 93 v6 M46 93 l14 -5 l14 5', 0.8)}${txt(60, 90, 5, '꽃집 문')}
+   ${pen('M3 40 l6 10 l-6 10 M12 40 l6 10 l-6 10', 0.7)}${txt(10, 67, 5, '골목 입구')}
+   ${pen('M94 10 a18 18 0 0 1 10 12', 0.6)}${pen('M102 18 l2 4 l-4 1', 0.6)}${txt(92, 7, 4.2, '시계 방향')}
+   ${seat('tree', 60, 25, '감나무 쪽')}${seat('post', 95, 50, '우체통 쪽')}${seat('shop', 60, 76, '꽃집 쪽')}${seat('lane', 22, 50, '골목 입구 쪽')}
   </svg>`;
 }
 
