@@ -215,9 +215,9 @@ export default {
       unlockedBy: 'mirror',
       arrive: '열차는 북문을 서지 않고 지나쳤고, 수림역에는 역무원이 없었다. 문 옆에 보관함이 열두 칸 있었는데 그중 한 칸에만 노란 별 스티커가 붙어 있었다. 민서는 뭐든 별 스티커를 붙이는 애였고, 그 노란 별을 보는데 왜 목이 메는지 알 수 없었다',
       hotspots: [
-        { id: 'postcard', x: 60, y: 30, label: '게시판의 그림엽서', kind: 'doc', doc: 'postcard' },
-        { id: 'lockerrule', x: 41, y: 20, label: '보관함 이용 안내', kind: 'doc', doc: 'lockerrule' },
-        { id: 'locker', x: 52, y: 47, label: '별 스티커가 붙은 보관함', kind: 'device', device: 'locker' },
+        { id: 'postcard', x: 86, y: 32, label: '게시판의 그림엽서', kind: 'doc', doc: 'postcard' },
+        { id: 'lockerrule', x: 42, y: 28, label: '보관함 이용 안내', kind: 'doc', doc: 'lockerrule' },
+        { id: 'locker', x: 55, y: 44, label: '별 스티커가 붙은 보관함', kind: 'device', device: 'locker' },
       ],
     },
     {
@@ -279,7 +279,7 @@ export default {
     lockerrule: {
       title: '보관함 이용 안내',
       kind: '수림역 · 무인',
-      html: `<div class="sticker"><b>보관함 이용 안내</b><ol><li>숫자 네 자리를 맞추고 손잡이를 당기세요</li><li>세 번 틀리면 30초 동안 잠깁니다</li><li>물건은 7일까지 보관됩니다</li></ol><small>수림역 · 무인역 관리 041-000-0000</small></div><p class="aside">보관함 옆면에 붙은 스티커. 별 스티커가 붙은 칸은 7번이고 다이얼은 전부 0에 맞춰져 있다</p>`,
+      html: `<div class="sticker"><b>보관함 이용 안내</b><ol><li>숫자 네 자리를 맞추고 손잡이를 당기세요</li><li>세 번 틀리면 30초 동안 잠깁니다</li><li>물건은 7일까지 보관됩니다</li></ol><small>수림역 · 무인역 관리 041-000-0000</small></div><p class="aside">보관함 옆면에 붙은 스티커. 별 스티커가 붙은 칸은 5번이고 다이얼은 전부 0에 맞춰져 있다</p>`,
     },
     letter: {
       title: '민서의 편지',
@@ -440,7 +440,7 @@ export default {
     locker: {
       title: '별 스티커가 붙은 보관함',
       scene: 'surim',
-      intro: '7번 칸. 다이얼 네 개가 전부 0에 맞춰져 있다. 세 번 틀리면 30초 동안 잠긴다',
+      intro: '5번 칸. 다이얼 네 개가 전부 0에 맞춰져 있다. 세 번 틀리면 30초 동안 잠긴다',
       docs: ['postcard', 'lockerrule'],
       hintCode: 'T-S03',
       hints: [
