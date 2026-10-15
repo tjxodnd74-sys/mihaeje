@@ -335,3 +335,12 @@ a{color:inherit}
 @media (max-width:640px){
   .laminated-sheet{font-size:2.5cqw}
 }
+/* 쪽지 세 장 */
+.note-cards{display:grid;gap:10px;margin:0 0 6px}
+.note-card{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;text-align:left;background:#fbf6e7;color:#2f3a7a;border:1px solid var(--paper-line);border-radius:3px;padding:12px 14px;font-family:var(--hand);font-size:22px;line-height:1.3;box-shadow:0 4px 12px rgba(0,0,0,.25);transform:rotate(-.6deg)}
+.note-card:nth-child(2){transform:rotate(.5deg)}
+.note-card:nth-child(3){transform:rotate(-.3deg)}
+.note-card .note-id{font-family:var(--sans);font-size:13px;font-weight:700;color:#7a7462;border:1px solid var(--paper-line);border-radius:999px;padding:2px 8px}
+.note-card .note-mark{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--wrong);min-width:3em;text-align:right}
+.note-card.lie{outline:2px solid var(--wrong);outline-offset:-2px;background:#fff0ec}
+.note-card.lie .note-text{text-decoration:line-through;text-decoration-color:var(--wrong);text-decoration-thickness:2px}

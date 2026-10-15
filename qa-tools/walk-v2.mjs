@@ -38,7 +38,7 @@ async function station({ mobile = false } = {}) {
     // hints: tier flow
     await L.click(page, '힌트');
     await L.click(page, '첫 힌트 받기');
-    L.check(await dlgHas(page, '화살표가 위를'), 'hint tier 1 shown');
+    L.check(await dlgHas(page, '서른여섯'), 'hint tier 1 shown');
     await L.closeDialog(page);
     // grille: wrong then right (읽은 자료는 옆에 펼쳐짐)
     await hotspot(page, '열차 안내판');
@@ -46,7 +46,7 @@ async function station({ mobile = false } = {}) {
     await commit(page);
     L.check((await status(page)).includes('하나씩 골라야'), 'grille: empty choice explained');
     await L.click(page, '1번 승강장'); await L.click(page, '둘째 기둥'); await commit(page);
-    L.check((await status(page)).includes('남행'), 'grille: wrong platform explained — ' + (await status(page)));
+    L.check((await status(page)).includes('아무것도'), 'grille: wrong platform explained — ' + (await status(page)));
     await L.click(page, '구간권 오른쪽으로'); await L.click(page, '구간권 오른쪽으로'); await L.click(page, '구간권 아래로');
     L.check((await L.dialogText(page)).includes('2번둘째기둥'), 'grille: correct offset reads 2번둘째기둥');
     await L.click(page, '2번 승강장'); await commit(page);
@@ -62,7 +62,7 @@ async function station({ mobile = false } = {}) {
     await shot(page, 'mirror');
     await page.evaluate(() => [...document.querySelectorAll('dialog[open] .train.dim')].find((b) => b.textContent.includes('09:40'))?.click());
     await commit(page);
-    L.check((await status(page)).includes('건너편'), 'mirror: other platform explained — ' + (await status(page)));
+    L.check((await status(page)).includes('두 승강장'), 'mirror: other platform explained — ' + (await status(page)));
     await page.evaluate(() => [...document.querySelectorAll('dialog[open] .train:not(.dim)')].find((b) => b.textContent.includes('09:25'))?.click());
     await commit(page);
     L.check((await status(page)).includes('아직 읽지'), 'mirror: unread back side explained — ' + (await status(page)));
@@ -81,7 +81,7 @@ async function station({ mobile = false } = {}) {
     await L.click(page, '1번째 다이얼 올리기'); await L.click(page, '1번째 다이얼 올리기'); await L.click(page, '1번째 다이얼 올리기');
     await commit(page);
     const st = await status(page);
-    L.check(st.includes('1자리는 맞습니다') && st.includes('창'), 'locker: partial match explained — ' + st);
+    L.check(st.includes('1자리는 맞다'), 'locker: partial match explained — ' + st);
     for (let i = 0; i < 4; i++) await L.click(page, '2번째 다이얼 올리기');
     for (let i = 0; i < 2; i++) await L.click(page, '3번째 다이얼 올리기');
     await L.click(page, '4번째 다이얼 올리기');
@@ -91,14 +91,22 @@ async function station({ mobile = false } = {}) {
     await L.click(page, '수림 마을길으로');
     await L.sleep(400);
     for (const d of ['민서의 편지', '접힌 손지도']) { await hotspot(page, d); await L.closeDialog(page); }
+    // notes: deduction (walk hidden until solved)
+    L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '마을로 걸어가기'))), 'walk hidden before notes');
+    await hotspot(page, '쪽지 세 장');
+    await page.evaluate(() => [...document.querySelectorAll('dialog[open] .note-card')][0].click()); await L.click(page, '둘째 집', { exact: true }); await commit(page);
+    L.check((await status(page)).includes('거짓이 둘'), 'notes: contradiction explained — ' + (await status(page)));
+    await page.evaluate(() => [...document.querySelectorAll('dialog[open] .note-card')][1].click()); await L.click(page, '셋째 집', { exact: true }); await commit(page);
+    L.check(await dlgHas(page, '거짓말은 나'), 'notes solved');
+    await L.click(page, '계속'); await L.sleep(400);
     // walk: wrong first turn
     await hotspot(page, '마을로 걸어가기');
     await L.click(page, '오른쪽'); await L.click(page, '왼쪽'); await L.click(page, '첫째 집'); await commit(page);
-    L.check((await status(page)).includes('반대'), 'walk: reversed start explained — ' + (await status(page)));
+    L.check((await status(page)).includes('등지고'), 'walk: reversed start explained — ' + (await status(page)));
     await L.click(page, '역 앞으로 되돌아가기');
     await L.click(page, '왼쪽'); await L.click(page, '직진'); await L.click(page, '오른쪽'); await L.click(page, '직진 (다리 건너기)'); await L.click(page, '왼쪽');
     await L.click(page, '첫째 집'); await commit(page);
-    L.check((await status(page)).includes('세 번째 집'), 'walk: right lane wrong house explained — ' + (await status(page)));
+    L.check((await status(page)).includes('쪽지'), 'walk: right lane wrong house explained — ' + (await status(page)));
     await L.click(page, '셋째 집');
     await shot(page, 'walk');
     await commit(page);
@@ -109,7 +117,7 @@ async function station({ mobile = false } = {}) {
     L.check(t.includes('없는 승강장에서 온 초대'), 'ending reached');
     await shot(page, 'ending');
     await L.click(page, '마지막 장 읽기');
-    L.check(await dlgHas(page, '수박 잘라 놨어'), 'final letter unlocked');
+    L.check(await dlgHas(page, '보관함에 넣어 뒀어'), 'final letter unlocked');
     await L.closeDialog(page);
     await L.click(page, '자료 다시 보기');
     const idx = await L.dialogText(page);
