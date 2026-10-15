@@ -63,7 +63,7 @@ export async function click(page, label, { within = null, nth = 0, exact = false
     const b = all[nth];
     if (!b) return false;
     b.scrollIntoView({ block: 'center' });
-    b.click();
+    if (typeof b.click === 'function') b.click(); else b.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     return true;
   }, { label, within, nth, exact });
   if (!ok) throw new Error('click: not found "' + label + '"');

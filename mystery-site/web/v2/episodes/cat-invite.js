@@ -1,14 +1,16 @@
 // 고양이의 초대장 — ★1. 이야기·자료·장치가 전부 이 파일에 있습니다.
 const P = 'assets/v2/cat-invite/';
+const js = (w, a, b) => { const c = w.charCodeAt(w.length - 1); if (c < 0xac00 || c > 0xd7a3) return w + a; return w + ((c - 0xac00) % 28 ? a : b); }; // 받침 있음→a, 없음→b
 
 // 장치 1: 봄이 사진 네 장을 찍은 순서(계절)대로
 const PHOTOS = [
-  { id: 'spring', label: '벚꽃 아래', img: P + 'props/cat-spring.webp', season: '봄' },
+  { id: 'kitten', label: '벚꽃 아래 · 아기', img: P + 'props/cat-kitten.webp', season: '봄' },
   { id: 'summer', label: '수박 옆', img: P + 'props/cat-summer.webp', season: '여름' },
   { id: 'autumn', label: '낙엽 위', img: P + 'props/cat-autumn.webp', season: '가을' },
   { id: 'winter', label: '눈 오는 날', img: P + 'props/cat-winter.webp', season: '겨울' },
+  { id: 'spring', label: '벚꽃 아래 · 다 큰 뒤', img: P + 'props/cat-spring.webp', season: '봄' },
 ];
-const ORDER = ['spring', 'summer', 'autumn', 'winter'];
+const ORDER = ['kitten', 'summer', 'autumn', 'winter', 'spring'];
 
 // 장치 2: 선물과 보낸 사람 맞추기
 const GIFTS = [
@@ -32,25 +34,27 @@ const SEATS = [
   { id: 'shop', label: '꽃집 쪽' },
   { id: 'lane', label: '골목 입구 쪽' },
 ];
-// 시계 방향: 감나무 → 우체통 → 꽃집 → 골목 입구
-const SEAT_ANSWER = { tree: 'eunho', post: 'soyeon', shop: 'jihu', lane: 'mijeong' };
+// 평상을 둘러싼 자리: 감나무(북) → 우체통(동) → 꽃집(남) → 골목 입구(서), 시계 방향.
+// 은호: 감나무 맞은편(꽃집 쪽) / 소연: 은호의 왼손 쪽(감나무를 보고 앉으면 왼손은 동쪽=우체통 쪽) / 미정: 꽃집 문이 보이는 자리(감나무 쪽) / 지후: 남는 자리(골목 입구)
+const SEAT_ANSWER = { tree: 'mijeong', post: 'soyeon', shop: 'eunho', lane: 'jihu' };
 
 function seatChart(d = {}) {
-  const pos = { tree: [50, 16], post: [84, 50], shop: [50, 84], lane: [16, 50] };
-  const ink = '#2f3a7a';
+  const ink = '#3a3a3a';
   const names = Object.fromEntries(PEOPLE.map((p) => [p.id, p.name]));
-  const seats = SEATS.map((s) => {
-    const [x, y] = pos[s.id]; const who = d[s.id];
-    return `<g><circle cx="${x}" cy="${y}" r="9" fill="${who ? '#f2c14e' : 'none'}" stroke="${ink}" stroke-width="1.2" stroke-dasharray="${who ? '0' : '2 1.5'}"/><text x="${x}" y="${y + (who ? 1.6 : 1.2)}" font-size="${who ? 5 : 3.2}" text-anchor="middle" fill="${ink}" font-family="MihaejeHand, serif">${who ? names[who] : s.label}</text></g>`;
-  }).join('');
-  return `<svg viewBox="0 0 100 100" class="seat-chart" role="img" aria-label="평상 자리표">
-   <rect x="30" y="30" width="40" height="40" rx="3" fill="none" stroke="${ink}" stroke-width="1.4"/>
-   <path d="M33 36 h34 M33 42 h34 M33 48 h34 M33 54 h34 M33 60 h34 M33 66 h34" stroke="${ink}" stroke-width=".5" opacity=".5"/>
-   <text x="50" y="52" font-size="4" text-anchor="middle" fill="${ink}" font-family="MihaejeHand, serif">평상</text>
-   <path d="M50 4 c-3 -2 -6 1 -4 3 c-2 2 1 5 4 3 c3 2 6 -1 4 -3 c2 -2 -1 -5 -4 -3 z" fill="none" stroke="${ink}" stroke-width=".6"/>
-   <text x="92" y="8" font-size="3.4" text-anchor="end" fill="${ink}" font-family="MihaejeHand, serif">시계 방향 →</text>
-   <path d="M62 10 a 40 40 0 0 1 28 28" fill="none" stroke="${ink}" stroke-width=".6" stroke-dasharray="1.5 1.5"/>
-   ${seats}
+  const pen = (dd, w = 1) => `<path d="${dd}" fill="none" stroke="${ink}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const seat = (id, x, y, label) => {
+    const who = d[id]; const on = d._pick === id;
+    return `<g class="seat-box${who ? ' named' : ''}${on ? ' picking' : ''}" data-seat="${id}" role="button" tabindex="0" aria-label="${label} 자리${who ? ': ' + names[who] : ' (비어 있음)'}"><rect x="${x - 9}" y="${y - 5.5}" width="18" height="11" rx="1" fill="${on ? 'rgba(227,166,74,.35)' : 'rgba(255,255,255,.01)'}"/>${pen(`M${x - 7} ${y - 4} h14 v8 h-14 z`, on ? 1.4 : 0.9)}<text x="${x}" y="${y + 1.8}" font-size="${who ? 5.6 : 4.4}" text-anchor="middle" fill="${who ? '#b23b2e' : ink}" font-family="MihaejeHand, serif">${who ? names[who] : label}</text></g>`;
+  };
+  return `<svg viewBox="0 0 150 100" class="seat-chart" role="img" aria-label="평상 자리표">
+   ${pen('M45 30 h60 v40 h-60 z', 1.3)}${pen('M48 36 h54 M48 42 h54 M48 48 h54 M48 54 h54 M48 60 h54 M48 66 h54', 0.4)}
+   <text x="75" y="52" font-size="5" text-anchor="middle" fill="${ink}" font-family="MihaejeHand, serif">평상</text>
+   ${pen('M75 4 v8 M69 9 c2 -6 10 -6 12 0 c3 -4 6 2 2 4 c-5 3 -11 3 -16 0 c-4 -2 -1 -8 2 -4 z', 0.7)}<text x="75" y="20" font-size="4.1" text-anchor="middle" fill="${ink}" font-family="MihaejeHand, serif">감나무</text>
+   ${pen('M130 42 h8 v12 h-8 z M134 54 v8 M131 46 h6', 0.7)}<text x="134" y="68" font-size="4.1" text-anchor="middle" fill="${ink}" font-family="MihaejeHand, serif">우체통</text>
+   ${pen('M60 90 h30 v8 h-30 z M72 90 v8 M60 90 l15 -5 l15 5', 0.7)}<text x="75" y="87" font-size="4.1" text-anchor="middle" fill="${ink}" font-family="MihaejeHand, serif">꽃집 문</text>
+   ${pen('M8 40 l8 10 l-8 10 M20 40 l8 10 l-8 10', 0.6)}<text x="18" y="66" font-size="4.1" text-anchor="middle" fill="${ink}" font-family="MihaejeHand, serif">골목 입구</text>
+   ${pen('M118 14 a22 22 0 0 1 10 14', 0.5)}${pen('M126 24 l2 4 l-4 1', 0.5)}<text x="112" y="12" font-size="3" fill="${ink}" font-family="MihaejeHand, serif">시계 방향</text>
+   ${seat('tree', 75, 26, '감나무 쪽')}${seat('post', 113, 50, '우체통 쪽')}${seat('shop', 75, 76, '꽃집 쪽')}${seat('lane', 37, 50, '골목 입구 쪽')}
   </svg>`;
 }
 
@@ -132,12 +136,12 @@ export default {
     charm: {
       title: '봄이 목걸이의 참',
       kind: '어젯밤까지 없던 것',
-      html: `<div class="charm"><span class="charm-tag">🩺</span><span class="charm-tag">🥐</span><span class="charm-tag">💐</span></div><p>작은 나무 조각 세 개가 끈에 꿰어 있다. 청진기, 빵, 꽃. 골목 순서대로다. 동물병원, 빵집, 그리고 골목 끝 꽃집</p><p class="aside">봄이가 작년까지 매일 돌던 길이기도 하다</p>`,
+      html: `<figure class="prop collar"><img src="${P}props/collar.webp" alt="청진기, 빵, 꽃 모양 나무 참이 달린 목걸이" decoding="async"></figure><p>작은 나무 조각 세 개가 끈에 꿰어 있다. 청진기, 빵, 꽃. 골목 순서대로다. 동물병원, 빵집, 그리고 골목 끝 꽃집</p><p class="aside">봄이가 작년까지 매일 돌던 길이기도 하다</p>`,
     },
     vetnote: {
       title: '병원 유리문의 쪽지',
       kind: '은호의 글씨',
-      html: `<blockquote class="hand">다은 씨, 오늘 하루 휴진입니다<br>창턱에 봄이 상자 두고 갔어요<br>작년에 찍어 둔 사진인데, 찍은 순서대로 넣으면 열려요<br>순서는 봄이가 알아요 (사진 보면 아실 거예요)</blockquote><p class="aside">은호 씨는 봄이 접종 때마다 파란 수건을 깔아 주던 사람이다</p>`,
+      html: `<blockquote class="hand">다은 씨, 오늘 하루 휴진입니다<br>창턱에 봄이 상자 두고 갔어요<br>재작년부터 찍어 둔 사진인데, 찍은 순서대로 넣으면 열려요<br>벚꽃 사진이 두 장인데, 봄이가 얼마나 컸는지 보면 어느 해인지 알아요</blockquote><p class="aside">은호 씨는 봄이 접종 때마다 파란 수건을 깔아 주던 사람이다</p>`,
     },
     colors: {
       title: '골목에서 본 것',
@@ -152,7 +156,7 @@ export default {
     mail: {
       title: '우체통의 봉투',
       kind: '지후의 글씨',
-      html: `<blockquote class="hand">다은 씨께<br>오늘 저녁 자리표예요. 네 사람 부탁을 적어 뒀어요<br>자리 정해지면 평상 밑 상자를 열어 보세요</blockquote><div class="notes-list"><p><b>은호</b> 감나무 쪽이요. 거기서 봄이가 제일 잘 보여요</p><p><b>소연</b> 은호 씨 바로 다음 자리요. 시계 방향으로</p><p><b>지후</b> 저는 소연 씨 다음이요. 같은 방향으로요</p><p><b>미정</b> 남는 자리 주세요. 꽃 놓을 자리만 있으면 돼요</p></div><p class="aside">평상 자리는 감나무 쪽, 우체통 쪽, 꽃집 쪽, 골목 입구 쪽 넷이다</p>`,
+      html: `<blockquote class="hand">다은 씨께<br>오늘 저녁 자리표예요. 네 사람 부탁을 적어 뒀어요<br>자리 정해지면 평상 밑 상자를 열어 보세요</blockquote><div class="notes-list"><p><b>은호</b> 봄이는 분명 감나무에 올라가 있을 거예요. 나무가 정면으로 보이는 자리로 주세요</p><p><b>소연</b> 은호 씨 왼손 쪽에 앉을게요. 접시 건네기 편하게</p><p><b>미정</b> 가게 문이 바로 보이는 자리요. 손님 오면 일어나야 해서</p><p><b>지후</b> 저는 아무 데나요. 남는 자리 주세요</p></div><p class="aside">평상 자리는 감나무 쪽, 우체통 쪽, 꽃집 쪽, 골목 입구 쪽 넷이고, 그림에는 평상 둘레에 뭐가 있는지 그려 두었다</p>`,
     },
     final: {
       title: '평상 밑 상자의 초대장',
@@ -166,53 +170,56 @@ export default {
     seasons: {
       title: '창턱의 상자',
       scene: 'alley',
-      intro: '상자 뚜껑에 사진 네 장이 들어갈 자리가 있다. 찍은 순서대로 넣으면 열린다고 했다',
+      intro: '뚜껑 안쪽에 사진 주머니가 다섯. 찍은 순서대로 넣으면 걸쇠가 열린다고 했다',
       docs: ['vetnote'],
       hintCode: 'C-S01',
       hints: [
-        '사진마다 계절이 보입니다. 벚꽃, 수박, 낙엽, 눈. 계절 순서대로 놓으면 됩니다',
-        '봄 → 여름 → 가을 → 겨울. 벚꽃 아래가 첫 번째입니다',
-        '벚꽃 아래 · 수박 옆 · 낙엽 위 · 눈 오는 날',
+        '사진마다 계절이 보이는데 벚꽃이 두 장입니다. 하나는 아기 고양이, 하나는 다 큰 봄이. 작은 쪽이 먼저입니다',
+        '아기 봄이(봄) → 여름 → 가을 → 겨울 → 다 큰 봄이(그다음 봄)',
+        '벚꽃 아래·아기 → 수박 옆 → 낙엽 위 → 눈 오는 날 → 벚꽃 아래·다 큰 뒤',
       ],
-      initial: () => ({ slots: [null, null, null, null] }),
+      initial: () => ({ slots: [null, null, null, null, null] }),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'seasons');
-        const slots = el('div', 'photo-slots');
+        const lid = el('div', 'prop boxlid'); const im = el('img'); im.src = P + 'props/boxlid.webp'; im.alt = '뚜껑 안쪽의 사진 주머니 다섯'; lid.append(im);
+        const xs = [10.3, 26.9, 43.5, 60.1, 76.7];
         d.slots.forEach((pid, i) => {
-          const s = el('button', 'photo-slot' + (pid ? ' filled' : '')); s.type = 'button'; s.setAttribute('aria-label', `${i + 1}번째 자리${pid ? ': ' + PHOTOS.find((p) => p.id === pid).label : ''}`);
-          if (pid) { const ph = PHOTOS.find((p) => p.id === pid); const im = el('img'); im.src = ph.img; im.alt = ph.label; s.append(im); }
-          else s.append(el('span', 'slot-num', String(i + 1)));
+          const s = el('button', 'pocket' + (pid ? ' filled' : '')); s.type = 'button'; s.style.left = xs[i] + '%';
+          s.setAttribute('aria-label', `${i + 1}번째 주머니${pid ? ': ' + PHOTOS.find((p) => p.id === pid).label : ''}`);
+          if (pid) { const ph = PHOTOS.find((p) => p.id === pid); const pi = el('img'); pi.src = ph.img; pi.alt = ph.label; s.append(pi); }
+          else s.append(el('span', 'pocket-num', String(i + 1)));
           s.onclick = () => { if (pid) { d.slots[i] = null; save(); } };
-          slots.append(s);
+          lid.append(s);
         });
-        wrap.append(el('p', 'pick-label', '뚜껑의 자리 (누르면 뺌)'), slots);
+        wrap.append(lid);
         const tray = el('div', 'photo-tray');
         PHOTOS.filter((p) => !d.slots.includes(p.id)).forEach((p) => {
           const b = el('button', 'photo-pick'); b.type = 'button'; b.setAttribute('aria-label', p.label + ' 사진 넣기');
-          const im = el('img'); im.src = p.img; im.alt = p.label; b.append(im, el('span', '', p.label));
+          const pi = el('img'); pi.src = p.img; pi.alt = p.label; b.append(pi, el('span', '', p.label));
           b.onclick = () => { const i = d.slots.indexOf(null); if (i < 0) return; d.slots[i] = p.id; save(); };
           tray.append(b);
         });
-        wrap.append(el('p', 'pick-label', '상자 옆에 놓인 사진'), tray);
+        wrap.append(el('p', 'pick-label', '상자 옆에 흩어진 사진 (누르면 빈 주머니부터 들어감 · 주머니를 누르면 뺌)'), tray);
         return wrap;
       },
       commitLabel: '뚜껑 닫고 걸쇠 누르기',
       check(d) {
-        if (d.slots.includes(null)) return { ok: false, msg: '네 자리를 다 채워야 걸쇠가 눌린다' };
+        if (d.slots.includes(null)) return { ok: false, msg: '주머니 다섯을 다 채워야 걸쇠가 눌린다' };
         if (d.slots.every((p, i) => p === ORDER[i])) return { ok: true };
         const names = Object.fromEntries(PHOTOS.map((p) => [p.id, p]));
-        for (let i = 0; i < 4; i++) if (d.slots[i] !== ORDER[i]) {
+        for (let i = 0; i < 5; i++) if (d.slots[i] !== ORDER[i]) {
           const got = names[d.slots[i]], want = names[ORDER[i]];
-          return { ok: false, msg: `${i + 1}번째가 ${got.label}(${got.season})인데, ${want.season}이 먼저다. 계절 순서로 다시 놓아 보자` };
+          if ((got.id === 'spring' && want.id === 'kitten') || (got.id === 'kitten' && want.id === 'spring')) return { ok: false, msg: `${i + 1}번째 벚꽃 사진, 봄이 크기를 다시 보자. 작을 때가 먼저다` };
+          return { ok: false, msg: `${i + 1}번째가 ${got.label}(${got.season})인데, 그 자리엔 ${js(want.season, '이', '가')} 와야 한다` };
         }
         return { ok: false, msg: '순서가 맞지 않는다' };
       },
       reveal: {
-        title: '봄, 여름, 가을, 겨울',
+        title: '두 번의 봄',
         text: '걸쇠가 톡 하고 열렸다. 안에는 파란 리본을 두른 작은 상자와 쪽지 한 장이 들어 있었다',
         scene: [
-          '「봄이가 골목에 온 게 재작년 봄이었어요. 사진은 그때부터 찍었어요. 다은 씨가 데려가기 전 네 계절이에요 — 은호」',
+          '「봄이가 골목에 온 게 재작년 봄이었어요. 손바닥만 했는데. 다은 씨가 데려가기 전까지 다섯 계절을 우리가 봤어요 — 은호」',
           '봄이는 내 품에서 상자 냄새를 맡더니 관심을 잃었다. 파란 리본 상자는 일단 가방에 넣고 빵집 쪽으로 갔다',
         ],
         unlock: null,
@@ -222,7 +229,7 @@ export default {
     gifts: {
       title: '빵집 앞 바구니',
       scene: 'alley',
-      intro: '바구니에 선물 넷과 쪽지 한 장. 선물에는 보낸 사람 이름이 없다. 누가 보낸 건지 맞히면 바구니 바닥에 다음 갈 곳이 있다',
+      intro: '바구니에 선물 넷과 빈 이름표 넷. 선물에는 보낸 사람 이름이 없다. 이름표를 맞게 달면 바구니 바닥에 다음 갈 곳이 있다',
       docs: ['basketnote', 'colors'],
       hintCode: 'C-S02',
       hints: [
@@ -230,28 +237,39 @@ export default {
         '파란 수건은 병원, 노란 차양은 빵집, 초록 가방은 우체부. 리본을 싫어하는 사람은 꽃집',
         '파란 리본 → 은호, 노란 리본 → 소연, 초록 리본 → 지후, 꽃다발 → 미정',
       ],
-      initial: () => ({ who: {} }),
+      initial: () => ({ who: {}, pick: null }),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'gifts');
+        const basket = el('div', 'prop basket'); const im = el('img'); im.src = P + 'props/basket.webp'; im.alt = '선물 넷이 든 바구니'; basket.append(im);
+        const pos = { blue: [35, 37], yellow: [63.5, 37], green: [36, 77], flower: [67, 81] };
         GIFTS.forEach((g) => {
-          const row = el('div', 'gift-row');
-          row.append(el('span', 'gift-name', g.label));
-          const picks = el('div', 'pick-row');
-          PEOPLE.forEach((p) => { const b = el('button', 'chip' + (d.who[g.id] === p.id ? ' on' : ''), p.name); b.type = 'button'; b.setAttribute('aria-label', `${g.label}은 ${p.name}`); b.onclick = () => { d.who[g.id] = p.id; save(); }; picks.append(b); });
-          row.append(picks); wrap.append(row);
+          const [x, y] = pos[g.id]; const who = PEOPLE.find((p) => p.id === d.who[g.id]);
+          const t = el('button', 'tag' + (who ? ' named' : '') + (d.pick === g.id ? ' picking' : '')); t.type = 'button'; t.style.left = x + '%'; t.style.top = y + '%';
+          t.setAttribute('aria-label', `${g.label}의 이름표${who ? ': ' + who.name : ' (비어 있음)'}`);
+          t.textContent = who ? who.name : '?';
+          t.onclick = () => { d.pick = d.pick === g.id ? null : g.id; save(); };
+          basket.append(t);
         });
+        wrap.append(basket);
+        if (d.pick) {
+          const g = GIFTS.find((x) => x.id === d.pick);
+          wrap.append(el('p', 'pick-label', `${g.label}의 이름표에 쓸 이름`));
+          const row = el('div', 'pick-row');
+          PEOPLE.forEach((p) => { const b = el('button', 'chip' + (d.who[d.pick] === p.id ? ' on' : ''), p.name); b.type = 'button'; b.setAttribute('aria-label', `${js(g.label, '은', '는')} ${p.name}`); b.onclick = () => { d.who[d.pick] = p.id; d.pick = null; save(); }; row.append(b); });
+          wrap.append(row);
+        } else wrap.append(el('p', 'pick-label', '바구니 속 이름표(?)를 누르면 이름을 쓸 수 있다'));
         return wrap;
       },
-      commitLabel: '이름표 붙이기',
+      commitLabel: '이름표 다 달았다',
       check(d) {
         const missing = GIFTS.filter((g) => !d.who[g.id]);
-        if (missing.length) return { ok: false, msg: `${missing[0].label}에 아직 이름을 안 붙였다` };
+        if (missing.length) return { ok: false, msg: `${missing[0].label} 이름표가 아직 비어 있다` };
         const wrong = GIFTS.filter((g) => d.who[g.id] !== GIFT_ANSWER[g.id]);
         if (!wrong.length) return { ok: true };
         const g = wrong[0]; const who = PEOPLE.find((p) => p.id === d.who[g.id]);
         if (g.id === 'flower') return { ok: false, msg: `${who.name} 씨가 꽃다발을? 리본을 싫어하는 사람이 누구였더라` };
-        return { ok: false, msg: `${g.label}이 ${who.name} 씨 것 같지 않다. ${who.job}에서 그 색을 본 적이 있나` };
+        return { ok: false, msg: `${js(g.label, '이', '가')} ${who.name} 씨 것 같지 않다. ${who.job}에서 그 색을 본 적이 있나` };
       },
       reveal: {
         title: '네 사람, 네 색',
@@ -271,23 +289,24 @@ export default {
       docs: ['mail'],
       hintCode: 'C-S03',
       hints: [
-        '은호 씨 자리부터 정하세요. 감나무 쪽이라고 적혀 있습니다. 그다음은 시계 방향으로 한 칸씩',
-        '시계 방향 순서는 감나무 → 우체통 → 꽃집 → 골목 입구입니다',
-        '감나무 쪽 은호, 우체통 쪽 소연, 꽃집 쪽 지후, 골목 입구 쪽 미정',
+        '은호 씨부터. "감나무가 정면으로 보이는 자리"는 감나무 쪽이 아니라 감나무 맞은편입니다. 그림에서 맞은편을 찾으세요',
+        '꽃집 쪽에 앉아 감나무를 보면 왼손은 우체통 쪽입니다. 소연 씨는 거기. 미정 씨는 꽃집 문이 보이는 자리, 즉 꽃집 맞은편',
+        '꽃집 쪽 은호, 우체통 쪽 소연, 감나무 쪽 미정, 골목 입구 쪽 지후',
       ],
-      initial: () => ({ seat: {} }),
+      initial: () => ({ seat: {}, pick: null }),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'seats');
-        const chart = el('div', 'prop paperchart'); chart.innerHTML = `<img src="${P}props/paper.webp" alt="" decoding="async"><div class="chart-on-paper">${seatChart(d.seat)}</div>`;
+        const chart = el('div', 'prop paperchart'); chart.innerHTML = `<img src="${P}props/paper.webp" alt="평상 밑에 있던 종이" decoding="async"><div class="chart-on-paper">${seatChart({ ...d.seat, _pick: d.pick })}</div>`;
+        chart.querySelectorAll('[data-seat]').forEach((g) => { const go = () => { d.pick = d.pick === g.dataset.seat ? null : g.dataset.seat; save(); }; g.addEventListener('click', go); g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } }); });
         wrap.append(chart);
-        SEATS.forEach((s) => {
-          const row = el('div', 'gift-row');
-          row.append(el('span', 'gift-name', s.label));
+        if (d.pick) {
+          const s = SEATS.find((x) => x.id === d.pick);
+          wrap.append(el('p', 'pick-label', `${s.label} 자리에 앉을 사람`));
           const picks = el('div', 'pick-row');
-          PEOPLE.forEach((p) => { const b = el('button', 'chip' + (d.seat[s.id] === p.id ? ' on' : ''), p.name); b.type = 'button'; b.setAttribute('aria-label', `${s.label}에 ${p.name}`); b.onclick = () => { for (const k of Object.keys(d.seat)) if (d.seat[k] === p.id) delete d.seat[k]; d.seat[s.id] = p.id; save(); }; picks.append(b); });
-          row.append(picks); wrap.append(row);
-        });
+          PEOPLE.forEach((p) => { const b = el('button', 'chip' + (d.seat[d.pick] === p.id ? ' on' : ''), p.name); b.type = 'button'; b.setAttribute('aria-label', `${s.label}에 ${p.name}`); b.onclick = () => { for (const k of Object.keys(d.seat)) if (d.seat[k] === p.id) delete d.seat[k]; d.seat[d.pick] = p.id; d.pick = null; save(); }; picks.append(b); });
+          wrap.append(picks);
+        } else wrap.append(el('p', 'pick-label', '종이 위 네모 칸을 연필로 짚으면 이름을 적을 수 있다'));
         return wrap;
       },
       commitLabel: '자리표 평상에 놓기',
@@ -295,15 +314,16 @@ export default {
         const empty = SEATS.filter((s) => !d.seat[s.id]);
         if (empty.length) return { ok: false, msg: `${empty[0].label} 자리가 비어 있다` };
         if (SEATS.every((s) => d.seat[s.id] === SEAT_ANSWER[s.id])) return { ok: true };
-        if (d.seat.tree !== 'eunho') return { ok: false, msg: '은호 씨는 감나무 쪽을 부탁했다. 거기서부터 시작하자' };
-        if (d.seat.post !== 'soyeon') return { ok: false, msg: '소연 씨는 은호 씨 바로 다음, 시계 방향. 감나무 다음은 어느 쪽이지' };
-        if (d.seat.shop !== 'jihu') return { ok: false, msg: '지후 씨는 소연 씨 다음이다. 같은 방향으로 한 칸 더' };
-        return { ok: false, msg: '미정 씨는 남는 자리다. 셋이 정해지면 하나 남는다' };
+        if (d.seat.tree === 'eunho') return { ok: false, msg: '은호 씨가 감나무 쪽에 앉으면 감나무는 등 뒤다. "정면으로 보이는 자리"가 아니다' };
+        if (d.seat.shop !== 'eunho') return { ok: false, msg: '감나무가 정면으로 보이는 자리는 감나무 맞은편이다. 은호 씨부터 다시' };
+        if (d.seat.post !== 'soyeon') return { ok: false, msg: '꽃집 쪽에 앉아 감나무를 바라보면 왼손은 어느 쪽인지, 그림을 보며 생각해 보자' };
+        if (d.seat.tree !== 'mijeong') return { ok: false, msg: '미정 씨는 꽃집 문이 보이는 자리다. 꽃집 쪽이 아니라 꽃집이 보이는 쪽' };
+        return { ok: false, msg: '지후 씨는 남는 자리다. 셋이 정해지면 하나 남는다' };
       },
       reveal: {
         title: '네 자리, 그리고 빈자리 하나',
         text: '평상 밑 상자가 열렸다. 발바닥 도장이 찍힌 봉투가 한 장 더 있었는데, 이번엔 받는 사람이 「다은」이었다',
-        scene: ['자리표를 다시 보니 평상에는 자리가 다섯이었다. 네 사람 자리를 정하고 나면 하나가 남는다. 봄이가 그 자리에 앉아 꼬리로 바닥을 쳤다'],
+        scene: ['자리표 네 칸을 채우고 나서야 평상 한가운데가 비어 있는 게 보였다. 봄이가 그 자리에 올라앉아 꼬리로 바닥을 쳤다'],
         unlock: null,
         ending: true,
         endingLabel: '이틀 뒤, 저녁 일곱 시로',

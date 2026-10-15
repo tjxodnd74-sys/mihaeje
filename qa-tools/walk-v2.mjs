@@ -153,32 +153,45 @@ async function catInvite({ mobile = false } = {}) {
     await hotspot(page, '골목으로 나가기');
     L.check((await L.mainText(page)).includes('오늘 휴진'), 'alley reached');
     for (const d of ['병원 유리문의 쪽지', '골목에서 본 것']) { await hotspot(page, d); await L.closeDialog(page); }
-    // seasons
+    // seasons: 뚜껑 안쪽 주머니 다섯
     await hotspot(page, '창턱의 상자');
     L.check(await page.evaluate(() => document.querySelector('dialog[open] .v2-guide')?.open === true), 'easy episode: guide open by default');
-    await L.click(page, '수박 옆 사진 넣기'); await L.click(page, '벚꽃 아래 사진 넣기'); await L.click(page, '낙엽 위 사진 넣기'); await L.click(page, '눈 오는 날 사진 넣기');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .boxlid img').length === 1 && document.querySelectorAll('dialog[open] .pocket').length === 5), 'seasons: box lid photo + 5 pockets');
     await commit(page);
-    L.check((await status(page)).includes('봄이 먼저'), 'seasons: wrong order explained — ' + (await status(page)));
-    await L.click(page, '1번째 자리'); await L.click(page, '2번째 자리'); // remove two
-    await L.click(page, '벚꽃 아래 사진 넣기'); await L.click(page, '수박 옆 사진 넣기');
+    L.check((await status(page)).includes('다섯을 다 채워야'), 'seasons: empty explained');
+    for (const l of ['벚꽃 아래 · 다 큰 뒤', '수박 옆', '낙엽 위', '눈 오는 날', '벚꽃 아래 · 아기']) await L.click(page, l + ' 사진 넣기', { exact: true });
     await commit(page);
-    L.check(await dlgHas(page, '봄, 여름, 가을, 겨울'), 'seasons solved');
+    L.check((await status(page)).includes('작을 때가 먼저'), 'seasons: kitten/adult swap explained — ' + (await status(page)));
+    await L.click(page, '1번째 주머니: 벚꽃 아래 · 다 큰 뒤', { exact: true }); // 빼기 → 1번 비움
+    await L.click(page, '5번째 주머니: 벚꽃 아래 · 아기', { exact: true });
+    await L.click(page, '벚꽃 아래 · 아기 사진 넣기', { exact: true }); await L.click(page, '벚꽃 아래 · 다 큰 뒤 사진 넣기', { exact: true });
+    await commit(page);
+    L.check(await dlgHas(page, '두 번의 봄'), 'seasons solved');
+    await shot(page, 'cat-seasons-solved');
     await L.click(page, '계속'); await L.sleep(300);
-    // gifts
+    // gifts: 바구니 이름표
     await hotspot(page, '빵집 앞 바구니');
-    await L.click(page, '파란 리본 상자은 소연'); await commit(page);
-    L.check((await status(page)).includes('아직 이름을'), 'gifts: missing explained');
-    await L.click(page, '노란 리본 상자은 은호'); await L.click(page, '초록 리본 봉투은 지후'); await L.click(page, '리본 없는 꽃다발은 미정'); await commit(page);
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .basket .tag').length === 4), 'gifts: 4 tags on basket photo');
+    const name = async (gift, who) => { await L.click(page, gift + '의 이름표'); await L.click(page, gift + (/[가-힣]$/.test(gift) && (gift.charCodeAt(gift.length - 1) - 0xac00) % 28 ? '은 ' : '는 ') + who, { exact: true }); };
+    await name('파란 리본 상자', '소연'); await commit(page);
+    L.check((await status(page)).includes('아직 비어'), 'gifts: missing explained');
+    await name('노란 리본 상자', '은호'); await name('초록 리본 봉투', '지후'); await name('리본 없는 꽃다발', '미정'); await commit(page);
     L.check((await status(page)).includes('빵집에서'), 'gifts: wrong person explained — ' + (await status(page)));
-    await L.click(page, '파란 리본 상자은 은호'); await L.click(page, '노란 리본 상자은 소연'); await commit(page);
+    await name('파란 리본 상자', '은호'); await name('노란 리본 상자', '소연'); await commit(page);
     L.check(await dlgHas(page, '네 사람, 네 색'), 'gifts solved');
-    await L.click(page, '골목 끝 · 꽃집과 평상으로'); await L.sleep(400);
+    await shot(page, 'cat-gifts-solved');
+    // 풀고 X로 닫아도 다음 장소로 이동해야 함
+    await L.closeDialog(page); await L.sleep(400);
+    L.check((await L.mainText(page)).includes('전구를 걸어'), 'closing reveal with X still moves to next scene');
     await hotspot(page, '우체통의 봉투'); await L.closeDialog(page);
     await hotspot(page, '평상 자리표');
-    await L.click(page, '감나무 쪽에 소연'); await L.click(page, '우체통 쪽에 은호'); await L.click(page, '꽃집 쪽에 지후'); await L.click(page, '골목 입구 쪽에 미정'); await commit(page);
-    L.check((await status(page)).includes('감나무 쪽을 부탁'), 'seats: wrong start explained — ' + (await status(page)));
-    await L.click(page, '감나무 쪽에 은호'); await L.click(page, '우체통 쪽에 소연'); await commit(page);
+    L.check(await page.evaluate(() => !!document.querySelector('dialog[open] .paperchart img') && !!document.querySelector('dialog[open] .chart-on-paper svg')), 'seats: chart drawn on paper photo');
+    const sit = async (seat, who) => { await L.click(page, seat + ' 자리'); await L.click(page, seat + '에 ' + who, { exact: true }); };
+    await sit('감나무 쪽', '은호'); await sit('우체통 쪽', '소연'); await sit('꽃집 쪽', '지후'); await sit('골목 입구 쪽', '미정'); await commit(page);
+    L.check((await status(page)).includes('등 뒤'), 'seats: 감나무 쪽 은호 explained — ' + (await status(page)));
+    await sit('꽃집 쪽', '은호'); await sit('감나무 쪽', '미정'); await sit('골목 입구 쪽', '지후'); await commit(page);
     L.check(await dlgHas(page, '빈자리 하나'), 'seats solved');
+    await shot(page, 'cat-seats-solved');
     await L.click(page, '이틀 뒤, 저녁 일곱 시로'); await L.sleep(500);
     L.check((await L.mainText(page)).includes('고양이가 데려온 사람들'), 'ending reached');
     await L.click(page, '평상 밑 상자의 초대장 읽기');
