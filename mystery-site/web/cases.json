@@ -6,7 +6,7 @@
     "subtitle": "사라진 SD카드",
     "genre": "미스터리 추리",
     "minutes": 15,
-    "difficulty": "★★★★",
+    "difficulty": "★★★★★",
     "image": "assets/covers/garage-v1.webp",
     "href": "case.html",
     "storageKey": "garage-case-v1",
@@ -26,7 +26,7 @@
       "text": "사건 해결 후 등록한 폐업 인계 종이 사본의 분류 조각 M"
     },
     "imageAlt": "젖은 정비소 앞에 멈춘 붉은 자동차",
-    "difficultyLevel": 4
+    "difficultyLevel": 5
   },
   {
     "id": "apartment",
@@ -35,7 +35,7 @@
     "subtitle": "아무도 살지 않는 창문",
     "genre": "도시괴담 · 공간 추리",
     "minutes": 17,
-    "difficulty": "★★★",
+    "difficulty": "★★★★",
     "image": "assets/covers/apartment-v1.webp",
     "href": "episode.html?case=apartment",
     "storageKey": "mihaeje-apartment-v1",
@@ -54,7 +54,7 @@
       "text": "점검 자료의 보관 사본에 남은 분류 조각 R"
     },
     "imageAlt": "어두운 연립주택에 홀로 켜진 창문",
-    "difficultyLevel": 3
+    "difficultyLevel": 4
   },
   {
     "id": "radio",
