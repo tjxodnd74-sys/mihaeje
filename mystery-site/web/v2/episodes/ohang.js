@@ -506,6 +506,6 @@ export default {
     },
     afterword: (S) => `${seedOf(S).gift}는 ${seedOf(S).id === 'blue' ? '가게 창가' : seedOf(S).id === 'white' ? '우리 집 문 앞' : '내 책상 위'}에 있다 ${seedOf(S).giftLine}`,
     unlockDoc: 'final',
-    next: { href: 'pet-home.html', title: '첫 번째 보호자', line: '다음은 동물병원 접수대 이야기입니다' },
+    next: { href: 'play.html?case=pet-home', title: '첫 번째 보호자', line: '다음은 동물병원 접수대 이야기입니다' },
   },
 };

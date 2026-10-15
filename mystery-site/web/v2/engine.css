@@ -511,3 +511,50 @@ a{color:inherit}
 .reading-item.mine{border-color:#b23b2e;box-shadow:inset 3px 0 0 #b23b2e;background:rgba(178,59,46,.06)}
 .reading-item b{display:block;font-family:var(--sans);font-size:13px;color:#5b5245;margin:0 0 4px}
 .reading-item p{font-size:18px;margin:2px 0}
+
+/* 첫 번째 보호자 소품 */
+.stamp{width:26px;height:26px;vertical-align:middle;color:#c23a2b;opacity:.85}
+.stamp.big{width:12cqw;height:12cqw}
+.paper-table{background:#f7f3e8;color:#2b2620;border:1px solid #d9d0bb;border-radius:3px;padding:12px 14px;margin:0 0 12px;font-family:var(--sans);box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.paper-table table{width:100%;border-collapse:collapse;font-size:14px}
+.paper-table th,.paper-table td{border-bottom:1px solid #d9d0bb;padding:7px 6px;text-align:left;vertical-align:middle}
+.paper-table th{font-weight:700;color:#5b5245;white-space:nowrap}
+.pt-head{margin:0 0 8px;font-weight:800;letter-spacing:.04em;font-size:14px;border-bottom:2px solid #2b2620;padding-bottom:6px}
+.pt-foot{margin:8px 0 0;font-size:12px;color:#7a7462}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.06em}
+.keepbox{max-width:620px;margin:0 auto 12px}
+.keep-item{position:absolute;width:30%;height:30%;border:0;background:transparent;border-radius:6px;cursor:pointer;transition:box-shadow .15s}
+.keep-item:hover,.keep-item:focus-visible{outline:none;box-shadow:0 0 0 .5cqw rgba(227,166,74,.75)}
+.keep-item.picking{box-shadow:0 0 0 .6cqw var(--lamp),0 0 3cqw rgba(227,166,74,.6)}
+.keep-item.gone{opacity:0;pointer-events:none}
+.keep-back{max-width:520px;margin:0 auto 12px}
+.keep-back-note{position:absolute;display:grid;gap:.6cqw;justify-items:start;font-family:var(--hand);color:#2f3a7a;font-size:5cqw;line-height:1.1;transform:rotate(-2deg)}
+.keep-back-note.blanket{left:42%;top:40%;width:22%;color:#2e6b3a;font-size:3.4cqw;gap:.2cqw}
+.keep-back-note.lanyard{left:38%;top:42%;font-size:4.4cqw;color:#1d2a66}
+.keep-back-note.envelope{left:48%;top:44%}
+.keep-back-note.envelope .stamp.big{position:absolute;left:28cqw;top:17.5cqw;color:#c23a2b}
+.keep-back-note.cert{left:22%;top:34%}
+.keep-back-note.cert .stamp.big{position:absolute;left:61.5cqw;top:21cqw;color:#4a3fa0;width:9cqw;height:9cqw}
+.keep-back-note.blanket .stamp.big{color:#2e6b3a;width:8cqw;height:8cqw}
+.keep-sub{font-family:var(--sans);font-size:2.6cqw;color:#444;letter-spacing:.04em}
+.record-sheet{background:#f7f3e8;color:#2b2620;border:1px solid #d9d0bb;border-radius:3px;padding:10px 12px;margin:8px 0 0;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.record-row{display:grid;grid-template-columns:86px 32px 1fr 110px;gap:8px;align-items:center;width:100%;text-align:left;background:transparent;border:0;border-bottom:1px dashed #c9bfa6;padding:8px 4px;font-family:var(--sans);font-size:14px;color:#2b2620;cursor:pointer}
+.record-row:last-child{border-bottom:0}
+.record-row.open{background:rgba(227,166,74,.18)}
+.record-row:hover,.record-row:focus-visible{outline:none;background:rgba(227,166,74,.12)}
+.record-row .rr-item{font-family:var(--hand);font-size:19px;color:#2f3a7a;text-align:right}
+.record-row.filled .rr-item{color:#b23b2e}
+.carddrawer{max-width:620px;margin:0 auto 12px}
+.card-tab{position:absolute;top:14%;width:8%;height:24%;border:0;background:transparent;border-radius:3px;cursor:pointer}
+.card-tab:hover,.card-tab:focus-visible{outline:none;box-shadow:0 0 0 .4cqw rgba(227,166,74,.75)}
+.card-tab.picking{box-shadow:0 0 0 .5cqw var(--lamp)}
+.index-card{background:#fbf7ea repeating-linear-gradient(transparent 0 27px,rgba(70,60,40,.16) 27px 28px);color:#2b2620;border:1px solid #d9d0bb;border-radius:3px;padding:12px 16px;max-width:420px;margin:0 auto 10px;box-shadow:0 2px 6px rgba(0,0,0,.25);font-family:var(--sans);transform:rotate(-.6deg)}
+.ic-head{margin:0 0 6px;font-size:12px;color:#8a8070;letter-spacing:.08em;border-bottom:2px solid #b23b2e;padding-bottom:4px}
+.ic-row{display:flex;justify-content:space-between;gap:10px;font-size:15px;line-height:28px}
+.ic-row b{font-family:var(--hand);font-size:22px;font-weight:400;color:#2f3a7a}
+.ic-row b.mono{font-family:var(--hand);letter-spacing:.04em}
+.strapimg{max-width:720px;margin:0 auto 12px}
+.strap-slot{position:absolute;top:36%;height:30%;border:0;background:transparent;border-radius:2px;color:rgba(255,255,255,.88);font-family:var(--sans);font-weight:800;font-size:3.6cqw;letter-spacing:.06em;cursor:pointer;text-shadow:0 0 .3cqw rgba(255,255,255,.4);filter:blur(.15px);padding:0}
+.strap-slot:hover,.strap-slot:focus-visible{outline:none;box-shadow:0 0 0 .4cqw rgba(227,166,74,.8)}
+.strap-slot.picking{box-shadow:0 0 0 .5cqw var(--lamp)}
+.strap-slot.filled{opacity:.9}
