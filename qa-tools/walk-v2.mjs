@@ -19,7 +19,7 @@ async function station({ mobile = false } = {}) {
     await L.fresh(page, '/play.html?case=station');
     await shot(page, 'intro');
     await L.click(page, '처음부터 하기');
-    L.check((await L.mainText(page)).includes('여기서 시작. 찾아와'), 'opening shown');
+    L.check((await L.mainText(page)).includes('여기서 시작'), 'opening shown');
     await shot(page, 'opening');
     await L.click(page, '중앙역 대합실로');
     await L.sleep(400);
@@ -190,6 +190,8 @@ async function catInvite({ mobile = false } = {}) {
     await sit('감나무 쪽', '은호'); await sit('우체통 쪽', '소연'); await sit('꽃집 쪽', '지후'); await sit('골목 입구 쪽', '미정'); await commit(page);
     L.check((await status(page)).includes('등 뒤'), 'seats: 감나무 쪽 은호 explained — ' + (await status(page)));
     await sit('꽃집 쪽', '은호'); await sit('감나무 쪽', '미정'); await sit('골목 입구 쪽', '지후'); await commit(page);
+    L.check((await status(page)).includes('오른손'), 'seats: soyeon on the right explained — ' + (await status(page)));
+    await sit('골목 입구 쪽', '소연'); await sit('우체통 쪽', '지후'); await commit(page);
     L.check(await dlgHas(page, '빈자리 하나'), 'seats solved');
     await shot(page, 'cat-seats-solved');
     await L.click(page, '이틀 뒤, 저녁 일곱 시로'); await L.sleep(500);
@@ -217,8 +219,21 @@ async function ohang({ mobile = false } = {}) {
     await L.fresh(page, '/play.html?case=ohang');
     await L.click(page, '처음부터 하기');
     L.check((await L.mainText(page)).includes('화분 다섯 개가 그대로'), 'opening shown');
-    await L.click(page, '오행당 문 앞에 서기'); await L.sleep(400);
-    for (const [d, t] of [['주머니 속 휴대폰', '불 낳는 놈 밑에'], ['문에 붙은 종이', '서로 낳는 순서']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    await L.click(page, '접수표 쓰기'); await L.sleep(400);
+    L.check((await L.mainText(page)).includes('오행당 접수표'), 'intake form shown');
+    await L.click(page, '접수표 내기');
+    L.check((await L.mainText(page)).includes('생일을 적어야'), 'intake: empty date explained');
+    await page.fill('input[name=date]', mobile ? '1988-11-03' : '1995-05-05'); await page.fill('input[name=time]', '10:30');
+    await L.click(page, '접수표 내기'); await L.sleep(1500);
+    const lightText = await page.evaluate(() => document.querySelector('.slip-light b')?.textContent || '');
+    L.check(/[木火土金水]/.test(lightText), 'intake: light computed — ' + lightText);
+    const EL = { '木': { id: 'blue', code: [5, 0, 0, 0], lantern: '파란 등' }, '火': { id: 'red', code: [4, 5, 0, 0], lantern: '붉은 등' }, '土': { id: 'yellow', code: [4, 0, 0, 0], lantern: '노란 등' }, '金': { id: 'white', code: [3, 5, 0, 0], lantern: '흰 등' }, '水': { id: 'black', code: [6, 0, 0, 0], lantern: '검은 등' } };
+    const NEXT = { blue: 'red', red: 'yellow', yellow: 'white', white: 'black', black: 'blue' };
+    const LAN = { blue: '파란 등', red: '붉은 등', yellow: '노란 등', white: '흰 등', black: '검은 등' };
+    const me = EL[lightText.match(/[木火土金水]/)[0]];
+    const order = [me.id]; while (order.length < 5) order.push(NEXT[order[order.length - 1]]);
+    await L.click(page, '접수표 들고 문 앞으로'); await L.sleep(400);
+    for (const [d, t] of [['주머니 속 휴대폰', '불 낳는놈 밑에'], ['문에 붙은 종이', '서로 낳는 순서']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     L.check(await page.evaluate(() => !!document.querySelector('.cycle-chart')) === false, 'chart only inside dialog');
     // pots
     await hotspot(page, '섬돌 위 화분');
@@ -252,28 +267,32 @@ async function ohang({ mobile = false } = {}) {
     // drawer
     await hotspot(page, '찬장 맨 아래 서랍');
     const setDial = async (digits) => { for (let i = 0; i < 4; i++) { const cur = await page.evaluate((i) => Number(document.querySelectorAll('dialog[open] .dial .num')[i].textContent), i); const up = (digits[i] - cur + 10) % 10; for (let k = 0; k < up; k++) await L.click(page, `${i + 1}번째 다이얼 올리기`); } };
-    await setDial([5, 5, 0, 0]); await commit(page);
-    L.check((await status(page)).includes('지금 값'), 'drawer: current price explained');
-    await setDial([4, 5, 0, 0]); await commit(page);
-    L.check(await dlgHas(page, '4 · 5 · 0 · 0'), 'drawer solved');
+    const wrongCode = me.id === 'black' ? [5, 0, 0, 0] : [6, 0, 0, 0];
+    await setDial(wrongCode); await commit(page);
+    L.check((await status(page)).includes('값이다'), 'drawer: other tea explained — ' + (await status(page)));
+    await setDial(me.code); await commit(page);
+    L.check(await dlgHas(page, '내 빛의 차 값'), 'drawer solved');
     await L.closeDialog(page); await L.sleep(400);
     L.check((await L.mainText(page)).includes('장부를 쓰던 방'), 'auto-moved to back room');
     for (const [d, t] of [['가져온 접수표 묶음', '2007. 12'], ['책상 위 메모', '낳는 순서로 다섯 개']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     // lanterns
     await hotspot(page, '장대에 걸린 등 다섯');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .lanternpole .lantern').length === 5), 'lanterns: 5 on photo');
-    for (const l of ['붉은 등', '노란 등', '흰 등', '검은 등', '파란 등']) await L.click(page, l, { exact: true });
+    const wrongStart = order.slice(1).concat(order[0]);
+    for (const id of wrongStart) await L.click(page, LAN[id], { exact: true });
     await commit(page);
-    L.check((await status(page)).includes('여름이 처음이 아니다'), 'lanterns: summer start explained');
+    L.check((await status(page)).includes('부터 켰다'), 'lanterns: wrong start explained — ' + (await status(page)));
     await L.click(page, '다 끄고 다시');
-    for (const l of ['검은 등', '파란 등', '붉은 등', '노란 등', '흰 등']) await L.click(page, l, { exact: true });
+    for (const id of order) await L.click(page, LAN[id], { exact: true });
     await shot(page, 'ohang-lanterns');
     await commit(page);
-    L.check(await dlgHas(page, '겨울에서 시작해서'), 'lanterns solved');
+    L.check(await dlgHas(page, '내 빛에서 시작해서'), 'lanterns solved');
     await L.click(page, '다음 날 아침, 병원으로'); await L.sleep(500);
-    L.check((await L.mainText(page)).includes('돌아오는 계절'), 'ending reached');
+    L.check((await L.mainText(page)).includes('돌아오는 계절') && (await L.mainText(page)).includes('비어 있는 칸에'), 'ending reached with choice');
+    await L.click(page, '다음 손님은 내가 받을게'); await L.sleep(400);
+    L.check((await L.mainText(page)).includes('첫 손님은 이모였다'), 'ending varies by choice');
     await L.click(page, '접수함 속 접수표 읽기');
-    L.check(await dlgHas(page, '가게는 네 거다'), 'final letter unlocked');
+    L.check(await dlgHas(page, '가게는 네 거다') && await dlgHas(page, '챙겨 뒀다'), 'final letter unlocked, personalized');
     await L.closeDialog(page);
     await L.click(page, '자료 다시 보기');
     L.check(!(await L.dialogText(page)).includes('아직 읽지 않은'), 'all docs read');

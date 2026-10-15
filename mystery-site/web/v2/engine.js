@@ -39,7 +39,7 @@ function syncMusic(ep) {
 async function main() {
   if (!id) { location.replace('index.html#cases'); return; }
   let ep;
-  try { ep = (await import(`./episodes/${id}.js?v=${VER}`)).default; } catch (e) { const p = el('p', 'v2-error', '이 주소의 이야기를 찾지 못했습니다. '); const a = el('a', '', '테마 로비로 가기'); a.href = 'index.html#cases'; p.append(a); root.append(p); console.error(e); return; }
+  try { ep = (await import(`./episodes/${id}.js?v=${VER}`)).default; } catch (e) { const p = el('p', 'v2-error', '이 주소의 이야기를 찾지 못했습니다 '); const a = el('a', '', '테마 로비로 가기'); a.href = 'index.html#cases'; p.append(a); root.append(p); console.error(e); return; }
   document.title = `${ep.title} — 미해제`;
   document.documentElement.dataset.case = ep.id;
 
@@ -93,6 +93,7 @@ async function main() {
     if (S.screen === 'intro') root.append(intro());
     else if (S.screen === 'opening') root.append(opening());
     else if (S.screen === 'ending') root.append(ending());
+    else if (S.screen === 'intake') root.append(intakeScreen());
     else root.append(playScreen());
     syncMusic(ep);
   }
@@ -125,7 +126,17 @@ async function main() {
     const paper = el('article', 'v2-paper v2-opening-paper');
     paper.append(el('p', 'v2-eyebrow', ep.opening.eyebrow));
     ep.opening.paragraphs.forEach((p) => paper.append(el('p', 'v2-line', p)));
-    paper.append(btn('v2-primary', ep.opening.cta + ' →', () => { S.screen = 'play'; save(); render(); }));
+    paper.append(btn('v2-primary', ep.opening.cta + ' →', () => { S.screen = ep.intake && !S.profile ? 'intake' : 'play'; save(); render(); }));
+    sec.append(paper);
+    return sec;
+  }
+
+  // ---------- 2.5 접수 (편이 요구할 때만: 생년월일 같은 입력) ----------
+  function intakeScreen() {
+    const sec = el('section', 'v2-opening v2-intake');
+    const paper = el('article', 'v2-paper v2-opening-paper');
+    const done = (profile) => { S.profile = profile; S.screen = 'play'; save(); play('keys'); render(); window.scrollTo({ top: 0 }); };
+    paper.append(ep.intake.render({ S, el, btn, save, done }));
     sec.append(paper);
     return sec;
   }
@@ -202,7 +213,7 @@ async function main() {
     const node = el('article', 'v2-paper v2-doc');
     node.append(el('p', 'v2-eyebrow', d.kind || '자료'));
     node.append(el('h2', 'v2-doc-title', d.title));
-    node.append(bust(html('div', 'v2-doc-body', d.html)));
+    node.append(bust(html('div', 'v2-doc-body', typeof d.html === 'function' ? d.html(S) : d.html)));
     if (from) node.append(btn('v2-secondary', '← ' + from.label, from.fn));
     openDialog(node, { label: d.title, onClose: () => render() });
   }
@@ -242,22 +253,23 @@ async function main() {
     head.append(el('h2', 'v2-doc-title', dev.title));
     head.append(el('p', 'v2-device-intro', dev.intro));
     // 쉬운 편(★3 이하)은 첫 안내를 장치 안에 바로 보여줍니다. 어려운 편은 무전기로만.
-    if (!solved && ep.difficulty <= 3 && dev.hints?.[0]) {
-      const g = el('details', 'v2-guide'); if (ep.difficulty <= 2) g.open = true; const sm = el('summary', '', '어떻게 하는 거지?'); g.append(sm, el('p', '', dev.hints[0])); head.append(g);
+    const hint0 = (typeof dev.hints === 'function' ? dev.hints(S) : dev.hints)?.[0];
+    if (!solved && ep.difficulty <= 3 && hint0) {
+      const g = el('details', 'v2-guide'); if (ep.difficulty <= 2) g.open = true; const sm = el('summary', '', '어떻게 하는 거지?'); g.append(sm, el('p', '', hint0)); head.append(g);
     }
     node.append(head);
     const body = el('div', 'v2-device-body');
     const status = el('p', 'v2-status'); status.setAttribute('role', 'status');
-    const ctx = { d, el, save: () => { save(); status.textContent = ''; status.classList.remove('wrong'); draw(); }, status: (m) => { status.textContent = m; } };
+    const ctx = { d, S, el, save: () => { save(); status.textContent = ''; status.classList.remove('wrong'); draw(); }, status: (m) => { status.textContent = m; } };
     let draw = () => { body.replaceChildren(bust(dev.render(ctx))); };
     draw();
     node.append(body);
     const actions = el('div', 'v2-actions');
     if (solved) {
-      actions.append(el('p', 'v2-solved', '이미 해결했습니다.'));
+      actions.append(el('p', 'v2-solved', '이미 해결했습니다'));
     } else {
       const go = btn('v2-primary', dev.commitLabel || '확인', () => {
-        const r = dev.check(d); save();
+        const r = dev.check(d, S); save();
         if (r.ok) { solve(did); return; }
         status.textContent = r.msg; status.classList.add('wrong'); play('lock'); draw();
       });
@@ -279,10 +291,10 @@ async function main() {
         if (r && !S.read.includes(r)) { S.read.push(r); play('paper'); }
         save();
         [...tabs.children].forEach((t) => { if (t.disabled) return; t.classList.toggle('on', t.dataset.doc === r); t.classList.toggle('read', S.read.includes(t.dataset.doc)); });
-        if (!r) { const any = refs.some((x) => S.read.includes(x)); panel.replaceChildren(el('p', 'v2-bench-empty', any ? '위에서 자료를 고르면 여기 펼쳐집니다.' : '장면에서 자료를 먼저 찾아 읽으면, 여기에 펼쳐 둘 수 있습니다.')); return; }
+        if (!r) { const any = refs.some((x) => S.read.includes(x)); panel.replaceChildren(el('p', 'v2-bench-empty', any ? '위에서 자료를 고르면 여기 펼쳐집니다' : '장면에서 자료를 먼저 찾아 읽으면, 여기에 펼쳐 둘 수 있습니다')); return; }
         const dd = ep.docs[r];
         const paper = el('div', 'v2-paper v2-bench-paper');
-        paper.append(el('p', 'v2-eyebrow', dd.kind || '자료'), el('h3', 'v2-bench-title', dd.title), bust(html('div', 'v2-doc-body', dd.html)));
+        paper.append(el('p', 'v2-eyebrow', dd.kind || '자료'), el('h3', 'v2-bench-title', dd.title), bust(html('div', 'v2-doc-body', typeof dd.html === 'function' ? dd.html(S) : dd.html)));
         panel.replaceChildren(paper); panel.scrollTop = 0;
       };
       // 장면에서 직접 찾아 읽은 자료만 옆에 펼칠 수 있습니다. 아직 못 찾은 것은 자물쇠로 표시합니다.
@@ -318,7 +330,7 @@ async function main() {
   // ---------- 힌트 ----------
   function openHints(pick) {
     const node = el('article', 'v2-paper v2-hints');
-    node.append(el('p', 'v2-eyebrow', '역무실 무전기'));
+    node.append(el('p', 'v2-eyebrow', ep.hintTitle || '역무실 무전기'));
     node.append(el('h2', 'v2-doc-title', '힌트'));
     const ids = Object.keys(ep.devices);
     const open = ids.filter((d) => unlockedScenes().some((s) => s.id === ep.devices[d].scene));
@@ -331,12 +343,12 @@ async function main() {
       const tier = S.hints[cur] || 0;
       const box = el('div', 'v2-hint-box');
       if (S.solved.includes(cur)) {
-        box.append(el('p', 'v2-note', '이미 해결한 장치입니다. 풀이를 다시 볼 수 있습니다.'));
-        dev.hints.forEach((h, i) => box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${h}`)));
+        box.append(el('p', 'v2-note', '이미 해결한 장치입니다 풀이를 다시 볼 수 있습니다'));
+        (typeof dev.hints === 'function' ? dev.hints(S) : dev.hints).forEach((h, i) => box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${h}`)));
       } else {
-        for (let i = 0; i < tier; i++) box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${dev.hints[i]}`));
+        const hs = typeof dev.hints === 'function' ? dev.hints(S) : dev.hints; for (let i = 0; i < tier; i++) box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${hs[i]}`));
         if (tier < 3) box.append(btn('v2-secondary', ['첫 힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { S.hints[cur] = tier + 1; save(); openHints(cur); }));
-        else box.append(el('p', 'v2-note', '힌트를 전부 받았습니다.'));
+        else box.append(el('p', 'v2-note', '힌트를 전부 받았습니다'));
       }
       node.append(box);
     }
@@ -349,14 +361,14 @@ async function main() {
     const node = el('article', 'v2-paper v2-feedback');
     node.append(el('p', 'v2-eyebrow', ep.title));
     node.append(el('h2', 'v2-doc-title', '의견 남기기'));
-    node.append(el('p', 'v2-feedback-lead', '막힌 곳, 이상한 문장, 재미없던 장치, 뭐든 좋습니다. 만든 사람이 직접 읽습니다.'));
+    node.append(el('p', 'v2-feedback-lead', '막힌 곳, 이상한 문장, 재미없던 장치, 뭐든 좋습니다 만든 사람이 직접 읽습니다'));
     const ta = el('textarea', 'v2-textarea'); ta.rows = 6; ta.maxLength = 2000; ta.placeholder = '예: 보관함 숫자를 어디서 세는지 한참 헤맸어요'; ta.setAttribute('aria-label', '의견');
     const contact = el('input', 'v2-input'); contact.type = 'text'; contact.maxLength = 120; contact.placeholder = '답장 받을 이메일이나 연락처 (선택)'; contact.setAttribute('aria-label', '연락처(선택)');
     const status = el('p', 'v2-status'); status.setAttribute('role', 'status');
     const send = btn('v2-primary', '보내기', async () => {
       const text = ta.value.trim();
-      if (!text) { status.textContent = '내용을 적어 주세요.'; return; }
-      if (!cfg.form || !cfg.fields?.text) { status.textContent = '아직 의견함이 연결되기 전입니다. 조금만 기다려 주세요.'; return; }
+      if (!text) { status.textContent = '내용을 적어 주세요'; return; }
+      if (!cfg.form || !cfg.fields?.text) { status.textContent = '아직 의견함이 연결되기 전입니다 조금만 기다려 주세요'; return; }
       send.disabled = true; status.textContent = '보내는 중…';
       const where = `${ep.id} / ${S.screen === 'ending' ? '엔딩' : (sceneById(S.scene)?.name || '')} / 푼 장치 ${S.solved.length}/${Object.keys(ep.devices).length}`;
       const body = new URLSearchParams();
@@ -365,8 +377,8 @@ async function main() {
       if (cfg.fields.contact && contact.value.trim()) body.set(cfg.fields.contact, contact.value.trim());
       try {
         await fetch(cfg.form, { method: 'POST', mode: 'no-cors', body });
-        status.textContent = '보냈습니다. 고맙습니다.'; ta.value = ''; contact.value = '';
-      } catch { status.textContent = '보내지 못했습니다. 잠시 뒤 다시 눌러 주세요.'; send.disabled = false; }
+        status.textContent = '보냈습니다 고맙습니다'; ta.value = ''; contact.value = '';
+      } catch { status.textContent = '보내지 못했습니다 잠시 뒤 다시 눌러 주세요'; send.disabled = false; }
     });
     node.append(ta, contact, status, send);
     openDialog(node, { label: '의견 남기기' });
@@ -383,8 +395,17 @@ async function main() {
     const paper = el('article', 'v2-paper v2-ending-paper');
     paper.append(el('p', 'v2-eyebrow', e.eyebrow));
     paper.append(el('h2', 'v2-ending-title', e.title));
-    e.paragraphs.forEach((p) => paper.append(el('p', 'v2-line', p)));
-    if (e.afterword) paper.append(el('p', 'v2-afterword', e.afterword));
+    (typeof e.paragraphs === 'function' ? e.paragraphs(S) : e.paragraphs).forEach((p) => paper.append(el('p', 'v2-line', p)));
+    if (e.choice && !S.choice) {
+      paper.append(el('p', 'v2-eyebrow', e.choice.prompt));
+      const row = el('div', 'pick-row');
+      e.choice.options.forEach((o) => row.append(btn('chip', o.label, () => { S.choice = o.id; save(); render(); window.scrollTo({ top: 0 }); })));
+      paper.append(row);
+      sec.append(paper);
+      return sec;
+    }
+    const after = typeof e.afterword === 'function' ? e.afterword(S) : e.afterword;
+    if (after) paper.append(el('p', 'v2-afterword', after));
     if (e.unlockDoc && ep.docs[e.unlockDoc]) paper.append(btn('v2-secondary', ep.docs[e.unlockDoc].title + ' 읽기', () => openDoc(e.unlockDoc)));
     const row = el('div', 'v2-row');
     if (e.next) { const a = el('a', 'v2-primary', `다음 이야기 · ${e.next.title} →`); a.href = e.next.href; row.append(a); }
