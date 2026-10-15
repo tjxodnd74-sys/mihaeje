@@ -24,6 +24,10 @@ async function station({ mobile = false } = {}) {
     await L.click(page, '중앙역 대합실로');
     await L.sleep(400);
     L.check((await L.mainText(page)).includes('자료 0 / 11'), 'doc counter starts at 0/11');
+    // 아직 아무것도 안 읽었을 때: 장치 옆 자료는 잠겨 있어야 함
+    await hotspot(page, '열차 안내판');
+    L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].every((t) => t.disabled)), 'bench docs locked before reading');
+    await L.closeDialog(page);
     // read docs in hall
     for (const d of ['민서의 마지막 메시지', '벽에 기댄 옛 표지판', '매표창구의 역무원', '승강장 개편 안내']) { await hotspot(page, d); L.check(await dlgHas(page, d), 'doc opens: ' + d); await L.closeDialog(page); }
     await shot(page, 'hall');
@@ -36,8 +40,9 @@ async function station({ mobile = false } = {}) {
     await L.click(page, '첫 힌트 받기');
     L.check(await dlgHas(page, '화살표가 위를'), 'hint tier 1 shown');
     await L.closeDialog(page);
-    // grille: wrong then right
+    // grille: wrong then right (읽은 자료는 옆에 펼쳐짐)
     await hotspot(page, '열차 안내판');
+    L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].every((t) => !t.disabled)), 'bench docs unlocked after reading');
     await commit(page);
     L.check((await status(page)).includes('하나씩 골라야'), 'grille: empty choice explained');
     await L.click(page, '1번 승강장'); await L.click(page, '둘째 기둥'); await commit(page);
