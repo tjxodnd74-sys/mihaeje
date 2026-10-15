@@ -97,21 +97,23 @@ const {{ chromium }} = require('playwright');const fs=require('fs');
 const fps=30,n=Math.round(fps*{total_dur});
 const b=await chromium.launch();const p=await b.newPage({{viewport:{{width:1080,height:1920}}}});
 await p.addInitScript(s=>{{window.SPEC=s}},spec);
-await p.goto('file://'+{json.dumps(os.path.join(HERE,'template.html'))});await p.evaluate(()=>document.fonts.ready);
-for(let i=0;i<n;i++){{await p.evaluate(t=>window.seek(t),i/fps);await p.screenshot({{path:{json.dumps(frames)}+'/f'+String(i).padStart(4,'0')+'.png',omitBackground:true}});}}
+await p.goto('file://'+{json.dumps(os.path.join(HERE, 'template_vector.html' if spec.get('style')=='vector' else 'template.html'))});await p.evaluate(()=>document.fonts.ready);
+for(let i=0;i<n;i++){{await p.evaluate(t=>window.seek(t),i/fps);await p.screenshot({{path:{json.dumps(frames)}+'/f'+String(i).padStart(4,'0')+'.png',omitBackground:{'false' if spec.get('style')=='vector' else 'true'}}});}}
 await b.close();}})();
 """
 open(os.path.join(W, '_render.js'), 'w').write(render_js)
 run(['node', os.path.join(W, '_render.js')], cwd=HERE)
 
 # --- 3. background: concat clips, cut per segment with punch zooms ---
+VECTOR = spec.get('style')=='vector'
 bgs = sorted(glob.glob(os.path.join(W, 'bg', '*.mp4')))
-if not bgs: print('bg/*.mp4 없음'); sys.exit(1)
+if not bgs and not VECTOR: print('bg/*.mp4 없음'); sys.exit(1)
 # build a concat of clips scaled/cropped to 1080x1920, loop if too short
 lst = os.path.join(W, '_bg.txt')
+if VECTOR: bgs=[]
 with open(lst, 'w') as f:
     L = 0.0; i = 0
-    while L < total_dur + 2:
+    while bgs and L < total_dur + 2:
         b = bgs[i % len(bgs)]
         d = float(run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', b]).stdout.strip())
         f.write(f"file '{b}'\n"); L += min(d, 8); i += 1
@@ -139,9 +141,13 @@ for s in segs:
     if s.get('stat'): add('shutter', s['t'], 0.4)
     if s.get('cta'):
         add('riser', max(0, s['t']-1.2), 0.35); add('success', s['t'], 0.55); add('ding', s['t']+0.4, 0.45)
-inputs = ['-i', os.path.join(W, 'bg', '_concat.mp4'), '-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-i', narr]
-# make concat file
-run(['ffmpeg', '-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', lst, '-vf', 'scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30', '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-t', str(total_dur+1), os.path.join(W, 'bg', '_concat.mp4')])
+if VECTOR:
+    inputs = ['-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-i', narr]
+    bgfilter = f"[0:v]format=yuv420p,fade=t=out:st={total_dur-0.6}:d=0.6[v]"
+else:
+  inputs = ['-i', os.path.join(W, 'bg', '_concat.mp4'), '-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-i', narr]
+  os.makedirs(os.path.join(W,'bg'),exist_ok=True)
+  run(['ffmpeg', '-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', lst, '-vf', 'scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30', '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-t', str(total_dur+1), os.path.join(W, 'bg', '_concat.mp4')])
 af = []
 labels = ['[n]']
 af.append('[2:a]volume=1.0[n]')
