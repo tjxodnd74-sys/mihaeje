@@ -1,4 +1,4 @@
-// 고양이의 초대장 — ★1. 이야기·자료·장치가 전부 이 파일에 있습니다.
+// 고양이의 초대장 — ★1. 이야기·자료·장치가 전부 이 파일에 있습니다
 const P = 'assets/v2/cat-invite/';
 const js = (w, a, b) => { const c = w.charCodeAt(w.length - 1); if (c < 0xac00 || c > 0xd7a3) return w + a; return w + ((c - 0xac00) % 28 ? a : b); }; // 받침 있음→a, 없음→b
 
@@ -34,9 +34,9 @@ const SEATS = [
   { id: 'shop', label: '꽃집 쪽' },
   { id: 'lane', label: '골목 입구 쪽' },
 ];
-// 평상을 둘러싼 자리: 감나무(북) → 우체통(동) → 꽃집(남) → 골목 입구(서), 시계 방향.
-// 은호: 감나무 맞은편(꽃집 쪽) / 소연: 은호의 왼손 쪽(감나무를 보고 앉으면 왼손은 동쪽=우체통 쪽) / 미정: 꽃집 문이 보이는 자리(감나무 쪽) / 지후: 남는 자리(골목 입구)
-const SEAT_ANSWER = { tree: 'mijeong', post: 'soyeon', shop: 'eunho', lane: 'jihu' };
+// 평상을 둘러싼 자리: 감나무(북) → 우체통(동) → 꽃집(남) → 골목 입구(서), 시계 방향
+// 은호: 감나무 맞은편(꽃집 쪽) / 소연: 은호의 왼손 쪽(꽃집 쪽에서 감나무를 보고 앉으면 왼손은 그림의 왼쪽=골목 입구 쪽) / 미정: 꽃집 문이 보이는 자리(감나무 쪽) / 지후: 남는 자리(골목 입구)
+const SEAT_ANSWER = { tree: 'mijeong', lane: 'soyeon', shop: 'eunho', post: 'jihu' };
 
 function seatChart(d = {}) {
   const ink = '#3a3a3a';
@@ -71,15 +71,16 @@ export default {
   coverAlt: '포장 가게 창턱에서 자는 고양이와 바닥의 봉투',
   music: 'assets/music/cat-invite-v33.mp3',
   tagline: '받는 사람: 봄이.\n보낸 사람은 적혀 있지 않았다',
-  blurb: '작년 여름, 골목 고양이 봄이를 집에 들인 다은.\n어느 아침 가게 문 밑으로 봄이 앞으로 온 봉투가 들어왔습니다.',
+  blurb: '작년 여름, 골목 고양이 봄이를 집에 들인 다은.\n어느 아침 가게 문 밑으로 봄이 앞으로 온 봉투가 들어왔습니다',
   storageKey: 'mihaeje-v2-cat-invite',
+  hintTitle: '이웃들의 귀띔',
 
   opening: {
     eyebrow: '6월 10일, 아침',
     paragraphs: [
-      '가게 문을 열다가 발밑에서 봉투를 밟을 뻔했다. 받는 사람 칸에는 「봄이」라고만 적혀 있고 보낸 사람은 없었는데, 대신 빨간 잉크로 찍은 발바닥 도장이 하나 있었다',
-      '봄이는 창턱에서 자고 있었다. 작년 여름까지 이 골목 전체가 돌보던 고양이였고, 그 여름 끝에 내가 집으로 데려왔다. 동물병원 은호 씨, 빵집 소연 씨, 우체부 지후 씨, 꽃집 미정 씨. 봄이 덕분에 이름을 알게 된 사람들이다',
-      '봉투 안에는 종이 한 장. 「6월 12일 저녁 일곱 시. 봄이를 데리고 오세요. 어디로 오는지는 봄이가 알아요」',
+      '가게 문을 열다가 발밑에서 봉투를 밟을 뻔했다 받는 사람 칸에는 「봄이」라고만 적혀 있고 보낸 사람은 없었는데, 대신 빨간 잉크로 찍은 발바닥 도장이 하나 있었다',
+      '봄이는 창턱에서 자고 있었다 작년 여름까지 이 골목 전체가 돌보던 고양이였고, 그 여름 끝에 내가 집으로 데려왔다 동물병원 은호 씨, 빵집 소연 씨, 우체부 지후 씨, 꽃집 미정 씨 봄이 덕분에 이름을 알게 된 사람들이다',
+      '봉투 안에는 종이 한 장 「6월 12일 저녁 일곱 시 봄이를 데리고 오세요 어디로 오는지는 봄이가 알아요」',
       '봄이가 알긴 뭘 알아, 하고 목덜미를 쓰다듬는데 목걸이에 못 보던 참이 달려 있었다',
     ],
     cta: '봄이의 목걸이 보기',
@@ -96,7 +97,7 @@ export default {
       id: 'shop',
       name: '다은의 포장 가게',
       image: P + 'shop.webp',
-      arrive: '아침 해가 창턱까지 들어와 있었고 봄이는 그 안에서 자고 있었다. 문 밑 봉투와 목걸이에 달린 참, 둘 다 어젯밤까지는 없던 것이다',
+      arrive: '아침 해가 창턱까지 들어와 있었고 봄이는 그 안에서 자고 있었다 문 밑 봉투와 목걸이에 달린 참, 둘 다 어젯밤까지는 없던 것이다',
       hotspots: [
         { id: 'envelope', x: 80, y: 84, label: '문 밑으로 들어온 봉투', kind: 'doc', doc: 'invite' },
         { id: 'charm', x: 53, y: 27, label: '봄이 목걸이의 참', kind: 'doc', doc: 'charm' },
@@ -107,7 +108,7 @@ export default {
       id: 'alley',
       name: '골목 · 동물병원과 빵집',
       image: P + 'alley.webp',
-      arrive: '봄이를 안고 골목으로 나왔다. 동물병원 유리문에는 「오늘 휴진」 쪽지가, 빵집 문에는 「준비 중」 팻말이 걸려 있었다. 두 사람 다 자리를 비웠는데, 창턱의 상자와 바구니는 누가 봐도 나 보라고 둔 것이었다',
+      arrive: '봄이를 안고 골목으로 나왔다 동물병원 유리문에는 「오늘 휴진」 쪽지가, 빵집 문에는 「준비 중」 팻말이 걸려 있었다 두 사람 다 자리를 비웠는데, 창턱의 상자와 바구니는 누가 봐도 나 보라고 둔 것이었다',
       hotspots: [
         { id: 'vetnote', x: 18, y: 36, label: '병원 유리문의 쪽지', kind: 'doc', doc: 'vetnote' },
         { id: 'box', x: 9, y: 58, label: '창턱의 상자', kind: 'device', device: 'seasons' },
@@ -120,7 +121,7 @@ export default {
       name: '골목 끝 · 꽃집과 평상',
       image: P + 'end.webp',
       unlockedBy: 'gifts',
-      arrive: '골목 끝 평상 위에 전구를 걸어 두고 있었다. 꽃집 미정 씨는 보이지 않았고, 우체통에 지후 씨 글씨로 「다은 씨」라고 적힌 봉투가 꽂혀 있었다. 봄이가 품에서 내려가 평상 위로 올라갔다',
+      arrive: '골목 끝 평상 위에 전구를 걸어 두고 있었다 꽃집 미정 씨는 보이지 않았고, 우체통에 지후 씨 글씨로 「다은 씨」라고 적힌 봉투가 꽂혀 있었다 봄이가 품에서 내려가 평상 위로 올라갔다',
       hotspots: [
         { id: 'mail', x: 90, y: 52, label: '우체통의 봉투', kind: 'doc', doc: 'mail' },
         { id: 'chart', x: 62, y: 70, label: '평상 자리표', kind: 'device', device: 'seats' },
@@ -132,12 +133,12 @@ export default {
     invite: {
       title: '문 밑으로 들어온 봉투',
       kind: '받는 사람: 봄이',
-      html: `<figure class="prop envelope"><img src="${P}props/envelope.webp" alt="발바닥 도장이 찍힌 봉투" decoding="async"><span class="env-to">봄이 앞</span></figure><blockquote class="hand">6월 12일 저녁 일곱 시<br>봄이를 데리고 오세요<br>어디로 오는지는 봄이가 알아요</blockquote><p class="aside">글씨는 네 사람 것이 섞여 있다. 한 줄씩 돌아가며 쓴 것 같다</p>`,
+      html: `<figure class="prop envelope"><img src="${P}props/envelope.webp" alt="발바닥 도장이 찍힌 봉투" decoding="async"><span class="env-to">봄이 앞</span></figure><blockquote class="hand">6월 12일 저녁 일곱 시<br>봄이를 데리고 오세요<br>어디로 오는지는 봄이가 알아요</blockquote><p class="aside">글씨는 네 사람 것이 섞여 있다 한 줄씩 돌아가며 쓴 것 같다</p>`,
     },
     charm: {
       title: '봄이 목걸이의 참',
       kind: '어젯밤까지 없던 것',
-      html: `<figure class="prop collar"><img src="${P}props/collar.webp" alt="청진기, 빵, 꽃 모양 나무 참이 달린 목걸이" decoding="async"></figure><p>작은 나무 조각 세 개가 끈에 꿰어 있다. 청진기, 빵, 꽃. 골목 순서대로다. 동물병원, 빵집, 그리고 골목 끝 꽃집</p><p class="aside">봄이가 작년까지 매일 돌던 길이기도 하다</p>`,
+      html: `<figure class="prop collar"><img src="${P}props/collar.webp" alt="청진기, 빵, 꽃 모양 나무 참이 달린 목걸이" decoding="async"></figure><p>작은 나무 조각 세 개가 끈에 꿰어 있다 청진기, 빵, 꽃 골목 순서대로다 동물병원, 빵집, 그리고 골목 끝 꽃집</p><p class="aside">봄이가 작년까지 매일 돌던 길이기도 하다</p>`,
     },
     vetnote: {
       title: '병원 유리문의 쪽지',
@@ -147,17 +148,17 @@ export default {
     colors: {
       title: '골목에서 본 것',
       kind: '내 눈에 들어온 것들',
-      html: `<p>빵집 차양은 노란색이고 소연 씨는 늘 그 색 앞치마를 입는다. 지후 씨의 우편 가방은 초록색이라 골목 끝에서도 알아본다. 은호 씨 병원 창턱에는 봄이 전용 파란 수건이 아직 개켜 있다</p><p>꽃집 미정 씨는 리본을 싫어한다. 꽃은 꽃으로 주면 된다고 했다</p>`,
+      html: `<p>빵집 차양은 노란색이고 소연 씨는 늘 그 색 앞치마를 입는다 지후 씨의 우편 가방은 초록색이라 골목 끝에서도 알아본다 은호 씨 병원 창턱에는 봄이 전용 파란 수건이 아직 개켜 있다</p><p>꽃집 미정 씨는 리본을 싫어한다 꽃은 꽃으로 주면 된다고 했다</p>`,
     },
     basketnote: {
       title: '바구니의 쪽지',
       kind: '소연의 글씨',
-      html: `<blockquote class="hand">다은 씨!<br>선물은 넷인데 누구 건지 안 적었어요<br>맞혀 보세요. 다 알 거예요<br>맞히면 바구니 바닥에 다음 갈 곳이 있어요</blockquote>`,
+      html: `<blockquote class="hand">다은 씨!<br>선물은 넷인데 누구 건지 안 적었어요<br>맞혀 보세요 다 알 거예요<br>맞히면 바구니 바닥에 다음 갈 곳이 있어요</blockquote>`,
     },
     mail: {
       title: '우체통의 봉투',
       kind: '지후의 글씨',
-      html: `<blockquote class="hand">다은 씨께<br>오늘 저녁 자리표예요. 네 사람 부탁을 적어 뒀어요<br>자리 정해지면 평상 밑 상자를 열어 보세요</blockquote><div class="notes-list"><p><b>은호</b> 봄이는 분명 감나무에 올라가 있을 거예요. 나무가 정면으로 보이는 자리로 주세요</p><p><b>소연</b> 은호 씨 왼손 쪽에 앉을게요. 접시 건네기 편하게</p><p><b>미정</b> 가게 문이 바로 보이는 자리요. 손님 오면 일어나야 해서</p><p><b>지후</b> 저는 아무 데나요. 남는 자리 주세요</p></div><p class="aside">평상 자리는 감나무 쪽, 우체통 쪽, 꽃집 쪽, 골목 입구 쪽 넷이고, 그림에는 평상 둘레에 뭐가 있는지 그려 두었다</p>`,
+      html: `<blockquote class="hand">다은 씨께<br>오늘 저녁 자리표예요 네 사람 부탁을 적어 뒀어요<br>자리 정해지면 평상 밑 상자를 열어 보세요</blockquote><div class="notes-list"><p><b>은호</b> 봄이는 분명 감나무에 올라가 있을 거예요 나무가 정면으로 보이는 자리로 주세요</p><p><b>소연</b> 은호 씨 왼손 쪽에 앉을게요 접시 건네기 편하게</p><p><b>미정</b> 가게 문이 바로 보이는 자리요 손님 오면 일어나야 해서</p><p><b>지후</b> 저는 아무 데나요 남는 자리 주세요</p></div><p class="aside">평상 자리는 감나무 쪽, 우체통 쪽, 꽃집 쪽, 골목 입구 쪽 넷이고, 그림에는 평상 둘레에 뭐가 있는지 그려 두었다</p>`,
     },
     final: {
       title: '평상 밑 상자의 초대장',
@@ -171,11 +172,11 @@ export default {
     seasons: {
       title: '창턱의 상자',
       scene: 'alley',
-      intro: '뚜껑 안쪽에 사진 주머니가 다섯. 찍은 순서대로 넣으면 걸쇠가 열린다고 했다',
+      intro: '뚜껑 안쪽에 사진 주머니가 다섯 찍은 순서대로 넣으면 걸쇠가 열린다고 했다',
       docs: ['vetnote'],
       hintCode: 'C-S01',
       hints: [
-        '사진마다 계절이 보이는데 벚꽃이 두 장입니다. 하나는 아기 고양이, 하나는 다 큰 봄이. 작은 쪽이 먼저입니다',
+        '사진마다 계절이 보이는데 벚꽃이 두 장입니다 하나는 아기 고양이, 하나는 다 큰 봄이 작은 쪽이 먼저입니다',
         '아기 봄이(봄) → 여름 → 가을 → 겨울 → 다 큰 봄이(그다음 봄)',
         '벚꽃 아래·아기 → 수박 옆 → 낙엽 위 → 눈 오는 날 → 벚꽃 아래·다 큰 뒤',
       ],
@@ -195,7 +196,7 @@ export default {
         });
         wrap.append(lid);
         const tray = el('div', 'photo-tray');
-        PHOTOS.filter((p) => !d.slots.includes(p.id)).forEach((p) => {
+        ['autumn', 'spring', 'winter', 'kitten', 'summer'].map((id) => PHOTOS.find((p) => p.id === id)).filter((p) => !d.slots.includes(p.id)).forEach((p) => {
           const b = el('button', 'photo-pick'); b.type = 'button'; b.setAttribute('aria-label', p.label + ' 사진 넣기');
           const pi = el('img'); pi.src = p.img; pi.alt = p.label; b.append(pi, el('span', '', p.label));
           b.onclick = () => { const i = d.slots.indexOf(null); if (i < 0) return; d.slots[i] = p.id; save(); };
@@ -211,17 +212,17 @@ export default {
         const names = Object.fromEntries(PHOTOS.map((p) => [p.id, p]));
         for (let i = 0; i < 5; i++) if (d.slots[i] !== ORDER[i]) {
           const got = names[d.slots[i]], want = names[ORDER[i]];
-          if ((got.id === 'spring' && want.id === 'kitten') || (got.id === 'kitten' && want.id === 'spring')) return { ok: false, msg: `${i + 1}번째 벚꽃 사진, 봄이 크기를 다시 보자. 작을 때가 먼저다` };
+          if ((got.id === 'spring' && want.id === 'kitten') || (got.id === 'kitten' && want.id === 'spring')) return { ok: false, msg: `${i + 1}번째 벚꽃 사진, 봄이 크기를 다시 보자 작을 때가 먼저다` };
           return { ok: false, msg: `${i + 1}번째가 ${got.label}(${got.season})인데, 그 자리엔 ${js(want.season, '이', '가')} 와야 한다` };
         }
         return { ok: false, msg: '순서가 맞지 않는다' };
       },
       reveal: {
         title: '두 번의 봄',
-        text: '걸쇠가 톡 하고 열렸다. 안에는 파란 리본을 두른 작은 상자와 쪽지 한 장이 들어 있었다',
+        text: '걸쇠가 톡 하고 열렸다 안에는 파란 리본을 두른 작은 상자와 쪽지 한 장이 들어 있었다',
         scene: [
-          '「봄이가 골목에 온 게 재작년 봄이었어요. 손바닥만 했는데. 다은 씨가 데려가기 전까지 다섯 계절을 우리가 봤어요 — 은호」',
-          '봄이는 내 품에서 상자 냄새를 맡더니 관심을 잃었다. 파란 리본 상자는 일단 가방에 넣고 빵집 쪽으로 갔다',
+          '「봄이가 골목에 온 게 재작년 봄이었어요 손바닥만 했는데 다은 씨가 데려가기 전까지 다섯 계절을 우리가 봤어요 — 은호」',
+          '봄이는 내 품에서 상자 냄새를 맡더니 관심을 잃었다 파란 리본 상자는 일단 가방에 넣고 빵집 쪽으로 갔다',
         ],
         unlock: null,
       },
@@ -230,12 +231,12 @@ export default {
     gifts: {
       title: '빵집 앞 바구니',
       scene: 'alley',
-      intro: '바구니에 선물 넷과 빈 이름표 넷. 선물에는 보낸 사람 이름이 없다. 이름표를 맞게 달면 바구니 바닥에 다음 갈 곳이 있다',
+      intro: '바구니에 선물 넷과 빈 이름표 넷 선물에는 보낸 사람 이름이 없다 이름표를 맞게 달면 바구니 바닥에 다음 갈 곳이 있다',
       docs: ['basketnote', 'colors'],
       hintCode: 'C-S02',
       hints: [
-        '리본 색이 그 사람의 일과 닿아 있습니다. 「골목에서 본 것」에 색이 다 나옵니다',
-        '파란 수건은 병원, 노란 차양은 빵집, 초록 가방은 우체부. 리본을 싫어하는 사람은 꽃집',
+        '리본 색이 그 사람의 일과 닿아 있습니다 「골목에서 본 것」에 색이 다 나옵니다',
+        '파란 수건은 병원, 노란 차양은 빵집, 초록 가방은 우체부 리본을 싫어하는 사람은 꽃집',
         '파란 리본 → 은호, 노란 리본 → 소연, 초록 리본 → 지후, 꽃다발 → 미정',
       ],
       initial: () => ({ who: {}, pick: null }),
@@ -270,14 +271,14 @@ export default {
         if (!wrong.length) return { ok: true };
         const g = wrong[0]; const who = PEOPLE.find((p) => p.id === d.who[g.id]);
         if (g.id === 'flower') return { ok: false, msg: `${who.name} 씨가 꽃다발을? 리본을 싫어하는 사람이 누구였더라` };
-        return { ok: false, msg: `${js(g.label, '이', '가')} ${who.name} 씨 것 같지 않다. ${who.job}에서 그 색을 본 적이 있나` };
+        return { ok: false, msg: `${js(g.label, '이', '가')} ${who.name} 씨 것 같지 않다 ${who.job}에서 그 색을 본 적이 있나` };
       },
       reveal: {
         title: '네 사람, 네 색',
-        text: '바구니 바닥에 쪽지가 한 장 더 있었다. 「골목 끝 평상으로. 전구 켜 놨어요 — 소연」',
+        text: '바구니 바닥에 쪽지가 한 장 더 있었다 「골목 끝 평상으로 전구 켜 놨어요 — 소연」',
         scene: [
-          '노란 리본 상자에서 버터 냄새가 났다. 소연 씨는 작년에 봄이한테 빵 부스러기를 주다가 은호 씨한테 혼난 적이 있다. 그 뒤로는 봄이 전용 간식을 따로 구웠다',
-          '전구라니. 저녁 일곱 시가 무슨 날인지 아직도 모르겠는데, 골목 끝으로 걸었다',
+          '노란 리본 상자에서 버터 냄새가 났다 소연 씨는 작년에 봄이한테 빵 부스러기를 주다가 은호 씨한테 혼난 적이 있다 그 뒤로는 봄이 전용 간식을 따로 구웠다',
+          '전구라니 저녁 일곱 시가 무슨 날인지 아직도 모르겠는데, 골목 끝으로 걸었다',
         ],
         unlock: 'end',
       },
@@ -286,13 +287,13 @@ export default {
     seats: {
       title: '평상 자리표',
       scene: 'end',
-      intro: '지후 씨 봉투에 든 자리표. 네 사람의 부탁대로 자리를 정하면 평상 밑 상자가 열린다',
+      intro: '지후 씨 봉투에 든 자리표 네 사람의 부탁대로 자리를 정하면 평상 밑 상자가 열린다',
       docs: ['mail'],
       hintCode: 'C-S03',
       hints: [
-        '은호 씨부터. "감나무가 정면으로 보이는 자리"는 감나무 쪽이 아니라 감나무 맞은편입니다. 그림에서 맞은편을 찾으세요',
-        '꽃집 쪽에 앉아 감나무를 보면 왼손은 우체통 쪽입니다. 소연 씨는 거기. 미정 씨는 꽃집 문이 보이는 자리, 즉 꽃집 맞은편',
-        '꽃집 쪽 은호, 우체통 쪽 소연, 감나무 쪽 미정, 골목 입구 쪽 지후',
+        '은호 씨부터 "감나무가 정면으로 보이는 자리"는 감나무 쪽이 아니라 감나무 맞은편입니다 그림에서 맞은편을 찾으세요',
+        '꽃집 쪽에 앉아 감나무를 보면 왼손은 골목 입구 쪽입니다 소연 씨는 거기 미정 씨는 꽃집 문이 보이는 자리, 즉 꽃집 맞은편',
+        '꽃집 쪽 은호, 골목 입구 쪽 소연, 감나무 쪽 미정, 우체통 쪽 지후',
       ],
       initial: () => ({ seat: {}, pick: null }),
       render(ctx) {
@@ -315,16 +316,16 @@ export default {
         const empty = SEATS.filter((s) => !d.seat[s.id]);
         if (empty.length) return { ok: false, msg: `${empty[0].label} 자리가 비어 있다` };
         if (SEATS.every((s) => d.seat[s.id] === SEAT_ANSWER[s.id])) return { ok: true };
-        if (d.seat.tree === 'eunho') return { ok: false, msg: '은호 씨가 감나무 쪽에 앉으면 감나무는 등 뒤다. "정면으로 보이는 자리"가 아니다' };
-        if (d.seat.shop !== 'eunho') return { ok: false, msg: '감나무가 정면으로 보이는 자리는 감나무 맞은편이다. 은호 씨부터 다시' };
-        if (d.seat.post !== 'soyeon') return { ok: false, msg: '꽃집 쪽에 앉아 감나무를 바라보면 왼손은 어느 쪽인지, 그림을 보며 생각해 보자' };
-        if (d.seat.tree !== 'mijeong') return { ok: false, msg: '미정 씨는 꽃집 문이 보이는 자리다. 꽃집 쪽이 아니라 꽃집이 보이는 쪽' };
-        return { ok: false, msg: '지후 씨는 남는 자리다. 셋이 정해지면 하나 남는다' };
+        if (d.seat.tree === 'eunho') return { ok: false, msg: '은호 씨가 감나무 쪽에 앉으면 감나무는 등 뒤다 "정면으로 보이는 자리"가 아니다' };
+        if (d.seat.shop !== 'eunho') return { ok: false, msg: '감나무가 정면으로 보이는 자리는 감나무 맞은편이다 은호 씨부터 다시' };
+        if (d.seat.lane !== 'soyeon') return { ok: false, msg: d.seat.post === 'soyeon' ? '소연 씨가 우체통 쪽이면 은호 씨 오른손이다 꽃집 쪽에 앉아 감나무를 바라보는 사람의 왼손은 그림에서 어느 쪽인가' : '꽃집 쪽에 앉아 감나무를 바라보면 왼손은 어느 쪽인지, 그림을 보며 생각해 보자' };
+        if (d.seat.tree !== 'mijeong') return { ok: false, msg: '미정 씨는 꽃집 문이 보이는 자리다 꽃집 쪽이 아니라 꽃집이 보이는 쪽' };
+        return { ok: false, msg: '지후 씨는 남는 자리다 셋이 정해지면 하나 남는다' };
       },
       reveal: {
         title: '네 자리, 그리고 빈자리 하나',
-        text: '평상 밑 상자가 열렸다. 발바닥 도장이 찍힌 봉투가 한 장 더 있었는데, 이번엔 받는 사람이 「다은」이었다',
-        scene: ['자리표 네 칸을 채우고 나서야 평상 한가운데가 비어 있는 게 보였다. 봄이가 그 자리에 올라앉아 꼬리로 바닥을 쳤다'],
+        text: '평상 밑 상자가 열렸다 발바닥 도장이 찍힌 봉투가 한 장 더 있었는데, 이번엔 받는 사람이 「다은」이었다',
+        scene: ['자리표 네 칸을 채우고 나서야 평상 한가운데가 비어 있는 게 보였다 봄이가 그 자리에 올라앉아 꼬리로 바닥을 쳤다'],
         unlock: null,
         ending: true,
         endingLabel: '이틀 뒤, 저녁 일곱 시로',
@@ -338,13 +339,13 @@ export default {
     eyebrow: '6월 12일, 저녁 일곱 시',
     title: '고양이가 데려온 사람들',
     paragraphs: [
-      '전구가 켜진 평상에 네 사람이 앉아 있었다. 케이크 위에는 초 대신 작은 발바닥 모양 쿠키가 하나 꽂혀 있었고, 은호 씨가 먼저 손을 흔들었다',
-      '“봄이 생일은 아무도 모르잖아요. 그래서 가족 된 날로 했어요” 소연 씨가 말했다. “작년 오늘, 다은 씨가 봄이 데려간 날”',
-      '“근데 왜 저한테는 봄이 앞으로 보내요” “다은 씨 앞으로 보내면 바쁘다고 안 올 것 같아서” 지후 씨가 웃었다. “봄이 앞으로 보내면 봄이 핑계로라도 오잖아요”',
-      '미정 씨가 꽃다발을 내밀었다. 리본은 없었다. “작년에 봄이 데려간다고 했을 때, 우리 넷이 사실 좀 섭섭했어요. 근데 그 뒤로 다은 씨 가게 앞을 지나는 게 좋더라고요”',
-      '빈자리에 앉았다. 봄이는 이미 평상 한가운데서 쿠키를 노리고 있었다',
+      '전구가 켜진 평상에 네 사람이 앉아 있었다 케이크 위에는 초 대신 작은 발바닥 모양 쿠키가 하나 꽂혀 있었고, 은호 씨가 먼저 손을 흔들었다',
+      '“봄이 생일은 아무도 모르잖아요 그래서 가족 된 날로 했어요” 소연 씨가 말했다 “작년 오늘, 다은 씨가 봄이 데려간 날”',
+      '“근데 왜 저한테는 봄이 앞으로 보내요” “다은 씨 앞으로 보내면 바쁘다고 안 올 것 같아서” 지후 씨가 웃었다 “봄이 앞으로 보내면 봄이 핑계로라도 오잖아요”',
+      '미정 씨가 꽃다발을 내밀었다 리본은 없었다 “작년에 봄이 데려간다고 했을 때, 우리 넷이 사실 좀 섭섭했어요 근데 그 뒤로 다은 씨 가게 앞을 지나는 게 좋더라고요”',
+      '빈자리에 앉았다 봄이는 이미 평상 한가운데서 쿠키를 노리고 있었다',
     ],
-    afterword: '봄이는 여전히 창턱에서 잔다. 아침마다 나는 병원, 빵집, 꽃집 순서로 골목을 한 바퀴 돌고 가게 문을 연다. 작년까지 봄이가 돌던 길이다',
+    afterword: '봄이는 여전히 창턱에서 잔다 아침마다 나는 병원, 빵집, 꽃집 순서로 골목을 한 바퀴 돌고 가게 문을 연다 작년까지 봄이가 돌던 길이다',
     unlockDoc: 'final',
     next: { href: 'play.html?case=ohang', title: '돌아오는 계절', line: '다음은 오행당의 다섯 그릇 이야기입니다' },
   },
