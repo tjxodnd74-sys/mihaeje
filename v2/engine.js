@@ -6,6 +6,7 @@ const root = document.getElementById('app');
 const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; };
 const btn = (cls, text, fn, aria) => { const b = el('button', cls, text); b.type = 'button'; if (aria) b.setAttribute('aria-label', aria); b.onclick = fn; return b; };
 const pic = (img, src) => { img.src = src; const base = src.replace(/\.webp$/, ''); if (/assets\/v2\//.test(src)) { img.srcset = `${base}-960.webp 960w, ${src} 1024w`; img.sizes = '(max-width: 640px) 100vw, 1180px'; } return img; };
+const josa = (w, a, b) => { const c = w.charCodeAt(w.length - 1); if (c < 0xac00 || c > 0xd7a3) return w + b; const t = (c - 0xac00) % 28; return w + (t === 0 || t === 8 ? b : a); }; // 받침 없음·ㄹ받침 → '로'
 const html = (tag, cls, markup) => { const n = el(tag, cls); n.innerHTML = markup; return n; };
 
 const sounds = {
@@ -102,7 +103,7 @@ async function main() {
     card.append(el('p', 'v2-subtitle', ep.subtitle));
     card.append(html('p', 'v2-tagline', ep.tagline.replace(/\n/g, '<br>')));
     card.append(html('p', 'v2-blurb', ep.blurb.replace(/\n/g, '<br>')));
-    const meta = el('p', 'v2-meta', `약 ${ep.minutes}분 · 난이도 ${'★'.repeat(ep.difficulty)}${'☆'.repeat(5 - ep.difficulty)} · 자료 ${docIds.length}장 · 1인`);
+    const meta = el('p', 'v2-meta', `약 ${ep.minutes}분 · 난이도 ${'★'.repeat(ep.difficulty)}${'☆'.repeat(5 - ep.difficulty)} · 자료 ${docIds.filter((x) => !ep.docs[x].locked).length}장 · 1인`);
     card.append(meta);
     const row = el('div', 'v2-row');
     const started = S.visited.length > 0 || S.solved.length > 0;
@@ -146,6 +147,7 @@ async function main() {
     const stage = el('div', 'v2-stage');
     const img = pic(el('img', 'v2-stage-img'), scene.image); img.alt = scene.name; img.decoding = 'async';
     stage.append(img);
+    (scene.overlays || []).forEach((o) => { const n = html('div', 'v2-stage-ov ' + (o.cls || ''), o.html); n.style.cssText = `left:${o.x}%;top:${o.y}%;width:${o.w}%;height:${o.h}%;${o.style || ''}`; n.setAttribute('aria-hidden', 'true'); stage.append(n); });
     const seenSet = new Set(S.seen);
     scene.hotspots.forEach((h) => {
       if (h.visible && !h.visible(S)) return;
@@ -240,18 +242,21 @@ async function main() {
     const body = el('div', 'v2-device-body');
     const status = el('p', 'v2-status'); status.setAttribute('role', 'status');
     const ctx = { d, el, save: () => { save(); status.textContent = ''; status.classList.remove('wrong'); draw(); }, status: (m) => { status.textContent = m; } };
-    function draw() { body.replaceChildren(dev.render(ctx)); }
+    let draw = () => { body.replaceChildren(dev.render(ctx)); };
     draw();
     node.append(body);
     const actions = el('div', 'v2-actions');
     if (solved) {
       actions.append(el('p', 'v2-solved', '이미 해결했습니다.'));
     } else {
-      actions.append(btn('v2-primary', dev.commitLabel || '확인', () => {
+      const go = btn('v2-primary', dev.commitLabel || '확인', () => {
         const r = dev.check(d); save();
         if (r.ok) { solve(did); return; }
         status.textContent = r.msg; status.classList.add('wrong'); play('lock'); draw();
-      }));
+      });
+      actions.append(go);
+      const gate = () => { if (dev.canCommit) go.hidden = !dev.canCommit(d); };
+      gate(); const _draw = draw; draw = () => { _draw(); gate(); };
     }
     node.append(status, actions);
     bench.append(node);
@@ -298,7 +303,7 @@ async function main() {
     (dev.reveal.scene || []).forEach((line) => node.append(el('p', 'v2-line', line)));
     const target = dev.reveal.unlock && sceneById(dev.reveal.unlock);
     if (dev.reveal.ending) node.append(btn('v2-primary', '대문 안으로 →', () => { S.screen = 'ending'; S.ended = true; S.solved = true; save(); closeDialog(); }));
-    else if (target) node.append(btn('v2-primary', target.name + '으로 →', () => { S.scene = target.id; save(); closeDialog(); }));
+    else if (target) node.append(btn('v2-primary', josa(target.name, '으로', '로') + ' →', () => { S.scene = target.id; save(); closeDialog(); }));
     else node.append(btn('v2-primary', '계속', () => closeDialog()));
     openDialog(node, { label: dev.reveal.title, onClose: () => render() });
   }
