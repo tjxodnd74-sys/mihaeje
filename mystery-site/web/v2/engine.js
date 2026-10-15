@@ -12,15 +12,23 @@ const sounds = {
   paper: 'assets/sounds/paper-turn-v23.wav', lock: 'assets/sounds/lock-v24.wav', keys: 'assets/sounds/keys-v24.wav',
   door: 'assets/sounds/door-open-v23.wav', drawer: 'assets/sounds/drawer-open-v23.wav', on: 'assets/sounds/switch-on-v24.wav',
 };
-let audioOn = false;
-try { audioOn = localStorage.getItem('mihaeje-v2-sound') === '1'; } catch {}
+let audioOn = true; // 기본 켜짐. 끄면 기억합니다.
+try { audioOn = localStorage.getItem('mihaeje-v2-sound') !== '0'; } catch {}
+// 브라우저는 사용자가 한 번 누르기 전에는 소리를 못 내므로, 첫 터치/클릭 때 배경음을 시작합니다.
+let armed = false;
+function armMusic(ep) {
+  if (armed) return; armed = true;
+  const go = () => { syncMusic(ep); };
+  document.addEventListener('pointerdown', go, { capture: true });
+  document.addEventListener('keydown', go, { capture: true });
+}
 function play(name) { if (!audioOn || !sounds[name]) return; try { const a = new Audio(sounds[name]); a.volume = 0.5; a.play().catch(() => {}); } catch {} }
 let music = null;
 function syncMusic(ep) {
   if (!ep.music) return;
   if (!audioOn) { if (music) { music.pause(); } return; }
-  if (!music) { music = new Audio(ep.music); music.loop = true; music.volume = 0.25; }
-  music.play().catch(() => {});
+  if (!music) { music = new Audio(ep.music); music.loop = true; music.volume = 0.22; music.preload = 'auto'; }
+  if (music.paused) music.play().catch(() => {});
 }
 
 async function main() {
@@ -68,7 +76,7 @@ async function main() {
     const logo = html('a', 'v2-logo', '<img src="assets/mihaeje-logo-v2.webp" alt="미해제" width="1983" height="793" decoding="async">'); logo.href = 'index.html';
     const right = el('div', 'v2-header-right');
     const back = el('a', 'v2-back', '← 테마 로비'); back.href = 'index.html';
-    const snd = btn('v2-sound' + (audioOn ? ' on' : ''), audioOn ? '소리 켜짐' : '소리 꺼짐', () => { audioOn = !audioOn; try { localStorage.setItem('mihaeje-v2-sound', audioOn ? '1' : '0'); } catch {} snd.textContent = audioOn ? '소리 켜짐' : '소리 꺼짐'; snd.classList.toggle('on', audioOn); syncMusic(ep); if (audioOn) play('on'); }, '배경음과 효과음 켜고 끄기');
+    const snd = btn('v2-sound' + (audioOn ? ' on' : ''), audioOn ? '배경음 켜짐' : '배경음 꺼짐', () => { audioOn = !audioOn; try { localStorage.setItem('mihaeje-v2-sound', audioOn ? '1' : '0'); } catch {} snd.textContent = audioOn ? '배경음 켜짐' : '배경음 꺼짐'; snd.classList.toggle('on', audioOn); syncMusic(ep); if (audioOn) play('on'); }, '배경음과 효과음 켜고 끄기');
     right.append(back, snd);
     h.append(logo, right);
     return h;
@@ -76,6 +84,7 @@ async function main() {
 
   function render() {
     root.replaceChildren(header());
+    armMusic(ep);
     if (S.screen === 'intro') root.append(intro());
     else if (S.screen === 'opening') root.append(opening());
     else if (S.screen === 'ending') root.append(ending());
@@ -160,6 +169,7 @@ async function main() {
     const n = S.read.filter((d) => openDocs().includes(d)).length, m = openDocs().length;
     bar.append(btn('v2-bar-btn', `자료 ${n} / ${m}`, () => openIndex()));
     bar.append(btn('v2-bar-btn', '힌트', () => openHints()));
+    bar.append(btn('v2-bar-btn subtle', '의견', () => openFeedback()));
     bar.append(btn('v2-bar-btn subtle', '처음 화면', () => { S.screen = 'intro'; save(); render(); }));
     sec.append(bar);
     return sec;
@@ -284,6 +294,35 @@ async function main() {
     openDialog(node, { label: '힌트', onClose: () => render() });
   }
 
+  // ---------- 의견 남기기 (Google Form으로 전송) ----------
+  function openFeedback() {
+    const cfg = window.MihaejeFeedback || {};
+    const node = el('article', 'v2-paper v2-feedback');
+    node.append(el('p', 'v2-eyebrow', ep.title));
+    node.append(el('h2', 'v2-doc-title', '의견 남기기'));
+    node.append(el('p', 'v2-feedback-lead', '막힌 곳, 이상한 문장, 재미없던 장치, 뭐든 좋습니다. 만든 사람이 직접 읽습니다.'));
+    const ta = el('textarea', 'v2-textarea'); ta.rows = 6; ta.maxLength = 2000; ta.placeholder = '예: 보관함 숫자를 어디서 세는지 한참 헤맸어요'; ta.setAttribute('aria-label', '의견');
+    const contact = el('input', 'v2-input'); contact.type = 'text'; contact.maxLength = 120; contact.placeholder = '답장 받을 이메일이나 연락처 (선택)'; contact.setAttribute('aria-label', '연락처(선택)');
+    const status = el('p', 'v2-status'); status.setAttribute('role', 'status');
+    const send = btn('v2-primary', '보내기', async () => {
+      const text = ta.value.trim();
+      if (!text) { status.textContent = '내용을 적어 주세요.'; return; }
+      if (!cfg.form || !cfg.fields?.text) { status.textContent = '아직 의견함이 연결되기 전입니다. 조금만 기다려 주세요.'; return; }
+      send.disabled = true; status.textContent = '보내는 중…';
+      const where = `${ep.id} / ${S.screen === 'ending' ? '엔딩' : (sceneById(S.scene)?.name || '')} / 푼 장치 ${S.solved.length}/${Object.keys(ep.devices).length}`;
+      const body = new URLSearchParams();
+      if (cfg.fields.game) body.set(cfg.fields.game, where);
+      body.set(cfg.fields.text, text);
+      if (cfg.fields.contact && contact.value.trim()) body.set(cfg.fields.contact, contact.value.trim());
+      try {
+        await fetch(cfg.form, { method: 'POST', mode: 'no-cors', body });
+        status.textContent = '보냈습니다. 고맙습니다.'; ta.value = ''; contact.value = '';
+      } catch { status.textContent = '보내지 못했습니다. 잠시 뒤 다시 눌러 주세요.'; send.disabled = false; }
+    });
+    node.append(ta, contact, status, send);
+    openDialog(node, { label: '의견 남기기' });
+  }
+
   // ---------- 4. 엔딩 ----------
   function ending() {
     const e = ep.ending;
@@ -301,6 +340,7 @@ async function main() {
     const row = el('div', 'v2-row');
     if (e.next) { const a = el('a', 'v2-primary', `다음 이야기 · ${e.next.title} →`); a.href = e.next.href; row.append(a); }
     row.append(btn('v2-secondary', '자료 다시 보기', () => openIndex()));
+    row.append(btn('v2-secondary', '의견 남기기', () => openFeedback()));
     row.append(btn('v2-secondary subtle', '처음 화면', () => { S.screen = 'intro'; save(); render(); }));
     paper.append(row);
     if (e.next?.line) paper.append(el('p', 'v2-fine', e.next.line));
