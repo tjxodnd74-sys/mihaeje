@@ -10,6 +10,7 @@ TRAILER="Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01EmFjZY1gpVcrfc1exiuVhy"
 
 cd "$SRC/mystery-site" && npm run build >/dev/null
+NODE_PATH=/home/claude/.npm-global/lib/node_modules node "$SRC/qa-tools/layout-check.mjs" >/dev/null || { echo "layout-check 실패: 자료가 가로로 넘칩니다"; exit 1; }
 
 # 1) 소스
 cd "$REPO"
