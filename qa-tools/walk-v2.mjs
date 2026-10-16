@@ -546,6 +546,7 @@ async function letter({ mobile = false } = {}) {
   console.log('=== letter v2' + (mobile ? ' (mobile)' : ''));
   const setDial = async (digits) => { for (let i = 0; i < digits.length; i++) { const cur = await page.evaluate((i) => Number(document.querySelectorAll('dialog[open] .dial .num')[i].textContent), i); const up = (digits[i] - cur + 10) % 10; for (let k = 0; k < up; k++) await L.click(page, `${i + 1}번째 다이얼 올리기`); } };
   try {
+    await L.fresh(page, '/episode.html?case=letter'); await L.sleep(600); L.check(page.url().includes('play.html?case=letter'), 'old address redirects to new letter');
     await L.fresh(page, '/play.html?case=letter');
     L.check((await L.mainText(page)).includes('★★★☆☆'), '3 stars shown');
     await L.click(page, '처음부터 하기');
@@ -560,7 +561,7 @@ async function letter({ mobile = false } = {}) {
     await setDial([0, 3, 1, 8]); await commit(page); L.check((await status(page)).includes('처음 돌아온 날이 아니다'), 'locker: later return');
     await setDial([0, 3, 1, 9]); await shot(page, 'l-locker'); await commit(page); L.check(await dlgHas(page, '맨 아래 칸에 고무줄로'), 'locker solved');
     await L.click(page, '계속'); await L.sleep(300);
-    await hotspot(page, '다섯 통의 겉봉'); L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .lenv').length === 5), 'five envelopes rendered'); await shot(page, 'l-envs'); await L.closeDialog(page);
+    await hotspot(page, '다섯 통의 겉봉'); L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .lenv').length === 5), 'five envelopes rendered'); L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .envpanel')].filter((x) => x.offsetParent).length === 1), 'one envelope shown at a time'); await page.evaluate(() => [...document.querySelectorAll('dialog[open] .envtabs label')].find((l) => l.textContent === '2024').click()); L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .envpanel')].find((x) => x.offsetParent)?.textContent.includes('2024')), 'year tab switches envelope'); await shot(page, 'l-envs'); await L.closeDialog(page);
     await hotspot(page, '묶음에 끼워진 신청서'); L.check(await dlgHas(page, '뒤채'), 'doc: forward'); await L.closeDialog(page);
     // rack
     await hotspot(page, '구분함');
