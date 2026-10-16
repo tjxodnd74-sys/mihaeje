@@ -77,13 +77,15 @@ for i, s in enumerate(segs):
     s['e'] = segs[i+1]['t'] if i+1 < n else round(dur + 1.5, 3)
 # kinetic words: relative → absolute
 for s in segs:
-    if 'kin' in s:
+    if isinstance(s.get('kin'), list):
         s['kin'] = [[k[0], round(s['t'] + k[1], 3), bool(k[2]) if len(k) > 2 else False] for k in s['kin']]
+for s_ in segs:
+    if s_.get('clip'): s_['cut'] = True
 total_dur = math.ceil(dur + 1.2)
 spec['duration'] = total_dur
 # impacts: segment start of hook, each step, cta + hook's yellow words
 imp = [segs[0]['t']] + [s['t'] for s in segs if s.get('step')] + [s['t'] for s in segs if s.get('cta')]
-for k in segs[0].get('kin', []):
+for k in (segs[0].get('kin') if isinstance(segs[0].get('kin'), list) else []):
     if k[2]: imp.append(k[1])
 spec['impacts'] = sorted(set(round(x, 3) for x in imp))
 json.dump(spec, open(os.path.join(W, 'spec_resolved.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
@@ -97,7 +99,7 @@ const {{ chromium }} = require('playwright');const fs=require('fs');
 const fps=30,n=Math.round(fps*{total_dur});
 const b=await chromium.launch();const p=await b.newPage({{viewport:{{width:1080,height:1920}}}});
 await p.addInitScript(s=>{{window.SPEC=s}},spec);
-await p.goto('file://'+{json.dumps(os.path.join(HERE, 'template_vector.html' if spec.get('style')=='vector' else 'template.html'))});await p.evaluate(()=>document.fonts.ready);
+await p.goto('file://'+{json.dumps(os.path.join(HERE, {'vector':'template_vector.html','fullscreen':'template_full.html'}.get(spec.get('style'),'template.html')))});await p.evaluate(()=>document.fonts.ready);
 for(let i=0;i<n;i++){{await p.evaluate(t=>window.seek(t),i/fps);await p.screenshot({{path:{json.dumps(frames)}+'/f'+String(i).padStart(4,'0')+'.png',omitBackground:{'false' if spec.get('style')=='vector' else 'true'}}});}}
 await b.close();}})();
 """
@@ -110,7 +112,7 @@ bgs = sorted(glob.glob(os.path.join(W, 'bg', '*.mp4')))
 if not bgs and not VECTOR: print('bg/*.mp4 없음'); sys.exit(1)
 # build a concat of clips scaled/cropped to 1080x1920, loop if too short
 lst = os.path.join(W, '_bg.txt')
-if VECTOR: bgs=[]
+if VECTOR or spec.get('style')=='fullscreen': bgs=[]
 with open(lst, 'w') as f:
     L = 0.0; i = 0
     while bgs and L < total_dur + 2:
@@ -133,7 +135,7 @@ def add(name, t, vol):
     p = os.path.join(sfxdir, name + '.wav')
     if os.path.exists(p): ev.append((p, int(t*1000), vol))
 add('hook_impact', segs[0]['t'], 0.6)
-for k in segs[0].get('kin', []):
+for k in (segs[0].get('kin') if isinstance(segs[0].get('kin'), list) else []):
     if k[2]: add('hook_hit', k[1], 0.5)
 for s in segs:
     if s.get('step'):
@@ -141,12 +143,48 @@ for s in segs:
     if s.get('stat'): add('shutter', s['t'], 0.4)
     if s.get('cta'):
         add('riser', max(0, s['t']-1.2), 0.35); add('success', s['t'], 0.55); add('ding', s['t']+0.4, 0.45)
-if VECTOR:
+FULL = spec.get('style')=='fullscreen'
+if FULL:
+    # quieter sound design: a soft whoosh on cuts, a tick on numbers, one success at the end
+    ev.clear()
+    for s_ in segs:
+        if s_.get('cut') and s_ is not segs[0]: add('whoosh_soft', s_['t'], 0.3)
+        if s_.get('stat'): add('tick', s_['t']+0.1, 0.35)
+        if s_.get('cta'): add('success', s_['t'], 0.4)
+    add('hook_impact', segs[0]['t'], 0.35)
+    # one trimmed piece per clip change; each piece spans until the next segment that names a clip
+    pieces=[]; cur=None; start=0.0
+    for i,s_ in enumerate(segs):
+        if s_.get('clip'):
+            if cur: pieces.append((cur,start,s_['t'],cstart))
+            cur=s_['clip']; start=s_['t'] if pieces or i>0 else 0.0; cstart=float(s_.get('start',0.8))
+    if cur: pieces.append((cur,start,total_dur,cstart))
+    if pieces and pieces[0][1]>0: pieces[0]=(pieces[0][0],0.0,pieces[0][2],pieces[0][3])
+    parts=[]
+    for j,(clip,a,b,cstart) in enumerate(pieces):
+        src=os.path.join(W,'bg',clip); L=b-a
+        cd=float(run(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',src]).stdout.strip())
+        off = max(0.0, min(cd-L-0.1, cstart))  # 'start' in spec = where to begin inside the clip
+        pf=os.path.join(W,f'_p{j}.mp4')
+        # gentle push-in over the piece + 6-frame punch at the cut
+        n=int(round(L*30))
+        z=f"1.02+0.06*(in/{max(n,1)})+0.10*lt(in,7)*(1-in/7)"
+        run(['ffmpeg','-loglevel','error','-y','-ss',str(off),'-i',src,'-t',str(L+0.2),'-vf',
+             f"fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps=30,trim=0:{L},setpts=PTS-STARTPTS",
+             '-an','-c:v','libx264','-preset','veryfast','-crf','16',pf])
+        parts.append(pf)
+    with open(lst,'w') as f:
+        for pf in parts: f.write(f"file '{pf}'\n")
+    run(['ffmpeg','-loglevel','error','-y','-f','concat','-safe','0','-i',lst,'-c','copy',os.path.join(W,'bg','_concat.mp4')])
+    inputs = ['-i', os.path.join(W, 'bg', '_concat.mp4'), '-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-i', narr]
+    bgfilter = (f"[0:v]trim=0:{total_dur},setpts=PTS-STARTPTS,eq=contrast=1.06:saturation=0.92:brightness=-0.02,"
+                f"colorbalance=bs=0.04:bh=-0.03,noise=alls=7:allf=t+u,"
+                f"fade=t=in:st=0:d=0.25,fade=t=out:st={total_dur-0.6}:d=0.6[bg];[bg][1:v]overlay=0:0:format=auto:shortest=1[v]")
+elif VECTOR:
     inputs = ['-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-i', narr]
     bgfilter = f"[0:v]format=yuv420p,fade=t=out:st={total_dur-0.6}:d=0.6[v]"
 else:
   inputs = ['-i', os.path.join(W, 'bg', '_concat.mp4'), '-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-i', narr]
-  os.makedirs(os.path.join(W,'bg'),exist_ok=True)
   run(['ffmpeg', '-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', lst, '-vf', 'scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30', '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-t', str(total_dur+1), os.path.join(W, 'bg', '_concat.mp4')])
 af = []
 labels = ['[n]']
