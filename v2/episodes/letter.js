@@ -177,7 +177,7 @@ export default {
     envs: {
       title: '다섯 통의 겉봉',
       kind: '맨 아래 칸 묶음 · 뜯지 않음',
-      html: `<p>고무줄을 풀어 다섯 통을 나란히 놓았다 받는 곳은 다섯 번 다 같다 보내는 사람 칸은 한 통도 온전하지 않다</p>${ENVS.map(envHtml).join('')}`,
+      html: () => { const k = 'e' + Math.random().toString(36).slice(2, 7); return `<p>고무줄을 풀어 다섯 통을 나란히 놓았다 받는 곳은 다섯 번 다 같다 보내는 사람 칸은 한 통도 온전하지 않다</p><div class="envtabs">${ENVS.map((e, i) => `<input type="radio" name="${k}" id="${k}${i}"${i === 0 ? ' checked' : ''}><label for="${k}${i}">${e.y}</label>`).join('')}${ENVS.map((e) => `<div class="envpanel">${envHtml(e)}</div>`).join('')}</div>`; },
     },
     forward: {
       title: '묶음에 끼워진 신청서',
