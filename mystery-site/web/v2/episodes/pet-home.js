@@ -45,12 +45,6 @@ const CARDS = [
 ];
 const CARD_ANSWER = 'c4';
 
-// 명찰 끈의 지워진 글자 세 칸
-const BLANKS = [
-  { id: 'school', label: '학교', opts: ['햇살중', '햇빛중', '해솔중', '햇살고'], ans: '햇살중' },
-  { id: 'cls', label: '학년 반', opts: ['1-3', '2-3', '3-2', '2-1'], ans: '2-3' },
-  { id: 'name', label: '이름', opts: ['김유나', '김유진', '이유나', '김유리'], ans: '김유나' },
-];
 
 const dialRow = (el, save, d, n, labels) => {
   const row = el('div', 'dials');
@@ -85,7 +79,7 @@ export default {
     eyebrow: '10월 9일, 이사 다음 날',
     paragraphs: [
       '루미는 열 살이다 전 보호자 정우 씨가 지방으로 이사하면서 새 가족을 찾았고, 한 달 동안 세 번 만나 보고 내가 데려왔다 어제가 첫날이었다',
-      '정우 씨는 사료와 약, 병원 기록을 넘기면서 상자를 하나 더 줬다 "루미가 처음 구조됐을 때 물건들이에요 저도 받은 거라 누가 뭘 남긴 건지는 몰라요" 그리고 파란 끈 얘기를 했다 루미를 처음 데려온 아이가 쓰던 끈이라고, 언젠가 돌려주고 싶었다고',
+      '정우 씨는 사료와 약, 병원 기록을 넘기면서 상자를 하나 더 줬다 "루미가 처음 구조됐을 때 물건들이에요 저도 받은 거라 누가 뭘 남긴 건지는 몰라요" 그리고 파란 끈 얘기를 했다 루미를 처음 데려온 아이가 쓰던 끈이라고, 언젠가 돌려주고 싶었다고 그 말을 들을 때 괜히 목이 막혔는데, 왜 그런지는 몰랐다',
       '상자 뚜껑 안쪽에 정우 씨 쪽지가 붙어 있었다 루미는 새 방석에서 자고 있다 창밖으로 이삿짐 트럭이 빠져나갔다',
     ],
     cta: '상자 열어 보기',
@@ -129,11 +123,11 @@ export default {
       name: '엄마 집',
       image: P + 'mom.webp',
       unlockedBy: 'cards',
-      arrive: '엄마는 앨범을 식탁에 꺼내 놓고 보리차를 끓이고 있었다 "니가 중학교 때 강아지 주워 온 거 기억 안 나?" 기억이 안 났다 앨범 옆에 사진 세 장이 뒤집혀 있었다',
+      arrive: '다음 날 토요일 오후, 엄마 집 엄마는 앨범을 식탁에 꺼내 놓고 보리차를 끓이고 있었다 "니가 중학교 때 강아지 주워 온 거 기억 안 나?" 기억이 안 났다 앨범 옆에 사진 세 장이 뒤집혀 있었다',
       hotspots: [
         { id: 'phone', x: 10, y: 88, label: '엄마와 주고받은 문자', kind: 'doc', doc: 'momchat' },
         { id: 'diary', x: 62, y: 88, label: '앨범에 끼워진 일기 한 장', kind: 'doc', doc: 'diary' },
-        { id: 'album', x: 36, y: 62, label: '앨범과 사진 세 장', kind: 'doc', doc: 'album' },
+        { id: 'album', x: 52, y: 54, label: '앨범과 사진 세 장', kind: 'doc', doc: 'album' },
         { id: 'sticky', x: 18, y: 52, label: '내 옛 방 책상의 포스트잇', kind: 'doc', doc: 'sticky' },
         { id: 'desk', x: 24, y: 60, label: '내 옛 방 책상 서랍', kind: 'device', device: 'desk' },
         { id: 'badge', x: 24, y: 70, label: '서랍 속 명찰', kind: 'doc', doc: 'badge', visible: (S) => S.solved.includes('desk') },
@@ -177,7 +171,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
     },
     momchat: {
       title: '엄마와 주고받은 문자',
-      kind: '오늘 낮',
+      kind: '다음 날 낮 · 10월 10일',
       html: `<div class="chat"><div class="chat-head"><span class="chat-back">‹</span><b>엄마</b><span class="chat-icons">☰</span></div><div class="chat-date">2026년 10월 10일 토요일</div>
 <div class="chat-row me"><span class="chat-meta">오후 1:12</span><div class="chat-bubble">엄마 2016년 7월에 찍은 사진 있어? 나 중2 때</div></div>
 <div class="chat-row me"><span class="chat-meta">오후 1:12</span><div class="chat-bubble">강아지 나오는 거</div></div>
@@ -210,7 +204,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       title: '정우가 남긴 편지',
       kind: '상자 맨 밑에 있던 것',
       locked: true,
-      html: `<blockquote class="hand">유나 씨께<br><br>이 편지는 끈 주인을 찾고 나서 읽으시라고 밑에 깔아 뒀어요<br>사실 입양 상담 때 유나 씨 이름을 보고 혹시나 했어요 센터 사본에는 「보호자 동반 학생」뿐이었는데, 유나 씨가 햇살동 출신이라길래요<br>그래도 말 안 했어요 유나 씨가 찾아야 유나 씨 거니까요<br><br>콩이는 십 년 동안 잘 살았어요 이제 루미로 유나 씨한테 돌아간 거예요<br>끈은 루미 목줄에 묶어 주세요 처음 묶였던 자리로요<br>— 정우</blockquote>`,
+      html: `<blockquote class="hand">유나 씨께<br><br>이 편지는 끈 주인을 찾고 나서 읽으시라고 밑에 깔아 뒀어요<br>사실 입양 상담 때 유나 씨가 햇살동 출신이라길래 혹시나 했어요 센터 사본에는 「보호자 동반 학생」뿐이라 확신이 없었어요<br>아니면 괜히 마음만 흔들까 봐 말을 못 했고, 대신 물건을 다 넘기면서 찾아봐 달라고 한 거예요<br><br>콩이는 십 년 동안 잘 살았어요 이제 루미로 유나 씨한테 돌아간 거예요<br>끈은 루미 목줄에 묶어 주세요 처음 묶였던 자리로요<br>— 정우</blockquote>`,
     },
   },
 
@@ -382,53 +376,43 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
     },
 
     strap: {
-      title: '파란 끈의 지워진 글자',
+      title: '파란 끈을 명찰에',
       scene: 'mom',
-      intro: '끈의 인쇄 글자가 세 군데 지워져 있다 학교, 학년 반, 이름 서랍에서 나온 명찰과 대 본다',
+      intro: '십 년 전 강아지 목에 묶었던 끈을 원래 자리, 명찰 구멍에 다시 끼운다 끈 한쪽 끝에는 집게, 다른 쪽은 매듭 걸었을 때 글자가 밖에서 바로 읽혀야 한다',
       docs: ['badge', 'diary', 'album'],
       hintCode: 'P-S04',
       hints: [
-        '명찰 끈에는 명찰과 같은 글자가 찍힙니다 서랍에서 나온 명찰을 보세요',
-        '명찰의 학교·학년 반·이름이 끈에는 줄여서 찍힙니다 "중학교"는 한 글자로, 학년 반은 숫자만',
-        '햇살중 · 2-3 · 김유나',
+        '명찰을 목에 걸었다고 생각해 보세요 끈의 글자는 남이 보는 쪽에서 바로 읽혀야 합니다',
+        '앞뒤와 위아래 둘 다 봐야 합니다 집게 쪽이 명찰 구멍으로 가고, 글자가 거꾸로 서 있지 않아야 합니다',
+        '글자가 보이는 앞면, 글자가 바로 선 방향 그대로 끼웁니다',
       ],
-      initial: () => ({ fill: {}, pick: null }),
+      initial: () => ({ back: true, turned: true }),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'strap-wrap');
-        const strip = el('div', 'prop strapimg'); const im = el('img'); im.src = P + 'props/strap.webp'; im.alt = '펼친 파란 끈, 글자가 지워진 자리 셋'; strip.append(im);
-        const pos = { school: [13, 17], cls: [35, 17], name: [63, 22] };
-        BLANKS.forEach((bl) => {
-          const b = el('button', 'strap-slot' + (d.fill[bl.id] ? ' filled' : '') + (d.pick === bl.id ? ' picking' : '')); b.type = 'button';
-          b.style.left = pos[bl.id][0] + '%'; b.style.width = pos[bl.id][1] + '%';
-          b.setAttribute('aria-label', `${bl.label} 칸${d.fill[bl.id] ? ': ' + d.fill[bl.id] : ' (지워짐)'}`);
-          b.textContent = d.fill[bl.id] || '';
-          b.onclick = () => { d.pick = d.pick === bl.id ? null : bl.id; save(); };
-          strip.append(b);
-        });
-        wrap.append(strip);
-        if (d.pick) {
-          const bl = BLANKS.find((x) => x.id === d.pick);
-          wrap.append(el('p', 'pick-label', `${bl.label} 칸에 들어갈 글자`));
-          const row = el('div', 'pick-row');
-          bl.opts.forEach((o) => { const c = el('button', 'chip' + (d.fill[bl.id] === o ? ' on' : ''), o); c.type = 'button'; c.setAttribute('aria-label', `${js(bl.label, '은', '는')} ${o}`); c.onclick = () => { d.fill[bl.id] = o; d.pick = null; save(); }; row.append(c); });
-          wrap.append(row);
-        } else wrap.append(el('p', 'pick-label', '끈의 지워진 자리를 누르면 글자를 넣을 수 있다'));
+        const badge = el('div', 'prop badgephoto small'); badge.innerHTML = `<img src="${P}props/badge.webp" alt="끈 없는 명찰" decoding="async"><div class="on-badge"><b>햇살중학교</b><span>2학년 3반</span><strong>김유나</strong></div>`;
+        const strip = el('div', 'prop strapimg' + (d.back ? ' back' : '') + (d.turned ? ' turned' : ''));
+        strip.innerHTML = `<div class="strap-turn"><img src="${P}props/strap.webp" alt="" decoding="async"><span class="strap-print" style="left:13%;width:17%">햇살중</span><span class="strap-print" style="left:35%;width:17%">2-3</span><span class="strap-print" style="left:63%;width:22%">김유나</span><span class="strap-clip">집게</span><span class="strap-knot">매듭</span></div>`;
+        strip.setAttribute('role', 'img');
+        strip.setAttribute('aria-label', `파란 끈 · ${d.back ? '뒷면이 위' : '앞면이 위'} · ${d.turned ? '집게가 왼쪽' : '집게가 오른쪽'}`);
+        wrap.append(badge, strip);
+        const row = el('div', 'pick-row');
+        const f = el('button', 'chip', '끈 뒤집기 (앞뒤)'); f.type = 'button'; f.onclick = () => { d.back = !d.back; save(); };
+        const t = el('button', 'chip', '끈 돌리기 (양 끝 바꾸기)'); t.type = 'button'; t.onclick = () => { d.turned = !d.turned; save(); };
+        row.append(f, t);
+        wrap.append(row, el('p', 'pick-label', '명찰 구멍은 끈의 오른쪽 끝에 있다 끈을 뒤집고 돌려서 맞춘 다음 끼운다'));
         return wrap;
       },
-      commitLabel: '명찰에 끈 끼우기',
+      commitLabel: '명찰 구멍에 끈 끼우기',
       check(d) {
-        const empty = BLANKS.filter((b) => !d.fill[b.id]);
-        if (empty.length) return { ok: false, msg: `${empty[0].label} 칸이 아직 비어 있다` };
-        if (BLANKS.every((b) => d.fill[b.id] === b.ans)) return { ok: true };
-        const w = BLANKS.find((b) => d.fill[b.id] !== b.ans);
-        if (w.id === 'name') return { ok: false, msg: `${d.fill.name}? 명찰의 이름을 다시 보자` };
-        if (w.id === 'cls') return { ok: false, msg: '학년 반이 다르다 명찰에 적힌 대로' };
-        return { ok: false, msg: '학교가 다르다 명찰과 병원 카드 뒷면에 같은 학교가 나온다' };
+        if (!d.back && !d.turned) return { ok: true };
+        if (d.back && d.turned) return { ok: false, msg: '매듭 쪽이 명찰로 가고, 글자도 안쪽이다 이대로 걸면 목에 글자가 닿는다' };
+        if (d.back) return { ok: false, msg: '집게는 맞게 들어가는데 글자가 안쪽을 본다 명찰을 걸면 아무도 못 읽는다' };
+        return { ok: false, msg: '글자는 밖으로 나왔는데 거꾸로 서 있다 매듭 쪽은 구멍에 안 들어간다' };
       },
       reveal: {
         title: '첫 번째 보호자',
-        text: '끈을 명찰 구멍에 끼웠다 딱 맞는다 햇살중 2-3 김유나 콩이를 처음 데려온 아이는 나였다',
+        text: '집게가 명찰 구멍에 딸깍 물렸다 십 년 만에 제자리다 햇살중 2-3 김유나 콩이를 처음 데려온 아이는 나였다',
         scene: [
           '엄마가 보리차를 내려놓으며 말했다 "그때 네가 사흘을 울어서 아빠가 다시는 강아지 얘기 꺼내지 말라고 했잖아 그래서 다 잊은 척했지"',
           '루미가 지금 내 집 방석에서 자고 있다 십 년을 돌아서 정우 씨 편지가 상자 맨 밑에 한 장 더 있었다',
@@ -445,7 +429,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
     eyebrow: '다음 주 토요일',
     title: '그날의 콩이가 지금의 루미였다',
     paragraphs: [
-      '정우 씨한테 전화했다 "찾았어요 저였어요" 수화기 너머가 한참 조용하다가 "그럴 줄 알았어요" 했다 "상담 때 햇살동이라고 하셔서요 근데 제가 말하면 안 되는 거잖아요"',
+      '정우 씨한테 전화했다 "찾았어요 저였어요" 수화기 너머가 한참 조용하다가 "혹시나 했어요" 했다 "상담 때 햇살동이라고 하셔서요 근데 아니면 어떡하나 싶어서 끝까지 말을 못 했어요"',
       '정우 씨가 올라온 토요일, 셋이 햇살동 공원을 걸었다 루미는 정우 씨를 보고 꼬리를 쳤고 나한테 돌아와서 걸었다 둘 다 제 사람이라는 얼굴로',
       '파란 끈은 목줄 손잡이에 리본으로 묶었다 십 년 전에 묶였던 자리는 아니지만, 같은 개 같은 끈이다',
       '"이름은 루미로 둘 거예요" "콩이가 더 어울리는데" "열 살한테 콩이는 좀" 정우 씨가 웃었다 루미는 둘 다 못 들은 척 낙엽 냄새를 맡았다',
