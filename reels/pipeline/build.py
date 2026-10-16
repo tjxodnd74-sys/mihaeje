@@ -56,20 +56,47 @@ for s, e in sil:
 if dur - cur > 0.15: chunks.append([cur, dur])
 segs = spec['segments']
 n = len(segs)
-# merge/split chunks to match segment count
-while len(chunks) > n:
-    # merge the two chunks with the smallest gap
-    gaps = [(chunks[i+1][0] - chunks[i][1], i) for i in range(len(chunks)-1)]
-    g, i = min(gaps)
-    chunks[i] = [chunks[i][0], chunks[i+1][1]]; del chunks[i+1]
-if len(chunks) < n:
-    print(f'경고: 나레이션 문장 수({len(chunks)}) < 세그먼트 수({n}) — 글자 수 비율로 나눔')
-    total = sum(len(re.sub(r'\|', '', s['cap'])) for s in segs)
-    t = chunks[0][0] if chunks else 0.3
-    chunks = []
-    for s in segs:
-        L = (dur - t) * len(re.sub(r'\|', '', s['cap'])) / total
-        chunks.append([t, t + L]); t += L
+# Boundaries: choose sentence starts among pause-ends so that every sentence's duration best
+# matches its expected share (by narration text length), optimising all boundaries together (DP).
+# Commas inside a sentence ("첫째, ...") also leave pauses — sometimes longer than the pause
+# between sentences — so greedy or "merge smallest gaps" approaches mis-assign them.
+import re as _re
+def _clen(s_):
+    t = s_.get('say') or s_['cap']
+    return max(1, len(_re.sub(r'[|/\s,.!?]', '', t)))
+if not chunks: chunks = [[0.3, dur]]
+m = len(chunks)
+lens = [_clen(x) for x in segs]
+tot = sum(lens)
+speech = sum(b - a for a, b in chunks)
+exp = [speech * l / tot for l in lens]
+INF = float('inf')
+# cost[i][j]: best cost placing first i segments over first j chunks
+cost = [[INF] * (m + 1) for _ in range(n + 1)]
+back = [[0] * (m + 1) for _ in range(n + 1)]
+cost[0][0] = 0.0
+for i in range(1, n + 1):
+    for j in range(i, m - (n - i) + 1):
+        for k in range(i - 1, j):
+            if cost[i-1][k] == INF: continue
+            d = sum(chunks[q][1] - chunks[q][0] for q in range(k, j))
+            c = cost[i-1][k] + ((d - exp[i-1]) / max(exp[i-1], 0.6)) ** 2
+            # a tiny trailing fragment (e.g. "둘째,") belongs to the next sentence's start, not this one's end
+            if j - k > 1 and (chunks[j-1][1] - chunks[j-1][0]) < 0.6: c += 3.0
+            if c < cost[i][j]: cost[i][j] = c; back[i][j] = k
+if n <= m and cost[n][m] < INF:
+    cuts = []; j = m
+    for i in range(n, 0, -1):
+        k = back[i][j]; cuts.append(k); j = k
+    cuts = cuts[::-1]
+    starts = [chunks[k][0] for k in cuts]
+else:
+    print(f'경고: 무음 구간({m}) < 문장 수({n}) — 글자 수 비율로 나눔')
+    starts = []; t0 = chunks[0][0]
+    for i in range(n): starts.append(t0 + speech * sum(lens[:i]) / tot)
+if all('t' in x for x in segs):
+    starts = [float(x['t']) for x in segs]   # manual override
+chunks = [[a, (starts[i+1] if i+1 < n else dur)] for i, a in enumerate(starts)]
 for s, (a, b) in zip(segs, chunks):
     s['t'] = round(a, 3)
 # each segment ends where the next begins; last one runs to the end
@@ -156,12 +183,12 @@ if FULL:
     pieces=[]; cur=None; start=0.0
     for i,s_ in enumerate(segs):
         if s_.get('clip'):
-            if cur: pieces.append((cur,start,s_['t'],cstart))
-            cur=s_['clip']; start=s_['t'] if pieces or i>0 else 0.0; cstart=float(s_.get('start',0.8))
-    if cur: pieces.append((cur,start,total_dur,cstart))
-    if pieces and pieces[0][1]>0: pieces[0]=(pieces[0][0],0.0,pieces[0][2],pieces[0][3])
+            if cur: pieces.append((cur,start,s_['t'],cstart,ccx))
+            cur=s_['clip']; start=s_['t'] if pieces or i>0 else 0.0; cstart=float(s_.get('start',0.8)); ccx=float(s_.get('cx',0.5))
+    if cur: pieces.append((cur,start,total_dur,cstart,ccx))
+    if pieces and pieces[0][1]>0: pieces[0]=(pieces[0][0],0.0,pieces[0][2],pieces[0][3],pieces[0][4])
     parts=[]
-    for j,(clip,a,b,cstart) in enumerate(pieces):
+    for j,(clip,a,b,cstart,ccx) in enumerate(pieces):
         src=os.path.join(W,'bg',clip); L=b-a
         cd=float(run(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',src]).stdout.strip())
         off = max(0.0, min(cd-L-0.1, cstart))  # 'start' in spec = where to begin inside the clip
@@ -170,7 +197,7 @@ if FULL:
         n=int(round(L*30))
         z=f"1.02+0.06*(in/{max(n,1)})+0.10*lt(in,7)*(1-in/7)"
         run(['ffmpeg','-loglevel','error','-y','-ss',str(off),'-i',src,'-t',str(L+0.2),'-vf',
-             f"fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps=30,trim=0:{L},setpts=PTS-STARTPTS",
+             f"fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920:'max(0,min(iw-1080,iw*{ccx}-540))':'(ih-1920)/2',zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps=30,trim=0:{L},setpts=PTS-STARTPTS",
              '-an','-c:v','libx264','-preset','veryfast','-crf','16',pf])
         parts.append(pf)
     with open(lst,'w') as f:
@@ -208,7 +235,7 @@ if spec.get('cover'):
     C=dict(spec['cover'])
     if C.get('clip'):
         cp=os.path.join(W,'_cover_bg.jpg')
-        run(['ffmpeg','-loglevel','error','-y','-ss',str(C.get('start',2)),'-i',os.path.join(W,'bg',C['clip']),'-frames:v','1','-vf','scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920',cp])
+        run(['ffmpeg','-loglevel','error','-y','-ss',str(C.get('start',2)),'-i',os.path.join(W,'bg',C['clip']),'-frames:v','1','-vf',f"scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920:'max(0,min(iw-1080,iw*{float(C.get('cx',0.5))}-540))':'(ih-1920)/2'",cp])
         C['photo']=cp
     cjs=os.path.join(W,'_cover.js')
     open(cjs,'w').write(f"""
