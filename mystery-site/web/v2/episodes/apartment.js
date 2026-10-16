@@ -448,6 +448,6 @@ export default {
     ],
     afterword: '월요일 아침 여덟 시, 할아버지와 등 세 개를 떼어 냈다 거실 등 하나는 할머니 병실 창가로 갔다 타이머는 아홉 시 커뮤니티 글에는 댓글이 하나 더 달렸다 「404 아니었음 301이었음 그리고 귀신도 아니었음」',
     unlockDoc: 'final',
-    next: { href: 'episode.html?case=laundry', title: '자정의 무인 세탁소', line: '다음은 자정마다 돌아가는 세탁기 이야기입니다' },
+    next: { href: 'play.html?case=laundry', title: '자정의 무인 세탁소', line: '다음은 자정마다 빈 통으로 도는 건조기 이야기입니다' },
   },
 };
