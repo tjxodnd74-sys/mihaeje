@@ -60,11 +60,11 @@ function cycleSvg() {
 
 // 할머니식 풀이 — 이야기용 해석 좋고 나쁜 판정은 없다
 const READ = {
-  blue: { me: '자라는 쪽을 보는 사람이다 시작은 잘하는데 가지치기를 못 한다 위로만 크다가 바람 맞는 날이 있다', many: '木이 많으면 일을 자꾸 벌린다 심은 건 많은데 거둔 게 없다', none: '木이 없으면 시작이 어렵다 남이 밀어 줘야 움직인다', tea: '유자차는 가지를 쳐 주는 차다 신맛이 위로만 크는 걸 잡는다' },
-  red: { me: '밝고 금방 뜨거워지는 사람이다 사람을 모으는데, 혼자 타다 꺼지는 날이 있다', many: '火가 많으면 급하다 말이 손보다 먼저 나간다', none: '火가 없으면 뜨거워지는 게 없다 오래 가는 대신 재미가 없다', tea: '오미자차는 다섯 맛이 한 잔에 있는 차다 한 가지로 타오르지 말라고 준다' },
-  yellow: { me: '받아 주는 사람이다 남 얘기는 다 들어주고 제 얘기는 못 한다 흙은 밟혀도 흙이다', many: '土가 많으면 굼뜨고 쌓아 둔다 버릴 걸 못 버린다', none: '土가 없으면 쉴 자리가 없다 앉아도 앉은 게 아니다', tea: '대추차는 속을 데우는 차다 받아 주느라 비운 속에 넣어 준다' },
-  white: { me: '맺고 끊는 게 분명한 사람이다 맞는 말을 하는데, 그 말에 사람이 벤다', many: '金이 많으면 날이 서 있다 저도 모르게 남을 긋는다', none: '金이 없으면 끊을 걸 못 끊는다 질질 끌다 상한다', tea: '생강차는 매운 걸 따뜻하게 바꾸는 차다 날을 세우되 데이지 말라고 준다' },
-  black: { me: '흘러가는 사람이다 어디든 맞춰 들어가는데, 고이면 제일 먼저 상한다', many: '水가 많으면 생각이 많다 밤에 못 잔다', none: '水가 없으면 쉬는 법을 모른다 흐르지 않고 달리기만 한다', tea: '쌍화차는 가라앉은 걸 띄우는 차다 고인 물 흔들어 주는 거다' },
+  blue: { me: '자라는 쪽을 보는 사람이다 뭘 시작할 때 눈이 제일 반짝인다 다만 위로만 크다가 바람 맞는 날이 있으니 가지 칠 줄도 알아야 한다', many: '木이 많으면 심어 둔 게 많다 하나씩 거두는 재미도 알아 가면 된다', none: '木이 없으면 첫발이 무겁다 옆에서 한 번 밀어 주면 그다음은 잘 간다', tea: '유자차는 가지를 쳐 주는 차다 신맛이 위로만 크는 걸 잡아 준다' },
+  red: { me: '밝고 금방 뜨거워지는 사람이다 네가 오면 가게가 환해졌다 혼자 다 태우지 말고 불씨를 나눠 가져라', many: '火가 많으면 마음이 먼저 달려간다 말이 손보다 반 걸음 빠르다', none: '火가 없으면 오래 데워지는 쪽이다 늦게 뜨거워진 대신 잘 안 식는다', tea: '오미자차는 다섯 맛이 한 잔에 있는 차다 한 가지로만 타오르지 말라고 준다' },
+  yellow: { me: '받아 주는 사람이다 남 얘기는 끝까지 들어 주는데 제 얘기는 아껴 둔다 흙은 밟혀도 흙이다 그래도 가끔은 네 얘기도 해라', many: '土가 많으면 천천히 쌓는다 모아 둔 게 많으니 가끔은 덜어 내도 된다', none: '土가 없으면 쉴 자리를 늦게 찾는다 앉을 데부터 하나 정해 둬라', tea: '대추차는 속을 데우는 차다 받아 주느라 비운 속에 넣어 준다' },
+  white: { me: '맺고 끊는 게 분명한 사람이다 맞는 말을 할 줄 안다 그 말이 날이 서지 않게 한 번만 쥐었다 내놓아라', many: '金이 많으면 반듯하다 반듯한 만큼 남한테도 반듯함을 바란다', none: '金이 없으면 정을 오래 쥐고 있다 놓아야 할 때 한 번 더 생각해 봐라', tea: '생강차는 매운 걸 따뜻하게 바꾸는 차다 날을 세우되 데이지 말라고 준다' },
+  black: { me: '흘러가는 사람이다 어디 가든 금방 맞춰 들어간다 그래도 한자리에 오래 고이면 답답해한다', many: '水가 많으면 생각이 깊다 밤이 길어지는 날이 있다', none: '水가 없으면 쉬는 법을 늦게 배운다 흐르는 것도 쉬는 거다', tea: '쌍화차는 가라앉은 걸 띄우는 차다 고인 물 흔들어 주는 거다' },
 };
 const CONTROL = { blue: 'yellow', yellow: 'black', black: 'red', red: 'white', white: 'blue' }; // 상극: 목극토 토극수 수극화 화극금 금극목
 function relationLine(a, b) { // a=내 빛, b=상대 빛
@@ -94,16 +94,19 @@ function reading(profile) {
   };
 }
 
-function resultCard(profile, el, btn, next) {
-  const seed = E[profile.seed], comp = E[profile.companion];
-  const card = el('div', 'slip-result');
+function slipHtml(profile) {
+  const seed = E[profile.seed];
   const fills = { blue: '#5f9e9a', red: '#b8433a', yellow: '#d2a84a', white: '#eee8dc', black: '#2e2e2e' };
-  card.innerHTML = `<p class="slip-head">할머니가 세는 법대로</p>
-<div class="pillars">${profile.pillars.map((p) => `<div class="pillar"><small>${p.label}</small><b>${p.text}</b><span>${p.elements.map((i) => E[i].han).join('') || '—'}</span></div>`).join('')}</div>
+  return `<p class="slip-head">할머니가 세는 법대로</p>
+<div class="pillars">${(profile.pillars || []).map((p) => `<div class="pillar"><small>${p.label}</small><b>${p.text}</b><span>${p.elements.map((i) => E[i].han).join('') || '—'}</span></div>`).join('')}</div>
 <div class="counts">${E.map((e, i) => `<div class="count"><i style="background:${fills[e.id]}"></i><b>${e.han}</b><span>${'●'.repeat(profile.counts[i])}${'○'.repeat(Math.max(0, 4 - profile.counts[i]))}</span><small>${profile.counts[i]}</small></div>`).join('')}</div>
 <p class="slip-light">네 빛은 <b style="color:${fills[seed.id] === '#eee8dc' ? '#9a8f70' : fills[seed.id]}">${seed.han} ${seed.el} · ${seed.color}색</b> <small>(태어난 날의 천간)</small></p>
 <p class="slip-light">가장 많은 빛은 <b>${reading(profile).tops.map((t) => `${t.han} ${t.el}`).join(' · ')}</b>${profile.unknown ? ' <small>(시각을 몰라 시주는 뺐다)</small>' : ''}${profile.ambiguous ? ' <small>(절기 바뀌는 날이라 연·월은 미확정)</small>' : ''}</p>
 <div class="slip-reading"><p class="slip-sub">할머니라면 이렇게 읽는다</p><p>${reading(profile).me}</p><p>${reading(profile).many}</p><p>${reading(profile).none}</p><p class="slip-note">좋고 나쁜 건 없다 할머니는 이 빛으로 차를 골랐고, 오늘은 이 빛이 열쇠가 된다 나머지 풀이는 가게 안에 있다</p></div>`;
+}
+function resultCard(profile, el, btn, next) {
+  const card = el('div', 'slip-result');
+  card.innerHTML = slipHtml(profile);
   card.append(btn('v2-primary', '접수표 들고 문 앞으로 →', next));
   return card;
 }
@@ -162,7 +165,8 @@ export default {
           window.scrollTo({ top: 0 });
         } catch (e) { err.textContent = e.message.replace(/을 입력해주세요$/, '을 적어야 한다').replace(/를 입력해주세요$/, '를 적어야 한다').replace(/을 확인해주세요$/, '을 다시 본다'); }
       });
-      wrap.append(el('p', 'v2-eyebrow', '문 옆 선반 · 접수표'), sheet, go);
+      const ex = btn('v2-secondary', '생일 대신 예시 손님으로 해 보기', () => { sheet.querySelector('[name=date]').value = '1990-05-05'; unk.checked = false; time.disabled = false; time.value = '10:00'; go.click(); });
+      wrap.append(el('p', 'v2-eyebrow', '문 옆 선반 · 접수표'), sheet, go, el('p', 'slip-note', '생일을 적기 싫으면 예시 손님(1990년 5월 5일 오전 10시)으로 해도 된다 풀이와 열쇠가 그 빛대로 바뀐다'), ex);
       return wrap;
     },
   },
@@ -184,6 +188,7 @@ export default {
         { id: 'phone', x: 9, y: 90, label: '주머니 속 휴대폰', kind: 'doc', doc: 'chat' },
         { id: 'paper', x: 50, y: 38, label: '문에 붙은 종이', kind: 'doc', doc: 'doorpaper' },
         { id: 'pots', x: 50, y: 86, label: '섬돌 위 화분', kind: 'device', device: 'pots' },
+        { id: 'myslip', x: 88, y: 90, label: '내가 쓴 접수표', kind: 'doc', doc: 'myslip' },
       ],
     },
     {
@@ -198,7 +203,7 @@ export default {
         { id: 'notebook', x: 78, y: 52, label: '접수대 서랍의 공책', kind: 'doc', doc: 'notebook' },
         { id: 'memo', x: 44, y: 47, label: '찬장에 붙은 메모', kind: 'doc', doc: 'memo' },
         { id: 'cabinet', x: 52, y: 29, label: '찬장과 다섯 그릇', kind: 'device', device: 'bowls' },
-        { id: 'drawernote', x: 47, y: 56, label: '서랍 손잡이의 쪽지', kind: 'doc', doc: 'drawernote', visible: (S) => S.solved.includes('bowls') },
+        { id: 'drawernote', x: 43, y: 62, label: '서랍 손잡이의 쪽지', kind: 'doc', doc: 'drawernote', visible: (S) => S.solved.includes('bowls') },
         { id: 'drawer', x: 59, y: 56, label: '찬장 맨 아래 서랍', kind: 'device', device: 'drawer', visible: (S) => S.solved.includes('bowls') },
       ],
     },
@@ -217,6 +222,11 @@ export default {
   ],
 
   docs: {
+    myslip: {
+      title: '내가 쓴 접수표',
+      kind: '오늘 저녁 · 내 빛',
+      html: (S) => `<div class="slip-result">${slipHtml(S.profile || { seed: 0, companion: 0, counts: [1, 1, 1, 1, 1], pillars: [] })}</div>`,
+    },
     chat: {
       title: '할머니의 문자',
       kind: '오늘 오후',
@@ -252,7 +262,7 @@ export default {
     memo: {
       title: '찬장에 붙은 메모',
       kind: '할머니 글씨',
-      html: `<figure class="prop notecard"><img src="${P}props/notecard.webp" alt="찬장에 테이프로 붙인 쪽지" decoding="async"><div class="on-notecard">그릇은 제 방향에<br>다섯이 제자리에 가야 서랍 쇠가 풀린다<br><br>창이 해 뜨는 쪽이다<br>헷갈리면 창부터 봐라</div></figure><p>찬장을 마주 보고 섰다 한지 창은 왼쪽에 있다</p>`,
+      html: `<figure class="prop notecard"><img src="${P}props/notecard.webp" alt="찬장에 테이프로 붙인 쪽지" decoding="async"><div class="on-notecard">그릇은 제 방향에<br>다섯이 제자리에 가야 서랍 쇠가 풀린다<br><br>창이 해 뜨는 쪽이다<br>헷갈리면 창부터 봐라<br>위 칸은 네가 바라보는 쪽이다</div></figure><p>찬장을 마주 보고 섰다 한지 창은 왼쪽에 있다</p>`,
     },
     drawernote: {
       title: '서랍 손잡이의 쪽지',
@@ -389,7 +399,7 @@ export default {
       title: '찬장 맨 아래 서랍',
       scene: 'inside',
       intro: '황동 자물쇠 네 자리 손잡이의 쪽지대로면 번호는 "네 빛의 차 값"이다',
-      docs: ['drawernote', 'board', 'notebook'],
+      docs: ['drawernote', 'board', 'myslip', 'notebook'],
       hintCode: 'O-S03',
       hints: (S) => { const e = seedOf(S); return [
         '접수표에 나온 내 빛이 무슨 글자였는지 떠올리세요 메뉴판의 차 이름 옆에 그 글자가 있습니다',
@@ -431,7 +441,7 @@ export default {
       title: '장대에 걸린 등 다섯',
       scene: 'back',
       intro: '등 다섯 개, 스위치가 하나씩 "네 빛부터, 낳는 순서로 다섯 개 다" 켜면 접수함이 열린다',
-      docs: ['deskmemo', 'doorpaper'],
+      docs: ['deskmemo', 'doorpaper', 'myslip'],
       hintCode: 'O-S04',
       hints: (S) => { const o = orderFrom(seedOf(S).id); return [
         '접수표의 내 빛이 첫 등입니다 그다음은 문에 붙은 종이의 화살표를 따라갑니다',
@@ -494,7 +504,7 @@ export default {
       ];
       if (!S.choice) return base;
       const tail = {
-        keep: [`접수표 마지막 장에 적었다 「${e.gift} 받음 계절 돌면 또 온다」 할머니가 들여다보더니 한마디 했다 "글씨는 나 닮았네"`, '가게는 당분간 주말만 연다 할머니 자리에 내가 앉고, 남쪽을 보고 차를 끓인다'],
+        keep: [`접수표 마지막 장에 적었다 「${e.gift} 받음 계절 돌면 또 온다」 할머니가 들여다보더니 한마디 했다 "글씨는 나 닮았네"`, '계절이 바뀌는 첫 주말마다 오행당 문을 연다 할머니 자리에 앉아 남쪽을 보고 차를 끓이고, 접수표 묶음에 내 이름이 한 장씩 늘어난다'],
         release: ['접수표 마지막 장에 적었다 「가게는 못 하겠어 열쇠는 가지고 있을게」 할머니는 한참 보더니 접어서 내 가방에 도로 넣었다 "그것도 대답이다"', '오행당 문은 닫혀 있다 그래도 섬돌 화분에는 물을 준다 봄마다, 청자 빛 화분부터'],
         share: ['접수표 마지막 장에 적었다 「다음 손님은 내가 받을게 빛 세는 법 가르쳐 줘」 할머니가 찻잔을 내려놓았다 "퇴원하면 바로다 한 달은 걸린다"', '퇴원한 날 할머니는 접수표 묶음부터 찾았다 첫 손님은 이모였다 이모 빛은 火였고, 둘이 한참 싸웠다'],
       }[S.choice];

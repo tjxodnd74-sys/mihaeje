@@ -171,7 +171,7 @@ async function main() {
       if (h.visible && !h.visible(S)) return;
       const done = h.kind === 'doc' ? S.read.includes(h.doc) : h.kind === 'device' ? S.solved.includes(h.device) : false;
       if (h.auto) h.label = josa(h.label.replace('(으)로 가기', ''), '으로', '로') + ' 가기';
-      const b = btn('v2-hotspot' + (done ? ' done' : '') + (h.kind === 'device' ? ' device' : '') + (h.kind === 'travel' ? ' travel' : ''), '', () => act(h), h.label);
+      const b = btn('v2-hotspot' + (done ? ' done' : '') + (h.kind === 'device' ? ' device' : '') + (h.kind === 'travel' ? ' travel' : '') + (h.x > 62 ? ' flip' : ''), '', () => act(h), h.label);
       b.style.left = h.x + '%'; b.style.top = h.y + '%';
       b.append(el('i'), el('span', 'v2-hotspot-label', h.label));
       stage.append(b);
@@ -182,6 +182,9 @@ async function main() {
     if (firstVisit) { S.visited.push(scene.id); save(); }
     const arrive = el('p', 'v2-arrive', scene.arrive);
     sec.append(arrive);
+    // 마지막 장치를 풀었는데 아직 엔딩에 안 갔으면, 어떤 경로로 돌아왔든 엔딩 버튼을 계속 보여 준다
+    const endDev = Object.values(ep.devices).find((dv, i) => dv.reveal?.ending && S.solved.includes(Object.keys(ep.devices)[i]));
+    if (endDev && !S.ended) sec.append(btn('v2-primary v2-endgo', (endDev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; save(); render(); window.scrollTo({ top: 0 }); }));
     // 핫스팟 목록(작은 화면·접근성)
     const list = el('div', 'v2-spotlist');
     [...scene.hotspots, ...autoTravel].forEach((h) => {
@@ -231,7 +234,7 @@ async function main() {
       const avail = read || (where && unlockedScenes().includes(where)) || d.locked || (S.found || []).includes(did);
       if (!avail) return;
       if (!read) unread.push(did);
-      const b = btn('v2-index-item' + (read ? ' read' : ''), '', () => openDoc(did, { label: '자료 목록', fn: openIndex }));
+      const b = btn('v2-index-item' + (read ? ' read' : ''), '', () => openDoc(did, { from: { label: '자료 목록', fn: openIndex } }));
       b.append(el('b', '', d.title), el('small', '', (read ? '읽음' : '아직') + (where ? ' · ' + where.name : '')));
       ul.append(b);
     });
@@ -260,6 +263,7 @@ async function main() {
       const g = el('details', 'v2-guide'); if (ep.difficulty <= 2) g.open = true; const sm = el('summary', '', '어떻게 하는 거지?'); g.append(sm, el('p', '', hint0)); head.append(g);
     }
     node.append(head);
+    if (solved && dev.reveal?.ending && !S.ended) node.append(btn('v2-primary', (dev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; save(); closeDialog(); }));
     const body = el('div', 'v2-device-body');
     const status = el('p', 'v2-status'); status.setAttribute('role', 'status');
     const ctx = { d, S, el, save: () => { save(); status.textContent = ''; status.classList.remove('wrong'); draw(); }, status: (m) => { status.textContent = m; } };
@@ -301,7 +305,7 @@ async function main() {
       };
       // 장면에서 직접 찾아 읽은 자료만 옆에 펼칠 수 있습니다. 아직 못 찾은 것은 자물쇠로 표시합니다.
       refs.forEach((r) => {
-        const found = S.read.includes(r);
+        const found = S.read.includes(r) || (S.found || []).includes(r);
         const t = btn('v2-bench-tab' + (found ? '' : ' locked'), found ? ep.docs[r].title : '아직 찾지 못한 자료', () => { if (!found) return; show(cur === r && window.innerWidth < 900 ? null : r); });
         t.dataset.doc = r; if (!found) { t.disabled = true; const where = ep.scenes.find((sc) => sc.hotspots.some((h) => h.doc === r)); t.title = where ? where.name + '에서 찾을 수 있습니다' : ''; }
         tabs.append(t);
@@ -323,7 +327,7 @@ async function main() {
     node.append(el('p', 'v2-line', dev.reveal.text));
     (dev.reveal.scene || []).forEach((line) => node.append(el('p', 'v2-line', line)));
     const target = dev.reveal.unlock && sceneById(dev.reveal.unlock);
-    if (dev.reveal.unlockDoc && ep.docs[dev.reveal.unlockDoc]) { S.found = S.found || []; if (!S.found.includes(dev.reveal.unlockDoc)) S.found.push(dev.reveal.unlockDoc); save(); node.append(btn('v2-secondary', ep.docs[dev.reveal.unlockDoc].title + ' 보기', () => openDoc(dev.reveal.unlockDoc))); }
+    if (dev.reveal.unlockDoc && ep.docs[dev.reveal.unlockDoc]) { S.found = S.found || []; if (!S.found.includes(dev.reveal.unlockDoc)) S.found.push(dev.reveal.unlockDoc); save(); node.append(btn('v2-secondary', ep.docs[dev.reveal.unlockDoc].title + ' 보기', () => openDoc(dev.reveal.unlockDoc, { from: { label: '돌아가기', fn: () => openDialog(node, { label: dev.reveal.title, onClose: () => render() }) } }))); }
     if (dev.reveal.ending) node.append(btn('v2-primary', (dev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; save(); closeDialog(); }));
     else if (target) node.append(btn('v2-primary', josa(target.name, '으로', '로') + ' →', () => { S.scene = target.id; save(); closeDialog(); }));
     else node.append(btn('v2-primary', '계속', () => closeDialog()));

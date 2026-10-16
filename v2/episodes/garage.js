@@ -192,7 +192,7 @@ export default {
     cam: {
       title: '서연 차의 블랙박스',
       scene: 'yard',
-      intro: '어젯밤 기록 중 측문이 찍힌 프레임 여섯 그중 카드를 꺼낸 사람의 입장과 퇴장, 두 프레임을 짚는다',
+      intro: '어젯밤 기록 중 측문이 찍힌 프레임 여섯 카드가 없어진 시간대에 의심스러운 출입 한 쌍, 들어간 장면과 나온 장면을 짚는다',
       docs: ['receipt', 'people'],
       hintCode: 'G-S01',
       hints: [
@@ -221,7 +221,7 @@ export default {
         row.append(mark); wrap.append(row, el('p', 'pick-label', d.pick.length ? `표시한 프레임: ${d.pick.map((id) => FRAMES.find((x) => x.id === id).t).join(' / ')}` : '두 프레임을 표시한다 (입장과 퇴장)'));
         return wrap;
       },
-      commitLabel: '이 두 프레임이 반출이다',
+      commitLabel: '이 두 장면을 표시해 둔다',
       canCommit: (d) => d.pick.length === 2,
       check(d) {
         const p = [...d.pick].sort((a, b) => FRAMES.findIndex((x) => x.id === a) - FRAMES.findIndex((x) => x.id === b));
@@ -230,8 +230,8 @@ export default {
       },
       reveal: {
         title: '21:53:20 → 21:55:20',
-        text: '표시 시각 21:53:20에 들어가 21:55:20에 나왔다 2분 왼 소매에 반사띠가 있는 회색 재킷 나올 때 오른손에 작은 걸 쥐고 있다',
-        scene: ['그런데 이 시계는 7분 빠르다 서버로는 21:46:20 입장, 21:48:20 퇴장 암호화된 두 줄이 그 자리다 왼 소매의 그 번쩍임이 다른 프레임에도 있는지 다시 넘겨 봤다'],
+        text: '표시 시각 21:53:20에 들어가 21:55:20에 나왔다 2분 왼 소매가 번쩍이는 회색 계열 재킷 나올 때 오른손에 작은 걸 쥐고 있다',
+        scene: ['화면 구석의 시각은 블랙박스 시계다 이게 출입 서버의 어느 줄인지는 아직 모른다 왼 소매의 그 번쩍임이 다른 프레임에도 있는지 다시 넘겨 봤다'],
         unlock: null,
       },
     },
@@ -391,7 +391,7 @@ export default {
       '지수는 아무 말도 안 했다 민호는 인계 문서의 메모 줄에 두 줄을 긋고 다시 썼다 「교체 지시: 박정호 사진은 고객에게 반환」',
       '서연은 카드를 받아 들고 한참 보더니 주머니에 넣었다 "이 정비소, 내일부터는 없는 거죠" 열 시에 셔터가 내려갔다 블랙박스는 그때도 7분 빠른 시각을 찍고 있었다',
     ],
-    afterword: '블랙박스 시계는 결국 아무도 고치지 않았다 서연이 그날 저녁 직접 맞췄다',
+    afterword: '정비소에서는 끝내 아무도 블랙박스 시계를 고치지 않았다 서연이 그날 저녁 집 앞에서 직접 맞췄다',
     unlockDoc: 'final',
     next: { href: 'episode.html?case=radio', title: '끝나지 않은 방송', line: '다음은 꺼진 마이크의 새벽 두 시 이야기입니다' },
   },

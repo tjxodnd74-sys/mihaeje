@@ -1,7 +1,12 @@
 // 비가 그친 사진관 — ★2 이야기·자료·장치가 전부 이 파일에 있습니다
 const P = 'assets/v2/studio/';
-const CELLS = ['A', 'B', 'C', 'D'].flatMap((r) => [1, 2, 3, 4].map((c) => r + c));
-const LOCKER_ANSWER = 'D3'; // 봉투엔 C3, 장부 메모: 2010년 선반 교체로 C열이 D열로 밀림
+// 보관함 4×4 할아버지식 라벨: 글자는 왼쪽부터 열(A~D), 숫자는 아래 줄부터 1~4
+// 라벨은 거의 떨어지고 A4(왼쪽 위) A1(왼쪽 아래) D1(오른쪽 아래)만 남았다 → C3 = 왼쪽에서 셋째 열, 위에서 둘째 줄
+const CELLS = [0, 1, 2, 3].flatMap((r) => [0, 1, 2, 3].map((c) => ({ id: `r${r}c${c}`, r, c, label: 'ABCD'[c] + (4 - r) })));
+const LEFT_LABELS = { r0c0: 'A4', r3c0: 'A1', r3c3: 'D1' };
+const LOCKER_ANSWER = 'r1c2'; // C3
+const LOCKER_NAIVE = 'r2c2'; // 글자를 줄(위부터), 숫자를 칸으로 읽으면 여기
+const cellName = (id) => { const x = CELLS.find((k) => k.id === id); return `위에서 ${x.r + 1}째 줄 왼쪽에서 ${x.c + 1}째 칸`; };
 const STRIPS = [
   { id: 'a', start: 1, end: 6 },
   { id: 'b', start: 7, end: 12 },
@@ -88,7 +93,7 @@ export default {
     gnote: {
       title: '접수대의 할아버지 쪽지',
       kind: '할아버지 글씨',
-      html: `<blockquote class="hand">수호야<br>윤서 씨 필름 인화 준비해 둬라 저녁에 온다<br>봉투는 접수대에 있다 이름은 번졌어도 칸 번호는 보일 거다 그 뒤로 선반 한 번 바꾼 건 장부에 적어 뒀다<br>컷은 윤서 씨가 동그라미 쳐 둔 거 하나다 크기하고 노출은 봉투에 적어 뒀다<br>암실 열쇠는 필름 봉투 안에 넣어 뒀다<br>— 할아버지</blockquote><p>봉투에 적어 뒀다는데 봉투 겉면은 번져서 글자가 안 보인다</p>`,
+      html: `<blockquote class="hand">수호야<br>윤서 씨 필름 인화 준비해 둬라 저녁에 온다<br>봉투는 접수대에 있다 이름은 번졌어도 칸 번호는 보일 거다 보관함 라벨은 거의 떨어졌는데, 남은 거 보면 내 셈법은 알 거다<br>컷은 윤서 씨가 동그라미 쳐 둔 거 하나다 크기하고 노출은 봉투에 적어 뒀다<br>암실 열쇠는 필름 봉투 안에 넣어 뒀다<br>— 할아버지</blockquote><p>봉투에 적어 뒀다는데 봉투 겉면은 번져서 글자가 안 보인다</p>`,
     },
     ledger: {
       title: '접수 장부',
@@ -98,7 +103,7 @@ export default {
 <tr><td>3. 9</td><td>0614</td><td>최○○</td><td>C2</td><td>가족 8×10</td></tr>
 <tr><td>3. 11</td><td>0615</td><td>○윤서</td><td class="mono">C3</td><td>필름 4줄 · 인화 보류 (손님 사정)</td></tr>
 <tr><td>3. 15</td><td>0617</td><td>이○○</td><td>C4</td><td>여권</td></tr>
-</table><p class="pt-foot hand-note">※ 2010. 6 선반 교체 — C열 서랍은 한 칸씩 아래 D열로 옮겨 꽂음 (벽의 칸 라벨은 그대로)</p></div><p>2006년 봉투에 적힌 칸 번호는 2010년 선반 교체 뒤로는 그대로 믿으면 안 된다는 뜻이다</p>`,
+</table><p class="pt-foot hand-note">※ 보관 칸 번호는 우리 집 셈법 (글자 먼저, 숫자 나중)</p></div>`,
     },
     wall: {
       title: '벽의 사진들',
@@ -120,11 +125,16 @@ export default {
       kind: '할아버지 글씨 · 암실',
       html: `<blockquote class="hand">1 흰 불 끄고 붉은 등만<br>2 인화지는 그다음에 꺼낸다<br>3 확대기 초점 맞추고, 타이머는 봉투에 적힌 초<br>4 노출 뒤 트레이: 현상 → 정지 → 정착<br>5 정착 끝나야 흰 불 켠다</blockquote><p>트레이 라벨은 떨어져 나갔다 왼쪽부터 현상, 정지, 정착이라고 할아버지가 늘 말했다</p>`,
     },
+    pressed: {
+      title: '봉투에 눌린 글씨',
+      kind: '초록 등 밑에서 읽어 낸 것',
+      html: `<blockquote class="hand">보관 C3<br>인화 컷 23<br>8×10 · 노출 12초</blockquote><p>봉투 위에 다른 종이를 대고 쓴 자국 할아버지 글씨다</p>`,
+    },
     final: {
-      title: '사진 뒷면의 글씨',
+      title: '필름 봉투 속 쪽지',
       kind: '2006년 · 윤서 아버지의 글씨',
       locked: true,
-      html: `<figure class="prop oldphoto"><img src="${P}props/print.webp" alt="2006년 봄, 사진관 앞에서 부모님과 선 윤서" decoding="async"></figure><blockquote class="hand">2006. 3. 11<br>윤서 유학 가는 날 아침, 사진관 앞에서<br>돌아오면 같이 찾으러 오자<br>— 아빠</blockquote><p>윤서 씨는 그해 봄에 떠났고, 부모님은 그 뒤로 사진관에 오지 못했다 할아버지는 인화를 보류해 두고 봉투를 스무 해 동안 보관함에 두었다</p>`,
+      html: `<figure class="prop oldphoto"><img src="${P}props/print.webp" alt="오늘 인화한 사진: 2006년 봄, 사진관 앞에서 부모님과 선 윤서" decoding="async"></figure><p>빈 필름 봉투를 접어 넣다가 안쪽 귀퉁이에 접혀 들어가 있던 쪽지를 봤다 네거티브를 다 빼기 전에는 안 보이던 자리다</p><blockquote class="hand">2006. 3. 11<br>윤서 유학 가는 날 아침, 사진관 앞에서<br>돌아오면 같이 찾으러 오자<br>— 아빠</blockquote><p>윤서 씨는 그해 봄에 떠났고, 부모님은 그 뒤로 사진관에 오지 못했다 할아버지는 인화를 보류해 두고 봉투를 스무 해 동안 보관함에 두었다</p>`,
     },
   },
 
@@ -162,7 +172,8 @@ export default {
       reveal: {
         title: 'C3 · 23 · 8×10 · 12초',
         text: '봉투 위에 다른 종이를 대고 쓴 자국이 비스듬한 빛에 떠올랐다 보관 C3, 인화할 컷 23, 크기 8×10, 노출 12초 할아버지 글씨다',
-        scene: ['C3 보관함 왼쪽 벽 서랍 열여섯 개 중 하나 그런데 장부 밑에 선반을 바꿨다는 메모가 있었다'],
+        scene: ['C3 왼쪽 벽 보관함 열여섯 칸 중 하나 그런데 그 벽 라벨은 거의 다 떨어지고 세 개만 붙어 있었다'],
+        unlockDoc: 'pressed',
         unlock: null,
       },
     },
@@ -170,13 +181,13 @@ export default {
     lockers: {
       title: '필름 보관함',
       scene: 'front',
-      intro: '서랍 열여섯 칸, 라벨은 A1부터 D4 봉투의 칸은 C3 장부의 메모를 믿는다면 그 칸이 아닐 수도 있다',
-      docs: ['ledger', 'gnote'],
+      intro: '서랍 열여섯 칸 라벨이 거의 다 떨어지고 세 개만 남았다 남은 라벨로 할아버지가 칸을 세는 법을 알아내서 C3를 찾는다',
+      docs: ['ledger', 'gnote', 'pressed'],
       hintCode: 'S-S02',
       hints: [
-        '봉투에는 C3라고 적혀 있지 그런데 장부 밑에 2010년 선반 바꾼 메모가 있다',
-        'C열 서랍을 한 칸씩 아래로 옮기고 벽 라벨은 안 바꿨다 C3에 있던 게 지금 어디 있겠냐',
-        'D3',
+        '남은 라벨 세 개 위치를 봐라 A가 둘이지 A4하고 A1이 어디 붙어 있냐',
+        '글자는 왼쪽에서 오른쪽으로 가고, 숫자는 아래에서 위로 올라간다 그러면 C는 몇째 열이고 3은 몇째 줄이겠냐',
+        '왼쪽에서 셋째 열, 위에서 둘째 줄',
       ],
       initial: () => ({ open: null }),
       render(ctx) {
@@ -184,31 +195,30 @@ export default {
         const wrap = el('div', 'lockers-wrap');
         const cab = el('div', 'prop lockerwall'); const im = el('img'); im.src = P + 'props/lockers.webp'; im.alt = '4×4 필름 보관함'; cab.append(im);
         const cols = [22, 37, 52, 67], rows = [11, 30, 49.5, 69];
-        CELLS.forEach((id, i) => {
-          const b = el('button', 'locker-cell' + (d.open === id ? ' picking' : '')); b.type = 'button';
-          b.style.left = cols[i % 4] + '%'; b.style.top = rows[Math.floor(i / 4)] + '%';
-          b.setAttribute('aria-label', `${id} 서랍 열기`); b.innerHTML = `<span class="plate">${id}</span>`;
-          b.onclick = () => { d.open = d.open === id ? null : id; save(); };
+        CELLS.forEach((k) => {
+          const b = el('button', 'locker-cell' + (d.open === k.id ? ' picking' : '') + (LEFT_LABELS[k.id] ? '' : ' bare')); b.type = 'button';
+          b.style.left = cols[k.c] + '%'; b.style.top = rows[k.r] + '%';
+          b.setAttribute('aria-label', `${cellName(k.id)} 서랍 열기${LEFT_LABELS[k.id] ? ' (라벨 ' + LEFT_LABELS[k.id] + ')' : ''}`);
+          b.innerHTML = LEFT_LABELS[k.id] ? `<span class="plate">${LEFT_LABELS[k.id]}</span>` : '<span class="plate gone"></span>';
+          b.onclick = () => { d.open = d.open === k.id ? null : k.id; save(); };
           cab.append(b);
         });
         wrap.append(cab);
         if (!d.open) wrap.append(el('p', 'pick-label', '서랍을 하나 고른다'));
-        else if (d.open === 'C3') wrap.append(el('p', 'pick-label', 'C3 — 2010년 이후 봉투 하나 「강○○ 2012」 2006년 것은 없다'));
-        else if (d.open === LOCKER_ANSWER) wrap.append(el('p', 'pick-label', 'D3 — 누런 봉투 하나 접수 0615 2006년 3월'));
-        else wrap.append(el('p', 'pick-label', `${d.open} — 다른 손님 봉투들 2006년 0615는 없다`));
+        else if (d.open === LOCKER_NAIVE) wrap.append(el('p', 'pick-label', `${cellName(d.open)} — 봉투 하나 「강○○ 2012」 2006년 것은 없다`));
+        else wrap.append(el('p', 'pick-label', `${cellName(d.open)} — 손님 봉투들이 꽂혀 있다 맨 앞 접수번호를 확인하려면 꺼내 봐야 한다`));
         return wrap;
       },
       commitLabel: '이 서랍의 봉투 꺼내기',
       canCommit: (d) => !!d.open,
       check(d) {
         if (d.open === LOCKER_ANSWER) return { ok: true };
-        if (d.open === 'C3') return { ok: false, msg: 'C3에는 2012년 봉투뿐이다 장부 밑 메모: 2010년에 C열을 한 칸씩 아래로 옮겼고 라벨은 그대로다' };
-        if (d.open[0] === 'D') return { ok: false, msg: `${d.open}은 다른 손님 거다 C3에서 메모대로 옮긴 자리를 다시 짚어 보자` };
-        return { ok: false, msg: `${d.open}은 아니다 봉투의 C3에서 출발해서 장부 메모대로 옮겨 보자` };
+        if (d.open === LOCKER_NAIVE) return { ok: false, msg: '2012년 봉투뿐이다 위 줄부터 A, B, C로 센 자리다 남은 라벨이 정말 그렇게 붙어 있었나' };
+        return { ok: false, msg: '0615 봉투가 아니다 남은 라벨 세 개로 셈법부터 다시 잡자' };
       },
       reveal: {
-        title: 'D3',
-        text: 'D3 서랍 안에 접수 0615 봉투 필름 네 줄과 할아버지 메모, 그리고 꼬리표 달린 작은 열쇠 「암실」',
+        title: 'C3',
+        text: '왼쪽에서 셋째, 위에서 둘째 서랍 안에 접수 0615 봉투 필름 네 줄과 할아버지 메모, 그리고 꼬리표 달린 작은 열쇠 「암실」',
         scene: ['필름을 작업대 라이트박스로 가져갔다 암실 문은 그다음이다 어느 컷인지부터 찾아야 한다'],
         unlock: 'table',
       },
@@ -218,7 +228,7 @@ export default {
       title: '라이트박스 위 필름',
       scene: 'table',
       intro: '네 줄을 번호가 1부터 24까지 이어지게 놓고, 뒤집힌 줄은 바로 놓는다 그다음 동그라미 친 23컷을 짚는다',
-      docs: ['edge', 'sleeve'],
+      docs: ['edge', 'sleeve', 'pressed'],
       hintCode: 'S-S03',
       hints: [
         '가장자리 글자가 거울처럼 뒤집혀 보이면 그 줄은 뒤집힌 거다 글자부터 바로 세워라',
@@ -273,7 +283,7 @@ export default {
       title: '확대기와 트레이',
       scene: 'darkroom',
       intro: '순서표대로 한다 불부터 그다음 확대기, 타이머, 그다음 트레이 셋 순서가 틀리면 인화지는 못 쓴다',
-      docs: ['chart', 'sleeve'],
+      docs: ['chart', 'pressed', 'sleeve'],
       hintCode: 'S-S04',
       hints: [
         '흰 불 끄고 붉은 등만 켜야 인화지를 꺼낼 수 있다 그다음이 초점하고 타이머다',
@@ -292,6 +302,8 @@ export default {
         // 2 확대기
         const enl = el('div', 'prop enlarger'); enl.innerHTML = `<img src="${P}props/enlarger.webp" alt="확대기와 타이머" decoding="async"><div class="easel-paper${d.paper ? ' in' : ''}"></div><div class="projection" style="filter:blur(${Math.max(0, Math.abs(d.focus - 65) - 5) / 6}px)"><img src="${P}props/print.webp" alt="" decoding="async"></div>`;
         wrap.append(enl);
+        const loupe = el('figure', 'focus-loupe'); loupe.innerHTML = `<div class="loupe-glass"><img src="${P}props/print.webp" alt="확대경으로 본 이젤 위의 상" decoding="async" style="filter:invert(1) sepia(.4) blur(${(Math.max(0, Math.abs(d.focus - 65) - 5) / 3).toFixed(1)}px)"></div><figcaption>확대경으로 본 이젤 위 상 · 초점 손잡이 ${d.focus}</figcaption>`;
+        wrap.append(loupe);
         const ctl = el('div', 'enl-controls');
         const paperBtn = el('button', 'chip' + (d.paper ? ' on' : ''), d.paper ? '인화지 올려짐 (8×10)' : '인화지 꺼내 올리기 (8×10)'); paperBtn.type = 'button'; paperBtn.onclick = () => { if (d.paper) return; if (d.white) { ctx.status('흰 불 아래서 인화지를 꺼내면 바로 타 버린다 불부터'); return; } if (!d.red) { ctx.status('깜깜해서 손이 안 보인다 붉은 등부터 켜자'); return; } d.paper = true; save(); };
         const fl = el('label', 'tilt-label'); fl.append(el('span', '', `초점 손잡이 ${d.focus}`)); const fr = el('input'); fr.type = 'range'; fr.min = 0; fr.max = 100; fr.step = 5; fr.value = d.focus; fr.setAttribute('aria-label', '초점 손잡이'); fr.oninput = () => { d.focus = Number(fr.value); save(); }; fl.append(fr);
@@ -327,7 +339,7 @@ export default {
       },
       reveal: {
         title: '스무 해 만의 한 장',
-        text: '흰 불을 켰다 트레이 안에서 세 사람이 사진관 앞에 서 있다 2006년 봄, 지금보다 젊은 간판 뒷면에 글씨가 있었다',
+        text: '흰 불을 켰다 트레이 안에서 세 사람이 사진관 앞에 서 있다 2006년 봄, 지금보다 젊은 간판 빈 필름 봉투를 접다가 안쪽에 접혀 있던 쪽지 한 장이 손에 걸렸다',
         scene: ['접수실 쪽에서 문 열리는 소리가 났다 할아버지 목소리, 그리고 모르는 여자 목소리 "스무 해 만이네요 사장님"'],
         ending: true,
         endingLabel: '붉은 등 아래로',
@@ -346,7 +358,7 @@ export default {
       '"스무 해 동안 인화 안 한 봉투는 이거 하나다" 할아버지가 말했다 "손님이 찾으러 온다고 했으면 오는 거야"',
       '사진은 벽 맨 아래 줄 빈 액자에 들어갔다 8×10 할아버지가 비워 두라던 자리였다 윤서 씨가 한참 보다가 사진을 찍어도 되냐고 물었다 할아버지는 카메라를 내줬다 처음으로 할아버지가 사진 안에 섰다',
     ],
-    afterword: '봉투는 비워진 채 D3에 그대로 있다 할아버지가 그건 버리지 말라고 했다',
+    afterword: '봉투는 비워진 채 C3에 그대로 있다 할아버지가 그건 버리지 말라고 했다',
     unlockDoc: 'final',
     next: { href: 'play.html?case=station', title: '세 번째 승강장', line: '다음은 없는 승강장에서 온 사진 이야기입니다' },
   },
