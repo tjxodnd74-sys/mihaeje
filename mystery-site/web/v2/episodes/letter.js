@@ -424,6 +424,6 @@ export default {
     ],
     afterword: '봉수 아저씨한테 문자를 보냈다 「할머니가 알고 계셨대요 고마웠대요」 답장은 한 시간 뒤에 왔다 「그래」 그게 다였다',
     unlockDoc: 'final',
-    next: { href: 'episode.html?case=apartment', title: '404호의 불빛', line: '다음은 밤마다 켜지는 빈집 불빛 이야기입니다' },
+    next: { href: 'play.html?case=apartment', title: '404호의 불빛', line: '다음은 밤마다 켜지는 빈집 불빛 이야기입니다' },
   },
 };

@@ -608,6 +608,63 @@ async function letter({ mobile = false } = {}) {
   await browser.close();
 }
 
+
+async function apartment({ mobile = false } = {}) {
+  const { browser, page, errors } = await L.launch({ mobile });
+  console.log('=== apartment v2' + (mobile ? ' (mobile)' : ''));
+  const setDial = async (digits) => { for (let i = 0; i < digits.length; i++) { const cur = await page.evaluate((i) => Number(document.querySelectorAll('dialog[open] .dial .num')[i].textContent), i); const up = (digits[i] - cur + 10) % 10; for (let k = 0; k < up; k++) await L.click(page, `${i + 1}번째 다이얼 올리기`); } };
+  try {
+    await L.fresh(page, '/episode.html?case=apartment'); await L.sleep(600); L.check(page.url().includes('play.html?case=apartment'), 'old address redirects');
+    L.check((await L.mainText(page)).includes('★★★★☆'), '4 stars shown');
+    await L.click(page, '처음부터 하기');
+    L.check((await L.mainText(page)).includes('404호 귀신'), 'opening shown');
+    await L.click(page, '둑길에서 건물 보기'); await L.sleep(400);
+    for (const [d, t] of [['오늘 작업 지시', '민원 3건'], ['동네 커뮤니티 글', '404호'], ['둑길의 철거 안내판', '반지하']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    L.check(await page.evaluate(() => true), 'post opened');
+    await hotspot(page, '건물 정문으로'); await L.sleep(400);
+    for (const [d, t] of [['우편함 위 호수 안내', '왼쪽 집부터'], ['게시판의 이주 현황', '301호']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    await hotspot(page, '우편함');
+    L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), '★4: no guide');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .mail-slot').length === 24), 'mailbox: 24 slots');
+    await L.click(page, '404 우편함', { exact: true }); await commit(page); L.check((await status(page)).includes('글쓴이'), 'mailbox: rumor decoy');
+    await L.click(page, '304 우편함', { exact: true }); await commit(page); L.check((await status(page)).includes('어느 쪽에서'), 'mailbox: mirror decoy');
+    await L.click(page, '401 우편함', { exact: true }); await commit(page); L.check((await status(page)).includes('맨 아래 줄'), 'mailbox: basement decoy');
+    await L.click(page, '301 우편함', { exact: true }); await shot(page, 'a-mail'); await commit(page); L.check(await dlgHas(page, '햇살요양병원'), 'mailbox solved');
+    await L.click(page, '관리실로'); await L.sleep(400);
+    for (const [d, t] of [['책상 위 근무일지', '한 고리에'], ['입주자 명부', '김순례'], ['벽에 붙은 창고 배정표', 'B03'], ['벽 달력', '동그라미']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    await hotspot(page, '열쇠함');
+    await L.click(page, '301 고리', { exact: true }); await commit(page); L.check((await status(page)).includes('빈 고리'), 'hooks: empty 301');
+    await L.click(page, 'B01 고리', { exact: true }); await commit(page); L.check((await status(page)).includes('누구 창고'), 'hooks: B01 decoy');
+    await L.click(page, 'B03 고리', { exact: true }); await shot(page, 'a-hooks'); await commit(page); L.check(await dlgHas(page, '꼬리표에 볼펜으로'), 'hooks solved');
+    await L.click(page, '301호로'); await L.sleep(400);
+    L.check((await L.mainText(page)).includes('배터리 등'), 'moved to 301');
+    for (const [d, t] of [['방문 옆 대피 안내도', '북쪽 벽'], ['테이프 붙은 스위치', '작은방']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    await hotspot(page, '싱크대 밑');
+    await setDial([1, 3, 2]); await commit(page); L.check((await status(page)).includes('밖에서 찍은'), 'box: mirror decoy');
+    await setDial([3, 1, 2]); await shot(page, 'a-box'); await commit(page); L.check(await dlgHas(page, '접힌 쪽지'), 'box solved');
+    await L.click(page, '상자 안 쪽지 보기'); L.check(await dlgHas(page, '햇살요양병원 3층'), 'mnote via reveal'); await L.click(page, '← 돌아가기'); await L.closeDialog(page); await L.sleep(300);
+    await hotspot(page, '상자 위 가계부'); L.check(await dlgHas(page, '거실 불부터'), 'doc: book'); await L.closeDialog(page);
+    await hotspot(page, '꺼낸 타이머 셋');
+    await commit(page); L.check((await status(page)).includes('틀렸다고 한 순서'), 'timers: current program explained');
+    await L.click(page, '1 안방 켜기 21:00', { exact: true }); await L.click(page, '끄기 22:00', { exact: true }); await commit(page); L.check((await status(page)).includes('혼자 되신 뒤'), 'timers: 2015 decoy');
+    await L.click(page, '2 거실 켜기 21:00', { exact: true }); await L.click(page, '3 작은방 켜기 21:30', { exact: true }); await L.click(page, '1 안방 켜기 22:30', { exact: true }); await L.click(page, '끄기 23:00', { exact: true });
+    await shot(page, 'a-timers'); await commit(page); L.check(await dlgHas(page, '그 집의 저녁'), 'timers solved');
+    await L.click(page, '다음 날 밤 아홉 시, 둑길'); await L.sleep(500);
+    L.check((await L.mainText(page)).includes('404호에는 불이 켜지지 않았다'), 'ending reached');
+    await shot(page, 'a-ending');
+    await L.click(page, '할머니와의 통화 읽기'); L.check(await dlgHas(page, '거실부터였어'), 'final unlocked'); await L.closeDialog(page);
+    await L.click(page, '자료 다시 보기'); L.check(!(await L.dialogText(page)).includes('아직 읽지 않은'), 'all docs read');
+  } catch (e) {
+    console.log('FAIL exception', e.message);
+    console.log('buttons now', JSON.stringify(await L.buttons(page)));
+    console.log('dialog', (await L.dialogText(page)).replace(/\n+/g, ' | ').slice(0, 400));
+    process.exitCode = 1;
+  }
+  const bad = errors.filter((e) => !/woff2/.test(e));
+  L.check(!bad.length, 'no page errors ' + JSON.stringify(bad));
+  await browser.close();
+}
+
 const which = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 const mobile = process.argv.includes('--mobile');
 await L.ensureServer();
@@ -618,3 +675,4 @@ if (!which.length || which.includes('pet-home')) await petHome({ mobile });
 if (!which.length || which.includes('studio')) await studio({ mobile });
 if (!which.length || which.includes('garage')) await garage({ mobile });
 if (!which.length || which.includes('letter')) await letter({ mobile });
+if (!which.length || which.includes('apartment')) await apartment({ mobile });

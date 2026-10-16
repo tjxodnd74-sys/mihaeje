@@ -1,6 +1,6 @@
 // 모든 v2 편의 자료·장치를 열어 가로로 넘치는 요소가 있는지 봅니다 (PC/모바일). 사용: node qa-tools/layout-check.mjs
 import * as L from './playlib.mjs';
-const EPS = ['station', 'cat-invite', 'ohang', 'pet-home', 'studio', 'garage', 'letter'];
+const EPS = ['station', 'cat-invite', 'ohang', 'pet-home', 'studio', 'garage', 'letter', 'apartment'];
 await L.ensureServer();
 let bad = 0;
 for (const mobile of [false, true]) for (const id of EPS) {
