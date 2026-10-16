@@ -428,6 +428,6 @@ export default {
     ],
     afterword: '6번 위에 새 쪽지를 붙였다 「6번은 밤 12시 10분부터 20분 정류장 담당 손대지 말 것」 엄마 쪽지는 떼지 않고 그 아래 나란히 붙였다',
     unlockDoc: 'final',
-    next: { href: 'episode.html?case=radio', title: '끝나지 않은 방송', line: '다음은 꺼진 마이크의 새벽 두 시 이야기입니다' },
+    next: { href: 'play.html?case=radio', title: '끝나지 않은 방송', line: '다음은 꺼진 마이크의 새벽 두 시 이야기입니다' },
   },
 };

@@ -166,7 +166,7 @@ async function main() {
     stage.append(img);
     (scene.overlays || []).forEach((o) => { const n = html('div', 'v2-stage-ov ' + (o.cls || ''), o.html); n.style.cssText = `left:${o.x}%;top:${o.y}%;width:${o.w}%;height:${o.h}%;${o.style || ''}`; n.setAttribute('aria-hidden', 'true'); stage.append(n); });
     const seenSet = new Set(S.seen);
-    const autoTravel = ep.scenes.filter((sc) => sc.unlockedBy && S.solved.includes(sc.unlockedBy) && ep.devices[sc.unlockedBy]?.scene === scene.id && !S.visited.includes(sc.id)).map((sc) => ({ id: 'go-' + sc.id, x: 50, y: 92, label: sc.name + '(으)로 가기', kind: 'travel', to: sc.id, auto: true }));
+    const autoTravel = ep.scenes.filter((sc) => sc.unlockedBy && S.solved.includes(sc.unlockedBy) && ep.devices[sc.unlockedBy]?.scene === scene.id && !S.visited.includes(sc.id)).map((sc, i, arr) => ({ id: 'go-' + sc.id, x: arr.length > 1 ? 30 + i * (40 / (arr.length - 1)) : 50, y: 92, label: sc.name + '(으)로 가기', kind: 'travel', to: sc.id, auto: true }));
     [...scene.hotspots, ...autoTravel].forEach((h) => {
       if (h.visible && !h.visible(S)) return;
       const done = h.kind === 'doc' ? S.read.includes(h.doc) : h.kind === 'device' ? S.solved.includes(h.device) : false;
@@ -417,7 +417,7 @@ async function main() {
     if (after) paper.append(el('p', 'v2-afterword', after));
     if (e.unlockDoc && ep.docs[e.unlockDoc]) paper.append(btn('v2-secondary', ep.docs[e.unlockDoc].title + ' 읽기', () => openDoc(e.unlockDoc)));
     const row = el('div', 'v2-row');
-    if (e.next) { const a = el('a', 'v2-primary', `다음 이야기 · ${e.next.title} →`); a.href = e.next.href; row.append(a); }
+    if (e.next) { const a = el('a', 'v2-primary', e.next.label || `다음 이야기 · ${e.next.title} →`); a.href = e.next.href; row.append(a); }
     row.append(btn('v2-secondary', '자료 다시 보기', () => openIndex()));
     row.append(btn('v2-secondary', '의견 남기기', () => openFeedback()));
     row.append(btn('v2-secondary subtle', '처음 화면', () => { S.screen = 'intro'; save(); render(); }));
