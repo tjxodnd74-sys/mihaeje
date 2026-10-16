@@ -540,6 +540,70 @@ async function garage({ mobile = false } = {}) {
   await browser.close();
 }
 
+
+async function letter({ mobile = false } = {}) {
+  const { browser, page, errors } = await L.launch({ mobile });
+  console.log('=== letter v2' + (mobile ? ' (mobile)' : ''));
+  const setDial = async (digits) => { for (let i = 0; i < digits.length; i++) { const cur = await page.evaluate((i) => Number(document.querySelectorAll('dialog[open] .dial .num')[i].textContent), i); const up = (digits[i] - cur + 10) % 10; for (let k = 0; k < up; k++) await L.click(page, `${i + 1}번째 다이얼 올리기`); } };
+  try {
+    await L.fresh(page, '/play.html?case=letter');
+    L.check((await L.mainText(page)).includes('★★★☆☆'), '3 stars shown');
+    await L.click(page, '처음부터 하기');
+    L.check((await L.mainText(page)).includes('봉수 아저씨였다'), 'opening shown');
+    await L.click(page, '구분실 불 켜기'); await L.sleep(400);
+    L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '구분함'))), 'rack hidden before locker');
+    for (const [d, t] of [['봉수 아저씨 문자', '뜯지는 말고'], ['보관함 문에 붙은 쪽지', '처음 돌아온 날'], ['반송 대장', '정○린'], ['게시판의 주소 안내', '17-4-1']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    // locker
+    await hotspot(page, '반송 보관함');
+    L.check(!(await page.evaluate(() => document.querySelector('dialog[open] .v2-guide')?.open)), '★3: guide collapsed');
+    await setDial([1, 1, 0, 2]); await commit(page); L.check((await status(page)).includes('17-14'), 'locker: 17-14 decoy');
+    await setDial([0, 3, 1, 8]); await commit(page); L.check((await status(page)).includes('처음 돌아온 날이 아니다'), 'locker: later return');
+    await setDial([0, 3, 1, 9]); await shot(page, 'l-locker'); await commit(page); L.check(await dlgHas(page, '맨 아래 칸에 고무줄로'), 'locker solved');
+    await L.click(page, '계속'); await L.sleep(300);
+    await hotspot(page, '다섯 통의 겉봉'); L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .lenv').length === 5), 'five envelopes rendered'); await shot(page, 'l-envs'); await L.closeDialog(page);
+    await hotspot(page, '묶음에 끼워진 신청서'); L.check(await dlgHas(page, '뒤채'), 'doc: forward'); await L.closeDialog(page);
+    // rack
+    await hotspot(page, '구분함');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .rack-slot').length === 16), 'rack: 16 slots');
+    await L.click(page, '미루새길 9 칸', { exact: true }); await commit(page); L.check((await status(page)).includes('빌라'), 'rack: villa decoy');
+    await L.click(page, '미루새길 11 칸', { exact: true }); await commit(page); L.check((await status(page)).includes('17-14'), 'rack: 11 decoy');
+    await L.click(page, '미루새길 9-1 칸', { exact: true }); await shot(page, 'l-rack'); await commit(page); L.check(await dlgHas(page, '쓴 사람은 정해린'), 'rack solved');
+    await L.click(page, '9-1 칸의 쪽지 보기'); L.check(await dlgHas(page, '이제는 받겠습니다'), 'hcard via reveal'); await L.click(page, '← 돌아가기');
+    await L.click(page, '집배원 휴게실로'); await L.sleep(400);
+    L.check((await L.mainText(page)).includes('아저씨 우비가'), 'moved to breakroom');
+    for (const [d, t] of [['못에 걸린 순로표', '파란 대문'], ['벽의 단체 사진', '38년']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    await hotspot(page, '맨 끝 사물함');
+    await setDial([1, 2, 6]); await commit(page); L.check((await status(page)).includes('2019년'), 'staffbox: old route decoy');
+    await setDial([1, 2, 7]); await commit(page); L.check((await status(page)).includes('빌라'), 'staffbox: villa decoy');
+    await setDial([1, 2, 8]); await shot(page, 'l-staff'); await commit(page); L.check(await dlgHas(page, '업무 수첩'), 'staffbox solved');
+    await L.click(page, '봉수 아저씨의 수첩 보기'); L.check(await dlgHas(page, '내가 지는 거다'), 'notebook via reveal'); await L.click(page, '← 돌아가기');
+    await L.click(page, '미루새길 골목으로'); await L.sleep(400);
+    L.check((await L.mainText(page)).includes('파란 대문이 있다'), 'moved to alley');
+    L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '할머니가 내민 빈 봉투'))), 'reply hidden before meeting');
+    for (const [d, t] of [['빌라 우편함', '파란 대문 틈'], ['파란 대문', '이번엔 돌아오지 않게']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    await hotspot(page, '할머니가 내민 빈 봉투');
+    const pick = async (q, v) => L.click(page, q + ': ' + v, { exact: true });
+    await pick('우편번호', '35271'); await pick('주소', '산장길 31-2'); await pick('층', '2층'); await pick('받는 사람', '오정민'); await commit(page);
+    L.check((await status(page)).includes('대장에'), 'reply: wrong zip explained');
+    await pick('우편번호', '35217'); await pick('층', '1층'); await commit(page); L.check((await status(page)).includes('옮겼다'), 'reply: old floor explained');
+    await pick('층', '2층'); await shot(page, 'l-reply'); await commit(page);
+    L.check(await dlgHas(page, '꽉 찬 봉투'), 'reply solved');
+    await L.click(page, '할머니 답장을 받아 들고'); await L.sleep(500);
+    L.check((await L.mainText(page)).includes('돌아오지 않을 봉투'), 'ending reached');
+    await shot(page, 'l-ending');
+    await L.click(page, '열흘 뒤 온 봉투 읽기'); L.check(await dlgHas(page, '3월 14일엔 제가 갈게요'), 'final unlocked'); await L.closeDialog(page);
+    await L.click(page, '자료 다시 보기'); L.check(!(await L.dialogText(page)).includes('아직 읽지 않은'), 'all docs read');
+  } catch (e) {
+    console.log('FAIL exception', e.message);
+    console.log('buttons now', JSON.stringify(await L.buttons(page)));
+    console.log('dialog', (await L.dialogText(page)).replace(/\n+/g, ' | ').slice(0, 400));
+    process.exitCode = 1;
+  }
+  const bad = errors.filter((e) => !/woff2/.test(e));
+  L.check(!bad.length, 'no page errors ' + JSON.stringify(bad));
+  await browser.close();
+}
+
 const which = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 const mobile = process.argv.includes('--mobile');
 await L.ensureServer();
@@ -549,3 +613,4 @@ if (!which.length || which.includes('ohang')) await ohang({ mobile });
 if (!which.length || which.includes('pet-home')) await petHome({ mobile });
 if (!which.length || which.includes('studio')) await studio({ mobile });
 if (!which.length || which.includes('garage')) await garage({ mobile });
+if (!which.length || which.includes('letter')) await letter({ mobile });

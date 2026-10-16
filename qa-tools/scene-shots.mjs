@@ -1,6 +1,6 @@
 // 모든 v2 장면을 장치 다 푼 상태로 열어 무대 스크린샷을 찍습니다 (핫스팟 위치 확인용)
 import * as L from './playlib.mjs';
-const EPS = ['station', 'cat-invite', 'ohang', 'pet-home', 'studio', 'garage'];
+const EPS = ['station', 'cat-invite', 'ohang', 'pet-home', 'studio', 'garage', 'letter'];
 const out = process.argv[2];
 await L.ensureServer();
 const { browser, page } = await L.launch({ mobile: false });

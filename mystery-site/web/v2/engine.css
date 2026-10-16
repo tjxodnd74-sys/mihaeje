@@ -780,3 +780,42 @@ html[data-case="garage"]{
 html[data-case="garage"] .v2-paper::before{height:8px;opacity:1;border-radius:0}
 html[data-case="garage"] .v2-primary,html[data-case="garage"] .v2-secondary,html[data-case="garage"] .chip,html[data-case="garage"] .v2-bar-btn,html[data-case="garage"] .v2-bench-tab{border-radius:2px}
 html[data-case="garage"] .v2-doc-title{text-transform:none;letter-spacing:.01em}
+
+/* 반송된 편지: 우체국 빨강 · 항공우편 띠 · 흰 봉투 */
+html[data-case="letter"]{
+  --night:#17191d;--night-2:#22252b;--night-rgb:23,25,29;--night2-rgb:34,37,43;
+  --line:#474b54;--line-2:#30333a;--chip:#2a2d34;--dock:#1a1c20;
+  --soft:#d3d6dc;--soft-2:#dfe1e5;--soft-3:#a3a8b1;--fog:#979ca6;
+  --lamp:#e2553f;--lamp-deep:#b33a28;--enamel:#f5f3ee;--ink:#1c1e22;
+  --paper:#fbfaf6;--paper-ink:#25282e;--paper-line:#dcd9cf;--radius:4px;
+  --paper-strip:repeating-linear-gradient(135deg,#d33a2c 0 12px,#fbfaf6 12px 18px,#2f4f9a 18px 30px,#fbfaf6 30px 36px);
+}
+html[data-case="letter"] .v2-paper::before{height:8px;opacity:1}
+.lenv{position:relative;margin:0 0 4px;container-type:inline-size}
+.lenv img{width:100%;border-radius:4px}
+.lenv-from{position:absolute;left:10%;top:20%;display:grid;gap:.3cqw;font-family:var(--hand);font-size:3.1cqw;line-height:1.15;color:#2b3570;transform:rotate(-1deg)}
+.lenv-from i{font-family:var(--sans);font-style:normal;font-size:1.6cqw;color:#8a8576;letter-spacing:.05em}
+.lenv-from .zip{font-family:var(--hand);font-weight:400;font-size:3.4cqw;letter-spacing:.35em}
+.lenv-from .zip.empty{color:#b9b4a6;letter-spacing:.1em}
+.lenv-from s{text-decoration:none;color:rgba(43,53,112,.35);filter:blur(.25cqw)}
+.lenv-mark{position:absolute;right:16%;top:18%;width:15cqw;height:15cqw;border:.35cqw solid rgba(40,40,60,.55);border-radius:50%;display:grid;place-content:center;text-align:center;font-family:var(--sans);font-size:1.7cqw;line-height:1.3;color:rgba(40,40,60,.7);transform:rotate(-14deg)}
+.lenv-mark em{font-style:normal;display:block}
+.lenv-to{position:absolute;left:46%;top:52%;font-family:var(--hand);font-size:4.4cqw;line-height:1.25;color:#1f2a66;transform:rotate(-.6deg)}
+.lenv-sticker{position:absolute;left:11%;bottom:20%;background:#f2d24b;padding:.6cqw 1.4cqw;display:grid;gap:.1cqw;transform:rotate(-4deg);box-shadow:0 .2cqw .5cqw rgba(0,0,0,.18);font-family:var(--sans);color:#3a2f10}
+.lenv-sticker b{font-size:2.6cqw;color:#c0362a;letter-spacing:.3em}
+.lenv-sticker small{font-size:1.7cqw;font-weight:700}
+.lenv-sticker small.pen{font-family:var(--hand);font-weight:400;font-size:2.2cqw;color:#2b3570}
+.lenv.reply .lenv-to.written{left:22%;top:36%;display:grid;gap:.4cqw;font-size:3.6cqw}
+.lenv.reply .lenv-to .blank{display:block;width:34cqw;border-bottom:.2cqw dashed rgba(31,42,102,.35);height:4.4cqw}
+.letterlock-wrap{max-width:560px;margin:0 auto}
+.letterlock-wrap .dials{margin-top:10px}
+.rack-wrap{max-width:720px;margin:0 auto}
+.rackphoto{position:relative;container-type:inline-size}
+.rack-slot{position:absolute;transform:translateX(-50%);width:22%;height:23%;border:0;background:transparent;cursor:pointer;display:grid;align-items:start;justify-items:center;padding-top:.3%}
+.rack-label{font-family:var(--sans);font-weight:800;font-size:1.75cqw;line-height:1.2;color:#4a3410;background:linear-gradient(#efe0b4,#cfb370);padding:.25cqw .8cqw;border-radius:.3cqw;box-shadow:inset 0 0 0 .12cqw #8a6a2a;white-space:nowrap}
+.rack-slot:hover,.rack-slot:focus-visible{outline:none;box-shadow:inset 0 0 0 .4cqw rgba(226,85,63,.7)}
+.rack-slot.picking{box-shadow:inset 0 0 0 .55cqw var(--lamp)}
+.ledger-table td.hand-cell,.paper-table td.hand-cell{font-family:var(--hand);font-size:17px;color:#2b3570}
+.ledgerphoto,.clipphoto{max-width:520px;margin:0 auto 10px}
+.paper-table.old{opacity:.72;background:#efe6cc}
+@media (max-width:640px){.ledger-table table{font-size:12.5px}.ledger-table td.hand-cell{font-size:15px}.ledger-table th,.ledger-table td{padding:5px 3px}}
