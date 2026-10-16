@@ -37,6 +37,8 @@ const MAIL_ANSWER = '301';
 // 열쇠함 6줄 × 4칸
 const HOOKROWS = [['501', '502', '503', '504'], ['401', '402', '403', '404'], ['301', '302', '303', '304'], ['201', '202', '203', '204'], ['101', '102', '103', '104'], ['B01', 'B02', 'B03', 'B04']];
 const HOOK_ANSWER = 'B03';
+// 꼬리표 뒷면(손글씨)과 고리에 걸린 열쇠 개수
+const RING = { B01: ['김순례', 1], B02: ['박정호', 1], B03: ['김순자', 2], B04: ['공구', 1] };
 const BOX_CODE = [3, 1, 2];
 const TIMES = ['21:00', '21:30', '22:00', '22:30'];
 const OFFS = ['22:00', '22:30', '23:00', '23:30'];
@@ -190,12 +192,12 @@ export default {
     board: {
       title: '게시판의 이주 현황',
       kind: '9월 30일 게시',
-      html: `<div class="paper-table"><p class="pt-head">A동 이주 현황 (20세대)</p><table><tr><th>이주 완료</th><td>19세대</td></tr><tr><th>남은 세대</th><td>301호 (입원 중 · 짐 정리는 보호자 대리)</td></tr><tr><th>단전</th><td>10월 1일 한전</td></tr></table><p class="pt-foot">우편물은 관리실에서 모아 전달합니다 관리인 문철호</p></div>`,
+      html: `<div class="paper-table"><p class="pt-head">A동 이주 현황 (20세대)</p><table><tr><th>이주 완료</th><td>19세대</td></tr><tr><th>남은 세대</th><td>1세대 (입원 중 · 짐 정리는 보호자가 대신)</td></tr><tr><th>단전</th><td>10월 1일 한전</td></tr></table><p class="pt-foot">우편물은 관리실에서 모아 전달합니다 관리인 문철호</p></div>`,
     },
     log: {
       title: '책상 위 근무일지',
       kind: '관리인 문철호 · 10월',
-      html: `<blockquote class="hand">10. 1 단전 엘리베이터 없음 계단 비상등만<br>10. 2 301 열쇠 할머니 창고 열쇠랑 한 고리에 같이 걸어 둠 자꾸 어디 뒀는지 잊어버려서<br>10. 5 햇살요양병원 다녀옴 3층 창가 자리로 옮기셨다 둑 너머로 우리 동이 보인다고 좋아하심<br>10. 9 철물점 배터리 등 세 개 타이머 셋 배터리 두 개<br>10. 12 밤 9시 통화<br>10. 16 밤 9시 통화 순서가 틀렸다고 하심<br>10. 21 커뮤니티에 귀신이라고 글 올라왔다고 302 아들이 알려 줌 허허</blockquote>`,
+      html: `<blockquote class="hand">10. 1 단전 계단 비상등만<br>10. 2 그 집 열쇠 할머니 창고 열쇠랑 한 고리에 같이 자꾸 어디 뒀는지 잊어버려서<br>10. 5 병원<br>10. 9 철물점 (영수증 서랍)<br>10. 12 밤 9시 ☎<br>10. 16 밤 9시 ☎<br>10. 21 커뮤니티에 귀신 글 올라왔다고 302 아들이 알려 줌 허허</blockquote>`,
     },
     roster: {
       title: '입주자 명부',
@@ -286,40 +288,54 @@ export default {
     hooks: {
       title: '열쇠함',
       scene: 'office',
-      intro: '스물네 개 고리 301 고리는 비어 있다',
+      intro: '스물네 개 고리 꼬리표 앞면엔 호수, 뒷면엔 관리인 손글씨 301 고리는 비어 있다',
       docs: ['log', 'roster', 'storage'],
       hintCode: 'A-S02',
       hints: [
-        '근무일지 10월 2일 301 열쇠를 다른 고리에 같이 걸었다고 했지',
-        '할머니 창고가 몇 번인지는 배정표에 이름으로만 있어 이름 비슷한 분이 한 분 더 계셔 명부에서 301이 누군지 먼저',
-        'B03 고리',
+        '근무일지 10월 2일 그 집 열쇠를 할머니 창고 열쇠랑 한 고리에 같이 걸었다고 했지',
+        '그 할머니가 누구고 창고가 몇 번인지는 명부랑 배정표를 같이 봐 이름 비슷한 분이 한 분 더 계셔 꺼내 보면 열쇠가 몇 개 달렸는지도 보이고',
+        'B03 고리 열쇠 두 개',
       ],
-      initial: () => ({ pick: null }),
+      initial: () => ({ hand: null, flip: false }),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'prop keywall'); wrap.innerHTML = `<img src="${P}props/keys.webp" alt="스물네 고리 열쇠함" decoding="async">`;
         HOOKROWS.forEach((row, r) => row.forEach((lab, c) => {
-          const b = el('button', 'hook-slot' + (d.pick === lab ? ' picking' : '')); b.type = 'button';
+          const b = el('button', 'hook-slot' + (d.hand === lab ? ' taken' : '')); b.type = 'button';
           b.style.left = [31.25, 43.75, 56.25, 68.65][c] + '%'; b.style.top = [8.0, 23.0, 38.1, 52.8, 67.2, 81.8][r] + '%';
-          b.setAttribute('aria-label', `${lab} 고리`); b.innerHTML = `<span class="hook-tag">${lab}</span>`;
-          b.onclick = () => { d.pick = d.pick === lab ? null : lab; save(); };
+          b.setAttribute('aria-label', d.hand === lab ? `${lab} 고리에 도로 걸기` : `${lab} 고리에서 꺼내기`); b.innerHTML = `<span class="hook-tag">${lab}</span>`;
+          b.onclick = () => {
+            if (lab === '301') { save(); ctx.status('빈 고리다 열쇠가 없다'); return; }
+            if (d.hand === lab) { d.hand = null; d.flip = false; } else { d.hand = lab; d.flip = false; }
+            save();
+          };
           wrap.append(b);
         }));
-        const box = el('div', 'mail-wrap'); box.append(wrap, el('p', 'pick-label', d.pick ? `${d.pick} 고리` : '고리를 하나 고른다'));
+        const box = el('div', 'mail-wrap'); box.append(wrap);
+        const hand = el('div', 'key-hand');
+        if (!d.hand) hand.append(el('p', 'pick-label', '고리를 누르면 열쇠를 꺼내 손에 든다 다시 누르면 도로 건다'));
+        else {
+          const ring = RING[d.hand] || ['', 1];
+          const tag = el('div', 'tag-big' + (d.flip ? ' back' : ''), d.flip ? (ring[0] || '(뒷면 비어 있음)') : d.hand);
+          const flip = el('button', 'chip', d.flip ? '꼬리표 앞면 보기' : '꼬리표 뒤집기'); flip.type = 'button'; flip.onclick = () => { d.flip = !d.flip; save(); };
+          const back = el('button', 'chip', '도로 걸기'); back.type = 'button'; back.onclick = () => { d.hand = null; d.flip = false; save(); };
+          hand.append(el('p', 'pick-label', `손에 든 것 · ${d.hand} 고리 · 고리에 열쇠 ${ring[1]}개`), tag, el('div', 'pick-row', ''));
+          hand.lastChild.append(flip, back);
+        }
+        box.append(hand);
         return box;
       },
-      commitLabel: '이 고리 열쇠 빼기',
-      canCommit: (d) => !!d.pick,
+      commitLabel: '이 열쇠 들고 3층으로',
+      canCommit: (d) => !!d.hand,
       check(d) {
-        if (d.pick === HOOK_ANSWER) return { ok: true };
-        if (d.pick === '301') return { ok: false, msg: '빈 고리다 근무일지에 301 열쇠를 어디 같이 걸었는지 적혀 있었다' };
-        if (d.pick === 'B01') return { ok: false, msg: '창고 열쇠 하나뿐이다 B01은 누구 창고였지' };
-        return { ok: false, msg: '그 집 열쇠가 아니다' };
+        if (d.hand === HOOK_ANSWER) return { ok: true };
+        d.hand = null; d.flip = false;
+        return { ok: false, msg: '3층까지 올라가 꽂아 봤지만 301 문이 안 열린다 열쇠를 도로 걸었다' };
       },
       reveal: {
         title: 'B03',
-        text: 'B03 고리에 열쇠가 두 개 창고 열쇠, 그리고 꼬리표에 볼펜으로 「301」',
-        scene: ['계단 비상등을 따라 3층으로 올라갔다 301호 문 아래로 노란빛이 새어 나왔다'],
+        text: 'B03 고리의 열쇠는 둘 하나는 창고 열쇠, 하나는 꼬리표 없는 현관 열쇠 301 문에 꽂자 한 번에 돌아갔다',
+        scene: ['문 아래로 노란빛이 새어 나왔다'],
         unlock: 'unit',
       },
     },
@@ -369,22 +385,34 @@ export default {
         '2009년 여백 순서 그대로 애들 방은 작은방',
         '거실 21:00 · 작은방 21:30 · 안방 22:30 · 끄기 23:00',
       ],
-      initial: () => ({ living: '22:00', small: '21:00', main: '21:30', off: '23:00' }),
+      initial: () => ({ living: '22:00', small: '21:00', main: '21:30', off: '23:00', t: 2 }),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'timers-wrap');
         const ph = el('div', 'prop timerphoto'); ph.innerHTML = `<img src="${P}props/timers.webp" alt="배터리에 연결된 타이머 셋" decoding="async">${[['1 안방', 21.9], ['2 거실', 50], ['3 작은방', 78.9]].map(([t, x]) => `<span class="timer-tape" style="left:${x}%">${t}</span>`).join('')}`;
         wrap.append(ph);
-        [['main', '1 안방'], ['living', '2 거실'], ['small', '3 작은방']].forEach(([k, lab]) => {
-          const row = el('div', 'gift-row'); row.append(el('span', 'gift-name', `${lab} 켜는 시각`));
-          const pr = el('div', 'pick-row');
-          TIMES.forEach((t) => { const b = el('button', 'chip' + (d[k] === t ? ' on' : ''), t); b.type = 'button'; b.setAttribute('aria-label', `${lab} 켜기 ${t}`); b.onclick = () => { d[k] = t; save(); }; pr.append(b); });
-          row.append(pr); wrap.append(row);
-        });
-        const row = el('div', 'gift-row'); row.append(el('span', 'gift-name', '셋 다 끄는 시각'));
-        const pr = el('div', 'pick-row');
-        OFFS.forEach((t) => { const b = el('button', 'chip' + (d.off === t ? ' on' : ''), t); b.type = 'button'; b.setAttribute('aria-label', `끄기 ${t}`); b.onclick = () => { d.off = t; save(); }; pr.append(b); });
-        row.append(pr); wrap.append(row);
+        const step = (k, list, lab) => {
+          const row = el('div', 'timer-dial');
+          const i = list.indexOf(d[k]);
+          const prev = el('button', 'ctl', '◀'); prev.type = 'button'; prev.setAttribute('aria-label', `${lab} 앞으로 돌리기`); prev.onclick = () => { d[k] = list[(i + list.length - 1) % list.length]; save(); };
+          const next = el('button', 'ctl', '▶'); next.type = 'button'; next.setAttribute('aria-label', `${lab} 뒤로 돌리기`); next.onclick = () => { d[k] = list[(i + 1) % list.length]; save(); };
+          const v = el('b', 'timer-val', d[k]); v.dataset.k = k;
+          row.append(el('span', 'gift-name', lab), prev, v, next);
+          return row;
+        };
+        const dials = el('div', 'timer-dials');
+        dials.append(step('main', TIMES, '1 안방 켜기'), step('living', TIMES, '2 거실 켜기'), step('small', TIMES, '3 작은방 켜기'), step('off', OFFS, '셋 다 끄기'));
+        wrap.append(dials);
+        // 미리 보기: 둑길에서 본 301 창 셋 (밖에서 보면 왼쪽부터 안방 · 거실 · 작은방)
+        const PREV = ['20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'];
+        const tt = PREV[d.t ?? 2];
+        const on = (k) => d[k] <= tt && tt < d.off;
+        const pv = el('figure', 'win-preview');
+        pv.innerHTML = `<div class="win-crop"><img src="${P}props/rear.webp" alt="" decoding="async">${[['main', 24.8], ['living', 49], ['small', 74.8]].map(([k, x]) => `<i class="pv-win${on(k) ? ' lit' : ''}" style="left:${x}%"></i>`).join('')}</div><figcaption>둑길에서 본 301 창 세 개 · ${tt}</figcaption>`;
+        const sl = el('input'); sl.type = 'range'; sl.min = 0; sl.max = PREV.length - 1; sl.step = 1; sl.value = d.t ?? 2; sl.setAttribute('aria-label', '미리 보기 시각');
+        sl.oninput = () => { d.t = Number(sl.value); save(); };
+        const lab = el('label', 'tilt-label'); lab.append(el('span', '', '시각을 밀어 미리 보기'), sl);
+        wrap.append(el('p', 'pick-label', '할머니가 병실 창에서 보는 모습'), pv, lab);
         return wrap;
       },
       commitLabel: '타이머 맞춰 두기',

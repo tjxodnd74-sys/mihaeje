@@ -878,3 +878,18 @@ html[data-case="apartment"] .v2-paper::before{height:5px;opacity:.9}
 .timers-wrap .timerphoto{max-width:560px;margin:0 auto 10px}
 .timerphoto{position:relative;container-type:inline-size}
 .timer-tape{position:absolute;top:9.8%;transform:translate(-50%,-50%) rotate(-1.5deg);font-family:var(--hand);font-size:3.2cqw;color:#2b3570;white-space:nowrap}
+.timer-dials{display:grid;gap:6px;margin:0 0 12px}
+.timer-dial{display:grid;grid-template-columns:1fr 44px 74px 44px;align-items:center;gap:6px;background:var(--chip);border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+.timer-dial .gift-name{margin:0}
+.timer-val{text-align:center;font-family:var(--sans);font-size:20px;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.win-preview{margin:0 auto 6px;max-width:520px}
+.win-crop{position:relative;overflow:hidden;aspect-ratio:215/110;border-radius:4px;background:#0b0f16}
+.win-crop img{position:absolute;width:476.2%;max-width:none;left:-342.9%;top:-206.25%}
+.pv-win{position:absolute;top:51.25%;width:16.7%;height:30.6%;transform:translate(-50%,-50%);transition:background .3s,box-shadow .3s}
+.pv-win.lit{background:radial-gradient(circle at 50% 55%,#fff1bf 0,#ffd36a 55%,#e8a63a 100%);box-shadow:0 0 14px 4px rgba(255,200,90,.5)}
+.win-preview figcaption{font-size:13px;opacity:.75;margin-top:4px;text-align:center}
+.key-hand{display:grid;justify-items:center;gap:8px;margin:12px 0 4px}
+.tag-big{width:110px;height:110px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fffdf6,#e9e3d3);box-shadow:inset 0 0 0 2px #cbbfa2,0 4px 10px rgba(0,0,0,.35);display:grid;place-items:center;font-family:var(--sans);font-weight:800;font-size:26px;color:#26305f;text-align:center;padding:10px;transition:transform .3s}
+.tag-big.back{font-family:var(--hand);font-weight:400;font-size:24px;color:#2b3570;transform:rotateY(180deg) scaleX(-1)}
+.ring-keys{font-size:28px;letter-spacing:4px}
+.hook-slot.taken{box-shadow:inset 0 0 0 .5cqw var(--lamp);background:rgba(18,20,23,.55)}

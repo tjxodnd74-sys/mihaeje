@@ -622,7 +622,7 @@ async function apartment({ mobile = false } = {}) {
     for (const [d, t] of [['오늘 작업 지시', '민원 3건'], ['동네 커뮤니티 글', '404호'], ['둑길의 철거 안내판', '반지하']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     L.check(await page.evaluate(() => true), 'post opened');
     await hotspot(page, '건물 정문으로'); await L.sleep(400);
-    for (const [d, t] of [['우편함 위 호수 안내', '왼쪽 집부터'], ['게시판의 이주 현황', '301호']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    for (const [d, t] of [['우편함 위 호수 안내', '왼쪽 집부터'], ['게시판의 이주 현황', '1세대']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     await hotspot(page, '우편함');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), '★4: no guide');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .mail-slot').length === 24), 'mailbox: 24 slots');
@@ -633,9 +633,11 @@ async function apartment({ mobile = false } = {}) {
     await L.click(page, '관리실로'); await L.sleep(400);
     for (const [d, t] of [['책상 위 근무일지', '한 고리에'], ['입주자 명부', '김순례'], ['벽에 붙은 창고 배정표', 'B03'], ['벽 달력', '동그라미']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     await hotspot(page, '열쇠함');
-    await L.click(page, '301 고리', { exact: true }); await commit(page); L.check((await status(page)).includes('빈 고리'), 'hooks: empty 301');
-    await L.click(page, 'B01 고리', { exact: true }); await commit(page); L.check((await status(page)).includes('누구 창고'), 'hooks: B01 decoy');
-    await L.click(page, 'B03 고리', { exact: true }); await shot(page, 'a-hooks'); await commit(page); L.check(await dlgHas(page, '꼬리표에 볼펜으로'), 'hooks solved');
+    L.check(!(await L.buttons(page)).includes('이 열쇠 들고 3층으로'), 'hooks: no commit with empty hand');
+    await L.click(page, '301 고리에서 꺼내기', { exact: true }); L.check((await status(page)).includes('빈 고리'), 'hooks: empty 301');
+    await L.click(page, 'B01 고리에서 꺼내기', { exact: true }); await L.click(page, '꼬리표 뒤집기'); L.check(await dlgHas(page, '김순례'), 'hooks: flip tag shows owner');
+    await commit(page); L.check((await status(page)).includes('안 열린다'), 'hooks: wrong key returned');
+    await L.click(page, 'B03 고리에서 꺼내기', { exact: true }); L.check(await dlgHas(page, '열쇠 2개'), 'hooks: ring shows two keys'); await shot(page, 'a-hooks'); await commit(page); L.check(await dlgHas(page, '한 번에 돌아갔다'), 'hooks solved');
     await L.click(page, '301호로'); await L.sleep(400);
     L.check((await L.mainText(page)).includes('배터리 등'), 'moved to 301');
     for (const [d, t] of [['방문 옆 대피 안내도', '북쪽 벽'], ['테이프 붙은 스위치', '작은방']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
@@ -646,8 +648,12 @@ async function apartment({ mobile = false } = {}) {
     await hotspot(page, '상자 위 가계부'); L.check(await dlgHas(page, '거실 불부터'), 'doc: book'); await L.closeDialog(page);
     await hotspot(page, '꺼낸 타이머 셋');
     await commit(page); L.check((await status(page)).includes('틀렸다고 한 순서'), 'timers: current program explained');
-    await L.click(page, '1 안방 켜기 21:00', { exact: true }); await L.click(page, '끄기 22:00', { exact: true }); await commit(page); L.check((await status(page)).includes('혼자 되신 뒤'), 'timers: 2015 decoy');
-    await L.click(page, '2 거실 켜기 21:00', { exact: true }); await L.click(page, '3 작은방 켜기 21:30', { exact: true }); await L.click(page, '1 안방 켜기 22:30', { exact: true }); await L.click(page, '끄기 23:00', { exact: true });
+    const setT = async (k, lab, v) => { for (let i = 0; i < 6; i++) { const cur = await page.evaluate((k) => document.querySelector(`dialog[open] .timer-val[data-k="${k}"]`).textContent, k); if (cur === v) return; await L.click(page, lab + ' 뒤로 돌리기', { exact: true }); } throw new Error('timer not set ' + k); };
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .pv-win').length === 3), 'timers: window preview');
+    await L.setRange(page, '미리 보기 시각', 1); L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .pv-win')].map((w) => w.classList.contains('lit')).join() === 'false,false,true'), 'preview: 21:00 shows rightmost (small room) lit from outside');
+    await setT('main', '1 안방 켜기', '21:00'); await setT('off', '셋 다 끄기', '22:00'); await commit(page); L.check((await status(page)).includes('혼자 되신 뒤'), 'timers: 2015 decoy');
+    await setT('living', '2 거실 켜기', '21:00'); await setT('small', '3 작은방 켜기', '21:30'); await setT('main', '1 안방 켜기', '22:30'); await setT('off', '셋 다 끄기', '23:00');
+    await L.setRange(page, '미리 보기 시각', 1); L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .pv-win')].map((w) => w.classList.contains('lit')).join() === 'false,true,false'), 'preview: 21:00 now living (middle)');
     await shot(page, 'a-timers'); await commit(page); L.check(await dlgHas(page, '그 집의 저녁'), 'timers solved');
     await L.click(page, '다음 날 밤 아홉 시, 둑길'); await L.sleep(500);
     L.check((await L.mainText(page)).includes('404호에는 불이 켜지지 않았다'), 'ending reached');
