@@ -637,6 +637,6 @@ export default {
     ],
     afterword: '민서는 수림에 남았고 나는 토요일마다 09:40 열차를 탄다 둘째 칸이고, 자리에 이름은 없다',
     unlockDoc: 'final',
-    next: { href: 'episode.html?case=letter', title: '반송된 편지', line: '같은 역을 지나는 네 통의 편지가 돌아왔습니다' },
+    next: { href: 'play.html?case=letter', title: '반송된 편지', line: '다음은 다섯 번 돌아온 편지 이야기입니다' },
   },
 };
