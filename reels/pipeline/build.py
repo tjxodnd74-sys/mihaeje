@@ -125,7 +125,7 @@ punch = '+'.join(f"gt(in,{int(t*30)})*lt(in,{int(t*30)+12})*(1-(in-{int(t*30)})/
 zexpr = f"1.04+0.08*abs(sin(in/{total_dur*30}*3.1416*2))+0.12*({punch})"
 bgfilter = (f"[0:v]fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,trim=0:{total_dur},setpts=PTS-STARTPTS,"
             f"zoompan=z='{zexpr}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)+(zoom-1)*30':d=1:s=1080x1920:fps=30,"
-            f"eq=contrast=1.08:saturation=1.15,fade=t=in:st=0:d=0.3,fade=t=out:st={total_dur-0.6}:d=0.6[bg];"
+            f"eq=contrast=1.08:saturation=1.15,fade=t=out:st={total_dur-0.6}:d=0.6[bg];"
             f"[bg][1:v]overlay=0:0:format=auto:shortest=1[v]")
 
 # --- 4. sfx events ---
@@ -179,7 +179,7 @@ if FULL:
     inputs = ['-i', os.path.join(W, 'bg', '_concat.mp4'), '-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-i', narr]
     bgfilter = (f"[0:v]trim=0:{total_dur},setpts=PTS-STARTPTS,eq=contrast=1.06:saturation=0.92:brightness=-0.02,"
                 f"colorbalance=bs=0.04:bh=-0.03,noise=alls=7:allf=t+u,"
-                f"fade=t=in:st=0:d=0.25,fade=t=out:st={total_dur-0.6}:d=0.6[bg];[bg][1:v]overlay=0:0:format=auto:shortest=1[v]")
+                f"fade=t=out:st={total_dur-0.6}:d=0.6[bg];[bg][1:v]overlay=0:0:format=auto:shortest=1[v]")
 elif VECTOR:
     inputs = ['-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-i', narr]
     bgfilter = f"[0:v]format=yuv420p,fade=t=out:st={total_dur-0.6}:d=0.6[v]"
@@ -203,4 +203,20 @@ sheet = []
 for i, t in enumerate(ts[:7]):
     run(['ffmpeg', '-loglevel', 'error', '-y', '-ss', str(t), '-i', out, '-frames:v', '1', os.path.join(W, f'_c{i}.png')]); sheet.append(os.path.join(W, f'_c{i}.png'))
 run(['ffmpeg', '-loglevel', 'error', '-y'] + sum([['-i', s] for s in sheet], []) + ['-filter_complex', ''.join(f'[{i}]' for i in range(len(sheet))) + f'hstack={len(sheet)},scale=2100:-1', os.path.join(W, 'check.jpg')])
+# --- cover (thumbnail) ---
+if spec.get('cover'):
+    C=dict(spec['cover'])
+    if C.get('clip'):
+        cp=os.path.join(W,'_cover_bg.jpg')
+        run(['ffmpeg','-loglevel','error','-y','-ss',str(C.get('start',2)),'-i',os.path.join(W,'bg',C['clip']),'-frames:v','1','-vf','scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920',cp])
+        C['photo']=cp
+    cjs=os.path.join(W,'_cover.js')
+    open(cjs,'w').write(f"""
+const {{ chromium }} = require('playwright');
+(async()=>{{const b=await chromium.launch();const p=await b.newPage({{viewport:{{width:1080,height:1920}}}});
+await p.addInitScript(c=>{{window.COVER=c}},{json.dumps(C,ensure_ascii=False)});
+await p.goto('file://'+{json.dumps(os.path.join(HERE,'cover.html'))});await p.evaluate(()=>document.fonts.ready);await p.waitForTimeout(300);
+await p.screenshot({{path:{json.dumps(os.path.join(W,'cover.jpg'))},type:'jpeg',quality:92}});await b.close();}})();""")
+    run(['node',cjs],cwd=HERE)
+    print('COVER', os.path.join(W,'cover.jpg'))
 print('OK', out)

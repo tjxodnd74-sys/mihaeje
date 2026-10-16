@@ -81,5 +81,12 @@
    "clip": "bg_snowroad_19555120.mp4",
    "start": 4
   }
- ]
+ ],
+ "cover": {
+  "clip": "bg_battery_close_3771711.mp4",
+  "start": 2,
+  "tag": "겨울 오기 전 필수",
+  "title": "이 3가지<br>안 하면<br>|아침에 고생|",
+  "sub": "배터리 · 공기압 · 워셔액"
+ }
 }
