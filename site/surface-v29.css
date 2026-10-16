@@ -1,0 +1,68 @@
+/* A story's documents are objects, rather than generic app cards. */
+.surface-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;flex:none;padding:11px 24px;font:13px/1.5 SUIT,system-ui,sans-serif;letter-spacing:.02em}
+.surface-status{white-space:nowrap}
+html[data-theme] body .inspection-dialog[data-surface=terminal]{--panel:#111c20;--panel-ink:#e7f0ed;--panel-muted:#a5bab5;--panel-line:#354b4d;--theme-accent:#aad5c4;--action-ink:#112622;border:8px solid #242b2d;border-radius:14px;box-shadow:0 28px 90px #000b,inset 0 0 0 1px #586265}
+html[data-theme] body .inspection-dialog[data-surface=terminal] .inspection-bar{background:#202b2e;border-bottom-color:#435254;padding:13px 24px;min-height:62px}
+html[data-theme] body .inspection-dialog[data-surface=terminal] .inspection-bar h2{font:600 21px/1.45 SUIT,system-ui,sans-serif;letter-spacing:-.3px}
+[data-surface=terminal] .surface-heading{background:#101a1d;color:#a1b7b1;border-bottom:1px solid #2f4446}
+[data-surface=terminal] .surface-identity:before{content:'';display:inline-block;width:7px;height:7px;background:#aad5c4;border-radius:50%;margin-right:9px;box-shadow:0 0 0 3px #aad5c418}
+[data-surface=terminal] .surface-status{font:12px/1.5 SUIT,system-ui,sans-serif;color:#b3c8c2}
+html[data-theme] body .inspection-dialog[data-surface=terminal] .inspection-body{background:linear-gradient(180deg,#122025,#111a1e);padding:28px 34px}
+html[data-theme] body .inspection-dialog[data-surface=terminal] .inspection-tools,html[data-theme] body .inspection-dialog[data-surface=terminal] .inspection-pager{background:#152328}
+html[data-theme] body .inspection-dialog[data-surface=terminal] .inspection-body #document p,html[data-theme] body .inspection-dialog[data-surface=terminal] .inspection-body #recordBody .document-content p{font-family:SUIT,system-ui,sans-serif;font-size:18px;line-height:1.85}
+[data-surface=terminal] .record-meta,[data-surface=terminal] .doc-head{padding-bottom:14px;border-bottom:1px solid #385053}
+html[data-theme] body [data-surface=terminal] .inspection-body .screen{background:#0a1215;color:#d1e5dd;border:1px solid #385053;border-left:3px solid #a0c7b5;font-family:ui-monospace,SUIT,monospace;font-size:16px;line-height:1.9}
+html[data-theme] body [data-surface=terminal] .inspection-body th{background:#203337;font-weight:600}
+html[data-theme] body [data-surface=terminal] .inspection-body td{padding:14px 12px}
+
+html[data-theme] body .inspection-dialog[data-surface=invitation],html[data-theme] body .inspection-dialog[data-surface=scrapbook],html[data-theme] body .inspection-dialog[data-surface=hanji],html[data-theme] body .inspection-dialog[data-surface=postal],html[data-theme] body .inspection-dialog[data-surface=photograph]{--panel:#faf6ed;--panel-ink:#3f392f;--panel-muted:#6c6355;--panel-line:#d9cdbc;--theme-accent:#546b54;--action-ink:#fffaf1;background:#e6ddce;border:0;border-radius:8px}
+html[data-theme] body .inspection-dialog[data-surface=invitation] .inspection-bar,html[data-theme] body .inspection-dialog[data-surface=scrapbook] .inspection-bar,html[data-theme] body .inspection-dialog[data-surface=hanji] .inspection-bar,html[data-theme] body .inspection-dialog[data-surface=postal] .inspection-bar,html[data-theme] body .inspection-dialog[data-surface=photograph] .inspection-bar{background:#f5f0e7;border-bottom-color:#d7ccbc;min-height:56px;padding:10px 24px}
+html[data-theme] body [data-surface=invitation] .inspection-bar h2,html[data-theme] body [data-surface=scrapbook] .inspection-bar h2,html[data-theme] body [data-surface=hanji] .inspection-bar h2,html[data-theme] body [data-surface=postal] .inspection-bar h2,html[data-theme] body [data-surface=photograph] .inspection-bar h2{font:600 17px/1.5 SUIT,system-ui,sans-serif;color:#5d5549}
+[data-surface=invitation] .surface-heading,[data-surface=scrapbook] .surface-heading,[data-surface=hanji] .surface-heading,[data-surface=postal] .surface-heading,[data-surface=photograph] .surface-heading{background:#e8dfd1;color:#6c6355;border-bottom:1px solid #d7ccbc}
+html[data-theme] body .inspection-dialog[data-surface=invitation] .inspection-body,html[data-theme] body .inspection-dialog[data-surface=scrapbook] .inspection-body,html[data-theme] body .inspection-dialog[data-surface=hanji] .inspection-body,html[data-theme] body .inspection-dialog[data-surface=postal] .inspection-body,html[data-theme] body .inspection-dialog[data-surface=photograph] .inspection-body{padding:24px;background:#e6ddce}
+html[data-theme] body .inspection-dialog[data-surface=invitation] .story-surface{box-sizing:border-box;max-width:680px;margin:0 auto;padding:32px 42px!important;background:#fbf6e9 url('assets/surfaces/invitation-paper-v1.webp') center top/100% 100% no-repeat!important;color:#403c32;border:1px solid #e0d4bc;box-shadow:0 5px 18px #57442718}
+html[data-theme] body [data-surface=invitation] .inspection-body #recordBody .record-meta{justify-content:center;padding:16px 0 20px;margin-bottom:24px;border-bottom:1px solid #b8ab8655;text-align:center}
+html[data-theme] body [data-surface=invitation] .inspection-body #recordBody>h2{display:block;text-align:center;font-family:MihaejeLetter,serif;font-size:30px;line-height:1.5;margin:20px 0 28px;color:#4f533f}
+html[data-theme] body [data-surface=invitation] .inspection-body #recordBody .document-content p{font-family:MihaejeLetter,SUIT,serif;font-size:19px;line-height:1.95;color:#403c32}
+html[data-theme] body [data-surface=invitation] .inspection-body blockquote{font-family:MihaejeLetter,serif!important;text-align:center;border:0!important;padding:24px 0!important;margin:26px 0!important;font-size:21px!important;line-height:2!important;color:#4b503d!important;background:none!important}
+html[data-theme] body [data-surface=invitation] .inspection-body .pin-button{font:13px/1.6 SUIT,system-ui,sans-serif;border-bottom:0;min-height:36px;margin:0 0 0 12px}
+html[data-theme] body .inspection-dialog[data-surface=scrapbook] .story-surface,html[data-theme] body .inspection-dialog[data-surface=hanji] .story-surface,html[data-theme] body .inspection-dialog[data-surface=postal] .story-surface,html[data-theme] body .inspection-dialog[data-surface=photograph] .story-surface{box-sizing:border-box;max-width:680px;margin:0 auto;padding:28px 34px!important;background:#faf6ed!important;color:#403c32;border:1px solid #d5c8b2;box-shadow:0 5px 18px #57442718}
+html[data-theme] body [data-surface=photograph] .story-surface{border:9px solid #fffdf5!important;box-shadow:0 4px 15px #49342633!important}
+html[data-theme] body [data-surface=postal] .story-surface{border-top:7px solid #a69472!important}
+[data-surface=hanji] .surface-identity{font-family:MihaejeLetter,serif}
+
+html[data-theme] body .inspection-body .hint-code.hint-request{display:inline-flex;align-items:center;gap:12px;text-align:left;max-width:100%;min-height:64px!important;padding:11px 15px!important;margin:0 0 24px!important;border:1px dashed var(--panel-line)!important;border-radius:6px;background:transparent!important;box-shadow:none;color:var(--panel-ink)!important;font-family:SUIT,system-ui,sans-serif!important;cursor:pointer;vertical-align:top}
+.hint-request-icon{display:grid;place-items:center;flex:none;width:28px;height:28px;border:1.5px solid var(--theme-accent);border-radius:50%;font:700 18px/1 SUIT,sans-serif;color:var(--theme-accent)}
+.hint-request-copy{display:grid;gap:3px}
+html[data-theme] body .inspection-body .hint-request-copy strong{font:650 16px/1.5 SUIT,system-ui,sans-serif;color:var(--panel-ink)}
+html[data-theme] body .inspection-body .hint-request-copy small{font:13px/1.5 SUIT,system-ui,sans-serif;color:var(--panel-muted)}
+.hint-request-arrow{margin-left:12px;font-size:20px;color:var(--panel-muted)}
+.hint-request:hover{outline:1px solid var(--theme-accent);outline-offset:2px}
+.hint-request:focus-visible{outline:3px solid var(--theme-accent);outline-offset:3px}
+html[data-theme] body [data-surface=invitation] .hint-request{background:#fffdf480!important}
+html[data-theme] body .inspection-body .session-panel{max-width:640px;padding:18px 8px}
+html[data-theme] body .inspection-body .session-panel h2{font-family:var(--story-font),SUIT,serif;font-size:30px;line-height:1.5;margin:14px 0 22px}
+html[data-theme] body .inspection-body .session-panel p{font:18px/1.9 SUIT,system-ui,sans-serif;color:var(--panel-ink);white-space:pre-line;margin:0 0 22px}
+html[data-theme] body .inspection-body .session-actions{gap:12px;margin-top:28px;padding-top:24px;border-top:1px solid var(--panel-line)}
+html[data-theme] body .inspection-body .session-actions button{min-height:48px;padding:12px 18px;font:600 16px/1.5 SUIT,system-ui,sans-serif;border:1px solid var(--panel-line);background:transparent;color:var(--panel-ink)}
+html[data-theme] body .inspection-body .session-actions button:last-child{background:var(--theme-accent);border-color:var(--theme-accent);color:var(--action-ink)}
+[data-surface=invitation][data-surface-mode=management] .session-panel h2{font-family:MihaejeLetter,serif!important;text-align:center}
+@media(max-width:600px){
+ html[data-theme] body .inspection-dialog[data-surface=terminal]{border:0;border-radius:0}
+ html[data-theme] body .inspection-dialog[data-surface=terminal] .inspection-bar{min-height:56px;padding:10px 20px}
+ html[data-theme] body .inspection-dialog[data-surface=terminal] .inspection-body{padding:24px 20px}
+ .surface-heading{padding:9px 20px;font-size:12px;gap:8px}.surface-status{font-size:11px}
+ html[data-theme] body .inspection-dialog[data-surface=invitation],html[data-theme] body .inspection-dialog[data-surface=scrapbook],html[data-theme] body .inspection-dialog[data-surface=hanji],html[data-theme] body .inspection-dialog[data-surface=postal],html[data-theme] body .inspection-dialog[data-surface=photograph]{border-radius:0}
+ html[data-theme] body .inspection-dialog[data-surface=invitation] .inspection-body,html[data-theme] body .inspection-dialog[data-surface=scrapbook] .inspection-body,html[data-theme] body .inspection-dialog[data-surface=hanji] .inspection-body,html[data-theme] body .inspection-dialog[data-surface=postal] .inspection-body,html[data-theme] body .inspection-dialog[data-surface=photograph] .inspection-body{padding:14px 12px 24px}
+ html[data-theme] body .inspection-dialog[data-surface=invitation] .story-surface,html[data-theme] body .inspection-dialog[data-surface=scrapbook] .story-surface,html[data-theme] body .inspection-dialog[data-surface=hanji] .story-surface,html[data-theme] body .inspection-dialog[data-surface=postal] .story-surface,html[data-theme] body .inspection-dialog[data-surface=photograph] .story-surface{padding:22px 20px!important}
+ html[data-theme] body [data-surface=invitation] .inspection-body #recordBody>h2{font-size:25px;margin:16px 0 24px}
+ html[data-theme] body [data-surface=invitation] .inspection-body #recordBody .document-content p{font-size:18px;line-height:1.95}
+ html[data-theme] body .inspection-body .hint-code.hint-request{gap:10px;width:100%;padding:10px 12px!important}
+ .hint-request-arrow{margin-left:auto}
+ html[data-theme] body .inspection-body .session-panel h2{font-size:25px}
+ html[data-theme] body .inspection-body .session-actions{display:grid;grid-template-columns:1fr}
+}
+
+html[data-theme] body .inspection-dialog[data-surface=terminal] .inspection-body :is(h2,h3,h4){color:var(--panel-ink)!important;font-family:SUIT,system-ui,sans-serif!important;line-height:1.5}
+html[data-theme] body .inspection-dialog[data-surface=terminal] .inspection-body h3{font-size:22px!important}
+html[data-theme] body .inspection-dialog[data-surface=terminal] .inspection-body blockquote{color:#c7ddd3!important;background:#172a2d!important;border-color:#829f96!important}

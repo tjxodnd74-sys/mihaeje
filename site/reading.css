@@ -1,0 +1,37 @@
+/* Shared reading surface and consistent collectible photographs */
+@media(max-width:700px){body .inspection-body .keepsake .keepsake-photo{height:auto!important;aspect-ratio:1}}
+body .inspection-dialog{font-family:SUIT,'Malgun Gothic',sans-serif;line-height:1.8;color:#262b33;background:#fbfaf7;border:1px solid #c9cbd0;border-radius:6px}
+body .inspection-dialog::backdrop{background:#07090dbd;backdrop-filter:blur(2px)}
+body .inspection-dialog .inspection-bar{background:#fbfaf7;border-bottom:1px solid #dedfe2;padding:16px 24px}
+body .inspection-bar h2{font-family:inherit;font-size:20px;color:#262b33;font-weight:700;letter-spacing:-.4px}
+body .inspection-dialog .inspection-close{background:transparent;border:1px solid #c9cbd0;border-radius:4px;color:#414752;font-size:15px;padding:8px 12px;min-height:44px}
+body .inspection-tools{background:#f3f3f1;border-bottom:1px solid #dedfe2;padding:12px 24px;gap:10px}
+body .inspection-tools select,body .inspection-tools button{font-family:inherit;font-size:16px;line-height:1.5;min-height:44px;background:#fff;color:#414752;border:1px solid #c9cbd0;border-radius:4px;padding:10px 12px}
+body .inspection-body{padding:30px 32px}
+body .inspection-body button,body .inspection-body input,body .inspection-body select,body .inspection-body textarea{font-family:inherit;font-size:16px;line-height:1.6;min-height:44px}
+body .inspection-body label{font-family:inherit;font-size:16px;line-height:1.7;color:#414752}
+body .inspection-body .letter-copy{font-size:18px!important;line-height:1.85!important;color:#353b45!important}
+body .inspection-body #recordBody,body .inspection-body #secondBody,body .inspection-body #document,body .inspection-body #compareDocument{font-family:inherit;color:#262b33;max-width:740px;margin-inline:auto}
+body .inspection-body #recordBody>h2{display:none}
+body .inspection-body #recordBody>.eyebrow,body .inspection-body .doc-head .eyebrow{font-size:14px!important;line-height:1.6;color:#67707d;margin:0 0 14px;letter-spacing:0}
+body .inspection-body #recordBody .document-content p,body .inspection-body #secondBody .document-content p,body .inspection-body #document p,body .inspection-body #compareDocument p{font-family:inherit;font-size:18px;line-height:1.85;color:#353b45;margin:0 0 22px;letter-spacing:-.15px}
+body .inspection-body #recordBody .document-content h3,body .inspection-body #document h3{font-family:inherit;font-size:23px;font-weight:700;color:#262b33;line-height:1.4;margin:30px 0 14px}
+body .inspection-body #document .doc-head h2,body .inspection-body #secondBody h2{font-family:inherit;font-size:27px;font-weight:750;color:#262b33;line-height:1.4}
+body .inspection-body #recordBody blockquote,body .inspection-body #document blockquote,body .inspection-body .studio-detail blockquote{font-family:inherit;font-size:19px;line-height:1.8;color:#303641;background:#f0efea;border:0;border-radius:4px;padding:20px 22px;margin:24px 0;box-shadow:none;transform:none}
+body .inspection-body td,body .inspection-body th{font-size:16px;line-height:1.7;color:#353b45;padding:12px 14px;border-color:#dedfe2}
+body .inspection-body th{font-weight:700;background:#eeefef;color:#303641}
+body .inspection-body #recordBody>.pin-button,body .inspection-body .doc-head button{font-family:inherit;font-size:15px;line-height:1.5;color:#414752;background:#fff;border:1px solid #c9cbd0;border-radius:4px;min-height:44px;padding:9px 14px;margin-bottom:22px}
+body .inspection-body .studio-detail p,body .inspection-body .room-detail>p{font-size:18px;line-height:1.8;color:#353b45}
+body .inspection-body .small,body .inspection-body small{font-size:14px;color:#67707d;line-height:1.7}
+body .inspection-body .keepsake-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:22px 0}
+body .inspection-body .keepsake,body .inspection-body .keepsake.turned,body .inspection-body .keepsake:nth-child(even){display:flex;flex-direction:column;align-items:center;gap:0;padding:20px 16px;min-height:335px;min-width:0;background:#fff;border:1px solid #d9dce1;border-radius:5px;color:#353b45;text-align:center}
+body .inspection-body .keepsake.turned{border-color:#929baa;background:#f7f8fa}
+body .inspection-body .keepsake .keepsake-photo{display:block;width:160px;height:160px;aspect-ratio:1;max-width:100%;max-height:none;object-fit:contain;margin:0 auto 14px;border:0;border-radius:3px;background:transparent;flex:none}
+body .inspection-body .keepsake strong{font-size:18px;line-height:1.5;font-weight:700;color:#262b33;margin:0 0 10px}
+body .inspection-body .keepsake-details{font-size:16px;line-height:1.7;color:#59616d;min-height:76px;width:100%}
+body .inspection-body .keepsake-details>span{display:block}
+body .inspection-body .keepsake .memory-digit{font-size:19px;line-height:1.5;color:#303641;font-weight:750;margin-top:8px}
+body .inspection-body .keepsake .keepsake-action{display:block;font-size:14px;line-height:1.5;color:#59616d;margin-top:auto;padding-top:12px}
+body .inspection-body .keepsake:focus-visible{outline:2px solid #686f7d;outline-offset:3px}
+@media(max-width:700px){body .inspection-body .keepsake,body .inspection-body .keepsake.turned,body .inspection-body .keepsake:nth-child(even){padding:15px 10px;min-height:315px}}
+@media(max-width:700px){body .inspection-dialog .inspection-bar{padding:12px 16px}body .inspection-bar h2{font-size:19px}body .inspection-tools{padding:10px 16px}body .inspection-body{padding:24px 18px}body .inspection-body #recordBody .document-content p,body .inspection-body #document p,body .inspection-body #secondBody .document-content p,body .inspection-body #compareDocument p,body .inspection-body .studio-detail p{font-size:17px;line-height:1.85;margin-bottom:20px}body .inspection-body #recordBody blockquote,body .inspection-body #document blockquote{font-size:18px;padding:18px;margin:22px 0}body .inspection-body .keepsake-grid{gap:10px}body .inspection-body .keepsake{padding:15px 10px;min-height:315px}body .inspection-body .keepsake .keepsake-photo{width:128px;height:128px;margin-bottom:12px}body .inspection-body .keepsake strong{font-size:17px}body .inspection-body .keepsake-details{font-size:15px;min-height:100px}body .inspection-body td,body .inspection-body th{font-size:15px;padding:10px}}

@@ -1,0 +1,32 @@
+.escape-lobby{grid-template-columns:.85fr 1.15fr;gap:34px}
+.lobby-doors{position:relative;display:flex;gap:0;padding:0;width:100%;max-width:none;aspect-ratio:3/2;background:#b5b0a1;border:0;box-shadow:none;overflow:hidden}
+.lobby-door-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.lobby-doors .lobby-door,.lobby-doors .lobby-door.heartwarming{position:relative;width:50%;min-height:0;display:block;padding:0;border:0;background:transparent;box-shadow:none;color:#fffaf0;transition:background .2s}
+.lobby-doors .lobby-door:before,.lobby-doors .door-handle{display:none}
+.lobby-doors .lobby-door:hover{transform:none;background:#ffffff09;box-shadow:none}
+.lobby-doors .lobby-door:focus-visible{outline:3px solid #e8ce88;outline-offset:-4px}
+.lobby-doors .door-plaque,.lobby-doors .door-name,.lobby-doors .door-series,.lobby-doors .door-enter{position:absolute;left:64%;transform:translateX(-50%);white-space:nowrap;margin:0;padding:0;background:none;border:0;box-shadow:none}
+.lobby-doors .door-plaque{top:25%;color:#3c3529;font:clamp(8px,1vw,13px)/1.5 monospace}
+.lobby-doors .door-name{top:43%;font-size:clamp(11px,1.4vw,18px);letter-spacing:-.5px;text-shadow:0 1px 3px #0009}
+.lobby-doors .door-series{top:51%;font-size:clamp(8px,.85vw,11px);color:#fff9e8;text-shadow:0 1px 3px #0009}
+.lobby-doors .door-enter{top:80%;font-size:clamp(9px,.95vw,12px);color:#fff9e8;text-shadow:0 1px 3px #0009}
+.lobby-doors .heartwarming .door-plaque,.lobby-doors .heartwarming .door-name,.lobby-doors .heartwarming .door-series,.lobby-doors .heartwarming .door-enter{left:36%;color:#322d23;text-shadow:0 1px 2px #fff8}
+.room-art{aspect-ratio:3/2;object-fit:contain;filter:none}
+.escape-scene{background:#34372f;overflow:hidden}
+.room-hotspot{max-width:19%;gap:4px}
+.hotspot-dot{box-shadow:0 0 0 4px #fff3,0 2px 8px #0007;background:#243527e0;border-color:#ede0bc}
+.hotspot-label{font-size:10px;background:#203326e8;box-shadow:0 2px 5px #0004}
+.inventory-item{display:flex;flex-direction:column;align-items:center;gap:9px;padding:7px;min-width:102px;width:128px;background:#fffdf5}
+.inventory-photo{display:block;width:100%;height:92px;object-fit:cover;background-color:#d3c6b0;background-repeat:no-repeat;border:1px solid #b3a783}
+.inventory-name{padding:2px 4px 5px;font-size:11px}
+.inventory-item.selected{background:#354c35}
+.object-zoom{width:min(100%,470px);aspect-ratio:3/2;background-color:#d4cdbb;background-repeat:no-repeat;border:1px solid #ada893;margin:18px 0 24px}
+.keepsake-photo{display:block;width:100%;aspect-ratio:1;object-fit:cover;border:1px solid #d0c5ae;margin:0 0 14px}
+.keepsake.turned .keepsake-photo{max-height:105px;object-fit:contain;background:#e9dfcc;margin-bottom:12px}
+.room-hotspot.collected .hotspot-dot{background:#203326aa;color:#fff;border-color:#cbd5c4;box-shadow:0 0 0 11px #15261955}
+.room-hotspot.collected .hotspot-label{opacity:.75}
+.lobby-doors .door-plaque{display:none}
+.lobby-doors .heartwarming .door-series,.lobby-doors .heartwarming .door-enter{color:#302c21;font-weight:600}
+@media(max-width:700px){.room-accessibility[open]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.room-accessibility summary{grid-column:1/-1}.room-accessibility .location-link{margin-top:0;font-size:11px;padding:10px;line-height:1.5}}
+@media(max-width:900px){.escape-lobby{gap:25px}.lobby-copy h1{font-size:40px}}
+@media(max-width:700px){.escape-lobby{grid-template-columns:1fr;gap:28px}.lobby-doors{max-width:600px;padding:0;gap:0}.lobby-doors .lobby-door{min-height:0;padding:0;border:0}.lobby-copy h1{font-size:37px}.lobby-doors .door-name{font-size:clamp(11px,3.4vw,17px)}.lobby-doors .door-series{font-size:clamp(8px,2.5vw,11px)}.lobby-doors .door-enter{font-size:clamp(9px,2.7vw,12px)}.room-hotspot{width:44px;max-width:44px;gap:0}.room-hotspot .hotspot-label{display:none}.room-accessibility{margin-top:12px}.location-link{min-height:44px}.inventory-item{width:calc(50% - 6px);max-width:150px;min-width:0;padding:6px}.inventory-photo{height:95px}.object-zoom{margin:12px 0 20px}.keepsake{padding:12px}.keepsake-photo{margin-bottom:10px}}

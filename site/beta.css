@@ -1,0 +1,8 @@
+.beta-status{font:15px/1.7 SUIT,sans-serif;color:#b7bbb7;padding:16px 0;margin:12px 0 0;border-bottom:1px solid #ffffff20}
+.beta-feedback-trigger{font:14px SUIT,sans-serif;background:none;border:0;border-bottom:1px solid currentColor;color:inherit;padding:10px 0;margin:12px 0;cursor:pointer;min-height:44px}
+.beta-help-link{display:block;margin-top:26px;color:var(--panel-muted)}
+.beta-feedback{max-width:620px;margin:auto;font:17px/1.7 SUIT,sans-serif;color:var(--panel-ink)}
+.beta-feedback .field{display:flex;flex-direction:column;gap:8px;margin:18px 0}
+.beta-feedback select,.beta-feedback textarea{width:100%;padding:12px;font:17px/1.6 SUIT,sans-serif;background:var(--panel);color:var(--panel-ink);border:1px solid var(--panel-line);border-radius:0;resize:vertical}
+.beta-feedback .small{font-size:14px;line-height:1.7;color:var(--panel-muted)}
+.beta-feedback .primary{border:0;min-height:46px;padding:12px 20px;background:var(--theme-accent);color:var(--action-ink);cursor:pointer;font:16px SUIT,sans-serif}
