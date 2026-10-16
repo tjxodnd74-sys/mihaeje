@@ -51,11 +51,27 @@ const ROUTE_NOW = [
   ['127', '미루새길 9', '빌라 101~302호 · 우편함 공용'], ['128', '미루새길 9-1', '빌라 옆 골목 안 · 파란 대문'],
   ['129', '미루새길 11', ''], ['130', '미루새길 13', '개 있음'],
 ];
-const ROUTE_OLD = [
-  ['124', '미루동 17-1', ''], ['125', '미루동 17-2', ''], ['126', '미루동 17-4', '정 할머니 · 감나무 집'],
-  ['127', '미루동 17-14', ''], ['128', '미루동 17-15', '개 있음'],
-];
-const STAFF_CODE = [1, 2, 8];
+const DIR_CODE = ['U', 'R', 'U', 'L']; // 우체국 문 → 북 → 미루새길 동 → 빌라 옆 골목 북 → 빌라 뒤 서 → 파란 대문
+const ARROW = { U: '↑', D: '↓', L: '←', R: '→' };
+function routeMap() {
+  const ink = '#2f3a7a';
+  const pen = (d, w = 0.8, extra = '', col = ink) => `<path d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" ${extra}/>`;
+  const t = (x, y, s, txt, a = 'middle', c = ink) => `<text x="${x}" y="${y}" font-size="${s}" text-anchor="${a}" fill="${c}" font-family="MihaejeHand, serif">${txt}</text>`;
+  const road = (x1, y1, x2, y2) => pen(`M${x1} ${y1} L${x2} ${y2}`, 0.5) ;
+  return `<svg viewBox="0 0 100 80" class="route-map" role="img" aria-label="봉수 아저씨가 순로표 뒤에 볼펜으로 그린 미루새길 약도">
+  ${road(4, 37, 96, 37)}${road(4, 43, 96, 43)}${t(90, 41.6, 3, '미루새길')}
+  ${road(15, 43, 15, 62)}${road(21, 43, 21, 62)}${t(29, 55, 3, '우체국길')}
+  ${pen('M8 62 h20 v12 h-20 z', 0.9)}${t(18, 70, 3.6, '우체국')}${pen('M16 62 h4', 1.6)}${t(18, 60.5, 2.2, '문')}
+  ${pen('M26 20 h14 v15 h-14 z', 0.7)}${t(33, 29, 3, '7 세탁소')}
+  ${pen('M44 20 h20 v15 h-20 z', 0.7)}${t(54, 27, 3, '9 빌라')}${t(54, 32, 2.2, '현관')}${pen('M51 35 h6', 1.4)}
+  ${pen('M71 20 h16 v15 h-16 z', 0.7)}${t(79, 29, 3, '11')}
+  ${road(65, 35, 65, 15)}${road(69, 35, 69, 11)}${road(44, 15, 65, 15)}${road(44, 11, 69, 11)}${t(67, 26, 2.2, '골목', 'middle')}
+  ${pen('M29 4 h14 v15 h-14 z', 0.7)}${t(36, 12.5, 2.6, '9-1 뒤채')}${pen('M43 11.4 v3.2', 2, '', '#2f6fd0')}${t(45, 9.5, 2.2, '파란 대문', 'start', '#2f6fd0')}
+  ${pen('M18 61 V40 H54 V36', 0.7, 'stroke-dasharray="1.6 1.2"', '#b33a28')}${t(52.6, 49, 2.3, '↑ 2019 정 할머니 대문 (지금 빌라 현관)', 'start', '#b33a28')}
+  ${pen('M93 4 v7 M93 4 l-1.6 2.4 M93 4 l1.6 2.4', 0.6)}${t(95.5, 8, 3, 'N', 'start')}
+  ${t(4, 78, 2.6, '할머니 집 가는 길 우체국 문 나서서 꺾을 때마다 한 번씩', 'start')}
+  </svg>`;
+}
 
 // 답장 봉투
 const FIELDS = [
@@ -191,8 +207,8 @@ export default {
     },
     route: {
       title: '못에 걸린 순로표',
-      kind: '7구 배달 순서 · 두 장 겹쳐 있음',
-      html: `<figure class="prop clipphoto"><img src="${P}props/clipboard.webp" alt="못에 걸린 클립보드" decoding="async"></figure><div class="paper-table"><p class="pt-head">7구 순로표 (2026년 개정) · 미루새길 구간</p><table><tr><th>순번</th><th>주소</th><th>메모</th></tr>${ROUTE_NOW.map((r) => `<tr><td class="mono">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</table></div><div class="paper-table old"><p class="pt-head">7구 순로표 (2019년) · 밑에 깔린 옛날 것</p><table><tr><th>순번</th><th>주소</th><th>메모</th></tr>${ROUTE_OLD.map((r) => `<tr><td class="mono">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</table></div>`,
+      kind: '7구 배달 순서 · 뒷면에 볼펜 약도',
+      html: `<figure class="prop clipphoto"><img src="${P}props/clipboard.webp" alt="못에 걸린 클립보드" decoding="async"></figure><div class="paper-table"><p class="pt-head">7구 순로표 (2026년 개정) · 미루새길 구간</p><table><tr><th>순번</th><th>주소</th><th>메모</th></tr>${ROUTE_NOW.map((r) => `<tr><td class="mono">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</table></div><p>종이를 뒤집으니 아저씨가 볼펜으로 그린 약도가 있었다 빨간 점선은 예전 길이다</p><figure class="prop routemap">${routeMap()}</figure>`,
     },
     photo: {
       title: '벽의 단체 사진',
@@ -202,7 +218,7 @@ export default {
     notebook: {
       title: '봉수 아저씨의 수첩',
       kind: '맨 끝 사물함 · 업무 수첩 마지막 장들',
-      html: `<blockquote class="hand">2020. 6. 20 정 할머니 앞집 헐고 빌라 들어섬 할머니는 뒤채로 전송 신청 받아 줌<br><br>2021. 3. 19 수림에서 정 할머니 앞 편지 보낸 사람 아드님 정민 씨<br>할머니가 안 받으신다 함 「그 애 편지 받으면 내가 지는 거다」<br>거절 도장을 찍으면 아드님이 알 거다 17-4는 이제 빌라 번지라 불명이 틀린 말도 아니고<br>보내는 사람 칸이 반쪽이라 돌려보낼 데도 없음 보관<br><br>2022. 3. 18 또 옴 할머니 겉봉만 한참 보시다 그래도 돌려보내라 하심<br><br>2023. 3. 17 할머니 생신이 3월 14일 그날 맞춰 부치는 것 같다<br><br>2024. 3. 19 2층으로 옮겼다고 겉봉에 써 있다 다섯 통 겉봉 합치면 주소 다 나오는데<br>그건 내 일이 아니라고 생각했다<br><br>2025. 3. 18 다섯 통째<br><br>2026. 3 올해는 안 옴<br><br>2026. 10. 30 퇴임 묶음은 못 버렸다<br><br>2026. 11. 14 국장님 전화 할머니가 쪽지 두고 가셨단다 나는 이제 우체국 사람이 아니다 재희한테</blockquote>`,
+      html: `<blockquote class="hand">2020. 6. 20 정 할머니 앞집 헐고 빌라 들어섬 할머니는 뒤채로 전송 신청 받아 줌<br><br>2021. 3. 19 수림에서 정 할머니 앞 편지 보낸 사람 아드님 정민 씨<br>할머니가 안 받으신다 함 「그 애 편지 받으면 내가 지는 거다」<br>거절 도장을 찍으면 언젠가 이게 돌아갔을 때 아드님이 볼 거다 17-4는 이제 빌라 번지라 불명이 틀린 말도 아니고<br>근데 보내는 사람 칸이 반쪽이라 돌려보낼 데도 없다 그럼 그 도장은 누구 보라고 찍었나<br>솔직히는 내가 거절을 못 찍었다 찍으면 정말 끝나는 것 같아서 보관<br><br>2022. 3. 18 또 옴 할머니 겉봉만 한참 보시다 그래도 돌려보내라 하심<br><br>2023. 3. 17 할머니 생신이 3월 14일 그날 맞춰 부치는 것 같다<br><br>2024. 3. 19 2층으로 옮겼다고 겉봉에 써 있다 네 통 겉봉 합치면 주소가 거의 다 나오는데<br>그건 내 일이 아니라고 생각했다<br><br>2025. 3. 18 다섯 통째 이번엔 우편번호를 잘못 썼다 아드님도 급했나 보다<br><br>2026. 3 올해는 안 옴<br><br>2026. 10. 30 퇴임 묶음은 못 버렸다<br><br>2026. 11. 14 국장님 전화 할머니가 쪽지 두고 가셨단다 나는 이제 우체국 사람이 아니다 재희한테</blockquote>`,
     },
     mailboxes: {
       title: '빌라 우편함',
@@ -253,7 +269,7 @@ export default {
       reveal: {
         title: '0319',
         text: '손잡이가 내려갔다 맨 아래 칸에 고무줄로 묶은 편지 다섯 통 다섯 통 다 노란 반송 스티커가 붙어 있고, 묶음 사이에 접힌 종이 한 장이 끼워져 있었다',
-        scene: ['받는 곳은 다섯 번 다 미루동 17-4 정해린 님 우체국에서 일하면 한 해에 반송을 수천 통 보는데, 같은 사람이 같은 날짜에 다섯 해를 보낸 건 처음 봤다'],
+        scene: ['받는 곳은 다섯 번 다 미루동 17-4 정해린 님 우체국에서 일하면 한 해에 반송을 수천 통 보는데, 같은 사람이 해마다 3월 중순이면 다섯 해를 보낸 건 처음 봤다'],
         unlock: null,
       },
     },
@@ -306,33 +322,41 @@ export default {
     staffbox: {
       title: '맨 끝 사물함',
       scene: 'breakroom',
-      intro: '세 자리 자물쇠 아무도 비번을 모른다는 사물함이다 문자 한 통이 더 와 있었다 「내 사물함 수첩 봐라 비번은 그 할머니 집 순로 번호 요즘 걸로」',
+      intro: '숫자가 없는 방향 자물쇠다 손잡이를 위아래 양옆으로 밀어서 연다 문자가 한 통 더 와 있었다 「내 사물함에 수첩 있다 비번은 그 할머니 집 가는 길 우체국 문 나서서 꺾는 대로 요즘 길로」',
       docs: ['route', 'hcard', 'notice'],
       hintCode: 'L-S03',
       hints: [
-        '순로표가 두 장이다 위에 걸린 게 올해 거, 밑에 깔린 게 옛날 거',
-        '올해 순로표에서 할머니 집을 찾아라 앞 빌라 말고 그 안쪽 집',
-        '128',
+        '순로표 뒤에 내가 그린 약도 있다 우체국 문에서 출발해서 꺾을 때마다 그 방향으로 한 번씩 밀어라',
+        '빨간 점선은 옛날 길이다 그 대문은 이제 빌라 현관이다 할머니 집 파란 대문은 빌라 뒤 골목으로 들어가야 나온다',
+        '↑ → ↑ ←',
       ],
-      initial: () => ({ dial: [0, 0, 0] }),
+      initial: () => ({ seq: [] }),
       render(ctx) {
         const { d, el, save } = ctx;
-        const wrap = el('div', 'prop staffphoto'); wrap.innerHTML = `<img src="${P}props/staffbox.webp" alt="이름표 없는 사물함과 세 자리 자물쇠" decoding="async">`;
-        const box = el('div', 'letterlock-wrap'); box.append(wrap, dialRow(el, save, d, 3));
+        const wrap = el('div', 'prop staffphoto'); wrap.innerHTML = `<img src="${P}props/dirlock.webp" alt="이름표 없는 사물함과 방향 자물쇠" decoding="async">`;
+        const box = el('div', 'letterlock-wrap');
+        const shown = el('p', 'dir-seq', d.seq.length ? d.seq.map((k) => ARROW[k]).join(' ') : '· · ·');
+        const pad = el('div', 'dir-pad');
+        [['U', '위로 밀기'], ['L', '왼쪽으로 밀기'], ['R', '오른쪽으로 밀기'], ['D', '아래로 밀기']].forEach(([k, lab]) => { const b = el('button', 'ctl dir-' + k, ARROW[k]); b.type = 'button'; b.setAttribute('aria-label', lab); b.onclick = () => { if (d.seq.length < 8) d.seq.push(k); save(); }; pad.append(b); });
+        const reset = el('button', 'chip', '손 떼고 처음부터'); reset.type = 'button'; reset.onclick = () => { d.seq = []; save(); };
+        box.append(wrap, shown, pad, reset);
         return box;
       },
       commitLabel: '자물쇠 당기기',
+      canCommit: (d) => d.seq.length > 0,
       check(d) {
-        const s = d.dial.join('');
-        if (s === STAFF_CODE.join('')) return { ok: true };
-        if (s === '126') return { ok: false, msg: '안 열린다 126은 2019년 순로표 번호다 요즘 걸로라고 했다' };
-        if (s === '127') return { ok: false, msg: '안 열린다 127은 앞 빌라다' };
-        return { ok: false, msg: '자물쇠가 꿈쩍 않는다 순로표를 다시 본다' };
+        const s = d.seq.join('');
+        if (s === DIR_CODE.join('')) return { ok: true };
+        d.seq = [];
+        if (s === 'URU') return { ok: false, msg: '안 열린다 그건 빌라 현관까지다 옛날 대문 자리' };
+        if (s.startsWith('URU')) return { ok: false, msg: '안 열린다 골목까지는 맞게 들어온 것 같은데 파란 대문이 어느 쪽에 있었지' };
+        if (s.startsWith('UR')) return { ok: false, msg: '안 열린다 미루새길까지는 왔다 그다음이 다르다' };
+        return { ok: false, msg: '안 열린다 우체국 문에서 처음 꺾는 방향부터 다시' };
       },
       reveal: {
-        title: '128',
+        title: '↑ → ↑ ←',
         text: '자물쇠가 빠졌다 사물함 안은 거의 비었고 업무 수첩 한 권만 세워져 있었다 마지막 장들에 정 할머니 얘기가 띄엄띄엄 적혀 있다',
-        scene: ['아저씨는 「수취 거절」 도장 대신 「수취인 불명」을 찍었다 거절은 받는 사람이 싫다는 뜻이고, 불명은 그냥 못 찾았다는 뜻이다 아들이 어느 쪽으로 받아들일지 알았던 거다'],
+        scene: ['아저씨는 「수취 거절」 대신 「수취인 불명」을 찍었다 어차피 아무에게도 돌아가지 않을 편지였는데 그래도 거절은 못 찍었다고 적혀 있었다'],
         unlock: 'alley',
         unlockDoc: 'notebook',
       },
@@ -341,7 +365,7 @@ export default {
     reply: {
       title: '할머니가 내민 빈 봉투',
       scene: 'alley',
-      intro: '보내는 사람 칸은 내가 대신 채운다 아들 주소는 다섯 통 겉봉에 조각조각 있다 이번엔 돌아오면 안 된다',
+      intro: '할머니 답장의 받는 사람 칸을 내가 채운다 아들 주소는 다섯 통 겉봉의 보내는 사람 칸에 조각조각 있다 이번엔 돌아오면 안 된다',
       docs: ['envs', 'ledger', 'haerin'],
       hintCode: 'L-S04',
       hints: [
@@ -355,6 +379,8 @@ export default {
         const wrap = el('div', 'reply-wrap');
         const env = el('figure', 'prop lenv reply'); env.innerHTML = `<img src="${P}props/reply.webp" alt="소반 위의 빈 봉투와 볼펜" decoding="async"><span class="lenv-to written">${['zip', 'addr', 'floor', 'name'].map((k) => d.f[k] ? `<b>${k === 'addr' ? '수림군 산장면 ' + d.f[k] : d.f[k]}${k === 'name' ? ' 님' : ''}</b>` : '<b class="blank">　</b>').join('')}</span>`;
         wrap.append(env);
+        const hand = el('div', 'inhand'); hand.innerHTML = `<p class="pick-label">손에 든 다섯 통 · 보내는 사람 칸</p>${ENVS.map((e) => `<div class="inhand-card"><b>${e.y}</b><span>${e.from[0] || '□□□□□'}</span><span>${e.from[1]}</span><span>${e.from[2]}</span>${e.y === 2024 ? '<small>2층으로 옮겼어요</small>' : ''}</div>`).join('')}`;
+        wrap.append(hand);
         FIELDS.forEach((fd) => {
           const row = el('div', 'gift-row'); row.append(el('span', 'gift-name', fd.label));
           const pr = el('div', 'pick-row');
@@ -376,7 +402,7 @@ export default {
       },
       reveal: {
         title: '꽉 찬 봉투',
-        text: '우편번호 다섯 자리, 군과 면과 길과 번지, 2층, 이름 석 자 다섯 해 동안 한 번도 꽉 차 본 적 없는 칸이었다',
+        text: '우편번호 다섯 자리, 군과 면과 길과 번지, 2층, 이름 석 자 다섯 해 동안 어느 봉투에도 온전히 적힌 적 없던 주소였다',
         scene: ['할머니가 봉투를 들고 한 자씩 따라 읽었다 그러고는 우표 붙일 자리에 손가락을 대고 한참 있었다'],
         ending: true,
         endingLabel: '할머니 답장을 받아 들고',

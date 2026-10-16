@@ -574,15 +574,18 @@ async function letter({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('아저씨 우비가'), 'moved to breakroom');
     for (const [d, t] of [['못에 걸린 순로표', '파란 대문'], ['벽의 단체 사진', '38년']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     await hotspot(page, '맨 끝 사물함');
-    await setDial([1, 2, 6]); await commit(page); L.check((await status(page)).includes('2019년'), 'staffbox: old route decoy');
-    await setDial([1, 2, 7]); await commit(page); L.check((await status(page)).includes('빌라'), 'staffbox: villa decoy');
-    await setDial([1, 2, 8]); await shot(page, 'l-staff'); await commit(page); L.check(await dlgHas(page, '업무 수첩'), 'staffbox solved');
-    await L.click(page, '봉수 아저씨의 수첩 보기'); L.check(await dlgHas(page, '내가 지는 거다'), 'notebook via reveal'); await L.click(page, '← 돌아가기');
+    L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].some((t) => t.textContent.includes('순로표') && !t.disabled)), 'route doc on bench');
+    const push = async (seq) => { for (const k of seq) await L.click(page, { U: '위로 밀기', D: '아래로 밀기', L: '왼쪽으로 밀기', R: '오른쪽으로 밀기' }[k], { exact: true }); };
+    await push('URU'); await commit(page); L.check((await status(page)).includes('빌라 현관'), 'dirlock: old gate decoy');
+    await push('URUR'); await commit(page); L.check((await status(page)).includes('파란 대문이 어느 쪽'), 'dirlock: wrong last turn');
+    await push('URUL'); await shot(page, 'l-staff'); await commit(page); L.check(await dlgHas(page, '업무 수첩'), 'staffbox solved');
+    await L.click(page, '봉수 아저씨의 수첩 보기'); L.check(await dlgHas(page, '거절을 못 찍었다'), 'notebook via reveal'); await L.click(page, '← 돌아가기');
     await L.click(page, '미루새길 골목으로'); await L.sleep(400);
     L.check((await L.mainText(page)).includes('파란 대문이 있다'), 'moved to alley');
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '할머니가 내민 빈 봉투'))), 'reply hidden before meeting');
     for (const [d, t] of [['빌라 우편함', '파란 대문 틈'], ['파란 대문', '이번엔 돌아오지 않게']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     await hotspot(page, '할머니가 내민 빈 봉투');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .inhand-card').length === 5), 'reply: five sender boxes in hand');
     const pick = async (q, v) => L.click(page, q + ': ' + v, { exact: true });
     await pick('우편번호', '35271'); await pick('주소', '산장길 31-2'); await pick('층', '2층'); await pick('받는 사람', '오정민'); await commit(page);
     L.check((await status(page)).includes('대장에'), 'reply: wrong zip explained');
