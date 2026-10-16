@@ -966,3 +966,48 @@ html[data-case="laundry"] .v2-paper::before{height:4px;opacity:.75}
 .term-table.log6 td:first-child{white-space:nowrap}
 .term-table.log6 td,.term-table.log6 th{padding:4px 6px}
 @media (max-width:640px){.term-table.log6{font-size:11.5px}.term-table.log6 td,.term-table.log6 th{padding:4px 3px}}
+
+/* 끝나지 않은 방송: 꺼진 방송국 · ON AIR 빨강 · VU 미터 호박색 */
+html[data-case="radio"]{
+  --night:#0f0b0b;--night-2:#191212;--night-rgb:15,11,11;--night2-rgb:25,18,18;
+  --line:#3f3231;--line-2:#2a201f;--chip:#211918;--dock:#120d0d;
+  --soft:#dccfca;--soft-2:#e6dbd6;--soft-3:#a8988f;--fog:#968780;
+  --lamp:#ff5a4a;--lamp-deep:#c93a2e;--enamel:#f3ece8;--ink:#140e0d;
+  --paper:#f4efe6;--paper-ink:#2a221f;--paper-line:#dcd2c4;--radius:6px;
+  --paper-strip:linear-gradient(90deg,#d8342a 0 64px,transparent 64px 72px,#e0a63c 72px 84px,transparent 84px);
+  --paper-tex:radial-gradient(rgba(90,60,40,.05) 1px,transparent 1.3px) 0 0/6px 6px;
+  --box-tex:radial-gradient(90% 50% at 50% 0%,rgba(255,90,74,.07),transparent 70%);
+}
+html[data-case="radio"] .v2-paper::before{height:5px;opacity:.85}
+.blinkfig{background:#0d0909;border-radius:6px;padding:10px 10px 4px;margin:0 0 12px;display:grid;gap:4px}
+.blink-svg{width:100%;height:auto;display:block}
+.zine{background:#f7f2e7;color:#2a221f;border:1px solid #ddd2bf;padding:14px 16px;margin:0 0 12px;font-family:var(--sans);font-size:14px;line-height:1.6;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.zine-head{font-weight:800;font-size:17px;margin:0 0 8px;border-bottom:2px solid #2a221f;padding-bottom:4px}
+.zine-foot{font-size:12px;color:#7a6e62;margin:6px 0 0}
+.morse-table{border-collapse:collapse;margin:8px 0 0;font-size:14px}
+.morse-table th{font-size:12px;color:#7a6e62;text-align:left;padding:0 0 4px}
+.morse-table td{padding:2px 10px 2px 0}
+.morse-table td.mc{letter-spacing:.18em;color:#b2281f}
+.term-screen.auto .term-sub{margin:0 0 8px;font-size:12px;opacity:.75}
+.term-table tr.term-err td{color:#ff7a6a;font-weight:700}
+.paper-table.wiring .hand-note{display:block;margin:6px 0 0}
+.keyphoto,.shelfphoto,.deckphoto,.patchphoto{max-width:640px;margin:0 auto 8px}
+.kp-key{position:absolute;width:4.8%;height:7.4%;transform:translate(-50%,-50%);border:0;background:transparent;border-radius:.8cqw;cursor:pointer;padding:0;min-width:0;min-height:0}
+.kp-key:hover,.kp-key:focus-visible{outline:none;box-shadow:0 0 0 .4cqw rgba(255,180,160,.75)}
+.kp-key:active{background:rgba(0,0,0,.35)}
+.kp-led{position:absolute;left:46.8%;top:15.6%;width:1.2%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:#5a1410}
+.kp-led.on{background:#3fe07a;box-shadow:0 0 .6cqw rgba(63,224,122,.6)}
+.reel-box{position:absolute;width:15%;height:27%;transform:translate(-50%,-30%);border:0;background:transparent;cursor:pointer;display:grid;align-items:start;justify-items:center;padding:0;min-width:0;min-height:0;border-radius:.4cqw}
+.reel-box span{margin-top:2.2cqw;min-width:72%;padding:.5cqw .6cqw;background:#f3f0e6;box-shadow:0 .15cqw .4cqw rgba(0,0,0,.35);font-family:var(--hand);font-size:3cqw;color:#1d2554;line-height:1;white-space:nowrap;text-align:center;pointer-events:none;transform:rotate(-1deg)}
+.reel-box:hover,.reel-box:focus-visible{outline:none;box-shadow:inset 0 0 0 .4cqw rgba(255,190,120,.7)}
+.reel-box.picking{box-shadow:inset 0 0 0 .55cqw var(--lamp);transform:translate(-50%,-34%)}
+.deck-counter{position:absolute;left:45%;top:52%;transform:translate(-50%,-50%);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:6.4cqw;letter-spacing:.12em;color:#ff7a3d;text-shadow:0 0 .5cqw rgba(255,110,50,.45);pointer-events:none}
+.counter-wheels{display:flex;justify-content:center;align-items:center;gap:8px;margin:6px 0 4px}
+.cw{display:grid;justify-items:center;gap:4px}
+.cw-num{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:26px;min-width:40px;text-align:center;background:var(--chip);border:1px solid var(--line);border-radius:6px;padding:4px 0}
+.cw-colon{font-size:26px;font-weight:800;padding:0 2px}
+.pb-lab{position:absolute;transform:translate(-50%,-50%);font-family:var(--sans);font-weight:800;font-size:1.45cqw;letter-spacing:-.02em;color:#1d1d1d;white-space:nowrap;pointer-events:none}
+.patch-cables{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.jack{position:absolute;width:7%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:0;background:transparent;cursor:pointer;padding:0;min-width:0;min-height:0;z-index:2}
+.jack:hover,.jack:focus-visible{outline:none;box-shadow:0 0 0 .45cqw rgba(255,190,120,.75)}
+.jack.picking{box-shadow:0 0 0 .6cqw var(--lamp)}

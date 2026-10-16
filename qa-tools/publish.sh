@@ -6,7 +6,7 @@ MSG="${1:-update}"
 SRC=/home/claude/mihaeje-src
 REPO=/home/claude/mihaeje          # main 체크아웃
 PAGES=/home/claude/mihaeje-pages   # gh-pages 워크트리
-TRAILER="Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+TRAILER="Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01EmFjZY1gpVcrfc1exiuVhy"
 
 cd "$SRC/mystery-site" && npm run build >/dev/null

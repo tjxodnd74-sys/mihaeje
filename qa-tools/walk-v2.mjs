@@ -741,6 +741,67 @@ async function laundry({ mobile = false } = {}) {
   await browser.close();
 }
 
+async function radio({ mobile = false } = {}) {
+  const { browser, page, errors } = await L.launch({ mobile });
+  console.log('=== radio v2' + (mobile ? ' (mobile)' : ''));
+  const key = async (code) => { for (const c of code) await L.click(page, `${c} 누르기`, { exact: true }); };
+  try {
+    await L.fresh(page, '/episode.html?case=radio'); await L.sleep(600); L.check(page.url().includes('play.html?case=radio'), 'old address redirects');
+    L.check((await L.mainText(page)).includes('★★★★★'), '5 stars shown');
+    await L.click(page, '처음부터 하기');
+    L.check((await L.mainText(page)).includes('송신기를 내린 건 나였다'), 'opening shown');
+    await L.click(page, 'ON AIR 불빛 쪽으로'); await L.sleep(400);
+    for (const [d, t] of [['만석 형 문자', '98점4'], ['모니터 스피커 받아쓰기', '결이 조금씩'], ['깜빡이는 ON AIR', '되풀이'], ['벽에 걸린 옛 사보', '쉼표가 길다'], ['안내 데스크 관리 일지', '도어락'], ['유리문의 철거 공지', '11월 15일']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    await hotspot(page, 'B실 도어락');
+    L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), '★5: no guide');
+    L.check(!(await L.buttons(page)).includes('손잡이 돌리기'), 'keypad: no commit before input');
+    await key('1947'); await commit(page); L.check((await status(page)).includes('돌지 않는다'), 'keypad: 1947 decoy neutral');
+    await key('4719'); await shot(page, 'r-keypad'); await commit(page); L.check(await dlgHas(page, '사번'), 'keypad solved');
+    await L.closeDialog(page); await L.sleep(400);
+    if (!(await L.mainText(page)).includes('콘솔 자리는 비어')) await hotspot(page, 'B실로 가기'); await L.sleep(400);
+    for (const [d, t] of [['자동 송출 PC 화면', '파일 없음'], ['모니터에 붙은 쪽지', '녹음기는 돌았잖아'], ['벽의 편성 변경 알림', 'A실 진행']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    await L.click(page, '1. 로비', { exact: true }); await L.sleep(300);
+    L.check(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].filter((b) => /가기$/.test(b.getAttribute('aria-label'))).length === 1), 'lobby: travel to archive left (B실 visited)');
+    await hotspot(page, '보관실로 가기'); await L.sleep(400);
+    await hotspot(page, '책상 위 보관 규칙'); L.check(await dlgHas(page, '새벽 5시'), 'doc: rules'); await L.closeDialog(page);
+    await hotspot(page, '지난주 테이프 선반');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .reel-box').length === 12), 'shelf: 12 boxes');
+    await L.click(page, '241030 A 02 테이프'); await commit(page); L.check((await status(page)).includes('그날이 아니다'), 'reel: later-tape decoy neutral');
+    await L.click(page, '241030 A 00 테이프'); await commit(page); L.check((await status(page)).includes('그날이 아니다'), 'reel: hour decoy neutral');
+    await L.click(page, '241030 A 01 테이프'); await shot(page, 'r-shelf'); await commit(page); L.check(await dlgHas(page, '마지막 날 2부'), 'reel solved');
+    await L.closeDialog(page); await L.sleep(400);
+    if (!(await L.mainText(page)).includes('그날 밤 선배가 앉았던')) await hotspot(page, 'A실로 가기'); await L.sleep(400);
+    for (const [d, t] of [['콘솔 위 송출 기록지', '01:58:12'], ['랙 옆 배선표', '출력 4']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    await hotspot(page, '릴 테이프 데크');
+    const setC = async (digits) => { const labs = ['분 십의 자리', '분 일의 자리', '초 십의 자리', '초 일의 자리']; for (let i = 0; i < 4; i++) { for (let k = 0; k < 10; k++) { const cur = await page.evaluate((i) => document.querySelectorAll('dialog[open] .cw-num')[i].textContent, i); if (cur === String(digits[i])) break; await L.click(page, labs[i] + ' 올리기', { exact: true }); } } };
+    await setC([5, 8, 1, 2]); await commit(page); L.check((await status(page)).includes('그 순간이 아니다'), 'deck: no preroll decoy neutral');
+    await setC([5, 8, 2, 2]); await shot(page, 'r-deck'); await commit(page); L.check(await dlgHas(page, '꺼진 마이크에 대고'), 'deck solved');
+    await L.closeDialog(page); await L.sleep(300);
+    await hotspot(page, '패치베이');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .jack').length === 16), 'patch: 16 jacks');
+    L.check((await L.dialogText(page)).includes('7 AUTO PC → 1 TX MAIN'), 'patch: tonight cables shown');
+    const plug = async (o, i) => { await L.click(page, `출력 ${o} ${['MIC A', 'MIC B', 'TAPE A', 'TAPE B', 'PGM A', 'PGM B', 'AUTO PC', 'TONE'][o - 1]}`, { exact: true }); await page.evaluate((i) => [...document.querySelectorAll('dialog[open] .jack.in')][i - 1].click(), i); await L.sleep(150); };
+    await plug(3, 2); await plug(3, 3); await plug(3, 4); await commit(page); L.check((await status(page)).includes('이대로는 아니다'), 'patch: printed-label decoy neutral');
+    for (const i of [2, 4]) await page.evaluate((i) => [...document.querySelectorAll('dialog[open] .jack.in')][i - 1].click(), i);
+    await L.sleep(150);
+    await plug(4, 1); await plug(4, 3); await plug(4, 5); await shot(page, 'r-patch'); await commit(page); L.check(await dlgHas(page, '처음으로 나간다'), 'patch solved');
+    await L.click(page, '로비로 내려가기'); await L.sleep(500);
+    L.check((await L.mainText(page)).includes('손 안 떨었네'), 'ending reached');
+    await shot(page, 'r-ending');
+    await L.click(page, '선배의 문자 읽기'); L.check(await dlgHas(page, '테이프는 내가 가져간다'), 'final unlocked'); await L.closeDialog(page);
+    await L.click(page, '자료 다시 보기'); L.check(!(await L.dialogText(page)).includes('아직 읽지 않은'), 'all docs read');
+    L.check(await page.evaluate(() => [...document.querySelectorAll('a.v2-primary')].some((a) => a.textContent.includes('테마 로비로') && a.getAttribute('href') === 'index.html#cases')), 'last episode links back to lobby');
+  } catch (e) {
+    console.log('FAIL exception', e.message);
+    console.log('buttons now', JSON.stringify(await L.buttons(page)));
+    console.log('dialog', (await L.dialogText(page)).replace(/\n+/g, ' | ').slice(0, 400));
+    process.exitCode = 1;
+  }
+  const bad = errors.filter((e) => !/woff2/.test(e));
+  L.check(!bad.length, 'no page errors ' + JSON.stringify(bad));
+  await browser.close();
+}
+
 const which = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 const mobile = process.argv.includes('--mobile');
 await L.ensureServer();
@@ -753,3 +814,4 @@ if (!which.length || which.includes('garage')) await garage({ mobile });
 if (!which.length || which.includes('letter')) await letter({ mobile });
 if (!which.length || which.includes('apartment')) await apartment({ mobile });
 if (!which.length || which.includes('laundry')) await laundry({ mobile });
+if (!which.length || which.includes('radio')) await radio({ mobile });
