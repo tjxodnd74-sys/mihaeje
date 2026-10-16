@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(fonts/Pretendard-Black.woff2) format("woff2");font-weight:900}
+@font-face{font-family:P;src:url(fonts/Pretendard-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:P;src:url(fonts/Pretendard-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:P;src:url(fonts/Pretendard-Medium.woff2) format("woff2");font-weight:500}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:transparent;font-family:P,"Noto Sans CJK KR",sans-serif;color:#fff}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden}
+/* soft darkening top & bottom so text reads on any footage */
+#gradTop{position:absolute;left:0;top:0;width:1080px;height:520px;background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,0))}
+#gradBot{position:absolute;left:0;bottom:0;width:1080px;height:760px;background:linear-gradient(0deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.35) 55%,rgba(0,0,0,0) 100%)}
+#vig{position:absolute;inset:0;box-shadow:inset 0 0 260px rgba(0,0,0,.55)}
+/* top: tiny label + step dots */
+#top{position:absolute;left:64px;right:64px;top:96px;display:flex;align-items:center;justify-content:space-between}
+#label{display:flex;align-items:center;gap:14px;font-size:28px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
+#label i{display:block;width:34px;height:3px;background:#ffd64f}
+#dots{display:flex;gap:10px}
+#dots b{display:block;width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.35)}
+#dots b.on{background:#ffd64f}
+/* step tag (left, mid) */
+#tag{position:absolute;left:64px;top:1080px;display:flex;align-items:baseline;gap:18px;opacity:0}
+#tag .n{font-size:48px;font-weight:800;color:#ffd64f;letter-spacing:.02em}
+#tag .t{font-size:60px;font-weight:800;letter-spacing:-.02em}
+#tag .ln{position:absolute;left:0;bottom:-16px;height:4px;background:#ffd64f;width:0}
+/* big stat */
+#stat{position:absolute;left:64px;top:1150px;opacity:0}
+#stat .big{font-size:168px;font-weight:900;line-height:.95;letter-spacing:-.05em;color:#ffd64f;text-shadow:0 10px 40px rgba(0,0,0,.55)}
+#stat .sub{font-size:38px;font-weight:700;margin-top:14px;opacity:.9}
+/* hook: big centered */
+#hook{position:absolute;left:64px;right:64px;top:0;height:1920px;display:flex;align-items:center;justify-content:center;text-align:center;opacity:0}
+#hook div{font-size:112px;font-weight:900;line-height:1.12;letter-spacing:-.035em;text-shadow:0 12px 50px rgba(0,0,0,.6);word-break:keep-all}
+#hook .w{display:inline-block;margin-right:.18em}
+#hook .hl{color:#ffd64f}
+/* caption */
+#cap{position:absolute;left:64px;right:64px;top:1480px;font-size:62px;line-height:1.28;font-weight:800;letter-spacing:-.015em;word-break:keep-all;text-shadow:0 4px 18px rgba(0,0,0,.6)}
+#cap .w{display:inline-block;margin-right:.2em;will-change:transform}
+#cap .hl{color:#ffd64f}
+/* cta */
+#cta{position:absolute;left:64px;right:64px;top:1180px;display:flex;flex-direction:column;gap:18px;opacity:0}
+#cta .r{display:flex;align-items:center;gap:20px;font-size:58px;font-weight:800;letter-spacing:-.02em}
+#cta .r b{width:56px;height:56px;border-radius:14px;background:#ffd64f;display:flex;align-items:center;justify-content:center;flex:none}
+#cta .r b svg{width:36px;height:36px}
+#bar{position:absolute;left:0;bottom:0;width:1080px;height:8px;background:rgba(255,255,255,.15)}
+#bar i{display:block;height:100%;background:#ffd64f;width:0}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+</style></head>
+<body><div id="stage">
+  <div id="gradTop"></div><div id="gradBot"></div><div id="vig"></div>
+  <div id="top"><div id="label"><i></i><span id="labeltxt"></span></div><div id="dots"><b id="d1"></b><b id="d2"></b><b id="d3"></b></div></div>
+  <div id="hook"><div id="hookin"></div></div>
+  <div id="tag"><span class="n" id="tagn"></span><span class="t" id="tagt"></span><span class="ln" id="tagln"></span></div>
+  <div id="stat"><div class="big" id="statbig"></div><div class="sub" id="statsub"></div></div>
+  <div id="cta"></div>
+  <div id="cap"></div>
+  <div id="bar"><i id="barfill"></i></div>
+  <div id="flash"></div>
+</div>
+<script>
+const SPEC=window.SPEC;const SEG=SPEC.segments;
+const $=id=>document.getElementById(id);
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-x,3);
+const back=x=>{const c=1.4;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+$('labeltxt').textContent=SPEC.eyebrow;
+function buildCap(str){let on=false;return str.split(' ').map(w=>{if(w==='/')return '<br>';const start=w.startsWith('|');if(start)on=true;const hl=on||w.includes('|');const n=(w.match(/\|/g)||[]).length;w=w.replace(/\|/g,'');if(n===2||(!start&&n===1))on=false;return `<span class="w${hl?' hl':''}">${w}</span>`;}).join('');}
+$('cta').innerHTML=SPEC.cta.map((c,i)=>`<div class="r" id="ctar${i}"><b><svg viewBox="0 0 24 24" fill="none" stroke="#0b1220" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></b><span>${c}</span></div>`).join('');
+let curStep=0;
+window.seek=function(t){
+  let seg=null,si=-1;for(let i=0;i<SEG.length;i++){if(t>=SEG[i].t){seg=SEG[i];si=i;}}
+  // cut flash (very short, subtle) at each segment that starts a new clip
+  let fl=0;if(seg&&seg.cut){const d=t-seg.t;if(d>=0&&d<0.08)fl=(1-d/0.08)*0.18;}
+  $('flash').style.opacity=fl;
+  $('barfill').style.width=(clamp(t/SPEC.duration,0,1)*100)+'%';
+  const e=eo(clamp((t-0.1)/0.5,0,1));$('top').style.opacity=e;$('top').style.transform=`translateY(${(1-e)*-16}px)`;
+  if(seg&&seg.step)curStep=seg.step;
+  for(let i=1;i<=3;i++)$('d'+i).classList.toggle('on',curStep>=i);
+  const hook=$('hook'),tag=$('tag'),stat=$('stat'),cta=$('cta'),cap=$('cap');
+  hook.style.opacity=0;tag.style.opacity=0;stat.style.opacity=0;cta.style.opacity=0;cap.style.opacity=1;
+  if(!seg){cap.innerHTML='';return;}
+  const d=t-seg.t;
+  if(seg.kin){ // hook: big centered sentence, words rise in; no bottom caption
+    if(hook.dataset.k!==String(seg.t)){$('hookin').innerHTML=buildCap(seg.cap);hook.dataset.k=String(seg.t);}
+    hook.style.opacity=1-eo(clamp((t-seg.e+0.25)/0.25,0,1));cap.style.opacity=0;
+    [...$('hookin').querySelectorAll('.w')].forEach((w,i)=>{const k=eo(clamp((d-i*0.07)/0.45,0,1));w.style.transform=`translateY(${(1-k)*50}px)`;w.style.opacity=k;});
+    return;
+  }
+  // caption (bottom)
+  if(cap.dataset.k!==String(seg.t)){cap.innerHTML=buildCap(seg.cap);cap.dataset.k=String(seg.t);}
+  [...cap.querySelectorAll('.w')].forEach((w,i)=>{const k=eo(clamp((d-i*0.045)/0.32,0,1));w.style.transform=`translateY(${(1-k)*26}px)`;w.style.opacity=k;});
+  // step tag persists through the step + its detail
+  const stepSeg=[...SEG].reverse().find(s=>s.step&&t>=s.t);
+  if(stepSeg&&!seg.cta){
+    $('tagn').textContent=stepSeg.num;$('tagt').textContent=stepSeg.name;
+    const k=eo(clamp((t-stepSeg.t)/0.45,0,1));tag.style.opacity=k;tag.style.transform=`translateX(${(1-k)*-40}px)`;
+    $('tagln').style.width=(k*100)+'%';
+    if(seg.stat){tag.style.transform+=' translateY(-110px)';}
+  }
+  if(seg.stat){
+    const [to,unit,pre]=seg.count;const p=eo(clamp((d-0.1)/0.9,0,1));
+    $('statbig').textContent=`${pre}${Math.round(to*p)}${unit}`;$('statsub').textContent=seg.stat[1];
+    const k=back(clamp(d/0.5,0,1));stat.style.opacity=clamp(d/0.12,0,1);stat.style.transform=`translateY(${(1-k)*30}px)`;
+  }
+  if(seg.cta){
+    cta.style.opacity=1;
+    SPEC.cta.forEach((c,i)=>{const r=$('ctar'+i);const k=back(clamp((d-0.15-i*0.3)/0.45,0,1));r.style.opacity=clamp(k*1.5,0,1);r.style.transform=`translateX(${(1-k)*-50}px)`;});
+  }
+};
+seek(0);
+</script></body></html>
