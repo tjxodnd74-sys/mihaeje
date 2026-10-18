@@ -116,6 +116,8 @@ for s_ in segs:
 # drifts because captions abbreviate ("F" is read "에프", "확인" vs "확인하세요").
 import difflib
 CMAX = spec.get('capMax', 12)
+CAP_LEAD = spec.get('capLead', 0.2)   # phrases appear slightly before the words are spoken (reads as in-sync)
+SEG_LEAD = spec.get('segLead', 0.12)  # cuts/new sentences start a touch before the voice
 sdf = subprocess.run(['ffmpeg', '-i', narr, '-af', 'silencedetect=n=-35dB:d=0.1', '-f', 'null', '-'], capture_output=True, text=True).stderr
 fsil = list(zip([float(x) for x in re.findall(r'silence_start: ([\d.]+)', sdf)], [float(x) for x in re.findall(r'silence_end: ([\d.]+)', sdf)]))
 sdf2 = subprocess.run(['ffmpeg', '-i', narr, '-af', 'silencedetect=n=-28dB:d=0.06', '-f', 'null', '-'], capture_output=True, text=True).stderr
@@ -216,12 +218,19 @@ for i, s_ in enumerate(segs):
             sc = cap2say(ci)
             hit = [a for c, a in anchors if c == sc]
             tt = hit[0] if hit else char_time(sc)
-            tt = max(tt - 0.08, out[-1]['t'] + 0.45)
+            tt = max(tt - CAP_LEAD, out[-1]['t'] + 0.45)
         html = ''.join(f'<span class="w{" hl" if hl else ""}">{_re.sub(r",$", "", w)}</span>' for w, hl in g)
         out.append({'t': round(tt, 3), 'html': html})
         ci += sum(len(_norm(w)) for w, _ in g)
     s_['capChunks'] = out
     if os.environ.get('CAPDBG'): print('cap', i+1, round(t1,2), [(c, round(a,2)) for c, a in anchors])
+# shift sentence starts (cut + caption) slightly ahead of the voice
+for i_, s_ in enumerate(segs):
+    nt = round(max(0.0, s_['t'] - (SEG_LEAD if i_ else 0)), 3)
+    if s_.get('capChunks'): s_['capChunks'][0]['t'] = nt
+    s_['t'] = nt
+for i_, s_ in enumerate(segs):
+    s_['e'] = segs[i_+1]['t'] if i_+1 < n else s_['e']
 total_dur = math.ceil(dur + 1.2)
 spec['duration'] = total_dur
 # impacts: segment start of hook, each step, cta + hook's yellow words
