@@ -1,9 +1,9 @@
 {
   "index": {
-    "classicScripts": 5,
+    "classicScripts": 6,
     "moduleEntries": 1,
-    "jsBytes": 48180,
-    "cssBytes": 151352
+    "jsBytes": 49669,
+    "cssBytes": 151845
   },
   "case": {
     "classicScripts": 36,
@@ -14,7 +14,7 @@
   "episode": {
     "classicScripts": 36,
     "moduleEntries": 1,
-    "jsBytes": 487307,
+    "jsBytes": 487304,
     "cssBytes": 441854
   },
   "studio": {

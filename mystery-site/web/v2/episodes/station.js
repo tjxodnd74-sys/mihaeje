@@ -258,7 +258,7 @@ export default {
     clerk: {
       title: '매표창구의 역무원',
       kind: '박종길 · 야간 근무',
-      html: `<p>창구 안의 남자는 커피를 반쯤 남긴 채 신문을 접었다</p><blockquote>“새벽에 여자분 하나가 저 표지판 앞에 한참 서 있다가, 뭘 붙이고 갔어요 떼려다 뒀습니다 ‘사람이 올 거예요’ 하길래”</blockquote><blockquote>“3번? 지금은 없어요 작년에 개편하면서 번호를 바꿨어요 저 표지판이 서 있던 자리는 지금 2번이에요 북쪽 가는 쪽”</blockquote><blockquote>“그 여자분, 아침에 북쪽 가는 열차 타고 올라갔어요 어느 열차였는지는 글쎄요 승강장 가서 물어보시든가 기둥에도 뭘 붙였을걸요 테이프 소리가 들렸으니까”</blockquote>`,
+      html: `<p>창구 안의 남자는 커피를 반쯤 남긴 채 신문을 접었다</p><blockquote>“새벽에 여자분 하나가 저 표지판 앞에 한참 서 있다가, 뭘 붙이고 갔어요 떼려다 뒀습니다 ‘사람이 올 거예요’ 하길래”</blockquote><blockquote>“3번? 지금은 없어요 작년에 개편하면서 번호를 바꿨어요 저 표지판이 어디 있던 건지는 나도 몰라요 표지판만 남았지”</blockquote><blockquote>“그 여자분, 첫차 타고 북쪽으로 올라갔어요 어느 열차였는지는 글쎄요 승강장 가서 물어보시든가 기둥에도 뭘 붙였을걸요 테이프 소리가 들렸으니까”</blockquote>`,
     },
     notice: {
       title: '승강장 개편 안내',
@@ -278,7 +278,7 @@ export default {
     timetable: {
       title: '기둥의 출발 시각표',
       kind: '2번 승강장 · 북행',
-      html: `<figure class="prop laminated"><img src="assets/v2/station/props/timetable.webp" alt="기둥에 핀으로 꽂힌 시각표" decoding="async"><div class="laminated-sheet"><p class="sheet-title">2번 승강장 출발 시각 (북행)</p><table><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_2.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="sheet-title dim">맞은편 1번 승강장 (남행)</p><table class="dim"><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_1.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="sheet-foot">미루선 · 수림역무관리소</p></div></figure><div class="paper-table mobile-only"><p class="pt-head">같은 시각표 글자로 옮겨 적은 것</p><table class="nwcells"><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr>${TRAINS_2.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</table><p class="pt-foot">맞은편 1번 승강장 (남행) ${TRAINS_1.map((t) => `${t.time} ${t.to}행`).join(' · ')}</p></div>`,
+      html: `<figure class="prop laminated"><img src="assets/v2/station/props/timetable.webp" alt="기둥에 핀으로 꽂힌 시각표" decoding="async"><div class="laminated-sheet"><p class="sheet-title">2번 승강장 출발 시각 (북행 · 09시 이후)</p><table><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_2.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="sheet-title dim">맞은편 1번 승강장 (남행)</p><table class="dim"><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_1.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="sheet-foot">미루선 · 수림역무관리소</p></div></figure><div class="paper-table mobile-only"><p class="pt-head">같은 시각표 글자로 옮겨 적은 것</p><table class="nwcells"><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr>${TRAINS_2.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</table><p class="pt-foot">맞은편 1번 승강장 (남행) ${TRAINS_1.map((t) => `${t.time} ${t.to}행`).join(' · ')}</p></div>`,
     },
     postcard: {
       title: '게시판의 그림엽서',
@@ -317,7 +317,7 @@ export default {
       hintCode: 'T-S01',
       hints: [
         '구간권을 안내판 위에서 움직이고, 돌려도 보세요 구멍으로 읽히는 글자가 말이 되는 자리는 서른여섯 가지 중 하나뿐입니다',
-        '화살표가 위를 보는 상태로, 오른쪽 두 칸, 아래 한 칸 숫자 하나와 글자 다섯이 읽힙니다',
+        '구간권을 돌리면 화살표 방향이 바뀝니다 방향마다 한 칸씩 밀어 보면서, 구멍 여섯 개가 승강장과 기둥을 가리키는 말로 읽히는 자리를 찾으세요',
         '읽히는 글자는 「2번 둘째 기둥」입니다 2번 승강장의 둘째 기둥을 고르세요',
       ],
       initial: () => ({ dx: 0, dy: 0, turn: 0, platform: null, pillar: null }),
@@ -374,8 +374,8 @@ export default {
         const txt = readHoles(d);
         if (txt !== '2번둘째기둥') return { ok: false, msg: `구멍으로 읽히는 글자가 아직 말이 안 된다 「${txt}」 구간권을 움직이거나 돌려서 말이 되는 자리를 먼저 찾는다` };
         if (d.platform === 2 && d.pillar === 2) return { ok: true };
-        if (d.platform === 1) return { ok: false, msg: '1번 승강장 그 기둥엔 아무것도 붙어 있지 않았다 구멍으로 읽힌 글자가 정말 말이 됐는지 다시 본다' };
-        return { ok: false, msg: `기둥이 다릅니다 구멍으로 읽힌 글자 「${txt}」을 다시 본다` };
+        if (d.platform === 1) return { ok: false, msg: '그 기둥엔 아무것도 붙어 있지 않았다 구멍으로 읽힌 글자를 다시 본다' };
+        return { ok: false, msg: '그 기둥엔 아무것도 붙어 있지 않았다 구멍으로 읽힌 글자를 다시 본다' };
       },
       reveal: {
         title: '2번 승강장, 둘째 기둥',
@@ -396,7 +396,7 @@ export default {
       hintCode: 'T-S02',
       hints: [
         '민서의 쪽지는 거울 글씨입니다 사진을 거울 앞에 들고 나란히 맞추면 읽힙니다 읽은 문장 안에 “시간”과 “종점”이 있습니다',
-        '민서와 처음 만난 시간은 「민서와 나」에 적혀 있습니다 같은 시간 열차가 두 승강장에 하나씩 있는데, 지금 서 있는 곳은 2번 승강장입니다',
+        '민서와 처음 만난 시간은 「민서와 나」에 적혀 있습니다 같은 시간 열차가 둘이면, 민서가 사진을 붙여 둔 승강장 쪽 열차를 고르세요',
         '09:40 수림행 급행입니다 종점은 수림',
       ],
       initial: () => ({ held: false, tilt: 0, train: null }),
@@ -431,16 +431,16 @@ export default {
         if (!d.train) return { ok: false, msg: '열차를 하나 골라야 합니다' };
         if (!d.held || Math.abs((d.tilt || 0) - 50) > 8) return { ok: false, msg: '뒷면 글씨를 아직 제대로 읽지 않았다 사진을 거울과 나란히 맞추면 글자가 바로 보인다' };
         if (d.train === 'n0940') return { ok: true };
-        if (d.train === 's0940') return { ok: false, msg: '09:40은 두 승강장에 하나씩 있다 민서가 사진을 붙인 기둥은 어느 쪽 승강장이었지' };
+        if (d.train === 's0940') return { ok: false, msg: '이 열차가 아니다 뒷면 글씨와 「민서와 나」를 다시 본다' };
         const t = [...TRAINS_2, ...TRAINS_1].find((x) => x.id === d.train);
-        return { ok: false, msg: `${t.time} ${t.to}행은 “처음 만난 그 시간”이 아닙니다 「민서와 나」에 그 시간이 있습니다` };
+        return { ok: false, msg: '이 열차가 아니다 뒷면 글씨와 「민서와 나」를 다시 본다' };
       },
       reveal: {
         title: '09:40 수림행 급행',
         text: '09:40까지 세 시간을 벤치에서 기다렸다 둘째 칸에 탔다 자리에 이름은 적혀 있지 않았다',
         scene: [
           '네컷사진을 창틀에 세워 뒀다 눈 감은 컷에서 민서는 웃고 있었는데, 나는 그 컷을 제일 싫어했고 민서는 제일 좋아했다',
-          '열차는 북문을 서지 않고 지나쳤다 창밖이 산으로 바뀌는 동안 휴대폰을 세 번 봤지만 여전히 꺼져 있었다',
+          '창밖이 들판에서 산으로 바뀌는 동안 휴대폰을 세 번 봤다 민서 번호는 여전히 꺼져 있었다',
         ],
         unlock: 'surim',
       },
@@ -506,7 +506,7 @@ export default {
       hintCode: 'T-S04',
       hints: [
         '쪽지 하나를 거짓이라고 가정하고, 나머지 둘이 전부 참이 되는지 봅니다 거짓이 둘이 되면 그 가정은 틀린 겁니다',
-        '가 쪽지가 거짓이라고 해 보세요 그러면 둘째 집인데, 그때 다 쪽지는 참인가요 거짓인가요 셋 다 그렇게 따져 봅니다',
+        '쪽지마다 하나씩 거짓이라고 놓고 따져 보세요 다른 두 쪽지가 둘 다 참으로 남는 경우가 딱 하나 있습니다',
         '거짓말은 나 집은 셋째',
       ],
       initial: () => ({ lie: null, house: null }),
@@ -531,9 +531,9 @@ export default {
       check(d) {
         if (!d.lie || !d.house) return { ok: false, msg: '거짓말 쪽지 하나와 집 하나를 골라야 한다' };
         if (d.lie === '나' && d.house === 3) return { ok: true };
-        if (d.lie === '가') return { ok: false, msg: '가가 거짓이면 둘째 집이다 그러면 다(셋째 집)도 거짓이 된다 거짓이 둘이다' };
-        if (d.lie === '다') return { ok: false, msg: '다가 거짓이면 셋째 집이 아니다 그러면 가는 참이고, 나(가는 거짓말)는 거짓이 된다 거짓이 둘이다' };
-        return { ok: false, msg: '거짓말 쪽지는 맞다 그러면 가와 다는 참이다 다를 다시 읽어 본다' };
+        if (d.lie === '가') return { ok: false, msg: '이렇게 놓으면 쪽지 셋의 앞뒤가 안 맞는다 거짓말은 꼭 하나다' };
+        if (d.lie === '다') return { ok: false, msg: '이렇게 놓으면 쪽지 셋의 앞뒤가 안 맞는다 거짓말은 꼭 하나다' };
+        return { ok: false, msg: '이렇게 놓으면 쪽지 셋의 앞뒤가 안 맞는다 거짓말은 꼭 하나다' };
       },
       reveal: {
         title: '거짓말은 나, 집은 셋째',
@@ -553,7 +553,7 @@ export default {
       hintCode: 'T-S05',
       hints: [
         '“역을 등지고”는 역을 뒤에 두고 선다는 뜻입니다 지도는 위가 북쪽이고 역은 아래에 있으니, 그렇게 서면 왼쪽이 서쪽입니다',
-        '왼쪽(서쪽)으로 가다 두 번째 골목에서 오른쪽(북쪽) 다리를 건너자마자 왼쪽 몇 번째 집인지는 쪽지 세 장에서 나온 답입니다',
+        '편지 문장을 한 줄씩 끊어서, 갈림길마다 지금 내가 어느 쪽을 보고 있는지 따져 보세요 몇 번째 집인지는 쪽지 세 장이 정합니다',
         '왼쪽 → 직진 → 오른쪽 → 직진(다리) → 왼쪽 → 쪽지에서 나온 번째 집(셋째)',
       ],
       initial: () => ({ at: 'S', heading: 'N', path: [], lane: null, house: null }),
@@ -591,13 +591,6 @@ export default {
         if (!d.lane) return { ok: false, msg: '아직 집이 늘어선 길까지 가지 않았습니다 갈림길에서 방향을 고르세요' };
         if (!d.house) return { ok: false, msg: '집을 하나 골라야 합니다' };
         if (d.house === ANSWER_HOUSE) return { ok: true };
-        const first = d.path[0]?.[1];
-        if (first === 'F') return { ok: false, msg: '열쇠가 안 들어간다 첫 방향부터 틀렸나 편지는 “역을 등지고”로 시작한다 그렇게 서면 어디가 왼쪽이지' };
-        if (d.lane === 'X') return { ok: false, msg: '둘째 골목을 지나쳐 버렸다 편지는 둘째 골목에서 오른쪽으로 꺾어 다리를 건너라고 했다' };
-        if (d.lane === 'R') return { ok: false, msg: '다리는 건넜는데, 건너자마자 왼쪽이었다 이 길은 오른쪽 길이다' };
-        if (d.lane === 'FL') return { ok: false, msg: '동쪽 언덕길이다 편지의 첫 방향부터 다시 보자' };
-        if (d.lane === 'GL') return { ok: false, msg: '여긴 첫째 골목 편지는 두 번째 골목에서 꺾으라고 했다' };
-        if (d.lane === 'L') return { ok: false, msg: '열쇠가 안 들어간다 길은 맞는 것 같다 몇 번째 집인지는 쪽지 세 장이 정한다' };
         return { ok: false, msg: '열쇠가 안 들어간다 편지의 순서대로 다시 걸어 보자' };
       },
       reveal: {

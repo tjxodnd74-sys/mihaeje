@@ -5,7 +5,7 @@ const js = (w, a, b) => { const c = w.charCodeAt(w.length - 1); if (c < 0xac00 |
 
 // 다섯 빛: 색 ↔ 오행 ↔ 방향 ↔ 계절
 const E = [
-  { id: 'blue', color: '청', han: '木', el: '목', dir: '동', season: '봄', name: '청자 빛 그릇', pot: '청자 빛 화분', lantern: '파란 등', tea: '유자차', gift: '창가의 작은 화분', giftLine: '새싹은 아침마다 창 쪽으로 돈다 물 주는 걸 잊으면 금방 티가 나는 게 나무다' },
+  { id: 'blue', color: '청', han: '木', el: '목', dir: '동', season: '봄', name: '청자 빛 그릇', pot: '청자 빛 화분', lantern: '청색 등', tea: '유자차', gift: '창가의 작은 화분', giftLine: '새싹은 아침마다 창 쪽으로 돈다 물 주는 걸 잊으면 금방 티가 나는 게 나무다' },
   { id: 'red', color: '적', han: '火', el: '화', dir: '남', season: '여름', name: '붉은 그릇', pot: '붉은 화분', lantern: '붉은 등', tea: '오미자차', gift: '저녁에 켜는 등불', giftLine: '등은 해 지면 켜고 자기 전에 끈다 불은 켜 두는 것보다 끄는 때를 아는 게 어렵다' },
   { id: 'yellow', color: '황', han: '土', el: '토', dir: '중앙', season: '늦여름', name: '노란 그릇', pot: '노란 화분', lantern: '노란 등', tea: '대추차', gift: '손때 묻은 흙그릇', giftLine: '흙그릇은 뜨거운 걸 담아도 손에 뜨겁지 않다 흙은 받아 주는 게 일이다' },
   { id: 'white', color: '백', han: '金', el: '금', dir: '서', season: '가을', name: '흰 그릇', pot: '흰 화분', lantern: '흰 등', tea: '생강차', gift: '문 앞에 다는 작은 종', giftLine: '종은 문 앞에 달아라 들어올 때 한 번, 나갈 때 한 번 소리가 난다 누가 왔다 갔는지는 알고 살아라' },
@@ -100,7 +100,7 @@ function slipHtml(profile) {
   return `<p class="slip-head">할머니가 세는 법대로</p>
 <div class="pillars">${(profile.pillars || []).map((p) => `<div class="pillar"><small>${p.label}</small><b>${p.text}</b><span>${p.elements.map((i) => E[i].han).join('') || '—'}</span></div>`).join('')}</div>
 <div class="counts">${E.map((e, i) => `<div class="count"><i style="background:${fills[e.id]}"></i><b>${e.han}</b><span>${'●'.repeat(profile.counts[i])}${'○'.repeat(Math.max(0, 4 - profile.counts[i]))}</span><small>${profile.counts[i]}</small></div>`).join('')}</div>
-<p class="slip-light">네 빛은 <b style="color:${fills[seed.id] === '#eee8dc' ? '#9a8f70' : fills[seed.id]}">${seed.han} ${seed.el} · ${seed.color}색</b> <small>(태어난 날의 천간)</small></p>
+<p class="slip-light">네 빛은 <b style="color:${fills[seed.id] === '#eee8dc' ? '#6b6248' : fills[seed.id]}">${seed.han} ${seed.el} · ${seed.color}색</b> <small>(태어난 날의 천간)</small></p>
 <p class="slip-light">가장 많은 빛은 <b>${reading(profile).tops.map((t) => `${t.han} ${t.el}`).join(' · ')}</b>${profile.unknown ? ' <small>(시각을 몰라 시주는 뺐다)</small>' : ''}${profile.ambiguous ? ' <small>(절기 바뀌는 날이라 연·월은 미확정)</small>' : ''}</p>
 <div class="slip-reading"><p class="slip-sub">할머니라면 이렇게 읽는다</p><p>${reading(profile).me}</p><p>${reading(profile).many}</p><p>${reading(profile).none}</p><p class="slip-note">좋고 나쁜 건 없다 할머니는 이 빛으로 차를 골랐고, 오늘은 이 빛이 열쇠가 된다 나머지 풀이는 가게 안에 있다</p></div>`;
 }
@@ -132,7 +132,7 @@ export default {
     eyebrow: '3월 2일, 저녁',
     paragraphs: [
       '할머니가 넘어졌다는 연락은 이모한테서 왔고, 할머니한테서는 문자가 왔다. 가게 좀 봐 달라는 거였다. 찬장 맨 아래 서랍에 둔 걸 꼭 가져오라고.',
-      '오행당. 외할머니가 마흔두 해 동안 약차를 끓인 가게다. 손님이 오면 생일하고 난 시부터 묻고, 다섯 빛을 세어서 차를 골라 줬다. 학교 다닐 때는 여름방학마다 거기서 살았는데, 대학에 들어간 뒤로는 명절에 얼굴만 비쳤다.',
+      '오행당. 외할머니가 마흔두 해 동안 약차를 끓인 가게다. 손님이 오면 생일하고 난 시부터 묻고, 다섯 빛을 세어서 차를 골라 줬다. 학교 다닐 때는 여름방학마다 거기서 살았는데, 대학에 들어간 뒤로는 뜸해졌고, 마지막으로 간 게 여섯 해 전이다.',
       '열쇠는 늘 두던 데 있다고 했다. 어디였더라, 되물으려는데 할머니 휴대폰이 꺼졌다.',
       '골목에 비가 조금 왔다. 문 앞 섬돌에 화분 다섯 개가 그대로 있고, 문 옆 작은 선반에 접수표 묶음이 놓여 있었다. 손님은 먼저 접수표부터 쓴다. 할머니 가게의 규칙이다.',
     ],
@@ -266,10 +266,10 @@ export default {
       kind: '할머니 장부',
       html: (S) => `<figure class="prop slips"><img src="${P}props/slips.webp" alt="집게로 묶은 접수표 묶음" decoding="async"></figure><p>장부라기보다 쪽지 묶음이다 손님 이름 대신 내 이름이 제일 많다</p><div class="slip-list">
 <p><b>2007년 12월</b> 지원 첫 방문 감기 생강차 안 마시려고 울었음</p>
-<p><b>2008년 8월</b> 지원 수박 차는 안 마심</p>
+<p><b>2008년 8월</b> 지원 차는 안 마시고 수박만 먹음</p>
 <p><b>2009년 8월</b> 지원 ${seedOf(S).tea} 세 잔째 수박은 안 먹음</p>
 <p><b>2011년 8월</b> 지원 대추차 숙제 안 함</p>
-<p><b>2014년 2월</b> 지원 쌍화차 수능 끝</p>
+<p><b>2014년 2월</b> 지원 쌍화차 졸업했다고 옴</p>
 <p><b>2020년 9월</b> 지원 유자차 취직했다고 함</p>
 <p><b>2026년 3월</b> 지원 (비어 있음)</p>
 </div><p class="aside">2026년 3월 칸은 비어 있다 오늘 내가 쓴 접수표가 들어갈 자리다</p>`,
@@ -283,7 +283,7 @@ export default {
       title: '접수함 속 접수표',
       kind: '받는 사람: 지원',
       locked: true,
-      html: (S) => { const r = reading(S.profile), e = r.seed; return `<figure class="prop slips"><img src="${P}props/slips.webp" alt="접수표" decoding="async"></figure><blockquote class="hand">접수 · 2026년 3월<br>받는 사람 지원 · 빛 ${e.han} ${e.el}<br><br>너는 ${r.me}<br>${r.many}<br>${r.none}<br>${r.relation}<br><br>그래서 네 차는 ${e.tea}다 ${r.tea}<br>${e.gift} 챙겨 뒀다 찬장 ${e.dir === '중앙' ? '가운데' : e.dir + '쪽'} 칸이다<br>${e.giftLine}<br><br>서랍 것은 가게 열쇠 뭉치하고 등기부다<br>이모가 가게 팔자고 한 지 삼 년 됐다<br>그래도 네가 올 거라 생각해서 안 팔았다<br>여름마다 왔고, 안 오는 해에도 결국 왔으니까<br><br>가게는 네 거다 하고 싶으면 해라<br>하기 싫으면 열쇠만 갖고 있어라<br>그래도 계절 돌면 한 번씩은 와라<br><br>등은 끄고 가라 전기세 나온다</blockquote>`; },
+      html: (S) => { const r = reading(S.profile), e = r.seed; return `<figure class="prop slips"><img src="${P}props/slips.webp" alt="접수표" decoding="async"></figure><blockquote class="hand">접수 · 2026년 3월<br>받는 사람 지원 · 빛 ${e.han} ${e.el}<br><br>너는 ${r.me}<br>${r.many}<br>${r.none}<br>${r.relation}<br><br>그래서 네 차는 ${e.tea}다 ${r.tea}<br>${e.gift} 챙겨 뒀다 찬장 ${e.dir === '중앙' ? '가운데' : e.dir + '쪽'} 칸이다<br>${e.giftLine}<br><br>서랍 것은 가게 열쇠 뭉치하고 등기부다<br>이모가 가게 팔자고 한 지 삼 년 됐다<br>그래도 네가 올 거라 생각해서 안 팔았다<br>어릴 땐 여름마다 왔고, 커서도 뜸하게나마 결국 왔으니까<br><br>가게는 네 거다 하고 싶으면 해라<br>하기 싫으면 열쇠만 갖고 있어라<br>그래도 계절 돌면 한 번씩은 와라<br><br>등은 끄고 가라 전기세 나온다</blockquote>`; },
     },
   },
 
@@ -295,8 +295,8 @@ export default {
       docs: ['chat', 'doorpaper'],
       hintCode: 'O-S01',
       hints: [
-        '"불 낳는 놈"은 문에 붙은 종이의 화살표를 따라가면 나옵니다 불(火) 앞에 있는 것',
-        '나무(木)가 불을 낳습니다 나무는 무슨 색이었나요',
+        '할머니 문자의 "불 낳는 놈"이 무슨 뜻인지는 문에 붙은 종이에 있습니다 화분 다섯은 다섯 빛입니다',
+        '종이의 화살표는 낳는 쪽에서 태어나는 쪽으로 갑니다 불을 가리키는 화살표를 거꾸로 따라가 보세요',
         '청자 빛 화분(木·청) 밑에 열쇠가 있습니다',
       ],
       initial: () => ({ pick: null }),
@@ -338,7 +338,7 @@ export default {
       hintCode: 'O-S02',
       hints: [
         '색마다 방향이 있습니다 문에 붙은 종이에 적혀 있어요 그런데 찬장의 "위"가 북쪽일까요',
-        '창이 동쪽이고, 창은 찬장을 마주 봤을 때 왼쪽에 있습니다 동쪽이 왼쪽이면 나는 어느 쪽을 보고 서 있는 걸까요 위 칸은 그 방향입니다',
+        '창은 해 뜨는 쪽에 냈습니다 찬장 앞에 서서 창이 어느 손 쪽에 있는지 보면, 내가 어느 방향을 보고 서 있는지 나옵니다',
         '남쪽을 보고 서 있습니다 위=남(적), 아래=북(흑), 왼쪽=동(청), 오른쪽=서(백), 가운데=황',
       ],
       initial: () => ({ placed: {}, held: null }),
@@ -391,8 +391,8 @@ export default {
       docs: ['deskmemo', 'doorpaper', 'myslip'],
       hintCode: 'O-S03',
       hints: (S) => { const o = orderFrom(seedOf(S).id); return [
-        '접수표의 내 빛이 첫 등입니다 그다음은 문에 붙은 종이의 화살표를 따라갑니다',
-        `내 빛 ${hj(seedOf(S).id, '은', '는')} ${seedOf(S).lantern} 거기서 화살표를 네 번 따라가면 다섯 개`,
+        '"네 빛부터, 낳는 순서로"를 둘로 나눠 읽어 보세요 네 빛은 접수표에, 낳는 순서는 문에 붙은 종이에 있습니다',
+        '화살표는 한 바퀴를 돕니다 다섯 개를 다 켜면 마지막 등은 내 빛 바로 앞 빛입니다',
         o.map((id) => byId[id].lantern).join(' → '),
       ]; },
       initial: () => ({ lit: [] }),
@@ -437,13 +437,13 @@ export default {
 
   ending: {
     image: P + 'ending.webp',
-    imageAlt: '병실 창가에서 할머니에게 찻잔을 건네는 지원',
+    imageAlt: '매화가 핀 병실 창가에서 할머니에게 찻잔을 건네는 지원',
     eyebrow: '3월 3일, 아침',
     title: '돌아오는 계절',
     paragraphs: (S) => {
       const e = seedOf(S), r = reading(S.profile);
       const base = [
-        `보온병에 ${e.tea}를 담아 갔다 내 빛의 차다 가게 불은 다 끄고, 등도 끄고, 열쇠 뭉치와 ${js(e.gift, '은', '는')} 가방에 넣었다`,
+        `병원 앞 매화가 일찍 피어 있었다 보온병에 ${e.tea}를 담아 갔다 내 빛의 차다 가게 불은 다 끄고, 등도 끄고, 열쇠 뭉치와 ${js(e.gift, '은', '는')} 가방에 넣었다`,
         '"서랍 것 가져왔냐"',
         '"뒷방까지 가게 해 놓고"',
         '할머니가 웃었다 "니가 길을 잊었나 보려고"',

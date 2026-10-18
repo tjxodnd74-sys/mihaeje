@@ -26,7 +26,7 @@ function blinkSvg() {
   return rows.map((r, ri) => {
     const end = ri === rows.length - 1 ? total : rows[ri + 1].s;
     const len = end - r.s;
-    let s = `<svg viewBox="0 0 ${W} 9" class="blink-svg" role="img" aria-label="${ri + 1}번째 줄 깜빡임 ${r.m.length}번">`;
+    let s = `<svg viewBox="0 0 ${W} 10" class="blink-svg" role="img" aria-label="${ri + 1}번째 줄 깜빡임 ${r.m.length}번">`;
     s += `<rect x="0" y="0" width="${len}" height="6" rx=".4" fill="#160d0d"/>`;
     r.m.forEach(([x, w]) => { s += `<rect x="${x - r.s}" y="1.6" width="${w}" height="2.8" rx=".3" fill="#ff5545"/>`; });
     for (let k = Math.ceil((r.s + 1) / 10) * 10; k <= end - 2; k += 10) s += `<line x1="${k - r.s}" y1="6" x2="${k - r.s}" y2="6.9" stroke="#8a7f7a" stroke-width=".15"/><text x="${k - r.s}" y="8.6" font-size="1.5" text-anchor="middle" fill="#8a7f7a" font-family="SUIT, sans-serif">${(k * U).toFixed(0)}초</text>`;
@@ -168,7 +168,7 @@ export default {
     guardlog: {
       title: '안내 데스크 관리 일지',
       kind: '낮 근무 박 씨',
-      html: `<div class="paper-table"><p class="pt-head">관리 일지</p><table><tr><th>10/3</th><td>B실 도어락 비번 누가 바꿈 관리실 비번으로 안 열림 업체에 문의 예정</td></tr><tr><th>10/17</th><td>보관실 테이프 11/10 일괄 폐기 그 전에 가져갈 사람은 연락</td></tr><tr><th>10/29</th><td>새벽에 B실 쪽 불 켜져 있었다는 말 있음 확인 못 함</td></tr><tr><th>10/20</th><td>철거 11/15 시작 확정</td></tr></table></div>`,
+      html: `<div class="paper-table"><p class="pt-head">관리 일지</p><table><tr><th>10/3</th><td>B실 도어락 비번 누가 바꿈 관리실 비번으로 안 열림 업체에 문의 예정</td></tr><tr><th>10/17</th><td>보관실 테이프 11/10 일괄 폐기 그 전에 가져갈 사람은 연락</td></tr><tr><th>10/20</th><td>철거 11/15 시작 확정</td></tr><tr><th>10/29</th><td>새벽에 B실 쪽 불 켜져 있었다는 말 있음 확인 못 함</td></tr></table></div>`,
     },
     notice: {
       title: '유리문의 철거 공지',
@@ -199,7 +199,7 @@ export default {
     },
     txlog: {
       title: '콘솔 위 송출 기록지',
-      kind: 'A실 · 2024-10-31 (목)',
+      kind: 'A실 · 2024/10/31 (목)',
       html: `<div class="paper-table"><p class="pt-head">송출 기록</p><table><tr><th>00:00:00</th><td>「새벽 두 시, 미루」 A실</td></tr><tr><th>01:00:00</th><td>2부</td></tr><tr><th>01:58:12</th><td>TX OFF (수동) 지시 경영지원팀 <span class="hand-note">— 정하람</span></td></tr><tr><th>02:00:00</th><td>폐국</td></tr></table><p class="pt-foot"><span class="hand-note">REC는 못 껐다</span></p></div>`,
     },
     wiring: {
@@ -240,7 +240,9 @@ export default {
           b.onclick = () => { if (k === '*') d.code = ''; else if (d.code.length < 8) d.code += k; save(); };
           wrap.append(b);
         });
-        const box = el('div', 'mail-wrap'); box.append(wrap, el('p', 'pick-label', d.code ? `누른 번호 ${d.code.split('').join(' ')}` : '아직 아무것도 안 눌렀다 · 별표는 지우기'));
+        const pad = el('div', 'mobile-only kp-pad');
+        ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0'].forEach((k) => { const b = el('button', 'ctl', k === '*' ? '지우기' : k); b.type = 'button'; b.setAttribute('aria-label', k === '*' ? '번호 지우기' : `${k} 버튼`); b.onclick = () => { if (k === '*') d.code = ''; else if (d.code.length < 8) d.code += k; save(); }; pad.append(b); });
+        const box = el('div', 'mail-wrap'); box.append(wrap, pad, el('p', 'pick-label', d.code ? `누른 번호 ${d.code.split('').join(' ')}` : '아직 아무것도 안 눌렀다 · 별표는 지우기'));
         return box;
       },
       commitLabel: '손잡이 돌리기',
@@ -289,7 +291,7 @@ export default {
       canCommit: (d) => !!d.pick,
       check(d) {
         if (d.pick === '2-2') return { ok: true };
-        return { ok: false, msg: '상자를 열어 릴에 붙은 메모를 보니 그날이 아니다 도로 꽂았다' };
+        return { ok: false, msg: '상자를 열어 릴 메모를 봤다 찾던 테이프가 아니다 도로 꽂았다' };
       },
       reveal: {
         title: '241030 A 01',
@@ -306,7 +308,7 @@ export default {
       hintCode: 'R-S03',
       hints: [
         '카운터 00:00은 테이프 맨 처음이고, 테이프 맨 처음은 정시가 아니다',
-        '기록지의 시계와 카운터의 0은 같은 순간이 아니다',
+        '녹음기는 정시보다 먼저 돌기 시작한다 얼마나 먼저인지 적힌 종이가 있다 기록지의 시각을 테이프 안의 자리로 바꿔 보자',
       ],
       initial: () => ({ v: [0, 0, 0, 0] }),
       render(ctx) {
@@ -346,7 +348,7 @@ export default {
       hintCode: 'R-S04',
       hints: [
         '라벨은 2019년 그대로다 배선표 손글씨가 나중이다',
-        '오늘 밤 방송이 어디로 나갔는지는 지금 꽂힌 케이블이 말해 준다 쪽지가 바라는 곳은 셋',
+        '오늘 밤 방송이 어디로 나갔는지는 지금 꽂힌 케이블이 말해 준다 쪽지에 적힌 곳마다 데크 소리가 닿아야 한다',
       ],
       initial: () => ({ cables: { 1: 7, 3: 7 }, sel: null }),
       render(ctx) {
@@ -379,7 +381,13 @@ export default {
           wrap.append(b);
         });
         const list = Object.entries(d.cables).sort((a, b) => a[0] - b[0]).map(([i, o]) => `${o} ${OUTS[o - 1]} → ${i} ${INS[i - 1]}`).join(' · ');
-        const box = el('div', 'mail-wrap'); box.append(wrap, el('p', 'pick-label', (d.sel ? `출력 ${d.sel} ${OUTS[d.sel - 1]}에 케이블을 꽂았다 이을 입력을 누른다 · ` : '') + (list ? `꽂힌 케이블 ${list}` : '꽂힌 케이블 없음')));
+        const mob = el('div', 'mobile-only pb-rows');
+        const rowO = el('div', 'pb-row'); rowO.append(el('span', 'pb-row-lab', '윗줄 출력'));
+        OUTS.forEach((o, i) => { const b = el('button', 'chip' + (d.sel === i + 1 ? ' on' : ''), `${i + 1}`); b.type = 'button'; b.setAttribute('aria-label', `출력 ${i + 1} ${o} 고르기`); b.onclick = () => { d.sel = d.sel === i + 1 ? null : i + 1; save(); }; rowO.append(b); });
+        const rowI = el('div', 'pb-row'); rowI.append(el('span', 'pb-row-lab', '아랫줄 입력'));
+        INS.forEach((o, i) => { const n = i + 1; const b = el('button', 'chip' + (d.cables[n] ? ' on' : ''), `${n}`); b.type = 'button'; b.setAttribute('aria-label', `입력 ${n} ${o} 누르기`); b.onclick = () => { if (d.sel) { d.cables[n] = d.sel; d.sel = null; save(); return; } if (d.cables[n]) { delete d.cables[n]; save(); return; } ctx.status('먼저 윗줄 출력을 하나 고른다'); }; rowI.append(b); });
+        mob.append(rowO, rowI);
+        const box = el('div', 'mail-wrap'); box.append(wrap, mob, el('p', 'pick-label', (d.sel ? `출력 ${d.sel} ${OUTS[d.sel - 1]}에 케이블을 꽂았다 이을 입력을 누른다 · ` : '') + (list ? `꽂힌 케이블 ${list}` : '꽂힌 케이블 없음')));
         return box;
       },
       commitLabel: '송출 시작',
@@ -402,7 +410,7 @@ export default {
     eyebrow: '2026년 10월 31일 토요일, 새벽 2시 41분',
     title: '1시 58분 그 뒤',
     paragraphs: [
-      '로비 스피커에서 선배 목소리가 나왔다 2년 전 그 방의 공기째로 "오늘이 마지막 방송입니다 열아홉 해 동안 새벽 두 시까지 깨어 있어 준 여러분, 반죽 치대던 분, 병동 불 끄고 돌던 분, 빈 차로 한 바퀴 더 돌던 분 다 고마웠어요"',
+      '로비 스피커에서 선배 목소리가 나왔다 2년 전 그 방의 공기째로 "오늘이 마지막 방송입니다 열다섯 해 동안 새벽 두 시까지 깨어 있어 준 여러분, 반죽 치대던 분, 병동 불 끄고 돌던 분, 빈 차로 한 바퀴 더 돌던 분 다 고마웠어요"',
       '"마이크가 꺼진 것 같네요 괜찮아요 하람 씨 손 떨지 마요 다음에 또 만나요는 못 하겠고, 잘 자요 새벽 두 시, 미루였습니다"',
       '로비로 나와 보니 벤치에 선배가 앉아 있었다 언제 왔는지 모르겠다 눈을 감고 스피커 쪽으로 고개를 기울이고 있었다',
       '만석이 형 문자가 왔다 「들었다」 「끝까지」',

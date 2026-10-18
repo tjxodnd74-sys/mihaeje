@@ -55,7 +55,7 @@ export default {
       id: 'front',
       name: '접수실',
       image: P + 'front.webp',
-      arrive: '비 냄새가 문틈으로 들어온다 접수대 위 초록 등 밑에 누런 봉투, 왼쪽 벽은 필름 보관함, 뒤쪽 문 위에는 붉은 등이 꺼진 채 달려 있다 암실 문은 잠겨 있다',
+      arrive: '비 냄새가 문틈으로 들어온다 접수대 위 초록 등 밑에 누런 봉투, 왼쪽 벽은 필름 보관함, 뒤쪽 암실 문 위에는 붉은 등이 희미하게 켜져 있다 문은 잠겨 있다',
       hotspots: [
         { id: 'gnote', x: 50, y: 80, label: '접수대의 할아버지 쪽지', kind: 'doc', doc: 'gnote' },
         { id: 'ledger', x: 64, y: 86, label: '접수 장부', kind: 'doc', doc: 'ledger' },
@@ -108,12 +108,12 @@ export default {
     wall: {
       title: '벽의 사진들',
       kind: '손님들과 동네',
-      html: `<p>벽에는 사십 년 치 손님 사진이 걸려 있다 결혼, 돌, 졸업, 여권 할아버지는 늘 카메라 뒤에 있어서 한 장도 없다</p><p>맨 아래 줄에 빈 액자가 하나 걸려 있다 8×10 크기 할아버지가 "거긴 비워 둬라" 했던 자리다</p>`,
+      html: `<p>벽에는 사십 년 치 손님 사진이 걸려 있다 결혼, 돌, 졸업, 여권 사진까지 할아버지는 늘 카메라 뒤에 있어서 한 장도 없다</p><p>맨 아래 줄에 빈 액자가 하나 걸려 있다 8×10 크기 할아버지가 "거긴 비워 둬라" 했던 자리다</p>`,
     },
     sleeve: {
       title: '보관함에서 꺼낸 필름 봉투',
       kind: '2006년 · 할아버지 글씨',
-      html: `<blockquote class="hand">접수 0615 · 윤서<br>필름 4줄 (MIRU 400)<br>인화할 컷·크기·노출은 접수 봉투 겉면에 적음<br>※ 손님 돌아오면 같이 인화하기로 함</blockquote><p>봉투 안에 작은 열쇠 하나 꼬리표에 「암실」 그리고 필름 네 줄 손님이 돌아오면 같이 하기로 했다는 게 스무 해 전이다</p>`,
+      html: `<blockquote class="hand">접수 0615 · 윤서<br>필름 4줄 (MIRU 400)<br>인화할 컷·크기·노출은 접수 봉투 겉면에 적음<br>※ 손님 돌아오는 날 인화해서 건넬 것</blockquote><p>봉투 안에 작은 열쇠 하나 꼬리표에 「암실」 그리고 필름 네 줄 손님이 돌아오면 같이 하기로 했다는 게 스무 해 전이다</p>`,
     },
     edge: {
       title: '루페로 본 필름 가장자리',
@@ -146,7 +146,7 @@ export default {
       docs: ['gnote'],
       hintCode: 'S-S01',
       hints: [
-        '볼펜으로 눌러 쓴 자국은 빛을 비스듬히 받아야 보인다 기울기를 천천히 올려 봐라',
+        '눌러 쓴 자국은 빛을 비스듬히 받아야 보인다 기울기를 천천히 올려 봐라',
         '반쯤 기울였을 때다 너무 세우면 빛이 미끄러지고, 너무 눕히면 그림자가 안 생긴다',
         '기울기 35도 전후 — 「C3 · 8×10 · 12초 / 셋 다 · 간판 밑 · 안 흔들린 컷」',
       ],
@@ -159,7 +159,15 @@ export default {
         wrap.append(env);
         const lab = el('label', 'tilt-label'); lab.append(el('span', '', `기울기 ${d.angle}°`));
         const r = el('input'); r.type = 'range'; r.min = 0; r.max = 70; r.step = 1; r.value = d.angle; r.setAttribute('aria-label', '봉투 기울기');
-        r.oninput = () => { d.angle = Number(r.value); save(); };
+        // 끄는 동안은 화면만 바꾸고(요소를 새로 만들면 끌기가 끊긴다) 손을 떼면 저장
+        r.oninput = () => {
+          d.angle = Number(r.value); const on = d.angle >= 30 && d.angle <= 45;
+          const pr = env.querySelector('.pressed'); pr.classList.toggle('lit', on); pr.style.opacity = on ? 1 : Math.max(0, 1 - Math.abs(d.angle - 37) / 12);
+          pr.innerHTML = on ? 'C3 · 8×10 · 12초<br>셋 다 · 간판 밑 · 안 흔들린 컷' : '▒▒ · ▒▒▒ · ▒▒▒<br>▒ ▒ · ▒▒ ▒ · ▒ ▒▒▒ ▒';
+          env.querySelector('.glare').style.transform = `translateX(${(d.angle - 35) * 2}%)`; env.style.setProperty('--tilt', d.angle + 'deg');
+          lab.firstChild.textContent = `기울기 ${d.angle}°`;
+        };
+        r.onchange = () => save();
         lab.append(r); wrap.append(lab);
         return wrap;
       },
@@ -171,7 +179,7 @@ export default {
       },
       reveal: {
         title: 'C3 · 셋 다 · 간판 밑 · 안 흔들린 컷',
-        text: '봉투 위에 다른 종이를 대고 쓴 자국이 비스듬한 빛에 떠올랐다 보관 C3, 인화할 컷은 셋 다 나오고 간판 밑이고 안 흔들린 것, 크기 8×10, 노출 12초 할아버지 글씨다',
+        text: '봉투 위에 다른 종이를 대고 쓴 자국이 비스듬한 빛에 떠올랐다 보관 C3, 인화할 컷은 셋 다 나오고 간판 밑이고 안 흔들린 것, 크기 8×10, 노출 12초, 할아버지 글씨다',
         scene: ['C3 왼쪽 벽 보관함 열여섯 칸 중 하나 그런데 그 벽 라벨은 거의 다 떨어지고 세 개만 붙어 있었다'],
         unlockDoc: 'pressed',
         unlock: null,
@@ -310,8 +318,8 @@ export default {
         wrap.append(loupe);
         const ctl = el('div', 'enl-controls');
         const paperBtn = el('button', 'chip' + (d.paper ? ' on' : ''), d.paper ? '인화지 올려짐 (8×10)' : '인화지 꺼내 올리기 (8×10)'); paperBtn.type = 'button'; paperBtn.onclick = () => { if (d.paper) return; if (d.white) { ctx.status('흰 불 아래서 인화지를 꺼내면 바로 타 버린다 불부터'); return; } if (!d.red) { ctx.status('깜깜해서 손이 안 보인다 붉은 등부터 켜자'); return; } d.paper = true; save(); };
-        const fl = el('label', 'tilt-label'); fl.append(el('span', '', `초점 손잡이 ${d.focus}`)); const fr = el('input'); fr.type = 'range'; fr.min = 0; fr.max = 100; fr.step = 5; fr.value = d.focus; fr.setAttribute('aria-label', '초점 손잡이'); fr.oninput = () => { d.focus = Number(fr.value); save(); }; fl.append(fr);
-        const tl = el('label', 'tilt-label'); tl.append(el('span', '', `타이머 ${d.timer}초`)); const tr = el('input'); tr.type = 'range'; tr.min = 0; tr.max = 30; tr.step = 1; tr.value = d.timer; tr.setAttribute('aria-label', '타이머'); tr.oninput = () => { d.timer = Number(tr.value); save(); }; tl.append(tr);
+        const fl = el('label', 'tilt-label'); fl.append(el('span', '', `초점 손잡이 ${d.focus}`)); const fr = el('input'); fr.type = 'range'; fr.min = 0; fr.max = 100; fr.step = 5; fr.value = d.focus; fr.setAttribute('aria-label', '초점 손잡이'); fr.oninput = () => { d.focus = Number(fr.value); const off = Math.max(0, Math.abs(d.focus - 65) - 5); enl.querySelector('.projection').style.filter = `blur(${off / 6}px)`; loupe.querySelector('img').style.filter = `invert(1) sepia(.4) blur(${(off / 3).toFixed(1)}px)`; loupe.querySelector('figcaption').textContent = `확대경으로 본 이젤 위 상 · 초점 손잡이 ${d.focus}`; fl.firstChild.textContent = `초점 손잡이 ${d.focus}`; }; fr.onchange = () => save(); fl.append(fr);
+        const tl = el('label', 'tilt-label'); tl.append(el('span', '', `타이머 ${d.timer}초`)); const tr = el('input'); tr.type = 'range'; tr.min = 0; tr.max = 30; tr.step = 1; tr.value = d.timer; tr.setAttribute('aria-label', '타이머'); tr.oninput = () => { d.timer = Number(tr.value); tl.firstChild.textContent = `타이머 ${d.timer}초`; }; tr.onchange = () => save(); tl.append(tr);
         const exp = el('button', 'chip' + (d.exposed ? ' on' : ''), d.exposed ? '노출 끝' : '타이머 누르기 (노출)'); exp.type = 'button'; exp.setAttribute('aria-label', '타이머 누르기'); exp.onclick = () => {
           if (d.exposed) return;
           if (!d.paper) { ctx.status('인화지가 안 올라가 있다'); return; }
@@ -323,7 +331,7 @@ export default {
         // 3 트레이
         const trays = el('div', 'prop trays'); trays.innerHTML = `<img src="${P}props/trays.webp" alt="트레이 셋" decoding="async">`;
         [1, 2, 3].forEach((n, i) => {
-          const b = el('button', 'tray-btn' + (d.baths.includes(n) ? ' done' : '')); b.type = 'button'; b.style.left = [14, 41, 68][i] + '%';
+          const b = el('button', 'tray-btn' + (d.baths.includes(n) ? ' done' : '')); b.type = 'button'; b.style.left = [1.5, 34.5, 66][i] + '%';
           b.setAttribute('aria-label', `${n}번째 트레이에 담그기`); b.innerHTML = `<span>${d.baths.includes(n) ? d.baths.indexOf(n) + 1 : ''}</span>`;
           b.onclick = () => { if (!d.exposed) { ctx.status('아직 노출을 안 했다 트레이는 그다음이다'); return; } if (d.baths.includes(n)) return; d.baths.push(n); save(); };
           trays.append(b);
@@ -343,8 +351,8 @@ export default {
       },
       reveal: {
         title: '스무 해 만의 한 장',
-        text: '흰 불을 켰다 트레이 안에서 세 사람이 사진관 앞에 서 있다 2006년 봄, 지금보다 젊은 간판 빈 필름 봉투를 접다가 안쪽에 접혀 있던 쪽지 한 장이 손에 걸렸다',
-        scene: ['접수실 쪽에서 문 열리는 소리가 났다 할아버지 목소리, 그리고 모르는 여자 목소리 "스무 해 만이네요 사장님"'],
+        text: '흰 불을 켰다 트레이 안에서 세 사람이 사진관 앞에 서 있다 2006년 봄, 지금보다 젊은 간판 아래',
+        scene: ['빈 필름 봉투를 접다가 안쪽에 접혀 있던 쪽지 한 장이 손에 걸렸다', '접수실 쪽에서 문 열리는 소리가 났다 할아버지 목소리, 그리고 모르는 여자 목소리 "스무 해 만이네요 사장님"'],
         ending: true,
         endingLabel: '붉은 등 아래로',
       },
@@ -358,7 +366,7 @@ export default {
     title: '비가 그친 사진관',
     paragraphs: [
       '윤서 씨는 마흔 넘은 사람이었다 암실 문을 열자 트레이를 먼저 보고, 그다음 나를 보고, 할아버지를 봤다',
-      '할아버지가 내 어깨를 툭 쳤다 "준비는 손주가 했어 이제 같이 끝내자"',
+      '할아버지가 내 어깨를 툭 쳤다 "혼자 다 해 놨네 말리는 건 같이 하자"',
       '"그날 아침에 찍고 저는 그날 저녁 비행기였어요 아빠가 돌아오면 찾자고 했는데" 윤서 씨는 거기서 말을 끊었다 할아버지가 집게로 사진을 들어 물을 뺐다',
       '"스무 해 동안 인화 안 한 봉투는 이거 하나다" 할아버지가 말했다 "손님이 찾으러 온다고 했으면 오는 거야"',
       '사진은 벽 맨 아래 줄 빈 액자에 들어갔다 8×10 할아버지가 비워 두라던 자리였다 윤서 씨가 한참 보다가 사진을 찍어도 되냐고 물었다 할아버지는 카메라를 내줬다 처음으로 할아버지가 사진 안에 섰다',

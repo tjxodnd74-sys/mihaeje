@@ -79,7 +79,7 @@ export default {
     paragraphs: [
       '루미는 열 살이다. 전 보호자 정우 씨가 지방으로 이사하면서 새 가족을 찾았고, 한 달 동안 세 번 만나 보고 내가 데려왔다. 어제가 첫날이었다.',
       '정우 씨는 사료와 약, 병원 기록을 넘기면서 상자를 하나 더 줬다. "루미가 처음 구조됐을 때 물건들이에요. 저도 받은 거라 누가 뭘 남긴 건지는 몰라요." 그리고 파란 끈 얘기를 했다. 루미를 처음 데려온 아이가 쓰던 끈이라고, 언젠가 돌려주고 싶었다고.',
-      '그 말에 괜히 목이 막혔다. 중학교 때 나도 정류장에서 강아지를 주워 센터에 맡긴 적이 있다. 사흘을 울었고, 그 뒤로는 일부러 생각을 안 했다. 그 애가 어디로 갔는지는 모른다.',
+      '그 말에 괜히 목이 막혔다. 중학교 때 나도 길에서 강아지를 주워 센터에 맡긴 적이 있다. 사흘을 울었고, 그 뒤로는 일부러 생각을 안 했다. 그 애가 어디로 갔는지는 모른다.',
       '상자 뚜껑 안쪽에 정우 씨 쪽지가 붙어 있었다. 루미는 새 방석에서 자고 있다. 창밖으로 이삿짐 트럭이 빠져나갔다.',
     ],
     cta: '상자 열어 보기',
@@ -164,7 +164,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
     rule: {
       title: '게시판의 카드 보관 안내',
       kind: '오래된 안내문',
-      html: `<div class="paper-table"><p class="pt-head">진료 카드 보관 안내 (2014~2018 전산 전 기록)</p><table><tr><th>서랍</th><th>번호</th></tr>${DRAWERS.map(([id, r]) => `<tr><td>${id}</td><td class="mono">${r}</td></tr>`).join('')}</table><p class="pt-foot hand-note">※ 2017년 정리 — 7-2가 꽉 차서 V-6350 이후는 7-3 앞쪽으로 옮겨 꽂음 (손글씨 추가)</p></div><p>카드 앞면: V 번호 · 이름 · 첫 진료일 · 동물등록번호 / 뒷면: 메모 안내문 밑에 볼펜으로 덧쓴 줄이 하나 있다</p>`,
+      html: `<div class="paper-table"><p class="pt-head">진료 카드 보관 안내 (2014~2018 전산 전 기록)</p><table><tr><th>서랍</th><th>번호</th></tr>${DRAWERS.map(([id, r]) => `<tr><td>${id}</td><td class="mono">${r}</td></tr>`).join('')}</table><p class="pt-foot hand-note">※ 2017년 정리 — 7-2가 꽉 차서 V-6350 이후는 7-3 앞쪽으로 옮겨 꽂음 (손글씨 추가)</p></div><p>카드 앞면에는 V 번호, 이름, 첫 진료일, 동물등록번호, 뒷면에는 메모</p><p>안내문 밑에 볼펜으로 덧쓴 줄이 하나 있다</p>`,
     },
     momchat: {
       title: '엄마와 주고받은 문자',
@@ -174,7 +174,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
 <div class="chat-row me"><span class="chat-meta">오후 1:12</span><div class="chat-bubble">나 정류장에서 강아지 주웠을 때</div></div>
 <div class="chat-row them"><span class="chat-avatar">母</span><div class="chat-col"><span class="chat-name">엄마</span><div class="chat-bubble">갑자기 왠 강아지 얘기야</div><div class="chat-bubble">앨범에 있을거다 와서 봐</div></div><span class="chat-time">오후 1:30</span></div>
 <div class="chat-row me"><span class="chat-meta">오후 1:31</span><div class="chat-bubble">그 강아지 이름 뭐였지 생각이 안 나</div></div>
-<div class="chat-row them"><span class="chat-avatar">母</span><div class="chat-col"><span class="chat-name">엄마</span><div class="chat-bubble">콩이 니가 지었잖아</div><div class="chat-bubble">비 맞으면서 니가 안고 왔지 센터 데려다주고 사흘 울고</div></div><span class="chat-time">오후 1:33</span></div>
+<div class="chat-row them"><span class="chat-avatar">母</span><div class="chat-col"><span class="chat-name">엄마</span><div class="chat-bubble">콩이 니가 지었잖아</div><div class="chat-bubble">땀 뻘뻘 흘리면서 니가 안고 왔지 센터 데려다주고 사흘 울고</div></div><span class="chat-time">오후 1:33</span></div>
 <div class="chat-input"><span class="chat-field">메시지 입력</span><span>➤</span></div></div>`,
     },
     diary: {
@@ -209,7 +209,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       hintCode: 'P-S01',
       hints: [
         '물건을 누르면 뒷면이 보입니다 도장이 있는 건 도장으로 기록 줄을 찾고, 도장이 없는 둘은 날짜 순서로 앞뒤를 정합니다',
-        '십자=진료, 집=입양 도장 없는 둘은 뒷면 날짜로 앞뒤를 정합니다 발견이 임시보호보다 먼저입니다 그다음 네 날의 끝자리를 기록 순서대로',
+        '기록 사본의 네 줄은 일어난 순서입니다 물건 뒷면 날짜를 그 순서에 맞게 올린 다음, 각 날에서 숫자 하나씩만 고르면 네 자리가 됩니다',
         '6782',
       ],
       initial: () => ({ placed: {}, held: null, flip: null, dial: [0, 0, 0, 0] }),
@@ -273,7 +273,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       docs: ['rule', 'vet', 'contract'],
       hintCode: 'P-S02',
       hints: [
-        '게시판 안내에서 V-6384가 어느 서랍 범위인지 봅니다 그런데 밑에 볼펜으로 덧쓴 줄이 있습니다',
+        '게시판 안내에서 V-6384가 어느 서랍 범위인지 봅니다 안내문을 끝까지 읽으세요',
         '볼펜 줄대로 옮겨 간 서랍을 여세요 같은 V 번호가 둘이면, 계약서에 적힌 다른 번호까지 끝까지 대 봐야 합니다',
         '7-3 서랍 · 네 번째 카드 (V-6384 · 콩이 · 941372608154902)',
       ],

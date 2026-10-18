@@ -37,8 +37,8 @@ async function station({ mobile = false } = {}) {
     await L.closeDialog(page);
     // hints: tier flow
     await L.click(page, '힌트');
-    await L.click(page, '첫 힌트 받기');
-    L.check(await dlgHas(page, '서른여섯'), 'hint tier 1 shown');
+    L.check(await dlgHas(page, '서른여섯') && await dlgHas(page, '장치 안내'), 'hint tier 1 already shown (same as device guide)');
+    L.check(!(await L.buttons(page)).includes('첫 힌트 받기'), 'no redundant first-hint button');
     await L.closeDialog(page);
     // grille: wrong then right (읽은 자료는 옆에 펼쳐짐)
     await hotspot(page, '열차 안내판');
@@ -71,10 +71,10 @@ async function station({ mobile = false } = {}) {
     await L.setRange(page, '사진 기울이기', 50);
     await page.evaluate(() => [...document.querySelectorAll('dialog[open] .train.dim')].find((b) => b.textContent.includes('09:40'))?.click());
     await commit(page);
-    L.check((await status(page)).includes('두 승강장'), 'mirror: other platform explained — ' + (await status(page)));
+    L.check((await status(page)).includes('이 열차가 아니다'), 'mirror: other platform neutral — ' + (await status(page)));
     await page.evaluate(() => [...document.querySelectorAll('dialog[open] .train:not(.dim)')].find((b) => b.textContent.includes('09:25'))?.click());
     await commit(page);
-    L.check((await status(page)).includes('처음 만난 그 시간'), 'mirror: wrong time explained — ' + (await status(page)));
+    L.check((await status(page)).includes('이 열차가 아니다'), 'mirror: wrong time neutral — ' + (await status(page)));
     await page.evaluate(() => [...document.querySelectorAll('dialog[open] .train:not(.dim)')].find((b) => b.textContent.includes('09:40'))?.click());
     await commit(page);
     L.check(await dlgHas(page, '09:40 수림행 급행'), 'mirror solved');
@@ -101,18 +101,18 @@ async function station({ mobile = false } = {}) {
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '마을로 걸어가기'))), 'walk hidden before notes');
     await hotspot(page, '쪽지 세 장');
     await page.evaluate(() => [...document.querySelectorAll('dialog[open] .note-card')][0].click()); await L.click(page, '둘째 집', { exact: true }); await commit(page);
-    L.check((await status(page)).includes('거짓이 둘'), 'notes: contradiction explained — ' + (await status(page)));
+    L.check((await status(page)).includes('앞뒤가 안 맞는다'), 'notes: neutral — ' + (await status(page)));
     await page.evaluate(() => [...document.querySelectorAll('dialog[open] .note-card')][1].click()); await L.click(page, '셋째 집', { exact: true }); await commit(page);
     L.check(await dlgHas(page, '거짓말은 나'), 'notes solved');
     await L.click(page, '계속'); await L.sleep(400);
     // walk: wrong first turn
     await hotspot(page, '마을로 걸어가기');
     await L.click(page, '오른쪽'); await L.click(page, '왼쪽'); await L.click(page, '첫째 집'); await commit(page);
-    L.check((await status(page)).includes('등지고'), 'walk: reversed start explained — ' + (await status(page)));
+    L.check((await status(page)).includes('편지의 순서대로'), 'walk: reversed start neutral — ' + (await status(page)));
     await L.click(page, '역 앞으로 되돌아가기');
     await L.click(page, '왼쪽'); await L.click(page, '직진'); await L.click(page, '오른쪽'); await L.click(page, '직진 (다리 건너기)'); await L.click(page, '왼쪽');
     await L.click(page, '첫째 집'); await commit(page);
-    L.check((await status(page)).includes('쪽지'), 'walk: right lane wrong house explained — ' + (await status(page)));
+    L.check((await status(page)).includes('편지의 순서대로'), 'walk: right lane wrong house neutral — ' + (await status(page)));
     await L.click(page, '셋째 집');
     await shot(page, 'walk');
     await commit(page);
@@ -232,9 +232,9 @@ async function ohang({ mobile = false } = {}) {
     const lightText = await page.evaluate(() => document.querySelector('.slip-light b')?.textContent || '');
     L.check(/[木火土金水]/.test(lightText), 'intake: light computed — ' + lightText);
     L.check((await L.mainText(page)).includes('할머니라면 이렇게 읽는다'), 'intake: reading shown');
-    const EL = { '木': { id: 'blue', code: [5, 0, 0, 0], lantern: '파란 등' }, '火': { id: 'red', code: [4, 5, 0, 0], lantern: '붉은 등' }, '土': { id: 'yellow', code: [4, 0, 0, 0], lantern: '노란 등' }, '金': { id: 'white', code: [3, 5, 0, 0], lantern: '흰 등' }, '水': { id: 'black', code: [6, 0, 0, 0], lantern: '검은 등' } };
+    const EL = { '木': { id: 'blue', code: [5, 0, 0, 0], lantern: '청색 등' }, '火': { id: 'red', code: [4, 5, 0, 0], lantern: '붉은 등' }, '土': { id: 'yellow', code: [4, 0, 0, 0], lantern: '노란 등' }, '金': { id: 'white', code: [3, 5, 0, 0], lantern: '흰 등' }, '水': { id: 'black', code: [6, 0, 0, 0], lantern: '검은 등' } };
     const NEXT = { blue: 'red', red: 'yellow', yellow: 'white', white: 'black', black: 'blue' };
-    const LAN = { blue: '파란 등', red: '붉은 등', yellow: '노란 등', white: '흰 등', black: '검은 등' };
+    const LAN = { blue: '청색 등', red: '붉은 등', yellow: '노란 등', white: '흰 등', black: '검은 등' };
     const me = EL[lightText.match(/[木火土金水]/)[0]];
     const order = [me.id]; while (order.length < 5) order.push(NEXT[order[order.length - 1]]);
     await L.click(page, '접수표 들고 문 앞으로'); await L.sleep(400);
@@ -462,7 +462,7 @@ async function garage({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('세 사람 다 나와 있다'), 'opening shown');
     await L.click(page, '앞마당으로'); await L.sleep(400);
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '서연에게 보고'))), 'report hidden at start');
-    for (const [d, t] of [['서연과 주고받은 문자', '문은 열어 뒀어요'], ['앞유리에 끼워진 점검 영수증', '20:07:00'], ['셔터 앞의 세 사람', '07-B']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    for (const [d, t] of [['서연과 주고받은 문자', '문은 열어 뒀어요'], ['앞유리에 끼워진 점검 영수증', '빠름'], ['셔터 앞의 세 사람', '07-B']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     // cam
     await hotspot(page, '서연 차의 블랙박스');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), '★5: no guide');
@@ -500,9 +500,9 @@ async function garage({ mobile = false } = {}) {
     await hotspot(page, '앞마당으로'); await L.sleep(300);
     await hotspot(page, '서연에게 보고');
     const pick = async (q, v) => L.click(page, q + ': ' + v, { exact: true });
-    await pick('① 21:46 측문으로 들어간 카드', '07-A'); await pick('② 그 카드가 그 전에 있던 곳', '작업장 바닥'); await pick('③ 들어간 사람이 입은 것', '왼 소매 반사띠 회색 재킷'); await pick('④ 같은 재킷이 다시 찍힌 출입 (서버 기준)', '21:40 09 퇴장'); await pick('⑤ 그래서 카드를 꺼낸 사람', '한지수'); await commit(page);
+    await pick('① 21:46 측문으로 들어간 카드', '07-A'); await pick('② 21:46 직전까지 그 카드가 있던 곳', '작업장 바닥'); await pick('③ 들어간 사람이 입은 것', '밝은 회색 재킷'); await pick('④ 같은 재킷이 다시 찍힌 출입 (서버 기준)', '21:40 09 퇴장'); await pick('⑤ 그래서 카드를 꺼낸 사람', '한지수'); await commit(page);
     L.check((await status(page)).includes('확실해요?'), 'report: neutral wrong message');
-    await pick('② 그 카드가 그 전에 있던 곳', '사무실 금고 봉투'); await pick('⑤ 그래서 카드를 꺼낸 사람', '박정호'); await commit(page); L.check((await status(page)).includes('확실해요?'), 'report: still neutral');
+    await pick('② 21:46 직전까지 그 카드가 있던 곳', '사무실 금고 봉투'); await pick('⑤ 그래서 카드를 꺼낸 사람', '박정호'); await commit(page); L.check((await status(page)).includes('확실해요?'), 'report: still neutral');
     await pick('④ 같은 재킷이 다시 찍힌 출입 (서버 기준)', '22:00 09 입장'); await shot(page, 'g-report'); await commit(page);
     L.check(await dlgHas(page, '경찰 불렀어요'), 'report solved');
     await L.click(page, '폐업 당일 아침으로'); await L.sleep(500);
@@ -607,8 +607,8 @@ async function apartment({ mobile = false } = {}) {
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), '★4: no guide');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .mail-slot').length === 24), 'mailbox: 24 slots');
     await L.click(page, '404 우편함', { exact: true }); await commit(page); L.check((await status(page)).includes('글쓴이'), 'mailbox: rumor decoy');
-    await L.click(page, '304 우편함', { exact: true }); await commit(page); L.check((await status(page)).includes('어느 쪽에서'), 'mailbox: mirror decoy');
-    await L.click(page, '401 우편함', { exact: true }); await commit(page); L.check((await status(page)).includes('맨 아래 줄'), 'mailbox: basement decoy');
+    await L.click(page, '304 우편함', { exact: true }); await commit(page); L.check((await status(page)).includes('그 창의 집이 아니다'), 'mailbox: mirror decoy neutral');
+    await L.click(page, '401 우편함', { exact: true }); await commit(page); L.check((await status(page)).includes('그 창의 집이 아니다'), 'mailbox: basement decoy neutral');
     await L.click(page, '301 우편함', { exact: true }); await shot(page, 'a-mail'); await commit(page); L.check(await dlgHas(page, '햇살요양병원'), 'mailbox solved');
     await L.click(page, '관리실로'); await L.sleep(400);
     for (const [d, t] of [['책상 위 근무일지', '한 고리에'], ['입주자 명부', '김순례'], ['벽에 붙은 창고 배정표', 'B03'], ['벽 달력', '동그라미']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
@@ -747,8 +747,8 @@ async function radio({ mobile = false } = {}) {
     await hotspot(page, '책상 위 보관 규칙'); L.check(await dlgHas(page, '새벽 5시'), 'doc: rules'); await L.closeDialog(page);
     await hotspot(page, '폐국 전 마지막 주 테이프');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .reel-box').length === 12), 'shelf: 12 boxes');
-    await L.click(page, '241030 A 02 테이프'); await commit(page); L.check((await status(page)).includes('그날이 아니다'), 'reel: later-tape decoy neutral');
-    await L.click(page, '241030 A 00 테이프'); await commit(page); L.check((await status(page)).includes('그날이 아니다'), 'reel: hour decoy neutral');
+    await L.click(page, '241030 A 02 테이프'); await commit(page); L.check((await status(page)).includes('찾던 테이프가 아니다'), 'reel: later-tape decoy neutral');
+    await L.click(page, '241030 A 00 테이프'); await commit(page); L.check((await status(page)).includes('찾던 테이프가 아니다'), 'reel: hour decoy neutral');
     await L.click(page, '241030 A 01 테이프'); await shot(page, 'r-shelf'); await commit(page); L.check(await dlgHas(page, '마지막 날 2부'), 'reel solved');
     await L.closeDialog(page); await L.sleep(400);
     if (!(await L.mainText(page)).includes('그날 밤 선배가 앉았던')) await hotspot(page, 'A실로 가기'); await L.sleep(400);
@@ -797,3 +797,4 @@ if (!which.length || which.includes('apartment')) await apartment({ mobile });
 if (!which.length || which.includes('laundry')) await laundry({ mobile });
 if (!which.length || which.includes('radio')) await radio({ mobile });
 if (process.env.AUDIT) L.auditReport(mobile ? 'mobile' : 'pc');
+if (process.env.OVERFLOW) L.overflowReport();

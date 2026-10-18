@@ -585,3 +585,10 @@ html[data-theme] body dialog.inspection-dialog[data-surface] .story-device .stor
 
 /* 허브 카드 제목: 테마별 명조 대신 SUIT로 통일(2026-10-15, 사용자 요청: 궁서체 느낌 제거) */
 .case-card .case-card-title,.case-card[data-theme] .case-card-title{font-family:SUIT,"Malgun Gothic",sans-serif;font-weight:800;letter-spacing:-.6px}
+.v2-vault{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:8px}
+.v2-vault a{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:14px 16px;border:1px solid rgba(255,255,255,.14);border-radius:8px;text-decoration:none;color:inherit}
+.v2-vault b{font-size:16px}
+.v2-vault span{color:#d9b46a;font-size:13px;align-self:center}
+.v2-vault em{grid-column:1/-1;font-style:normal;font-size:13px;opacity:.85}
+.v2-vault li.doing a{border-color:#d9b46a}
+.v2-vault li.done em{color:#9fd3a8}

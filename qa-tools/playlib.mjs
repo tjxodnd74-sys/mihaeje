@@ -54,6 +54,7 @@ export async function statusText(page) {
 // Click a button/link whose aria-label or text contains `label` (first visible match).
 export async function click(page, label, { within = null, nth = 0, exact = false } = {}) {
   if (process.env.AUDIT) await audit(page, page.url().split('case=')[1] + ' before ' + label);
+  if (process.env.OVERFLOW) await overflowCheck(page, page.url().split('case=')[1] + ' before ' + label);
   const ok = await page.evaluate(({ label, within, nth, exact }) => {
     const root = within ? document.querySelector(within) : (document.querySelector('dialog[open]') || document);
     const all = [...root.querySelectorAll('button,a,[role=button],summary')].filter((b) => {
@@ -287,3 +288,20 @@ export function auditReport(tag = '') {
   for (const f of AUDIT.values()) console.log(`AUDIT real=${f.real} need=${f.need} calc=${f.ratio}${f.img ? ' IMG' : ''} ${f.color} [${f.cls}] "${f.text}" @${f.where}`);
   AUDIT.clear();
 }
+
+// ---- 가로 넘침 검사 (OVERFLOW=1): 화면 폭을 넘는 요소 (가로 스크롤 상자 안은 제외) ----
+export const OVER = new Map();
+export async function overflowCheck(page, where = '') {
+  const res = await page.evaluate(() => {
+    const vw = document.documentElement.clientWidth; const out = [];
+    const root = document.querySelector('dialog[open]') || document.body;
+    const inScroller = (e) => { for (let p = e.parentElement; p && p !== root.parentElement; p = p.parentElement) { const cs = getComputedStyle(p); if (/(auto|scroll|hidden|clip)/.test(cs.overflowX) && p.clientWidth < p.scrollWidth + 1) return true; } return false; };
+    for (const e of root.querySelectorAll('*')) {
+      const r = e.getBoundingClientRect(); if (!r.width || !r.height) continue;
+      if (r.right > vw + 2 || r.left < -2) { if (inScroller(e)) continue; out.push((e.tagName + '.' + String(e.className || '').split(' ')[0]).slice(0, 40) + ` [${Math.round(r.left)}..${Math.round(r.right)} / ${vw}]`); }
+    }
+    return out.slice(0, 6);
+  }).catch(() => []);
+  for (const o of res) { const k = o.replace(/\[.*\]/, ''); if (!OVER.has(k)) OVER.set(k, o + ' @' + where); }
+}
+export function overflowReport() { if (!OVER.size) console.log('OVERFLOW OK'); for (const v of OVER.values()) console.log('OVERFLOW ' + v); OVER.clear(); }
