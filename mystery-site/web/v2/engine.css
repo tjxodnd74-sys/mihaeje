@@ -598,7 +598,7 @@ a{color:inherit}
 .envtilt{max-width:620px;margin:0 auto 10px;perspective:900px}
 .envtilt .tiltbox{position:relative;transform:rotateX(var(--tilt,0deg));transform-origin:50% 100%;transition:transform .15s}
 .envtilt .tiltbox>img{display:block;width:100%;height:auto}
-.envtilt .pressed{position:absolute;left:53%;top:46%;width:42%;font-family:var(--hand);font-size:max(11px,3.3cqw);line-height:1.35;color:rgba(70,52,25,.95);letter-spacing:.04em;transform:rotate(-3deg);text-shadow:.1cqw .1cqw 0 rgba(255,255,255,.35),-.1cqw -.1cqw 0 rgba(0,0,0,.35);pointer-events:none;transition:opacity .15s}
+.envtilt .pressed{position:absolute;left:37%;top:46%;width:41%;font-family:var(--hand);font-size:max(11px,3.3cqw);line-height:1.35;color:rgba(70,52,25,.95);letter-spacing:.04em;transform:rotate(-3deg);text-shadow:.1cqw .1cqw 0 rgba(255,255,255,.35),-.1cqw -.1cqw 0 rgba(0,0,0,.35);pointer-events:none;transition:opacity .15s}
 .envtilt .pressed.lit{color:rgba(60,45,20,1)}
 .envtilt .glare{position:absolute;inset:0;background:linear-gradient(100deg,rgba(255,255,255,0) 30%,rgba(255,250,220,.18) 50%,rgba(255,255,255,0) 70%);pointer-events:none;mix-blend-mode:screen}
 .tilt-label{display:grid;gap:6px;margin:6px 0 10px;font-size:14px;color:var(--fog)}
@@ -1063,3 +1063,38 @@ button.pv-win:hover,button.pv-win:focus-visible{outline:none;box-shadow:inset 0 
 .sync-svg{width:100%;height:auto;display:block;margin:4px 0}
 .sync-row{display:flex;gap:8px;justify-content:center;margin:8px 0 2px}
 .sync-row .ctl{min-width:64px}
+
+/* v117: 장치·장면 조작 중 글자 전체가 드래그 선택되지 않게 */
+dialog, .v2-stage, .v2-device-body, .v2-device-head, .v2-actions, .v2-hotspot, .v2-bench,
+button, label, input[type=range], .v2-chip, .chip, summary {
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+}
+.v2-device-body img, .v2-stage img { -webkit-user-drag: none; user-drag: none; }
+input[type=range] { touch-action: pan-y; }
+dialog input:not([type=range]), dialog textarea { -webkit-user-select: text; user-select: text; }
+/* v117: 암실 흰 불 켰을 때(밝은 바탕) 글자·버튼이 안 보이던 문제 */
+.print-wrap.white, .print-wrap.white .tilt-label, .print-wrap.white .tilt-label span, .print-wrap.white .pick-label, .print-wrap.white figcaption, .print-wrap.white .focus-loupe figcaption{color:#2b2620}
+.print-wrap.white .chip, .print-wrap.white .switch{color:#2b2620;border-color:#6b5f52;background:rgba(255,255,255,.55)}
+.print-wrap.white .chip.on, .print-wrap.white .switch.on{color:#f6f1e6;background:#3a3129;border-color:#3a3129}
+/* v117: 글자 대비 보강 (자동 대비 검사 결과) */
+.chat-meta i{color:#ffe14d;text-shadow:0 0 1px #5c4700,0 0 1px #5c4700,0 1px 2px rgba(0,0,0,.35)}
+.chat-date,.chat-sys{background:rgba(0,0,0,.34)}
+.chat-time,.chat-meta{color:#3f4750}
+.chat-input span{color:#6d737a}
+.v2-fine{color:var(--soft-3)}
+.v2-paper .v2-fine,.v2-ending-paper .v2-fine{color:#5f584b}
+.v2-trace{color:#8a96a2}
+.v2-bench-tab.locked{opacity:.7}
+.train.dim{opacity:.72}
+.pick-label.dim{opacity:.8}
+.tape-chip.used{opacity:.38}
+.pocket-num{color:#3d311b;opacity:1;text-shadow:0 0 .5cqw rgba(255,250,235,.95),0 0 1cqw rgba(255,250,235,.8)}
+.lantern-order{opacity:1;background:rgba(0,0,0,.55);border-radius:999px;padding:0 .9cqw;text-shadow:none}
+.note-card .note-mark{color:#a8321f}
+.pt-foot{color:#5c5649}
+.ic-head{color:#5f574a}
+.v2-paper .v2-eyebrow{color:#5f594b}
+.strip-edge .fno,.strip-edge .brand{color:#ffd88a;opacity:1}
+.envtilt .pressed{z-index:2}
+.envtilt .glare{z-index:1}
+.envtilt .pressed.lit{color:#1f1405;font-weight:700;font-size:max(12px,3.4cqw);text-shadow:0 .15cqw 0 rgba(255,246,220,.6),0 -.08cqw 0 rgba(0,0,0,.4)}

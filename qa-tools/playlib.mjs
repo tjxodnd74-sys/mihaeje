@@ -53,6 +53,7 @@ export async function statusText(page) {
 
 // Click a button/link whose aria-label or text contains `label` (first visible match).
 export async function click(page, label, { within = null, nth = 0, exact = false } = {}) {
+  if (process.env.AUDIT) await audit(page, page.url().split('case=')[1] + ' before ' + label);
   const ok = await page.evaluate(({ label, within, nth, exact }) => {
     const root = within ? document.querySelector(within) : (document.querySelector('dialog[open]') || document);
     const all = [...root.querySelectorAll('button,a,[role=button],summary')].filter((b) => {
@@ -128,6 +129,7 @@ export async function typeInto(page, label, value) {
   await sleep(150);
 }
 export async function closeDialog(page) {
+  if (process.env.AUDIT) await audit(page, page.url().split('case=')[1] + ' before close');
   await page.evaluate(() => {
     const d = document.querySelector('dialog[open]');
     const b = d && [...d.querySelectorAll('button')].find((x) => /닫기|돌아가기/.test(x.getAttribute('aria-label') || x.textContent));
@@ -200,4 +202,88 @@ export async function roomSpots(page) {
   return page.evaluate(() => [...document.querySelectorAll('.room-hotspot,.place-next')]
     .filter((b) => b.getClientRects().length && !b.disabled)
     .map((b) => b.getAttribute('aria-label') || b.textContent.trim()));
+}
+
+// ---- 글자 대비 검사 (AUDIT=1 일 때 click/closeDialog 직전마다 화면 상태를 검사) ----
+// 1차: 계산된 색으로 후보를 고르고, 2차: 실제 화면 픽셀로 (글자 있음 vs 글자 투명) 비교해 진짜 대비를 잰다
+export const AUDIT = new Map();
+const AUDIT_SEEN = new Set();
+let sharp = null;
+export async function audit(page, where = '') {
+  if (!sharp) sharp = require('sharp');
+  let cands;
+  try {
+    cands = await page.evaluate(() => {
+      const parse = (s) => { const m = s.match(/rgba?\(([^)]+)\)/); if (!m) return [0, 0, 0, 0]; const p = m[1].split(/[ ,/]+/).filter(Boolean).map(Number); return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1]; };
+      const lum = ([r, g, b]) => { const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
+      const over = (top, bot) => { const a = top[3]; return [top[0] * a + bot[0] * (1 - a), top[1] * a + bot[1] * (1 - a), top[2] * a + bot[2] * (1 - a), 1]; };
+      const root = document.querySelector('dialog[open]') || document.body;
+      document.querySelectorAll('[data-aud]').forEach((x) => x.removeAttribute('data-aud'));
+      const out = []; const seen = new Set();
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      let n;
+      while ((n = walker.nextNode())) {
+        if (!n.textContent.trim()) continue;
+        const el = n.parentElement; if (!el || seen.has(el)) continue; seen.add(el);
+        if (el.closest('svg,script,style,noscript,[aria-hidden=true],[hidden]')) continue;
+        const dt = el.closest('details'); if (dt && !dt.open && !el.closest('summary')) continue;
+        const cs = getComputedStyle(el);
+        if (cs.visibility === 'hidden' || cs.display === 'none') continue;
+        const r = el.getBoundingClientRect(); if (r.width < 2 || r.height < 2) continue;
+        let op = 1; for (let a = el; a && a !== document.documentElement; a = a.parentElement) op *= Number(getComputedStyle(a).opacity);
+        if (op < 0.05) continue;
+        const layers = []; let img = false;
+        for (let a = el; a; a = a.parentElement) {
+          const sc = getComputedStyle(a);
+          if (sc.backgroundImage && sc.backgroundImage !== 'none') { img = true; break; }
+          const bg = parse(sc.backgroundColor); if (bg[3] > 0) layers.push(bg);
+          if (bg[3] >= 0.99) break;
+        }
+        // 형제 이미지 위에 겹친 글자
+        if (!img) { const pr = el.offsetParent; if (pr) for (const im of pr.querySelectorAll('img,canvas,video')) { const q = im.getBoundingClientRect(); if (q.width && !(q.right < r.left || q.left > r.right || q.bottom < r.top || q.top > r.bottom) && !el.contains(im)) { img = true; break; } } }
+        let bg = [255, 255, 255, 1]; for (let i = layers.length - 1; i >= 0; i--) bg = over(layers[i], bg);
+        const tc = parse(cs.color); if (tc[3] === 0) continue; tc[3] *= op; const fg = over(tc, bg);
+        const ratio = (Math.max(lum(fg), lum(bg)) + 0.05) / (Math.min(lum(fg), lum(bg)) + 0.05);
+        const px = parseFloat(cs.fontSize), bold = Number(cs.fontWeight) >= 700;
+        const need = (px >= 24 || (bold && px >= 18.6)) ? 3 : 4.5;
+        if (img || ratio < need) { const id = out.length; el.setAttribute('data-aud', id); out.push({ id, img, ratio: Math.round(ratio * 100) / 100, need, text: el.textContent.trim().replace(/\s+/g, ' ').slice(0, 40), cls: (el.tagName + '.' + (el.className?.toString?.() || '')).slice(0, 50), color: cs.color }); }
+      }
+      return out;
+    });
+  } catch (e) { console.log('AUDIT-ERR ' + e.message); return; }
+  const scroll = await page.evaluate(() => [document.scrollingElement.scrollTop, ...[...document.querySelectorAll('dialog[open], dialog[open] *')].filter((x) => x.scrollHeight > x.clientHeight + 2).map((x) => x.scrollTop)]);
+  for (const c of cands) {
+    const key = c.cls + '|' + c.text + '|' + c.color;
+    if (AUDIT_SEEN.has(key)) continue; AUDIT_SEEN.add(key);
+    try {
+      const sel = `[data-aud="${c.id}"]`;
+      const box = await page.evaluate((sel) => { const e = document.querySelector(sel); e.scrollIntoView({ block: 'center', inline: 'nearest' }); const r = e.getBoundingClientRect(); return { x: Math.max(0, r.left), y: Math.max(0, r.top), w: Math.min(r.width, innerWidth - Math.max(0, r.left)), h: Math.min(r.height, innerHeight - Math.max(0, r.top)) }; }, sel);
+      if (box.w < 3 || box.h < 3) continue;
+      const clip = { x: Math.floor(box.x), y: Math.floor(box.y), width: Math.ceil(box.w), height: Math.ceil(box.h) };
+      const A = await page.screenshot({ clip, animations: 'disabled' });
+      await page.evaluate((sel) => { const e = document.querySelector(sel); e.dataset.audStyle = e.getAttribute('style') || ''; e.style.setProperty('color', 'transparent', 'important'); e.style.setProperty('-webkit-text-fill-color', 'transparent', 'important'); e.style.setProperty('text-shadow', 'none', 'important'); }, sel);
+      const B = await page.screenshot({ clip, animations: 'disabled' });
+      await page.evaluate((sel) => { const e = document.querySelector(sel); const st = e.dataset.audStyle; if (st) e.setAttribute('style', st); else e.removeAttribute('style'); delete e.dataset.audStyle; }, sel);
+      const a = await sharp(A).raw().toBuffer({ resolveWithObject: true }), b = await sharp(B).raw().toBuffer({ resolveWithObject: true });
+      const ch = a.info.channels; const L = (r, g, bb) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(bb); };
+      const rs = [];
+      for (let i = 0; i < a.data.length; i += ch) {
+        const d = Math.abs(a.data[i] - b.data[i]) + Math.abs(a.data[i + 1] - b.data[i + 1]) + Math.abs(a.data[i + 2] - b.data[i + 2]);
+        if (d < 30) continue;
+        const l1 = L(a.data[i], a.data[i + 1], a.data[i + 2]), l2 = L(b.data[i], b.data[i + 1], b.data[i + 2]);
+        rs.push((Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05));
+      }
+      rs.sort((x, y) => y - x);
+      const real = rs.length ? rs[Math.floor(rs.length * 0.1)] : 1; // 글자 획의 상위 10% 대비
+      // 픽셀 측정은 작은 글씨에서 실제보다 낮게 나오므로: 이미지 위 글자는 픽셀 2.2 미만, 그 외는 계산값 기준
+      const need = c.img ? 2.2 : c.need;
+      if (c.img ? real < need : c.ratio < c.need) { AUDIT.set(key, { ...c, real: Math.round(real * 100) / 100, need, where }); if (process.env.AUDIT_SHOTS) { const pad = 40; const big = { x: Math.max(0, clip.x - pad), y: Math.max(0, clip.y - pad), width: clip.width + pad * 2, height: clip.height + pad * 2 }; try { await page.screenshot({ path: `${process.env.AUDIT_SHOTS}/${AUDIT.size}-${c.text.slice(0, 12).replace(/[^가-힣A-Za-z0-9]/g, '_')}.png`, clip: big }); } catch {} } }
+    } catch (e) { /* 요소가 사라짐 */ }
+  }
+  await page.evaluate((sc) => { document.scrollingElement.scrollTop = sc[0]; [...document.querySelectorAll('dialog[open], dialog[open] *')].filter((x) => x.scrollHeight > x.clientHeight + 2).forEach((x, i) => { if (sc[i + 1] != null) x.scrollTop = sc[i + 1]; }); }, scroll);
+}
+export function auditReport(tag = '') {
+  console.log(`AUDIT checked ${AUDIT_SEEN.size} ${tag}`);
+  for (const f of AUDIT.values()) console.log(`AUDIT real=${f.real} need=${f.need} calc=${f.ratio}${f.img ? ' IMG' : ''} ${f.color} [${f.cls}] "${f.text}" @${f.where}`);
+  AUDIT.clear();
 }

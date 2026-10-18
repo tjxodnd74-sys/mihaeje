@@ -131,3 +131,10 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
 - 고양이: 탐색이 6/12 아침(당일) 엔딩 '그날 저녁 일곱 시로' / 2단계 힌트 방향만
 - 보호자: 엄마 문자·명찰 문서에서 끈 정체 숨김 / strap 결과 문구 / 오답 문구 전부 중립 / 힌트코드 P-S03
 - 편지·404호: 부분 정답 새는 오답 문구 제거
+
+### v117 (2026-10-18 사용자 요청)
+- 규칙 변경: **10편 오프닝(처음 시작하는 스토리) 문단에는 마침표·쉼표를 넣는다** (안 읽힌다는 피드백) 그 외 본문은 기존 규칙 유지
+- 드래그 선택 방지: dialog, .v2-stage, 버튼, label, range 등 user-select:none (입력칸은 text) — 슬라이더 끌 때 화면 전체가 파랗게 선택되던 문제
+- 글자 대비: playlib.mjs에 audit() 추가 `AUDIT=1 [AUDIT_SHOTS=dir] node ../qa-tools/walk-v2.mjs` → click/closeDialog 직전마다 화면 글자를 계산값+실제 픽셀로 검사, 끝에 목록 출력
+  - 암실 흰 불(.print-wrap.white) 상태 칩·라벨·확대경 캡션이 밝은 바탕에 밝은 글자였음 → 어두운 글자로
+  - 카톡 안 읽음 "1" 테두리, 날짜 말풍선 진하게, 회색 보조 글자 진하게 등

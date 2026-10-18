@@ -426,7 +426,7 @@ async function studio({ mobile = false } = {}) {
     await hotspot(page, '벽의 순서표'); await L.closeDialog(page);
     // print
     await hotspot(page, '확대기와 트레이');
-    await L.click(page, '인화지 꺼내 올리기'); L.check((await status(page)).includes('불부터'), 'print: white light explained');
+    if (shots) await (await page.$('dialog[open] .print-wrap')).screenshot({ path: shots + '/st-print-white.png' }); await L.click(page, '인화지 꺼내 올리기'); L.check((await status(page)).includes('불부터'), 'print: white light explained');
     await L.click(page, '흰 불 스위치', { exact: true }); await L.click(page, '붉은 등 스위치', { exact: true }); await L.click(page, '인화지 꺼내 올리기');
     await L.click(page, '타이머 누르기', { exact: true }); L.check((await status(page)).includes('흐리다'), 'print: focus explained');
     await setRange('초점 손잡이', 65); await L.click(page, '타이머 누르기', { exact: true }); L.check((await status(page)).includes('봉투에 적힌 초'), 'print: timer explained');
@@ -796,3 +796,4 @@ if (!which.length || which.includes('letter')) await letter({ mobile });
 if (!which.length || which.includes('apartment')) await apartment({ mobile });
 if (!which.length || which.includes('laundry')) await laundry({ mobile });
 if (!which.length || which.includes('radio')) await radio({ mobile });
+if (process.env.AUDIT) L.auditReport(mobile ? 'mobile' : 'pc');
