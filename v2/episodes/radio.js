@@ -120,7 +120,7 @@ export default {
       arrive: 'B실 뒷문으로 이어진 보관실 테이프 상자가 천장까지 쌓였다 다음 달 10일에 전부 폐기된다 책상 위 스탠드만 켜져 있다',
       hotspots: [
         { id: 'rules', x: 13, y: 52, label: '책상 위 보관 규칙', kind: 'doc', doc: 'rules' },
-        { id: 'reel', x: 62, y: 46, label: '지난주 테이프 선반', kind: 'device', device: 'reel' },
+        { id: 'reel', x: 62, y: 46, label: '폐국 전 마지막 주 테이프', kind: 'device', device: 'reel' },
       ],
     },
     {
@@ -205,7 +205,7 @@ export default {
     wiring: {
       title: '랙 옆 배선표',
       kind: 'A실 패치베이 · 2019 개정',
-      html: `<div class="paper-table wiring"><p class="pt-head">패치베이 배선표</p><table><tr><th>윗줄 출력</th><td>${OUTS.map((o, i) => `${i + 1} ${o}`).join(' · ')}</td></tr><tr><th>아랫줄 입력</th><td>${INS.map((o, i) => `${i + 1} ${o}`).join(' · ')}</td></tr></table><p class="hand-note">10/28 A실 데크 고장 반출 B실 데크 들여옴 B실 쓰던 선째로 꽂아서 데크는 출력 4 (라벨 안 바꿈)</p><p class="hand-note">10/29 REC A 접촉 불량 녹음은 REC B로</p><p class="hand-note">10/31 02:10 TX MAIN 철거</p><p class="hand-note">예비 송신기 선 입력 1로 옮김 (예비는 철거 보류) — 하람</p></div>`,
+      html: `<div class="paper-table wiring"><p class="pt-head">패치베이 배선표</p><table><tr><th>윗줄 출력</th><td>${OUTS.map((o, i) => `<span class="nw jack-tag">${i + 1} ${o}</span>`).join(' ')}</td></tr><tr><th>아랫줄 입력</th><td>${INS.map((o, i) => `<span class="nw jack-tag">${i + 1} ${o}</span>`).join(' ')}</td></tr></table><p class="hand-note">10/28 A실 데크 고장 반출 B실 데크 들여옴 B실 쓰던 선째로 꽂아서 데크는 출력 4 (라벨 안 바꿈)</p><p class="hand-note">10/29 REC A 접촉 불량 녹음은 REC B로</p><p class="hand-note">10/31 02:10 TX MAIN 철거</p><p class="hand-note">예비 송신기 선 입력 1로 옮김 (예비는 철거 보류) — 하람</p></div>`,
     },
     final: {
       title: '선배의 문자',
@@ -259,7 +259,7 @@ export default {
     },
 
     reel: {
-      title: '지난주 테이프 선반',
+      title: '폐국 전 마지막 주 테이프',
       scene: 'archive',
       intro: '폐국 전 마지막 주 테이프가 한 칸에 모여 있다 열두 통',
       docs: ['enote', 'sched', 'rules'],
@@ -410,6 +410,6 @@ export default {
     ],
     afterword: '11월 10일 보관실 테이프는 모두 폐기됐다 241030 A 01 한 통만 빼고 그 테이프는 지금 선배 집 라디오 옆에 있다 이번엔 녹음도 했으니까 두 통이다',
     unlockDoc: 'final',
-    next: { href: 'index.html#cases', title: '테마 로비', label: '테마 로비로 →', line: '미해제의 열 편을 모두 지나왔습니다' },
+    next: { href: 'index.html#cases', title: '테마 로비', label: '테마 로비로 →', line: '다른 이야기는 테마 로비에서 고를 수 있습니다' },
   },
 };

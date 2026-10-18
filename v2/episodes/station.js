@@ -258,7 +258,7 @@ export default {
     clerk: {
       title: '매표창구의 역무원',
       kind: '박종길 · 야간 근무',
-      html: `<p>창구 안의 남자는 커피를 반쯤 남긴 채 신문을 접었다</p><blockquote>“새벽에 여자분 하나가 저 표지판 앞에 한참 서 있다가, 뭘 붙이고 갔어요 떼려다 뒀습니다 ‘사람이 올 거예요’ 하길래”</blockquote><blockquote>“3번? 지금은 없어요 작년에 개편하면서 번호를 바꿨어요 저 표지판이 서 있던 자리는 지금 2번이에요 북쪽 가는 쪽”</blockquote><blockquote>“그 여자분, 아침에 북쪽 가는 열차 타고 올라갔어요 어느 열차였는지는… 승강장 가서 물어보시든가 기둥에도 뭘 붙였을걸요 테이프 소리가 들렸으니까”</blockquote>`,
+      html: `<p>창구 안의 남자는 커피를 반쯤 남긴 채 신문을 접었다</p><blockquote>“새벽에 여자분 하나가 저 표지판 앞에 한참 서 있다가, 뭘 붙이고 갔어요 떼려다 뒀습니다 ‘사람이 올 거예요’ 하길래”</blockquote><blockquote>“3번? 지금은 없어요 작년에 개편하면서 번호를 바꿨어요 저 표지판이 서 있던 자리는 지금 2번이에요 북쪽 가는 쪽”</blockquote><blockquote>“그 여자분, 아침에 북쪽 가는 열차 타고 올라갔어요 어느 열차였는지는 글쎄요 승강장 가서 물어보시든가 기둥에도 뭘 붙였을걸요 테이프 소리가 들렸으니까”</blockquote>`,
     },
     notice: {
       title: '승강장 개편 안내',
@@ -278,7 +278,7 @@ export default {
     timetable: {
       title: '기둥의 출발 시각표',
       kind: '2번 승강장 · 북행',
-      html: `<figure class="prop laminated"><img src="assets/v2/station/props/timetable.webp" alt="기둥에 핀으로 꽂힌 시각표" decoding="async"><div class="laminated-sheet"><p class="sheet-title">2번 승강장 출발 시각 (북행)</p><table><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_2.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="sheet-title dim">맞은편 1번 승강장 (남행)</p><table class="dim"><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_1.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="sheet-foot">미루선 · 수림역무관리소</p></div></figure>`,
+      html: `<figure class="prop laminated"><img src="assets/v2/station/props/timetable.webp" alt="기둥에 핀으로 꽂힌 시각표" decoding="async"><div class="laminated-sheet"><p class="sheet-title">2번 승강장 출발 시각 (북행)</p><table><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_2.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="sheet-title dim">맞은편 1번 승강장 (남행)</p><table class="dim"><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_1.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="sheet-foot">미루선 · 수림역무관리소</p></div></figure><div class="paper-table mobile-only"><p class="pt-head">같은 시각표 글자로 옮겨 적은 것</p><table class="nwcells"><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr>${TRAINS_2.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</table><p class="pt-foot">맞은편 1번 승강장 (남행) ${TRAINS_1.map((t) => `${t.time} ${t.to}행`).join(' · ')}</p></div>`,
     },
     postcard: {
       title: '게시판의 그림엽서',
@@ -304,7 +304,7 @@ export default {
       title: '민서의 편지 · 마지막 장',
       kind: '편지의 접힌 뒷장 · 마당에서 읽음',
       locked: true,
-      html: `<figure class="prop letterphoto back"><img src="assets/v2/station/props/letter.webp" alt="편지의 접힌 뒷장" decoding="async"><div class="letter-hand"><p>할머니가 겨울에 넘어지셨어 아무한테도 말 안 하고 혼자 석 달을 누워 계셨대 그 얘기를 듣고 그날 사표 냈어</p><p>너한테는 말을 못 했어 말하면 네가 말릴 것 같았고, 안 말리면 그게 더 서운할 것 같았어 그래서 네가 직접 오게 만들었어 넌 길 찾는 거 잘하잖아 그리고 여기까지 온 사람은 그냥 못 돌아가</p><p>휴대폰을 보관함에 넣어 둔 건, 거기까지 온 너라면 그다음은 안 봐도 믿을 수 있어서야</p><p>수박 잘라 놨어</p></div></figure>`,
+      html: `<figure class="prop letterphoto back"><img src="assets/v2/station/props/letter.webp" alt="편지의 접힌 뒷장" decoding="async"><div class="letter-hand"><p>할머니가 겨울에 넘어지셨어 아무한테도 말 안 하고 혼자 석 달을 누워 계셨대 그 얘기를 듣고 그날 사표 냈어</p><p>전화를 끈 건 도망친 거야 네 목소리 들으면 다 무너질 것 같았어 그건 내가 잘못한 거고 핑계 없어</p><p>이 길은 한참 뒤에, 좀 괜찮아지고 나서 만들었어 사과를 말로 하기엔 너무 늦은 것 같아서 우리 어릴 때 하던 길 찾기로 한 번만 불러 보고 싶었어 안 왔어도 원망 안 했을 거야 진짜로</p><p>수박 잘라 놨어</p></div></figure>`,
     },
   },
 

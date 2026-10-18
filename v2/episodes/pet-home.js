@@ -13,16 +13,16 @@ const stampSvg = (id, cls = '') => `<svg class="stamp ${cls}" viewBox="0 0 32 32
 
 // 기념품 네 개: 뒷면에 남은 것(날짜/도장)이 다 다르다
 const ITEMS = [
-  { id: 'blanket', name: '접힌 담요', img: 'blanket', stamp: null, date: '2016. 7. 18', dateNote: '', back: '세탁 라벨 안쪽 날짜는 또렷한데 도장은 물에 번져서 무슨 모양인지 읽을 수 없다' },
-  { id: 'lanyard', name: '파란 명찰 끈', img: 'lanyard', stamp: null, date: '2016. 7. 16', dateNote: '', back: '도장은 없다 끈 안쪽에 볼펜으로 적은 날짜 하나 글씨가 어리다' },
-  { id: 'envelope', name: '진료 봉투', img: 'envelope', stamp: 'cross', date: '2016. 7. 17', dateNote: '', back: '빨간 십자 도장과 날짜 「접수 27 · 진료 V-6384 · 담담동물병원」' },
+  { id: 'blanket', name: '접힌 담요', img: 'blanket', stamp: null, date: '2016/7/18', dateNote: '', back: '세탁 라벨 안쪽 날짜는 또렷한데 도장은 물에 번져서 무슨 모양인지 읽을 수 없다' },
+  { id: 'lanyard', name: '파란 명찰 끈', img: 'lanyard', stamp: null, date: '2016/7/16', dateNote: '', back: '도장은 없다 끈 안쪽에 볼펜으로 적은 날짜 하나 글씨가 어리다' },
+  { id: 'envelope', name: '진료 봉투', img: 'envelope', stamp: 'cross', date: '2016/7/17', dateNote: '', back: '빨간 십자 도장과 날짜 「접수 27 · 진료 V-6384 · 담담동물병원」' },
   { id: 'cert', name: '입양 확인서', img: 'cert', stamp: 'house', date: null, dateNote: '날짜 칸이 찢어져 없다', back: '집 모양 도장만 남았다 위쪽 이름 칸과 날짜 칸은 찢어져 없다' },
 ];
 const STAGES = [
-  { id: 'rescue', n: 1, name: '처음 발견한 날', date: '2016. 7. 16', shown: '2016. 7. ▒▒', stamp: 'sun', who: '보호자 동반 학생 (이름 없음)' },
-  { id: 'clinic', n: 2, name: '진료받은 날', date: '2016. 7. 17', shown: '2016. 7. ▒▒', stamp: 'cross', who: '담담동물병원' },
-  { id: 'foster', n: 3, name: '잠깐 머문 날', date: '2016. 7. 18', shown: '2016. 7. ▒▒', stamp: 'sprout', who: '햇살 임시보호집' },
-  { id: 'adopt', n: 4, name: '오래 살 집이 생긴 날', date: '2016. 8. 2', shown: '2016. 8. 2', stamp: 'house', who: '박정우' },
+  { id: 'rescue', n: 1, name: '처음 발견한 날', date: '2016/7/16', shown: '2016/7/▒▒', stamp: 'sun', who: '보호자 동반 학생 (이름 없음)' },
+  { id: 'clinic', n: 2, name: '진료받은 날', date: '2016/7/17', shown: '2016/7/▒▒', stamp: 'cross', who: '담담동물병원' },
+  { id: 'foster', n: 3, name: '잠깐 머문 날', date: '2016/7/18', shown: '2016/7/▒▒', stamp: 'sprout', who: '햇살 임시보호집' },
+  { id: 'adopt', n: 4, name: '오래 살 집이 생긴 날', date: '2016/8/2', shown: '2016/8/2', stamp: 'house', who: '박정우' },
 ];
 const TIN_CODE = [6, 7, 8, 2]; // 네 날의 끝자리, 기록 순서대로
 const DRAWERS = [
@@ -32,16 +32,15 @@ const DRAWERS = [
   ['9-1', 'V-6800~6899'], ['9-2', 'V-6900~6999'], ['9-3', 'V-7000~7099'],
 ];
 const DRAWER_ANSWER = '7-3'; // 2017년 정리 때 V-6350 이후를 7-3으로 옮김
-const DESK_CODE = [7, 1, 6];
 const BOX_ANSWER = { rescue: 'lanyard', clinic: 'envelope', foster: 'blanket', adopt: 'cert' };
 
 // 병원 카드 서랍: 비슷한 카드 다섯 V-6384가 둘인데, 계약서의 등록번호까지 맞는 건 하나
 const CARDS = [
-  { id: 'c1', v: 'V-6381', name: '보리', date: '2016. 7. 15', reg: '941372608154209' },
-  { id: 'c2', v: 'V-6382', name: '콩', date: '2016. 7. 17', reg: '941372680154902' },
-  { id: 'c3', v: 'V-6384', name: '콩이', date: '2016. 7. 17', reg: '941372608145902' }, // 접수 실수로 번호가 겹친 카드
-  { id: 'c4', v: 'V-6384', name: '콩이', date: '2016. 7. 17', reg: '941372608154902' },
-  { id: 'c5', v: 'V-6385', name: '코코', date: '2016. 7. 18', reg: '941327608154902' },
+  { id: 'c1', v: 'V-6381', name: '보리', date: '2016/7/15', reg: '941372608154209' },
+  { id: 'c2', v: 'V-6382', name: '콩', date: '2016/7/17', reg: '941372680154902' },
+  { id: 'c3', v: 'V-6384', name: '콩이', date: '2016/7/17', reg: '941372608145902' }, // 접수 실수로 번호가 겹친 카드
+  { id: 'c4', v: 'V-6384', name: '콩이', date: '2016/7/17', reg: '941372608154902' },
+  { id: 'c5', v: 'V-6385', name: '코코', date: '2016/7/18', reg: '941327608154902' },
 ];
 const CARD_ANSWER = 'c4';
 
@@ -79,7 +78,8 @@ export default {
     eyebrow: '10월 9일, 이사 다음 날',
     paragraphs: [
       '루미는 열 살이다 전 보호자 정우 씨가 지방으로 이사하면서 새 가족을 찾았고, 한 달 동안 세 번 만나 보고 내가 데려왔다 어제가 첫날이었다',
-      '정우 씨는 사료와 약, 병원 기록을 넘기면서 상자를 하나 더 줬다 "루미가 처음 구조됐을 때 물건들이에요 저도 받은 거라 누가 뭘 남긴 건지는 몰라요" 그리고 파란 끈 얘기를 했다 루미를 처음 데려온 아이가 쓰던 끈이라고, 언젠가 돌려주고 싶었다고 그 말을 들을 때 괜히 목이 막혔는데, 왜 그런지는 몰랐다',
+      '정우 씨는 사료와 약, 병원 기록을 넘기면서 상자를 하나 더 줬다 "루미가 처음 구조됐을 때 물건들이에요 저도 받은 거라 누가 뭘 남긴 건지는 몰라요" 그리고 파란 끈 얘기를 했다 루미를 처음 데려온 아이가 쓰던 끈이라고, 언젠가 돌려주고 싶었다고',
+      '그 말에 괜히 목이 막혔다 중학교 때 나도 정류장에서 강아지를 주워 센터에 맡긴 적이 있다 사흘을 울었고, 그 뒤로는 일부러 생각을 안 했다 그 애가 어디로 갔는지는 모른다',
       '상자 뚜껑 안쪽에 정우 씨 쪽지가 붙어 있었다 루미는 새 방석에서 자고 있다 창밖으로 이삿짐 트럭이 빠져나갔다',
     ],
     cta: '상자 열어 보기',
@@ -88,7 +88,6 @@ export default {
   traces: [
     { device: 'box', label: '기념품 네 개' },
     { device: 'cards', label: '진료 카드' },
-    { device: 'desk', label: '책상 서랍' },
     { device: 'strap', label: '끈의 글자' },
   ],
 
@@ -123,15 +122,13 @@ export default {
       name: '엄마 집',
       image: P + 'mom.webp',
       unlockedBy: 'cards',
-      arrive: '다음 날 토요일 오후, 엄마 집 엄마는 앨범을 식탁에 꺼내 놓고 보리차를 끓이고 있었다 "니가 중학교 때 강아지 주워 온 거 기억 안 나?" 기억이 안 났다 앨범 옆에 사진 세 장이 뒤집혀 있었다',
+      arrive: '다음 날 토요일 오후, 엄마 집 엄마는 앨범을 식탁에 꺼내 놓고 보리차를 끓이고 있었다 "그 강아지 이름 콩이였어 니가 지었잖아" 이름은 잊었는데 사흘 운 건 기억난다 앨범 옆에 사진 세 장이 뒤집혀 있었다',
       hotspots: [
         { id: 'phone', x: 10, y: 88, label: '엄마와 주고받은 문자', kind: 'doc', doc: 'momchat' },
         { id: 'diary', x: 62, y: 88, label: '앨범에 끼워진 일기 한 장', kind: 'doc', doc: 'diary' },
         { id: 'album', x: 52, y: 54, label: '앨범과 사진 세 장', kind: 'doc', doc: 'album' },
-        { id: 'sticky', x: 18, y: 52, label: '내 옛 방 책상의 포스트잇', kind: 'doc', doc: 'sticky' },
-        { id: 'desk', x: 24, y: 60, label: '내 옛 방 책상 서랍', kind: 'device', device: 'desk' },
-        { id: 'badge', x: 24, y: 70, label: '서랍 속 명찰', kind: 'doc', doc: 'badge', visible: (S) => S.solved.includes('desk') },
-        { id: 'strap', x: 90, y: 66, label: '상자에서 가져온 파란 끈', kind: 'device', device: 'strap', visible: (S) => S.solved.includes('desk') },
+        { id: 'badge', x: 24, y: 62, label: '내 옛 방 책상 서랍', kind: 'doc', doc: 'badge' },
+        { id: 'strap', x: 90, y: 66, label: '상자에서 가져온 파란 끈', kind: 'device', device: 'strap', visible: (S) => S.read.includes('badge') },
       ],
     },
   ],
@@ -152,7 +149,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
     contract: {
       title: '입양 계약서 봉투',
       kind: '2026년 재입양 · 유나 보관',
-      html: `<div class="paper-table"><p class="pt-head">반려동물 재입양 계약서 (사본)</p><table><tr><th>동물 이름</th><td>루미 (10세 · 중성화)</td></tr><tr><th>동물등록번호</th><td class="mono">${REG}</td></tr><tr><th>이전 보호자</th><td>박정우</td></tr><tr><th>새 보호자</th><td>김유나</td></tr><tr><th>등록 최초 일자</th><td>2016. 7. 17 (담담동물병원)</td></tr></table></div><p>등록번호 열다섯 자리 최초 등록이 2016년 7월, 그 병원이다 상자 속 봉투에 적힌 병원과 같다</p>`,
+      html: `<div class="paper-table"><p class="pt-head">반려동물 재입양 계약서 (사본)</p><table><tr><th>동물 이름</th><td>루미 (10세 · 중성화)</td></tr><tr><th>동물등록번호</th><td class="mono">${REG}</td></tr><tr><th>이전 보호자</th><td>박정우</td></tr><tr><th>새 보호자</th><td>김유나</td></tr><tr><th>등록 최초 일자</th><td>2016/7/17 (담담동물병원)</td></tr></table></div><p>등록번호 열다섯 자리 최초 등록이 2016년 7월, 그 병원이다 상자 속 봉투에 적힌 병원과 같다</p>`,
     },
     rumi: {
       title: '방석의 루미',
@@ -174,31 +171,26 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       kind: '다음 날 낮 · 10월 10일',
       html: `<div class="chat"><div class="chat-head"><span class="chat-back">‹</span><b>엄마</b><span class="chat-icons">☰</span></div><div class="chat-date">2026년 10월 10일 토요일</div>
 <div class="chat-row me"><span class="chat-meta">오후 1:12</span><div class="chat-bubble">엄마 2016년 7월에 찍은 사진 있어? 나 중2 때</div></div>
-<div class="chat-row me"><span class="chat-meta">오후 1:12</span><div class="chat-bubble">강아지 나오는 거</div></div>
-<div class="chat-row them"><span class="chat-avatar">母</span><div class="chat-col"><span class="chat-name">엄마</span><div class="chat-bubble">갑자기 왠 강아지</div><div class="chat-bubble">니가 정류장에서 주워온 거 말하는거야?</div><div class="chat-bubble">앨범에 있을거다 와서 봐</div></div><span class="chat-time">오후 1:30</span></div>
-<div class="chat-row me"><span class="chat-meta">오후 1:31</span><div class="chat-bubble">내가 강아지를 주워왔다고??</div></div>
-<div class="chat-row them"><span class="chat-avatar">母</span><div class="chat-col"><span class="chat-name">엄마</span><div class="chat-bubble">기억 안나냐 니 명찰끈으로 묶어서 끌고 왔잖아</div><div class="chat-bubble">센터에 데려다주고 사흘 울었다</div></div><span class="chat-time">오후 1:33</span></div>
+<div class="chat-row me"><span class="chat-meta">오후 1:12</span><div class="chat-bubble">나 정류장에서 강아지 주웠을 때</div></div>
+<div class="chat-row them"><span class="chat-avatar">母</span><div class="chat-col"><span class="chat-name">엄마</span><div class="chat-bubble">갑자기 왠 강아지 얘기야</div><div class="chat-bubble">앨범에 있을거다 와서 봐</div></div><span class="chat-time">오후 1:30</span></div>
+<div class="chat-row me"><span class="chat-meta">오후 1:31</span><div class="chat-bubble">그 강아지 이름 뭐였지 생각이 안 나</div></div>
+<div class="chat-row them"><span class="chat-avatar">母</span><div class="chat-col"><span class="chat-name">엄마</span><div class="chat-bubble">콩이 니가 지었잖아</div><div class="chat-bubble">비 맞으면서 니가 안고 왔지 센터 데려다주고 사흘 울고</div></div><span class="chat-time">오후 1:33</span></div>
 <div class="chat-input"><span class="chat-field">메시지 입력</span><span>➤</span></div></div>`,
     },
     diary: {
       title: '앨범에 끼워진 일기 한 장',
       kind: '2016년 7월 16일 · 내 글씨',
-      html: `<blockquote class="hand">7월 16일 토 맑음 너무 더움<br>학원 가는 길에 정류장 밑에 강아지가 있었다 손바닥만 하다 엄마한테 전화했더니 데려오래서 명찰 끈 풀어서 목에 묶고 데려왔다 명찰은 빼서 주머니에 넣음<br>이름은 콩이로 정했다 콩같이 생겨서<br>내일 병원 데려간대 키우면 안 되냐고 했는데 안 된대 (아빠)<br>— 햇살중 2학년 3반 김유나</blockquote><p>글씨가 내 글씨다 기억은 없는데 글씨는 맞다</p>`,
+      html: `<blockquote class="hand">7월 16일 토 맑음 너무 더움<br>학원 가는 길에 정류장 밑에 강아지가 있었다 손바닥만 하다 엄마한테 전화했더니 데려오래서 명찰 끈 풀어서 목에 묶고 데려왔다 명찰은 빼서 주머니에 넣음<br>이름은 콩이로 정했다 콩같이 생겨서<br>내일 병원 데려간대 키우면 안 되냐고 했는데 안 된대 (아빠)<br>— 햇살중 2학년 3반 김유나</blockquote><p>콩이라는 이름을 지은 것도 나였다 그 이름을 십 년 동안 까맣게 잊고 있었다</p>`,
     },
     album: {
       title: '앨범과 사진 세 장',
       kind: '엄마가 꺼내 둔 것',
-      html: `<figure class="prop album"><img src="${P}props/album.webp" alt="펼쳐 둔 앨범과 뒤집힌 사진 세 장" decoding="async"></figure><p>세 장 중 한 장을 뒤집었다</p><figure class="prop oldphoto"><img src="${P}props/photo2016.webp" alt="2016년 정류장에서 강아지를 안은 중학생 유나" decoding="async"></figure><p>정류장 벤치 앞에 쪼그려 앉은 중학생이 손바닥만 한 강아지를 안고 있다 강아지 목에 파란 끈 뒷면에 엄마 글씨로 「2016. 7. 16 햇살동 정류장 유나 콩이」</p><p class="aside">사진 속 강아지 코가 까맸다 루미는 지금 코끝이 하얗다 십 년이면 그렇다</p>`,
-    },
-    sticky: {
-      title: '책상 서랍의 포스트잇',
-      kind: '중2 때 내 글씨',
-      html: `<div class="sticky-note">비번 = 콩이 만난 날<br><small>(까먹지 말 것!!)</small></div><p>콩이를 만난 날이 언제인지는 일기에 있다 세 자리 자물쇠다</p>`,
+      html: `<figure class="prop album"><img src="${P}props/album.webp" alt="펼쳐 둔 앨범과 뒤집힌 사진 세 장" decoding="async"></figure><p>세 장 중 한 장을 뒤집었다</p><figure class="prop oldphoto"><img src="${P}props/photo2016.webp" alt="2016년 정류장에서 강아지를 안은 중학생 유나" decoding="async"></figure><p>정류장 벤치 앞에 쪼그려 앉은 중학생이 손바닥만 한 강아지를 안고 있다 강아지 목에 파란 끈 뒷면에 엄마 글씨로 「2016/7/16 햇살동 정류장 유나 콩이」</p><p class="aside">사진 속 강아지 코가 까맸다 루미는 지금 코끝이 하얗다 십 년이면 그렇다</p>`,
     },
     badge: {
-      title: '서랍 속 명찰',
+      title: '책상 서랍 속 명찰',
       kind: '2016년 · 햇살중',
-      html: `<figure class="prop badgephoto"><img src="${P}props/badge.webp" alt="서랍 속 명찰" decoding="async"><div class="on-badge"><b>햇살중학교</b><span>2학년 3반</span><strong>김유나</strong></div></figure><p>명찰에 끈이 없다 끈은 지금 내 가방에 있다 십 년 전에 강아지 목에 묶었던 그 끈이</p>`,
+      html: `<figure class="prop badgephoto"><img src="${P}props/badge.webp" alt="서랍 속 명찰" decoding="async"><div class="on-badge"><b>햇살중학교</b><span>2학년 3반</span><strong>김유나</strong></div></figure><p>중학교 때 쓰던 책상 서랍을 열었다 연필, 지우개, 머리끈 사이에 명찰이 하나 끈이 없다 언제 없어졌는지 기억이 안 난다 루미 상자에서 나온 파란 끈, 집게 폭이 이 구멍이랑 비슷하다</p>`,
     },
     final: {
       title: '정우가 남긴 편지',
@@ -259,13 +251,12 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       check(d) {
         const code = d.dial.join('');
         const filled = STAGES.filter((s) => d.placed[s.id]).length;
-        if (filled < 4) return { ok: false, msg: `자물쇠가 안 열린다 기록 사본은 날짜가 뭉개져 있다 물건 뒷면으로 네 날부터 채우자 (지금 ${filled}/4)` };
+        if (filled < 4) return { ok: false, msg: '자물쇠가 안 열린다 기록 줄 네 칸에 물건부터 다 올려놓자' };
         if (!STAGES.every((s) => d.placed[s.id] === BOX_ANSWER[s.id])) {
-          if (d.placed.rescue === 'blanket' && d.placed.foster === 'lanyard') return { ok: false, msg: '안 열린다 도장 없는 둘의 앞뒤가 바뀌었다 발견이 임시보호보다 먼저다 날짜가 빠른 쪽이 발견한 날' };
-          return { ok: false, msg: '안 열린다 놓은 물건이 기록 줄과 어긋난다 도장이 있는 둘은 도장으로, 없는 둘은 날짜 순서로' };
+          return { ok: false, msg: '안 열린다 기록 줄과 물건 뒷면을 다시 대 본다' };
         }
         if (code === TIN_CODE.join('')) return { ok: true };
-        return { ok: false, msg: '네 날은 맞췄다 번호는 네 날의 끝자리, 기록 순서대로다' };
+        return { ok: false, msg: '안 열린다 기록 줄과 물건 뒷면을 다시 대 본다' };
       },
       reveal: {
         title: '6 · 7 · 8 · 2',
@@ -283,7 +274,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       hintCode: 'P-S02',
       hints: [
         '게시판 안내에서 V-6384가 어느 서랍 범위인지 봅니다 그런데 밑에 볼펜으로 덧쓴 줄이 있습니다',
-        '2017년 정리 때 V-6350 이후는 7-3으로 옮겼습니다 7-3을 열면 카드 다섯 장이 올라와 있고, V-6384가 둘입니다 계약서의 등록번호와 열다섯 자리가 다 같은 쪽이 루미입니다',
+        '볼펜 줄대로 옮겨 간 서랍을 여세요 같은 V 번호가 둘이면, 계약서에 적힌 다른 번호까지 끝까지 대 봐야 합니다',
         '7-3 서랍 · 네 번째 카드 (V-6384 · 콩이 · 941372608154902)',
       ],
       initial: () => ({ drawer: null, open: null }),
@@ -317,7 +308,7 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
         if (d.open) {
           const c = CARDS.find((x) => x.id === d.open);
           const card = el('div', 'index-card');
-          card.innerHTML = `<p class="ic-head">담담동물병원 진료 카드</p><div class="ic-row"><span>번호</span><b class="mono">${c.v}</b></div><div class="ic-row"><span>이름</span><b>${c.name}</b></div><div class="ic-row"><span>첫 진료</span><b>${c.date}</b></div><div class="ic-row"><span>동물등록번호</span><b class="mono reg">${c.reg.replace(/(\d{3})(?=\d)/g, '$1 ')}</b></div>`;
+          card.innerHTML = `<p class="ic-head">담담동물병원 진료 카드</p><div class="ic-row"><span>번호</span><b class="mono">${c.v}</b></div><div class="ic-row"><span>이름</span><b>${c.name}</b></div><div class="ic-row"><span>첫 진료</span><b>${c.date}</b></div><div class="ic-row"><span>동물등록번호</span><b class="mono reg">${c.reg.replace(/(\d{3})(?=\d)/g, '$1 ')}</b></div><div class="ic-row cmp"><span>계약서 번호</span><b class="mono reg">${REG.replace(/(\d{3})(?=\d)/g, '$1 ')}</b></div>`;
           wrap.append(el('p', 'pick-label', `${CARDS.indexOf(c) + 1}번째 카드`), card);
         } else wrap.append(el('p', 'pick-label', '올라와 있는 카드를 누르면 앞면이 보인다'));
         return wrap;
@@ -327,60 +318,23 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       check(d) {
         if (d.open === CARD_ANSWER) return { ok: true };
         const c = CARDS.find((x) => x.id === d.open);
-        if (c.v !== 'V-6384') return { ok: false, msg: `${c.v} 번호는 봉투의 번호가 아니다 봉투에는 V-6384라고 적혀 있다` };
-        return { ok: false, msg: '번호는 맞는데 등록번호가 계약서와 다르다 열다섯 자리를 세 자리씩 끊어서 다시 대 보자' };
+        if (c.v !== 'V-6384') return { ok: false, msg: '이 카드가 아니다 계약서와 하나하나 대 본다' };
+        return { ok: false, msg: '이 카드가 아니다 계약서와 하나하나 대 본다' };
       },
       reveal: {
         title: '콩이 = 루미',
         text: '카드를 뒤집었다 「신고자: 햇살중 학생, 어머니 동반 명찰 끈을 임시 목줄로 사용 사진 1매는 어머니가 촬영, 센터 보관」 등록번호는 계약서와 한 자리도 안 틀렸다 콩이가 루미다',
-        scene: ['햇살중 내가 나온 학교다 2016년이면 중2 그런데 강아지를 주운 기억이 없다 엄마한테 문자를 보냈다'],
+        scene: ['햇살중 내가 나온 학교다 2016년 여름이면 중2 내가 정류장에서 주웠던 그 강아지가 콩이였나 이름조차 기억이 안 난다 엄마한테 문자를 보냈다'],
         unlock: 'mom',
-      },
-    },
-
-    desk: {
-      title: '내 옛 방 책상 서랍',
-      scene: 'mom',
-      intro: '중학교 때 쓰던 책상 서랍에 세 자리 자물쇠 옆에 붙은 포스트잇: "비번 = 콩이 만난 날"',
-      docs: ['sticky', 'diary', 'momchat'],
-      hintCode: 'P-S03',
-      hints: [
-        '콩이를 만난 날은 일기 첫 줄에 있습니다 세 자리',
-        '일기 첫 줄의 날짜를 월 한 자리, 일 두 자리로 넣습니다',
-        '716',
-      ],
-      initial: () => ({ dial: [0, 0, 0] }),
-      render(ctx) {
-        const { d, el, save } = ctx;
-        const wrap = el('div', 'desk-wrap');
-        const desk = el('div', 'prop deskphoto'); const im = el('img'); im.src = P + 'props/desk.webp'; im.alt = '스티커가 바랜 옛 책상, 서랍에 세 자리 자물쇠와 포스트잇'; desk.append(im);
-        const lock = el('div', 'prop desklock'); lock.innerHTML = `<img src="${P}props/desk-lock.webp" alt="세 자리 자물쇠와 포스트잇" decoding="async"><div class="on-sticky">비번 = 콩이 만난 날<br><small>까먹지 말 것!!</small></div>`;
-        lock.append(dialRow(el, save, d, 3));
-        wrap.append(desk, lock);
-        return wrap;
-      },
-      commitLabel: '서랍 당기기',
-      check(d) {
-        const code = d.dial.join('');
-        if (code === DESK_CODE.join('')) return { ok: true };
-        if (code === '816' || code === '802') return { ok: false, msg: '안 열린다 콩이를 "만난" 날이다 입양된 날이 아니라' };
-        if (code === '717') return { ok: false, msg: '안 열린다 그날은 병원에 간 날이지 만난 날이 아니다' };
-        return { ok: false, msg: '걸린다 월 한 자리, 일 두 자리다' };
-      },
-      reveal: {
-        title: '7 · 1 · 6',
-        text: '서랍이 열렸다 연필, 지우개, 머리끈 사이에 명찰이 하나 끈이 없는 명찰 「햇살중학교 2학년 3반 김유나」',
-        scene: ['명찰은 있는데 끈이 없다 끈은 지금 내 가방 속에 있다 상자에서 꺼내 온, 십 년 전 강아지 목에 묶였던 파란 끈'],
-        unlock: null,
       },
     },
 
     strap: {
       title: '파란 끈을 명찰에',
       scene: 'mom',
-      intro: '십 년 전 강아지 목에 묶었던 끈을 원래 자리, 명찰 구멍에 다시 끼운다 끈 한쪽 끝에는 집게, 다른 쪽은 매듭 걸었을 때 글자가 밖에서 바로 읽혀야 한다',
+      intro: '루미 상자에서 나온 파란 끈을 명찰 구멍에 끼워 본다 끈 한쪽 끝에는 집게, 다른 쪽은 매듭 걸었을 때 글자가 밖에서 바로 읽혀야 한다',
       docs: ['badge', 'diary', 'album'],
-      hintCode: 'P-S04',
+      hintCode: 'P-S03',
       hints: [
         '명찰을 목에 걸었다고 생각해 보세요 끈의 글자는 남이 보는 쪽에서 바로 읽혀야 합니다',
         '앞뒤와 위아래 둘 다 봐야 합니다 집게 쪽이 명찰 구멍으로 가고, 글자가 거꾸로 서 있지 않아야 합니다',
@@ -406,15 +360,15 @@ ${STAGES.map((s) => `<tr><td class="${s.shown.includes('▒') ? 'torn' : ''}">${
       commitLabel: '명찰 구멍에 끈 끼우기',
       check(d) {
         if (!d.back && !d.turned) return { ok: true };
-        if (d.back && d.turned) return { ok: false, msg: '매듭 쪽이 명찰로 가고, 글자도 안쪽이다 이대로 걸면 목에 글자가 닿는다' };
-        if (d.back) return { ok: false, msg: '집게는 맞게 들어가는데 글자가 안쪽을 본다 명찰을 걸면 아무도 못 읽는다' };
-        return { ok: false, msg: '글자는 밖으로 나왔는데 거꾸로 서 있다 매듭 쪽은 구멍에 안 들어간다' };
+        if (d.back && d.turned) return { ok: false, msg: '이대로 걸면 끈이 이상하게 걸린다 목에 걸었을 때를 다시 그려 본다' };
+        if (d.back) return { ok: false, msg: '이대로 걸면 끈이 이상하게 걸린다 목에 걸었을 때를 다시 그려 본다' };
+        return { ok: false, msg: '이대로 걸면 끈이 이상하게 걸린다 목에 걸었을 때를 다시 그려 본다' };
       },
       reveal: {
         title: '첫 번째 보호자',
-        text: '집게가 명찰 구멍에 딸깍 물렸다 십 년 만에 제자리다 햇살중 2-3 김유나 콩이를 처음 데려온 아이는 나였다',
+        text: '집게가 명찰 구멍에 딸깍 물렸다 십 년 만에 제자리다 햇살중 2-3 김유나 루미랑 같이 온 끈은 십 년 전 내 명찰 끈이었다 루미는 그 끈을 십 년 동안 달고 다녔다',
         scene: [
-          '엄마가 보리차를 내려놓으며 말했다 "그때 네가 사흘을 울어서 아빠가 다시는 강아지 얘기 꺼내지 말라고 했잖아 그래서 다 잊은 척했지"',
+          '엄마가 보리차를 내려놓으며 말했다 "그때 네가 사흘을 울어서 아빠가 강아지 얘기는 꺼내지도 말라고 했잖아 그 뒤로 너도 다시는 안 묻더라"',
           '루미가 지금 내 집 방석에서 자고 있다 십 년을 돌아서 정우 씨 편지가 상자 맨 밑에 한 장 더 있었다',
         ],
         ending: true,
