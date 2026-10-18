@@ -108,6 +108,120 @@ for s in segs:
         s['kin'] = [[k[0], round(s['t'] + k[1], 3), bool(k[2]) if len(k) > 2 else False] for k in s['kin']]
 for s_ in segs:
     if s_.get('clip'): s_['cut'] = True
+
+# --- caption chunks timed to the actual narration ---
+# The caption is split into short phrases (" / " forces a break). Each phrase's start time comes from
+# where its words occur in the spoken text (say), mapped onto the segment's real speech time
+# (internal pauses skipped), then snapped to a nearby pause end. Timing by caption character count
+# drifts because captions abbreviate ("F" is read "에프", "확인" vs "확인하세요").
+import difflib
+CMAX = spec.get('capMax', 12)
+sdf = subprocess.run(['ffmpeg', '-i', narr, '-af', 'silencedetect=n=-35dB:d=0.1', '-f', 'null', '-'], capture_output=True, text=True).stderr
+fsil = list(zip([float(x) for x in re.findall(r'silence_start: ([\d.]+)', sdf)], [float(x) for x in re.findall(r'silence_end: ([\d.]+)', sdf)]))
+sdf2 = subprocess.run(['ffmpeg', '-i', narr, '-af', 'silencedetect=n=-28dB:d=0.06', '-f', 'null', '-'], capture_output=True, text=True).stderr
+fsil2 = list(zip([float(x) for x in re.findall(r'silence_start: ([\d.]+)', sdf2)], [float(x) for x in re.findall(r'silence_end: ([\d.]+)', sdf2)]))
+_norm = lambda x: _re.sub(r'[|/\s,.!?·~\-]', '', x)
+def cap_groups(cap):
+    on = False; toks = []
+    for w in cap.split(' '):
+        if w == '/': toks.append(None); continue
+        st = w.startswith('|')
+        if st: on = True
+        hl = on or ('|' in w)
+        k = w.count('|'); w = w.replace('|', '')
+        if k == 2 or (not st and k == 1): on = False
+        if w: toks.append((w, hl))
+    groups, cur, ln = [], [], 0
+    def flush():
+        nonlocal cur, ln
+        if cur: groups.append(cur)
+        cur, ln = [], 0
+    for t in toks:
+        if t is None: flush(); continue
+        if cur and ln + len(t[0]) > CMAX: flush()
+        cur.append(t); ln += len(t[0])
+        if _re.search(r'[,，]$', t[0]) and ln >= 4: flush()
+    flush()
+    if len(groups) > 1 and sum(len(w) for w, _ in groups[-1]) <= 3:
+        last = groups.pop(); groups[-1] = groups[-1] + last
+    return groups
+for i, s_ in enumerate(segs):
+    if s_.get('kin'): continue   # hook shows the whole sentence big, no chunks
+    groups = cap_groups(s_['cap'])
+    t0 = s_['t']; e0 = s_['e'] if i + 1 < n else dur
+    # speech end = start of the trailing pause before the next segment
+    tail = [a for a, b in fsil if t0 + 0.3 < a < e0 + 0.05 and b >= e0 - 0.08]
+    t1 = min(tail) if tail else e0
+    # align spoken words to speech islands (gaps between short pauses) by speaking rate (DP).
+    # A pause may be a word gap or a stop-consonant gap inside a word, so islands can be grouped;
+    # every group must end on a word boundary. Result: syllable position -> time.
+    sayraw = s_.get('say') or s_['cap']
+    sayn = _norm(sayraw)
+    L = max(1, len(sayn))
+    wb = []; acc = 0
+    for wd in sayraw.split():
+        acc += len(_norm(wd)); wb.append(acc)
+    wb = sorted(set(x for x in wb if 0 < x < L))
+    gaps = [(a, b) for a, b in fsil2 if t0 + 0.1 < a and b < t1 - 0.05]
+    isl = []; cur0 = t0
+    for a, b in gaps:
+        if a - cur0 > 0.04: isl.append((cur0, a))
+        cur0 = b
+    isl.append((cur0, t1))
+    M = len(isl)
+    spt = sum(b - a for a, b in isl)
+    rate = spt / L
+    bps = [0] + wb + [L]          # allowed group ends (syllable positions)
+    K = len(bps)
+    INF2 = float('inf')
+    f = [[INF2] * K for _ in range(M + 1)]; bk = [[None] * K for _ in range(M + 1)]
+    f[0][0] = 0.0
+    for j in range(1, M + 1):
+        for kb in range(1, K):
+            for j0 in range(j):
+                d = sum(isl[q][1] - isl[q][0] for q in range(j0, j))
+                gp = sum(((isl[q+1][0] - isl[q][1]) / 0.1) ** 2 for q in range(j0, j - 1))   # pauses inside a group = inside a word: penalise
+                for k0 in range(kb):
+                    if f[j0][k0] == INF2: continue
+                    syl = bps[kb] - bps[k0]
+                    e = rate * syl
+                    c = f[j0][k0] + ((d - e) / max(0.12, 0.25 * e)) ** 2 + gp
+                    if c < f[j][kb]: f[j][kb] = c; bk[j][kb] = (j0, k0)
+    anchors = [(0, t0)]
+    if f[M][K - 1] < INF2:
+        segs_ = []; j, kb = M, K - 1
+        while j > 0:
+            j0, k0 = bk[j][kb]; segs_.append((j0, j, bps[k0], bps[kb])); j, kb = j0, k0
+        for j0, j1, p0, p1 in reversed(segs_):
+            if p0 > 0: anchors.append((p0, isl[j0][0]))
+    anchors.append((L, t1))
+    def char_time(c):
+        for (c0, a0), (c1, a1) in zip(anchors, anchors[1:]):
+            if c <= c1: return a0 + (a1 - a0) * (c - c0) / max(1, c1 - c0)
+        return t1
+    capn = ''.join(_norm(w) for g in groups for w, _ in g)
+    sm = difflib.SequenceMatcher(None, capn, sayn, autojunk=False)
+    blocks = sm.get_matching_blocks()
+    def cap2say(ci):
+        prev = 0
+        for a, b, sz in blocks:
+            if sz and a <= ci < a + sz: return b + (ci - a)
+            if sz and a > ci: return prev   # unmatched (e.g. "F" vs "에프"): right after the previous match
+            if sz: prev = b + sz
+        return len(sayn)
+    out, ci = [], 0
+    for gi, g in enumerate(groups):
+        if gi == 0: tt = t0
+        else:
+            sc = cap2say(ci)
+            hit = [a for c, a in anchors if c == sc]
+            tt = hit[0] if hit else char_time(sc)
+            tt = max(tt - 0.08, out[-1]['t'] + 0.45)
+        html = ''.join(f'<span class="w{" hl" if hl else ""}">{_re.sub(r",$", "", w)}</span>' for w, hl in g)
+        out.append({'t': round(tt, 3), 'html': html})
+        ci += sum(len(_norm(w)) for w, _ in g)
+    s_['capChunks'] = out
+    if os.environ.get('CAPDBG'): print('cap', i+1, round(t1,2), [(c, round(a,2)) for c, a in anchors])
 total_dur = math.ceil(dur + 1.2)
 spec['duration'] = total_dur
 # impacts: segment start of hook, each step, cta + hook's yellow words

@@ -77,7 +77,7 @@ function chunksOf(i){
   SEG[i].cap.split(' ').forEach(w=>{if(w==='/'){toks.push({br:1});return;}const start=w.startsWith('|');if(start)on=true;const hl=on||w.includes('|');const n=(w.match(/\|/g)||[]).length;w=w.replace(/\|/g,'');if(n===2||(!start&&n===1))on=false;if(w)toks.push({w,hl});});
   const groups=[];let cur=[],len=0;
   const flush=()=>{if(cur.length)groups.push(cur);cur=[];len=0;};
-  toks.forEach(t=>{if(t.br){flush();return;}const l=t.w.length;if(cur.length&&len+l>CMAX)flush();cur.push(t);len+=l+1;if(/[,，]$/.test(t.w)&&len>=5)flush();});
+  toks.forEach(t=>{if(t.br){flush();return;}const l=t.w.length;if(cur.length&&len+l>CMAX)flush();cur.push(t);len+=l;if(/[,，]$/.test(t.w)&&len>=4)flush();});
   flush();
   // merge a tiny trailing chunk (≤3 chars) back into the previous one
   if(groups.length>1){const last=groups[groups.length-1];if(last.reduce((a,t)=>a+t.w.length,0)<=3){groups[groups.length-2].push(...last);groups.pop();}}
@@ -107,12 +107,14 @@ window.seek=function(t){
     return;
   }
   // caption (bottom): show one short chunk at a time, timed by character share of the sentence
-  const ch=chunksOf(si);
-  const sEnd=(si===SEG.length-1)?seg.e-1.8:seg.e-0.3, span=Math.max(0.6,sEnd-seg.t-0.05);
-  let ci=0;for(let j=0;j<ch.list.length;j++){if(d>=0.05+span*ch.at[j])ci=j;}
+  // chunk times come from build.py (seg.capChunks, aligned to the narration); fallback: character share
+  let list,starts;
+  if(seg.capChunks){list=seg.capChunks.map(c=>c.html);starts=seg.capChunks.map(c=>c.t);}
+  else{const ch=chunksOf(si);const sEnd=(si===SEG.length-1)?seg.e-1.8:seg.e-0.3, span=Math.max(0.6,sEnd-seg.t-0.05);list=ch.list;starts=ch.at.map(a=>seg.t+0.05+span*a);}
+  let ci=0;for(let j=0;j<list.length;j++){if(t>=starts[j])ci=j;}
   const key=seg.t+':'+ci;
-  if(cap.dataset.k!==key){cap.innerHTML=ch.list[ci];cap.dataset.k=key;let fs=84;cap.style.fontSize=fs+'px';while(cap.scrollWidth>cap.clientWidth+1&&fs>54){fs-=4;cap.style.fontSize=fs+'px';}}
-  const cd=d-(0.05+span*ch.at[ci]);const k=eo(clamp(cd/0.14,0,1));
+  if(cap.dataset.k!==key){cap.innerHTML=list[ci];cap.dataset.k=key;let fs=84;cap.style.fontSize=fs+'px';while(cap.scrollWidth>cap.clientWidth+1&&fs>54){fs-=4;cap.style.fontSize=fs+'px';}}
+  const cd=t-starts[ci];const k=eo(clamp(cd/0.14,0,1));
   cap.style.opacity=clamp(cd/0.06+0.001,0,1);cap.style.transform=`scale(${0.94+0.06*k})`;
   // step tag persists through the step + its detail
   const stepSeg=[...SEG].reverse().find(s=>s.step&&t>=s.t);
