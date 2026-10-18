@@ -89,7 +89,7 @@ export default {
   tagline: '밤 열두 시 정각\n아무도 없는 빨래방에서 6번 건조기가 빈 통으로 돈다',
   blurb: '손목 수술을 한 엄마 대신 24시 빨래방을 맡은 지 한 달\n엄마가 남긴 규칙은 하나였습니다 「6번 자정에 도는 거 건드리지 마라」',
   storageKey: 'mihaeje-v2-laundry',
-  hintTitle: '엄마 수첩',
+  hintTitle: '가게 공책',
   tracesLabel: '6번이 데려간 곳',
 
   opening: {
@@ -209,7 +209,7 @@ export default {
       title: '엄마와의 통화',
       kind: '11월 5일 목요일 0시 31분',
       locked: true,
-      html: `<blockquote>"봤냐"</blockquote><blockquote>"봤어 막차 바뀐 거 알았어?"</blockquote><blockquote>"몰랐지 병원에 누워 있는데 그럼 사흘을 애들이 떨었겠네"</blockquote><blockquote>"이제 열두 시 십 분부터 이십 분 저온 관리자로 걸어서 동전도 안 들어 예약은 하루짜리니까 밤마다 내가 걸게"</blockquote><blockquote>"잘했네 도현이한테 오백 원 돌려줘라 한 달 치"</blockquote><blockquote>"벌써 줬어 안 받더라"</blockquote><p>엄마가 웃었다 손목이 아프다면서 한참 웃었다</p>`,
+      html: `<blockquote>"봤냐"</blockquote><blockquote>"봤어 막차 바뀐 거 알았어?"</blockquote><blockquote>"몰랐지 병원 다니느라 정신없는데 그럼 사흘을 애들이 떨었겠네"</blockquote><blockquote>"이제 열두 시 십 분부터 이십 분 저온 관리자로 걸어서 동전도 안 들어 예약은 하루짜리니까 밤마다 내가 걸게"</blockquote><blockquote>"잘했네 도현이한테 오백 원 돌려줘라 한 달 치"</blockquote><blockquote>"벌써 줬어 안 받더라"</blockquote><p>엄마가 웃었다 손목이 아프다면서 한참 웃었다</p>`,
     },
   },
 
@@ -222,7 +222,7 @@ export default {
       hintCode: 'W-S01',
       hints: [
         '관리자모드는 쪽지에 적어 놨다 내가 자꾸 까먹어서',
-        '간판을 그대로 버튼으로 옮겨 봐 버튼에 없는 건 버리고',
+        '쪽지에 적은 건 버튼 이름이 아니라 그림 이야기다 가게 앞에서 매일 보는 그 그림',
         '☀ ☾ 2 4 그리고 시작 길게',
       ],
       initial: () => ({ seq: [] }),
@@ -242,7 +242,12 @@ export default {
         const down = (e) => { e.preventDefault(); if (!d.seq.length) { ctx.status('아직 아무 버튼도 안 눌렀다'); return; } st.classList.add('holding'); timer = setTimeout(() => { timer = null; st.classList.remove('holding'); ctx.commit?.(); }, 900); };
         const up = () => { if (!timer) return; clearTimeout(timer); timer = null; st.classList.remove('holding'); ctx.status('삑 짧게 누르면 일반 운전 대기다 관리자 확인은 시작을 꾹 누르고 있어야 한다'); };
         st.addEventListener('pointerdown', down); st.addEventListener('pointerup', up); st.addEventListener('pointerleave', up); st.addEventListener('pointercancel', up);
-        st.onclick = (e) => { if (e.detail === 0 && d.seq.length) ctx.commit?.(); };
+        // 키보드로는 엔터·스페이스를 누르고 있으면 확인 (짧은 탭이 click으로 새어 들어가 풀리던 문제 방지)
+        st.onclick = (e) => e.preventDefault();
+        let kt = null;
+        st.onkeydown = (e) => { if ((e.key === 'Enter' || e.key === ' ') && !e.repeat) { e.preventDefault(); if (!d.seq.length) { ctx.status('아직 아무 버튼도 안 눌렀다'); return; } st.classList.add('holding'); kt = setTimeout(() => { kt = null; st.classList.remove('holding'); ctx.commit?.(); }, 900); } };
+        st.onkeyup = (e) => { if (kt && (e.key === 'Enter' || e.key === ' ')) { clearTimeout(kt); kt = null; st.classList.remove('holding'); ctx.status('삑 짧게 누르면 일반 운전 대기다 관리자 확인은 시작을 꾹 누르고 있어야 한다'); } };
+        st.addEventListener('contextmenu', (e) => e.preventDefault());
         wrap.append(st);
         const box = el('div', 'letterlock-wrap'); box.append(wrap);
         const reset = el('button', 'chip', '입력 지우기'); reset.type = 'button'; reset.onclick = () => { d.seq = []; save(); };
@@ -295,7 +300,8 @@ export default {
         const sticky = el('div', 'six-sticky' + (picked ? ' filled ' + picked.color : ''));
         sticky.innerHTML = picked ? `<i></i><b>6번?</b><span>${picked.name}</span>` : '<b>6번?</b>';
         wrap.append(sticky);
-        const box = el('div', 'mail-wrap'); box.append(wrap, el('p', 'pick-label', picked ? `${picked.name} 자석을 「6번?」 옆으로 옮겼다` : '자석을 하나 누르면 「6번?」 옆으로 옮긴다'));
+        const tbl = el('div', 'paper-table mobile-only'); tbl.innerHTML = `<table><tr><th></th>${DAYS.map((dd) => `<th>${dd}</th>`).join('')}</tr>${ROWS.map((r, i) => `<tr><th class="nw">${r.name.replace(' ', '<br>')}</th>${SHIFT[i].map((n) => `<td>${n}</td>`).join('')}</tr>`).join('')}</table>`;
+        const box = el('div', 'mail-wrap'); box.append(wrap, tbl, el('p', 'pick-label', picked ? `${picked.name} 자석을 「6번?」 옆으로 옮겼다` : '자석을 하나 누르면 「6번?」 옆으로 옮긴다'));
         return box;
       },
       commitLabel: '이 사람이다',
@@ -378,7 +384,7 @@ export default {
       hintCode: 'W-S04',
       hints: [
         '도현이가 애들 몇 시에 나간다 했니 버스는 정류장 시간표에',
-        '애들 나오는 때부터 버스 올 때까지만 빈 통 오래 돌리지 말고 온도는 쪽지 봐',
+        '언제 시작해서 얼마나 돌릴지는 정류장에 누가 언제 서 있는지에 달렸다 온도는 6번 쪽지에 내가 적어 둔 대로',
         '00:10 20분 저온',
       ],
       initial: () => ({ start: '00:00', min: '10', temp: '저온' }),
@@ -427,7 +433,7 @@ export default {
       '비가 밤사이 진눈깨비로 바뀌었다 열두 시 십 분, 편의점 문이 열리고 교복 입은 애가 가방을 메고 정류장으로 갔다 뒤로 작업복 차림의 아주머니 한 분, 점퍼 입은 아저씨 한 분',
       '정류장 지붕 위 배기구에서 더운 바람이 내려왔다 셋이 벤치에 붙어 앉았다 아주머니가 손을 위로 뻗어 보더니 웃었다 "여기 따뜻하네"',
       '"원래 열두 시였거든요" 도현이 말했다 "막차 바뀌고 나선 애들 나오기 전에 끝나 버렸죠"',
-      '"엄마도 몰랐대 막차 바뀐 거"',
+      '"엄마는 아직 모를 거야 막차 바뀐 거"',
       '열두 시 반, 막차가 왔다 배기구 바람이 딱 그때 멎었다 아저씨가 버스에 오르면서 빨래방 뒷벽을 한 번 올려다봤다',
     ],
     afterword: '6번 위에 새 쪽지를 붙였다 「6번은 밤 12시 10분부터 20분 정류장 담당 손대지 말 것」 엄마 쪽지는 떼지 않고 그 아래 나란히 붙였다',

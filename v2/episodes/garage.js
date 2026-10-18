@@ -47,8 +47,8 @@ const JACKETS = [
 ];
 const REPORT = [
   { id: 'card', label: '① 21:46 측문으로 들어간 카드', opts: [['07b', '07-B'], ['07a', '07-A'], ['09', '09']], ans: '07a' },
-  { id: 'from', label: '② 그 카드가 그 전에 있던 곳', opts: [['pocket', '지수 주머니'], ['safe', '사무실 금고 봉투'], ['floor', '작업장 바닥']], ans: 'safe' },
-  { id: 'wear', label: '③ 들어간 사람이 입은 것', opts: [['navy', '남색 재킷'], ['charcoal', '진회색 재킷'], ['stripe', '왼 소매 반사띠 회색 재킷']], ans: 'stripe' },
+  { id: 'from', label: '② 21:46 직전까지 그 카드가 있던 곳', opts: [['pocket', '지수 주머니'], ['safe', '사무실 금고 봉투'], ['floor', '작업장 바닥']], ans: 'safe' },
+  { id: 'wear', label: '③ 들어간 사람이 입은 것', opts: [['navy', '남색 재킷'], ['charcoal', '진회색 재킷'], ['stripe', '밝은 회색 재킷']], ans: 'stripe' },
   { id: 'again', label: '④ 같은 재킷이 다시 찍힌 출입 (서버 기준)', opts: [['2135', '21:35 07-B 퇴장'], ['2140', '21:40 09 퇴장'], ['2200', '22:00 09 입장']], ans: '2200' },
   { id: 'who', label: '⑤ 그래서 카드를 꺼낸 사람', opts: [['jisu', '한지수'], ['minho', '강민호'], ['boss', '박정호']], ans: 'boss' },
 ];
@@ -116,7 +116,7 @@ export default {
         { id: 'lost', x: 84, y: 72, label: '서류함의 분실 신고서', kind: 'doc', doc: 'lost' },
         { id: 'alibi', x: 84, y: 60, label: '강민호의 면담 기록', kind: 'doc', doc: 'alibi' },
         { id: 'plaque', x: 42, y: 16, label: '벽의 기념패', kind: 'doc', doc: 'plaque' },
-        { id: 'jackets', x: 62, y: 34, label: '걸려 있는 재킷 세 벌', kind: 'device', device: 'jackets', visible: (S) => S.solved.includes('cam') },
+        { id: 'jackets', x: 62, y: 34, label: '걸려 있는 재킷 세 벌', kind: 'device', device: 'jackets', visible: (S) => S.solved.includes('terminal') },
         { id: 'safe', x: 28, y: 86, label: '책상 밑 금고', kind: 'device', device: 'safe' },
         { id: 'back-yard', x: 8, y: 12, label: '앞마당으로', kind: 'travel', to: 'yard' },
       ],
@@ -147,14 +147,14 @@ export default {
     receipt: {
       title: '앞유리에 끼워진 점검 영수증',
       kind: '미루정비소 장비 점검 · 2026/9/18',
-      html: `<div class="paper-table"><p class="pt-head">장비 점검 영수증 · 2026/9/18 20:00</p><table><tr><th>항목</th><td>주차 차량 블랙박스 시각 점검 (고객 차량)</td></tr><tr><th>서버 기준 시각</th><td class="mono">20:00:00</td></tr><tr><th>블랙박스 표시 시각</th><td class="mono">20:07:00</td></tr><tr><th>조치</th><td>시계 수정 미실시 폐업 일정으로 보류</td></tr><tr><th>비고</th><td>오차는 자정까지 일정함 (수정 전 기록은 표시 시각 그대로 남음)</td></tr></table></div>`,
+      html: `<div class="paper-table"><p class="pt-head">장비 점검 영수증 · 2026/9/18 20:00</p><table><tr><th>항목</th><td>주차 차량 블랙박스 시각 점검 (고객 차량)</td></tr><tr><th>점검 결과</th><td>블랙박스 시계가 서버 시각과 맞지 않음 (빠름)</td></tr><tr><th>조치</th><td>시계 수정 미실시 폐업 일정으로 보류</td></tr><tr><th>비고</th><td>오차는 자정까지 일정함 (수정 전 기록은 표시 시각 그대로 남음)</td></tr></table></div>`,
     },
     people: {
       title: '셔터 앞의 세 사람',
       kind: '진술',
       html: `<div class="paper-table"><table><tr><th>한지수 · 07<br><small>정비사</small></th><td>“21:35에 퇴근했어요 측문으로 나갔고 그 뒤엔 안 왔어요 카드요? 그제 잃어버려서 어제 아침에 새로 받았어요 07-B”<br><small>알리바이 기록 없음</small></td></tr>
 <tr><th>강민호 · 04<br><small>인수 담당</small></th><td>“21:44부터 21:50까지 본사랑 영상 면담 중이었습니다 기록 있어요 저는 21:30에 정비소 나가서 차 안에서 면담했고요”<br><small>면담 기록은 사무실 서류함에</small></td></tr>
-<tr><th>박정호 · 09<br><small>사장</small></th><td>“21:40에 재고 점검 끝내고 나갔다가 22:00에 최종 점검하러 들어왔어요 그때 카드가 없더라고 지수가 그 사진 때문에 불안해했으니까”<br><small>21:40 퇴장 · 22:00 입장은 서버에 있음</small></td></tr></table></div><p>셋 다 아침이라 재킷은 사무실에 걸어 둔 채 셔츠 바람이다 사장은 지수 쪽으로 자꾸 말을 돌린다</p>`,
+<tr><th>박정호 · 09<br><small>사장</small></th><td>“21:40에 재고 점검 끝내고 나갔다가 22:00에 최종 점검하러 들어왔어요 그때 카드가 없더라고 지수가 그 사진 때문에 불안해했으니까”<br><small>21:40 퇴장 · 22:00 입장은 서버에 있음</small></td></tr></table></div><p>셋 다 아침이라 재킷은 사무실에 걸어 둔 채 셔츠 바람이다</p>`,
     },
     server: {
       title: '출입 서버 화면',
@@ -270,7 +270,7 @@ export default {
         const screen = el('div', 'term-screen sync-screen'); screen.innerHTML = `<p class="term-line">BACKUP TERMINAL · CLOCK SYNC</p>${syncSvg(d.off)}<p class="term-line">블랙박스 시계 ${d.off > 0 ? '+' : d.off < 0 ? '−' : '±'}${Math.abs(d.off)}분</p>`;
         const row = el('div', 'sync-row');
         [[-5, '−5분'], [-1, '−1분'], [1, '+1분'], [5, '+5분']].forEach(([v, lab]) => { const b = el('button', 'ctl', lab); b.type = 'button'; b.setAttribute('aria-label', `블랙박스 시계 ${lab}`); b.onclick = () => { d.off = Math.max(-15, Math.min(15, d.off + v)); save(); }; row.append(b); });
-        wrap.append(screen, row, el('p', 'pick-label', '블랙박스 프레임 번호와 서버 카드 번호 옆의 ↓는 들어감, ↑는 나감'));
+        wrap.append(screen, el('p', 'pick-label mobile-only', '시간 축은 옆으로 밀어서 본다'), row, el('p', 'pick-label', '블랙박스 프레임 번호와 서버 카드 번호 옆의 ↓는 들어감, ↑는 나감'));
         return wrap;
       },
       commitLabel: '이 차이로 맞추기',
@@ -391,7 +391,7 @@ export default {
       reveal: {
         title: '보고 완료',
         text: '서연이 답장을 보냈다 「경찰 불렀어요 사장님 차 글로브박스에서 카드 나왔대요 고맙습니다」',
-        scene: ['사장은 셔터 앞 상자에 앉아 고개를 숙이고 있었다 지수가 사무실에서 자기 재킷을 가져와 사장 어깨에 걸쳐 줬다 남색이었다'],
+        scene: ['사장은 셔터 앞 상자에 앉아 고개를 숙이고 있었다 회색 작업복 바람 그대로였다 지수는 정비소 안에서 나오지 않았다'],
         ending: true,
         endingLabel: '폐업 당일 아침으로',
       },

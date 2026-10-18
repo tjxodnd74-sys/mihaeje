@@ -83,7 +83,7 @@ const FIELDS = [
 
 const envHtml = (e) => `<figure class="prop lenv"><img src="${P}props/envelope.webp" alt="${e.y}년 봉투 앞면" decoding="async">
 <span class="lenv-from"><i>보내는 사람</i>${e.from[0] ? `<b class="zip">${e.from[0]}</b>` : '<b class="zip empty">□□□□□</b>'}<span>${e.from[1]}</span><span>${e.from[2]}</span></span>
-<span class="lenv-mark"><em>수림</em><em>${e.mark}</em></span>
+<span class="lenv-mark${e.y === 2023 ? ' at-zip' : ''}"><em>수림</em><em>${e.mark}</em></span>
 <span class="lenv-to">미루동 17-4<br>정해린 님께</span>
 <span class="lenv-sticker"><b>반송</b><small>수취인 불명</small><small class="pen">보관 · 김</small></span>
 </figure>${e.note ? `<p class="aside">${e.y}년 · ${e.note}</p>` : `<p class="aside">${e.y}년</p>`}`;
@@ -183,7 +183,7 @@ export default {
     ledger: {
       title: '반송 대장',
       kind: '2020 ~ 2025 · 미루우체국',
-      html: `<figure class="prop ledgerphoto"><img src="${P}props/ledger.webp" alt="펼쳐진 반송 대장" decoding="async"></figure><div class="paper-table ledger-table cardify"><p class="pt-head">반송 우편 처리 대장 (발췌) · 받는 사람 이름은 가려 적음</p><table><tr><th>처리일</th><th>받는 곳</th><th>받는 사람</th><th>사유</th><th>처리</th></tr>${LEDGER.map((r) => `<tr>${r.map((c, i) => `<td data-h="${['처리일', '받는 곳', '받는 사람', '사유', '처리'][i]}" class="${i === 0 || i === 1 ? 'hand-cell nw' : ''}">${c}</td>`).join('')}</tr>`).join('')}</table><p class="pt-foot">처리 담당 김봉수 · 반송 불능 우편은 1년 보관 뒤 폐기</p></div>`,
+      html: `<figure class="prop ledgerphoto"><img src="${P}props/ledger.webp" alt="펼쳐진 반송 대장" decoding="async"></figure><div class="paper-table ledger-table"><p class="pt-head">반송 우편 처리 대장 (발췌) · 받는 사람 이름은 가려 적음</p><table class="pc-only"><tr><th>처리일</th><th>받는 곳</th><th>받는 사람</th><th>사유</th><th>처리</th></tr>${LEDGER.map((r) => `<tr>${r.map((c, i) => `<td class="${i === 0 || i === 1 ? 'hand-cell nw' : ''}">${c}</td>`).join('')}</tr>`).join('')}</table><table class="mobile-only ledger-compact"><tr><th>처리일</th><th>받는 곳 · 받는 사람</th><th>사유 · 처리</th></tr>${LEDGER.map((r) => `<tr><td class="hand-cell nw">${r[0]}</td><td><span class="hand-cell">${r[1]}</span><br><small>${r[2]}</small></td><td>${r[3]}<br><small>${r[4]}</small></td></tr>`).join('')}</table><p class="pt-foot">처리 담당 김봉수 · 반송 불능 우편은 1년 보관 뒤 폐기</p></div>`,
     },
     notice: {
       title: '게시판의 주소 안내',
@@ -291,10 +291,10 @@ export default {
           const b = el('button', 'rack-slot' + (d.pick === lab ? ' picking' : '')); b.type = 'button';
           b.style.left = cols[i % 4] + '%'; b.style.top = rows[Math.floor(i / 4)] + '%';
           b.setAttribute('aria-label', `${lab} 칸`); b.innerHTML = `<span class="rack-label">${lab}</span>`;
-          b.onclick = () => { d.pick = d.pick === lab ? null : lab; save(); };
+          b.onclick = () => { d.pick = lab; save(); };
           wrap.append(b);
         });
-        const box = el('div', 'rack-wrap'); box.append(wrap, el('p', 'pick-label', d.pick ? `${d.pick} 칸을 골랐다` : '칸 위의 이름표를 누른다'));
+        const box = el('div', 'rack-wrap'); const chips = el('div', 'pick-row mobile-only rack-chips'); RACK.forEach((lab) => { const c = el('button', 'chip' + (d.pick === lab ? ' on' : ''), lab); c.type = 'button'; c.setAttribute('aria-label', `${lab} 칸 이름표`); c.onclick = () => { d.pick = lab; save(); }; chips.append(c); }); box.append(wrap, chips, el('p', 'pick-label', d.pick ? `${d.pick} 칸을 골랐다` : '칸 위의 이름표를 누른다'));
         return box;
       },
       commitLabel: '이 칸을 뒤져 보기',
@@ -309,7 +309,7 @@ export default {
       },
       reveal: {
         title: '미루새길 9-1',
-        text: '9-1 칸에는 광고지 두 장과 손글씨 쪽지 한 장이 꽂혀 있었다 받는 사람은 김봉수 씨 쓴 사람은 정해린',
+        text: '9-1 칸에는 광고지 두 장과 손글씨 쪽지 한 장이 꽂혀 있었다 받는 사람은 김봉수 씨, 쓴 사람은 정해린',
         scene: ['이제는 받겠다고 했다 그럼 왜 다섯 번이나 돌아온 걸까 아저씨가 「내가 못 한 거다」라고 한 말이 걸렸다 휴게실 맨 끝 사물함은 아저씨 거다'],
         unlock: 'breakroom',
         unlockDoc: 'hcard',

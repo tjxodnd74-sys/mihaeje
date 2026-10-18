@@ -57,7 +57,6 @@ function seatChart(d = {}) {
    ${pen('M111 42 h8 v12 h-8 z M115 54 v8 M112 46 h6', 0.8)}${txt(114, 68, 5, '우체통')}
    ${pen('M46 93 h28 v6 h-28 z M60 93 v6 M46 93 l14 -5 l14 5', 0.8)}${txt(60, 90, 5, '꽃집 문')}
    ${pen('M3 40 l6 10 l-6 10 M12 40 l6 10 l-6 10', 0.7)}${txt(10, 67, 5, '골목 입구')}
-   ${pen('M94 10 a18 18 0 0 1 10 12', 0.6)}${pen('M102 18 l2 4 l-4 1', 0.6)}${txt(92, 7, 4.2, '시계 방향')}
    ${seat('tree', 60, 25, '감나무 쪽')}${seat('post', 95, 50, '우체통 쪽')}${seat('shop', 60, 76, '꽃집 쪽')}${seat('lane', 22, 50, '골목 입구 쪽')}
   </svg>`;
 }
@@ -214,7 +213,7 @@ export default {
       check(d) {
         if (d.slots.includes(null)) return { ok: false, msg: '주머니 다섯을 다 채워야 이어 읽을 수 있다' };
         if (d.slots.every((p, i) => p === ORDER[i])) return { ok: true };
-        return { ok: false, msg: `「${d.slots.map((p) => BACK[p]).join('')}」 말이 안 된다 계절이 이어지는 순서와 봄이 크기를 다시 본다` };
+        return { ok: false, msg: '뒷면 글자를 이어 읽어 봤지만 말이 안 된다 계절이 이어지는 순서와 봄이 크기를 다시 본다' };
       },
       reveal: {
         title: '두 번의 봄',
@@ -230,12 +229,12 @@ export default {
     gifts: {
       title: '빵집 앞 바구니',
       scene: 'alley',
-      intro: '바구니에 선물 셋과 빈 이름표 넷 은호 씨 상자에서 나온 파란 리본 상자를 옆에 놓으니 넷이 됐다 선물에는 보낸 사람 이름이 없다',
+      intro: '바구니에 선물 넷과 빈 이름표 넷 파란 리본 상자는 은호 씨 상자에서 꺼내 같이 넣었다 선물에는 보낸 사람 이름이 없다',
       docs: ['basketnote', 'colors'],
       hintCode: 'C-S02',
       hints: [
         '리본 색이 그 사람의 일과 닿아 있습니다 「골목에서 본 것」에 색이 다 나옵니다',
-        '리본 색 셋은 가게나 일할 때 쓰는 물건 색이에요 리본이 없는 선물은 리본을 싫어한다는 사람 거예요',
+        '선물마다 보낸 사람이 하루 종일 쓰는 물건 색이 묻어 있어요 「골목에서 본 것」을 사람별로 다시 읽어 보세요',
         '파란 리본 → 은호, 노란 리본 → 소연, 초록 리본 → 지후, 꽃다발 → 미정',
       ],
       initial: () => ({ who: {}, pick: null }),
@@ -267,7 +266,7 @@ export default {
         const missing = GIFTS.filter((g) => !d.who[g.id]);
         if (missing.length) return { ok: false, msg: `${missing[0].label} 이름표가 아직 비어 있다` };
         if (GIFTS.every((g) => d.who[g.id] === GIFT_ANSWER[g.id])) return { ok: true };
-        return { ok: false, msg: '바구니를 들어 봤는데 바닥이 비어 있다 소연 씨가 다 맞혀야 둔다고 했다 골목에서 본 색을 다시 떠올린다' };
+        return { ok: false, msg: '바구니를 들어 봤는데 바닥이 비어 있다 쪽지에는 다 맞혔으면 들어 보라고 했다 골목에서 본 색을 다시 떠올린다' };
       },
       reveal: {
         title: '네 사람, 네 색',

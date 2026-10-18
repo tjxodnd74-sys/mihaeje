@@ -56,7 +56,9 @@ async function main() {
   const unlockedScenes = () => ep.scenes.filter((s) => !s.unlockedBy || S.solved.includes(s.unlockedBy));
   const sceneById = (sid) => ep.scenes.find((s) => s.id === sid);
   const deviceOf = (did) => ep.devices[did];
-  const activeDevices = () => Object.keys(ep.devices).filter((did) => !S.solved.includes(did) && unlockedScenes().some((s) => s.id === ep.devices[did].scene));
+  // 장치가 플레이어 눈에 보이는가 (장면이 열렸고, 그 장치 표시가 아직 숨겨져 있지 않음)
+  const deviceShown = (did) => { const sc = unlockedScenes().find((s) => s.id === ep.devices[did].scene); if (!sc) return false; const hs = (sc.hotspots || []).filter((h) => h.device === did); return !hs.length || hs.some((h) => !h.visible || h.visible(S)); };
+  const activeDevices = () => Object.keys(ep.devices).filter((did) => !S.solved.includes(did) && deviceShown(did));
 
   // ---------- 공통 틀 ----------
   let dialog = null;
@@ -307,6 +309,8 @@ async function main() {
       // 장면에서 직접 찾아 읽은 자료만 옆에 펼칠 수 있습니다. 아직 못 찾은 것은 자물쇠로 표시합니다.
       refs.forEach((r) => {
         const found = S.read.includes(r) || (S.found || []).includes(r);
+        // 지금 갈 수 있는 곳에서 찾을 수 없는 자료는 자물쇠 칸으로도 보이지 않게 (놓친 줄 알고 헤매지 않도록)
+        if (!found && !unlockedScenes().some((sc) => (sc.hotspots || []).some((h) => h.doc === r && (!h.visible || h.visible(S))))) return;
         const t = btn('v2-bench-tab' + (found ? '' : ' locked'), found ? ep.docs[r].title : '아직 찾지 못한 자료', () => { if (!found) return; show(cur === r && window.innerWidth < 900 ? null : r); });
         t.dataset.doc = r; if (!found) { t.disabled = true; const where = ep.scenes.find((sc) => sc.hotspots.some((h) => h.doc === r)); t.title = where ? where.name + '에서 찾을 수 있습니다' : ''; }
         tabs.append(t);
@@ -329,11 +333,13 @@ async function main() {
     (dev.reveal.scene || []).forEach((line) => node.append(el('p', 'v2-line', line)));
     const target = dev.reveal.unlock && sceneById(dev.reveal.unlock);
     // 보상 창을 어떤 길로 닫든(닫기 · 바깥 누르기 · 자료 보고 닫기) 다음 장소로 가는 길이 같게
+    const acts = el('div', 'v2-reveal-actions');
     const finish = () => { if (target && S.scene !== target.id) { S.scene = target.id; save(); window.scrollTo({ top: 0 }); } render(); };
-    if (dev.reveal.unlockDoc && ep.docs[dev.reveal.unlockDoc]) { S.found = S.found || []; if (!S.found.includes(dev.reveal.unlockDoc)) S.found.push(dev.reveal.unlockDoc); save(); node.append(btn('v2-secondary', ep.docs[dev.reveal.unlockDoc].title + ' 보기', () => openDoc(dev.reveal.unlockDoc, { from: { label: '돌아가기', fn: () => openDialog(node, { label: dev.reveal.title, onClose: finish }), onClose: finish } }))); }
-    if (dev.reveal.ending) node.append(btn('v2-primary', (dev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; save(); closeDialog(); }));
-    else if (target) node.append(btn('v2-primary', josa(target.name, '으로', '로') + ' →', () => { S.scene = target.id; save(); closeDialog(); }));
-    else node.append(btn('v2-primary', '계속', () => closeDialog()));
+    if (dev.reveal.unlockDoc && ep.docs[dev.reveal.unlockDoc]) { S.found = S.found || []; if (!S.found.includes(dev.reveal.unlockDoc)) S.found.push(dev.reveal.unlockDoc); save(); acts.append(btn('v2-secondary', ep.docs[dev.reveal.unlockDoc].title + ' 보기', () => openDoc(dev.reveal.unlockDoc, { from: { label: '돌아가기', fn: () => openDialog(node, { label: dev.reveal.title, onClose: finish }), onClose: finish } }))); }
+    if (dev.reveal.ending) acts.append(btn('v2-primary', (dev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; save(); closeDialog(); }));
+    else if (target) acts.append(btn('v2-primary', josa(target.name, '으로', '로') + ' →', () => { S.scene = target.id; save(); closeDialog(); }));
+    else acts.append(btn('v2-primary', '계속', () => closeDialog()));
+    node.append(acts);
     openDialog(node, { label: dev.reveal.title, onClose: finish });
   }
 
@@ -343,20 +349,21 @@ async function main() {
     node.append(el('p', 'v2-eyebrow', ep.hintTitle || '역무실 무전기'));
     node.append(el('h2', 'v2-doc-title', '힌트'));
     const ids = Object.keys(ep.devices);
-    const open = ids.filter((d) => unlockedScenes().some((s) => s.id === ep.devices[d].scene));
+    const open = ids.filter((d) => S.solved.includes(d) || deviceShown(d));
     const cur = pick || activeDevices()[0] || open[open.length - 1];
     const tabs = el('div', 'v2-hint-tabs');
     open.forEach((d) => { const dev = ep.devices[d]; tabs.append(btn('v2-chip' + (d === cur ? ' on' : '') + (S.solved.includes(d) ? ' done' : ''), `${dev.hintCode} ${dev.title}`, () => openHints(d))); });
     node.append(tabs);
     if (cur) {
       const dev = ep.devices[cur];
-      const tier = S.hints[cur] || 0;
+      // ★3 이하는 첫 힌트가 장치 안 '어떻게 하는 거지?'에 이미 있으니 무전기에서도 펼친 상태로 시작
+      const tier = Math.max(S.hints[cur] || 0, ep.difficulty <= 3 ? 1 : 0);
       const box = el('div', 'v2-hint-box');
       if (S.solved.includes(cur)) {
         box.append(el('p', 'v2-note', '이미 해결한 장치입니다 풀이를 다시 볼 수 있습니다'));
         (typeof dev.hints === 'function' ? dev.hints(S) : dev.hints).forEach((h, i) => box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${h}`)));
       } else {
-        const hs = typeof dev.hints === 'function' ? dev.hints(S) : dev.hints; for (let i = 0; i < tier; i++) box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${hs[i]}`));
+        const hs = typeof dev.hints === 'function' ? dev.hints(S) : dev.hints; for (let i = 0; i < tier; i++) box.append(html('p', 'v2-hint-line', `<b>${i === 0 && ep.difficulty <= 3 ? '장치 안내' : ['첫 힌트', '풀이 방향', '정답'][i]}</b> ${hs[i]}`));
         const maxTier = Math.min(3, hs.length);
         if (tier < maxTier) box.append(btn('v2-secondary', ['첫 힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { S.hints[cur] = tier + 1; save(); openHints(cur); }));
         else if (hs.length < 3) box.append(el('p', 'v2-note', '이 편은 정답 힌트가 없습니다 여기까지가 전부입니다'));
@@ -411,7 +418,8 @@ async function main() {
     if (e.choice && !S.choice) {
       paper.append(el('p', 'v2-eyebrow', e.choice.prompt));
       const row = el('div', 'pick-row');
-      e.choice.options.forEach((o) => row.append(btn('chip', o.label, () => { S.choice = o.id; save(); render(); window.scrollTo({ top: 0 }); })));
+      const before = paper.querySelectorAll('.v2-line').length;
+      e.choice.options.forEach((o) => row.append(btn('chip', o.label, () => { S.choice = o.id; save(); render(); requestAnimationFrame(() => { const t = document.querySelectorAll('.v2-ending-paper .v2-line')[before]; if (t) t.scrollIntoView({ block: 'center' }); }); })));
       paper.append(row);
       sec.append(paper);
       return sec;

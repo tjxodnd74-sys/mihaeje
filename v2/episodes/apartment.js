@@ -126,7 +126,7 @@ export default {
       id: 'entrance',
       name: 'A동 현관',
       image: P + 'entrance.webp',
-      arrive: '정문으로 돌아 들어왔다 현관 형광등은 비상 배터리로 겨우 버틴다 왼쪽 벽에 우편함, 맞은편에 관리실 관리실 유리창 안쪽에 스탠드 불이 켜져 있다 전기가 없는 건물인데',
+      arrive: '정문으로 돌아 들어왔다 현관 형광등은 비상 배터리로 겨우 버틴다 왼쪽 벽에 우편함, 맞은편에 관리실, 그 유리창 안쪽에 스탠드 불이 켜져 있다 전기가 없는 건물인데',
       hotspots: [
         { id: 'plate', x: 17, y: 23, label: '우편함 위 호수 안내', kind: 'doc', doc: 'plate' },
         { id: 'board', x: 40, y: 40, label: '게시판의 이주 현황', kind: 'doc', doc: 'board' },
@@ -274,9 +274,9 @@ export default {
       check(d) {
         if (d.pick === MAIL_ANSWER) return { ok: true };
         if (d.pick === '404') return { ok: false, msg: '전단지만 꽉 찼다 작년에 이사 간 집이다 커뮤니티 글쓴이가 센 대로 따라가면 안 된다' };
-        if (d.pick === '304') return { ok: false, msg: '304는 비어 있는 집이다 사진을 어느 쪽에서 찍었는지 다시 생각한다' };
-        if (d.pick === '401') return { ok: false, msg: '401은 오래된 고지서뿐이다 사진 맨 아래 줄이 정말 1층일까' };
-        return { ok: false, msg: '먼지뿐이다 사진 속 그 창을 다시 센다' };
+        if (d.pick === '304') return { ok: false, msg: '전단지와 고지서뿐이다 사진 속 그 창의 집이 아니다' };
+        if (d.pick === '401') return { ok: false, msg: '전단지와 고지서뿐이다 사진 속 그 창의 집이 아니다' };
+        return { ok: false, msg: '전단지와 고지서뿐이다 사진 속 그 창의 집이 아니다' };
       },
       reveal: {
         title: '301',
@@ -441,7 +441,7 @@ export default {
       '아홉 시 반에 작은방이 켜졌고, 열 시 반에 안방이 켜졌다 할아버지는 아무 말 없이 휴대폰을 난간에 올려 두고 건너편만 봤다',
       '열한 시에 셋이 같이 꺼졌다 "잘 자요 할머니" "그래 자네도"',
     ],
-    afterword: '월요일 아침 여덟 시, 할아버지와 등 세 개를 떼어 냈다 거실 등 하나는 할머니 병실 창가로 갔다 타이머는 아홉 시 커뮤니티 글에는 댓글이 하나 더 달렸다 「404 아니었음 301이었음 그리고 귀신도 아니었음」',
+    afterword: '월요일 아침 여덟 시, 할아버지와 등 세 개를 떼어 냈다 거실 등 하나는 할머니 병실 창가로 갔다 타이머는 아홉 시에 맞췄다 그날 밤 커뮤니티 글에는 댓글이 하나 더 달렸다 「404 아니었음 301이었음 그리고 귀신도 아니었음」',
     unlockDoc: 'final',
     next: { href: 'play.html?case=laundry', title: '자정의 무인 세탁소', line: '다음은 자정마다 빈 통으로 도는 건조기 이야기입니다' },
   },
