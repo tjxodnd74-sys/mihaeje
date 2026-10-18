@@ -180,7 +180,7 @@ async function main() {
     // 처음 도착 문장
     const firstVisit = !S.visited.includes(scene.id);
     if (firstVisit) { S.visited.push(scene.id); save(); }
-    const arrive = el('p', 'v2-arrive', scene.arrive);
+    const arrive = el('p', 'v2-arrive', typeof scene.arrive === 'function' ? scene.arrive(S) : scene.arrive);
     sec.append(arrive);
     // 마지막 장치를 풀었는데 아직 엔딩에 안 갔으면, 어떤 경로로 돌아왔든 엔딩 버튼을 계속 보여 준다
     const endDev = Object.values(ep.devices).find((dv, i) => dv.reveal?.ending && S.solved.includes(Object.keys(ep.devices)[i]));
@@ -220,7 +220,7 @@ async function main() {
     node.append(el('h2', 'v2-doc-title', d.title));
     node.append(bust(html('div', 'v2-doc-body', typeof d.html === 'function' ? d.html(S) : d.html)));
     if (from) node.append(btn('v2-secondary', '← ' + from.label, from.fn));
-    openDialog(node, { label: d.title, onClose: () => render() });
+    openDialog(node, { label: d.title, onClose: from?.onClose || (() => render()) });
   }
   function openIndex() {
     const node = el('article', 'v2-paper v2-index');
@@ -280,6 +280,7 @@ async function main() {
         status.textContent = r.msg; status.classList.add('wrong'); play('lock'); draw();
       });
       actions.append(go);
+      ctx.commit = () => go.click();
       const gate = () => { if (dev.canCommit) go.hidden = !dev.canCommit(d); };
       gate(); const _draw = draw; draw = () => { _draw(); gate(); };
     }
@@ -327,11 +328,13 @@ async function main() {
     node.append(el('p', 'v2-line', dev.reveal.text));
     (dev.reveal.scene || []).forEach((line) => node.append(el('p', 'v2-line', line)));
     const target = dev.reveal.unlock && sceneById(dev.reveal.unlock);
-    if (dev.reveal.unlockDoc && ep.docs[dev.reveal.unlockDoc]) { S.found = S.found || []; if (!S.found.includes(dev.reveal.unlockDoc)) S.found.push(dev.reveal.unlockDoc); save(); node.append(btn('v2-secondary', ep.docs[dev.reveal.unlockDoc].title + ' 보기', () => openDoc(dev.reveal.unlockDoc, { from: { label: '돌아가기', fn: () => openDialog(node, { label: dev.reveal.title, onClose: () => render() }) } }))); }
+    // 보상 창을 어떤 길로 닫든(닫기 · 바깥 누르기 · 자료 보고 닫기) 다음 장소로 가는 길이 같게
+    const finish = () => { if (target && S.scene !== target.id) { S.scene = target.id; save(); window.scrollTo({ top: 0 }); } render(); };
+    if (dev.reveal.unlockDoc && ep.docs[dev.reveal.unlockDoc]) { S.found = S.found || []; if (!S.found.includes(dev.reveal.unlockDoc)) S.found.push(dev.reveal.unlockDoc); save(); node.append(btn('v2-secondary', ep.docs[dev.reveal.unlockDoc].title + ' 보기', () => openDoc(dev.reveal.unlockDoc, { from: { label: '돌아가기', fn: () => openDialog(node, { label: dev.reveal.title, onClose: finish }), onClose: finish } }))); }
     if (dev.reveal.ending) node.append(btn('v2-primary', (dev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; save(); closeDialog(); }));
     else if (target) node.append(btn('v2-primary', josa(target.name, '으로', '로') + ' →', () => { S.scene = target.id; save(); closeDialog(); }));
     else node.append(btn('v2-primary', '계속', () => closeDialog()));
-    openDialog(node, { label: dev.reveal.title, onClose: () => { if (target && S.scene !== target.id) { S.scene = target.id; save(); window.scrollTo({ top: 0 }); } render(); } });
+    openDialog(node, { label: dev.reveal.title, onClose: finish });
   }
 
   // ---------- 힌트 ----------

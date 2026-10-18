@@ -40,9 +40,10 @@ const HOOK_ANSWER = 'B03';
 // 꼬리표 뒷면(손글씨)과 고리에 걸린 열쇠 개수
 const RING = { B01: ['김순례', 1], B02: ['박정호', 1], B03: ['김순자', 2], B04: ['공구', 1] };
 const BOX_CODE = [3, 1, 2];
-const TIMES = ['21:00', '21:30', '22:00', '22:30'];
-const OFFS = ['22:00', '22:30', '23:00', '23:30'];
-const PROG_ANSWER = { living: '21:00', small: '21:30', main: '22:30', off: '23:00' };
+// 마지막 장치: 시각마다 밖에서 본 301 창 셋 (왼쪽 안방 · 가운데 거실 · 오른쪽 작은방)
+const LIGHT_TIMES = ['21:00', '21:30', '22:00', '22:30', '23:00'];
+const lightKey = (lit) => LIGHT_TIMES.map((t) => [...lit[t]].sort().join('')).join('|');
+const LIGHT_ANSWER = 'M|MR|MR|LMR|';
 
 function sectionSvg() {
   const ink = '#2b3340';
@@ -159,7 +160,7 @@ export default {
         { id: 'switches', x: 74, y: 26, label: '테이프 붙은 스위치', kind: 'doc', doc: 'switches' },
         { id: 'box', x: 88, y: 66, label: '싱크대 밑', kind: 'device', device: 'box' },
         { id: 'book', x: 20, y: 46, label: '상자 위 가계부', kind: 'doc', doc: 'book', visible: (S) => S.solved.includes('box') },
-        { id: 'timers', x: 26, y: 76, label: '꺼낸 타이머 셋', kind: 'device', device: 'timers', visible: (S) => S.solved.includes('box') },
+        { id: 'timers', x: 26, y: 76, label: '할머니가 볼 저녁', kind: 'device', device: 'timers', visible: (S) => S.solved.includes('box') },
       ],
     },
   ],
@@ -197,7 +198,7 @@ export default {
     log: {
       title: '책상 위 근무일지',
       kind: '관리인 문철호 · 10월',
-      html: `<blockquote class="hand">10. 1 단전 계단 비상등만<br>10. 2 그 집 열쇠 할머니 창고 열쇠랑 한 고리에 같이 자꾸 어디 뒀는지 잊어버려서<br>10. 5 병원<br>10. 9 철물점 (영수증 서랍)<br>10. 12 밤 9시 ☎<br>10. 16 밤 9시 ☎<br>10. 21 커뮤니티에 귀신 글 올라왔다고 302 아들이 알려 줌 허허</blockquote>`,
+      html: `<blockquote class="hand">10/1 단전 계단 비상등만<br>10/2 그 집 열쇠 할머니 창고 열쇠랑 한 고리에 같이 자꾸 어디 뒀는지 잊어버려서<br>10/5 병원<br>10/9 철물점 (영수증 서랍)<br>10/12 밤 9시 ☎<br>10/16 밤 9시 ☎<br>10/21 커뮤니티에 귀신 글 올라왔다고 302 아들이 알려 줌 허허</blockquote>`,
     },
     roster: {
       title: '입주자 명부',
@@ -375,56 +376,50 @@ export default {
     },
 
     timers: {
-      title: '꺼낸 타이머 셋',
+      title: '할머니가 볼 저녁',
       scene: 'unit',
-      intro: '방마다 등 하나 타이머 하나 지금은 할머니가 틀렸다고 한 순서로 맞춰져 있다',
+      intro: '타이머는 지금 할머니가 틀렸다고 한 순서로 맞춰져 있다 시각마다 둑 너머에서 보일 창 세 개를 켜고 꺼 본다 맞으면 그대로 타이머에 옮겨 단다',
       docs: ['book', 'mnote', 'switches'],
       hintCode: 'A-S04',
       hints: [
         '가계부가 두 권이야 할머니가 원하는 건 영감님 계실 때 저녁',
-        '2009년 여백 순서 그대로 애들 방은 작은방',
-        '거실 21:00 · 작은방 21:30 · 안방 22:30 · 끄기 23:00',
+        '할머니는 밖에서 본다 둑길 사진처럼 좌우가 바뀐다 한 번 켠 불은 다 끌 때까지 켜져 있다',
+        '21:00 가운데(거실) · 21:30 오른쪽(작은방)까지 · 22:30 왼쪽(안방)까지 셋 다 · 23:00 모두 끔',
       ],
-      initial: () => ({ living: '22:00', small: '21:00', main: '21:30', off: '23:00', t: 2 }),
+      initial: () => ({ lit: { '21:00': ['R'], '21:30': ['L', 'R'], '22:00': ['L', 'M', 'R'], '22:30': ['L', 'M', 'R'], '23:00': [] } }),
       render(ctx) {
         const { d, el, save } = ctx;
-        const wrap = el('div', 'timers-wrap');
-        const ph = el('div', 'prop timerphoto'); ph.innerHTML = `<img src="${P}props/timers.webp" alt="배터리에 연결된 타이머 셋" decoding="async">${[['1 안방', 21.9], ['2 거실', 50], ['3 작은방', 78.9]].map(([t, x]) => `<span class="timer-tape" style="left:${x}%">${t}</span>`).join('')}`;
-        wrap.append(ph);
-        const step = (k, list, lab) => {
-          const row = el('div', 'timer-dial');
-          const i = list.indexOf(d[k]);
-          const prev = el('button', 'ctl', '◀'); prev.type = 'button'; prev.setAttribute('aria-label', `${lab} 앞으로 돌리기`); prev.onclick = () => { d[k] = list[(i + list.length - 1) % list.length]; save(); };
-          const next = el('button', 'ctl', '▶'); next.type = 'button'; next.setAttribute('aria-label', `${lab} 뒤로 돌리기`); next.onclick = () => { d[k] = list[(i + 1) % list.length]; save(); };
-          const v = el('b', 'timer-val', d[k]); v.dataset.k = k;
-          row.append(el('span', 'gift-name', lab), prev, v, next);
-          return row;
-        };
-        const dials = el('div', 'timer-dials');
-        dials.append(step('main', TIMES, '1 안방 켜기'), step('living', TIMES, '2 거실 켜기'), step('small', TIMES, '3 작은방 켜기'), step('off', OFFS, '셋 다 끄기'));
-        wrap.append(dials);
-        // 미리 보기: 둑길에서 본 301 창 셋 (밖에서 보면 왼쪽부터 안방 · 거실 · 작은방)
-        const PREV = ['20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'];
-        const tt = PREV[d.t ?? 2];
-        const on = (k) => d[k] <= tt && tt < d.off;
-        const pv = el('figure', 'win-preview');
-        pv.innerHTML = `<div class="win-crop"><img src="${P}props/rear.webp" alt="" decoding="async">${[['main', 24.8], ['living', 49], ['small', 74.8]].map(([k, x]) => `<i class="pv-win${on(k) ? ' lit' : ''}" style="left:${x}%"></i>`).join('')}</div><figcaption>둑길에서 본 301 창 세 개 · ${tt}</figcaption>`;
-        const sl = el('input'); sl.type = 'range'; sl.min = 0; sl.max = PREV.length - 1; sl.step = 1; sl.value = d.t ?? 2; sl.setAttribute('aria-label', '미리 보기 시각');
-        sl.oninput = () => { d.t = Number(sl.value); save(); };
-        const lab = el('label', 'tilt-label'); lab.append(el('span', '', '시각을 밀어 미리 보기'), sl);
-        wrap.append(el('p', 'pick-label', '할머니가 병실 창에서 보는 모습'), pv, lab);
-        return wrap;
+        if (!d.lit) d.lit = { '21:00': ['R'], '21:30': ['L', 'R'], '22:00': ['L', 'M', 'R'], '22:30': ['L', 'M', 'R'], '23:00': [] }; // 예전 저장 상태
+        const wrap = el('div', 'lightboard');
+        const WIN = [['L', 24.8, '왼쪽'], ['M', 49, '가운데'], ['R', 74.8, '오른쪽']];
+        LIGHT_TIMES.forEach((t) => {
+          const row = el('div', 'lb-row');
+          const crop = el('div', 'win-crop'); crop.innerHTML = `<img src="${P}props/rear.webp" alt="" decoding="async">`;
+          WIN.forEach(([w, x, name]) => {
+            const on = d.lit[t].includes(w);
+            const b = el('button', 'pv-win' + (on ? ' lit' : '')); b.type = 'button'; b.style.left = x + '%';
+            b.setAttribute('aria-label', `${t} ${name} 창 ${on ? '켜짐' : '꺼짐'}`);
+            b.onclick = () => { d.lit[t] = on ? d.lit[t].filter((v) => v !== w) : [...d.lit[t], w]; save(); };
+            crop.append(b);
+          });
+          row.append(el('b', 'lb-time', t), crop);
+          wrap.append(row);
+        });
+        const box = el('div', 'mail-wrap');
+        box.append(el('p', 'pick-label', '둑 너머 요양병원 3층에서 보일 301 창 세 개 · 창을 누르면 켜지고 꺼진다'), wrap);
+        return box;
       },
-      commitLabel: '타이머 맞춰 두기',
+      commitLabel: '이 저녁으로 타이머 맞추기',
       check(d) {
-        if (Object.entries(PROG_ANSWER).every(([k, v]) => d[k] === v)) return { ok: true };
-        if (d.main === '21:00' && d.off === '22:00') return { ok: false, msg: '그건 혼자 되신 뒤의 저녁이다 할머니가 원한 건 그 순서가 아니었다' };
-        if (d.small === '21:00' && d.main === '21:30' && d.living === '22:00') return { ok: false, msg: '지금 맞춰진 그대로다 할머니가 틀렸다고 한 순서' };
-        return { ok: false, msg: '이대로면 또 틀렸다고 하실 거다 가계부 여백을 다시 본다' };
+        const k = lightKey(d.lit);
+        if (k === LIGHT_ANSWER) return { ok: true };
+        if (k === 'R|LR|LMR|LMR|') return { ok: false, msg: '지금 맞춰진 그대로다 할머니가 틀렸다고 한 순서' };
+        if (k === 'L|L|||') return { ok: false, msg: '그건 혼자 되신 뒤의 저녁이다 할머니가 원한 건 그 순서가 아니었다' };
+        return { ok: false, msg: '이대로면 또 틀렸다고 하실 거다' };
       },
       reveal: {
         title: '그 집의 저녁',
-        text: '거실, 작은방, 안방 열한 시에 다 같이 꺼진다 2009년 3월 어느 저녁의 순서다',
+        text: '거실, 작은방, 안방 열한 시에 다 같이 꺼진다 2009년 3월 어느 저녁의 순서다 그대로 타이머 셋에 옮겨 달았다 거실 21:00 · 작은방 21:30 · 안방 22:30 · 끄기 23:00',
         scene: ['관리실로 내려가 쪽지 밑에 적어 뒀다 「순서 고쳐 놨습니다 월요일 아침 철거 전에 같이 떼요 — 점검 한도윤」 팀장한테는 「원인 확인 배터리 조명 월요일 철거 전 제거 예정」이라고만 보냈다'],
         ending: true,
         endingLabel: '다음 날 밤 아홉 시, 둑길',

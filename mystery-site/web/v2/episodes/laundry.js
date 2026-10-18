@@ -89,7 +89,7 @@ export default {
   tagline: '밤 열두 시 정각\n아무도 없는 빨래방에서 6번 건조기가 빈 통으로 돈다',
   blurb: '손목 수술을 한 엄마 대신 24시 빨래방을 맡은 지 한 달\n엄마가 남긴 규칙은 하나였습니다 「6번 자정에 도는 거 건드리지 마라」',
   storageKey: 'mihaeje-v2-laundry',
-  hintTitle: '엄마 문자',
+  hintTitle: '엄마 수첩',
   tracesLabel: '6번이 데려간 곳',
 
   opening: {
@@ -114,7 +114,7 @@ export default {
       id: 'hall',
       name: '해달빨래방',
       image: P + 'hall.webp',
-      arrive: '밖엔 비가 온다 맨 끝 6번이 불을 켠 채 빈 통으로 돌고, 4번 건조기에선 저녁에 손님이 넣고 간 이불이 웅웅 돈다 6번 위에 엄마 글씨 쪽지가 붙어 있다',
+      arrive: (S) => S.solved.includes('vents') ? '6번은 멈췄다 문 유리가 아직 따뜻하다 4번은 아직 손님 이불을 돌린다 패널 액정에 ADMIN이 그대로 떠 있다' : '밖엔 비가 온다 맨 끝 6번이 불을 켠 채 빈 통으로 돌고, 4번 건조기에선 열한 시 넘어 손님이 넣고 간 이불이 웅웅 돈다 6번 위에 엄마 글씨 쪽지가 붙어 있다',
       hotspots: [
         { id: 'mchat', x: 7, y: 88, label: '엄마 문자', kind: 'doc', doc: 'mchat' },
         { id: 'note6', x: 96, y: 7, label: '6번 위 쪽지', kind: 'doc', doc: 'note6' },
@@ -157,13 +157,13 @@ export default {
       kind: '방금',
       html: `<div class="chat"><div class="chat-head"><span class="chat-back">‹</span><b>엄마</b><span class="chat-icons">☰</span></div><div class="chat-date">2026년 11월 4일 수요일</div>
 <div class="chat-row me"><span class="chat-meta">오전 12:01</span><div class="chat-bubble">엄마 6번 지금 혼자 돌아<br>통 비었는데</div></div>
-<div class="chat-row them"><span class="chat-avatar">엄</span><div class="chat-col"><span class="chat-name">엄마</span><div class="chat-bubble">건들지 말랫지</div><div class="chat-bubble">궁금하면 기록봐 관리자모드는 간판이야</div><div class="chat-bubble">손목아파 이만 자</div></div><span class="chat-time">오전 12:03</span></div>
+<div class="chat-row them"><span class="chat-avatar">엄</span><div class="chat-col"><span class="chat-name">엄마</span><div class="chat-bubble">건들지 말랫지</div><div class="chat-bubble">사연잇어 낼 낮에 얘기해줄게</div><div class="chat-bubble">손목아파 자야돼</div></div><span class="chat-time">오전 12:03</span></div>
 <div class="chat-input"><span class="chat-field">메시지 입력</span><span>➤</span></div></div>`,
     },
     note6: {
       title: '6번 위 쪽지',
       kind: '엄마 글씨',
-      html: `<blockquote class="hand">6번 자정에 도는 거 손대지 말 것<br>예약 걸린 거 취소하지 말 것<br>6번은 저온만 쓸 것 뜨거우면 냄새 난다고 싫어들 한다<br>빈 통 오래 돌리지 말 것 전기 아깝다</blockquote>`,
+      html: `<blockquote class="hand">6번 자정에 도는 거 손대지 말 것<br>예약 걸린 거 취소하지 말 것<br>6번은 저온만 쓸 것 뜨거우면 냄새 난다고 싫어들 한다<br>빈 통 오래 돌리지 말 것 전기 아깝다</blockquote><p class="aside">쪽지 맨 아래, 볼펜 색이 다른 작은 글씨</p><blockquote class="hand small">관리자 → 간판대로 누르고 시작 꾹 (자꾸 까먹어서 적어 둠)</blockquote>`,
     },
     sign: {
       title: '문 위 간판',
@@ -183,7 +183,7 @@ export default {
     coins: {
       title: '6번 동전함',
       kind: '관리자 모드로 열림',
-      html: `<figure class="prop"><img src="${P}props/coins.webp" alt="500원 동전 사이에 영수증으로 만 동전 묶음" decoding="async"></figure><p>500원짜리 사이에 영수증으로 돌돌 만 것이 여럿 섞여 있다 손에 잡히는 대로 넷을 풀어 보니 안에 500원이 하나씩</p><div class="receipt-row">${[['10/06 화', '22:01'], ['10/10 토', '22:04'], ['10/15 목', '22:01'], ['10/25 일', '22:02']].map(([d, t]) => `<div class="receipt"><b>늘봄편의점 윤슬점</b><span>2026/${d} ${t}</span><span>POS 2</span><span>캔커피 1,500</span><span>받은 돈 2,000</span><span>거스름 500</span></div>`).join('')}</div>`,
+      html: `<figure class="prop"><img src="${P}props/coins.webp" alt="500원 동전 사이에 가늘게 접힌 영수증 몇 장" decoding="async"></figure><p>500원짜리 사이에 가늘게 접힌 영수증이 섞여 있다 동전 넣는 구멍으로 같이 밀어 넣은 것 같다 펴 보니 뒷면마다 볼펜으로 「6번 500」</p><div class="receipt-row">${[['10/06 화', '22:01'], ['10/10 토', '22:04'], ['10/15 목', '22:01'], ['10/25 일', '22:02']].map(([d, t]) => `<div class="receipt"><b>늘봄편의점 윤슬점</b><span>2026/${d} ${t}</span><span>POS 2</span><span>캔커피 1,500</span><span>받은 돈 2,000</span><span>거스름 500</span></div>`).join('')}</div>`,
     },
     posnote: {
       title: '포스 옆 메모',
@@ -193,7 +193,7 @@ export default {
     talk: {
       title: '야간 알바 김도현',
       kind: '편의점 계산대',
-      html: `<p>「6번?」 메모 옆에 초록 자석을 붙이는데 창고에서 박스를 안고 나오던 알바가 멈춰 섰다 명찰에 김도현</p><blockquote>"아 빨래방 사장님 따님이시죠 들켰네"</blockquote><blockquote>"사모님이 수술 들어가시면서 부탁하셨어요 출근할 때 6번에 오백 원 넣고 열두 시로 예약만 걸어 달라고 동전 값은 주신다는데 그냥 커피 사고 남은 거 넣었어요"</blockquote><blockquote>"이유는 열두 시쯤 뒷골목 정류장 가 보면 알아요 사모님이 이것도 맡기셨어요 무슨 그림인지는 모르겠고"</blockquote><p>도현이 계산대 밑에서 접힌 종이를 꺼냈다 설비 업체 배관도였다</p><blockquote>"아 그리고 요즘 학원 끝난 애들이 여기서 컵라면 먹다가 열두 시 십 분 되면 우르르 나가요 막차가 늦어졌다고"</blockquote>`,
+      html: `<p>「6번?」 메모 옆에 초록 자석을 붙이는데 창고에서 박스를 안고 나오던 알바가 멈춰 섰다 명찰에 김도현</p><blockquote>"아 빨래방 사장님 따님이시죠 들켰네"</blockquote><blockquote>"사모님이 수술 들어가시면서 부탁하셨어요 출근할 때 6번에 오백 원 넣고 열두 시로 예약만 걸어 달라고 동전 값은 주신다고 했는데 그냥 제 돈으로 넣었어요 커피 사고 거스름돈 넣은 날은 영수증도 같이 넣어 뒀고요 사모님 나중에 계산하시라고"</blockquote><blockquote>"이유는 열두 시쯤 뒷골목 정류장 가 보면 알아요 사모님이 이것도 맡기셨어요 무슨 그림인지는 모르겠고"</blockquote><p>도현이 계산대 밑에서 접힌 종이를 꺼냈다 설비 업체 배관도였다</p><blockquote>"아 그리고 요즘 학원 끝난 애들이 여기서 컵라면 먹다가 열두 시 십 분 되면 우르르 나가요 막차가 늦어졌다고"</blockquote>`,
     },
     duct: {
       title: '설비 업체 배관도',
@@ -218,10 +218,10 @@ export default {
       title: '6번 건조기 패널',
       scene: 'hall',
       intro: '버튼 일곱 개와 시작 버튼 관리자 모드로 들어가야 기록을 볼 수 있다',
-      docs: ['mchat', 'sign', 'guide'],
-      hintCode: 'L-S01',
+      docs: ['note6', 'sign', 'guide'],
+      hintCode: 'W-S01',
       hints: [
-        '관리자모드는 간판이야 엄마가 그렇게 정했어',
+        '관리자모드는 쪽지에 적어 놨다 내가 자꾸 까먹어서',
         '간판을 그대로 버튼으로 옮겨 봐 버튼에 없는 건 버리고',
         '☀ ☾ 2 4 그리고 시작 길게',
       ],
@@ -236,21 +236,25 @@ export default {
           x.onclick = () => { if (d.seq.length < 8) d.seq.push(b.id); save(); };
           wrap.append(x);
         });
-        const st = el('button', 'pbtn start'); st.type = 'button'; st.setAttribute('aria-label', '시작 버튼 짧게 누르기'); st.innerHTML = '<span>시작</span>';
-        st.onclick = () => { d.seq = []; save(); ctx.status('삑 동전을 넣으라는 표시만 깜빡이고 입력이 지워졌다'); };
+        // 시작 버튼: 짧게 누르면 삑 소리만, 꾹 누르고 있으면(0.9초) 관리자 확인
+        const st = el('button', 'pbtn start'); st.type = 'button'; st.setAttribute('aria-label', '시작 버튼 (꾹 누르고 있기)'); st.innerHTML = '<span>시작</span><i class="hold-ring"></i>';
+        let timer = null;
+        const down = (e) => { e.preventDefault(); if (!d.seq.length) { ctx.status('아직 아무 버튼도 안 눌렀다'); return; } st.classList.add('holding'); timer = setTimeout(() => { timer = null; st.classList.remove('holding'); ctx.commit?.(); }, 900); };
+        const up = () => { if (!timer) return; clearTimeout(timer); timer = null; st.classList.remove('holding'); ctx.status('삑 짧게 누르면 일반 운전 대기다 관리자 확인은 시작을 꾹 누르고 있어야 한다'); };
+        st.addEventListener('pointerdown', down); st.addEventListener('pointerup', up); st.addEventListener('pointerleave', up); st.addEventListener('pointercancel', up);
+        st.onclick = (e) => { if (e.detail === 0 && d.seq.length) ctx.commit?.(); };
         wrap.append(st);
         const box = el('div', 'letterlock-wrap'); box.append(wrap);
         const reset = el('button', 'chip', '입력 지우기'); reset.type = 'button'; reset.onclick = () => { d.seq = []; save(); };
         box.append(reset);
         return box;
       },
-      commitLabel: '시작 버튼 꾹 누르고 있기',
-      canCommit: (d) => d.seq.length > 0,
+      commitLabel: '시작 버튼 꾹 누르기',
+      canCommit: () => false,
       check(d) {
         const s = d.seq.join(',');
-        d.seq = [];
         if (s === ADMIN.join(',')) return { ok: true };
-        return { ok: false, msg: '삑삑 액정에 ERR 관리자 모드가 안 열리고 입력이 지워졌다' };
+        return { ok: false, msg: '삑삑 액정에 ERR 관리자 모드가 안 열린다 누른 순서는 액정에 남아 있다' };
       },
       reveal: {
         title: '관리자 모드',
@@ -266,7 +270,7 @@ export default {
       scene: 'store',
       intro: '보드 오른쪽에 이름 자석 넷과 빈 자리 하나 빈 자리에 「6번?」이라고 쓴 메모를 붙였다 누구 자석을 거기로 옮길까',
       docs: ['log6', 'coins', 'posnote'],
-      hintCode: 'L-S02',
+      hintCode: 'W-S02',
       hints: [
         '동전 들어간 시간 봐라 밤 열 시 조금 넘어서 그 시각에 저 가게 포스 2를 쓰는 사람',
         '기록에 빠진 날 있지 무슨 요일인지 보고 열두 시에 돈 건 그 전날 밤에 넣은 거다',
@@ -316,7 +320,7 @@ export default {
       scene: 'alley',
       intro: '배기구 여섯에 번호가 없다 가게에서 들고 나온 번호 스티커 1부터 6까지 하나씩 제자리에 붙인다',
       docs: ['duct', 'bus', 'talk'],
-      hintCode: 'L-S03',
+      hintCode: 'W-S03',
       hints: [
         '김 나는 데는 지금 4번 이불 도는 거다 거기부터 붙여',
         '도면은 위아래 두 칸이야 건조기에서 줄 따라 천장 끝 글자까지 가고 그 글자를 위 칸 벽에서 찾아',
@@ -371,7 +375,7 @@ export default {
       scene: 'hall',
       intro: '관리자 모드라 동전 없이 예약을 걸 수 있다 시작 시각, 운전 시간, 온도',
       docs: ['bus', 'talk', 'note6'],
-      hintCode: 'L-S04',
+      hintCode: 'W-S04',
       hints: [
         '도현이가 애들 몇 시에 나간다 했니 버스는 정류장 시간표에',
         '애들 나오는 때부터 버스 올 때까지만 빈 통 오래 돌리지 말고 온도는 쪽지 봐',
@@ -381,12 +385,12 @@ export default {
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'sched-wrap');
+        // 고를 수 있는 값을 다 보여 준다 (◀▶로 돌리면 순서가 헷갈린다는 피드백)
         const step = (k, list, lab) => {
-          const row = el('div', 'timer-dial'); const i = list.indexOf(d[k]);
-          const prev = el('button', 'ctl', '◀'); prev.type = 'button'; prev.setAttribute('aria-label', `${lab} 앞으로`); prev.onclick = () => { d[k] = list[(i + list.length - 1) % list.length]; save(); };
-          const next = el('button', 'ctl', '▶'); next.type = 'button'; next.setAttribute('aria-label', `${lab} 뒤로`); next.onclick = () => { d[k] = list[(i + 1) % list.length]; save(); };
-          const v = el('b', 'timer-val', d[k] + (k === 'min' ? '분' : '')); v.dataset.k = k;
-          row.append(el('span', 'gift-name', lab), prev, v, next); return row;
+          const row = el('div', 'sched-row'); row.dataset.k = k;
+          const g = el('div', 'sched-chips');
+          list.forEach((v) => { const b = el('button', 'chip' + (d[k] === v ? ' on' : ''), v + (k === 'min' ? '분' : '')); b.type = 'button'; b.setAttribute('aria-pressed', d[k] === v ? 'true' : 'false'); b.setAttribute('aria-label', `${lab} ${v}${k === 'min' ? '분' : ''}`); b.onclick = () => { d[k] = v; save(); }; g.append(b); });
+          row.append(el('span', 'gift-name', lab), g); return row;
         };
         const ph = el('div', 'prop dpanel small'); ph.innerHTML = `<img src="${P}props/panel.webp" alt="6번 건조기 패널" decoding="async"><div class="lcd">예약 ${d.start}<br>${d.min}분 ${d.temp}</div>`;
         const dials = el('div', 'timer-dials'); dials.append(step('start', STARTS, '예약 시작'), step('min', MINS, '운전 시간'), step('temp', TEMPS, '온도'));
@@ -416,18 +420,18 @@ export default {
 
   ending: {
     image: P + 'ending.webp',
-    imageAlt: '자정의 버스 정류장, 지붕 위 배기구에서 내려오는 김 아래 붙어 앉은 세 사람과 모퉁이에서 지켜보는 두 사람, 멀리 막차가 온다',
+    imageAlt: '자정의 버스 정류장, 지붕 위 배기구 아래 붙어 앉은 세 사람과 모퉁이에서 지켜보는 두 사람, 멀리 막차가 온다',
     eyebrow: '11월 5일 목요일, 막차 오기 전',
     title: '빈 통으로 도는 이유',
     paragraphs: [
       '비가 밤사이 진눈깨비로 바뀌었다 열두 시 십 분, 편의점 문이 열리고 교복 입은 애가 가방을 메고 정류장으로 갔다 뒤로 작업복 차림의 아주머니 한 분, 점퍼 입은 아저씨 한 분',
-      '정류장 지붕 위 배기구에서 김이 내려왔다 셋이 벤치에 붙어 앉았다 아주머니가 손을 위로 뻗어 보더니 웃었다 "여기 따뜻하네"',
+      '정류장 지붕 위 배기구에서 더운 바람이 내려왔다 셋이 벤치에 붙어 앉았다 아주머니가 손을 위로 뻗어 보더니 웃었다 "여기 따뜻하네"',
       '"원래 열두 시였거든요" 도현이 말했다 "막차 바뀌고 나선 애들 나오기 전에 끝나 버렸죠"',
       '"엄마도 몰랐대 막차 바뀐 거"',
-      '열두 시 반, 막차가 왔다 배기구 김이 딱 그때 멎었다 아저씨가 버스에 오르면서 빨래방 뒷벽을 한 번 올려다봤다',
+      '열두 시 반, 막차가 왔다 배기구 바람이 딱 그때 멎었다 아저씨가 버스에 오르면서 빨래방 뒷벽을 한 번 올려다봤다',
     ],
     afterword: '6번 위에 새 쪽지를 붙였다 「6번은 밤 12시 10분부터 20분 정류장 담당 손대지 말 것」 엄마 쪽지는 떼지 않고 그 아래 나란히 붙였다',
     unlockDoc: 'final',
-    next: { href: 'play.html?case=radio', title: '끝나지 않은 방송', line: '다음은 꺼진 마이크의 새벽 두 시 이야기입니다' },
+    next: { href: 'play.html?case=garage', title: '마지막 정비소', line: '다음은 폐업 전날 밤 정비소에서 사라진 SD카드 이야기입니다' },
   },
 };

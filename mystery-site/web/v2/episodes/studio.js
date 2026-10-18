@@ -46,7 +46,7 @@ export default {
   traces: [
     { device: 'lamp', label: '눌린 글씨' },
     { device: 'lockers', label: '보관함' },
-    { device: 'lightbox', label: '필름 순서' },
+    { device: 'lightbox', label: '고른 컷' },
     { device: 'print', label: '인화' },
   ],
 
@@ -70,7 +70,7 @@ export default {
       name: '작업대',
       image: P + 'table.webp',
       unlockedBy: 'lockers',
-      arrive: '라이트박스를 켜자 작업대가 하얗게 떴다 필름 네 줄을 올려놓았다 순서도 앞뒤도 제멋대로다 장갑을 꼈다',
+      arrive: '라이트박스를 켜자 작업대가 하얗게 떴다 필름 네 줄을 올려놓았다 몇 줄은 앞뒤가 뒤집혀 있다 장갑을 꼈다',
       hotspots: [
         { id: 'lightbox', x: 46, y: 56, label: '라이트박스 위 필름', kind: 'device', device: 'lightbox' },
         { id: 'loupe', x: 54, y: 48, label: '루페로 본 필름 가장자리', kind: 'doc', doc: 'edge' },
@@ -93,16 +93,16 @@ export default {
     gnote: {
       title: '접수대의 할아버지 쪽지',
       kind: '할아버지 글씨',
-      html: `<blockquote class="hand">수호야<br>윤서 씨 필름 인화 준비해 둬라 저녁에 온다<br>봉투는 접수대에 있다 이름은 번졌어도 칸 번호는 보일 거다 보관함 라벨은 거의 떨어졌는데, 남은 거 보면 내 셈법은 알 거다<br>컷은 윤서 씨가 동그라미 쳐 둔 거 하나다 크기하고 노출은 봉투에 적어 뒀다<br>암실 열쇠는 필름 봉투 안에 넣어 뒀다<br>— 할아버지</blockquote><p>봉투에 적어 뒀다는데 봉투 겉면은 번져서 글자가 안 보인다</p>`,
+      html: `<blockquote class="hand">수호야<br>윤서 씨 필름 인화 준비해 둬라 저녁에 온다<br>봉투는 접수대에 있다 이름은 번졌어도 칸 번호는 보일 거다 보관함 라벨은 거의 떨어졌는데, 남은 거 보면 내 셈법은 알 거다<br>컷은 윤서 씨가 고른 거 하나다 어떤 컷인지, 크기하고 노출은 봉투에 적어 뒀다<br>암실 열쇠는 필름 봉투 안에 넣어 뒀다<br>— 할아버지</blockquote><p>봉투에 적어 뒀다는데 봉투 겉면은 번져서 글자가 안 보인다</p>`,
     },
     ledger: {
       title: '접수 장부',
       kind: '2006년 3월',
-      html: `<div class="paper-table"><p class="pt-head">접수 장부 · 2006년 3월</p><table><tr><th>날짜</th><th>접수</th><th>이름</th><th>보관</th><th>비고</th></tr>
-<tr><td>3. 2</td><td>0611</td><td>박○○</td><td>B2</td><td>증명 4매</td></tr>
-<tr><td>3. 9</td><td>0614</td><td>최○○</td><td>C2</td><td>가족 8×10</td></tr>
-<tr><td>3. 11</td><td>0615</td><td>○윤서</td><td class="mono">C3</td><td>필름 4줄 · 인화 보류 (손님 사정)</td></tr>
-<tr><td>3. 15</td><td>0617</td><td>이○○</td><td>C4</td><td>여권</td></tr>
+      html: `<div class="paper-table"><p class="pt-head">접수 장부 · 2006년 3월</p><table class="nwcells"><tr><th>날짜</th><th>접수</th><th>이름</th><th>보관</th><th>비고</th></tr>
+<tr><td>3/2</td><td>0611</td><td>박○○</td><td>B2</td><td>증명 4매</td></tr>
+<tr><td>3/9</td><td>0614</td><td>최○○</td><td>C2</td><td>가족 8×10</td></tr>
+<tr><td>3/11</td><td>0615</td><td>○윤서</td><td class="mono">C3</td><td>필름 4줄 · 인화 보류 (손님 사정)</td></tr>
+<tr><td>3/15</td><td>0617</td><td>이○○</td><td>C4</td><td>여권</td></tr>
 </table><p class="pt-foot hand-note">※ 보관 칸 번호는 우리 집 셈법 (글자 먼저, 숫자 나중)</p></div>`,
     },
     wall: {
@@ -118,7 +118,7 @@ export default {
     edge: {
       title: '루페로 본 필름 가장자리',
       kind: '작업대',
-      html: `<p>필름 가장자리에는 제조사 이름과 프레임 번호가 찍혀 있다 글자가 바르게 읽히는 쪽이 앞면이다 뒤집혀 있으면 글자가 거울처럼 뒤집혀 보인다</p><p>네 줄은 원래 한 롤이었다 번호가 1에서 24까지 이어져야 한다</p>`,
+      html: `<p>필름 가장자리에는 제조사 이름과 프레임 번호가 찍혀 있다 글자가 바르게 읽히는 쪽이 앞면이다 뒤집혀 있으면 글자가 거울처럼 뒤집혀 보인다</p><p>네거티브는 밝고 어두운 게 뒤바뀌어 있어서 맨눈으로는 잘 안 보인다 루페를 대고 보면 사람 모양은 알아볼 수 있다</p>`,
     },
     chart: {
       title: '벽의 순서표',
@@ -128,13 +128,13 @@ export default {
     pressed: {
       title: '봉투에 눌린 글씨',
       kind: '초록 등 밑에서 읽어 낸 것',
-      html: `<blockquote class="hand">보관 C3<br>인화 컷 23<br>8×10 · 노출 12초</blockquote><p>봉투 위에 다른 종이를 대고 쓴 자국 할아버지 글씨다</p>`,
+      html: `<blockquote class="hand">보관 C3<br>인화 컷 윤서 씨가 고른 것 (셋 다 나온 거 · 간판 밑 · 안 흔들린 거)<br>8×10 · 노출 12초</blockquote><p>봉투 위에 다른 종이를 대고 쓴 자국 할아버지 글씨다</p>`,
     },
     final: {
       title: '필름 봉투 속 쪽지',
       kind: '2006년 · 윤서 아버지의 글씨',
       locked: true,
-      html: `<figure class="prop oldphoto"><img src="${P}props/print.webp" alt="오늘 인화한 사진: 2006년 봄, 사진관 앞에서 부모님과 선 윤서" decoding="async"></figure><p>빈 필름 봉투를 접어 넣다가 안쪽 귀퉁이에 접혀 들어가 있던 쪽지를 봤다 네거티브를 다 빼기 전에는 안 보이던 자리다</p><blockquote class="hand">2006. 3. 11<br>윤서 유학 가는 날 아침, 사진관 앞에서<br>돌아오면 같이 찾으러 오자<br>— 아빠</blockquote><p>윤서 씨는 그해 봄에 떠났고, 부모님은 그 뒤로 사진관에 오지 못했다 할아버지는 인화를 보류해 두고 봉투를 스무 해 동안 보관함에 두었다</p>`,
+      html: `<figure class="prop oldphoto"><img src="${P}props/print.webp" alt="오늘 인화한 사진: 2006년 봄, 사진관 앞에서 부모님과 선 윤서" decoding="async"></figure><p>빈 필름 봉투를 접어 넣다가 안쪽 귀퉁이에 접혀 들어가 있던 쪽지를 봤다 네거티브를 다 빼기 전에는 안 보이던 자리다</p><blockquote class="hand">2006/3/11<br>윤서 유학 가는 날 아침, 사진관 앞에서<br>돌아오면 같이 찾으러 오자<br>— 아빠</blockquote><p>윤서 씨는 그해 봄에 떠났고, 부모님은 그 뒤로 사진관에 오지 못했다 할아버지는 인화를 보류해 두고 봉투를 스무 해 동안 보관함에 두었다</p>`,
     },
   },
 
@@ -148,13 +148,13 @@ export default {
       hints: [
         '볼펜으로 눌러 쓴 자국은 빛을 비스듬히 받아야 보인다 기울기를 천천히 올려 봐라',
         '반쯤 기울였을 때다 너무 세우면 빛이 미끄러지고, 너무 눕히면 그림자가 안 생긴다',
-        '기울기 35도 전후 — 「C3 · 23 · 8×10 · 12초」',
+        '기울기 35도 전후 — 「C3 · 8×10 · 12초 / 셋 다 · 간판 밑 · 안 흔들린 컷」',
       ],
       initial: () => ({ angle: 0 }),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'lamp-wrap');
-        const env = el('div', 'prop envtilt'); const lit = d.angle >= 30 && d.angle <= 45; env.innerHTML = `<div class="tiltbox"><img src="${P}props/envelope.webp" alt="초록 등 밑의 누런 봉투" decoding="async"><div class="pressed${lit ? ' lit' : ''}" style="opacity:${lit ? 1 : Math.max(0, 1 - Math.abs(d.angle - 37) / 12)}">${lit ? 'C3 · 23 · 8×10 · 12초' : '▒▒ · ▒▒ · ▒▒▒ · ▒▒▒'}</div><div class="glare" style="transform:translateX(${(d.angle - 35) * 2}%)"></div></div>`;
+        const env = el('div', 'prop envtilt'); const lit = d.angle >= 30 && d.angle <= 45; env.innerHTML = `<div class="tiltbox"><img src="${P}props/envelope.webp" alt="초록 등 밑의 누런 봉투" decoding="async"><div class="pressed${lit ? ' lit' : ''}" style="opacity:${lit ? 1 : Math.max(0, 1 - Math.abs(d.angle - 37) / 12)}">${lit ? 'C3 · 8×10 · 12초<br>셋 다 · 간판 밑 · 안 흔들린 컷' : '▒▒ · ▒▒▒ · ▒▒▒<br>▒ ▒ · ▒▒ ▒ · ▒ ▒▒▒ ▒'}</div><div class="glare" style="transform:translateX(${(d.angle - 35) * 2}%)"></div></div>`;
         env.style.setProperty('--tilt', d.angle + 'deg');
         wrap.append(env);
         const lab = el('label', 'tilt-label'); lab.append(el('span', '', `기울기 ${d.angle}°`));
@@ -170,8 +170,8 @@ export default {
         return { ok: false, msg: '너무 세웠다 빛이 다 미끄러진다 조금 내리자' };
       },
       reveal: {
-        title: 'C3 · 23 · 8×10 · 12초',
-        text: '봉투 위에 다른 종이를 대고 쓴 자국이 비스듬한 빛에 떠올랐다 보관 C3, 인화할 컷 23, 크기 8×10, 노출 12초 할아버지 글씨다',
+        title: 'C3 · 셋 다 · 간판 밑 · 안 흔들린 컷',
+        text: '봉투 위에 다른 종이를 대고 쓴 자국이 비스듬한 빛에 떠올랐다 보관 C3, 인화할 컷은 셋 다 나오고 간판 밑이고 안 흔들린 것, 크기 8×10, 노출 12초 할아버지 글씨다',
         scene: ['C3 왼쪽 벽 보관함 열여섯 칸 중 하나 그런데 그 벽 라벨은 거의 다 떨어지고 세 개만 붙어 있었다'],
         unlockDoc: 'pressed',
         unlock: null,
@@ -227,53 +227,57 @@ export default {
     lightbox: {
       title: '라이트박스 위 필름',
       scene: 'table',
-      intro: '네 줄을 번호가 1부터 24까지 이어지게 놓고, 뒤집힌 줄은 바로 놓는다 그다음 동그라미 친 23컷을 짚는다',
-      docs: ['edge', 'sleeve', 'pressed'],
+      intro: '필름 네 줄 가장자리 글자가 거울처럼 보이는 줄은 뒤집힌 거다 바로 놓고, 컷을 하나씩 루페로 보며 윤서 씨가 고른 컷을 찾는다',
+      docs: ['pressed', 'edge', 'sleeve'],
       hintCode: 'S-S03',
       hints: [
-        '가장자리 글자가 거울처럼 뒤집혀 보이면 그 줄은 뒤집힌 거다 글자부터 바로 세워라',
-        '바로 세운 뒤 가장자리 번호를 읽어라 1부터 24까지 위에서 아래로 이어지게',
-        '순서 a·b·c·d, 뒤집힘 없음, 네 번째 줄의 다섯 번째 컷(23)',
+        '컷을 누르면 루페로 크게 보인다 네거티브라도 루페로 보면 사람 모양은 알아본다',
+        '봉투에 눌린 글씨대로다 셋 다 나온 것, 간판 밑, 안 흔들린 것 비슷한 컷이 바로 옆에 붙어 있다 줄이 뒤집혀 있으면 바로 놓고 인화한다',
+        '네 번째 줄 다섯 번째 컷 (가장자리 23) 그 줄이 뒤집혀 있으면 ⇄로 바로 놓기',
       ],
-      initial: () => ({ order: ['c', 'a', 'd', 'b'], flip: { a: true, b: false, c: true, d: false }, frame: 0 }),
+      initial: () => ({ flip: { a: true, b: false, c: true, d: true }, frame: 0 }),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'lightbox-wrap');
         const box = el('div', 'lightbox');
-        d.order.forEach((id, idx) => {
-          const st = STRIPS.find((s) => s.id === id);
+        const FL = (k) => 1.32 + k * 16.447;
+        STRIPS.forEach((st, idx) => {
+          const id = st.id;
           const row = el('div', 'strip-row');
           const strip = el('div', 'strip' + (d.flip[id] ? ' flipped' : ''));
-          strip.innerHTML = `<img src="${P}props/strip-${id}.webp" alt="필름 ${idx + 1}번째 줄" decoding="async"><div class="strip-edge"><span class="brand">MIRU 400</span>${Array.from({ length: 6 }, (_, k) => `<span class="fno">${st.start + k}</span>`).join('')}</div>`;
-          for (let k = 0; k < 6; k++) {
+          strip.innerHTML = `<img src="${P}props/strip-${id}.webp" alt="필름 ${idx + 1}번째 줄" decoding="async"><div class="strip-edge"><span class="brand">MIRU 400</span>${Array.from({ length: 6 }, (_, k) => `<span class="fno" style="left:${(FL(k) + 9.5).toFixed(2)}%">${st.start + k}</span>`).join('')}</div>`;
+          for (let v = 0; v < 6; v++) {
+            const k = d.flip[id] ? 5 - v : v; // 뒤집힌 줄은 보이는 자리와 실제 컷 순서가 반대
             const n = st.start + k;
-            const f = el('button', 'frame-btn' + (d.frame === n ? ' picking' : '') + (n === FRAME_ANSWER ? ' circled' : '')); f.type = 'button'; f.style.left = (4.5 + k * 15.3) + '%';
-            f.setAttribute('aria-label', `${idx + 1}번째 줄 ${k + 1}번째 컷 짚기`);
+            const f = el('button', 'frame-btn' + (d.frame === n ? ' picking' : '')); f.type = 'button'; f.style.left = FL(v) + '%';
+            f.setAttribute('aria-label', `${idx + 1}번째 줄 ${v + 1}번째 컷 루페로 보기`);
             f.onclick = () => { d.frame = d.frame === n ? 0 : n; save(); };
             strip.append(f);
           }
           const tools = el('div', 'strip-tools');
-          const up = el('button', 'ctl', '▲'); up.type = 'button'; up.disabled = idx === 0; up.setAttribute('aria-label', `${idx + 1}번째 줄 위로`); up.onclick = () => { [d.order[idx - 1], d.order[idx]] = [d.order[idx], d.order[idx - 1]]; save(); };
-          const dn = el('button', 'ctl', '▼'); dn.type = 'button'; dn.disabled = idx === 3; dn.setAttribute('aria-label', `${idx + 1}번째 줄 아래로`); dn.onclick = () => { [d.order[idx + 1], d.order[idx]] = [d.order[idx], d.order[idx + 1]]; save(); };
           const fl = el('button', 'ctl', '⇄'); fl.type = 'button'; fl.setAttribute('aria-label', `${idx + 1}번째 줄 뒤집기`); fl.onclick = () => { d.flip[id] = !d.flip[id]; save(); };
-          tools.append(up, dn, fl);
+          tools.append(fl);
           row.append(strip, tools); box.append(row);
         });
-        wrap.append(box, el('p', 'pick-label', d.frame ? `짚은 컷: ${d.frame}` : '가장자리 번호를 보고 줄을 정리한 뒤, 컷을 하나 짚는다'));
+        wrap.append(box);
+        if (d.frame) {
+          const st = STRIPS.find((x) => d.frame >= x.start && d.frame <= x.end); const k = d.frame - st.start;
+          const posX = (FL(k) / (100 - 14.87)) * 100;
+          const lp = el('figure', 'film-loupe');
+          lp.innerHTML = `<div class="film-loupe-glass"><div class="film-loupe-img${d.flip[st.id] ? ' mirror' : ''}" style="background-image:url(${P}props/strip-${st.id}.webp);background-position:${posX.toFixed(2)}% 61.2%"></div></div><figcaption>루페로 본 컷 · ${STRIPS.indexOf(st) + 1}번째 줄${d.flip[st.id] ? ' · 줄이 뒤집혀 있다' : ''}</figcaption>`;
+          wrap.append(lp);
+        } else wrap.append(el('p', 'pick-label', '컷을 누르면 루페로 크게 본다'));
         return wrap;
       },
       commitLabel: '이 컷으로 인화',
+      canCommit: (d) => !!d.frame,
       check(d) {
-        const flipped = STRIPS.filter((s) => d.flip[s.id]);
-        if (flipped.length) return { ok: false, msg: `${flipped.length}줄이 아직 뒤집혀 있다 가장자리 글자가 거울처럼 보이는 줄을 찾자` };
-        if (d.order.join('') !== 'abcd') return { ok: false, msg: '번호가 이어지지 않는다 위에서 아래로 1부터 24까지 흐르게 놓자' };
-        if (!d.frame) return { ok: false, msg: '인화할 컷을 아직 안 짚었다 봉투에 적힌 번호의 컷이다' };
-        if (d.frame !== FRAME_ANSWER) return { ok: false, msg: `${d.frame}컷? 봉투와 눌린 글씨에 적힌 번호는 그게 아니다 동그라미가 쳐진 컷을 찾자` };
-        return { ok: true };
+        if (d.frame === FRAME_ANSWER && !d.flip.d) return { ok: true };
+        return { ok: false, msg: '인화지에 올리기 전에 루페로 한 번 더 봤다 이대로는 아니다 봉투의 눌린 글씨를 다시 본다' };
       },
       reveal: {
         title: '23컷',
-        text: '네 번째 줄 다섯 번째 컷, 가장자리에 연필로 작은 동그라미 네거티브라 얼굴이 검게 뒤집혀 있지만 세 사람이 사진관 앞에 서 있는 건 보인다',
+        text: '네 번째 줄 다섯 번째 컷 셋이 나란히 웃고 있고 뒤로 사진관 간판이 보인다 바로 앞 컷은 흔들렸고, 다음 컷은 사람 없이 자전거만 찍혔다',
         scene: ['필름을 슬리브에 넣고 작은 열쇠를 들었다 암실 문은 접수실 뒤 붉은 등 밑이다'],
         unlock: 'darkroom',
       },

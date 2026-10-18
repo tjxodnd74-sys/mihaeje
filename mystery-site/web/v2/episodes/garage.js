@@ -16,25 +16,41 @@ const dialRow = (el, save, d, n) => {
 // 블랙박스 프레임 (표시 시각은 서버보다 7분 빠르다)
 const FRAMES = [
   { id: 'f0', t: '21:42:30', img: 'cam3', what: '남색 재킷, 배낭 측문에서 나와 길 쪽으로' },
-  { id: 'f1', t: '21:47:05', img: 'cam2', what: '회색 계열 재킷 측문에서 나와 길 쪽으로 셔터는 반쯤 내려감' },
+  { id: 'f1', t: '21:47:05', img: 'cam2', what: '회색 계열 재킷 측문에서 나와 길 쪽으로 소매는 그늘에 가려 안 보인다 셔터는 반쯤 내려감' },
   { id: 'f2', t: '21:53:20', img: 'cam1', what: '회색 계열 재킷 측문을 밀고 들어감 왼 소매에서 뭔가 번쩍임' },
   { id: 'f3', t: '21:55:20', img: 'cam2', what: '회색 계열 재킷 측문에서 나옴 오른손에 작은 것' },
-  { id: 'f4', t: '22:07:00', img: 'cam1', what: '회색 계열 재킷 측문을 밀고 들어감' },
+  { id: 'f4', t: '22:07:00', img: 'cam1', what: '회색 계열 재킷 측문을 밀고 들어감 왼 소매에서 다시 번쩍임' },
   { id: 'f5', t: '22:21:40', img: 'cam0', what: '아무도 없음 셔터 내려감' },
 ];
 const CAM_ANSWER = ['f2', 'f3'];
-const TERMINAL_CODE = [2, 1, 4, 6]; // 21:53:20 − 7분 = 21:46
-const SAFE_CODE = [0, 4, 0, 7]; // 개업일 2009. 4. 7 (사업자등록 3. 30은 함정)
+// 백업 단말: 블랙박스 시계를 서버 시계에 맞춰 겹쳐 본다 (블박이 7분 빠름 → −7분에서 출입이 다 겹친다)
+const SYNC_ANSWER = -7;
+const SRV = [['21:30:40', '퇴', '04'], ['21:35:10', '퇴', '07-B'], ['21:40:00', '퇴', '09'], ['22:00:05', '입', '09'], ['22:12:30', '퇴', '09']];
+const CAMDIR = { f0: '퇴', f1: '퇴', f2: '입', f3: '퇴', f4: '입', f5: '' };
+const toSec = (t) => { const [h, m, x] = t.split(':').map(Number); return h * 3600 + m * 60 + x; };
+function syncSvg(off) {
+  const t0 = toSec('21:26:00'), span = 56 * 60;
+  const X = (sec) => 4 + ((sec - t0) / span) * 92;
+  let s = '<svg viewBox="0 0 100 44" class="sync-svg" role="img" aria-label="위는 블랙박스 출입, 아래는 출입 서버 기록 같은 시간 축">';
+  s += '<line x1="4" y1="22" x2="96" y2="22" stroke="#4a5560" stroke-width=".3"/>';
+  for (let m = 30; m <= 80; m += 5) { const sec = toSec('21:00:00') + m * 60; const x = X(sec); const hh = 21 + Math.floor(m / 60), mm = m % 60; s += `<line x1="${x}" y1="21" x2="${x}" y2="23" stroke="#6b7782" stroke-width=".25"/><text x="${x}" y="26.4" font-size="2" text-anchor="middle" fill="#8d979f" font-family="ui-monospace,monospace">${hh}:${String(mm).padStart(2, '0')}</text>`; }
+  s += '<text x="4" y="5" font-size="2.4" fill="#f2b134" font-family="SUIT,sans-serif">블랙박스 (표시 시각을 옮겨 봄)</text><text x="4" y="42.5" font-size="2.4" fill="#9be8a5" font-family="SUIT,sans-serif">출입 서버</text>';
+  FRAMES.forEach((f, i) => { if (!CAMDIR[f.id]) return; const x = X(toSec(f.t) + off * 60); if (x < 2 || x > 98) return; s += `<line x1="${x}" y1="9" x2="${x}" y2="20" stroke="#f2b134" stroke-width=".5"/><text x="${x}" y="8.2" font-size="2.3" text-anchor="middle" fill="#f2b134" font-family="SUIT,sans-serif">${i + 1}${CAMDIR[f.id] === '입' ? '↓' : '↑'}</text>`; });
+  SRV.forEach(([t, dir, card]) => { const x = X(toSec(t)); s += `<line x1="${x}" y1="28" x2="${x}" y2="35" stroke="#9be8a5" stroke-width=".5"/><text x="${x}" y="38.2" font-size="2.1" text-anchor="middle" fill="#9be8a5" font-family="SUIT,sans-serif">${card}${dir === '입' ? '↓' : '↑'}</text>`; });
+  return s + '</svg>';
+}
+const SAFE_CODE = [0, 4, 0, 7]; // 개업일 2009/4/7 (사업자등록 3/30은 함정)
 const JACKETS = [
   { id: 'navy', name: '남색 재킷', tag: '한지수', note: '소매에 띠 없음 안주머니에 재발급 카드 07-B' },
   { id: 'charcoal', name: '진회색 재킷', tag: '강민호', note: '소매에 띠 없음 안주머니에 본사 출입증' },
   { id: 'stripe', name: '회색 재킷 · 왼 소매 반사띠', tag: '박정호', note: '왼 소매 반사띠 안주머니 비어 있음, 주머니 바닥에 SD카드 보호 케이스 뚜껑' },
 ];
 const REPORT = [
-  { id: 'who', label: '카드를 반출한 사람', opts: [['jisu', '한지수 (07)'], ['minho', '강민호 (04)'], ['boss', '박정호 (09)']], ans: 'boss' },
-  { id: 'card', label: '그때 쓰인 출입 카드', opts: [['07b', '07-B (지수 재발급)'], ['07a', '07-A (지수 분실 카드, 금고 보관분)'], ['09', '09 (사장)']], ans: '07a' },
-  { id: 'time', label: '실제 반출 시각 (서버 기준)', opts: [['2147', '21:47'], ['2154', '21:54'], ['2200', '22:00']], ans: '2147' },
-  { id: 'proof', label: '그 사람이라는 결정적 근거', opts: [['jacket', '반출 때 찍힌 재킷이 서버 22:00 입장 때도 찍혔다'], ['motive', '지수가 동의 없이 부품을 바꿨다는 메모'], ['alibi', '민호의 면담 기록이 21:53과 겹치지 않는다']], ans: 'jacket' },
+  { id: 'card', label: '① 21:46 측문으로 들어간 카드', opts: [['07b', '07-B'], ['07a', '07-A'], ['09', '09']], ans: '07a' },
+  { id: 'from', label: '② 그 카드가 그 전에 있던 곳', opts: [['pocket', '지수 주머니'], ['safe', '사무실 금고 봉투'], ['floor', '작업장 바닥']], ans: 'safe' },
+  { id: 'wear', label: '③ 들어간 사람이 입은 것', opts: [['navy', '남색 재킷'], ['charcoal', '진회색 재킷'], ['stripe', '왼 소매 반사띠 회색 재킷']], ans: 'stripe' },
+  { id: 'again', label: '④ 같은 재킷이 다시 찍힌 출입 (서버 기준)', opts: [['2135', '21:35 07-B 퇴장'], ['2140', '21:40 09 퇴장'], ['2200', '22:00 09 입장']], ans: '2200' },
+  { id: 'who', label: '⑤ 그래서 카드를 꺼낸 사람', opts: [['jisu', '한지수'], ['minho', '강민호'], ['boss', '박정호']], ans: 'boss' },
 ];
 
 export default {
@@ -67,7 +83,7 @@ export default {
 
   traces: [
     { device: 'cam', label: '블랙박스' },
-    { device: 'terminal', label: '백업 단말' },
+    { device: 'terminal', label: '두 시계' },
     { device: 'safe', label: '금고' },
     { device: 'jackets', label: '재킷' },
     { device: 'report', label: '보고' },
@@ -130,30 +146,30 @@ export default {
     },
     receipt: {
       title: '앞유리에 끼워진 점검 영수증',
-      kind: '미루정비소 장비 점검 · 2026. 9. 18',
-      html: `<div class="paper-table"><p class="pt-head">장비 점검 영수증 · 2026. 9. 18 20:00</p><table><tr><th>항목</th><td>주차 차량 블랙박스 시각 점검 (고객 차량)</td></tr><tr><th>서버 기준 시각</th><td class="mono">20:00:00</td></tr><tr><th>블랙박스 표시 시각</th><td class="mono">20:07:00</td></tr><tr><th>조치</th><td>시계 수정 미실시 폐업 일정으로 보류</td></tr><tr><th>비고</th><td>오차는 자정까지 일정함 (수정 전 기록은 표시 시각 그대로 남음)</td></tr></table></div>`,
+      kind: '미루정비소 장비 점검 · 2026/9/18',
+      html: `<div class="paper-table"><p class="pt-head">장비 점검 영수증 · 2026/9/18 20:00</p><table><tr><th>항목</th><td>주차 차량 블랙박스 시각 점검 (고객 차량)</td></tr><tr><th>서버 기준 시각</th><td class="mono">20:00:00</td></tr><tr><th>블랙박스 표시 시각</th><td class="mono">20:07:00</td></tr><tr><th>조치</th><td>시계 수정 미실시 폐업 일정으로 보류</td></tr><tr><th>비고</th><td>오차는 자정까지 일정함 (수정 전 기록은 표시 시각 그대로 남음)</td></tr></table></div>`,
     },
     people: {
       title: '셔터 앞의 세 사람',
       kind: '진술',
       html: `<div class="paper-table"><table><tr><th>한지수 · 07<br><small>정비사</small></th><td>“21:35에 퇴근했어요 측문으로 나갔고 그 뒤엔 안 왔어요 카드요? 그제 잃어버려서 어제 아침에 새로 받았어요 07-B”<br><small>알리바이 기록 없음</small></td></tr>
 <tr><th>강민호 · 04<br><small>인수 담당</small></th><td>“21:44부터 21:50까지 본사랑 영상 면담 중이었습니다 기록 있어요 저는 21:30에 정비소 나가서 차 안에서 면담했고요”<br><small>면담 기록은 사무실 서류함에</small></td></tr>
-<tr><th>박정호 · 09<br><small>사장</small></th><td>“21:40에 재고 점검 끝내고 나갔다가 22:00에 최종 점검하러 들어왔어요 그때 카드가 없더라고 지수가 그 사진 때문에 불안해했으니까…”<br><small>21:40 퇴장 · 22:00 입장은 서버에 있음</small></td></tr></table></div><p>셋 다 아침이라 재킷은 사무실에 걸어 둔 채 셔츠 바람이다 사장은 지수 쪽으로 자꾸 말을 돌린다</p>`,
+<tr><th>박정호 · 09<br><small>사장</small></th><td>“21:40에 재고 점검 끝내고 나갔다가 22:00에 최종 점검하러 들어왔어요 그때 카드가 없더라고 지수가 그 사진 때문에 불안해했으니까”<br><small>21:40 퇴장 · 22:00 입장은 서버에 있음</small></td></tr></table></div><p>셋 다 아침이라 재킷은 사무실에 걸어 둔 채 셔츠 바람이다 사장은 지수 쪽으로 자꾸 말을 돌린다</p>`,
     },
     server: {
       title: '출입 서버 화면',
       kind: '서버 기준 시각 · 기록 누락 없음',
-      html: `<div class="term-screen"><p class="term-line">MIRU-GARAGE ACCESS LOG 2026-09-18</p><table class="term-table"><tr><th>시각</th><th>카드</th><th>이벤트</th></tr><tr><td>21:30:40</td><td>04</td><td>퇴장</td></tr><tr><td>21:35:10</td><td>07-B</td><td>퇴장</td></tr><tr><td>21:40:00</td><td>09</td><td>퇴장 · 실내 0</td></tr><tr><td class="enc">██:██:██</td><td class="enc">██-█</td><td>입장 <small>(암호화)</small></td></tr><tr><td class="enc">██:██:██</td><td class="enc">██-█</td><td>퇴장 · 실내 0 <small>(암호화)</small></td></tr><tr><td>22:00:05</td><td>09</td><td>입장 · 최종 점검</td></tr><tr><td>22:12:30</td><td>09</td><td>퇴장 · 실내 0</td></tr></table><p class="term-line">※ 암호화 구간 복호화: 보관함 백업 단말(작업장)에서 "실제 입장 시각" 4자리 입력</p></div>`,
+      html: `<div class="term-screen"><p class="term-line">MIRU-GARAGE ACCESS LOG 2026-09-18</p><table class="term-table"><tr><th>시각</th><th>카드</th><th>이벤트</th></tr><tr><td>21:30:40</td><td>04</td><td>퇴장</td></tr><tr><td>21:35:10</td><td>07-B</td><td>퇴장</td></tr><tr><td>21:40:00</td><td>09</td><td>퇴장 · 실내 0</td></tr><tr><td class="enc">██:██:██</td><td class="enc">██-█</td><td>입장 <small>(잠김)</small></td></tr><tr><td class="enc">██:██:██</td><td class="enc">██-█</td><td>퇴장 · 실내 0 <small>(잠김)</small></td></tr><tr><td>22:00:05</td><td>09</td><td>입장 · 최종 점검</td></tr><tr><td>22:12:30</td><td>09</td><td>퇴장 · 실내 0</td></tr></table><p class="term-line">※ 폐업 이관 중 잠긴 구간: 작업장 백업 단말에 영상 기록을 연결하고 두 시계를 맞추면 원본이 열림</p></div>`,
     },
     handover: {
       title: '폐업 인계 문서',
       kind: '작성 강민호 · 폐업 전날 오전',
-      html: `<div class="paper-table"><p class="pt-head">미루정비소 폐업 인계 (초안)</p><table><tr><th>사업자등록</th><td>2009. 3. 30</td></tr><tr><th>금고</th><td>비밀번호는 개업일 네 자리 (월일) 사장 외 공유 금지</td></tr><tr><th>분실 카드</th><td>회수된 출입 카드는 금고 봉투에 보관 폐업 시 일괄 폐기</td></tr><tr><th>고객 저장물</th><td>고객 SD카드는 본인 동의 후 반환 복사본은 동의 없이 삭제 금지</td></tr></table><p class="pt-foot hand-note">인수 담당 메모: 고객 카드에는 지수가 고객 동의 없이 부품을 교체한 전후 사진이 있다고 들었다 내일 인계 전에 확인 필요 — 민호</p></div>`,
+      html: `<div class="paper-table"><p class="pt-head">미루정비소 폐업 인계 (초안)</p><table><tr><th>사업자등록</th><td>2009/3/30</td></tr><tr><th>금고</th><td>비밀번호는 개업일 네 자리 (월일) 사장 외 공유 금지</td></tr><tr><th>분실 카드</th><td>회수된 출입 카드는 금고 봉투에 보관 폐업 시 일괄 폐기</td></tr><tr><th>고객 저장물</th><td>고객 SD카드는 본인 동의 후 반환 복사본은 동의 없이 삭제 금지</td></tr></table><p class="pt-foot hand-note">인수 담당 메모: 고객 카드에는 지수가 고객 동의 없이 부품을 교체한 전후 사진이 있다고 들었다 내일 인계 전에 확인 필요 — 민호</p></div>`,
     },
     lost: {
       title: '서류함의 분실 신고서',
-      kind: '출입 카드 분실 · 2026. 9. 17',
-      html: `<div class="paper-table"><p class="pt-head">출입 카드 분실 신고 · 재발급</p><table><tr><th>신고</th><td>9. 17 14:00 한지수 07-A 분실 (작업장에서 잃어버린 듯)</td></tr><tr><th>재발급</th><td>9. 18 09:00 07-B 발급 (서명 한지수)</td></tr><tr><th>07-A 처리</th><td>9. 18 09:10 작업장 바닥에서 발견 → 사무실 금고 보관 (서명 박정호) <b>정지 처리 안 함</b></td></tr></table><p class="pt-foot">※ 폐업 일정으로 카드 정지는 보류 서버에는 07-A, 07-B가 따로 찍힘</p></div>`,
+      kind: '출입 카드 분실 · 2026/9/17',
+      html: `<div class="paper-table"><p class="pt-head">출입 카드 분실 신고 · 재발급</p><table><tr><th>신고</th><td>9/17 14:00 한지수 07-A 분실 (작업장에서 잃어버린 듯)</td></tr><tr><th>재발급</th><td>9/18 09:00 07-B 발급 (서명 한지수)</td></tr><tr><th>07-A 처리</th><td>9/18 09:10 작업장 바닥에서 발견 → 사무실 금고 보관 (서명 박정호) <b>정지 처리 안 함</b></td></tr></table><p class="pt-foot">※ 폐업 일정으로 카드 정지는 보류 서버에는 07-A, 07-B가 따로 찍힘</p></div>`,
     },
     alibi: {
       title: '강민호의 면담 기록',
@@ -178,7 +194,7 @@ export default {
     safedoc: {
       title: '금고 안의 봉투들',
       kind: '금고 열림',
-      html: `<figure class="prop"><img src="${P}props/safe-open.webp" alt="열린 금고 안, 봉투 하나가 비어 있다" decoding="async"></figure><p>봉투 넷 「04 예비」 「09 예비」 「11 퇴직」 그리고 「07-A 분실 · 9. 18 보관」 — 이 봉투만 비어 있다</p>`,
+      html: `<figure class="prop"><img src="${P}props/safe-open.webp" alt="열린 금고 안, 봉투 하나가 비어 있다" decoding="async"></figure><p>봉투 넷 「04 예비」 「09 예비」 「11 퇴직」 그리고 「07-A 분실 · 9/18 보관」 — 이 봉투만 비어 있다</p>`,
     },
     final: {
       title: '서연에게 보낸 보고',
@@ -239,31 +255,33 @@ export default {
     terminal: {
       title: '보관함 백업 단말',
       scene: 'shop',
-      intro: '화면에 「실제 입장 시각 4자리」',
+      intro: '단말에 서연 차 블랙박스 기록을 연결했다 화면에 시간 축 두 줄 위는 블랙박스, 아래는 출입 서버 두 시계를 맞추면 잠긴 구간이 열린다',
       docs: ['receipt', 'server'],
       hintCode: 'G-S02',
       hints: [
-        '"실제"면 서버 기준 아닐까요 블박 시각이랑 다르다면서요',
-        '들어간 장면의 표시 시각에서 영수증의 오차만큼 빼 보세요 초는 빼고 시와 분만요',
+        '블박 시각이 서버랑 다르다고 했죠 둘 다 찍힌 출입이 있을 거예요 화살표 방향도 같아야 같은 출입이에요',
+        '시각이 남아 있는 서버 출입 가운데 블박 장면 셋이 한꺼번에 겹치는 차이는 하나뿐이에요 나머지 두 장면은 서버가 잠긴 자리로 떨어져요',
       ],
-      initial: () => ({ dial: [0, 0, 0, 0], fails: 0 }),
+      initial: () => ({ off: 0 }),
       render(ctx) {
         const { d, el, save } = ctx;
-        const wrap = el('div', 'prop termlock'); wrap.innerHTML = `<img src="${P}props/terminal.webp" alt="백업 단말" decoding="async"><div class="term-lcd">ENTER TIME${d.fails ? ' · DENIED ' + d.fails : ''}<br><b>${d.dial.join('')}</b></div>`;
-        wrap.append(dialRow(el, save, d, 4));
+        if (typeof d.off !== 'number') d.off = 0;
+        const wrap = el('div', 'sync-wrap');
+        const screen = el('div', 'term-screen sync-screen'); screen.innerHTML = `<p class="term-line">BACKUP TERMINAL · CLOCK SYNC</p>${syncSvg(d.off)}<p class="term-line">블랙박스 시계 ${d.off > 0 ? '+' : d.off < 0 ? '−' : '±'}${Math.abs(d.off)}분</p>`;
+        const row = el('div', 'sync-row');
+        [[-5, '−5분'], [-1, '−1분'], [1, '+1분'], [5, '+5분']].forEach(([v, lab]) => { const b = el('button', 'ctl', lab); b.type = 'button'; b.setAttribute('aria-label', `블랙박스 시계 ${lab}`); b.onclick = () => { d.off = Math.max(-15, Math.min(15, d.off + v)); save(); }; row.append(b); });
+        wrap.append(screen, row, el('p', 'pick-label', '블랙박스 프레임 번호와 서버 카드 번호 옆의 ↓는 들어감, ↑는 나감'));
         return wrap;
       },
-      commitLabel: '입력',
+      commitLabel: '이 차이로 맞추기',
       check(d) {
-        const s = d.dial.join('');
-        if (s === TERMINAL_CODE.join('')) return { ok: true };
-        d.fails = (d.fails || 0) + 1;
-        return { ok: false, msg: 'DENIED' };
+        if (d.off === SYNC_ANSWER) return { ok: true };
+        return { ok: false, msg: 'SYNC FAIL' };
       },
       reveal: {
-        title: '2146',
-        text: '단말이 풀렸다 21:46:20 07-A 입장, 21:47:10 SD 슬롯 반출, 21:48:20 퇴장 쓰인 카드는 지수의 새 카드 07-B가 아니라 잃어버린 07-A다',
-        scene: ['07-A 지수가 잃어버렸다던 그 카드다 어제 아침 이후 어디 있었는지는 서류함에 있을 것이다'],
+        title: 'SYNC OK',
+        text: '블랙박스 −7분에서 장면 셋이 서버 출입과 겹쳤다 남은 두 장면은 서버가 잠긴 자리에 떨어졌다 잠긴 줄이 열렸다 21:46:20 07-A 입장, 21:47:10 SD 슬롯 반출, 21:48:20 07-A 퇴장',
+        scene: ['07-A 이 카드가 어제 아침 이후 어디 있었는지는 서류함에 있을 것이다'],
         unlock: null,
         unlockDoc: 'lockerlog',
       },
@@ -294,7 +312,7 @@ export default {
       },
       reveal: {
         title: '0407',
-        text: '손잡이가 내려갔다 봉투 넷 중 「07-A 분실 · 9. 18 보관」 봉투만 비어 있다',
+        text: '손잡이가 내려갔다 봉투 넷 중 「07-A 분실 · 9/18 보관」 봉투만 비어 있다',
         scene: ['번호 규칙은 인계 문서에 적혀 있다 그 문서를 쓴 사람도, 읽은 사람도 열 수 있다 금고만으로는 사람이 안 나온다'],
         unlock: null,
         unlockDoc: 'safedoc',
@@ -331,11 +349,11 @@ export default {
       canCommit: (d) => !!d.open,
       check(d) {
         if (d.open === 'stripe') return { ok: true };
-        return { ok: false, msg: '블랙박스의 재킷과 다르다 소매를 다시 보자' };
+        return { ok: false, msg: '블랙박스의 재킷과 다르다' };
       },
       reveal: {
-        title: '박정호',
-        text: '반사띠 재킷의 칼라 이름표는 박정호 안주머니 바닥에 SD카드 보호 케이스 뚜껑이 들어 있었다',
+        title: '왼 소매 반사띠',
+        text: '왼 소매에 반사띠가 붙은 재킷 안주머니 바닥에 SD카드 보호 케이스 뚜껑이 들어 있었다',
         scene: ['이름표만으로는 약하다 남의 재킷을 입을 수도 있으니까 이 재킷이 블랙박스에 한 번 더 찍혔다면, 그 시각 서버에 누가 찍혔는지가 답이다'],
         unlock: null,
       },
@@ -344,12 +362,12 @@ export default {
     report: {
       title: '서연에게 보고',
       scene: 'yard',
-      intro: '네 가지를 정해 보고한다 누가, 어떤 카드로, 서버 기준 몇 시에, 무엇이 결정적 근거인지 하나라도 틀리면 서연은 경찰을 못 부른다',
-      docs: ['lockerlog', 'safedoc', 'alibi'],
+      intro: '들어감에서 나감까지 한 줄로 이어 보고한다 칸마다 근거를 하나씩 끼운다 하나라도 틀리면 서연은 경찰을 못 부른다',
+      docs: ['lockerlog', 'safedoc', 'alibi', 'server'],
       hintCode: 'G-S05',
       hints: [
-        '카드랑 시각은 단말 기록에 있는 거죠? 사람은 재킷으로 근거는 그 재킷이 또 찍힌 장면이요',
-        '같은 재킷이 두 번 들어왔잖아요 두 번째 들어온 시각에 서버에 찍힌 카드가 누구 건지, 그게 사람이에요',
+        '카드는 단말 기록에, 그 카드가 어디 있었는지는 서류함하고 금고에 있잖아요',
+        '소매가 번쩍인 장면이 하나 더 있었죠 그 출입이 서버에서 누구 카드로 찍혔는지 보세요',
       ],
       initial: () => ({ pick: {} }),
       render(ctx) {
@@ -366,7 +384,7 @@ export default {
       commitLabel: '보고 보내기',
       check(d) {
         const empty = REPORT.filter((q) => !d.pick[q.id]);
-        if (empty.length) return { ok: false, msg: `「${empty[0].label}」이 비어 있다` };
+        if (empty.length) return { ok: false, msg: '보고서에 빈 칸이 있다' };
         if (REPORT.every((q) => d.pick[q.id] === q.ans)) return { ok: true };
         return { ok: false, msg: '서연: "확실해요? 하나라도 틀리면 경찰 못 불러요 다시 봐 주세요"' };
       },
