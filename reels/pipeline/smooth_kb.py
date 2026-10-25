@@ -1,3 +1,4 @@
+# usage: python3 smooth_kb.py <workdir>  (needs <workdir>/cards/*.png, writes <workdir>/bg/*.mp4)
 # smooth Ken Burns for still cards: subpixel affine per frame -> no pixel-snapping jitter
 import sys, subprocess, os
 from PIL import Image
@@ -20,6 +21,11 @@ def job(args):
             fr=im.transform((W,H),Image.AFFINE,(1/z,0,cx-cx/z,0,1/z,cy-cy/z),resample=Image.BICUBIC)
         p.stdin.write(fr.tobytes())
     p.stdin.close(); p.wait(); return name
-jobs=[(f'gr_{k}',f'cards/{k}.png','card') for k in ['g1','g2','g3','g4','g5','g6','g7','new','int']]
-jobs+=[('gr_sea','cards/sea.png','full'),('gr_lineup','cards/lineup.png','pan')]
+# every cards/<name>.png becomes bg/<name>.mp4 ; name starting with "pan_" slides across, "full_" pushes in at centre, others = car card
+import glob as _g
+jobs=[]
+for f in sorted(_g.glob('cards/*.png')):
+    n=os.path.splitext(os.path.basename(f))[0]
+    mode='pan' if n.startswith('pan_') else ('full' if n.startswith('full_') else 'card')
+    jobs.append((n,f,mode))
 with Pool(6) as pl: print(pl.map(job,jobs))
