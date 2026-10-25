@@ -299,6 +299,7 @@ for s in segs:
     if s.get('cta'):
         add('riser', max(0, s['t']-1.2), 0.35); add('success', s['t'], 0.55); add('ding', s['t']+0.4, 0.45)
 FULL = spec.get('style')=='fullscreen'
+STILLS = bool(spec.get('stills'))   # photo-based series (no zoompan jitter, no grain)
 if FULL:
     # quieter sound design: a soft whoosh on cuts, a tick on numbers, one success at the end
     ev.clear()
@@ -324,8 +325,11 @@ if FULL:
         # gentle push-in over the piece + 6-frame punch at the cut
         n=int(round(L*30))
         z=f"1.02+0.06*(in/{max(n,1)})+0.10*lt(in,7)*(1-in/7)"
-        run(['ffmpeg','-loglevel','error','-y','-ss',str(off),'-i',src,'-t',str(L+0.2),'-vf',
-             f"fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920:'max(0,min(iw-1080,iw*{ccx}-540))':'(ih-1920)/2',zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps=30,trim=0:{L},setpts=PTS-STARTPTS",
+        # stills mode (photo series): clips already carry a smooth subpixel push-in; ffmpeg zoompan on a still
+        # snaps to whole pixels and visibly shakes, so pass the clip through untouched
+        vf = (f"fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,trim=0:{L},setpts=PTS-STARTPTS" if STILLS else
+              f"fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920:'max(0,min(iw-1080,iw*{ccx}-540))':'(ih-1920)/2',zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps=30,trim=0:{L},setpts=PTS-STARTPTS")
+        run(['ffmpeg','-loglevel','error','-y','-ss',str(off),'-i',src,'-t',str(L+0.2),'-vf',vf,
              '-an','-c:v','libx264','-preset','veryfast','-crf','16',pf])
         parts.append(pf)
     with open(lst,'w') as f:
@@ -333,7 +337,7 @@ if FULL:
     run(['ffmpeg','-loglevel','error','-y','-f','concat','-safe','0','-i',lst,'-c','copy',os.path.join(W,'bg','_concat.mp4')])
     inputs = ['-i', os.path.join(W, 'bg', '_concat.mp4'), '-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-i', narr]
     bgfilter = (f"[0:v]trim=0:{total_dur},setpts=PTS-STARTPTS,eq=contrast=1.06:saturation=0.92:brightness=-0.02,"
-                f"colorbalance=bs=0.04:bh=-0.03,noise=alls=7:allf=t+u,"
+                f"colorbalance=bs=0.04:bh=-0.03,{'' if STILLS else 'noise=alls=7:allf=t+u,'}"
                 f"fade=t=out:st={total_dur-0.6}:d=0.6[bg];[bg][1:v]overlay=0:0:format=auto:shortest=1[v]")
 elif VECTOR:
     inputs = ['-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-i', narr]
