@@ -164,6 +164,9 @@ for i, s_ in enumerate(segs):
     for wd in sayraw.split():
         acc += len(_norm(wd)); wb.append(acc)
     wb = sorted(set(x for x in wb if 0 < x < L))
+    commas = set(); acc = 0
+    for part in _re.split(r'[,，]', sayraw)[:-1]:
+        acc += len(_norm(part)); commas.add(acc)
     gaps = [(a, b) for a, b in fsil2 if t0 + 0.1 < a and b < t1 - 0.05]
     isl = []; cur0 = t0
     for a, b in gaps:
@@ -188,6 +191,7 @@ for i, s_ in enumerate(segs):
                     syl = bps[kb] - bps[k0]
                     e = rate * syl
                     c = f[j0][k0] + ((d - e) / max(0.12, 0.25 * e)) ** 2 + gp
+                    if j < M and bps[kb] in commas: c -= 3.0      # a pause right after a comma is the comma pause
                     if c < f[j][kb]: f[j][kb] = c; bk[j][kb] = (j0, k0)
     anchors = [(0, t0)]
     if f[M][K - 1] < INF2:
