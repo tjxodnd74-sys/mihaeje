@@ -300,6 +300,7 @@ for s in segs:
         add('riser', max(0, s['t']-1.2), 0.35); add('success', s['t'], 0.55); add('ding', s['t']+0.4, 0.45)
 FULL = spec.get('style')=='fullscreen'
 STILLS = bool(spec.get('stills'))   # photo-based series (no zoompan jitter, no grain)
+CLIPAUD = float(spec.get('clipAudio') or 0)   # >0: mix each clip's own sound (e.g. AI engine/road sfx) at this volume
 if FULL:
     # quieter sound design: a soft whoosh on cuts, a tick on numbers, one success at the end
     ev.clear()
@@ -329,6 +330,14 @@ if FULL:
         # snaps to whole pixels and visibly shakes, so pass the clip through untouched
         vf = (f"fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,trim=0:{L},setpts=PTS-STARTPTS" if STILLS else
               f"fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920:'max(0,min(iw-1080,iw*{ccx}-540))':'(ih-1920)/2',zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps=30,trim=0:{L},setpts=PTS-STARTPTS")
+        if CLIPAUD:   # keep each clip's own sound (AI driving clips); silent clips get a silent track so concat stays uniform
+            has_a = 'audio' in run(['ffprobe','-v','error','-show_entries','stream=codec_type','-of','csv=p=0',src]).stdout
+            ain = ['-f','lavfi','-t',str(L+0.2),'-i','anullsrc=r=44100:cl=stereo'] if not has_a else []
+            amap = '1:a' if not has_a else '0:a'
+            run(['ffmpeg','-loglevel','error','-y','-ss',str(off),'-i',src]+ain+['-t',str(L),'-vf',vf,'-map','0:v','-map',amap,
+                 '-af',f'atrim=0:{L},asetpts=PTS-STARTPTS,afade=t=in:d=0.08,afade=t=out:st={max(0,L-0.15)}:d=0.15',
+                 '-c:a','aac','-ar','44100','-ac','2','-c:v','libx264','-preset','veryfast','-crf','16',pf])
+            parts.append(pf); continue
         run(['ffmpeg','-loglevel','error','-y','-ss',str(off),'-i',src,'-t',str(L+0.2),'-vf',vf,
              '-an','-c:v','libx264','-preset','veryfast','-crf','16',pf])
         parts.append(pf)
@@ -348,6 +357,8 @@ else:
 af = []
 labels = ['[n]']
 af.append('[2:a]volume=1.0[n]')
+if FULL and CLIPAUD:
+    af.append(f'[0:a]volume={CLIPAUD},afade=t=out:st={total_dur-0.8}:d=0.8[ca]'); labels.append('[ca]')
 for i, (p, ms, vol) in enumerate(ev):
     inputs += ['-i', p]
     af.append(f'[{3+i}:a]adelay={ms}|{ms},volume={vol}[s{i}]'); labels.append(f'[s{i}]')
