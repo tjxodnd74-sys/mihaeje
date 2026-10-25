@@ -20,6 +20,7 @@ h1 em{font-style:normal;color:#ffd64f}
 <div class="box"><div class="tag" id="tag"></div><h1 id="h"></h1><div class="sub" id="s"></div></div>
 <script>
 const C=window.COVER;document.getElementById('ph').style.backgroundImage=`url('${C.photo}')`;
+if(C.boxTop!=null){const b=document.querySelector('.box');b.style.top=C.boxTop+'px';b.style.height=(C.boxH||620)+'px';}
 const hl=s=>s.replace(/\|([^|]+)\|/g,'<em>$1</em>');
 document.getElementById('tag').textContent=C.tag;document.getElementById('h').innerHTML=hl(C.title);document.getElementById('s').innerHTML=hl(C.sub||'');
 </script></body></html>
