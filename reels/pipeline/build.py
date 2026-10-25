@@ -280,6 +280,7 @@ bgfilter = (f"[0:v]fps=30,scale=1080:1920:force_original_aspect_ratio=increase,c
 
 # --- 4. sfx events ---
 sfxdir = os.path.join(W, 'sfx')
+if not os.path.isdir(sfxdir) or not os.listdir(sfxdir): sfxdir = os.path.join(HERE, 'sfx')   # bundled copy in the repo
 ev = []  # (file, ms, vol)
 def add(name, t, vol):
     p = os.path.join(sfxdir, name + '.wav')
