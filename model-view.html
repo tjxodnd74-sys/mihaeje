@@ -1,0 +1,18 @@
+<!doctype html><html><body style="margin:0;background:#888"><canvas id="c" width="900" height="500"></canvas>
+<script type="module">
+import * as THREE from './v2/vendor/three-bundle.min.js';
+const url = new URLSearchParams(location.search).get('m');
+const r = new THREE.WebGLRenderer({ canvas: document.getElementById('c'), antialias: true }); r.outputColorSpace = THREE.SRGBColorSpace; r.toneMapping = THREE.ACESFilmicToneMapping;
+const s = new THREE.Scene(); s.background = new THREE.Color(0x777b80);
+s.environment = new THREE.PMREMGenerator(r).fromScene(new THREE.RoomEnvironment(r), 0.04).texture;
+const l = new THREE.DirectionalLight(0xffffff, 2); l.position.set(2, 3, 2); s.add(l);
+new THREE.GLTFLoader().setMeshoptDecoder(THREE.MeshoptDecoder).load(url, (g) => {
+  const m = g.scene; const b = new THREE.Box3().setFromObject(m); const sz = b.getSize(new THREE.Vector3()); const c = b.getCenter(new THREE.Vector3());
+  m.position.sub(c); s.add(m);
+  const d = Math.max(sz.x, sz.y, sz.z);
+  const views = [[1, 0.5, 1.4], [-1.4, 0.4, 0.3]];
+  const out = [];
+  views.forEach((v, i) => { const cam = new THREE.PerspectiveCamera(35, 900 / 500, 0.01, 100); cam.position.set(v[0] * d * 1.6, v[1] * d * 1.6, v[2] * d * 1.6); cam.lookAt(0, 0, 0); r.render(s, cam); out.push(r.domElement.toDataURL()); });
+  window.__shots = out; window.__info = { size: sz.toArray(), tris: (() => { let t = 0; m.traverse((o) => { if (o.isMesh) t += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3; }); return t; })() };
+}, undefined, (e) => { window.__err = String(e); });
+</script></body></html>

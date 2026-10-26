@@ -2,6 +2,9 @@
 // 좌표는 미터 단위 · 접수실 x -3~3, z -3~3 · 작업대는 접수실 오른쪽 안쪽 · 암실은 뒷벽 너머 x -3~0, z -6~-3
 // 핫스팟 id(kit.hot)는 episodes/studio.js 장면의 hotspots id와 같아야 엔진의 자료·장치 창이 열린다
 
+// 받아 둔 실사 모델 (없는 건 코드 모양 그대로)
+const MODELS = { lamp: true, enlarger: true, cabinet: true, tray: true, camera: true, counter: false, bottles: true, timer: true, loupe: false, plant: true };
+
 const BRASS = 0xb08d4a, IRON = 0x2b2b2d, KRAFT = 0xc49a5c;
 
 function hand(g, w, h, lines, o = {}) {
@@ -103,9 +106,10 @@ export default {
     k.lathe([[0, 0], [0.05, -0.05], [0.07, -0.32], [0.0, -0.34]], [-1.8, 1.08, 2.63], 0x232a3a, { rough: 0.25 });
 
     // ---------- 접수대 ----------
-    k.rbox([2.3, 0.98, 0.6], [0.45, 0.49, -0.45], M.counter, { r: 0.015 });
-    for (let i = 0; i < 4; i++) k.rbox([0.5, 0.6, 0.02], [-0.42 + i * 0.58, 0.5, -0.14], M.counterTop, { r: 0.008 }); // 앞판 칸
-    k.rbox([2.42, 0.045, 0.7], [0.45, 1.0, -0.45], M.counterTop, { r: 0.01 });
+    const counterG = k.group([0.45, 0, -0.45]);
+    k.rbox([2.3, 0.98, 0.6], [0, 0.49, 0], M.counter, { r: 0.015, parent: counterG });
+    for (let i = 0; i < 4; i++) k.rbox([0.5, 0.6, 0.02], [-0.87 + i * 0.58, 0.5, 0.31], M.counterTop, { r: 0.008, parent: counterG }); // 앞판 칸
+    k.rbox([2.42, 0.045, 0.7], [0, 1.0, 0], M.counterTop, { r: 0.01, parent: counterG });
     // 초록 은행 등 + 등 밑 봉투 (장치: lamp)
     const lampG = k.group([0.95, 1.022, -0.6]);
     k.cyl(0.075, 0.09, 0.025, [0, 0.012, 0], BRASS, { metal: 0.9, rough: 0.3, parent: lampG });
@@ -114,7 +118,7 @@ export default {
     shade.material = shade.material.clone(); shade.material.transparent = true; shade.material.opacity = 0.92;
     k.cyl(0.004, 0.004, 0.12, [0.06, 0.26, 0.04], BRASS, { metal: 0.9, parent: lampG }); // 당김 줄
     k.sphere(0.018, [0, 0.29, 0.04], 0xfff2d0, { glow: 0xfff0c8, glowI: 1.6, cast: false, parent: lampG });
-    k.point(0xfff0c8, 3.6, 2.4, [0.95, 1.3, -0.52], { shadow: !k.small });
+    k.point(0xfff0c8, 1.8, 2.2, [0.95, 1.33, -0.5], { shadow: !k.small });
     const env = k.group([0.72, 1.026, -0.36], { rot: [0, 9, 0] });
     k.box([0.34, 0.006, 0.25], [0, 0, 0], k.tex('paint', { color: KRAFT, seed: 88 }), { parent: env });
     k.box([0.05, 0.007, 0.05], [0, 0.002, -0.08], 0x7a5a2c, { parent: env });
@@ -143,8 +147,9 @@ export default {
     k.cyl(0.17, 0.17, 0.05, [0, 0, 0], M.frame, { rot: [90, 0, 0], parent: clock });
     k.sign(0.3, 0.3, [0, 0, 0.03], (g, w, h) => { g.fillStyle = '#efe8d8'; g.beginPath(); g.arc(w / 2, h / 2, w / 2 - 2, 0, 7); g.fill(); g.fillStyle = '#222'; for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2; g.fillRect(w / 2 + Math.sin(a) * w * 0.4 - 2, h / 2 - Math.cos(a) * w * 0.4 - 6, 4, 12); } g.strokeStyle = '#111'; g.lineCap = 'round'; g.lineWidth = 7; g.beginPath(); g.moveTo(w / 2, h / 2); g.lineTo(w / 2 + Math.sin(4.5 / 12 * 2 * Math.PI) * w * 0.22, h / 2 - Math.cos(4.5 / 12 * 2 * Math.PI) * w * 0.22); g.stroke(); g.lineWidth = 4; g.beginPath(); g.moveTo(w / 2, h / 2); g.lineTo(w / 2 + Math.sin(Math.PI) * w * 0.34, h / 2 - Math.cos(Math.PI) * w * 0.34); g.stroke(); }, { parent: clock, px: 256 });
     // 화분
-    k.lathe([[0, 0], [0.13, 0], [0.16, 0.32], [0.17, 0.34]], [2.6, 0, 2.6], 0x7a4a32, { rough: 0.9 });
-    for (let i = 0; i < 9; i++) { const a = i * 2.4, rr = 0.06 + (i % 3) * 0.05; k.sphere(0.09 + (i % 2) * 0.03, [2.6 + Math.cos(a) * rr, 0.42 + (i % 4) * 0.1, 2.6 + Math.sin(a) * rr], 0x2f5a2a, { rough: 0.7 }); }
+    const plantG = k.group([2.55, 0, 2.55]);
+    k.lathe([[0, 0], [0.13, 0], [0.16, 0.32], [0.17, 0.34]], [0, 0, 0], 0x7a4a32, { rough: 0.9, parent: plantG });
+    for (let i = 0; i < 9; i++) { const a = i * 2.4, rr = 0.06 + (i % 3) * 0.05; k.sphere(0.09 + (i % 2) * 0.03, [Math.cos(a) * rr, 0.42 + (i % 4) * 0.1, Math.sin(a) * rr], 0x2f5a2a, { rough: 0.7, parent: plantG }); }
 
     // ---------- 촬영 구석 (왼쪽 앞) : 삼각대 카메라 + 배경지 ----------
     k.cyl(0.04, 0.04, 1.6, [-2.9, 2.35, 1.9], IRON, { rot: [90, 0, 0] });
@@ -240,16 +245,18 @@ export default {
     k.cyl(0.035, 0.04, 0.06, [0, 0.75, -0.02], 0x0a0a0a, { parent: enl });
     k.cyl(0.035, 0.035, 0.08, [0.16, 0.95, -0.12], IRON, { rot: [0, 0, 90], parent: enl });
     // 타이머
-    k.rbox([0.16, 0.16, 0.09], [-1.8, 1.005, -5.55], 0x1a1a1a, { r: 0.012 });
-    k.cyl(0.055, 0.055, 0.006, [-1.8, 1.01, -5.504], 0x302018, { rot: [90, 0, 0], glow: 0xff5a20, glowI: 0.35 });
+    const timerG = k.group([-1.8, 0.925, -5.55]);
+    k.rbox([0.16, 0.16, 0.09], [0, 0.08, 0], 0x1a1a1a, { r: 0.012, parent: timerG });
+    k.cyl(0.055, 0.055, 0.006, [0, 0.085, 0.046], 0x302018, { rot: [90, 0, 0], glow: 0xff5a20, glowI: 0.35, parent: timerG });
     // 트레이 셋
     const trays = k.group([-0.95, 0.925, -5.65]);
-    [-0.4, 0, 0.4].forEach((x) => { k.rbox([0.34, 0.06, 0.44], [x, 0.03, 0], 0xe6e6e2, { r: 0.012, rough: 0.35, parent: trays }); k.plane(0.3, 0.4, [x, 0.052, 0], 0x18181c, { rot: [-90, 0, 0], rough: 0.05, metal: 0.2, parent: trays }); });
+    const trayGs = [-0.4, 0, 0.4].map((x) => { const tg = k.group([x, 0, 0], { parent: trays }); k.rbox([0.34, 0.06, 0.44], [0, 0.03, 0], 0xe6e6e2, { r: 0.012, rough: 0.35, parent: tg }); k.plane(0.3, 0.4, [0, 0.052, 0], 0x18181c, { rot: [-90, 0, 0], rough: 0.05, metal: 0.2, parent: tg }); return tg; });
     k.box([0.18, 0.004, 0.03], [-0.55, 0.985, -5.45], 0x9a9a9a, { rot: [0, 30, 0] });
     const print = k.group([0, 0, 0]); print.add(enl, trays); k.root.add(print); k.hot('print', print);
     // 약품병 선반
     k.rbox([1.4, 0.03, 0.22], [-0.9, 2.0, -5.9], M.bench, { r: 0.006 });
-    [[-0.25, 0x5a2a0a, 0.26], [-0.12, 0x4a2008, 0.22], [0.0, 0x2a2a2a, 0.3]].forEach(([dx, c, hh]) => { k.lathe([[0, 0], [0.05, 0], [0.05, hh * 0.7], [0.022, hh * 0.85], [0.02, hh]], [-0.6 + dx, 2.015, -5.9], c, { rough: 0.15, metal: 0.1 }); });
+    const bottleG = k.group([-0.72, 2.015, -5.9]);
+    [[-0.13, 0x5a2a0a, 0.26], [0, 0x4a2008, 0.22], [0.13, 0x2a2a2a, 0.3]].forEach(([dx, c, hh]) => { k.lathe([[0, 0], [0.05, 0], [0.05, hh * 0.7], [0.022, hh * 0.85], [0.02, hh]], [dx, 0, 0], c, { rough: 0.15, metal: 0.1, parent: bottleG }); });
     // 벽의 순서표 (자료: chart)
     const chart = k.sign(0.42, 0.56, [-2.99, 1.55, -4.7], (g, w, h) => { g.fillStyle = '#efe6cf'; g.fillRect(0, 0, w, h); g.fillStyle = '#2a3570'; g.font = 'bold 44px "Nanum Pen Script", cursive'; g.fillText('순서', 30, 60); g.strokeStyle = '#2a3570'; g.lineWidth = 4; for (let i = 0; i < 5; i++) { g.fillText(String(i + 1), 30, 130 + i * 70); g.beginPath(); g.moveTo(70, 118 + i * 70); g.lineTo(60 + 120 + (i * 53) % 160, 118 + i * 70); g.stroke(); } }, { rot: [0, 90, 0], px: 320 });
     k.hot('chart', chart);
@@ -264,6 +271,21 @@ export default {
     k.rbox([0.2, 0.12, 0.12], [-1.5, 2.45, -4.0], 0x2a1010, { glow: 0xff2010, glowI: 3, r: 0.02 });
     const safe = k.point(0xff2a12, 4.5, 6, [-1.5, 2.3, -4.2], { shadow: true });
     const fill = k.point(0xff6a50, 0, 4, [-1.5, 1.6, -3.6]);
+
+    // ---------- 실사 소품 (AI 3D 모델, assets/v2/studio/3d) — 받는 동안은 위의 모양이 보인다 ----------
+    const G = 'assets/v2/studio/3d/';
+    const kids = (g) => g.children.slice();
+    k.model(G + 'lamp.glb', lampG, { fit: [0.42, 0.44, 0.3], rot: [0, 90, 0], env: 0.25, hide: kids(lampG) });
+    if (MODELS.enlarger) k.model(G + 'enlarger.glb', enl, { fit: [0.6, 1.15, 0.5], rot: [0, -90, 0], env: 0.3, hide: kids(enl) });
+    // 서랍장: 보관함(장치)은 칸·라벨 자리가 단서라 그대로 두고, 암실 문 옆 장식으로만 쓴다
+    if (MODELS.cabinet) { const cab = k.group([-2.7, 0, -2.15]); k.model(G + 'cabinet.glb', cab, { fit: [0.6, 1.0, 1.05], env: 0.3 }); }
+    if (MODELS.tray) trayGs.forEach((tg) => k.model(G + 'tray.glb', tg, { fit: [0.34, 0.07, 0.44], stretch: true, env: 0.3, hide: [tg.children[0]] }));
+    if (MODELS.camera) { const body = k.group([0, 1.2, 0], { parent: cam }); k.model(G + 'camera.glb', body, { fit: [0.3, 0.42, 0.42], rot: [0, -90, 0], env: 0.3, hide: kids(cam).slice(3, 6) }); }
+    if (MODELS.counter) k.model(G + 'counter.glb', counterG, { fit: [2.4, 1.02, 0.7], stretch: true, hide: kids(counterG) });
+    if (MODELS.bottles) k.model(G + 'bottles.glb', bottleG, { fit: [0.4, 0.3, 0.14], rot: [0, -90, 0], env: 0.3, hide: kids(bottleG) });
+    if (MODELS.timer) k.model(G + 'timer.glb', timerG, { fit: [0.17, 0.2, 0.12], rot: [0, -90, 0], env: 0.3, hide: kids(timerG) });
+    if (MODELS.loupe) k.model(G + 'loupe.glb', loupe, { fit: [0.09, 0.08, 0.09], offset: [0, -0.025, 0], hide: kids(loupe) });
+    if (MODELS.plant) k.model(G + 'plant.glb', plantG, { fit: [0.7, 1.15, 0.7], env: 0.3, hide: kids(plantG) });
 
     return {
       scenes: {

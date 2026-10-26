@@ -45,6 +45,27 @@ function makeKit(root, renderer, small) {
     },
     point: (color, intensity, dist, pos, o = {}) => { const l = new THREE.PointLight(color, intensity, dist, o.decay ?? 2); l.position.set(...pos); if (o.shadow) { l.castShadow = true; l.shadow.mapSize.set(512, 512); l.shadow.bias = -0.002; l.shadow.radius = 4; } (o.parent || root).add(l); return l; },
     spot: (color, intensity, dist, pos, target, o = {}) => { const l = new THREE.SpotLight(color, intensity, dist, (o.angle || 40) * D2R, o.penumbra ?? 0.6, 2); l.position.set(...pos); l.target.position.set(...target); if (o.shadow) { l.castShadow = true; l.shadow.mapSize.set(1024, 1024); l.shadow.bias = -0.001; } root.add(l, l.target); return l; },
+    // 실사 3D 모델(GLB) 불러오기: 받는 동안은 코드로 만든 모양을 보여 주고, 다 오면 바꿔 끼운다
+    // fit: [가로, 높이, 깊이] 상자 안에 비율 유지로 맞춤 · 바닥 가운데가 그룹 원점에 오도록
+    model: (url, holder, o = {}) => {
+      const loader = kit._gltf || (kit._gltf = new THREE.GLTFLoader().setMeshoptDecoder(THREE.MeshoptDecoder));
+      loader.load(url, (g) => {
+        const m0 = g.scene; const m = new THREE.Group(); m.add(m0); if (o.rot) m0.rotation.set(o.rot[0] * D2R, o.rot[1] * D2R, o.rot[2] * D2R); m.updateMatrixWorld(true);
+        const b = new THREE.Box3().setFromObject(m); const sz = b.getSize(new THREE.Vector3());
+        const f = o.fit || [sz.x, sz.y, sz.z];
+        if (o.stretch) m.scale.set(f[0] / sz.x, f[1] / sz.y, f[2] / sz.z); else m.scale.setScalar(Math.min(f[0] / sz.x, f[1] / sz.y, f[2] / sz.z));
+        m.updateMatrixWorld(true);
+        const b2 = new THREE.Box3().setFromObject(m); const c = b2.getCenter(new THREE.Vector3());
+        m.position.sub(new THREE.Vector3(c.x, b2.min.y, c.z));
+        const wrap = new THREE.Group(); wrap.add(m);
+        if (o.offset) wrap.position.set(...o.offset);
+        const hotId = holder.userData.hot;
+        m.traverse((c2) => { if (c2.isMesh) { c2.castShadow = true; c2.receiveShadow = true; if (c2.material) { c2.material.envMapIntensity = o.env ?? 0.5; if (o.tint) c2.material.color?.multiplyScalar(o.tint); } } if (hotId) c2.userData.hot = hotId; });
+        (o.hide || []).forEach((h) => { h.visible = false; });
+        holder.add(wrap);
+        kit.onModel?.();
+      }, undefined, (e) => console.warn('model load failed', url, e));
+    },
     hots: new Map(), // 핫스팟 id → 물건(Object3D)
     hot: (id, obj) => { kit.hots.set(id, obj); obj.userData.hot = id; obj.traverse((c) => { c.userData.hot = id; }); return obj; },
   };
