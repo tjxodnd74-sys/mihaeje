@@ -164,12 +164,18 @@ async function main() {
     sec.append(nav);
     // 무대
     const stage = el('div', 'v2-stage');
-    const img = pic(el('img', 'v2-stage-img'), scene.image); img.alt = scene.name; img.decoding = 'async';
-    stage.append(img);
-    (scene.overlays || []).forEach((o) => { const n = html('div', 'v2-stage-ov ' + (o.cls || ''), o.html); n.style.cssText = `left:${o.x}%;top:${o.y}%;width:${o.w}%;height:${o.h}%;${o.style || ''}`; n.setAttribute('aria-hidden', 'true'); stage.append(n); });
+    const use3d = window.MIHAEJE_3D && (window.MIHAEJE_3D === true || window.MIHAEJE_3D.includes?.(ep.id));
+    if (!use3d) { const img = pic(el('img', 'v2-stage-img'), scene.image); img.alt = scene.name; img.decoding = 'async'; stage.append(img); }
+    if (!use3d) (scene.overlays || []).forEach((o) => { const n = html('div', 'v2-stage-ov ' + (o.cls || ''), o.html); n.style.cssText = `left:${o.x}%;top:${o.y}%;width:${o.w}%;height:${o.h}%;${o.style || ''}`; n.setAttribute('aria-hidden', 'true'); stage.append(n); });
     const seenSet = new Set(S.seen);
     const autoTravel = ep.scenes.filter((sc) => sc.unlockedBy && S.solved.includes(sc.unlockedBy) && ep.devices[sc.unlockedBy]?.scene === scene.id && !S.visited.includes(sc.id)).map((sc, i, arr) => ({ id: 'go-' + sc.id, x: arr.length > 1 ? 30 + i * (40 / (arr.length - 1)) : 50, y: 92, label: sc.name + '(으)로 가기', kind: 'travel', to: sc.id, auto: true }));
-    [...scene.hotspots, ...autoTravel].forEach((h) => {
+    if (use3d) {
+      // 3D 무대: 사진·점 대신 방을 그리고, 같은 핫스팟을 방 안 물건에 붙인다
+      stage.classList.add('is-3d');
+      const hs = [...scene.hotspots, ...autoTravel].filter((h) => !(h.visible && !h.visible(S))).map((h) => { if (h.auto) h.label = josa(h.label.replace('(으)로 가기', ''), '으로', '로') + ' 가기'; return { ...h, done: h.kind === 'doc' ? S.read.includes(h.doc) : h.kind === 'device' ? S.solved.includes(h.device) : false }; });
+      import(`./three-stage.js?v=${VER}`).then((m) => m.mount(stage, { ep, scene, S, hotspots: hs, act, VER })).catch((e) => { console.error(e); stage.classList.remove('is-3d'); const img = pic(el('img', 'v2-stage-img'), scene.image); img.alt = scene.name; stage.append(img); });
+    }
+    if (!use3d) [...scene.hotspots, ...autoTravel].forEach((h) => {
       if (h.visible && !h.visible(S)) return;
       const done = h.kind === 'doc' ? S.read.includes(h.doc) : h.kind === 'device' ? S.solved.includes(h.device) : false;
       if (h.auto) h.label = josa(h.label.replace('(으)로 가기', ''), '으로', '로') + ' 가기';

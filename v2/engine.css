@@ -1149,3 +1149,21 @@ body:has(.v2-bar){padding-bottom:calc(84px + env(safe-area-inset-bottom))}
 }
 .slip-head{font-family:var(--sans);font-weight:800}
 .v2-ending .v2-secondary.subtle{opacity:.9}
+
+/* ---------- 3D 무대 (시범 · play3d.html) ---------- */
+.v2-stage.is-3d{aspect-ratio:auto;height:min(72vh,680px);background:#0b0c0e;overflow:hidden;position:relative;touch-action:none}
+.v2-stage.is-3d .v3-canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
+.v3-tags{position:absolute;inset:0;pointer-events:none}
+.v3-tag{position:absolute;left:0;top:0;pointer-events:auto;display:flex;align-items:center;gap:6px;border:0;background:rgba(12,12,14,.72);color:#f3ead8;font-size:13px;font-weight:600;padding:5px 10px 5px 8px;border-radius:999px;white-space:nowrap;margin:-30px 0 0 -12px;box-shadow:0 2px 8px rgba(0,0,0,.4);cursor:pointer}
+.v3-tag i{width:9px;height:9px;border-radius:50%;background:var(--lamp,#e3a64a);box-shadow:0 0 0 3px rgba(227,166,74,.25)}
+.v3-tag.device i{background:#f0c25a}
+.v3-tag.done{opacity:.6}
+.v3-tag.done i{background:#8a8f95;box-shadow:none}
+.v3-tag.hover,.v3-tag:focus-visible{outline:none;background:rgba(60,42,14,.92)}
+.v3-views{position:absolute;left:10px;top:10px;display:flex;flex-wrap:wrap;gap:6px;max-width:calc(100% - 20px)}
+.v3-view{border:1px solid rgba(255,255,255,.22);background:rgba(10,10,12,.62);color:#e9e4da;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.v3-view.on{background:rgba(227,166,74,.9);color:#1b1206;border-color:transparent}
+.v3-strip{position:absolute;left:0;right:0;bottom:34px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;pointer-events:none}
+.v3-strip .v3-tag{position:static;margin:0;pointer-events:auto;font-size:15px;padding:9px 16px}
+.v3-help{position:absolute;left:0;right:0;bottom:8px;margin:0;text-align:center;font-size:12px;color:rgba(235,230,220,.6);pointer-events:none}
+@media (max-width:640px){.v2-stage.is-3d{height:64vh}.v3-tag{font-size:12px}.v3-view{font-size:12px;padding:5px 10px}}
