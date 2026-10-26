@@ -328,7 +328,8 @@ if FULL:
         z=f"1.02+0.06*(in/{max(n,1)})+0.10*lt(in,7)*(1-in/7)"
         # stills mode (photo series): clips already carry a smooth subpixel push-in; ffmpeg zoompan on a still
         # snaps to whole pixels and visibly shakes, so pass the clip through untouched
-        vf = (f"fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,trim=0:{L},setpts=PTS-STARTPTS" if STILLS else
+        slow = (L + 0.15) / max(cd - off, 0.1) if STILLS and cd - off < L + 0.1 else 1.0   # clip shorter than the sentence: stretch it slightly instead of running out
+        vf = (f"setpts={slow:.4f}*(PTS-STARTPTS),fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,trim=0:{L},setpts=PTS-STARTPTS" if STILLS else
               f"fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920:'max(0,min(iw-1080,iw*{ccx}-540))':'(ih-1920)/2',zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps=30,trim=0:{L},setpts=PTS-STARTPTS")
         if CLIPAUD:   # keep each clip's own sound (AI driving clips); silent clips get a silent track so concat stays uniform
             has_a = 'audio' in run(['ffprobe','-v','error','-show_entries','stream=codec_type','-of','csv=p=0',src]).stdout
