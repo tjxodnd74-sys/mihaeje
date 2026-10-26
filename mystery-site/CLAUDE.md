@@ -166,3 +166,4 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
   - 창밖: Poly Haven HDRI cobblestone_street_night 를 원근 투영해 어둡게·흐리게 한 사진(window_street.jpg)을 유리 3m 뒤 판에 · 유리는 비 그친 뒤 남은 물방울(투명, 움직이지 않음)
   - 남은 약점: 사진 벽의 인물 사진(흐린 실루엣) — 2D 장면 그림에서 잘라 쓰면 작은 얼굴이 뭉개져서 안 씀
   - 질감·HDRI 받는 길도 Higgsfield 샌드박스(인터넷 됨) → tar → PNG 바이트 포장 → unpack.py (크레딧 안 듦)
+- v123 사진 벽: Higgsfield nano_banana_2 로 1970~90년대 한국 사진관 사진 8장(결혼·돌·졸업·여권·가족·회갑·교복·80년대 여성) → tex/portraits.jpg (256×320 칸 8개 한 줄) · 14칸에 나눠 걸고 다시 나오는 건 좌우 반전 · 맨 아래 가운데 빈 액자(단서)는 그대로 · 약 12 크레딧

@@ -188,6 +188,7 @@ export default {
     k.hot('sleeve', sleeve);
 
     // ---------- 오른쪽 벽: 손님 사진들 (자료: wall) ----------
+    const portraits = new T.TextureLoader().load('assets/v2/studio/tex/portraits.jpg'); portraits.colorSpace = T.SRGBColorSpace; portraits.anisotropy = 4; portraits.wrapS = T.RepeatWrapping;
     const wallG = k.group([2.99, 0, 0], { rot: [0, -90, 0] });
     for (let r = 0; r < 3; r++) for (let c = 0; c < 5; c++) {
       const w = 0.3 + ((r + c) % 3) * 0.06, h = 0.38 + ((r * 2 + c) % 2) * 0.08;
@@ -195,7 +196,12 @@ export default {
       const empty = r === 2 && c === 2;
       k.rbox([w + 0.07, h + 0.07, 0.03], [x, y, 0], M.frame, { r: 0.006, parent: wallG });
       if (empty) k.plane(w, h, [x, y, 0.017], 0xf1ece0, { parent: wallG, rough: 0.8 });
-      else k.sign(w, h, [x, y, 0.017], oldPhoto(r * 7 + c * 3 + 1), { parent: wallG, px: 220, rough: 0.35 });
+      else { // 옛 손님 사진 (AI로 만든 1970~90년대 사진관 사진 8장, portraits.jpg 한 줄에 8칸) · 같은 사진이 다시 나오면 좌우를 뒤집는다
+        const n = r * 5 + c - (r * 5 + c > 12 ? 1 : 0); const cell = [0, 3, 6, 1, 4, 7, 2, 5][n % 8]; const flip = n >= 8;
+        const t = portraits.clone(); t.needsUpdate = true; const a = w / h; const uw = Math.min(1, a / 0.8) / 8, vh = Math.min(1, 0.8 / a);
+        t.repeat.set(flip ? -uw : uw, vh); t.offset.set((cell + 0.5) / 8 + (flip ? uw / 2 : -uw / 2), (1 - vh) / 2 + 0.04 * (1 - vh));
+        k.plane(w, h, [x, y, 0.017], new T.MeshStandardMaterial({ map: t, roughness: 0.32, envMapIntensity: 0.5, color: [0xf0e8dc, 0xe8e8e8, 0xf4e6d0][n % 3] }), { parent: wallG });
+      }
     }
     k.hot('wall', wallG);
     k.spot(0xffe6c4, 9, 4, [1.9, 2.75, 0.2], [2.95, 1.6, 0.2], { angle: 50, penumbra: 0.9 });
