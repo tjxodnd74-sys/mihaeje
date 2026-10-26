@@ -157,3 +157,8 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
 - 테스트: 장면별 스크린샷은 localStorage 에 상태를 넣고 .v2-stage 를 찍는다 (scratchpad/shots3d.mjs 방식) · 이름표 위에서 끌면 회전하지 않는다(버튼)
 - v120 실사 보강: vendor/three-bundle.min.js (three 0.160.1 + RoomEnvironment·RoundedBoxGeometry·EffectComposer·GTAOPass·UnrealBloomPass·OutputPass 를 esbuild로 묶음) · web/v2/three-tex.js 가 나무결·마루·회벽·콘크리트·쇠·칠 질감(색·거칠기·노멀)을 코드로 그림 (kit.tex(kind,{color,repeat})) · GTAO(구석 그림자)는 PC만, 모바일은 질감 절반 크기 · 재질 캐시 키에 parent 같은 물체를 넣지 말 것(JSON 직렬화로 느려짐)
 - 헤드리스(소프트웨어 GL)에선 한 장 찍는 데 수십 초 → shots3d.mjs 는 page.screenshot(clip) + 긴 timeout, 장면 번호를 골라 찍기
+- v121 AI 3D 소품 (Higgsfield tripo_3d detailed, 장당 12.5 크레딧): web/assets/v2/studio/3d/*.glb — 초록 등, 확대기, 서랍장(장식), 트레이, 대형 카메라, 약품병, 타이머, 화분
+  - 받는 길: 샌드박스에서 gltf-transform optimize(meshopt + webp 1024/512) → PNG 안에 바이트를 담아 image_paths 로 가져옴 → scratchpad/unpack.py 로 풀고 md5 비교 (사용자 토큰·계정 정보는 샌드박스에 보내지 않는다)
+  - rooms/studio.js 맨 위 MODELS 로 켜고 끔 · kit.model(url, 자리 그룹, {fit, rot, stretch, offset, env, hide}) — 받는 동안은 상자판 모양이 보이고, 다 받으면 hide 목록을 숨김 · 핫스팟은 자리 그룹의 hot id 를 물려받음
+  - 퍼즐 단서가 있는 모양(필름 보관함 4×4 칸·라벨 자리)은 AI 모델로 바꾸지 않는다 → 서랍장은 문 옆 장식
+  - 버림: 접수대(거친 나무 상자처럼 나옴), 루페(양동이처럼 나옴) — 상자판 그대로
