@@ -359,9 +359,18 @@ labels = ['[n]']
 af.append('[2:a]volume=1.0[n]')
 if FULL and CLIPAUD:
     af.append(f'[0:a]volume={CLIPAUD},afade=t=out:st={total_dur-0.8}:d=0.8[ca]'); labels.append('[ca]')
+BED = spec.get('bed')   # one continuous ambience under the whole video (e.g. "car_bed"), instead of per-clip sound that cuts at every scene change
+if BED:
+    bp = os.path.join(sfxdir, BED + '.wav')
+    if not os.path.exists(bp): bp = os.path.join(HERE, 'sfx', BED + '.wav')
+    if os.path.exists(bp):
+        bi = len([x for x in inputs if x == '-i'])
+        inputs += ['-stream_loop', '-1', '-i', bp]
+        af.append(f"[{bi}:a]atrim=0:{total_dur},asetpts=PTS-STARTPTS,volume={float(spec.get('bedVolume', 0.5))},afade=t=in:d=0.6,afade=t=out:st={total_dur-1.0}:d=1.0[bed]"); labels.append('[bed]')
 for i, (p, ms, vol) in enumerate(ev):
+    k_in = len([x for x in inputs if x == '-i'])
     inputs += ['-i', p]
-    af.append(f'[{3+i}:a]adelay={ms}|{ms},volume={vol}[s{i}]'); labels.append(f'[s{i}]')
+    af.append(f'[{k_in}:a]adelay={ms}|{ms},volume={vol}[s{i}]'); labels.append(f'[s{i}]')
 af.append(''.join(labels) + f'amix=inputs={len(labels)}:normalize=0:duration=longest,apad,atrim=0:{total_dur},loudnorm=I=-14:TP=-1.5:LRA=11[a]')
 out = os.path.join(W, 'out.mp4')
 run(['ffmpeg', '-loglevel', 'error', '-y'] + inputs + ['-filter_complex', bgfilter + ';' + ';'.join(af),
