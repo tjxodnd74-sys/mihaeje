@@ -23,9 +23,12 @@ function oldPhoto(seed) {
     for (let i = 0; i < n; i++) {
       const cx = w * (0.5 + (i - (n - 1) / 2) * 0.26 + (r() - 0.5) * 0.05), top = h * (0.28 + r() * 0.08);
       g.fillStyle = `rgba(${sepia ? '60,42,28' : '40,40,42'},${0.55 + r() * 0.3})`;
+      g.filter = `blur(${Math.max(1.5, w / 90)}px)`;
       g.beginPath(); g.ellipse(cx, top, w * 0.07, w * 0.085, 0, 0, Math.PI * 2); g.fill();
       g.beginPath(); g.moveTo(cx - w * 0.15, h); g.quadraticCurveTo(cx - w * 0.15, top + w * 0.1, cx, top + w * 0.08); g.quadraticCurveTo(cx + w * 0.15, top + w * 0.1, cx + w * 0.15, h); g.fill();
     }
+    g.filter = 'none';
+    const img = g.getImageData(0, 0, w, h); for (let p = 0; p < img.data.length; p += 4) { const n = (r() - 0.5) * 34; img.data[p] += n; img.data[p + 1] += n; img.data[p + 2] += n; } g.putImageData(img, 0, 0);
     const v = g.createRadialGradient(w / 2, h / 2, w * 0.2, w / 2, h / 2, w * 0.75); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(30,20,10,.55)'); g.fillStyle = v; g.fillRect(0, 0, w, h);
   };
 }
@@ -33,28 +36,30 @@ function oldPhoto(seed) {
 export default {
   background: 0x0b0c0e,
   fog: [0x0b0c0e, 10, 24],
-  bloom: [0.26, 0.5, 0.9],
+  bloom: [0.22, 0.45, 0.95],
   build(k) {
     const T = k.THREE;
     // ---------- 재질 ----------
+    // 바닥·벽·나무는 실사 스캔 질감(Poly Haven CC0, assets/v2/studio/tex) · 쇠·칠은 코드 질감
+    const P = (n, o) => k.photo(n, o);
     const M = {
-      floor: k.tex('planks', { color: 0x5e3e28, rows: 8, repeat: [4, 4] }),
-      wallTop: k.tex('plaster', { color: 0xa89c86, repeat: [2, 1] }),
-      wallTopSide: k.tex('plaster', { color: 0xa89c86, repeat: [2, 1], seed: 22 }),
-      wainscot: k.tex('wood', { color: 0x5b3a22, repeat: [4, 1] }),
-      ceil: k.tex('plaster', { color: 0xb9b0a0, repeat: [2, 2], seed: 23 }),
-      counter: k.tex('wood', { color: 0x6b4426, repeat: [2, 1] }),
-      counterTop: k.tex('wood', { color: 0x4a2c18, repeat: [2, 1], seed: 4 }),
-      cabinet: k.tex('wood', { color: 0x7a5232, repeat: [1, 1], seed: 9 }),
-      drawer: k.tex('wood', { color: 0x8a5e38, repeat: [1, 1], seed: 12 }),
-      frame: k.tex('wood', { color: 0x2c1d14, repeat: [1, 1], seed: 15 }),
+      floor: P('wood_floor_worn', { tile: 2.2, color: 0x9c8672, ns: 1.2 }),
+      wallTop: P('white_plaster_02', { tile: 2.4, color: 0xe4ccac, ns: 0.8 }),
+      ceil: P('white_stucco', { tile: 2.4, color: 0xcfc6b6, ns: 0.6 }),
+      wainscot: P('wood_cabinet_worn_long', { tile: 1.4, color: 0x8a6c58, ns: 1 }),
+      counter: P('wood_cabinet_worn_long', { tile: 1.1, color: 0x9a7660 }),
+      counterTop: P('wood_cabinet_worn_long', { tile: 1.3, color: 0x5e4232, rough: 0.8, env: 0.4, swap: true }),
+      cabinet: P('wood_cabinet_worn_long', { tile: 1.0, color: 0xa88468 }),
+      drawer: P('wood_cabinet_worn_long', { tile: 0.6, color: 0xa88062 }),
+      frame: P('wood_cabinet_worn_long', { tile: 0.9, color: 0x5a4234 }),
       door: k.tex('paint', { color: 0x3a2c26 }),
-      darkWall: k.tex('paint', { color: 0x1f1b1b, repeat: [2, 2] }),
-      darkFloor: k.tex('concrete', { color: 0x3a3634, repeat: [2, 2] }),
-      bench: k.tex('paint', { color: 0x262626, repeat: [2, 1], seed: 82 }),
+      darkWall: P('concrete_wall_006', { tile: 2, color: 0x4a4040, ns: 0.8 }),
+      darkFloor: P('concrete_floor_worn_001', { tile: 2, color: 0x6a605c }),
+      bench: P('wood_cabinet_worn_long', { tile: 1.2, color: 0x4a3830, swap: true }),
       steel: k.tex('brushed', { color: 0x9a9da2, repeat: [1, 1] }),
-      table: k.tex('wood', { color: 0x5a3a24, repeat: [2, 1], seed: 31 }),
+      table: P('wood_cabinet_worn_long', { tile: 1.2, color: 0x6e4e3c, rough: 0.85, swap: true }),
     };
+    M.wallTopSide = M.wallTop;
     M.steel.metalness = 0.9; M.steel.roughness = 0.6;
 
     // ---------- 빛 ----------
@@ -65,7 +70,7 @@ export default {
     k.cyl(0.006, 0.006, 0.18, [0.3, 2.72, 0.2], IRON);
     k.sphere(0.05, [0.3, 2.5, 0.2], 0xfff1d6, { glow: 0xffe2b8, glowI: 3, cast: false });
     // 비 오는 창으로 들어오는 푸른 빛
-    const winLight = k.spot(0x8fa8c8, 14, 10, [0.2, 2.2, 4.2], [0, 0.2, 0.5], { angle: 55, penumbra: 1, shadow: !k.small });
+    const winLight = k.spot(0xb4b4bc, 12, 10, [0.2, 2.2, 4.2], [0, 0.2, 0.5], { angle: 55, penumbra: 1, shadow: !k.small });
 
     // ---------- 접수실 껍데기 ----------
     k.box([6, 0.05, 6], [0, -0.025, 0], M.floor);
@@ -87,13 +92,17 @@ export default {
     k.box([1.1, 2.8, 0.1], [2.45, 1.4, 3.05], M.wallTop);
     k.box([3.5, 0.6, 0.12], [0.15, 0.3, 3.05], M.wainscot);
     k.box([3.5, 0.35, 0.1], [0.15, 2.625, 3.05], M.wallTop);
-    // 빗물 흐르는 유리 (움직이는 질감)
-    const rainCv = document.createElement('canvas'); rainCv.width = 256; rainCv.height = 512; const rg = rainCv.getContext('2d');
-    const sky = rg.createLinearGradient(0, 0, 0, 512); sky.addColorStop(0, '#5a6f86'); sky.addColorStop(0.6, '#3a4a5c'); sky.addColorStop(1, '#2a3440'); rg.fillStyle = sky; rg.fillRect(0, 0, 256, 512);
-    rg.fillStyle = 'rgba(255,214,150,.5)'; [[40, 300, 18], [120, 330, 10], [200, 310, 14]].forEach(([x, y, r]) => { rg.beginPath(); rg.arc(x, y, r, 0, 7); rg.fill(); });
-    for (let i = 0; i < 140; i++) { const x = Math.random() * 256, y = Math.random() * 512, l = 8 + Math.random() * 40; rg.strokeStyle = `rgba(220,235,255,${0.08 + Math.random() * 0.18})`; rg.lineWidth = 1 + Math.random(); rg.beginPath(); rg.moveTo(x, y); rg.lineTo(x + (Math.random() - 0.5) * 3, y + l); rg.stroke(); }
-    const rainTex = new T.CanvasTexture(rainCv); rainTex.colorSpace = T.SRGBColorSpace; rainTex.wrapS = rainTex.wrapT = T.RepeatWrapping; rainTex.repeat.set(3, 1.6);
-    const glass = new T.Mesh(new T.PlaneGeometry(3.5, 1.85), new T.MeshStandardMaterial({ map: rainTex, emissive: 0xffffff, emissiveMap: rainTex, emissiveIntensity: 0.55, roughness: 0.15, metalness: 0, envMapIntensity: 1 }));
+    // 창밖: 밤 골목 사진(HDRI 원근 투영, 젖은 공기처럼 흐림) — 유리에서 조금 떨어진 곳에 세워 고개를 돌리면 살짝 깊이가 느껴지게
+    const street = new T.TextureLoader().load('assets/v2/studio/tex/window_street.jpg'); street.colorSpace = T.SRGBColorSpace;
+    const outside = new T.Mesh(new T.PlaneGeometry(9.5, 5), new T.MeshBasicMaterial({ map: street, color: 0xb8b8b8, fog: false }));
+    outside.position.set(0.3, 1.35, 6.4); outside.rotation.y = Math.PI; k.root.add(outside);
+    // 유리: 비가 그친 뒤 남은 물방울·흘러내린 자국 (투명)
+    const rainCv = document.createElement('canvas'); rainCv.width = 512; rainCv.height = 512; const rg = rainCv.getContext('2d');
+    let rs = 7; const rr = () => ((rs = (rs * 16807) % 2147483647) / 2147483647);
+    for (let i = 0; i < 26; i++) { const x = rr() * 512, y = rr() * 380, l = 40 + rr() * 120; const gr = rg.createLinearGradient(0, y, 0, y + l); gr.addColorStop(0, 'rgba(230,238,250,0)'); gr.addColorStop(1, 'rgba(230,238,250,.22)'); rg.strokeStyle = gr; rg.lineWidth = 1.2 + rr() * 1.5; rg.beginPath(); rg.moveTo(x, y); rg.bezierCurveTo(x + (rr() - 0.5) * 6, y + l / 3, x + (rr() - 0.5) * 8, y + l * 0.7, x + (rr() - 0.5) * 6, y + l); rg.stroke(); rg.fillStyle = 'rgba(235,242,255,.35)'; rg.beginPath(); rg.arc(x, y + l, 1.6 + rr() * 1.4, 0, 7); rg.fill(); }
+    for (let i = 0; i < 420; i++) { const x = rr() * 512, y = rr() * 512, r = 0.6 + rr() * rr() * 3.2; rg.fillStyle = `rgba(225,235,250,${0.06 + rr() * 0.14})`; rg.beginPath(); rg.ellipse(x, y, r, r * 1.15, 0, 0, 7); rg.fill(); if (r > 1.6) { rg.fillStyle = `rgba(255,255,255,${0.2 + rr() * 0.2})`; rg.beginPath(); rg.arc(x - r * 0.3, y - r * 0.35, r * 0.3, 0, 7); rg.fill(); } }
+    const rainTex = new T.CanvasTexture(rainCv); rainTex.colorSpace = T.SRGBColorSpace; rainTex.wrapS = rainTex.wrapT = T.RepeatWrapping; rainTex.repeat.set(3.4, 1.8);
+    const glass = new T.Mesh(new T.PlaneGeometry(3.5, 1.85), new T.MeshStandardMaterial({ map: rainTex, transparent: true, opacity: 1, roughness: 0.05, metalness: 0, envMapIntensity: 0.6, depthWrite: false }));
     glass.position.set(0.15, 1.525, 3.1); glass.rotation.y = Math.PI; k.root.add(glass);
     for (let i = 0; i < 4; i++) k.box([0.06, 1.85, 0.08], [-1.6 + i * 1.17, 1.525, 3.0], M.frame);
     k.box([3.5, 0.06, 0.1], [0.15, 0.62, 3.0], M.frame);
@@ -118,19 +127,19 @@ export default {
     shade.material = shade.material.clone(); shade.material.transparent = true; shade.material.opacity = 0.92;
     k.cyl(0.004, 0.004, 0.12, [0.06, 0.26, 0.04], BRASS, { metal: 0.9, parent: lampG }); // 당김 줄
     k.sphere(0.018, [0, 0.29, 0.04], 0xfff2d0, { glow: 0xfff0c8, glowI: 1.6, cast: false, parent: lampG });
-    k.point(0xfff0c8, 1.8, 2.2, [0.95, 1.33, -0.5], { shadow: !k.small });
+    k.point(0xfff0c8, 1.3, 2.2, [0.95, 1.33, -0.5], { shadow: !k.small });
     const env = k.group([0.72, 1.026, -0.36], { rot: [0, 9, 0] });
     k.box([0.34, 0.006, 0.25], [0, 0, 0], k.tex('paint', { color: KRAFT, seed: 88 }), { parent: env });
     k.box([0.05, 0.007, 0.05], [0, 0.002, -0.08], 0x7a5a2c, { parent: env });
     k.cyl(0.012, 0.012, 0.003, [0, 0.006, -0.08], 0x5a3a1a, { parent: env });
     const lampHot = k.group(); lampHot.add(lampG, env); k.hot('lamp', lampHot);
     // 할아버지 쪽지 (자료: gnote)
-    const note = k.sign(0.16, 0.11, [0.2, 1.024, -0.3], (g, w, h) => hand(g, w, h, ['윤서 씨 필름', '인화 준비해 둬라'], { size: 52, y: 90, lh: 80 }), { rot: [-90, 0, 4], px: 360 });
+    const note = k.sign(0.16, 0.11, [0.2, 1.024, -0.3], (g, w, h) => hand(g, w, h, ['윤서 씨 필름', '인화 준비해 둬라'], { size: 52, y: 90, lh: 80, bg: '#e0d6bf' }), { rot: [-90, 0, 4], px: 360 });
     k.hot('gnote', note);
     // 접수 장부 (자료: ledger)
     const led = k.group([-0.25, 1.024, -0.42], { rot: [0, -6, 0] });
     k.rbox([0.48, 0.02, 0.33], [0, 0, 0], 0x3a2216, { parent: led, r: 0.006 });
-    const pageDraw = (g, w, h) => { g.fillStyle = '#efe6cf'; g.fillRect(0, 0, w, h); g.strokeStyle = '#b9ad90'; g.lineWidth = 1; for (let y = 34; y < h; y += 22) { g.beginPath(); g.moveTo(10, y); g.lineTo(w - 10, y); g.stroke(); } g.strokeStyle = '#3a4580'; g.lineWidth = 2; for (let y = 52; y < h - 20; y += 22) { g.beginPath(); g.moveTo(18, y - 6); for (let x = 18; x < 40 + (y * 7) % 140; x += 8) g.lineTo(x, y - 6 + Math.sin(x * 0.7 + y) * 3); g.stroke(); } };
+    const pageDraw = (g, w, h) => { g.fillStyle = '#dcd0b4'; g.fillRect(0, 0, w, h); g.strokeStyle = '#ab9f82'; g.lineWidth = 1; for (let y = 34; y < h; y += 22) { g.beginPath(); g.moveTo(10, y); g.lineTo(w - 10, y); g.stroke(); } g.strokeStyle = '#3a4580'; g.lineWidth = 2; for (let y = 52; y < h - 20; y += 22) { g.beginPath(); g.moveTo(18, y - 6); for (let x = 18; x < 40 + (y * 7) % 140; x += 8) g.lineTo(x, y - 6 + Math.sin(x * 0.7 + y) * 3); g.stroke(); } };
     k.sign(0.22, 0.31, [-0.113, 0.014, 0], pageDraw, { rot: [-90, 0, 2], parent: led, px: 256 });
     k.sign(0.22, 0.31, [0.113, 0.014, 0], pageDraw, { rot: [-90, 0, -2], parent: led, px: 256 });
     k.hot('ledger', led);
@@ -234,6 +243,7 @@ export default {
     // 작업대
     k.rbox([2.8, 0.05, 0.62], [-1.5, 0.9, -5.7], M.bench, { r: 0.01 });
     k.rbox([2.8, 0.85, 0.58], [-1.5, 0.43, -5.72], M.bench, { r: 0.01 });
+    [-2.42, -1.5, -0.58].forEach((x) => { k.rbox([0.86, 0.66, 0.02], [x, 0.45, -5.42], M.frame, { r: 0.006 }); k.rbox([0.12, 0.02, 0.03], [x, 0.7, -5.4], IRON, { metal: 0.7, rough: 0.4, r: 0.008 }); });
     // 확대기
     const enl = k.group([-2.3, 0.925, -5.65]);
     k.rbox([0.52, 0.035, 0.46], [0, 0.018, 0], 0x1c1c1c, { r: 0.006, parent: enl });
@@ -301,13 +311,13 @@ export default {
           { name: '순서표 앞', pos: [-1.7, 1.6, -4.5], look: [-3, 1.5, -4.7] },
         ] },
       },
-      onFrame(t) { rainTex.offset.y = -t * 0.06; },
+      onFrame() {},
       // 진행에 따라 바뀌는 것: 작업대를 풀면 암실 문이 열린다
       onState(S, sceneId) {
         const open = S.solved.includes('lightbox');
         door.rotation.y = open ? -1.7 : 0;
         const dark = sceneId === 'darkroom';
-        ceilLamp.intensity = dark ? 4 : 22;
+        ceilLamp.intensity = dark ? 4 : 17;
         winLight.intensity = dark ? 2 : 14;
         safe.intensity = dark ? 7 : 1.2;
         fill.intensity = dark ? 2.2 : 0;

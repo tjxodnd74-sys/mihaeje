@@ -162,3 +162,7 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
   - rooms/studio.js 맨 위 MODELS 로 켜고 끔 · kit.model(url, 자리 그룹, {fit, rot, stretch, offset, env, hide}) — 받는 동안은 상자판 모양이 보이고, 다 받으면 hide 목록을 숨김 · 핫스팟은 자리 그룹의 hot id 를 물려받음
   - 퍼즐 단서가 있는 모양(필름 보관함 4×4 칸·라벨 자리)은 AI 모델로 바꾸지 않는다 → 서랍장은 문 옆 장식
   - 버림: 접수대(거친 나무 상자처럼 나옴), 루페(양동이처럼 나옴) — 상자판 그대로
+- v122 배경 실사화 ("배경이 AI 티 난다" 피드백): 바닥·회벽·천장·판벽·접수대·작업대·암실 벽/바닥을 Poly Haven CC0 스캔 질감으로 (assets/v2/studio/tex/<이름>_d·_n·_r.jpg, 1024/512) · kit.photo(이름,{tile,color,swap}) — box/rbox 는 tile(미터) 기준으로 UV를 다시 깔아 늘어남 없음
+  - 창밖: Poly Haven HDRI cobblestone_street_night 를 원근 투영해 어둡게·흐리게 한 사진(window_street.jpg)을 유리 3m 뒤 판에 · 유리는 비 그친 뒤 남은 물방울(투명, 움직이지 않음)
+  - 남은 약점: 사진 벽의 인물 사진(흐린 실루엣) — 2D 장면 그림에서 잘라 쓰면 작은 얼굴이 뭉개져서 안 씀
+  - 질감·HDRI 받는 길도 Higgsfield 샌드박스(인터넷 됨) → tar → PNG 바이트 포장 → unpack.py (크레딧 안 듦)
