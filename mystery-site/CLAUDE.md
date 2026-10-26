@@ -148,3 +148,10 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
 - 모바일에서 사진 위 작은 버튼·글자(도어락, 패치베이, 금고 다이얼, 구분함 이름표, 근무표)는 사진 아래에 같은 기능의 큰 버튼/글자 표(.mobile-only)를 같이 둔다
 - 그림과 글 맞추기: 승강장 기둥 시각표의 실제 회사 로고 흐림, 404호 둑길 장면 불 켜진 창을 퍼즐 결론 자리(뒤에서 맨 오른쪽)로 옮김, 우편함 301 찌그러짐 제거(정답 흘림), 사진관 트레이·이젤 좌표, 오행당 엔딩 꽃 = 매화
 - 정비소 ★5 보강: 영수증에서 −7 숫자 삭제(빠름만), 재킷은 단말 맞춘 뒤 보임, 진술의 '말을 돌린다' 삭제, 보고 ③ 보기에서 정답 묘사 삭제
+
+## 3D 시범 (v119, 2026-10-26 · 사진관만)
+- 주소: play3d.html?case=studio — 같은 엔진·같은 저장(mihaeje-v2-studio)에서 장면 사진 대신 Three.js 방을 그린다 (window.MIHAEJE_3D = ['studio'])
+- web/v2/three-stage.js: 3D 화면 하나를 계속 재사용(다시 그릴 때마다 만들면 WebGL 문맥이 쌓임) · 끌어서 둘러보기, 시점 버튼(views), 물건/이름표 누르면 그쪽으로 고개를 돌린 뒤 엔진 act(h) → 기존 자료·장치 창 · 핫스팟 visible 조건이면 물건도 숨김 · 장면 사진에 없는 핫스팟(자동 '가기')은 아래 줄 버튼
+- web/v2/rooms/<id>.js: 회색 상자판 방 정의(미터 단위) kit.box/cyl/sign/point… · kit.hot('<핫스팟 id>', 물건) 으로 퍼즐과 연결 · views(장면별 시점) · onState(S, sceneId)(문 열림·조명)
+- three.js 0.160.1 은 web/v2/vendor/ 에 직접 넣음(MIT, 외부 CDN 안 씀)
+- 테스트: 장면별 스크린샷은 localStorage 에 상태를 넣고 .v2-stage 를 찍는다 (scratchpad/shots3d.mjs 방식) · 이름표 위에서 끌면 회전하지 않는다(버튼)
