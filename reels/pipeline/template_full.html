@@ -45,6 +45,10 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:transparent;font
 #cta .r{display:flex;align-items:center;gap:20px;font-size:58px;font-weight:800;letter-spacing:-.02em}
 #cta .r b{width:56px;height:56px;border-radius:14px;background:#ffd64f;display:flex;align-items:center;justify-content:center;flex:none}
 #cta .r b svg{width:36px;height:36px}
+/* era (history series): big year + generation label, rolls between years */
+#era{position:absolute;left:0;right:0;top:205px;text-align:center;opacity:0}
+#era .y{font-size:200px;font-weight:900;line-height:1;letter-spacing:-.04em;color:#ffd64f;text-shadow:0 10px 40px rgba(0,0,0,.55);font-variant-numeric:tabular-nums}
+#era .g{display:inline-block;margin-top:14px;font-size:54px;font-weight:800;letter-spacing:-.02em;padding:6px 26px;border-radius:14px;background:rgba(255,255,255,.12)}
 #bar{position:absolute;left:0;bottom:0;width:1080px;height:8px;background:rgba(255,255,255,.15)}
 #bar i{display:block;height:100%;background:#ffd64f;width:0}
 #flash{position:absolute;inset:0;background:#fff;opacity:0}
@@ -56,6 +60,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:transparent;font
   <div id="tag"><span class="n" id="tagn"></span><span class="t" id="tagt"></span><span class="ln" id="tagln"></span></div>
   <div id="stat"><div class="big" id="statbig"></div><div class="sub" id="statsub"></div></div>
   <div id="cta"></div>
+  <div id="era"><div class="y" id="eray"></div><div class="g" id="erag"></div></div>
   <div id="cap"></div>
   <div id="bar"><i id="barfill"></i></div>
   <div id="flash"></div>
@@ -67,6 +72,7 @@ const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const eo=x=>1-Math.pow(1-x,3);
 const back=x=>{const c=1.4;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
 $('labeltxt').textContent=SPEC.eyebrow;
+if(SPEC.noDots)$('dots').style.display='none';
 function buildCap(str){let on=false;return str.split(' ').map(w=>{if(w==='/')return '<br>';const start=w.startsWith('|');if(start)on=true;const hl=on||w.includes('|');const n=(w.match(/\|/g)||[]).length;w=w.replace(/\|/g,'');if(n===2||(!start&&n===1))on=false;return `<span class="w${hl?' hl':''}">${w}</span>`;}).join('');}
 $('cta').innerHTML=SPEC.cta.map((c,i)=>`<div class="r" id="ctar${i}"><b><svg viewBox="0 0 24 24" fill="none" stroke="#0b1220" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></b><span>${c}</span></div>`).join('');
 // split a caption into short chunks (≈12 chars, never mid-word). " / " forces a break; commas prefer a break.
@@ -98,8 +104,15 @@ window.seek=function(t){
   for(let i=1;i<=3;i++)$('d'+i).classList.toggle('on',curStep>=i);
   const hook=$('hook'),tag=$('tag'),stat=$('stat'),cta=$('cta'),cap=$('cap');
   hook.style.opacity=0;tag.style.opacity=0;stat.style.opacity=0;cta.style.opacity=0;cap.style.opacity=1;
+  $('era').style.opacity=0;
   if(!seg){cap.innerHTML='';return;}
   const d=t-seg.t;
+  if(seg.year){ // history: year rolls up from the previous era's year
+    const prev=SEG.slice(0,si).reverse().find(s=>s.year);const from=prev?+prev.year:+seg.year,to=+seg.year;
+    const p=eo(clamp((d-0.05)/0.6,0,1));$('eray').textContent=Math.round(from+(to-from)*p);$('erag').textContent=seg.gen||'';
+    const first=!prev||(SEG[si-1]&&!SEG[si-1].year);const k=first?eo(clamp(d/0.4,0,1)):1;
+    $('era').style.opacity=k;$('era').style.transform=`translateY(${(1-k)*-30}px)`;
+  }
   if(seg.kin){ // hook: big centered sentence, words rise in; no bottom caption
     if(hook.dataset.k!==String(seg.t)){$('hookin').innerHTML=buildCap(seg.cap);hook.dataset.k=String(seg.t);}
     hook.style.opacity=1-eo(clamp((t-seg.e+0.25)/0.25,0,1));cap.style.opacity=0;

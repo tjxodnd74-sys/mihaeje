@@ -164,6 +164,9 @@ for i, s_ in enumerate(segs):
     for wd in sayraw.split():
         acc += len(_norm(wd)); wb.append(acc)
     wb = sorted(set(x for x in wb if 0 < x < L))
+    commas = set(); acc = 0
+    for part in _re.split(r'[,，]', sayraw)[:-1]:
+        acc += len(_norm(part)); commas.add(acc)
     gaps = [(a, b) for a, b in fsil2 if t0 + 0.1 < a and b < t1 - 0.05]
     isl = []; cur0 = t0
     for a, b in gaps:
@@ -188,6 +191,7 @@ for i, s_ in enumerate(segs):
                     syl = bps[kb] - bps[k0]
                     e = rate * syl
                     c = f[j0][k0] + ((d - e) / max(0.12, 0.25 * e)) ** 2 + gp
+                    if j < M and bps[kb] in commas: c -= 3.0      # a pause right after a comma is the comma pause
                     if c < f[j][kb]: f[j][kb] = c; bk[j][kb] = (j0, k0)
     anchors = [(0, t0)]
     if f[M][K - 1] < INF2:
@@ -280,6 +284,7 @@ bgfilter = (f"[0:v]fps=30,scale=1080:1920:force_original_aspect_ratio=increase,c
 
 # --- 4. sfx events ---
 sfxdir = os.path.join(W, 'sfx')
+if not os.path.isdir(sfxdir) or not os.listdir(sfxdir): sfxdir = os.path.join(HERE, 'sfx')   # bundled copy in the repo
 ev = []  # (file, ms, vol)
 def add(name, t, vol):
     p = os.path.join(sfxdir, name + '.wav')
@@ -294,6 +299,8 @@ for s in segs:
     if s.get('cta'):
         add('riser', max(0, s['t']-1.2), 0.35); add('success', s['t'], 0.55); add('ding', s['t']+0.4, 0.45)
 FULL = spec.get('style')=='fullscreen'
+STILLS = bool(spec.get('stills'))   # photo-based series (no zoompan jitter, no grain)
+CLIPAUD = float(spec.get('clipAudio') or 0)   # >0: mix each clip's own sound (e.g. AI engine/road sfx) at this volume
 if FULL:
     # quieter sound design: a soft whoosh on cuts, a tick on numbers, one success at the end
     ev.clear()
@@ -319,8 +326,20 @@ if FULL:
         # gentle push-in over the piece + 6-frame punch at the cut
         n=int(round(L*30))
         z=f"1.02+0.06*(in/{max(n,1)})+0.10*lt(in,7)*(1-in/7)"
-        run(['ffmpeg','-loglevel','error','-y','-ss',str(off),'-i',src,'-t',str(L+0.2),'-vf',
-             f"fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920:'max(0,min(iw-1080,iw*{ccx}-540))':'(ih-1920)/2',zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps=30,trim=0:{L},setpts=PTS-STARTPTS",
+        # stills mode (photo series): clips already carry a smooth subpixel push-in; ffmpeg zoompan on a still
+        # snaps to whole pixels and visibly shakes, so pass the clip through untouched
+        slow = (L + 0.15) / max(cd - off, 0.1) if STILLS and cd - off < L + 0.1 else 1.0   # clip shorter than the sentence: stretch it slightly instead of running out
+        vf = (f"setpts={slow:.4f}*(PTS-STARTPTS),fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,trim=0:{L},setpts=PTS-STARTPTS" if STILLS else
+              f"fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920:'max(0,min(iw-1080,iw*{ccx}-540))':'(ih-1920)/2',zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps=30,trim=0:{L},setpts=PTS-STARTPTS")
+        if CLIPAUD:   # keep each clip's own sound (AI driving clips); silent clips get a silent track so concat stays uniform
+            has_a = 'audio' in run(['ffprobe','-v','error','-show_entries','stream=codec_type','-of','csv=p=0',src]).stdout
+            ain = ['-f','lavfi','-t',str(L+0.2),'-i','anullsrc=r=44100:cl=stereo'] if not has_a else []
+            amap = '1:a' if not has_a else '0:a'
+            run(['ffmpeg','-loglevel','error','-y','-ss',str(off),'-i',src]+ain+['-t',str(L),'-vf',vf,'-map','0:v','-map',amap,
+                 '-af',f'atrim=0:{L},asetpts=PTS-STARTPTS,afade=t=in:d=0.08,afade=t=out:st={max(0,L-0.15)}:d=0.15',
+                 '-c:a','aac','-ar','44100','-ac','2','-c:v','libx264','-preset','veryfast','-crf','16',pf])
+            parts.append(pf); continue
+        run(['ffmpeg','-loglevel','error','-y','-ss',str(off),'-i',src,'-t',str(L+0.2),'-vf',vf,
              '-an','-c:v','libx264','-preset','veryfast','-crf','16',pf])
         parts.append(pf)
     with open(lst,'w') as f:
@@ -328,7 +347,7 @@ if FULL:
     run(['ffmpeg','-loglevel','error','-y','-f','concat','-safe','0','-i',lst,'-c','copy',os.path.join(W,'bg','_concat.mp4')])
     inputs = ['-i', os.path.join(W, 'bg', '_concat.mp4'), '-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-i', narr]
     bgfilter = (f"[0:v]trim=0:{total_dur},setpts=PTS-STARTPTS,eq=contrast=1.06:saturation=0.92:brightness=-0.02,"
-                f"colorbalance=bs=0.04:bh=-0.03,noise=alls=7:allf=t+u,"
+                f"colorbalance=bs=0.04:bh=-0.03,{'' if STILLS else 'noise=alls=7:allf=t+u,'}"
                 f"fade=t=out:st={total_dur-0.6}:d=0.6[bg];[bg][1:v]overlay=0:0:format=auto:shortest=1[v]")
 elif VECTOR:
     inputs = ['-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-framerate', '30', '-i', os.path.join(frames, 'f%04d.png'), '-i', narr]
@@ -339,9 +358,20 @@ else:
 af = []
 labels = ['[n]']
 af.append('[2:a]volume=1.0[n]')
+if FULL and CLIPAUD:
+    af.append(f'[0:a]volume={CLIPAUD},afade=t=out:st={total_dur-0.8}:d=0.8[ca]'); labels.append('[ca]')
+BED = spec.get('bed')   # one continuous ambience under the whole video (e.g. "car_bed"), instead of per-clip sound that cuts at every scene change
+if BED:
+    bp = os.path.join(sfxdir, BED + '.wav')
+    if not os.path.exists(bp): bp = os.path.join(HERE, 'sfx', BED + '.wav')
+    if os.path.exists(bp):
+        bi = len([x for x in inputs if x == '-i'])
+        inputs += ['-stream_loop', '-1', '-i', bp]
+        af.append(f"[{bi}:a]atrim=0:{total_dur},asetpts=PTS-STARTPTS,volume={float(spec.get('bedVolume', 0.5))},afade=t=in:d=0.6,afade=t=out:st={total_dur-1.0}:d=1.0[bed]"); labels.append('[bed]')
 for i, (p, ms, vol) in enumerate(ev):
+    k_in = len([x for x in inputs if x == '-i'])
     inputs += ['-i', p]
-    af.append(f'[{3+i}:a]adelay={ms}|{ms},volume={vol}[s{i}]'); labels.append(f'[s{i}]')
+    af.append(f'[{k_in}:a]adelay={ms}|{ms},volume={vol}[s{i}]'); labels.append(f'[s{i}]')
 af.append(''.join(labels) + f'amix=inputs={len(labels)}:normalize=0:duration=longest,apad,atrim=0:{total_dur},loudnorm=I=-14:TP=-1.5:LRA=11[a]')
 out = os.path.join(W, 'out.mp4')
 run(['ffmpeg', '-loglevel', 'error', '-y'] + inputs + ['-filter_complex', bgfilter + ';' + ';'.join(af),
