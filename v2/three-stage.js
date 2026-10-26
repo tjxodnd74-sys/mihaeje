@@ -25,12 +25,32 @@ function makeKit(root, renderer, small) {
     (o.parent || root).add(m);
     return m;
   };
+  // 실사 질감(사진 스캔 PBR, CC0 Poly Haven): assets/.../<이름>_d·_n·_r.jpg
+  // tile = 질감 한 장이 덮는 길이(미터) · 상자 크기에 맞춰 UV를 다시 깔아서 늘어나지 않게 한다
+  const photoTex = new Map(); const tl = new THREE.TextureLoader();
+  const loadT = (url, srgb) => { if (!photoTex.has(url)) { const t = tl.load(url); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy()); if (srgb) t.colorSpace = THREE.SRGBColorSpace; photoTex.set(url, t); } return photoTex.get(url); };
+  const worldUV = (mesh) => {
+    const m = mesh.material; const tile = m?.userData?.tile; if (!tile) return mesh;
+    const g = mesh.geometry; const P = g.attributes.position, N = g.attributes.normal, uv = g.attributes.uv; const o = mesh.position;
+    for (let i = 0; i < P.count; i++) {
+      const x = P.getX(i) + o.x, y = P.getY(i) + o.y, z = P.getZ(i) + o.z; const ax = Math.abs(N.getX(i)), ay = Math.abs(N.getY(i)), az = Math.abs(N.getZ(i));
+      let u, v; if (ay >= ax && ay >= az) { u = x; v = z; } else if (ax >= az) { u = z; v = y; } else { u = x; v = y; }
+      if (m.userData.swap) [u, v] = [v, u];
+      uv.setXY(i, u / tile, v / tile);
+    }
+    uv.needsUpdate = true; return mesh;
+  };
   const kit = {
     THREE, root, mat, small,
     tex: (kind, o) => texMat(kind, o),
-    rbox: (size, pos, c, o = {}) => place(new THREE.Mesh(new THREE.RoundedBoxGeometry(size[0], size[1], size[2], o.segs || 3, o.r ?? Math.min(0.02, Math.min(...size) / 3)), mat(c, o)), pos, o),
+    photo: (name, o = {}) => {
+      const b = (o.base || 'assets/v2/studio/tex/') + name;
+      const m = new THREE.MeshStandardMaterial({ map: loadT(b + '_d.jpg', true), normalMap: loadT(b + '_n.jpg'), roughnessMap: loadT(b + '_r.jpg'), color: o.color ?? 0xffffff, roughness: o.rough ?? 1, metalness: o.metal ?? 0, normalScale: new THREE.Vector2(o.ns ?? 1, o.ns ?? 1), envMapIntensity: o.env ?? 0.3 });
+      m.userData.tile = o.tile || 1; m.userData.swap = !!o.swap; return m;
+    },
+    rbox: (size, pos, c, o = {}) => worldUV(place(new THREE.Mesh(new THREE.RoundedBoxGeometry(size[0], size[1], size[2], o.segs || 3, o.r ?? Math.min(0.02, Math.min(...size) / 3)), mat(c, o)), pos, o)),
     lathe: (pts, pos, c, o = {}) => place(new THREE.Mesh(new THREE.LatheGeometry(pts.map(([x, y]) => new THREE.Vector2(x, y)), o.seg || 32), mat(c, { ...o, double: o.double ?? true })), pos, o),
-    box: (size, pos, c, o = {}) => place(new THREE.Mesh(new THREE.BoxGeometry(...size), mat(c, o)), pos, o),
+    box: (size, pos, c, o = {}) => worldUV(place(new THREE.Mesh(new THREE.BoxGeometry(...size), mat(c, o)), pos, o)),
     cyl: (rt, rb, h, pos, c, o = {}) => place(new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, o.seg || 24, 1, !!o.open, o.thetaStart || 0, o.thetaLen || Math.PI * 2), mat(c, o)), pos, o),
     sphere: (r, pos, c, o = {}) => place(new THREE.Mesh(new THREE.SphereGeometry(r, 20, 14, 0, Math.PI * 2, 0, o.half ? Math.PI / 2 : Math.PI), mat(c, o)), pos, o),
     plane: (w, h, pos, c, o = {}) => place(new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat(c, o)), pos, { cast: false, ...o }),
