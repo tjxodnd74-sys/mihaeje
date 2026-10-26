@@ -155,3 +155,5 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
 - web/v2/rooms/<id>.js: 회색 상자판 방 정의(미터 단위) kit.box/cyl/sign/point… · kit.hot('<핫스팟 id>', 물건) 으로 퍼즐과 연결 · views(장면별 시점) · onState(S, sceneId)(문 열림·조명)
 - three.js 0.160.1 은 web/v2/vendor/ 에 직접 넣음(MIT, 외부 CDN 안 씀)
 - 테스트: 장면별 스크린샷은 localStorage 에 상태를 넣고 .v2-stage 를 찍는다 (scratchpad/shots3d.mjs 방식) · 이름표 위에서 끌면 회전하지 않는다(버튼)
+- v120 실사 보강: vendor/three-bundle.min.js (three 0.160.1 + RoomEnvironment·RoundedBoxGeometry·EffectComposer·GTAOPass·UnrealBloomPass·OutputPass 를 esbuild로 묶음) · web/v2/three-tex.js 가 나무결·마루·회벽·콘크리트·쇠·칠 질감(색·거칠기·노멀)을 코드로 그림 (kit.tex(kind,{color,repeat})) · GTAO(구석 그림자)는 PC만, 모바일은 질감 절반 크기 · 재질 캐시 키에 parent 같은 물체를 넣지 말 것(JSON 직렬화로 느려짐)
+- 헤드리스(소프트웨어 GL)에선 한 장 찍는 데 수십 초 → shots3d.mjs 는 page.screenshot(clip) + 긴 timeout, 장면 번호를 골라 찍기

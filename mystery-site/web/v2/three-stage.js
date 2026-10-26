@@ -1,18 +1,20 @@
 // 3D 무대 (시범): 장면 사진 대신 Three.js 방을 그리고, 방 안 물건을 누르면 엔진의 같은 자료·장치 창이 열린다
 // 엔진은 퍼즐을 그대로 쓰고, 이 파일은 "보는 것과 누르는 것"만 맡는다
-import * as THREE from './vendor/three.module.min.js';
+import * as THREE from './vendor/three-bundle.min.js';
+import { makeTextures } from './three-tex.js';
 
 let V = null; // 한 번 만든 3D 화면을 계속 쓴다 (다시 그릴 때마다 새로 만들면 WebGL 문맥이 쌓인다)
 
 const D2R = Math.PI / 180;
 const ease = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
 
-function makeKit(root) {
+function makeKit(root, renderer, small) {
+  const texMat = makeTextures(THREE, renderer, { small });
   const mats = new Map();
   const mat = (c, o = {}) => {
     if (c && c.isMaterial) return c;
-    const key = JSON.stringify([c, o]);
-    if (!mats.has(key)) mats.set(key, new THREE.MeshStandardMaterial({ color: c, roughness: o.rough ?? 0.85, metalness: o.metal ?? 0, emissive: o.glow || 0x000000, emissiveIntensity: o.glowI ?? 1, transparent: o.alpha != null, opacity: o.alpha ?? 1, side: o.double ? THREE.DoubleSide : THREE.FrontSide }));
+    const key = JSON.stringify([c, o.rough, o.metal, o.glow, o.glowI, o.alpha, o.double, o.env]); // 재질에 필요한 값만 (parent 같은 물체를 넣으면 느려진다)
+    if (!mats.has(key)) mats.set(key, new THREE.MeshStandardMaterial({ color: c, roughness: o.rough ?? 0.85, metalness: o.metal ?? 0, emissive: o.glow || 0x000000, emissiveIntensity: o.glowI ?? 1, transparent: o.alpha != null, opacity: o.alpha ?? 1, side: o.double ? THREE.DoubleSide : THREE.FrontSide, envMapIntensity: o.env ?? 0.35 }));
     return mats.get(key);
   };
   const place = (m, pos = [0, 0, 0], o = {}) => {
@@ -24,7 +26,10 @@ function makeKit(root) {
     return m;
   };
   const kit = {
-    THREE, root, mat,
+    THREE, root, mat, small,
+    tex: (kind, o) => texMat(kind, o),
+    rbox: (size, pos, c, o = {}) => place(new THREE.Mesh(new THREE.RoundedBoxGeometry(size[0], size[1], size[2], o.segs || 3, o.r ?? Math.min(0.02, Math.min(...size) / 3)), mat(c, o)), pos, o),
+    lathe: (pts, pos, c, o = {}) => place(new THREE.Mesh(new THREE.LatheGeometry(pts.map(([x, y]) => new THREE.Vector2(x, y)), o.seg || 32), mat(c, { ...o, double: o.double ?? true })), pos, o),
     box: (size, pos, c, o = {}) => place(new THREE.Mesh(new THREE.BoxGeometry(...size), mat(c, o)), pos, o),
     cyl: (rt, rb, h, pos, c, o = {}) => place(new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, o.seg || 24, 1, !!o.open, o.thetaStart || 0, o.thetaLen || Math.PI * 2), mat(c, o)), pos, o),
     sphere: (r, pos, c, o = {}) => place(new THREE.Mesh(new THREE.SphereGeometry(r, 20, 14, 0, Math.PI * 2, 0, o.half ? Math.PI / 2 : Math.PI), mat(c, o)), pos, o),
@@ -48,18 +53,30 @@ function makeKit(root) {
 
 function create(ep, roomDef) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, matchMedia('(pointer: coarse)').matches ? 1.5 : 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.95;
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   const scene3 = new THREE.Scene();
   scene3.background = new THREE.Color(roomDef.background || 0x0d0f12);
   if (roomDef.fog) scene3.fog = new THREE.Fog(...roomDef.fog);
   const camera = new THREE.PerspectiveCamera(62, 16 / 9, 0.05, 60);
-  const kit = makeKit(scene3);
+  const small = matchMedia('(pointer: coarse)').matches || Math.min(screen.width, screen.height) < 700;
+  // 은은한 반사용 환경 (방 모양 조명 상자)
+  const pm = new THREE.PMREMGenerator(renderer);
+  scene3.environment = pm.fromScene(new THREE.RoomEnvironment(renderer), 0.04).texture;
+  const kit = makeKit(scene3, renderer, small);
   const def = roomDef.build(kit);
+  // 후처리: 구석 그림자(GTAO, PC만) + 등 번짐(bloom)
+  const composer = new THREE.EffectComposer(renderer);
+  composer.addPass(new THREE.RenderPass(scene3, camera));
+  let gtao = null;
+  if (!small) { gtao = new THREE.GTAOPass(scene3, camera, 800, 500); gtao.updateGtaoMaterial({ radius: 0.35, distanceExponent: 1.5, thickness: 1, scale: 1.1 }); gtao.blendIntensity = 0.85; composer.addPass(gtao); }
+  const bloom = new THREE.UnrealBloomPass(new THREE.Vector2(800, 500), roomDef.bloom?.[0] ?? 0.35, roomDef.bloom?.[1] ?? 0.5, roomDef.bloom?.[2] ?? 0.82);
+  composer.addPass(bloom);
+  composer.addPass(new THREE.OutputPass());
   const v = {
-    ep, def, kit, renderer, scene3, camera,
+    ep, def, kit, renderer, scene3, camera, composer, gtao, bloom, small,
     yaw: 0, pitch: 0, fov: 62, pos: new THREE.Vector3(), anim: null,
     sceneId: null, viewIdx: 0, hotList: [], act: null, labels: new Map(), host: null,
     ray: new THREE.Raycaster(), hover: null, alive: true,
@@ -103,7 +120,7 @@ function tick(v) {
   const r = v.host.getBoundingClientRect();
   const w = Math.max(1, Math.round(r.width)), h = Math.max(1, Math.round(r.height));
   const cv = v.renderer.domElement;
-  if (cv.width !== Math.round(w * v.renderer.getPixelRatio()) || cv.height !== Math.round(h * v.renderer.getPixelRatio())) { v.renderer.setSize(w, h, false); cv.style.width = w + 'px'; cv.style.height = h + 'px'; }
+  if (cv.width !== Math.round(w * v.renderer.getPixelRatio()) || cv.height !== Math.round(h * v.renderer.getPixelRatio())) { v.renderer.setSize(w, h, false); cv.style.width = w + 'px'; cv.style.height = h + 'px'; v.composer.setPixelRatio(v.renderer.getPixelRatio()); v.composer.setSize(w, h); }
   v.camera.aspect = w / h; v.camera.fov = w < 560 ? Math.min(78, v.fov + 12) : v.fov; v.camera.updateProjectionMatrix();
   if (v.anim) {
     const a = v.anim; const t = Math.min(1, (performance.now() - a.t0) / a.dur); const k = ease(t);
@@ -114,7 +131,7 @@ function tick(v) {
   v.camera.position.copy(v.pos);
   v.camera.rotation.set(v.pitch, v.yaw, 0, 'YXZ');
   v.def.onFrame?.(performance.now() / 1000);
-  v.renderer.render(v.scene3, v.camera);
+  v.composer.render();
   // 이름표 위치
   for (const [id, tag] of v.labels) {
     const obj = v.kit.hots.get(id); if (!obj) continue;
