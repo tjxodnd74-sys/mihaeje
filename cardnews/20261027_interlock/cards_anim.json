@@ -1,0 +1,30 @@
+{
+ "kicker": "자동차 이슈",
+ "handle": "road.log_autogram",
+ "dur": 6,
+ "cards": [
+  {"type": "cover", "dur": 5, "photo": "cover.jpg", "tag": "10월 25일부터 시작",
+   "title": "술 감지되면<br><mark>시동이 안 걸린다</mark>",
+   "sub": "상습 음주운전자 '조건부 면허' 첫 시행"},
+
+  {"type": "text", "img": "img_who.jpg", "imgH": 380,
+   "html": "<div class='q' data-s='fade' style='animation-delay:.25s'>Q. 누가 대상이에요?</div><h2>최근 5년 안에<br>음주운전 <mark>2번 이상</mark></h2><p class='s' data-s='up' style='margin-top:10px'>으로 면허가 취소된 사람</p><div class='box' data-s='up' style='margin-top:34px'><p class='t'>다시 면허를 받아도<br><mark>방지장치 단 차만</mark> 운전할 수 있어요.</p><p class='s' style='margin-top:8px'>= '조건부 운전면허'</p></div>"},
+
+  {"type": "text", "img": "img_time.jpg", "imgH": 330,
+   "html": "<div class='q' data-s='fade' style='animation-delay:.25s'>Q. 왜 지금이에요?</div><h2>법은 2년 전에,<br>대상자는 <mark>이번 달</mark>부터</h2><div class='tl'><div class='st' data-s='left'><div class='dot'><i></i><u class='a grow' style='animation-delay:1.0s'></u></div><div><div class='d'>2024. 10. 25</div><div class='x'>개정 도로교통법 시행</div></div></div><div class='st' data-s='left'><div class='dot'><i></i><u class='a grow' style='animation-delay:1.5s'></u></div><div><div class='d'>최소 2년</div><div class='x'>면허 결격기간</div></div></div><div class='st' data-s='left'><div class='dot'><i class='y'></i></div><div><div class='d'>2026. 10. 25~</div><div class='x'>첫 조건부 면허 대상자</div></div></div></div>"},
+
+  {"type": "text", "img": "img_install.jpg", "imgH": 340,
+   "html": "<div class='q' data-s='fade' style='animation-delay:.25s'>Q. 얼마나 달아야 해요?</div><h2>결격기간만큼<br><mark>똑같이</mark> 달아요</h2><div class='box' data-s='up' style='margin-top:34px'><p class='t'>예) 결격기간 2년 → 부착도 2년</p><p class='s' style='margin-top:6px'>끝나면 일반 면허로 자동 전환돼요.</p></div><div class='box' data-s='up' style='margin-top:18px'><p class='t'>6개월마다 정기검사·운행기록 제출</p><p class='s' style='margin-top:6px'>설치비 약 300만 원, 본인 부담이에요.</p></div>"},
+
+  {"type": "text", "img": "img_law.jpg", "imgH": 250,
+   "html": "<div class='q' data-s='fade' style='animation-delay:.25s'>Q. 어기면요?</div><h2 style='margin-bottom:28px'>처벌이 <span class='red'>무겁습니다</span></h2><div class='pen'><div class='it' data-s='left'><div class='k'>장치 없는 차 운전</div><div class='v'>1년 이하 징역 · 300만 원 이하 벌금 <small>+ 면허 취소</small></div></div><div class='it' data-s='left'><div class='k'>장치를 해체·조작</div><div class='v'>3년 이하 징역 · 3,000만 원 이하 벌금</div></div><div class='it' data-s='left'><div class='k'>남이 대신 불어서 통과</div><div class='v'>3년 이하 징역 · 3,000만 원 이하 벌금</div></div><div class='it' data-s='left'><div class='k'>정기검사 안 받음</div><div class='v'>과태료 10만~500만 원</div></div></div>"},
+
+  {"type": "text", "img": "img_start.jpg", "imgH": 420,
+   "html": "<h2>두 번 걸리면<br><mark>시동부터</mark> 막힙니다</h2><p class='t' data-s='up' style='margin-top:34px'>음주운전은 처음부터 0번이 정답이에요.</p><div class='chip' data-s='pop' style='margin-top:40px;align-self:flex-start'>저장하고, 주변에 공유해 주세요</div><p class='s' data-s='fade' style='font-size:26px;margin-top:40px'>출처: 경찰청 「2026년 달라지는 도로교통법령」</p>"},
+
+  {"type": "follow", "dur": 6, "handTop": 905,
+   "title": "자동차 소식,<br><mark>매일</mark> 정리해 드려요",
+   "desc": "신차 · 제도 · 할인 · 꿀팁까지<br>놓치지 않으려면 팔로우!",
+   "tips": ["#자동차이슈", "#신차소식", "#운전꿀팁", "#자동차역사"]}
+ ]
+}
