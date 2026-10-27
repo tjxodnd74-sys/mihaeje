@@ -46,7 +46,7 @@ p.s{font-size:32px;line-height:1.5;font-weight:500;color:var(--sub)}
 .cover .tag{display:inline-block;background:var(--y);color:var(--ink);font-size:36px;font-weight:900;padding:10px 24px;border-radius:12px;margin-bottom:30px}
 /* follow */
 .fol{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 90px}
-.av{width:230px;height:230px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;box-shadow:0 0 0 10px #fff,0 0 0 16px var(--y)}
+.av{width:250px;height:250px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;box-shadow:0 0 0 10px #fff,0 0 0 16px var(--y)}
 .av b{font-size:50px;font-weight:900;letter-spacing:.02em;line-height:1}
 .av span{font-size:24px;font-weight:800;color:var(--y);margin-top:8px;letter-spacing:.2em}
 .hd{font-size:46px;font-weight:900;margin-top:46px}
@@ -90,7 +90,7 @@ mark.a{animation-name:mk;animation-duration:.7s;animation-timing-function:ease-o
 <script>
 // window.CARD = {type, ...}, window.META={kicker,handle,idx,n}
 const C=window.CARD, M=window.META, el=document.getElementById('card');
-const topH=`<div class="top"><span><b>ROAD.LOG</b> · ${M.kicker}</span><span>${M.idx} / ${M.n}</span></div>`;
+const topH=`<div class="top"><span><b>ROADLOG</b> · ${M.kicker}</span><span>${M.idx} / ${M.n}</span></div>`;
 const foot=`<div class="foot"><span>@${M.handle}</span><span class="arw">${M.idx<M.n?'옆으로 넘기기 →':''}</span></div>`;
 const img=(src,h)=>`<div class="img" style="height:${h||380}px"><div class="a kb" style="background-image:url('${src}')"></div></div>`;
 if(C.type==='cover'){
@@ -99,8 +99,8 @@ if(C.type==='cover'){
   <div class="ct"><div class="tag a pulseY" style="animation-delay:.6s">${C.tag}</div><h1>${C.title}</h1><div class="sub">${C.sub}</div></div>`;
 } else if(C.type==='follow'){
   el.innerHTML=`${topH}<div class="fol">
-   <div class="av"><b>ROAD<br>LOG</b><span>CAR</span></div>
-   <div class="hd">@${M.handle}</div>
+   <div class="av" style="background:url(assets/profile.jpg) center/cover"></div>
+   <div class="hd">로드로그 <span style="color:var(--sub);font-weight:700">@${M.handle}</span></div>
    <div class="big1" style="margin-top:40px">${C.title}</div>
    <div class="ds">${C.desc}</div>
    <div class="a pop" style="animation-delay:.25s"><div class="fbtn a pulse" style="animation-delay:.8s"><div class="off">팔로우</div><div class="on a swap" style="animation-delay:2.1s">팔로잉 ✓</div></div></div>
