@@ -1,0 +1,19 @@
+{
+ "kicker": "자동차 이슈",
+ "handle": "road.log_autogram",
+ "cards": [
+  {"cls": "cover light", "photo": "cover.jpg", "tag": "10월 25일부터 시작",
+   "title": "술 감지되면<br><em>시동이 안 걸린다</em>",
+   "sub": "상습 음주운전자 '조건부 면허' 첫 시행"},
+
+  {"html": "<div class='q'>Q. 누가 대상이에요?</div><h2>최근 5년 안에<br>음주운전 <mark>2번 이상</mark></h2><p class='s' style='margin-top:18px'>으로 면허가 취소된 사람</p><div class='box' style='margin-top:56px'><p class='t'>면허를 다시 받을 때<br><mark>음주운전 방지장치</mark>를 단 차만<br>운전할 수 있어요.</p><p class='s' style='margin-top:18px'>이걸 '조건부 운전면허'라고 해요.</p></div>"},
+
+  {"html": "<div class='q'>Q. 왜 지금이에요?</div><h2>법은 2년 전에,<br>대상자는 <mark>이번 달</mark>부터</h2><div class='tl'><div class='st'><div class='dot'><i></i><u></u></div><div><div class='d'>2024. 10. 25</div><div class='x'>개정 도로교통법 시행</div></div></div><div class='st'><div class='dot'><i></i><u></u></div><div><div class='d'>최소 2년</div><div class='x'>면허 결격기간</div></div></div><div class='st'><div class='dot'><i class='y'></i></div><div><div class='d'>2026. 10. 25~</div><div class='x'>첫 조건부 면허 대상자</div></div></div></div>"},
+
+  {"html": "<div class='q'>Q. 얼마나 달아야 해요?</div><h2>결격기간만큼<br><mark>똑같이</mark> 달아야 해요</h2><div class='box' style='margin-top:56px'><p class='t'>예) 결격기간 2년<br>→ 장치 부착도 2년</p><p class='s' style='margin-top:18px'>기간이 끝나면 일반 면허로 자동 전환돼요.</p></div><div class='box' style='margin-top:28px'><p class='t'>6개월마다 정기검사,<br>운행기록도 내야 해요.</p><p class='s' style='margin-top:18px'>설치비 약 300만 원, 본인 부담이에요.</p></div>"},
+
+  {"html": "<div class='q'>Q. 어기면요?</div><h2 style='margin-bottom:44px'>처벌이 <span class='red'>무겁습니다</span></h2><div class='pen'><div class='it'><div class='k'>장치 없는 차 운전</div><div class='v'>1년 이하 징역 · 300만 원 이하 벌금 <small>+ 면허 취소</small></div></div><div class='it'><div class='k'>장치를 해체·조작</div><div class='v'>3년 이하 징역 · 3,000만 원 이하 벌금</div></div><div class='it'><div class='k'>남이 대신 불어서 통과</div><div class='v'>3년 이하 징역 · 3,000만 원 이하 벌금</div></div><div class='it'><div class='k'>정기검사 안 받음</div><div class='v'>과태료 10만~500만 원</div></div></div>"},
+
+  {"html": "<div style='flex:1;display:flex;flex-direction:column;justify-content:center'><h2>두 번 걸리면<br><mark>시동부터</mark> 막힙니다</h2><p class='t' style='margin-top:48px'>음주운전은 처음부터<br>0번이 정답이에요.</p><div class='chip' style='margin-top:64px;align-self:flex-start'>저장하고, 주변에 공유해 주세요</div></div><p class='s' style='font-size:28px'>출처: 경찰청 「2026년 달라지는 도로교통법령」</p>"}
+ ]
+}
