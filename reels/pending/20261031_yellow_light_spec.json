@@ -1,0 +1,356 @@
+{
+ "style": "fullscreen",
+ "eyebrow": "이럴 땐 어떻게?",
+ "title": [],
+ "cta": [
+  "저장해 두고",
+  "주변에 공유"
+ ],
+ "cover": {
+  "clip": "yl_close_yellow_hook_6415591.mp4",
+  "start": 1.5,
+  "cx": 0.5,
+  "tag": "이럴 땐 어떻게?",
+  "title": "노란불,<br>|멈춰요?|<br>지나가요?",
+  "sub": "도로교통법 · 대법원 판례 기준"
+ },
+ "segments": [
+  {
+   "cap": "교차로 바로 앞에서, / 신호가 / |노란불|로 바뀌었어요",
+   "kin": true,
+   "say": "교차로 바로 앞에서, 신호가 노란불로 바뀌었어요.",
+   "clip": "yl_close_yellow_hook_6415591.mp4",
+   "start": 0.0,
+   "cx": 0.5,
+   "t": 0.401,
+   "e": 3.987,
+   "cut": true
+  },
+  {
+   "cap": "|멈출까요|, / 아니면 / 그냥 |지나갈까요|?",
+   "say": "멈출까요, 아니면 그냥 지나갈까요?",
+   "clip": "yl_person_13802596.mp4",
+   "start": 5.0,
+   "cx": 0.45,
+   "t": 3.987,
+   "e": 6.488,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 3.987,
+     "html": "<span class=\"w hl\">멈출까요</span>"
+    },
+    {
+     "t": 4.557,
+     "html": "<span class=\"w\">아니면</span>"
+    },
+    {
+     "t": 5.007,
+     "html": "<span class=\"w\">그냥</span><span class=\"w hl\">지나갈까요?</span>"
+    }
+   ]
+  },
+  {
+   "cap": "첫째, / 아직 교차로에 / 들어가기 전이라면 / |멈춰야| 해요",
+   "step": 1,
+   "name": "진입 전 = 정지",
+   "num": "01",
+   "say": "첫째, 아직 교차로에 들어가기 전이라면 멈춰야 해요.",
+   "clip": "yl_drone_15171829.mp4",
+   "start": 0.3,
+   "cx": 0.5,
+   "t": 6.488,
+   "e": 10.358,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 6.488,
+     "html": "<span class=\"w\">첫째</span>"
+    },
+    {
+     "t": 7.058,
+     "html": "<span class=\"w\">아직</span><span class=\"w\">교차로에</span>"
+    },
+    {
+     "t": 7.9,
+     "html": "<span class=\"w\">들어가기</span><span class=\"w\">전이라면</span>"
+    },
+    {
+     "t": 9.075,
+     "html": "<span class=\"w hl\">멈춰야</span><span class=\"w\">해요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "법규는 노란불이면, / |정지선|이나 / 교차로 직전에 / 서라고 정해요",
+   "stat": [
+    "직전 정지",
+    "도로교통법 시행규칙"
+   ],
+   "say": "법규는 노란불이면, 정지선이나 교차로 직전에 서라고 정해요.",
+   "clip": "yl_change_yellow_slow_17041886.mp4",
+   "start": 0.0,
+   "cx": 0.58,
+   "t": 10.358,
+   "e": 14.656,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 10.358,
+     "html": "<span class=\"w\">법규는</span><span class=\"w\">노란불이면</span>"
+    },
+    {
+     "t": 11.737,
+     "html": "<span class=\"w hl\">정지선이나</span>"
+    },
+    {
+     "t": 12.371,
+     "html": "<span class=\"w\">교차로</span><span class=\"w\">직전에</span>"
+    },
+    {
+     "t": 13.133,
+     "html": "<span class=\"w\">서라고</span><span class=\"w\">정해요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "대법원도 / 이때 운전자가, / 지나갈지 / |고를 수 없다|고 봤어요",
+   "stat": [
+    "고를 수 없음",
+    "대법원 2018도14262"
+   ],
+   "say": "대법원도 이때 운전자가, 지나갈지 고를 수 없다고 봤어요.",
+   "clip": "yl_cab_16455066.mp4",
+   "start": 0.0,
+   "cx": 0.45,
+   "t": 14.656,
+   "e": 18.342,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 14.656,
+     "html": "<span class=\"w\">대법원도</span>"
+    },
+    {
+     "t": 15.226,
+     "html": "<span class=\"w\">이때</span><span class=\"w\">운전자가</span>"
+    },
+    {
+     "t": 16.172,
+     "html": "<span class=\"w\">지나갈지</span>"
+    },
+    {
+     "t": 16.655,
+     "html": "<span class=\"w hl\">고를</span><span class=\"w hl\">수</span><span class=\"w hl\">없다고</span><span class=\"w\">봤어요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "둘째, / 이미 차 일부라도 / 교차로에 들어갔다면 / |달라요|",
+   "step": 2,
+   "name": "진입 후 = 통과",
+   "num": "02",
+   "say": "둘째, 이미 차 일부라도 교차로에 들어갔다면 달라요.",
+   "clip": "yl_carcrosswalk_20128894.mp4",
+   "start": 0.5,
+   "cx": 0.5,
+   "t": 18.342,
+   "e": 22.037,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 18.342,
+     "html": "<span class=\"w\">둘째</span>"
+    },
+    {
+     "t": 18.912,
+     "html": "<span class=\"w\">이미</span><span class=\"w\">차</span><span class=\"w\">일부라도</span>"
+    },
+    {
+     "t": 19.79,
+     "html": "<span class=\"w\">교차로에</span><span class=\"w\">들어갔다면</span><span class=\"w hl\">달라요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "이때는 / 안에서 멈추지 말고, / |신속히| 빠져나가야 해요",
+   "stat": [
+    "신속히 통과",
+    "이미 진입했다면"
+   ],
+   "say": "이때는 안에서 멈추지 말고, 신속히 빠져나가야 해요.",
+   "clip": "yl_dashcam_5921059.mp4",
+   "start": 0.3,
+   "cx": 0.4,
+   "t": 22.037,
+   "e": 25.893,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 22.037,
+     "html": "<span class=\"w\">이때는</span>"
+    },
+    {
+     "t": 22.607,
+     "html": "<span class=\"w\">안에서</span><span class=\"w\">멈추지</span><span class=\"w\">말고</span>"
+    },
+    {
+     "t": 23.894,
+     "html": "<span class=\"w hl\">신속히</span><span class=\"w\">빠져나가야</span><span class=\"w\">해요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "교차로 한가운데 / 서 버리면, / 다른 방향 차와 / |부딪힐 수| 있거든요",
+   "say": "교차로 한가운데 서 버리면, 다른 방향 차와 부딪힐 수 있거든요.",
+   "clip": "yl_crosswalk_2836277.mp4",
+   "start": 8.0,
+   "cx": 0.5,
+   "t": 25.893,
+   "e": 30.303,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 25.893,
+     "html": "<span class=\"w\">교차로</span><span class=\"w\">한가운데</span>"
+    },
+    {
+     "t": 26.902,
+     "html": "<span class=\"w\">서</span><span class=\"w\">버리면</span>"
+    },
+    {
+     "t": 27.525,
+     "html": "<span class=\"w\">다른</span><span class=\"w\">방향</span><span class=\"w\">차와</span>"
+    },
+    {
+     "t": 28.459,
+     "html": "<span class=\"w hl\">부딪힐</span><span class=\"w hl\">수</span><span class=\"w\">있거든요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "셋째, / 진짜 정답은 / |미리| 속도를 줄이는 거예요",
+   "step": 3,
+   "name": "미리 감속",
+   "num": "03",
+   "say": "셋째, 진짜 정답은 미리 속도를 줄이는 거예요.",
+   "clip": "bg_speedo_6312479.mp4",
+   "start": 0.3,
+   "cx": 0.3,
+   "t": 30.303,
+   "e": 34.035,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 30.303,
+     "html": "<span class=\"w\">셋째</span>"
+    },
+    {
+     "t": 30.873,
+     "html": "<span class=\"w\">진짜</span><span class=\"w\">정답은</span>"
+    },
+    {
+     "t": 31.57,
+     "html": "<span class=\"w hl\">미리</span><span class=\"w\">속도를</span><span class=\"w\">줄이는</span><span class=\"w\">거예요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "초록불이 / 오래 켜져 있었다면, / |곧 바뀐다|고 / 생각하세요",
+   "say": "초록불이 오래 켜져 있었다면, 곧 바뀐다고 생각하세요.",
+   "clip": "yl_redgreen_17121177.mp4",
+   "start": 10.5,
+   "cx": 0.48,
+   "t": 34.035,
+   "e": 37.443,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 34.035,
+     "html": "<span class=\"w\">초록불이</span>"
+    },
+    {
+     "t": 34.605,
+     "html": "<span class=\"w\">오래</span><span class=\"w\">켜져</span><span class=\"w\">있었다면</span>"
+    },
+    {
+     "t": 35.637,
+     "html": "<span class=\"w hl\">곧</span><span class=\"w hl\">바뀐다고</span>"
+    },
+    {
+     "t": 36.277,
+     "html": "<span class=\"w\">생각하세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "그래야 노란불에도, / 정지선 앞에 / |여유 있게| / 설 수 있어요",
+   "stat": [
+    "미리 감속",
+    "정지선 앞 여유"
+   ],
+   "say": "그래야 노란불에도, 정지선 앞에 여유 있게 설 수 있어요.",
+   "clip": "yl_drone_15171829.mp4",
+   "start": 4.6,
+   "cx": 0.5,
+   "t": 37.443,
+   "e": 41.281,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 37.443,
+     "html": "<span class=\"w\">그래야</span><span class=\"w\">노란불에도</span>"
+    },
+    {
+     "t": 38.813,
+     "html": "<span class=\"w\">정지선</span><span class=\"w\">앞에</span>"
+    },
+    {
+     "t": 39.632,
+     "html": "<span class=\"w hl\">여유</span><span class=\"w hl\">있게</span>"
+    },
+    {
+     "t": 40.128,
+     "html": "<span class=\"w\">설</span><span class=\"w\">수</span><span class=\"w\">있어요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "헷갈렸던 분은 / |저장|해 두고, / 친구에게도 / 공유해 주세요",
+   "cta": true,
+   "say": "헷갈렸던 분은 저장해 두고, 친구에게도 공유해 주세요.",
+   "clip": "yl_person_13802596.mp4",
+   "start": 0.3,
+   "cx": 0.45,
+   "t": 41.281,
+   "e": 46.248,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 41.281,
+     "html": "<span class=\"w\">헷갈렸던</span><span class=\"w\">분은</span>"
+    },
+    {
+     "t": 42.184,
+     "html": "<span class=\"w hl\">저장해</span><span class=\"w\">두고</span>"
+    },
+    {
+     "t": 43.003,
+     "html": "<span class=\"w\">친구에게도</span>"
+    },
+    {
+     "t": 43.567,
+     "html": "<span class=\"w\">공유해</span><span class=\"w\">주세요</span>"
+    }
+   ]
+  }
+ ],
+ "duration": 46,
+ "impacts": [
+  0.401,
+  6.488,
+  18.342,
+  30.303,
+  41.281
+ ]
+}
