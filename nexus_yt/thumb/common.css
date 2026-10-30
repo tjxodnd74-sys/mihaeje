@@ -1,0 +1,4 @@
+#t img.bg{position:absolute;inset:0;width:1280px;height:720px;object-fit:cover}
+.T{position:absolute;margin:0;color:#fff;font-weight:900;letter-spacing:-.05em;line-height:1.02;-webkit-text-stroke:0;text-shadow:0 6px 0 rgba(0,0,0,.55),0 0 40px rgba(0,0,0,.9)}
+.T .o{color:#FF8A4C;text-shadow:0 6px 0 rgba(0,0,0,.55),0 0 30px rgba(255,110,40,.9),0 0 70px rgba(255,90,20,.6)}
+.pill{position:absolute;font-weight:900;font-size:58px;padding:6px 22px 12px;border-radius:14px}

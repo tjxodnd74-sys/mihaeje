@@ -1,0 +1,64 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>봄날 플라워</title>
+<style>
+@font-face{font-family:P;font-weight:500;src:url(../fonts/Pretendard-Medium.otf)}
+@font-face{font-family:P;font-weight:700;src:url(../fonts/Pretendard-Bold.otf)}
+@font-face{font-family:P;font-weight:800;src:url(../fonts/Pretendard-ExtraBold.otf)}
+:root{--bg:#F6F0E6;--ink:#2B2621;--mut:#8A7F72;--btn:#4E5B48;--btnT:#fff;--card:#FFFDF9}
+body.s-warm{--btn:#D9785A}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:P,sans-serif}
+nav{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:22px 6vw;background:rgba(246,240,230,.97)}
+.logo{font-weight:800;font-size:26px;letter-spacing:-.02em}.logo span{color:var(--mut);font-weight:500;font-size:15px;margin-left:8px;letter-spacing:.12em}
+.links{display:flex;gap:30px;font-weight:700;font-size:16px}.links a{color:var(--ink);text-decoration:none}
+.burger{display:none;width:28px;height:20px;flex-direction:column;justify-content:space-between}.burger i{height:2.5px;background:var(--ink);border-radius:2px}
+.hero{position:relative;height:78vh;min-height:520px;margin:0 6vw;border-radius:28px;overflow:hidden}
+.hero img{width:100%;height:100%;object-fit:cover}
+.hero .t{position:absolute;left:5vw;bottom:9vh;color:#fff;text-shadow:0 4px 30px rgba(0,0,0,.35)}
+.hero h1{margin:0;font-weight:800;font-size:clamp(40px,6vw,86px);letter-spacing:-.04em;line-height:1.05}
+.hero p{margin:16px 0 26px;font-size:clamp(16px,1.6vw,22px);font-weight:500}
+.btn{display:inline-block;background:var(--btn);color:var(--btnT);font-weight:800;font-size:17px;padding:16px 30px;border-radius:999px;text-decoration:none;border:0;cursor:pointer;transition:background .3s}
+section{padding:110px 6vw 40px}
+.eb{font-weight:700;font-size:14px;letter-spacing:.2em;color:var(--mut)}
+h2{font-weight:800;font-size:clamp(30px,3.6vw,52px);letter-spacing:-.03em;margin:10px 0 40px}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.about p{font-size:19px;line-height:1.8;color:#544B42}
+.stat{display:flex;gap:40px;margin-top:26px}.stat b{display:block;font-size:34px;font-weight:800}.stat span{font-size:14px;color:var(--mut)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.card{background:var(--card);border-radius:22px;overflow:hidden;box-shadow:0 20px 50px -30px rgba(60,40,20,.35)}
+.card img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+.card .b{padding:22px 24px 26px}.card h3{margin:0;font-size:22px;font-weight:800}.card p{margin:8px 0 0;color:var(--mut);font-size:15px}
+.price{display:none;margin-top:14px;font-weight:800;font-size:20px;color:var(--btn)}
+body.s-price .price{display:block}
+.form{background:var(--card);border-radius:28px;padding:50px;display:grid;grid-template-columns:1fr 1fr;gap:18px;box-shadow:0 30px 60px -40px rgba(60,40,20,.4)}
+.form label{font-weight:700;font-size:14px;color:var(--mut)}
+.form input,.form select{width:100%;margin-top:8px;padding:16px 18px;border-radius:14px;border:1.5px solid #E5DCCD;background:#fff;font-family:P;font-size:17px}
+.form .full{grid-column:1/-1}
+.ok{display:none;grid-column:1/-1;background:#F3E3DA;color:#8A3E25;border-radius:14px;padding:18px 20px;font-weight:800;font-size:18px}
+.ok.show{display:block;animation:pop .5s}
+@keyframes pop{from{transform:translateY(10px);opacity:0}}
+footer{padding:60px 6vw;color:var(--mut);font-size:14px}
+@media (max-width:700px){
+ nav{padding:16px 20px}.links{display:none}.burger{display:flex}
+ .hero{margin:0 14px;height:70vh;min-height:0}.hero .t{left:22px;right:22px;bottom:28px}
+ section{padding:70px 20px 20px}.about{grid-template-columns:1fr;gap:20px}
+ .grid{grid-template-columns:1fr}.form{grid-template-columns:1fr;padding:26px}
+}
+</style></head>
+<body>
+<nav><div class="logo">봄날 <span>FLOWER</span></div><div class="links"><a href="#about">소개</a><a href="#items">상품</a><a href="#book">예약</a></div><div class="burger"><i></i><i></i><i></i></div></nav>
+<div class="hero"><img src="shop.jpg" alt=""><div class="t"><h1>오늘을 닮은<br>꽃 한 다발</h1><p>매일 아침 들여온 제철 꽃으로 만듭니다</p><a class="btn" href="#book">예약하기</a></div></div>
+<section id="about" class="about"><div><div class="eb">ABOUT</div><h2>동네 골목의<br>작은 꽃집</h2></div><div><p>봄날은 매일 아침 시장에서 고른 제철 꽃만 씁니다. 기념일 꽃다발부터 집에 두는 한 송이까지, 받는 사람을 떠올리며 한 다발씩 정성껏 묶어요.</p><div class="stat"><div><b>매일</b><span>제철 꽃 입고</span></div><div><b>당일</b><span>픽업 가능</span></div></div></div></section>
+<section id="items"><div class="eb">BEST</div><h2>대표 상품</h2><div class="grid">
+<div class="card"><img src="p1.jpg"><div class="b"><h3>라넌큘러스 꽃다발</h3><p>기념일 · 생일 선물</p><div class="price">49,000원</div></div></div>
+<div class="card"><img src="p2.jpg"><div class="b"><h3>로즈 플라워 박스</h3><p>책상 위 · 집들이</p><div class="price">39,000원</div></div></div>
+<div class="card"><img src="p3.jpg"><div class="b"><h3>한 송이 포장</h3><p>가벼운 마음 전하기</p><div class="price">9,000원</div></div></div>
+</div></section>
+<section id="book"><div class="eb">BOOKING</div><h2>예약 신청</h2>
+<form class="form" onsubmit="event.preventDefault();if(document.body.classList.contains('s-form'))document.querySelector('.ok').classList.add('show')">
+<div><label>이름<input value=""></label></div><div><label>연락처<input value=""></label></div>
+<div><label>상품<select><option>라넌큘러스 꽃다발</option><option>로즈 플라워 박스</option><option>한 송이 포장</option></select></label></div><div><label>픽업 날짜<input value="11월 2일 (월)"></label></div>
+<div class="full"><button class="btn" type="submit">예약 신청하기</button></div>
+<div class="ok">예약이 접수됐어요! 확인 후 문자로 연락드릴게요.</div>
+</form></section>
+<footer>봄날 플라워 · 연습용 가상 가게 · 영업시간 10:00–20:00</footer>
+</body></html>

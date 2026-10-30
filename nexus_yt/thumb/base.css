@@ -1,0 +1,5 @@
+@font-face{font-family:P;font-weight:900;src:url(../fonts/Pretendard-Black.otf)}
+@font-face{font-family:P;font-weight:800;src:url(../fonts/Pretendard-ExtraBold.otf)}
+@font-face{font-family:P;font-weight:700;src:url(../fonts/Pretendard-Bold.otf)}
+body{margin:0}#t{position:relative;width:1280px;height:720px;overflow:hidden;font-family:P;background:#07070a}
+.o{color:#FF7A3D;text-shadow:0 0 28px rgba(255,110,40,.85),0 0 70px rgba(255,90,20,.5)}
