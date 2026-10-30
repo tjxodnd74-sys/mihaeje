@@ -1,0 +1,360 @@
+{
+ "style": "fullscreen",
+ "stills": true,
+ "eyebrow": "연봉 계산 · 영상 제네시스",
+ "title": [],
+ "cta": [
+  "된다 / 안 된다",
+  "댓글로"
+ ],
+ "cover": {
+  "clip": "full_drive.mp4",
+  "start": 1.0,
+  "cx": 0.5,
+  "tag": "유지비 계산",
+  "title": "제네시스 G80,<br>연봉 |얼마|면<br>탈 수 있을까?",
+  "sub": "차값 · 세금 · 유지비 · 감가 계산"
+ },
+ "segments": [
+  {
+   "cap": "제네시스 G80, / 연봉 |얼마|면 / 탈 수 있을까요?",
+   "kin": true,
+   "say": "제네시스 G80, 연봉 얼마면 탈 수 있을까요?",
+   "clip": "full_drive.mp4",
+   "start": 0.0,
+   "t": 0.231,
+   "e": 3.858,
+   "cut": true
+  },
+  {
+   "cap": "차값부터 유지비까지, / |일 년 비용|을 / 계산해 볼게요",
+   "say": "차값부터 유지비까지, 일 년 비용을 계산해 볼게요.",
+   "clip": "g80_kv.mp4",
+   "start": 2.0,
+   "t": 3.858,
+   "e": 7.427,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 3.858,
+     "html": "<span class=\"w\">차값부터</span><span class=\"w\">유지비까지</span>"
+    },
+    {
+     "t": 5.284,
+     "html": "<span class=\"w hl\">일</span><span class=\"w hl\">년</span><span class=\"w hl\">비용을</span>"
+    },
+    {
+     "t": 5.985,
+     "html": "<span class=\"w\">계산해</span><span class=\"w\">볼게요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "첫째, / |사는 날| 드는 돈",
+   "step": 1,
+   "name": "사는 날",
+   "num": "01",
+   "say": "첫째, 사는 날 드는 돈.",
+   "clip": "pan_ext.mp4",
+   "start": 0.0,
+   "t": 7.427,
+   "e": 9.683,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 7.427,
+     "html": "<span class=\"w\">첫째</span>"
+    },
+    {
+     "t": 8.049,
+     "html": "<span class=\"w hl\">사는</span><span class=\"w hl\">날</span><span class=\"w\">드는</span><span class=\"w\">돈</span>"
+    }
+   ]
+  },
+  {
+   "cap": "시작 가격 6,063만 원에, / 옵션을 더해 / |7,000만 원|으로 / 잡을게요",
+   "stat": [
+    "7,000만 원",
+    "시작가 6,063만 + 옵션 가정"
+   ],
+   "say": "시작 가격 육천육십삼만 원에, 옵션을 더해 칠천만 원으로 잡을게요.",
+   "clip": "full_int.mp4",
+   "start": 0.0,
+   "t": 9.683,
+   "e": 14.732,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 9.683,
+     "html": "<span class=\"w\">시작</span><span class=\"w\">가격</span><span class=\"w\">6,063만</span>"
+    },
+    {
+     "t": 11.632,
+     "html": "<span class=\"w\">원에</span>"
+    },
+    {
+     "t": 12.082,
+     "html": "<span class=\"w\">옵션을</span><span class=\"w\">더해</span>"
+    },
+    {
+     "t": 12.726,
+     "html": "<span class=\"w hl\">7,000만</span><span class=\"w hl\">원으로</span>"
+    },
+    {
+     "t": 13.569,
+     "html": "<span class=\"w\">잡을게요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "취득세 7%에 / 공채와 등록비까지, / 약 |550만 원|이 / 더 들어요",
+   "stat": [
+    "+550만 원",
+    "취득세 7% · 공채 · 등록비"
+   ],
+   "say": "취득세 칠 퍼센트에 공채와 등록비까지, 약 오백오십만 원이 더 들어요.",
+   "clip": "g80_kv.mp4",
+   "start": 5.0,
+   "t": 14.732,
+   "e": 19.686,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 14.732,
+     "html": "<span class=\"w\">취득세</span><span class=\"w\">7%에</span>"
+    },
+    {
+     "t": 15.963,
+     "html": "<span class=\"w\">공채와</span><span class=\"w\">등록비까지</span>"
+    },
+    {
+     "t": 17.425,
+     "html": "<span class=\"w\">약</span><span class=\"w hl\">550만</span><span class=\"w hl\">원이</span>"
+    },
+    {
+     "t": 18.532,
+     "html": "<span class=\"w\">더</span><span class=\"w\">들어요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "둘째, / |일 년 굴리는| 돈",
+   "step": 2,
+   "name": "굴리는 돈",
+   "num": "02",
+   "say": "둘째, 일 년 굴리는 돈.",
+   "clip": "g80_rws.mp4",
+   "start": 7.8,
+   "t": 19.686,
+   "e": 21.741,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 19.686,
+     "html": "<span class=\"w\">둘째</span>"
+    },
+    {
+     "t": 20.256,
+     "html": "<span class=\"w hl\">일</span><span class=\"w hl\">년</span><span class=\"w hl\">굴리는</span><span class=\"w\">돈</span>"
+    }
+   ]
+  },
+  {
+   "cap": "일 년에 1만 5천km면, / 기름값만 / 약 |280만 원|이에요",
+   "stat": [
+    "기름값 280만",
+    "연비 10km/L · 휘발유 1,856원"
+   ],
+   "say": "일 년에 만 오천 킬로미터면, 기름값만 약 이백팔십만 원이에요.",
+   "clip": "g80_kv.mp4",
+   "start": 3.0,
+   "t": 21.741,
+   "e": 26.287,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 21.741,
+     "html": "<span class=\"w\">일</span><span class=\"w\">년에</span><span class=\"w\">1만</span><span class=\"w\">5천km면</span>"
+    },
+    {
+     "t": 23.609,
+     "html": "<span class=\"w\">기름값만</span>"
+    },
+    {
+     "t": 24.203,
+     "html": "<span class=\"w\">약</span><span class=\"w hl\">280만</span><span class=\"w hl\">원이에요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "여기에 자동차세와 / 보험, 정비까지 더하면, / 약 |560만 원|이에요",
+   "stat": [
+    "운행비 560만",
+    "자동차세 65만 · 보험·정비 추정"
+   ],
+   "say": "여기에 자동차세와 보험, 정비까지 더하면, 약 오백육십만 원이에요.",
+   "clip": "g80_rws.mp4",
+   "start": 2.6,
+   "t": 26.287,
+   "e": 31.07,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 26.287,
+     "html": "<span class=\"w\">여기에</span><span class=\"w\">자동차세와</span>"
+    },
+    {
+     "t": 27.508,
+     "html": "<span class=\"w\">보험</span><span class=\"w\">정비까지</span><span class=\"w\">더하면</span>"
+    },
+    {
+     "t": 28.972,
+     "html": "<span class=\"w\">약</span><span class=\"w hl\">560만</span><span class=\"w hl\">원이에요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "셋째, / 눈에 안 보이는 / |감가|",
+   "step": 3,
+   "name": "감가",
+   "num": "03",
+   "say": "셋째, 눈에 안 보이는 감가.",
+   "clip": "full_drive.mp4",
+   "start": 2.5,
+   "t": 31.07,
+   "e": 33.336,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 31.07,
+     "html": "<span class=\"w\">셋째</span>"
+    },
+    {
+     "t": 31.64,
+     "html": "<span class=\"w\">눈에</span><span class=\"w\">안</span><span class=\"w\">보이는</span><span class=\"w hl\">감가</span>"
+    }
+   ]
+  },
+  {
+   "cap": "5년 뒤 / 절반 값이라 치면, / 일 년에 |700만 원|씩 / 사라져요",
+   "stat": [
+    "감가 연 700만",
+    "5년 뒤 50% 가정"
+   ],
+   "say": "오 년 뒤 절반 값이라 치면, 일 년에 칠백만 원씩 사라져요.",
+   "clip": "g80_kv.mp4",
+   "start": 6.0,
+   "t": 33.336,
+   "e": 37.22,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 33.336,
+     "html": "<span class=\"w\">5년</span><span class=\"w\">뒤</span>"
+    },
+    {
+     "t": 33.906,
+     "html": "<span class=\"w\">절반</span><span class=\"w\">값이라</span><span class=\"w\">치면</span>"
+    },
+    {
+     "t": 35.054,
+     "html": "<span class=\"w\">일</span><span class=\"w\">년에</span><span class=\"w hl\">700만</span><span class=\"w hl\">원씩</span>"
+    },
+    {
+     "t": 36.101,
+     "html": "<span class=\"w\">사라져요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "다 더하면 / 일 년에 약 |1,370만 원|, / 한 달 115만 원이에요",
+   "stat": [
+    "연 1,370만 원",
+    "한 달 약 115만"
+   ],
+   "say": "다 더하면 일 년에 약 천삼백칠십만 원, 한 달 백십오만 원이에요.",
+   "clip": "pan_ext.mp4",
+   "start": 3.0,
+   "t": 37.22,
+   "e": 42.353,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 37.22,
+     "html": "<span class=\"w\">다</span><span class=\"w\">더하면</span>"
+    },
+    {
+     "t": 37.877,
+     "html": "<span class=\"w\">일</span><span class=\"w\">년에</span><span class=\"w\">약</span><span class=\"w hl\">1,370만</span><span class=\"w hl\">원</span>"
+    },
+    {
+     "t": 40.047,
+     "html": "<span class=\"w\">한</span><span class=\"w\">달</span><span class=\"w\">115만</span><span class=\"w\">원이에요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "차에 연봉의 / 20%까지 쓴다면, / 연봉 약 |7,000만 원|이 / 필요해요",
+   "stat": [
+    "연봉 7,000만",
+    "차 비용 = 연봉 20% 기준"
+   ],
+   "say": "차에 연봉의 이십 퍼센트까지 쓴다면, 연봉 약 칠천만 원이 필요해요.",
+   "clip": "full_int.mp4",
+   "start": 3.0,
+   "t": 42.353,
+   "e": 46.984,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 42.353,
+     "html": "<span class=\"w\">차에</span><span class=\"w\">연봉의</span>"
+    },
+    {
+     "t": 43.052,
+     "html": "<span class=\"w\">20%까지</span><span class=\"w\">쓴다면</span>"
+    },
+    {
+     "t": 44.62,
+     "html": "<span class=\"w\">연봉</span><span class=\"w\">약</span><span class=\"w hl\">7,000만</span><span class=\"w hl\">원이</span>"
+    },
+    {
+     "t": 45.868,
+     "html": "<span class=\"w\">필요해요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "연봉 7천, / G80 |된다? 안 된다?| / 댓글로 남겨 주세요",
+   "cta": true,
+   "say": "연봉 칠천, 지팔공 된다? 안 된다? 댓글로 남겨 주세요.",
+   "clip": "g80_kv.mp4",
+   "start": 2.0,
+   "t": 46.984,
+   "e": 52.439,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 46.984,
+     "html": "<span class=\"w\">연봉</span><span class=\"w\">7천</span>"
+    },
+    {
+     "t": 47.949,
+     "html": "<span class=\"w\">G80</span><span class=\"w hl\">된다?</span><span class=\"w hl\">안</span><span class=\"w hl\">된다?</span>"
+    },
+    {
+     "t": 49.173,
+     "html": "<span class=\"w\">댓글로</span><span class=\"w\">남겨</span><span class=\"w\">주세요</span>"
+    }
+   ]
+  }
+ ],
+ "duration": 53,
+ "impacts": [
+  0.231,
+  7.427,
+  19.686,
+  31.07,
+  46.984
+ ]
+}
