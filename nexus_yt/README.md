@@ -73,12 +73,18 @@ cd /home/claude/work/<slug>
 - `python3 mix.py vid.mp4 final.mp4` mixes BGM (quiet), voice and sfx.
 - Check 6–8 frames from final.mp4.
 
-## 5. Thumbnail (1280x720)
-- Background: Higgsfield `gpt_image_2_5`, 16:9. Dark 3D render, orange rim light/glow, subject on the right, empty dark area on the left, no text.
-- In th/t.html, set the background image and the title:
-  - the title is short, 1–2 lines, with the key word in `<span class="o">`
-- Render with `node th/shot.js` (adjust paths), output thumb.png.
-- No celebrities or other people's photos.
+## 5. Thumbnail (1280x720) — v2, follows trending Korean AI channels (checked 2026-11)
+Trend analysis (top AI channels): one bright hero object in the middle, huge 2-line text at the bottom, black outline, yellow/cyan highlight, emotional hook in quotes.
+- Background: Higgsfield `gpt_image_2_5`, 16:9, prompt must include:
+  "YouTube thumbnail background, no text, no logos. <ONE hero object: glowing 3D symbol of the topic>. Hero large and centered in the upper 60% of frame, lower 35% darker and simpler for text. Ultra vivid saturated colors, dramatic rim light, high contrast, 3D render, crisp."
+  - Bright and saturated (blue/purple space, neon). Not dark/minimal.
+  - No real people, celebrities or real company logos.
+- Text: `node th/mk.js bg.png thumb.png "<tag>" "<line1>" "<line2>"` (uses th/v2.css)
+  - tag (top-left orange pill): 2–8 chars, e.g. "구글 신모델", "코딩 0줄"
+  - line1 (white, 86px): an emotional hook in quotes, ≤ 14 chars, one key word in `<span class=c>` (cyan). e.g. “1등인데 못 쓴다고?”, “말만 했는데 홈페이지가?”
+  - line2 (yellow, 140px): the topic/model name, ≤ 10 chars. e.g. 제미나이 4 카본, AI 직원 만들기
+  - Never repeat the video title word-for-word. No banned words.
+- Read the png before upload: text must be readable at phone size (look at a 320px-wide copy).
 
 ## 6. Upload info
 - Title: 30–45 chars.

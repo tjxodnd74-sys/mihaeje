@@ -1,0 +1,10 @@
+#t img.bg{position:absolute;inset:0;width:1280px;height:720px;object-fit:cover}
+.fade{position:absolute;left:0;right:0;bottom:0;height:400px;background:linear-gradient(0deg,rgba(0,0,0,.9) 30%,rgba(0,0,0,.5) 70%,transparent)}
+.L{position:absolute;left:0;right:0;text-align:center;margin:0;font-weight:900;letter-spacing:-.04em;line-height:1.05;white-space:nowrap}
+.in{display:inline-block;paint-order:stroke fill;-webkit-text-stroke:var(--sw) #000;
+ filter:drop-shadow(0 7px 0 rgba(0,0,0,.85)) drop-shadow(0 0 22px rgba(0,0,0,.7))}
+.L1{bottom:196px;font-size:86px;color:#fff;--sw:16px}
+.L2{bottom:40px;font-size:140px;color:#FFE234;--sw:20px}
+.L .c{color:#3CF2FF}.L .w{color:#fff}.L .y{color:#FFE234}
+.tag{position:absolute;left:34px;top:30px;background:#FF5A1F;color:#fff;font-weight:900;font-size:40px;padding:8px 22px 12px;border-radius:12px;box-shadow:0 6px 0 rgba(0,0,0,.45);letter-spacing:-.03em}
+.brand{position:absolute;right:30px;top:30px;color:#fff;font-weight:800;font-size:28px;background:rgba(0,0,0,.55);padding:6px 16px 9px;border-radius:10px;border:2px solid #FF7A3D}
