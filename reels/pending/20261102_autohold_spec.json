@@ -1,0 +1,109 @@
+{
+ "style": "compare",
+ "slug": "20261102_autohold",
+ "format": "비교형·무음성 12초",
+ "title": "신호 대기, 이렇게 |달라요|",
+ "left": "브레이크 계속",
+ "right": "오토홀드",
+ "rows": [
+  {
+   "k": "켜기",
+   "l": "—",
+   "r": "버튼 한 번"
+  },
+  {
+   "k": "정차 중",
+   "l": "계속 밟기",
+   "r": "발 떼도 정지"
+  },
+  {
+   "k": "출발",
+   "l": "발 옮겨 가속",
+   "r": "가속 페달 살살"
+  },
+  {
+   "k": "10분 넘게",
+   "l": "계속 밟기",
+   "r": "파킹 브레이크로"
+  },
+  {
+   "k": "내리막·세차",
+   "l": "그대로",
+   "r": "꺼 두기"
+  }
+ ],
+ "save": "|저장|해두고 비교해 보세요",
+ "foot": "기아 취급설명서 기준 · 차종마다 다를 수 있어요",
+ "segs": [
+  {
+   "clip": "bg_yl_redgreen_17121177.mp4",
+   "start": 3.0,
+   "dur": 1.5,
+   "cx": 0.55,
+   "filled": 0,
+   "zoom": 1.15,
+   "cy": 0.38,
+   "ty": 560
+  },
+  {
+   "clip": "bg_ah_epb_4k_32083964.mp4",
+   "start": 0.7,
+   "dur": 1.6,
+   "cx": 0.68,
+   "cy": 0.66,
+   "ty": 760,
+   "zoom": 1.8,
+   "filled": 1
+  },
+  {
+   "clip": "bg_ah_jam_v_18477437.mp4",
+   "start": 0.0,
+   "dur": 1.6,
+   "cx": 0.5,
+   "filled": 2
+  },
+  {
+   "clip": "bg_yl_dashcam_5921059.mp4",
+   "start": 1.4,
+   "dur": 1.6,
+   "cx": 0.5,
+   "filled": 3
+  },
+  {
+   "clip": "bg_ah_jam_v_18477437.mp4",
+   "start": 9.0,
+   "dur": 1.6,
+   "cx": 0.5,
+   "filled": 4
+  },
+  {
+   "clip": "bg_ah_wash_v_37252537.mp4",
+   "start": 3.0,
+   "dur": 1.6,
+   "cx": 0.5,
+   "filled": 5
+  },
+  {
+   "clip": "bg_ah_jam_v_18477437.mp4",
+   "start": 4.0,
+   "dur": 2.6,
+   "cx": 0.5,
+   "filled": 5,
+   "final": true,
+   "blur": true
+  }
+ ],
+ "bed": "car_bed",
+ "bedVolume": 0.4,
+ "sfxVolume": 0.7,
+ "tick": "tick",
+ "finalSfx": "whoosh_soft",
+ "cover": {
+  "clip": "bg_ah_jam_v_18477437.mp4",
+  "start": 2.0,
+  "cx": 0.5,
+  "tag": "신호 대기 비교표",
+  "title": "브레이크<br>계속 vs<br>|오토홀드|",
+  "sub": "출발·10분·세차까지 |한 장|"
+ }
+}

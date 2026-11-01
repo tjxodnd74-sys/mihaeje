@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<!-- 초단기 비교형(무음성) 오버레이. build_compare.py 가 window.S 를 넣고 투명 PNG로 찍는다. -->
+<style>
+@font-face{font-family:P;src:url(fonts/Pretendard-Black.woff2) format("woff2");font-weight:900}
+@font-face{font-family:P;src:url(fonts/Pretendard-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:P;src:url(fonts/Pretendard-Bold.woff2) format("woff2");font-weight:700}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;font-family:P,"Noto Sans CJK KR",sans-serif;color:#fff;background:transparent}
+.topfade{position:absolute;left:0;right:0;top:0;height:560px;background:linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.35) 55%,rgba(0,0,0,0))}
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.0)}
+.title{position:absolute;left:50px;right:50px;top:170px;text-align:center;font-size:74px;font-weight:900;letter-spacing:-.04em;white-space:nowrap;text-shadow:0 6px 28px rgba(0,0,0,.7)}
+.title em{font-style:normal;color:#ffd64f}
+.panel{position:absolute;left:36px;right:36px;bottom:300px;background:rgba(9,13,22,.80);border-radius:30px;padding:22px 20px 18px;box-shadow:0 18px 60px rgba(0,0,0,.45)}
+.row{display:grid;grid-template-columns:200px 1fr 1fr;align-items:center;height:104px;border-radius:18px;padding:0 10px;position:relative}
+.row+.row{border-top:1px solid rgba(255,255,255,.08)}
+.row.hd{height:90px;border-top:none}
+.chip{justify-self:center;font-size:38px;font-weight:900;padding:10px 22px;border-radius:14px;white-space:nowrap;letter-spacing:-.02em}
+.chip.l{background:#3a4352;color:#e6e9ee}
+.chip.r{background:#ffd64f;color:#111827}
+.lab{font-size:36px;font-weight:800;color:#9aa4b2;white-space:nowrap;letter-spacing:-.03em}
+.c{justify-self:center;font-size:44px;font-weight:800;white-space:nowrap;letter-spacing:-.035em}
+.c.l{color:#d5dae1}
+.c.r{color:#ffd64f;font-weight:900}
+.c.q{color:rgba(255,255,255,.28);font-weight:800}
+.row.cur{background:rgba(255,214,79,.17)}
+.row.cur::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:8px;border-radius:4px;background:#ffd64f}
+.row.cur .lab{color:#fff}
+.row.done{opacity:.86}
+.save{position:absolute;left:40px;right:40px;text-align:center;font-size:62px;font-weight:900;letter-spacing:-.04em;white-space:nowrap;text-shadow:0 6px 28px rgba(0,0,0,.8)}
+.save em{font-style:normal;color:#ffd64f}
+.foot{position:absolute;left:40px;right:40px;bottom:250px;text-align:center;font-size:29px;font-weight:700;color:rgba(255,255,255,.82);white-space:nowrap;text-shadow:0 2px 10px rgba(0,0,0,.8)}
+</style></head><body>
+<div class="dim" id="dim"></div>
+<div class="topfade"></div>
+<div class="title" id="title"></div>
+<div class="panel" id="panel"></div>
+<div class="save" id="save"></div>
+<div class="foot" id="foot"></div>
+<script>
+const S=window.S;const hl=s=>(s||'').replace(/\|([^|]+)\|/g,'<em>$1</em>');
+document.getElementById('title').innerHTML=hl(S.title);
+let h=`<div class="row hd"><div></div><div class="chip l">${S.left}</div><div class="chip r">${S.right}</div></div>`;
+S.rows.forEach((r,i)=>{const shown=i<S.filled;const cls=(i===S.filled-1&&!S.final)?'cur':(shown?'done':'');
+ h+=`<div class="row ${cls}"><div class="lab">${r.k}</div>`+
+ (shown?`<div class="c l">${r.l}</div><div class="c r">${r.r}</div>`:`<div class="c q">?</div><div class="c q">?</div>`)+`</div>`;});
+document.getElementById('panel').innerHTML=h;
+if(S.final){document.getElementById('dim').style.background='rgba(0,0,0,.35)';
+ const p=document.getElementById('panel').getBoundingClientRect();const sv=document.getElementById('save');
+ sv.innerHTML=hl(S.save);sv.style.top=(p.top-120)+'px';document.getElementById('foot').textContent=S.foot||'';}
+</script></body></html>
