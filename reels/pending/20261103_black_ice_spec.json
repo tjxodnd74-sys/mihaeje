@@ -1,0 +1,348 @@
+{
+ "style": "fullscreen",
+ "eyebrow": "위험할 때 대처",
+ "title": [],
+ "cta": [
+  "저장해 두고",
+  "출근길에 확인"
+ ],
+ "cover": {
+  "clip": "bg_ice_bridge_aerial_15355524.mp4",
+  "start": 3.0,
+  "cx": 0.5,
+  "tag": "겨울 위험 대처",
+  "title": "블랙아이스,<br>|다리 위|부터<br>조심하세요",
+  "sub": "행정안전부 · 도로교통공단 기준"
+ },
+ "segments": [
+  {
+   "cap": "겨울 아침 / |다리 위|, / 도로가 몰래 / 얼어 있을 수 있어요",
+   "say": "겨울 아침 다리 위, 도로가 몰래 얼어 있을 수 있어요.",
+   "clip": "bg_ice_bridge_aerial_15355524.mp4",
+   "start": 0.5,
+   "cx": 0.5,
+   "t": 0.17,
+   "kin": true,
+   "e": 4.24,
+   "cut": true
+  },
+  {
+   "cap": "결빙 사고는 / 눈 오는 날보다, / |맑거나 흐린 날| / 더 많았대요",
+   "say": "결빙 사고는 눈 오는 날보다, 맑거나 흐린 날 더 많았대요.",
+   "clip": "bg_ice_clearday_7042965.mp4",
+   "start": 14.0,
+   "cx": 0.5,
+   "t": 4.24,
+   "stat": [
+    "맑은 날 더 많아",
+    "결빙 사고 · 행정안전부"
+   ],
+   "e": 9.22,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 4.24,
+     "html": "<span class=\"w\">결빙</span><span class=\"w\">사고는</span>"
+    },
+    {
+     "t": 5.218,
+     "html": "<span class=\"w\">눈</span><span class=\"w\">오는</span><span class=\"w\">날보다</span>"
+    },
+    {
+     "t": 6.487,
+     "html": "<span class=\"w hl\">맑거나</span><span class=\"w hl\">흐린</span><span class=\"w hl\">날</span>"
+    },
+    {
+     "t": 7.614,
+     "html": "<span class=\"w\">더</span><span class=\"w\">많았대요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "첫째, / |얼기 쉬운 곳|부터 / 알아두기",
+   "say": "첫째, 얼기 쉬운 곳부터 알아두기.",
+   "clip": "bg_ice_storm_hwy_v_15317963.mp4",
+   "start": 0.0,
+   "cx": 0.5,
+   "t": 9.22,
+   "step": 1,
+   "name": "얼기 쉬운 곳",
+   "num": "01",
+   "e": 12.02,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 9.22,
+     "html": "<span class=\"w\">첫째</span>"
+    },
+    {
+     "t": 10.003,
+     "html": "<span class=\"w hl\">얼기</span><span class=\"w hl\">쉬운</span><span class=\"w hl\">곳부터</span>"
+    },
+    {
+     "t": 10.903,
+     "html": "<span class=\"w\">알아두기</span>"
+    }
+   ]
+  },
+  {
+   "cap": "다리 위, / 그리고 / |터널 입구와 출구|가 / 대표적이에요",
+   "say": "다리 위, 그리고 터널 입구와 출구가 대표적이에요.",
+   "clip": "bg_ice_hwy_v_15317964.mp4",
+   "start": 0.4,
+   "cx": 0.5,
+   "t": 12.02,
+   "e": 16.26,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 12.02,
+     "html": "<span class=\"w\">다리</span><span class=\"w\">위</span>"
+    },
+    {
+     "t": 13.051,
+     "html": "<span class=\"w\">그리고</span>"
+    },
+    {
+     "t": 13.639,
+     "html": "<span class=\"w hl\">터널</span><span class=\"w hl\">입구와</span><span class=\"w hl\">출구가</span>"
+    },
+    {
+     "t": 14.925,
+     "html": "<span class=\"w\">대표적이에요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "햇볕이 잘 안 드는 / |좁은 길|도 / 조심하세요",
+   "say": "햇볕이 잘 안 드는 좁은 길도 조심하세요.",
+   "clip": "bg_ice_narrow_trees_3046681.mp4",
+   "start": 2.0,
+   "cx": 0.45,
+   "t": 16.26,
+   "e": 19.99,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 16.26,
+     "html": "<span class=\"w\">햇볕이</span><span class=\"w\">잘</span><span class=\"w\">안</span><span class=\"w\">드는</span>"
+    },
+    {
+     "t": 17.799,
+     "html": "<span class=\"w hl\">좁은</span><span class=\"w hl\">길도</span>"
+    },
+    {
+     "t": 18.464,
+     "html": "<span class=\"w\">조심하세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "둘째, / 미끄러워도 / |급하게 하지 않기|",
+   "say": "둘째, 미끄러워도 급하게 하지 않기.",
+   "clip": "bg_snowforestdrive_18019178.mp4",
+   "start": 5.0,
+   "cx": 0.5,
+   "t": 19.99,
+   "step": 2,
+   "name": "급하게 X",
+   "num": "02",
+   "e": 23.37,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 19.99,
+     "html": "<span class=\"w\">둘째</span>"
+    },
+    {
+     "t": 20.842,
+     "html": "<span class=\"w\">미끄러워도</span>"
+    },
+    {
+     "t": 21.507,
+     "html": "<span class=\"w hl\">급하게</span><span class=\"w hl\">하지</span><span class=\"w hl\">않기</span>"
+    }
+   ]
+  },
+  {
+   "cap": "급제동, 급가속, / |급한 핸들 조작|은 / 피하라고 해요",
+   "say": "급제동, 급가속, 급한 핸들 조작은 피하라고 해요.",
+   "clip": "bg_hands_wheel_10579034.mp4",
+   "start": 1.0,
+   "cx": 0.55,
+   "t": 23.37,
+   "e": 26.74,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 23.37,
+     "html": "<span class=\"w\">급제동</span>"
+    },
+    {
+     "t": 23.997,
+     "html": "<span class=\"w\">급가속</span>"
+    },
+    {
+     "t": 24.473,
+     "html": "<span class=\"w hl\">급한</span><span class=\"w hl\">핸들</span><span class=\"w hl\">조작은</span>"
+    },
+    {
+     "t": 25.37,
+     "html": "<span class=\"w\">피하라고</span><span class=\"w\">해요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "미끄러지면 / |핸들 각도|를 / 그대로 두고, / 속도를 줄이세요",
+   "say": "미끄러지면 핸들 각도를 그대로 두고, 속도를 줄이세요.",
+   "clip": "bg_ice_slush_turn_6749797.mp4",
+   "start": 1.5,
+   "cx": 0.5,
+   "t": 26.74,
+   "stat": [
+    "핸들 그대로",
+    "미끄러질 때 · 도로교통공단"
+   ],
+   "e": 30.83,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 26.74,
+     "html": "<span class=\"w\">미끄러지면</span>"
+    },
+    {
+     "t": 27.381,
+     "html": "<span class=\"w hl\">핸들</span><span class=\"w hl\">각도를</span>"
+    },
+    {
+     "t": 28.102,
+     "html": "<span class=\"w\">그대로</span><span class=\"w\">두고</span>"
+    },
+    {
+     "t": 29.306,
+     "html": "<span class=\"w\">속도를</span><span class=\"w\">줄이세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "셋째, / 앞차와 거리를 / |크게| 두기",
+   "say": "셋째, 앞차와 거리를 크게 두기.",
+   "clip": "bg_ice_storm_hwy_v_15317963.mp4",
+   "start": 5.0,
+   "cx": 0.5,
+   "t": 30.83,
+   "step": 3,
+   "name": "차간 거리",
+   "num": "03",
+   "e": 33.72,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 30.83,
+     "html": "<span class=\"w\">셋째</span>"
+    },
+    {
+     "t": 31.55,
+     "html": "<span class=\"w\">앞차와</span><span class=\"w\">거리를</span>"
+    },
+    {
+     "t": 32.582,
+     "html": "<span class=\"w hl\">크게</span><span class=\"w\">두기</span>"
+    }
+   ]
+  },
+  {
+   "cap": "빙판에선 / |제동거리|가 / 평소의 최대 일곱 배까지 / 늘어나요",
+   "say": "빙판에선 제동거리가 평소의 최대 일곱 배까지 늘어나요.",
+   "clip": "bg_ice_snowstreet_18019166.mp4",
+   "start": 3.0,
+   "cx": 0.55,
+   "t": 33.72,
+   "stat": [
+    "최대 7배",
+    "빙판 제동거리 · 행정안전부"
+   ],
+   "e": 37.91,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 33.72,
+     "html": "<span class=\"w\">빙판에선</span>"
+    },
+    {
+     "t": 34.35,
+     "html": "<span class=\"w hl\">제동거리가</span>"
+    },
+    {
+     "t": 35.236,
+     "html": "<span class=\"w\">평소의</span><span class=\"w\">최대</span><span class=\"w\">일곱</span><span class=\"w\">배까지</span>"
+    },
+    {
+     "t": 36.743,
+     "html": "<span class=\"w\">늘어나요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "속도는 / |엔진 브레이크|로 / 천천히 줄이세요",
+   "say": "속도는 엔진 브레이크로 천천히 줄이세요.",
+   "clip": "bg_gear_shift_18911703.mp4",
+   "start": 0.3,
+   "cx": 0.45,
+   "t": 37.91,
+   "e": 41.16,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 37.91,
+     "html": "<span class=\"w\">속도는</span>"
+    },
+    {
+     "t": 38.48,
+     "html": "<span class=\"w hl\">엔진</span><span class=\"w hl\">브레이크로</span>"
+    },
+    {
+     "t": 39.434,
+     "html": "<span class=\"w\">천천히</span><span class=\"w\">줄이세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "출근 전에 / |저장|해 두고, / 다리 앞에서 / 떠올려 보세요",
+   "say": "출근 전에 저장해 두고, 다리 앞에서 떠올려 보세요.",
+   "clip": "bg_ice_bridge_aerial_15355524.mp4",
+   "start": 6.0,
+   "cx": 0.5,
+   "t": 41.16,
+   "cta": true,
+   "e": 46.039,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 41.16,
+     "html": "<span class=\"w\">출근</span><span class=\"w\">전에</span>"
+    },
+    {
+     "t": 41.843,
+     "html": "<span class=\"w hl\">저장해</span><span class=\"w\">두고</span>"
+    },
+    {
+     "t": 42.797,
+     "html": "<span class=\"w\">다리</span><span class=\"w\">앞에서</span>"
+    },
+    {
+     "t": 43.453,
+     "html": "<span class=\"w\">떠올려</span><span class=\"w\">보세요</span>"
+    }
+   ]
+  }
+ ],
+ "duration": 46,
+ "impacts": [
+  0.17,
+  9.22,
+  19.99,
+  30.83,
+  41.16
+ ]
+}
