@@ -81,8 +81,8 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
   - No real people, celebrities or real company logos.
 - Text: `node th/mk.js bg.png thumb.png "<tag>" "<line1>" "<line2>"` (uses th/v2.css)
   - tag (top-left orange pill): 2–8 chars, e.g. "구글 신모델", "코딩 0줄"
-  - line1 (white, 86px): an emotional hook in quotes, ≤ 14 chars, one key word in `<span class=c>` (cyan). e.g. “1등인데 못 쓴다고?”, “말만 했는데 홈페이지가?”
-  - line2 (yellow, 140px): the topic/model name, ≤ 10 chars. e.g. 제미나이 4 카본, AI 직원 만들기
+  - line1 (white, 86px): an emotional hook in quotes, ≤ 8 Korean chars (user 2026-11-02: "글이 너무 길어"), one key word in `<span class=c>` (cyan). e.g. “1등인데 못 쓴다고?”, “말만 했는데 홈페이지가?”
+  - line2 (yellow, 140px): the topic/model name, ≤ 7 chars. Tag is optional; skip it when the image already says it. e.g. 제미나이 4 카본, AI 직원 만들기
   - Never repeat the video title word-for-word. No banned words.
 - Read the png before upload: text must be readable at phone size (look at a 320px-wide copy).
 
