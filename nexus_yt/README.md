@@ -84,6 +84,14 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
   - line1 (white, 86px): an emotional hook in quotes, ≤ 8 Korean chars (user 2026-11-02: "글이 너무 길어"), one key word in `<span class=c>` (cyan). e.g. “1등인데 못 쓴다고?”, “말만 했는데 홈페이지가?”
   - line2 (yellow, 140px): the topic/model name, ≤ 7 chars. Tag is optional; skip it when the image already says it. e.g. 제미나이 4 카본, AI 직원 만들기
   - Never repeat the video title word-for-word. No banned words.
+### Real logos (user rule 2026-11-02: "로고 같은 거 그냥 씩씩하게 갖다 써, 직접 만들려 하지 말고, 내가 책임질게")
+- When the topic is a company/app (Instagram, YouTube, ChatGPT, Gemini, Claude…), USE THE REAL LOGO FILE. Never redraw a logo by hand or ask the image model to imitate it.
+- Sources, in order:
+  1. `assets/logos/*.png` (full-color files from official sites, transparent bg). Add new ones here when the user provides them.
+  2. npm `simple-icons` (official brand glyphs, one color): `npm pack simple-icons@13.21.0 && tar -xzf simple-icons-*.tgz` → `package/icons/<slug>.svg` (googlegemini, openai, anthropic, claude, meta, x, tiktok, threads, notion, perplexity…). Fill with the brand color, put on a rounded tile if needed.
+- Be witty ("센스있게"): make the logos act out the story. Example `thumb/logo_example.html` (ep19): the Instagram logo split into jaws with teeth, mouth wide open, the YouTube logo inside the mouth being bitten, red crumbs. Other ideas: a logo kicking/crushing/racing/overtaking another, a crown on the winner, a cracked logo for "끝났다?".
+- Build such scenes in HTML/CSS (copy logo_example.html, render with `node th/shot_logo.js` → thumb4.png; edit paths). Keep the scene in the top 60%; same bottom text rules.
+- No "넥서스 AI" corner badge.
 - Read the png before upload: text must be readable at phone size (look at a 320px-wide copy).
 
 ## 6. Upload info

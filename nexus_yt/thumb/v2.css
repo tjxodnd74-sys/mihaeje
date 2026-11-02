@@ -7,4 +7,4 @@
 .L2{bottom:40px;font-size:140px;color:#FFE234;--sw:20px}
 .L .c{color:#3CF2FF}.L .w{color:#fff}.L .y{color:#FFE234}
 .tag{position:absolute;left:34px;top:30px;background:#FF5A1F;color:#fff;font-weight:900;font-size:40px;padding:8px 22px 12px;border-radius:12px;box-shadow:0 6px 0 rgba(0,0,0,.45);letter-spacing:-.03em}
-.brand{position:absolute;right:30px;top:30px;color:#fff;font-weight:800;font-size:28px;background:rgba(0,0,0,.55);padding:6px 16px 9px;border-radius:10px;border:2px solid #FF7A3D}
+.brand{display:none;position:absolute;right:30px;top:30px;color:#fff;font-weight:800;font-size:28px;background:rgba(0,0,0,.55);padding:6px 16px 9px;border-radius:10px;border:2px solid #FF7A3D}
