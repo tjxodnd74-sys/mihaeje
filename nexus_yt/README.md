@@ -95,7 +95,13 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - Read the png before upload: text must be readable at phone size (look at a 320px-wide copy).
 
 ## 6. Upload info
-- Title: 30–45 chars.
+- Title: 25–40 chars, MUST create curiosity (user 2026-11-03: "제목 좀 궁금증을 유발하게 좀 해봐 썸네일이랑 제발").
+  - Hide the answer; open a gap: "~의 정체", "~한 진짜 이유", "결국 ~까지", "~했더니 결과는?", "~라고?", "…".
+  - No "A | B" explainer titles, no "정리/핵심 정리/쓰는 법" as the main hook, no channel name.
+  - Title and thumbnail work as a pair: thumbnail = the shock/visual, title = the question it raises. Never repeat the thumbnail text.
+  - Must stay true to the video (no fake claims). Banned words still apply.
+  - Examples: "인스타가 결국 이것까지 합니다… 90분짜리 영상의 정체" / "구글이 1등 AI를 잠가버린 진짜 이유" / "같은 AI인데 결과가 이렇게 다르다고?"
+  - Shorts titles: same rule, ≤ 25 chars.
 - Description: **short**. 2 intro lines, 1–2 key lines, a pinned-comment note, 3 hashtags.
 - Tags: about 15.
 - Pinned comment: prompts the viewer can copy.
