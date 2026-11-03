@@ -102,6 +102,10 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
   - Must stay true to the video (no fake claims). Banned words still apply.
   - Examples: "인스타가 결국 이것까지 합니다… 90분짜리 영상의 정체" / "구글이 1등 AI를 잠가버린 진짜 이유" / "같은 AI인데 결과가 이렇게 다르다고?"
   - Shorts titles: same rule, ≤ 25 chars.
+- BE PROVOCATIVE (user 2026-11-03: "썸네일이랑 글 자체 좀 자극적으로 하라고 제발"): title, thumbnail text and the first description line must hit an emotion — fear of missing out, danger, shock, conflict.
+  - Patterns: "~하면 벌어지는 일", "모르면 털린다/손해", "~ 끝났다?", "결국 ~까지", "아직도 ~ 쓰세요?", "(모르면 위험)".
+  - Thumbnail scene: danger colors (red glow, warning sticker "⚠"), conflict between logos, things flying/breaking. Calm explainer scenes are not allowed.
+  - Still no lies: the video must back the hook (e.g. "모르면 털린다" only when the video covers a real security risk).
 - Description: **short**. 2 intro lines, 1–2 key lines, a pinned-comment note, 3 hashtags.
 - Tags: about 15.
 - Pinned comment: prompts the viewer can copy.
