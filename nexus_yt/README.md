@@ -119,3 +119,8 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - **Never touch brand 7088172 (car_log99).**
 - The date must be in the future: urgent = now + 15 min.
 - SRT: `[f"{i+1}\n{ts(l[0])} --> {ts(l[1])}\n{l[2]}\n" for l in voice.json lines]`.
+
+### Lesson (ep21): flat CSS cartoons look CHEAP ("싼티")
+- Do NOT draw faces/objects with CSS shapes. User rejected it as cheap.
+- Do: generate a premium 3D scene background with Higgsfield `gpt_image_2_5` (glossy, cinematic light, dramatic object — e.g. cracked phone, sparks), then composite the REAL logo (simple-icons SVG / assets/logos) + short bold text in HTML.
+- Example: thumb/logo_example_premium.html (+ logo_example_premium_bg.png).
