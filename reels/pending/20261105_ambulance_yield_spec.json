@@ -1,0 +1,256 @@
+{
+ "style": "fullscreen",
+ "eyebrow": "이럴 땐 어떻게?",
+ "title": [],
+ "cta": [
+  "저장해 두고",
+  "구급차 만나면 확인"
+ ],
+ "cover": {
+  "clip": "bg_em_amb_street_3759222.mp4",
+  "start": 11.2,
+  "cx": 0.45,
+  "tag": "이럴 땐 어떻게?",
+  "title": "교차로에서<br>|구급차| 오면<br>1번? 2번?",
+  "sub": "도로교통법 제29조 기준"
+ },
+ "segments": [
+  {
+   "cap": "교차로를 지나는 중인데, / 뒤에서 |구급차 사이렌|이 / 울려요",
+   "say": "교차로를 지나는 중인데, 뒤에서 구급차 사이렌이 울려요.",
+   "clip": "bg_em_amb_street_3759222.mp4",
+   "start": 10.0,
+   "cx": 0.4,
+   "kin": true,
+   "t": 0.277,
+   "e": 4.851,
+   "cut": true
+  },
+  {
+   "cap": "1번, / 그 자리에 / |바로 멈춘다|",
+   "say": "일번, 그 자리에 바로 멈춘다.",
+   "clip": "bg_em_amb_street_3759222.mp4",
+   "start": 3.0,
+   "cx": 0.5,
+   "step": 1,
+   "num": "1번",
+   "name": "바로 멈춤",
+   "t": 4.851,
+   "e": 7.659,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 4.851,
+     "html": "<span class=\"w\">1번</span>"
+    },
+    {
+     "t": 5.454,
+     "html": "<span class=\"w\">그</span><span class=\"w\">자리에</span>"
+    },
+    {
+     "t": 6.071,
+     "html": "<span class=\"w hl\">바로</span><span class=\"w hl\">멈춘다</span>"
+    }
+   ]
+  },
+  {
+   "cap": "2번, / 교차로를 |빠져나가서| / 오른쪽에 선다",
+   "say": "이번, 교차로를 빠져나가서 오른쪽에 선다.",
+   "clip": "bg_yl_drone_15171829.mp4",
+   "start": 0.0,
+   "cx": 0.5,
+   "step": 2,
+   "num": "2번",
+   "name": "빠져나가 오른쪽",
+   "t": 7.659,
+   "e": 11.376,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 7.659,
+     "html": "<span class=\"w\">2번</span>"
+    },
+    {
+     "t": 8.252,
+     "html": "<span class=\"w\">교차로를</span><span class=\"w hl\">빠져나가서</span>"
+    },
+    {
+     "t": 9.784,
+     "html": "<span class=\"w\">오른쪽에</span><span class=\"w\">선다</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|몇 번|이 맞을까요?",
+   "say": "몇 번이 맞을까요?",
+   "t": 11.376,
+   "e": 13.024,
+   "capChunks": [
+    {
+     "t": 11.376,
+     "html": "<span class=\"w hl\">몇</span><span class=\"w hl\">번이</span><span class=\"w\">맞을까요?</span>"
+    }
+   ]
+  },
+  {
+   "cap": "정답은 |2번|이에요",
+   "say": "정답은 이번이에요.",
+   "clip": "bg_em_yield_5514366.mp4",
+   "start": 2.5,
+   "cx": 0.55,
+   "step": 3,
+   "num": "정답",
+   "name": "2번",
+   "stat": [
+    "2번",
+    "교차로를 피해서 정차"
+   ],
+   "t": 13.024,
+   "e": 14.698,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 13.024,
+     "html": "<span class=\"w\">정답은</span><span class=\"w hl\">2번이에요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "도로교통법은 / |교차로를 피해서| / 일시정지하라고 / 정해 두었어요",
+   "say": "도로교통법은 교차로를 피해서 일시정지하라고 정해 두었어요.",
+   "stat": [
+    "피해서 정지",
+    "도로교통법 제29조"
+   ],
+   "t": 14.698,
+   "e": 18.884,
+   "capChunks": [
+    {
+     "t": 14.698,
+     "html": "<span class=\"w\">도로교통법은</span>"
+    },
+    {
+     "t": 15.67,
+     "html": "<span class=\"w hl\">교차로를</span><span class=\"w hl\">피해서</span>"
+    },
+    {
+     "t": 16.618,
+     "html": "<span class=\"w\">일시정지하라고</span>"
+    },
+    {
+     "t": 17.566,
+     "html": "<span class=\"w\">정해</span><span class=\"w\">두었어요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "교차로 한가운데 서면, / 구급차도 옆 차들도 / |막힐 수 있어요|",
+   "say": "교차로 한가운데 서면, 구급차도 옆 차들도 막힐 수 있어요.",
+   "clip": "bg_ah_jam_v_18477437.mp4",
+   "start": 0.0,
+   "cx": 0.5,
+   "t": 18.884,
+   "e": 23.548,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 18.884,
+     "html": "<span class=\"w\">교차로</span><span class=\"w\">한가운데</span><span class=\"w\">서면</span>"
+    },
+    {
+     "t": 20.841,
+     "html": "<span class=\"w\">구급차도</span><span class=\"w\">옆</span><span class=\"w\">차들도</span>"
+    },
+    {
+     "t": 21.977,
+     "html": "<span class=\"w hl\">막힐</span><span class=\"w hl\">수</span><span class=\"w hl\">있어요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "아직 |들어가기 전|이면, / 그 앞 |가장자리|에 서세요",
+   "say": "아직 교차로에 들어가기 전이면, 그 앞 가장자리에 서세요.",
+   "clip": "bg_yl_dashcam_5921059.mp4",
+   "start": 0.0,
+   "cx": 0.5,
+   "step": 4,
+   "num": "TIP",
+   "name": "들어가기 전",
+   "t": 23.548,
+   "e": 27.507,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 23.548,
+     "html": "<span class=\"w\">아직</span><span class=\"w hl\">들어가기</span><span class=\"w hl\">전이면</span>"
+    },
+    {
+     "t": 25.555,
+     "html": "<span class=\"w\">그</span><span class=\"w\">앞</span><span class=\"w hl\">가장자리에</span><span class=\"w\">서세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "교차로가 아닌 길에서는, / |가장자리로 비켜| / 길을 내주면 돼요",
+   "say": "교차로가 아닌 길에서는, 가장자리로 비켜 길을 내주면 돼요.",
+   "clip": "bg_em_amb_18496733.mp4",
+   "start": 2.0,
+   "cx": 0.55,
+   "step": 5,
+   "num": "TIP",
+   "name": "교차로 아닌 길",
+   "t": 27.507,
+   "e": 31.991,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 27.507,
+     "html": "<span class=\"w\">교차로가</span><span class=\"w\">아닌</span><span class=\"w\">길에서는</span>"
+    },
+    {
+     "t": 29.18,
+     "html": "<span class=\"w hl\">가장자리로</span><span class=\"w hl\">비켜</span>"
+    },
+    {
+     "t": 30.331,
+     "html": "<span class=\"w\">길을</span><span class=\"w\">내주면</span><span class=\"w\">돼요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|저장|해 두고, / 구급차 만나면 / 떠올려 보세요",
+   "say": "저장해 두고, 구급차 만나면 떠올려 보세요.",
+   "clip": "bg_em_blueflash_11387539.mp4",
+   "start": 0.0,
+   "cx": 0.25,
+   "cta": true,
+   "t": 31.991,
+   "e": 36.948,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 31.991,
+     "html": "<span class=\"w hl\">저장해</span><span class=\"w\">두고</span>"
+    },
+    {
+     "t": 33.053,
+     "html": "<span class=\"w\">구급차</span><span class=\"w\">만나면</span>"
+    },
+    {
+     "t": 34.244,
+     "html": "<span class=\"w\">떠올려</span><span class=\"w\">보세요</span>"
+    }
+   ]
+  }
+ ],
+ "duration": 37,
+ "impacts": [
+  0.277,
+  4.851,
+  7.659,
+  13.024,
+  23.548,
+  27.507,
+  31.991
+ ]
+}
