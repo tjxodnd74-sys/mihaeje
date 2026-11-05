@@ -125,10 +125,10 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - Do: generate a premium 3D scene background with Higgsfield `gpt_image_2_5` (glossy, cinematic light, dramatic object — e.g. cracked phone, sparks), then composite the REAL logo (simple-icons SVG / assets/logos) + short bold text in HTML.
 - Example: thumb/logo_example_premium.html (+ logo_example_premium_bg.png).
 
-## 7. Shorts — 1 per long-form (REQUIRED, user: "쇼츠로 유입이 커야 함")
-- Do NOT cut the long-form (user rejected: 루즈, 짧고 재미없음). Make a SHORTS-ONLY piece: own script 11–12 lines, 35–45s, cloned voice (seed_audio, same reference) — tell the user the credit use first.
-- Script: 2s hook with consequence ("클로드한테 욕하면, 이제 진짜 대화가 끊깁니다") → escalate (rules, stakes, twist "반전", numbers) → relatable line ("솔직히 화나면 한마디 할 수도…") → final QUESTION, answer only in long-form → CTA "풀영상".
-- TTS text: write "에이아이", "십일월 십이일", "엠씨피", "구십 분" (avoid odd readings like "에--"). ASR-check every take.
-- Visuals: vertical-only animated widgets (engine/short_v3/make.py): chat window with bubbles & lock, OS popup with shake, giant numbers, rotated stamps, real-logo tiles orbit, VS, phone→landscape, X-card, flow, list of 3 locked "???", hidden-command card, end CTA with long-form thumbnail. Moving glow bg, top title, big 1-line yellow-keyword captions, progress bar, flash per scene, SFX per action, quiet BGM.
-- Spec example: engine/short_v3/spec_c.json → `python3 make.py spec.json`. Contact-sheet check before upload.
-- Title ≤ 25 chars curiosity; Metricool type "short".
+## 7. Shorts — 1 per long-form (REQUIRED)
+- Engine: engine/short_v4 (HTML short.html + Playwright render.js, scenes in specs.py, build.py). Light cream channel style (same as long-form), real UI cards (chat, dialog, table, stamps, logo tiles, mascot), title top, captions in dark pill.
+- Own shorts script 11–12 lines, 40–45s, cloned voice (seed_audio) — tell credits first.
+- CAPTIONS: write phrases by hand with "/" at natural Korean breaks — NEVER split a predicate ("못 보내요", "끝내 버려요" stay together). Timing = faster-whisper word timestamps on each line (build.py) → sync.
+- AUDIO: no atempo, no aggressive silenceremove (cut words). Python trim: edges at -48dB, cap internal pauses 0.32s. ASR-check final mp4.
+- Elements appear at phrase anchors ("p2", "p1+0.3") so visuals hit with the words; every entrance has an SFX.
+- Check a 16-frame contact sheet before upload (no empty stage, no overlap with caption, no overflow).
