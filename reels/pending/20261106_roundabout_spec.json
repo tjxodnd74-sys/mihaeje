@@ -1,0 +1,328 @@
+{
+ "style": "fullscreen",
+ "eyebrow": "위에서 보면 쉬워요",
+ "title": [],
+ "cta": [
+  "저장해 두고",
+  "회전교차로 앞에서 확인"
+ ],
+ "cover": {
+  "clip": "bg_rb_busy_v_40360886.mp4",
+  "start": 4.0,
+  "cx": 0.5,
+  "tag": "위에서 보면 쉬워요",
+  "title": "회전교차로<br>|누가 먼저|<br>들어갈까?",
+  "sub": "도로교통법 제25조의2 기준"
+ },
+ "segments": [
+  {
+   "cap": "회전교차로 앞인데, / 안에서 |차가 돌고| 있어요",
+   "say": "회전교차로 앞인데, 안에서 차가 돌고 있어요.",
+   "clip": "bg_rb_busy_v_40360886.mp4",
+   "start": 2.0,
+   "cx": 0.5,
+   "kin": true,
+   "t": 0.41,
+   "e": 3.84,
+   "cut": true
+  },
+  {
+   "cap": "내가 |먼저| 들어갈까요, / |기다릴까요|?",
+   "say": "내가 먼저 들어갈까요, 기다릴까요?",
+   "clip": "bg_rb_aero_v_36381669.mp4",
+   "start": 0.5,
+   "cx": 0.5,
+   "t": 3.84,
+   "e": 6.68,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 3.84,
+     "html": "<span class=\"w\">내가</span><span class=\"w hl\">먼저</span><span class=\"w\">들어갈까요</span>"
+    },
+    {
+     "t": 5.355,
+     "html": "<span class=\"w hl\">기다릴까요?</span>"
+    }
+   ]
+  },
+  {
+   "cap": "첫째, / |안에서 도는 차|가 / 먼저예요",
+   "say": "첫째, 안에서 돌고 있는 차가 먼저예요.",
+   "clip": "bg_rb_busy_v_40360886.mp4",
+   "start": 8.0,
+   "cx": 0.5,
+   "step": 1,
+   "num": "첫째",
+   "name": "안에 있는 차 먼저",
+   "t": 6.68,
+   "e": 10.48,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 6.68,
+     "html": "<span class=\"w\">첫째</span>"
+    },
+    {
+     "t": 7.799,
+     "html": "<span class=\"w hl\">안에서</span><span class=\"w hl\">도는</span><span class=\"w hl\">차가</span>"
+    },
+    {
+     "t": 9.145,
+     "html": "<span class=\"w\">먼저예요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "도로교통법은 / 이미 진행 중인 차에 / |양보|하라고 / 정해 두었어요",
+   "say": "도로교통법은 이미 진행 중인 차에 양보하라고 정해 두었어요.",
+   "clip": "bg_rb_flow_32917484.mp4",
+   "start": 15.5,
+   "cx": 0.5,
+   "stat": [
+    "양보",
+    "도로교통법 제25조의2"
+   ],
+   "t": 10.48,
+   "e": 14.67,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 10.48,
+     "html": "<span class=\"w\">도로교통법은</span>"
+    },
+    {
+     "t": 11.262,
+     "html": "<span class=\"w\">이미</span><span class=\"w\">진행</span><span class=\"w\">중인</span><span class=\"w\">차에</span>"
+    },
+    {
+     "t": 12.412,
+     "html": "<span class=\"w hl\">양보하라고</span>"
+    },
+    {
+     "t": 13.131,
+     "html": "<span class=\"w\">정해</span><span class=\"w\">두었어요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "들어가기 전엔 / |서행|하거나 / |잠깐 멈추세요|",
+   "say": "그래서 들어가기 전엔 서행하거나 잠깐 멈추세요.",
+   "clip": "bg_rb_tuzla_33269758.mp4",
+   "start": 4.0,
+   "cx": 0.5,
+   "t": 14.67,
+   "e": 18.6,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 14.67,
+     "html": "<span class=\"w\">들어가기</span><span class=\"w\">전엔</span>"
+    },
+    {
+     "t": 16.341,
+     "html": "<span class=\"w hl\">서행하거나</span>"
+    },
+    {
+     "t": 17.088,
+     "html": "<span class=\"w hl\">잠깐</span><span class=\"w hl\">멈추세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "둘째, / 도는 방향은 / |시계 반대 방향|",
+   "say": "둘째, 도는 방향은 시계 반대 방향이에요.",
+   "clip": "bg_rb_aero2_v_36381670.mp4",
+   "start": 4.0,
+   "cx": 0.5,
+   "step": 2,
+   "num": "둘째",
+   "name": "시계 반대 방향",
+   "t": 18.6,
+   "chunkT": [
+    19.35,
+    20.18
+   ],
+   "e": 22.27,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 18.6,
+     "html": "<span class=\"w\">둘째</span>"
+    },
+    {
+     "t": 19.35,
+     "html": "<span class=\"w\">도는</span><span class=\"w\">방향은</span>"
+    },
+    {
+     "t": 20.18,
+     "html": "<span class=\"w hl\">시계</span><span class=\"w hl\">반대</span><span class=\"w hl\">방향</span>"
+    }
+   ]
+  },
+  {
+   "cap": "가운데 섬을 / |왼쪽에 두고| / 돈다고 기억하세요",
+   "say": "가운데 섬을 왼쪽에 두고 돈다고 기억하세요.",
+   "clip": "bg_rb_aero_v_36381669.mp4",
+   "start": 14.0,
+   "cx": 0.5,
+   "t": 22.27,
+   "e": 26.15,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 22.27,
+     "html": "<span class=\"w\">가운데</span><span class=\"w\">섬을</span>"
+    },
+    {
+     "t": 23.535,
+     "html": "<span class=\"w hl\">왼쪽에</span><span class=\"w hl\">두고</span>"
+    },
+    {
+     "t": 24.259,
+     "html": "<span class=\"w\">돈다고</span><span class=\"w\">기억하세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "셋째, / 들어갈 때도 / 나갈 때도 / |깜빡이|를 켜요",
+   "say": "셋째, 들어갈 때도 나갈 때도 깜빡이를 켜요.",
+   "clip": "bg_rb_city_v_40578043.mp4",
+   "start": 10.0,
+   "cx": 0.5,
+   "step": 3,
+   "num": "셋째",
+   "name": "깜빡이",
+   "t": 26.15,
+   "e": 29.35,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 26.15,
+     "html": "<span class=\"w\">셋째</span>"
+    },
+    {
+     "t": 26.893,
+     "html": "<span class=\"w\">들어갈</span><span class=\"w\">때도</span>"
+    },
+    {
+     "t": 27.512,
+     "html": "<span class=\"w\">나갈</span><span class=\"w\">때도</span>"
+    },
+    {
+     "t": 28.007,
+     "html": "<span class=\"w hl\">깜빡이를</span><span class=\"w\">켜요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "진입·진출 신호도 / |법에 정해진 의무|예요",
+   "say": "진입과 진출 신호도 법에 정해진 의무예요.",
+   "clip": "bg_rb_flow_32917484.mp4",
+   "start": 20.2,
+   "cx": 0.5,
+   "stat": [
+    "진입·진출 신호",
+    "도로교통법 제38조"
+   ],
+   "t": 29.35,
+   "e": 33.17,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 29.35,
+     "html": "<span class=\"w\">진입·진출</span><span class=\"w\">신호도</span>"
+    },
+    {
+     "t": 31.191,
+     "html": "<span class=\"w hl\">법에</span><span class=\"w hl\">정해진</span><span class=\"w hl\">의무예요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "나갈 때 / |오른쪽 깜빡이|를 켜면, / 기다리는 차가 / 미리 알 수 있어요",
+   "say": "나갈 때 오른쪽 깜빡이를 켜면, 기다리는 차가 미리 알 수 있어요.",
+   "clip": "bg_rb_busy_v_40360886.mp4",
+   "start": 14.0,
+   "cx": 0.5,
+   "t": 33.17,
+   "e": 38.03,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 33.17,
+     "html": "<span class=\"w\">나갈</span><span class=\"w\">때</span>"
+    },
+    {
+     "t": 33.74,
+     "html": "<span class=\"w hl\">오른쪽</span><span class=\"w hl\">깜빡이를</span><span class=\"w\">켜면</span>"
+    },
+    {
+     "t": 35.345,
+     "html": "<span class=\"w\">기다리는</span><span class=\"w\">차가</span>"
+    },
+    {
+     "t": 36.305,
+     "html": "<span class=\"w\">미리</span><span class=\"w\">알</span><span class=\"w\">수</span><span class=\"w\">있어요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "이 세 가지만 알면, / 회전교차로가 / |훨씬 편해져요|",
+   "say": "이 세 가지만 알면, 회전교차로가 훨씬 편해져요.",
+   "clip": "bg_rb_aero3_v_36381671.mp4",
+   "start": 22.0,
+   "cx": 0.5,
+   "t": 38.03,
+   "e": 42.14,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 38.03,
+     "html": "<span class=\"w\">이</span><span class=\"w\">세</span><span class=\"w\">가지만</span><span class=\"w\">알면</span>"
+    },
+    {
+     "t": 39.878,
+     "html": "<span class=\"w\">회전교차로가</span>"
+    },
+    {
+     "t": 40.707,
+     "html": "<span class=\"w hl\">훨씬</span><span class=\"w hl\">편해져요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|저장|해 두고, / 회전교차로 앞에서 / 떠올려 보세요",
+   "say": "저장해 두고, 회전교차로 앞에서 떠올려 보세요.",
+   "clip": "bg_rb_city_v_40578043.mp4",
+   "start": 28.0,
+   "cx": 0.5,
+   "cta": true,
+   "t": 42.14,
+   "e": 47.188,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 42.14,
+     "html": "<span class=\"w hl\">저장해</span><span class=\"w\">두고</span>"
+    },
+    {
+     "t": 43.336,
+     "html": "<span class=\"w\">회전교차로</span><span class=\"w\">앞에서</span>"
+    },
+    {
+     "t": 44.514,
+     "html": "<span class=\"w\">떠올려</span><span class=\"w\">보세요</span>"
+    }
+   ]
+  }
+ ],
+ "duration": 47,
+ "impacts": [
+  0.41,
+  6.68,
+  18.6,
+  26.15,
+  42.14
+ ]
+}
