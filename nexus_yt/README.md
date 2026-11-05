@@ -124,3 +124,11 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - Do NOT draw faces/objects with CSS shapes. User rejected it as cheap.
 - Do: generate a premium 3D scene background with Higgsfield `gpt_image_2_5` (glossy, cinematic light, dramatic object — e.g. cracked phone, sparks), then composite the REAL logo (simple-icons SVG / assets/logos) + short bold text in HTML.
 - Example: thumb/logo_example_premium.html (+ logo_example_premium_bg.png).
+
+## 7. Shorts — 1 per long-form (REQUIRED)
+- Every long-form gets exactly ONE YouTube Short, scheduled 1 day after (or same evening).
+- TEASER, not summary: hook + tension (stakes, the surprising fact, the question) and CUT before the answer. End card says "답은 풀영상에서". Never include the full tips/prompt list.
+- Reuse the long-form's own voice (no new TTS, no credits). Build: write spec.json
+  `{"name":"sNN","ep":"/path/epNN","thumb":"/path/thumb.jpg","segs":[[a,b],...],"hook":["줄1","줄2"],"hl":"강조어","end":["질문 한 줄","답은 풀영상에서"]}`
+  (segs = second ranges from voice.json lines, 20–35s total, first seg = hook) → `python3 engine/short.py spec.json` → sNN.mp4 (1080x1920, blurred thumb bg, hook top, video middle, captions, end card).
+- Title ≤ 25 chars, curiosity (e.g. "클로드한테 욕하면 진짜 이렇게 됩니다"). Metricool youtubeData.type "short". Description 2 lines + "#shorts".
