@@ -125,11 +125,10 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - Do: generate a premium 3D scene background with Higgsfield `gpt_image_2_5` (glossy, cinematic light, dramatic object — e.g. cracked phone, sparks), then composite the REAL logo (simple-icons SVG / assets/logos) + short bold text in HTML.
 - Example: thumb/logo_example_premium.html (+ logo_example_premium_bg.png).
 
-## 7. Shorts — 1 per long-form (REQUIRED)
-- Every long-form gets exactly ONE YouTube Short (same evening or next day).
-- TEASER, not summary: hook + tension (stakes, surprising fact) then CUT on the question. End card "답은 풀영상에서". Never show the answer/tips — if a line's video reveals the answer, replace its visual with the thumbnail via `vimg`.
-- Audio: ONLY the ep's clean `voice.wav` (never the long-form final mix — its cut BGM/SFX fragments = noise) + quiet BGM + few SFX (hook impact, whoosh on jumps, stamp hits, end ding). Pacing FAST: 1.17x speed, internal pauses >0.14s removed, 0.06s gap between lines. Drop filler lines ("새로 들어간 문장은 이거예요"). Skip lines with odd TTS sounds (e.g. drawn-out "에-이아이" at start) — verify with faster-whisper word timestamps (no gaps >0.35s, no stray syllables).
-- Visual hooks: hook text pop+shake, punch-in zoom on each jump + slow push, flash on cuts, 2–3 rotated STAMPS ("대화 종료", "해킹 주의"), keyword captions in yellow, orange progress bar on top.
-- Captions: ONE short line (≤11 chars), big, pop-in. Auto-split.
-- Build: spec json (see engine/short_example.json: lines = substrings of voice.json lines, hook, hl, end, kws, stamps, stamp_delay, vimg) → `python3 engine/short.py spec.json` → name.mp4. Check frames + volumedetect before upload.
-- Title ≤ 25 chars, curiosity. Metricool youtubeData.type "short". Description 2 lines + "#shorts".
+## 7. Shorts — 1 per long-form (REQUIRED, user: "쇼츠로 유입이 커야 함")
+- Do NOT cut the long-form (user rejected: 루즈, 짧고 재미없음). Make a SHORTS-ONLY piece: own script 11–12 lines, 35–45s, cloned voice (seed_audio, same reference) — tell the user the credit use first.
+- Script: 2s hook with consequence ("클로드한테 욕하면, 이제 진짜 대화가 끊깁니다") → escalate (rules, stakes, twist "반전", numbers) → relatable line ("솔직히 화나면 한마디 할 수도…") → final QUESTION, answer only in long-form → CTA "풀영상".
+- TTS text: write "에이아이", "십일월 십이일", "엠씨피", "구십 분" (avoid odd readings like "에--"). ASR-check every take.
+- Visuals: vertical-only animated widgets (engine/short_v3/make.py): chat window with bubbles & lock, OS popup with shake, giant numbers, rotated stamps, real-logo tiles orbit, VS, phone→landscape, X-card, flow, list of 3 locked "???", hidden-command card, end CTA with long-form thumbnail. Moving glow bg, top title, big 1-line yellow-keyword captions, progress bar, flash per scene, SFX per action, quiet BGM.
+- Spec example: engine/short_v3/spec_c.json → `python3 make.py spec.json`. Contact-sheet check before upload.
+- Title ≤ 25 chars curiosity; Metricool type "short".
