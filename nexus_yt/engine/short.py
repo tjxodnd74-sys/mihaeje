@@ -11,7 +11,7 @@ S={
  's19':('/home/claude/ep19','/home/claude/ep19/th/thumb4.png',[(0.6,6.2),(33.6,38.1),(43.5,48.3),(48.8,55.6),(90.8,92.4)],
         ['인스타가 유튜브를','잡아먹으려 한다'],'유튜브',['나한테 뭐가 달라질까?','답은 풀영상에서']),
 }
-fH=ImageFont.truetype(F+'Pretendard-Black.otf',100);fC=ImageFont.truetype(F+'Pretendard-ExtraBold.otf',58)
+fH=ImageFont.truetype(F+'Pretendard-Black.otf',100);fC=ImageFont.truetype(F+'Pretendard-Black.otf',78)
 fE=ImageFont.truetype(F+'Pretendard-Black.otf',92);fS=ImageFont.truetype(F+'Pretendard-Bold.otf',40)
 W,H=1080,1920;Y=700;VH=608;END=2.8
 def stroke(d,xy,t,f,fill,sw=8):d.text(xy,t,font=f,fill=fill,stroke_width=sw,stroke_fill='#000000')
@@ -48,10 +48,16 @@ def wrap(t,d,maxw=980):
         a,b=' '.join(ws[:i]),' '.join(ws[i:]);m=max(d.textlength(a,font=fC),d.textlength(b,font=fC))
         if best is None or m<best[0]:best=(m,[a,b])
     return best[1]
+def chunks(t,mx=11):
+    t=t.replace(',',' ').replace('.',' ').replace('?','? ');ws=[w for w in t.split() if w];out=[];cur=''
+    for w in ws:
+        if cur and len(cur)+1+len(w)>mx:out.append(cur);cur=w
+        else:cur=(cur+' '+w).strip()
+    if cur:out.append(cur)
+    return out
 def cap(t,path):
-    im=Image.new('RGBA',(W,200),(0,0,0,0));d=ImageDraw.Draw(im);ls=wrap(t.rstrip(',.'),d);y=(200-len(ls)*78)/2
-    for l in ls:
-        w=d.textlength(l,font=fC);stroke(d,((W-w)/2,y),l,fC,'#FFFFFF',7);y+=78
+    im=Image.new('RGBA',(W,200),(0,0,0,0));d=ImageDraw.Draw(im);w=d.textlength(t,font=fC)
+    stroke(d,((W-w)/2,50),t,fC,'#FFFFFF',9)
     im.save(path)
 if len(sys.argv)>1 and sys.argv[1].endswith('.json'):
     j=json.load(open(sys.argv[1]));S={j['name']:(j['ep'],j['thumb'],j['segs'],j['hook'],j['hl'],j['end'])};sys.argv=sys.argv[:1]
@@ -60,7 +66,10 @@ for name in (sys.argv[1:] or S):
     L=json.load(open(ep+'/voice.json'))['lines'];src=ep+'/final.mp4';caps=[];off=0
     for a,b in segs:
         for l in L:
-            if l[0]>=a-0.05 and l[1]<=b+0.3:caps.append((l[0]-a+off,min(l[1],b)-a+off,l[2]))
+            if l[0]>=a-0.05 and l[1]<=b+0.3:
+                t0,t1=l[0]-a+off,min(l[1],b)-a+off;cs=chunks(l[2]);n=sum(len(c) for c in cs);x=t0
+                for c in cs:
+                    dt=(t1-t0)*len(c)/n;caps.append((x,x+dt-0.2,c));x+=dt
         off+=b-a
     T=off;k=len(segs);ins=[]
     for a,b in segs:ins+=['-ss',str(a),'-t',str(b-a),'-i',src]

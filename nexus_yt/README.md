@@ -131,4 +131,5 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - Reuse the long-form's own voice (no new TTS, no credits). Build: write spec.json
   `{"name":"sNN","ep":"/path/epNN","thumb":"/path/thumb.jpg","segs":[[a,b],...],"hook":["줄1","줄2"],"hl":"강조어","end":["질문 한 줄","답은 풀영상에서"]}`
   (segs = second ranges from voice.json lines, 20–35s total, first seg = hook) → `python3 engine/short.py spec.json` → sNN.mp4 (1080x1920, blurred thumb bg, hook top, video middle, captions, end card).
+- Captions: ONE short line (≤ 11 chars) at a time, big — never 2-line long sentences (user: 가독성). short.py splits automatically.
 - Title ≤ 25 chars, curiosity (e.g. "클로드한테 욕하면 진짜 이렇게 됩니다"). Metricool youtubeData.type "short". Description 2 lines + "#shorts".
