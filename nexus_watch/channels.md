@@ -36,3 +36,4 @@
 
 ## 실행 메모
 - 2026-11-05 16:24: WebFetch가 전부 권한 응답 대기로 차단(PROVENANCE_REQUIRED) — 유튜브·긱뉴스·AI타임스·공식 블로그 못 읽음. WebSearch는 채널 영상 날짜를 못 줌.
+- 2026-11-05 17:24: C조 6개 채널·인스타(@horang.wave, @prompt_what) WebSearch 결과에 최근 3일 날짜 확인되는 글 없음. WebFetch 도구 미로드(사용 불가)로 유튜브·긱뉴스·AI타임스·공식 블로그 직접 확인 못 함. 새 소식 없음.
