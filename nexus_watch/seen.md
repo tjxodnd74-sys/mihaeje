@@ -11,3 +11,5 @@
 2026-11-05 13:23 | 클로드(알림 제외) | AP 선거 데이터 라이선스 계약 | https://www.adweek.com/media/anthropic-licensing-deal-ap-election/
 2026-11-05 14:23 | 애플(알림 제외·베타) | iOS 27.3 베타: 대화 기억 AI·시리 앱 제어 강화 | https://www.aitimes.com/news/articleView.html?idxno=216983
 2026-11-05 14:23 | 오픈AI(알림 제외·벤치마크) | 일상 업무 AI 평가 '라이프밸' 공개 | https://www.aitimes.com/news/articleView.html?idxno=216996
+2026-11-05 15:23 | 오픈AI(알림 제외·루머) | Astra·Sol·Cyber 모델 11/6 출시설 | https://kucoin.com/news/flash/openai-may-release-astra-sol-and-cyber-models-as-early-as-nov-6
+2026-11-05 15:23 | 제미나이(알림 제외·9월 발표) | 젬(Gems)→스킬 전환(11월 예정) | https://9to5google.com/2026/09/27/gemini-gems-skills/
