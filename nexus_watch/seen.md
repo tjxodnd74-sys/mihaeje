@@ -7,3 +7,5 @@
 2026-11-04 18:24 | 빠나나 Shift Recast(경쟁 주제·광고성, 알림 제외) | 반려동물 사진으로 주인공 바꾸기 (@prompt_what) | https://www.instagram.com/reel/DfUEyFbSwCF/
 2026-11-05 09:24 | 챗GPT | ChatGPT Images 2.6 출시: GIF 생성·참고 이미지, API 신모델 2종 | https://x.com/OpenAI/status/2118124944928432327
 2026-11-05 09:24 | AI 룩북 부업(경쟁 주제·@biggie_ai) | AI 룩북 영상+쇼핑 어필리에이트 부업 | https://www.instagram.com/reel/DfUZ6hXhUoG/
+2026-11-05 13:23 | 클로드 | 보이지 않는 텍스트 워터마크, 11/3부터 이전 모델까지 확대 | https://finance.biggo.com/news/baba9904-cef5-4598-959b-7e86dd40f84f
+2026-11-05 13:23 | 클로드(알림 제외) | AP 선거 데이터 라이선스 계약 | https://www.adweek.com/media/anthropic-licensing-deal-ap-election/

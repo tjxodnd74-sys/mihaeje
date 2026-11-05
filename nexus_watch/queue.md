@@ -1,5 +1,15 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-05 13:23 — ① 클로드 글에 '보이지 않는 워터마크'
+- 출처: https://finance.biggo.com/news/baba9904-cef5-4598-959b-7e86dd40f84f , https://uk.finance.yahoo.com/news/anthropic-claude-now-leave-trail-151343512.html , https://interestingengineering.com/ai-robotics/anthropic-claude-text-invisible-watermarks
+- 추천 형식: 카드뉴스
+- 제목안: "클로드로 쓴 글 / 이제 티 납니다?"
+- 핵심 사실:
+  1. 앤트로픽이 클로드가 쓴 글에 눈에 안 보이는 텍스트 워터마크를 넣음(8월 최신 모델부터 시작, EU 규정 대응)
+  2. 11월 3일부터 Opus 4.6·4.7, Sonnet 4.6 등 이전 모델까지 전 세계 확대, 일반 사용자는 끌 수 없음
+  3. 요금·토큰 영향 없음. 복사·붙여넣기엔 남지만 편집하면 약해진다는 분석도 있음(과장 금지)
+- 예상 크레딧: 표지 이미지 2~3장 기준 약 2~3크레딧
+
 ## 2026-11-05 09:24 — ① 챗GPT 이미지 2.6, 이제 GIF까지
 - 출처: https://x.com/OpenAI/status/2118124944928432327 (2026-11-05 08:35 KST), https://thenextweb.com/news/chatgpt-animated-gifs-images-2-6-openai , https://cryptobriefing.com/openai-images-2-6-global-rollout-chatgpt-codex/
 - 추천 형식: 릴스(GIF 결과 보여주기)
