@@ -2,7 +2,7 @@ import json,subprocess,sys,os,math
 import numpy as np
 from PIL import Image,ImageDraw,ImageFont,ImageFilter,ImageEnhance
 A=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','assets');F=A+'/fonts/';SFX=A+'/sfx/'
-W,H=1080,1920;Y=700;VH=608;FPS=30;GAP=0.10;SPD=1.08;END=2.6
+W,H=1080,1920;Y=700;VH=608;FPS=30;GAP=0.06;SPD=1.17;END=2.4
 fH=ImageFont.truetype(F+'Pretendard-Black.otf',100);fC=ImageFont.truetype(F+'Pretendard-Black.otf',80)
 fE=ImageFont.truetype(F+'Pretendard-Black.otf',92);fS=ImageFont.truetype(F+'Pretendard-Bold.otf',40);fT=ImageFont.truetype(F+'Pretendard-Black.otf',96)
 def sfx(k):return [SFX+f for f in os.listdir(SFX) if f.startswith(k)][0]
@@ -58,18 +58,20 @@ def build(spec):
     # timeline
     plan=[];t=0.0
     for i,l in enumerate(sel):
-        a,b=l[0]-0.04,l[1]+0.06;d=(b-a)/SPD
+        a,b=l[0]-0.03,l[1]+0.05;pw=f'/tmp/{name}_p{i}.wav'
+        subprocess.run(['ffmpeg','-v','error','-y','-ss',f'{a:.3f}','-t',f'{b-a:.3f}','-i',ep+'/voice.wav','-af',f'aresample=48000,aformat=channel_layouts=stereo,silenceremove=start_periods=1:start_threshold=-40dB:stop_periods=-1:stop_duration=0.14:stop_threshold=-40dB:stop_silence=0.07,atempo={SPD},afade=t=in:d=0.015,areverse,afade=t=in:d=0.04,areverse',pw],check=True)
+        d=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',pw]))
         jump=i>0 and sel[i-1] is not l and L.index(l)!=L.index(sel[i-1])+1
         vs=[v for k,v in spec.get('vsrc',{}).items() if k in l[2]];vi=[v for k,v in spec.get('vimg',{}).items() if k in l[2]]
-        plan.append(dict(a=a,b=b,t0=t,t1=t+d,text=l[2],jump=jump,vs=vs[0] if vs else a,vi=vi[0] if vi else None));t+=d+GAP
+        plan.append(dict(pw=pw,a=a,b=b,t0=t,t1=t+d,text=l[2],jump=jump,vs=vs[0] if vs else a,vi=vi[0] if vi else None));t+=d+GAP
     T=t-GAP;TOT=T+END
     # audio: voice pieces
     tmp=f'/tmp/{name}_a';os.makedirs(tmp,exist_ok=True)
     ins=[];fl=[];lab=[]
     for i,p in enumerate(plan):
-        ins+=['-ss',f"{p['a']:.3f}",'-t',f"{p['b']-p['a']:.3f}",'-i',ep+'/voice.wav']
+        ins+=['-i',p['pw']]
         ms=int(p['t0']*1000)
-        fl.append(f"[{i}:a]aresample=48000,aformat=channel_layouts=stereo,atempo={SPD},afade=t=in:d=0.02,afade=t=out:st={(p['b']-p['a'])/SPD-0.04:.3f}:d=0.04,adelay={ms}|{ms}[v{i}]");lab.append(f'[v{i}]')
+        fl.append(f"[{i}:a]adelay={ms}|{ms}[v{i}]");lab.append(f'[v{i}]')
     n=len(plan)
     ins+=['-stream_loop','-1','-ss','4','-i',A+'/music.mp3'];fl.append(f"[{n}:a]atrim=0:{TOT:.2f},asetpts=PTS-STARTPTS,aresample=48000,aformat=channel_layouts=stereo,volume=0.07,afade=t=in:d=0.5,afade=t=out:st={TOT-1.2:.2f}:d=1.2[m]");lab.append('[m]');n+=1
     ev=[]  # sfx events
@@ -106,7 +108,7 @@ def build(spec):
         if p['vi']:
             im=np.array(Image.open(p['vi']).convert('RGB').resize((BW,BH)));return im[None]
         dur=p['b']-p['a'];nf=int(round((p['t1']-p['t0'])*FPS))+1
-        raw=subprocess.check_output(['ffmpeg','-v','error','-ss',f"{p['vs']:.3f}",'-t',f'{dur+0.1:.3f}','-i',ep+'/vid.mp4','-vf',f'fps={FPS*SPD:.3f},crop=1720:968:110:80,scale={BW}:{BH}','-f','rawvideo','-pix_fmt','rgb24','-'])
+        raw=subprocess.check_output(['ffmpeg','-v','error','-ss',f"{p['vs']:.3f}",'-t',f'{dur+0.1:.3f}','-i',ep+'/vid.mp4','-vf',f"fps={FPS*(p['b']-p['a'])/(p['t1']-p['t0']):.3f},crop=1720:968:110:80,scale={BW}:{BH}",'-f','rawvideo','-pix_fmt','rgb24','-'])
         arr=np.frombuffer(raw,np.uint8).reshape(-1,BH,BW,3);return arr
     enc=subprocess.Popen(['ffmpeg','-v','error','-y','-f','rawvideo','-pix_fmt','rgb24','-s',f'{W}x{H}','-r',str(FPS),'-i','-','-i',f'{tmp}/a.wav','-map','0:v','-map','1:a','-c:v','libx264','-crf','19','-preset','veryfast','-pix_fmt','yuv420p','-c:a','aac','-b:a','192k','-shortest','-movflags','+faststart',f'{name}.mp4'],stdin=subprocess.PIPE)
     NF=int(TOT*FPS);cache={};last=None
