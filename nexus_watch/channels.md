@@ -8,6 +8,7 @@
 - @horang.wave (허성범)
 - @grit_park_ (2026-11-06 vidIQ로 발견, 클로드 활용 꿀팁)
 - @lightning_hand_ (2026-11-06 발견, AI 코미디 단편)
+- @picsart.jane (2026-11-06 vidIQ로 발견, AI 햄스터 썰 영상·광고성)
 
 ## 유튜브 A조 (HOUR%3==0)
 - 조팀장의 AI 공략집
@@ -47,3 +48,4 @@
 - 2026-11-06 12:23: A조 5개 채널·인스타(@reelta.gangsa, @momdi.tip)·화제 검색 2건·레딧 검색 모두 최근 3일 날짜 확인되는 글 없음. vidIQ 릴스 조회(@lightning_hand_, 5크레딧): 48시간 내 새 릴스 없음(최신 11/1 '선녀와나무꾼' AI 코미디 30만 회). 웹페치 8개 URL 전부 PROVENANCE_REQUIRED 차단. 웹검색으로 GPT-6 Cyber 출시 확인.
 - 2026-11-06 13:24: B조 5개 채널·인스타(@grit_park_, @lightning_hand_)·화제 검색 2건·레딧 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치 5개 URL(The Neuron 11/6·긱뉴스·AI타임스·앤트로픽·오픈AI) 전부 PROVENANCE_REQUIRED 차단. vidIQ 미사용. 새 소식 없음(GPT-6 무료 사용자 개방은 10월 소식이라 제외).
 - 2026-11-06 14:24: C조 6개 채널·인스타(@prompt_what, @biggie_ai)·화제 검색 2건·레딧 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치(에이전트 경유) dev.to 다이제스트·KuCoin·agents-radar 성공. vidIQ 미사용. 새 소식 없음(Enterprise 보안 기능은 기업용, Opus 5.5 저가 모델 보도는 9월 재탕이라 제외).
+- 2026-11-06 15:23: A조 5개 채널·인스타(@reelta.gangsa, @momdi.tip)·화제 검색 2건·레딧 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치 6개 URL 전부 PROVENANCE_REQUIRED 차단. vidIQ 아웃라이어(5크레딧): 대부분 이미 보고한 주제, 새 주제는 @picsart.jane AI 햄스터 썰(광고성). 새 소식 없음(Gemini 4 Carbon은 10월 소식).
