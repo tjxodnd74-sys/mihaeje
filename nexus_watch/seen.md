@@ -18,3 +18,6 @@
 2026-11-06 09:24 | AI 영상(경쟁 주제·@lightning_hand_) | AI 코미디 단편 '심청전' 패러디 | https://www.instagram.com/reel/DfUBSeyzdAT
 2026-11-06 09:24 | 드리미나(광고성, 알림 제외·@dreamina_zek) | 월 409원 프로모션 | https://www.instagram.com/reel/DfT4XhCC1Mq
 2026-11-06 10:23 | 앤트로픽(알림 제외·루머) | GPT-6 Astra 대응 새 클로드 모델 검토 보도 | https://digg.com/ai/o61pjxs3
+2026-11-06 11:23 | 노션 | 공유 워크스페이스 메모리, 챗GPT·클로드 등 연결해 사용 | https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-thursday-november-5-2026/
+2026-11-06 11:23 | 클로드 코드 | 백그라운드 에이전트 상태 업데이트를 Haiku 5.5로, 사용량 약 5% 절감 | https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-thursday-november-5-2026/
+2026-11-06 11:23 | 구글(알림 제외·정책) | 학교에서 제미나이·AI 기능 기본 꺼짐 선택 가능 | https://killtheai.com/news/top-10-ai-news-today-november-5-2026/
