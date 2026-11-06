@@ -35,7 +35,7 @@ cd /home/claude/work/<slug>
 - index = k*10 + take. Send up to 6 per batch; on a 429, wait and resend.
 - Wait with `jobs_wait` using `jobs:[{index,job_id}]`.
 - Download with `./dl2.sh <index> <url> …`. Files go to ln2/u{k}_{t}.wav.
-- Run `python3 asr.py ln2/*.wav > asr_a.log` (faster-whisper).
+- Run `python3 asr.py ln2/*.wav > asr_a.log` (faster-whisper; if missing: `pip install faster-whisper --break-system-packages`).
   - r < 0.85, or audible stuttering/garbling → retake (take 1). Reword the line if needed.
   - Differences that are only digits vs Korean numerals, or AI vs 에이아이, are fine.
 - Copy the good takes to `ln/u{k}.wav`.
