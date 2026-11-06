@@ -23,3 +23,5 @@
 2026-11-06 11:23 | 구글(알림 제외·정책) | 학교에서 제미나이·AI 기능 기본 꺼짐 선택 가능 | https://killtheai.com/news/top-10-ai-news-today-november-5-2026/
 2026-11-06 12:23 | 오픈AI | GPT-6 Cyber 출시(보안 특화 모델, API 가격 경쟁사보다 높음) | https://venturebeat.com/technology/openai-launches-gpt-6-cyber-with-stronger-exploit-research-and-higher-api-price-than-anthropic-and-google
 2026-11-06 12:23 | 구글(알림 제외·API 가격) | Gemini Omni 영상 API 가격 30% 인하 | https://fourweekmba.com/ai-google-cuts-gemini-omni-video-price-30-to-0-07-a-second/
+2026-11-06 14:24 | 앤트로픽(알림 제외·기업 관리자용) | Claude Enterprise 보안 관리 기능(훅·보안센터 베타 등) | https://dev.to/hiroki-ii-ai/ai-daily-digest-november-6-2026-openai-ships-gpt-6-cyber-meta-buys-conductor-anthropic-locks-1jij
+2026-11-06 14:24 | 클로드·오픈AI(알림 제외·재탕) | Opus 5.5·GPT-6.1 Terra '저가 모델 출시' 보도 — Opus 5.5는 9/22 출시, 오래된 소식 | https://www.kucoin.com/news/flash/openai-and-anthropic-launch-cheaper-ai-models-sparking-valuation-concerns
