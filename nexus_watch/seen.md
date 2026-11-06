@@ -17,3 +17,4 @@
 2026-11-06 09:24 | AI 스마트안경(경쟁 주제·@ebsstory) | AI 안경으로 수능 수학 22번 7초 풀이 | https://www.instagram.com/reel/DfT3JvDHOTD
 2026-11-06 09:24 | AI 영상(경쟁 주제·@lightning_hand_) | AI 코미디 단편 '심청전' 패러디 | https://www.instagram.com/reel/DfUBSeyzdAT
 2026-11-06 09:24 | 드리미나(광고성, 알림 제외·@dreamina_zek) | 월 409원 프로모션 | https://www.instagram.com/reel/DfT4XhCC1Mq
+2026-11-06 10:23 | 앤트로픽(알림 제외·루머) | GPT-6 Astra 대응 새 클로드 모델 검토 보도 | https://digg.com/ai/o61pjxs3
