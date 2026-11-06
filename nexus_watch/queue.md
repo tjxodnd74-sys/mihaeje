@@ -1,5 +1,16 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-06 09:24 — ① 클로드에 PDF 올리기 전 '마크다운 변환' (경쟁 주제)
+- 출처: @grit_park_ 릴스(2026-11-04 게시, 주제만 참고) https://www.instagram.com/reel/DfUKFV6NxGe — 86만 회(평소의 11배)
+- 추천 형식: 릴스(화면 녹화 전·후 비교)
+- 제목안: "클로드에 PDF 그대로 / 올리지 마세요"
+- 핵심 사실:
+  1. PDF를 그대로 올리면 레이아웃·이미지 등 불필요한 데이터까지 처리해 토큰(사용량)을 더 씀
+  2. 마이크로소프트의 무료 오픈소스 도구 MarkItDown으로 PDF·워드·엑셀을 마크다운 텍스트로 바꿔 올리면 가볍고 정확해짐
+  3. 표·이미지가 중요한 문서는 원본이 나을 수 있음(과장 금지). 문구·화면은 우리 방식으로 새로 작성
+- 다룬 채널: @grit_park_ (1곳, 고조회수)
+- 예상 크레딧: 표지 이미지 2~3장 기준 약 2~3크레딧
+
 ## 2026-11-05 13:23 — ① 클로드 글에 '보이지 않는 워터마크'
 - 출처: https://finance.biggo.com/news/baba9904-cef5-4598-959b-7e86dd40f84f , https://uk.finance.yahoo.com/news/anthropic-claude-now-leave-trail-151343512.html , https://interestingengineering.com/ai-robotics/anthropic-claude-text-invisible-watermarks
 - 추천 형식: 카드뉴스
@@ -59,3 +70,4 @@
   2. 검색형 질문량이 구글 검색의 약 20% 수준(오픈AI 자체 추정)
   3. 'Chat'과 'Work'를 하나의 경험으로 합칠 계획
 - 예상 크레딧: 표지 이미지 2~3장 기준 약 2~3크레딧
+vidIQ 사용: 2026-11-06 09:24 5크레딧, 잔액 316

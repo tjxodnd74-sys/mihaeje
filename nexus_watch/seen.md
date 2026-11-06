@@ -13,3 +13,7 @@
 2026-11-05 14:23 | 오픈AI(알림 제외·벤치마크) | 일상 업무 AI 평가 '라이프밸' 공개 | https://www.aitimes.com/news/articleView.html?idxno=216996
 2026-11-05 15:23 | 오픈AI(알림 제외·루머) | Astra·Sol·Cyber 모델 11/6 출시설 | https://kucoin.com/news/flash/openai-may-release-astra-sol-and-cyber-models-as-early-as-nov-6
 2026-11-05 15:23 | 제미나이(알림 제외·9월 발표) | 젬(Gems)→스킬 전환(11월 예정) | https://9to5google.com/2026/09/27/gemini-gems-skills/
+2026-11-06 09:24 | 클로드(경쟁 주제·@grit_park_) | PDF→MarkItDown 마크다운 변환 후 업로드 | https://www.instagram.com/reel/DfUKFV6NxGe
+2026-11-06 09:24 | AI 스마트안경(경쟁 주제·@ebsstory) | AI 안경으로 수능 수학 22번 7초 풀이 | https://www.instagram.com/reel/DfT3JvDHOTD
+2026-11-06 09:24 | AI 영상(경쟁 주제·@lightning_hand_) | AI 코미디 단편 '심청전' 패러디 | https://www.instagram.com/reel/DfUBSeyzdAT
+2026-11-06 09:24 | 드리미나(광고성, 알림 제외·@dreamina_zek) | 월 409원 프로모션 | https://www.instagram.com/reel/DfT4XhCC1Mq
