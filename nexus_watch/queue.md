@@ -1,5 +1,25 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-07 08:24 — ① 제미나이 옴니 1.2 Flash: 영상 15초·반복 편집
+- 출처: https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-friday-november-6-2026/ (원문 https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-omni-1-2-flash/ 확인 필요)
+- 추천 형식: 릴스
+- 제목안: "제미나이 AI 영상 / 이제 15초까지"
+- 핵심 사실:
+  1. Gemini Omni 1.2 Flash로 영상 최대 길이 10초→15초
+  2. 후속 프롬프트로 같은 영상을 이어서 수정 가능
+  3. 개발자 도구로 분류된 발표 — 제미나이 앱 일반 사용자 적용 여부는 원문 확인 후 제작(과장 금지)
+- 다룬 채널: 아직 없음
+
+## 2026-11-07 08:24 — ② 퍼플렉시티 'Teammates' 상시 작업 에이전트
+- 출처: 같은 다이제스트, https://www.theverge.com/ai-artificial-intelligence/1028302/perplexity-teammates-ai-agents-work
+- 추천 형식: 카드뉴스
+- 제목안: "퍼플렉시티에 / 24시간 일하는 AI 팀원"
+- 핵심 사실:
+  1. 여러 작업을 동시에 맡기고 변화를 계속 감시하는 에이전트
+  2. 사용자가 중간에 검토·방향 수정 가능
+  3. 처음엔 웹 Max 구독자만(유료 상위 요금제) — 과장 금지
+- 다룬 채널: 아직 없음
+
 ## 2026-11-06 12:23 — ① 오픈AI 'GPT-6 Cyber' 출시 (보안 특화)
 - 출처: https://venturebeat.com/technology/openai-launches-gpt-6-cyber-with-stronger-exploit-research-and-higher-api-price-than-anthropic-and-google , https://dev.to/hiroki-ii-ai/ai-daily-digest-november-6-2026-openai-ships-gpt-6-cyber-meta-buys-conductor-anthropic-locks-1jij
 - 추천 형식: 카드뉴스(짧은 뉴스형)

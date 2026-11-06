@@ -27,3 +27,7 @@
 2026-11-06 14:24 | 클로드·오픈AI(알림 제외·재탕) | Opus 5.5·GPT-6.1 Terra '저가 모델 출시' 보도 — Opus 5.5는 9/22 출시, 오래된 소식 | https://www.kucoin.com/news/flash/openai-and-anthropic-launch-cheaper-ai-models-sparking-valuation-concerns
 2026-11-06 15:23 | AI 썰 영상(경쟁 주제·@picsart.jane, 제작지원 광고성) | 사람 인트로+AI 햄스터 립싱크로 사연 풀기(160만 회) | https://www.instagram.com/reel/DfUahbHCmeV
 2026-11-06 15:23 | 구글(알림 제외·10월 발표) | Gemini 4 Carbon(보안 특화) — 10월 소식 재탕 | https://www.khaleejtimes.com/business/google-launches-gemini-4-carbon-ai-model-with-cybersecurity-focus-2
+2026-11-07 08:24 | 구글 | Gemini Omni 1.2 Flash: 영상 최대 15초·후속 프롬프트로 반복 편집 | https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-friday-november-6-2026/
+2026-11-07 08:24 | 퍼플렉시티 | Teammates(상시 작업 에이전트), 웹 Max 구독자 먼저 | https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-friday-november-6-2026/
+2026-11-07 08:24 | 클로드(알림 제외·미국 한정, 롱폼 이미 제작) | 개인 금융 계정 연결(Plaid, 베타) | https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-friday-november-6-2026/
+2026-11-07 08:24 | 메타(알림 제외·미국 한정) | Muse 실시간 표현형 아바타 | https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-friday-november-6-2026/

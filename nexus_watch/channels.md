@@ -52,3 +52,4 @@
 - 2026-11-06 16:23: B조 5개 채널·인스타(@horang.wave, @lightning_hand_)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치 5개 URL(The Neuron 11/6·긱뉴스·AI타임스·챗GPT·제미나이 릴리스노트) 전부 PROVENANCE_REQUIRED 차단. vidIQ 미사용(정해진 시각 아님, 오늘 15크레딧 소진). 새 소식 없음.
 - 2026-11-06 17:23: C조 6개 채널·인스타(@grit_park_, @picsart.jane)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치 4개 URL(긱뉴스·AI타임스·The Neuron 11/6 PROVENANCE_REQUIRED 차단, aimatters는 쿠키 리다이렉트만). vidIQ 미사용(정해진 시각 아님). 새 소식 없음.
 - 2026-11-06 18:23: A조 5개 채널·인스타(@prompt_what, @biggie_ai)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치 6개 URL(긱뉴스·AI타임스·The Neuron 11/6·제미나이·챗GPT 릴리스노트·앤트로픽) 전부 PROVENANCE_REQUIRED 차단. vidIQ 미사용(정해진 시각 아님). 새 소식 없음.
+- 2026-11-07 08:24: C조 6개 채널·인스타(@reelta.gangsa, @momdi.tip)·화제 검색 2건·레딧 검색 모두 최근 3일 날짜 확인되는 글 없음('AI 아스트라' 검색은 9월 GPT-6 Astra 기사만). 웹페치: The Neuron 11/6·note.com 성공, 긱뉴스·AI타임스 PROVENANCE_REQUIRED, X·marketingprofs 실패. vidIQ 미사용. 새 소식 2건(Omni 1.2 Flash, 퍼플렉시티 Teammates).
