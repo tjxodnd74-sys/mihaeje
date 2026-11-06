@@ -21,3 +21,5 @@
 2026-11-06 11:23 | 노션 | 공유 워크스페이스 메모리, 챗GPT·클로드 등 연결해 사용 | https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-thursday-november-5-2026/
 2026-11-06 11:23 | 클로드 코드 | 백그라운드 에이전트 상태 업데이트를 Haiku 5.5로, 사용량 약 5% 절감 | https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-thursday-november-5-2026/
 2026-11-06 11:23 | 구글(알림 제외·정책) | 학교에서 제미나이·AI 기능 기본 꺼짐 선택 가능 | https://killtheai.com/news/top-10-ai-news-today-november-5-2026/
+2026-11-06 12:23 | 오픈AI | GPT-6 Cyber 출시(보안 특화 모델, API 가격 경쟁사보다 높음) | https://venturebeat.com/technology/openai-launches-gpt-6-cyber-with-stronger-exploit-research-and-higher-api-price-than-anthropic-and-google
+2026-11-06 12:23 | 구글(알림 제외·API 가격) | Gemini Omni 영상 API 가격 30% 인하 | https://fourweekmba.com/ai-google-cuts-gemini-omni-video-price-30-to-0-07-a-second/

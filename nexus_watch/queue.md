@@ -1,5 +1,15 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-06 12:23 — ① 오픈AI 'GPT-6 Cyber' 출시 (보안 특화)
+- 출처: https://venturebeat.com/technology/openai-launches-gpt-6-cyber-with-stronger-exploit-research-and-higher-api-price-than-anthropic-and-google , https://dev.to/hiroki-ii-ai/ai-daily-digest-november-6-2026-openai-ships-gpt-6-cyber-meta-buys-conductor-anthropic-locks-1jij
+- 추천 형식: 카드뉴스(짧은 뉴스형)
+- 제목안: "GPT-6에 '해커 잡는' / 버전이 나왔다"
+- 핵심 사실:
+  1. 오픈AI가 보안(취약점 분석·방어) 특화 모델 GPT-6 Cyber 출시(VentureBeat 보도)
+  2. API 가격이 앤트로픽·구글 경쟁 모델보다 높게 책정
+  3. 일반 챗GPT 사용자용 기능 아님 — 보안 전문가·기업 대상(과장 금지). 원문 세부 확인 후 제작
+- 다룬 채널: 아직 없음
+
 ## 2026-11-06 11:23 — ① 노션 '공유 메모리'를 챗GPT·클로드가 같이 씀
 - 출처: The Neuron 11/5 다이제스트 https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-thursday-november-5-2026/
 - 추천 형식: 카드뉴스
@@ -91,3 +101,4 @@
   3. 'Chat'과 'Work'를 하나의 경험으로 합칠 계획
 - 예상 크레딧: 표지 이미지 2~3장 기준 약 2~3크레딧
 vidIQ 사용: 2026-11-06 09:24 5크레딧, 잔액 316
+vidIQ 사용: 2026-11-06 12:23 5크레딧, 잔액 296
