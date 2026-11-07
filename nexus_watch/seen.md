@@ -35,3 +35,4 @@
 2026-11-07 09:23 | AI 교육(경쟁 주제·@ebsstory) | AI 없이 글쓰기 시켰더니(130만 회) | https://www.instagram.com/reel/DfWkqaHEkHi
 2026-11-07 09:23 | AI 영상 콩트(경쟁 주제·@dalbong_otter) | AI 수달 팀장 직장 콩트(83만 회) | https://www.instagram.com/reel/DfWqEHzzMyq
 2026-11-07 09:23 | 그록(알림 제외·확인 안 됨) | Grok 전화 걸기 기능(영상 요약만, 원문 미확인) | https://scitech.whatfinger.com/2026/11/06/ai-news-new-chatgpt-google-models-14-updates-worth-knowing/
+2026-11-07 13:23 | 앤트로픽(알림 제외·루머) | Claude 6 출시설 | https://www.geeky-gadgets.com/ai-news-november-2026/
