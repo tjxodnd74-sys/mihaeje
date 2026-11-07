@@ -9,6 +9,7 @@
 - @grit_park_ (2026-11-06 vidIQ로 발견, 클로드 활용 꿀팁)
 - @lightning_hand_ (2026-11-06 발견, AI 코미디 단편)
 - @picsart.jane (2026-11-06 vidIQ로 발견, AI 햄스터 썰 영상·광고성)
+- @dalbong_otter (2026-11-07 vidIQ로 발견, AI 수달 캐릭터 직장 콩트)
 
 ## 유튜브 A조 (HOUR%3==0)
 - 조팀장의 AI 공략집
@@ -53,3 +54,4 @@
 - 2026-11-06 17:23: C조 6개 채널·인스타(@grit_park_, @picsart.jane)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치 4개 URL(긱뉴스·AI타임스·The Neuron 11/6 PROVENANCE_REQUIRED 차단, aimatters는 쿠키 리다이렉트만). vidIQ 미사용(정해진 시각 아님). 새 소식 없음.
 - 2026-11-06 18:23: A조 5개 채널·인스타(@prompt_what, @biggie_ai)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치 6개 URL(긱뉴스·AI타임스·The Neuron 11/6·제미나이·챗GPT 릴리스노트·앤트로픽) 전부 PROVENANCE_REQUIRED 차단. vidIQ 미사용(정해진 시각 아님). 새 소식 없음.
 - 2026-11-07 08:24: C조 6개 채널·인스타(@reelta.gangsa, @momdi.tip)·화제 검색 2건·레딧 검색 모두 최근 3일 날짜 확인되는 글 없음('AI 아스트라' 검색은 9월 GPT-6 Astra 기사만). 웹페치: The Neuron 11/6·note.com 성공, 긱뉴스·AI타임스 PROVENANCE_REQUIRED, X·marketingprofs 실패. vidIQ 미사용. 새 소식 2건(Omni 1.2 Flash, 퍼플렉시티 Teammates).
+- 2026-11-07 09:23: A조 5개 채널·인스타(@horang.wave, @prompt_what)·화제 검색 2건·레딧 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치 6개 URL(긱뉴스·AI타임스·앤트로픽·오픈AI·제미나이·챗GPT 릴리스노트) 전부 PROVENANCE_REQUIRED 차단, dev.to 11/7·releasebot·whatfinger는 성공. vidIQ 아웃라이어(5크레딧): AI 관련은 @ebsstory·@dalbong_otter 2건, 나머지는 비AI. 새 소식 1건(챗GPT·코덱스 한도 통합).

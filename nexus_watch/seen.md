@@ -31,3 +31,7 @@
 2026-11-07 08:24 | 퍼플렉시티 | Teammates(상시 작업 에이전트), 웹 Max 구독자 먼저 | https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-friday-november-6-2026/
 2026-11-07 08:24 | 클로드(알림 제외·미국 한정, 롱폼 이미 제작) | 개인 금융 계정 연결(Plaid, 베타) | https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-friday-november-6-2026/
 2026-11-07 08:24 | 메타(알림 제외·미국 한정) | Muse 실시간 표현형 아바타 | https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-friday-november-6-2026/
+2026-11-07 09:23 | 챗GPT | 챗GPT·코덱스 사용량 한도 12월부터 통합(유료) | https://www.techrepublic.com/article/news-chatgpt-codex-shared-usage-limits/
+2026-11-07 09:23 | AI 교육(경쟁 주제·@ebsstory) | AI 없이 글쓰기 시켰더니(130만 회) | https://www.instagram.com/reel/DfWkqaHEkHi
+2026-11-07 09:23 | AI 영상 콩트(경쟁 주제·@dalbong_otter) | AI 수달 팀장 직장 콩트(83만 회) | https://www.instagram.com/reel/DfWqEHzzMyq
+2026-11-07 09:23 | 그록(알림 제외·확인 안 됨) | Grok 전화 걸기 기능(영상 요약만, 원문 미확인) | https://scitech.whatfinger.com/2026/11/06/ai-news-new-chatgpt-google-models-14-updates-worth-knowing/

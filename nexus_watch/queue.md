@@ -1,5 +1,22 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-07 09:23 — ① 챗GPT·코덱스 사용량 한도 12월부터 통합
+- 출처: https://www.techrepublic.com/article/news-chatgpt-codex-shared-usage-limits/ , https://notebookcheck.net/ChatGPT-and-Codex-will-share-one-usage-limit-starting-in-December.1440897.0.html , 도움말 https://help.openai.com/de-de/articles/20001625-understanding-chatgpt-and-codex-usage-limits
+- 추천 형식: 카드뉴스
+- 제목안: "12월부터 챗GPT 한도 / 이렇게 바뀐다"
+- 핵심 사실:
+  1. 오픈AI가 챗GPT와 코덱스(코딩 에이전트) 사용량을 하나의 공유 한도로 합친다고 확인(여러 매체 보도)
+  2. 12월부터 적용, 유료 구독자 대상 — 코덱스를 많이 쓰면 챗GPT 쓸 양이 줄 수 있음
+  3. 요금제별 세부 수치는 오픈AI 도움말 원문 확인 후 제작(과장 금지)
+- 다룬 채널: 아직 없음
+
+## 2026-11-07 09:23 — (참고) AI 채널 주제: 'AI 없이 글쓰기' 실험
+- 출처: https://www.instagram.com/reel/DfWkqaHEkHi (@ebsstory, 11/5, 130만 회·평소 14.7배)
+- 추천 형식: 릴스(주제만 참고, 영상·문구 베끼지 않기)
+- 제목안: "AI 없이 글 써보라고 했더니"
+- 핵심 사실: AI 의존 vs 스스로 생각하기 주제가 교육 계정에서 크게 터짐 / 넥서스는 'AI를 생각 도우미로 쓰는 프롬프트'로 비틀 수 있음 / 1곳만 다룸
+- 다룬 채널: @ebsstory
+
 ## 2026-11-07 08:24 — ① 제미나이 옴니 1.2 Flash: 영상 15초·반복 편집
 - 출처: https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-friday-november-6-2026/ (원문 https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-omni-1-2-flash/ 확인 필요)
 - 추천 형식: 릴스
@@ -123,3 +140,4 @@
 vidIQ 사용: 2026-11-06 09:24 5크레딧, 잔액 316
 vidIQ 사용: 2026-11-06 12:23 5크레딧, 잔액 296
 vidIQ 사용: 2026-11-06 15:23 5크레딧, 잔액 291
+vidIQ 사용: 2026-11-07 09:23 5크레딧, 잔액 276
