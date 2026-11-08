@@ -151,6 +151,7 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 
 ## 10. Long-form quality rules (user feedback 2026-11-08 — "타 AI 채널에 비하면 퀄리티·자막·목소리 별로")
 - MASCOT = 넥서스 펭귄 (assets/peng.png, blue felt penguin with glasses + phone). Probe is retired. NO name tag above it (user: "넥서스 빼").
+- MASCOT POSES (assets/peng_<pose>.png, copied to img/ by new_ep.sh): point 가리키기, think 턱 괴기, wow 놀람, happy 엄지·윙크, no 팔 X, show 폰 화면 보여주기. EXPR={scene:{line:pose}} picks them per spoken line (e.g. 경고 문장 → no, 질문 → think, 반전 → wow, 프롬프트 소개 → show, 마무리 → happy). Leave 'idle' on explaining lines: the penguin then automatically POINTS at each new item as it appears. Use poses every scene — the user wants the character visibly acting.
 - MASCOT MOTION (user 2026-11-08: "지랄발광 말고 설명에 맞춰 움직여"): calm only. probe.js = breathing + soft nod while talking + lean toward content when a new element appears (cueAt) + one gentle ease per EXPR change. Never constant hopping, shaking or squash. EXPR: use sparingly (≤1 change per scene), matching what the line says.
 - DESIGN THEME = "dark pro" (template.html last <style> block; user: "클로드 템플릿 같다, 강조색도, 검정 알약 칩도 별로"):
   - bg #0D0F14 + dot grid + vignette, cards = dark panels, accent = YELLOW var(--o) #FFD23F (not orange), red var(--r), green var(--g), blue var(--b).
@@ -163,3 +164,14 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - CAPTIONS: phrase chunks ≤15 chars, one line, whisper-synced (build_voice writes voice.json "caps"; renderL/snapL pass them). Never split predicates (끊어 버려요, 못 보내요). Optional keyword highlight: KW=[...] in lines.py.
 - OUTRO: shows previous video thumbnail (assets/prev.jpg → img/prev.jpg). After each upload, save the new thumbnail as assets/prev.jpg (1280x720 jpg) and commit.
 - VOICE (user chose: keep cloned seed_audio): write for the ear — short sentences, use "?" and "!" for intonation, put the punchline word last, contractions/구어체 ("~거든요", "~잖아요"). Re-take any line that sounds flat or slow (ASR + listen-length check: >5.5 chars/sec target).
+
+## 11. Scene design = explanatory information graphics (user 2026-11-08: "AI로 딸깍한 디자인 같다, 설명보다 말에 맞춰 넣은 느낌")
+- BANNED: word-illustration chains (icon → logo → label), rows of pills/tags, one random card per line, emoji/icon decoration.
+- Each scene = ONE explanatory structure from the KIT (template.html, after `head`); full example: engine/scenes_example.js
+  - `DOC({src,meta,sec,text})` real-document excerpt (paper + serif) with `<span class="mk" ${R(li,off,'mark')}>` highlighter on the exact clause, plus `ANNO(label,text)` + `LEAD(...)` leader line explaining it in plain words
+  - `TL([...])` timeline (dates), `SPLIT(A,B)` OK vs NO columns, `FLOW([...])` cause → result steps, `QUOTE({text,src})`, `STAT({num,lab})`, `CHAT(name,msgs)` product UI mock, `PROMPTS(rows)` copyable prompt editor (row focus follows narration), `AGENDA(items)` numbered list, `.lede` one-line takeaway
+  - Containers use `{anim:'show'}`; every inner part reveals ON ITS SPOKEN LINE via `R(li,off,fx)` (fx up|fade|wipe|draw|mark|grow). Time offsets to the word: off = seconds into the line.
+  - Cite: `SRC(sc,li,'SOURCE NAME · DATE')` on news/policy scenes.
+  - Chapter indicator (top-left "02 / 06 title" + progress) is automatic from head().
+- Type: headline 66px/800, body 28–36px/600, labels mono uppercase. Yellow only for the key word. Generous empty space; align everything to x=170.
+- Before render: snapshot ~14 frames (contact sheet) and check: nothing cramped, no text wrapping mid-word (set widths), every element appears exactly when it is said.
