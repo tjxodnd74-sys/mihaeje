@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Regular.woff2);font-weight:400}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-SemiBold.woff2);font-weight:600}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+:root{--bg:#0D0F1E;--vi:#A394FF;--vi2:#7B6CFF;--am:#FFC861;--tx:#F3F4FA;--mu:#9EA3BD;--ln:rgba(255,255,255,.10);--red:#FF6B6B;--grn:#5BE0A0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#333;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.mono{font-family:'DejaVu Sans Mono',monospace;letter-spacing:.08em}
+.card{width:1080px;height:1350px;position:relative;overflow:hidden;margin:0 0 40px;color:var(--tx);
+ background:radial-gradient(900px 600px at 85% 0%,rgba(123,108,255,.22),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(70,180,255,.10),transparent 60%),var(--bg)}
+.card:before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:54px 54px;pointer-events:none}
+.bar{position:absolute;left:64px;right:64px;top:52px;display:flex;justify-content:space-between;align-items:center;font-size:22px;color:var(--mu);padding-bottom:22px;border-bottom:2px dashed var(--ln)}
+.bar .l{display:flex;align-items:center;gap:14px}
+.bar img{width:34px;height:34px}
+.bar .r{color:var(--vi);font-weight:700}
+.wrap{position:absolute;left:64px;right:64px;top:150px}
+.lab{font-size:26px;color:var(--vi);font-weight:700;margin-bottom:22px}
+.h{font-weight:900;font-size:96px;line-height:1.12;letter-spacing:-.045em}
+.h .v{color:var(--vi)} .h .a{color:var(--am)}
+.s{margin-top:26px;font-size:34px;color:#C9CCDD;font-weight:500;letter-spacing:-.02em;line-height:1.5}
+.s b{color:var(--am);font-weight:800}
+.box{position:absolute;left:64px;right:64px;border:2px solid var(--ln);border-radius:28px;background:rgba(255,255,255,.035);padding:60px 56px}
+.box .tag{position:absolute;top:-17px;left:36px;background:var(--bg);padding:0 14px;font-size:22px;color:var(--mu)}
+.foot{position:absolute;left:64px;right:64px;bottom:56px;font-size:24px;color:#6E7390;font-weight:500;line-height:1.5}
+.stamp{display:inline-block;border:4px solid var(--vi);color:var(--vi);font-weight:900;font-size:30px;padding:6px 20px;border-radius:10px;transform:rotate(-6deg);letter-spacing:.12em}
+
+/* cover */
+#k1{background:url(gem_cover.png) center/cover}
+#k1:before{display:none}
+#k1 .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,10,24,.92) 0%,rgba(9,10,24,.7) 38%,rgba(9,10,24,0) 60%,rgba(9,10,24,.25) 100%)}
+#k1 .tt{position:absolute;left:64px;top:118px}
+#k1 .h{font-size:112px;margin-top:30px}
+#k1 .s{font-size:34px}
+#k1 .bl{position:absolute;left:64px;bottom:52px;font-size:22px;color:rgba(255,255,255,.6)}
+#k1 .br{position:absolute;right:64px;bottom:52px;font-size:22px;color:rgba(255,255,255,.6)}
+
+/* map */
+.map{display:flex;flex-direction:column;gap:30px}
+.mrow{display:flex;align-items:center;gap:24px}
+.pill{flex:1;height:124px;border-radius:26px;display:flex;align-items:center;gap:20px;padding:0 30px;font-size:40px;font-weight:700}
+.pill.o{background:rgba(163,148,255,.12);border:2px solid rgba(163,148,255,.35);color:#D9D4FF}
+.pill.n{background:#fff;color:#14162A}
+.pill i{font-style:normal;font-size:44px}
+.arr{color:var(--am);font-size:46px;font-weight:900}
+
+/* quote */
+.q{background:#FBF7EA;color:#1C1D28;border-radius:20px;padding:48px 50px;font-family:Georgia,serif;font-size:44px;line-height:1.5}
+.q mark{background:#FFE37A;padding:0 4px}
+.qk{margin-top:44px;font-size:54px;font-weight:800;line-height:1.4;letter-spacing:-.03em}
+.qk span{color:var(--am)}
+
+/* list */
+.ol{display:flex;flex-direction:column;gap:54px}
+.ol .it{display:flex;align-items:baseline;gap:30px;font-size:50px;font-weight:700;letter-spacing:-.03em}
+.ol .it .n{font-size:30px;color:var(--vi);font-weight:700;width:52px}
+.ol .it small{display:block;font-size:33px;color:var(--mu);font-weight:500;margin-top:6px}
+.ol .it.hot{color:var(--am)}
+
+/* ox */
+.ox{position:absolute;left:64px;right:64px;top:620px;display:flex;gap:24px}
+.ox .c{flex:1;border-radius:28px;padding:50px 44px;min-height:560px;border:2px solid var(--ln);background:rgba(255,255,255,.03)}
+.ox .c.x{border-color:rgba(255,107,107,.6);background:rgba(255,107,107,.08)}
+.ox .hd{font-size:30px;font-weight:700;margin-bottom:26px;color:var(--grn)}
+.ox .x .hd{color:var(--red)}
+.ox li{list-style:none;font-size:44px;font-weight:700;line-height:1.35;margin-bottom:36px;letter-spacing:-.02em}
+
+/* copy box */
+.copy{font-size:46px;font-weight:700;line-height:1.9;letter-spacing:-.02em}
+.copy .f{background:rgba(255,200,97,.18);color:var(--am);border:2px solid rgba(255,200,97,.55);border-radius:10px;padding:0 10px}
+.tip{font-size:37px;color:#C9CCDD;line-height:1.65;font-weight:500}
+.tip b{color:var(--am)}
+.best{position:absolute;right:40px;top:-26px;border:4px solid var(--red);color:var(--red);font-weight:900;font-size:26px;padding:4px 16px;border-radius:8px;transform:rotate(6deg);background:var(--bg);letter-spacing:.1em}
+
+/* end */
+#k10 .glow{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(163,148,255,.45) 0%,rgba(123,108,255,.18) 45%,transparent 70%)}
+#k10 .floor{position:absolute;left:50%;top:640px;transform:translateX(-50%);width:420px;height:70px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.55),transparent 70%)}
+#k10 .peng{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:300px;filter:drop-shadow(0 20px 40px rgba(123,108,255,.5))}
+#k10 .bubble{position:absolute;left:610px;top:190px;background:#fff;color:#14162A;font-weight:800;font-size:32px;padding:18px 28px;border-radius:26px 26px 26px 6px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+#k10 .c{position:absolute;left:0;right:0;top:720px;text-align:center}
+#k10 .h{font-size:88px}
+#k10 .key{display:inline-block;margin-top:40px;border:4px solid var(--am);color:var(--am);font-size:54px;font-weight:900;padding:14px 46px;border-radius:14px}
+#k10 .s{text-align:center}
+</style></head><body>
+
+<section class="card" id="k1"><div class="shade"></div>
+ <div class="tt"><span class="stamp mono">NOTICE</span>
+  <div class="h">11월 17일,<br>내 <span class="v">'젬'</span>이<br>이사 갑니다</div>
+  <div class="s">제미나이 공식 안내 · 그 전에 할 3가지 정리했어요</div></div>
+ <div class="bl mono">@nexus_studio.kr</div><div class="br mono">FILE 01/10 · SWIPE →</div>
+</section>
+
+<section class="card" id="k2">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 02/10</div></div>
+ <div class="wrap"><div class="lab mono">WHAT HAPPENS</div>
+  <div class="h">젬이 전부<br><span class="v">'스킬'</span>로 바뀝니다</div>
+  <div class="s">11월 17일부터 개인 계정의 젬은 <b>스킬로 자동 전환</b>돼요.<br>직접 다시 만들 필요는 없어요.</div></div>
+ <div class="box" style="top:640px"><div class="tag mono">EXAMPLE · 내가 만든 젬</div>
+  <div class="map">
+   <div class="mrow"><div class="pill o"><i>💎</i>블로그 글쓰기</div><div class="arr">→</div><div class="pill n"><i>⚡</i>블로그 글쓰기</div></div>
+   <div class="mrow"><div class="pill o"><i>💎</i>영어 첨삭</div><div class="arr">→</div><div class="pill n"><i>⚡</i>영어 첨삭</div></div>
+   <div class="mrow"><div class="pill o"><i>💎</i>회의록 정리</div><div class="arr">→</div><div class="pill n"><i>⚡</i>회의록 정리</div></div>
+  </div></div>
+ <div class="foot">전환 전까지는 지금 쓰던 젬을 그대로 쓸 수 있어요.</div>
+</section>
+
+<section class="card" id="k3">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 03/10</div></div>
+ <div class="wrap"><div class="lab mono">OFFICIAL</div>
+  <div class="h">구글이<br><span class="v">직접</span> 안내했어요</div>
+  <div class="s">제미나이 앱 도움말에 이렇게 적혀 있어요.</div></div>
+ <div class="box" style="top:640px"><div class="tag mono">SOURCE · GEMINI APPS HELP</div>
+  <div class="q">"…will <mark>automatically transition your Gems, along with any supported files, to skills</mark>."</div>
+  <div class="qk">"젬과 지원되는 파일을<br><span>스킬로 자동 전환</span>합니다"</div></div>
+ <div class="foot">Notebookcheck 보도(구글 도움말 인용) 기준이에요.</div>
+</section>
+
+<section class="card" id="k4">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 04/10</div></div>
+ <div class="wrap"><div class="lab mono">SCHEDULE</div>
+  <div class="h">언제<br><span class="a">바뀌나요?</span></div>
+  <div class="s">계정 종류마다 날짜가 달라요.</div></div>
+ <div class="box" style="top:680px"><div class="tag mono">WHEN</div>
+  <div class="ol">
+   <div class="it hot"><span class="n mono">01</span><div>개인 계정 · 2026년 11월 17일<small>지금 개인 구글 계정으로 쓰고 있다면 이거예요</small></div></div>
+   <div class="it"><span class="n mono">02</span><div>회사(워크스페이스) · 2027년 3월</div></div>
+   <div class="it"><span class="n mono">03</span><div>교육용 계정 · 2027년 6월</div></div>
+  </div></div>
+</section>
+
+<section class="card" id="k5">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 05/10</div></div>
+ <div class="wrap"><div class="lab mono">CHECK</div>
+  <div class="h">옮겨지는 것,<br><span class="a">안 되는 것</span></div>
+  <div class="s">스킬에선 <b>아직 안 되는 기능</b>이 있어요.</div></div>
+ <div class="ox">
+  <div class="c"><div class="hd mono">O · 옮겨져요</div><ul><li>젬 이름·지시문</li><li>지원되는 파일</li><li>기본 젬·공유 젬</li></ul></div>
+  <div class="c x"><div class="hd mono">X · 아직 안 돼요</div><ul><li>캔버스</li><li>딥 리서치</li><li>영상·음악 만들기</li><li>가이드 학습</li></ul></div>
+ </div>
+ <div class="foot">공유·드라이브 파일 연결은 "몇 주 안에" 추가될 예정이라고 해요.</div>
+</section>
+
+<section class="card" id="k6">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 06/10</div></div>
+ <div class="wrap"><div class="lab mono">WHY</div>
+  <div class="h">그럼 스킬은<br><span class="v">뭐가 좋아요?</span></div>
+  <div class="s">젬보다 꺼내 쓰기가 훨씬 편해져요.</div></div>
+ <div class="box" style="top:640px"><div class="tag mono">UPGRADE</div>
+  <div class="ol">
+   <div class="it"><span class="n mono">01</span><div>채팅창에서 바로 불러 써요<small>사이드바에서 젬을 따로 열 필요가 없어요</small></div></div>
+   <div class="it"><span class="n mono">02</span><div>여러 개를 한 번에 섞어 써요<small>젬은 한 대화에 하나만 쓸 수 있었어요</small></div></div>
+   <div class="it"><span class="n mono">03</span><div>한 번에 100개까지 켜 둘 수 있어요</div></div>
+  </div></div>
+</section>
+
+<section class="card" id="k7">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 07/10</div></div>
+ <div class="wrap"><div class="lab mono">TODO 01</div>
+  <div class="h">지시문부터<br><span class="a">백업</span>하세요</div>
+  <div class="s">자동으로 옮겨져도 <b>원본은 따로</b> 갖고 있는 게 안전해요.</div></div>
+ <div class="box" style="top:660px"><div class="tag mono">COPY · PASTE</div><div class="best mono">SAVE</div>
+  <div class="copy">[스킬 이름] <span class="f">○○</span><br>[하는 일] <span class="f">한 줄 설명</span><br>[지시문] <span class="f">젬에 쓰던 지시문 그대로</span></div>
+  <div class="tip" style="margin-top:26px">이 양식으로 메모장에 붙여 두면<br>전환 뒤 결과가 이상할 때 <b>바로 다시 만들 수 있어요.</b></div></div>
+</section>
+
+<section class="card" id="k8">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 08/10</div></div>
+ <div class="wrap"><div class="lab mono">TODO 02</div>
+  <div class="h">지식 파일은<br><span class="a">내려받기</span></div>
+  <div class="s">젬에 올려 둔 파일은 <b>미리 다운로드</b>하라고 구글이 안내해요.</div></div>
+ <div class="box" style="top:720px"><div class="tag mono">CAUTION</div>
+  <div class="ol">
+   <div class="it"><span class="n mono">!</span><div>깃허브에서 가져온 파일은<br>아직 스킬로 안 옮겨져요</div></div>
+   <div class="it"><span class="n mono">!</span><div>파일이 붙은 젬은 전환 뒤<br>한 번 열어서 확인하세요</div></div>
+  </div></div>
+</section>
+
+<section class="card" id="k9">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 09/10</div></div>
+ <div class="wrap"><div class="lab mono">TODO 03</div>
+  <div class="h">활동 설정<br><span class="a">확인하기</span></div>
+  <div class="s">스킬은 <b>'Gemini 앱 활동(Keep Activity)'</b>이<br>켜져 있어야 쓸 수 있어요.</div></div>
+ <div class="box" style="top:740px"><div class="tag mono">GOOD TO KNOW</div>
+  <div class="tip">켜 두면 대화가 계정에 저장되고,<br>구글 안내에 따르면 <b>일부는 검토자가 볼 수 있어요.</b><br>민감한 내용은 넣지 않는 게 좋아요.</div></div>
+ <div class="foot">+ 같은 날(11월 17일) 구글 오팔(Opal)도 서비스를 끝내요.</div>
+</section>
+
+<section class="card" id="k10">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">END OF FILE</div></div>
+ <div class="glow"></div><div class="floor"></div><img class="peng" src="../assets/heart.png"><div class="bubble">넥서스가 챙겨줄게요!</div>
+ <div class="c"><div class="h">17일 전에<br>저장해 두세요</div>
+  <div class="key">📌 저장 · 팔로우</div>
+  <div class="s" style="margin-top:36px">바로 써먹는 AI 소식, 넥서스가 쉽게 정리해요<br><span class="mono" style="color:var(--vi);font-size:28px">@nexus_studio.kr</span></div></div>
+</section>
+</body></html>
