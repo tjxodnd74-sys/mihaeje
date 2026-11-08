@@ -15,7 +15,7 @@
    - 8~10장: ①표지(주제 캐릭터 그림 + 큰 제목 + NOTICE 같은 도장) ②무슨 일 ③공식 근거(인용·출처) ④누가/언제(일정·조건) ⑤되는 것/안 되는 것 or 비교 ⑥좋아진 점 ⑦**COPY·PASTE 지시문 상자**(바로 따라 쓰는 프롬프트) ⑧주의점 ⑨추가 팁 ⑩CTA(펭귄 heart.png + 말풍선 + "저장·팔로우" + @nexus_studio.kr).
    - 주제마다 **그 주제 전용 캐릭터**를 표지에 씀(예: 젬 주제 → 울면서 짐 싸는 보석 캐릭터). 남의 회사 캐릭터·로고·유명인·남의 사진은 금지 → 주제를 상징하는 사물을 귀여운 3D 캐릭터로 직접 만듦.
    - 빈 공간 없이 글씨·상자를 크게. 한 장에 하나의 메시지.
-3. 표지 그림: Higgsfield `generate_image`(1080x1350에 맞는 4:5 비율, quality high), 프롬프트 = "cute glossy 3D <주제 상징 사물> character with big eyes, <감정·행동>, dark navy/purple cinematic background with soft glow, empty space at top-left for headline, no text, no logos". 1~2장만(약 2~3크레딧). 받은 그림을 작업 폴더에 `cover.png`로 저장하고 `#k1{background:url(cover.png)}`.
+3. 표지 그림: 아래 ★표지 규칙대로. Higgsfield `generate_image`(gpt_image_2_6, quality high, 4:5 또는 16:9를 위쪽에 배치), 주제 상황이 한눈에 보이는 장면 + 매번 다른 화풍·색감, "no text, no letters, no logos" 명시. 1~2장(약 2~3크레딧). 작업 폴더에 `cover.png`로 저장.
 4. `python3 render.py <작업폴더>/cards.html` → `grid.jpg`를 Read로 보고 겹침·빈 공간·오타·잘림을 고쳐 다시 렌더(최대 3회).
 5. 글 규칙
    - 금지 표현: 최초·유일·완벽·가장·제일·최고·최대·100%·무조건 (python으로 cards.html·캡션 둘 다 0개 확인)
