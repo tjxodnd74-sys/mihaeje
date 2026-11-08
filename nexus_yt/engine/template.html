@@ -159,10 +159,62 @@ mark{background:#FBD9C8;border-radius:4px;padding:0 3px;color:inherit}.dot{width
 #ripple{position:absolute;left:0;top:0;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;border:4px solid var(--o);z-index:6;opacity:0}
 .skel{height:16px;border-radius:8px;background:#ECEAE5;margin-bottom:14px}
 </style>
+<style>
+/* ===== THEME: NEXUS dark pro (2026-11-08) — overrides everything above. Scenes must use var(--…) colors only ===== */
+:root{--bg:#0D0F14;--pan:#161A22;--pan2:#1C212B;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);
+ --ink:#F1F3F7;--mut:#8D96A7;--mut2:#5E6777;--o:#FFD23F;--oT:rgba(255,210,63,.14);--r:#FF5F5F;--rT:rgba(255,95,95,.12);--g:#3DD68C;--gT:rgba(61,214,140,.12);--b:#5AA9FF;--bT:rgba(90,169,255,.12)}
+html,body{background:var(--bg)}
+#st{background:var(--bg);color:var(--ink)}
+#st::before{content:"";position:absolute;inset:0;background:radial-gradient(1100px 650px at 78% 18%,rgba(90,169,255,.10),transparent 62%),radial-gradient(900px 600px at 8% 100%,rgba(255,210,63,.05),transparent 60%);pointer-events:none}
+#st::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 55%,rgba(0,0,0,.45) 100%);pointer-events:none;z-index:5}
+#grid{background-image:radial-gradient(rgba(255,255,255,.075) 1.3px,transparent 1.5px);background-size:40px 40px}
+#fade{background:var(--bg)!important}
+.card,.pc{background:linear-gradient(180deg,#1A1F28,#151920);border:1px solid var(--line);border-radius:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 30px 60px -30px rgba(0,0,0,.7)}
+.pc.acc,.pc.hl,.hl{border:1px solid rgba(255,210,63,.55)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 0 0 4px rgba(255,210,63,.06),0 30px 70px -30px rgba(255,210,63,.22)}
+.H,.H2,.T,.t1,.mtt,.dlgT{color:var(--ink)}
+.H .o,.H2 .o{background:none}
+.o{color:var(--o)}.r{color:var(--r)}.m,.t2,.note,.mod{color:var(--mut)}
+.eb{color:var(--o);letter-spacing:.18em;font-size:19px}
+.eb::before{content:"";display:inline-block;width:30px;height:3px;border-radius:2px;background:var(--o);margin-right:14px;vertical-align:middle;transform:translateY(-3px)}
+.cap,.src,.mtm{color:var(--mut2)}
+.tag{background:var(--pan2);color:var(--ink);border:1px solid var(--line2);border-radius:12px;font-weight:700;padding:10px 20px 12px 18px;display:inline-flex;align-items:center;gap:12px}
+.tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--o);flex:none}
+.tag[style*="background"]::before{background:#fff}
+.pc.bad{border:1px solid rgba(255,95,95,.55)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 0 0 4px rgba(255,95,95,.06),0 30px 70px -30px rgba(255,95,95,.22)}
+.band{background:var(--pan2);color:var(--ink);border:1px solid var(--line);border-left:8px solid var(--o);border-radius:14px;box-shadow:0 30px 70px -30px rgba(0,0,0,.7)}
+.band .o{color:var(--o)}
+.stamp,.stamp2{background:rgba(13,15,20,.6)!important}
+.stamp2{color:var(--r);border-color:var(--r)}
+.ic{background:var(--oT)}
+.chip{background:var(--pan2);border:1px solid var(--line2);color:var(--ink)}
+.badge{background:rgba(255,255,255,.08);color:var(--ink)}
+.kv,.plan,.fl,.ck,.pl{border-bottom-color:var(--line)}.fld{border-bottom-color:var(--line2)}
+.bt{background:rgba(255,255,255,.08)}.bf{background:#4A5262}.bf.on{background:var(--o)}
+.step{background:var(--pan);border-color:var(--line)}.step.on{background:linear-gradient(180deg,rgba(255,210,63,.12),var(--pan));border-color:rgba(255,210,63,.55)}
+.mic{background:var(--pan2);border-color:var(--line)}
+.ck{color:#525B6B}.ck.on{color:var(--ink)}.ckb{border-color:#3A4150}.ck.on .ckb{background:var(--o);border-color:var(--o)}
+.av{background:#2A303B}.lk{background:var(--rT)}
+.wm{color:rgba(255,255,255,.035)}.outl{-webkit-text-stroke:3px rgba(255,255,255,.28)}
+.line{background:linear-gradient(90deg,rgba(255,255,255,.12),var(--o))}
+.code{color:#C9D1DE}.add{color:var(--g)}.del{color:var(--r)}
+mark,.spk{background:rgba(255,210,63,.22);color:inherit}
+.pq2 b,.num,.stat,.bign.o,.o .bign{color:var(--o)}
+.mno,.sl>span{background:var(--o);color:#14161B}
+.btnO,.send,.aic{background:var(--o);color:#14161B}
+.term{background:#090B0F;border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
+.cw,.bw,.win,.res,.dlg{box-shadow:0 40px 90px -30px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.06)}
+.mopt.hl{background:#FFF6D6;border-color:#E0B300}
+.dot{background:#3A4150}
+/* captions: no box, white + black outline, keyword yellow */
+#sub span{background:none!important;border:0!important;box-shadow:none!important;padding:0 20px!important;color:#fff!important;font-size:60px!important;font-weight:800!important;letter-spacing:-.02em;
+ -webkit-text-stroke:11px #07080B;paint-order:stroke fill;text-shadow:0 6px 18px rgba(0,0,0,.55)}
+#sub em,#sub b{color:var(--o)!important;font-style:normal;font-weight:900}
+/* mascot */
+.probe img{filter:drop-shadow(0 0 1.5px rgba(255,255,255,.35)) drop-shadow(0 0 26px rgba(90,169,255,.28)) drop-shadow(0 26px 30px rgba(0,0,0,.55))}
+</style>
 <script src="probe.js"></script>
 </head><body>
 <div id="st"><div id="grid"></div><div id="cam"></div>
- <div class="a" id="ptag" style="font-weight:900;font-size:30px;color:#FFF;background:var(--ink);border-radius:14px;padding:6px 18px 9px;white-space:nowrap">넥서스</div>
  <div id="ripple"></div>
  <svg id="cur" width="44" height="58" viewBox="0 0 100 130" style="filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))"><path d="M8 4 L8 104 L32 82 L48 120 L66 112 L50 76 L84 76 Z" fill="#1F1F1D" stroke="#fff" stroke-width="7" stroke-linejoin="round"/></svg>
  <div id="sub"></div>
@@ -215,7 +267,7 @@ const IC={
  nav:'<path d="M5 12h14M13 6l6 6-6 6"/>',globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
  phone:'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',spark:'<path d="M12 3v18M3 12h18M6 6l12 12M18 6L6 18"/>'};
 const ico=(n,s=44,c='var(--o)',w=1.8)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" style="display:block">${IC[n]}</svg>`;
-const AIC=(s=30)=>`<div class="aic" style="width:${s}px;height:${s}px;border-radius:${s*0.3}px">${ico('cursor',s*0.6,'#fff',2.2)}</div>`;
+const AIC=(s=30)=>`<div class="aic" style="width:${s}px;height:${s}px;border-radius:${s*0.3}px">${ico('cursor',s*0.6,'#14161B',2.2)}</div>`;
 const head=(sc,eb,html,y=110)=>{E(sc,0,`<div class="eb">${eb}</div>`,170,y,{anim:'fade'});E(sc,0,html,170,y+44,{cls:'H',anim:'kin',kin:1});};
 // chrome window
 const CW=(url,body,{w=1500,h=740,ext='',tab='새 탭'}={})=>`<div class="cw" style="width:${w}px;height:${h}px"><div class="ctab"><div class="tb">${tab}</div></div><div class="cbar"><div class="nav">‹</div><div class="nav">›</div><div class="nav">↻</div><div class="omni">${url}</div>${ext}<div class="ext">${ico('puzzle',26,'#6F6E69',1.8)}</div></div><div class="cbody">${body}</div></div>`;
@@ -240,7 +292,7 @@ E('hook',0,'말로만 만든 웹사이트',156,440,{style:'font-weight:800;font-
 head('zero','Confession','웹사이트 제작 경험 <span class="o">0번</span>');
 [['HTML?','뭔지도 잘 모름'],['디자인 툴','못 다룸'],['코딩','한 줄도 안 해봄']].forEach(([a,b],i)=>E('zero',1,`<div class="t1" style="font-size:46px">${a}</div><div class="note">${b}</div><div class="stamp2" style="position:absolute;right:26px;top:26px;font-size:30px;padding:4px 16px 8px">0</div>`,170+i*540,290,{cls:'pc',w:500,h:190,off:i*0.35,style:'position:absolute'}));
 E('zero',2,'<div class="cap">요즘 말로</div><div class="H" style="font-size:96px;margin-top:10px">바이브 <span class="o">코딩</span></div>',170,540,{anim:'pop'});
-E('zero',3,`<div style="display:flex;align-items:center;gap:26px">${[['user','나','원하는 걸 말하기'],['code','AI','코드를 씀'],['globe','결과','웹사이트']].map(([i,a,b],k)=>`<div class="pc" style="padding:22px 28px;text-align:center;min-width:220px">${k===1?'<div style="display:flex;justify-content:center">'+AIC(48)+'</div>':'<div style="display:flex;justify-content:center">'+ico(i==='code'?'type':i,48,k===0?'#3A3936':'var(--o)',1.8)+'</div>'}<div class="t1" style="font-size:30px;margin-top:10px">${a}</div><div class="note" style="margin-top:4px;font-size:20px">${b}</div></div>`).join('<div style="font-weight:900;font-size:44px;color:var(--o)">→</div>')}</div>`,900,520,{anim:'fade'});
+E('zero',3,`<div style="display:flex;align-items:center;gap:26px">${[['user','나','원하는 걸 말하기'],['code','AI','코드를 씀'],['globe','결과','웹사이트']].map(([i,a,b],k)=>`<div class="pc" style="padding:22px 28px;text-align:center;min-width:220px">${k===1?'<div style="display:flex;justify-content:center">'+AIC(48)+'</div>':'<div style="display:flex;justify-content:center">'+ico(i==='code'?'type':i,48,k===0?'var(--ink)':'var(--o)',1.8)+'</div>'}<div class="t1" style="font-size:30px;margin-top:10px">${a}</div><div class="note" style="margin-top:4px;font-size:20px">${b}</div></div>`).join('<div style="font-weight:900;font-size:44px;color:var(--o)">→</div>')}</div>`,900,520,{anim:'fade'});
 // MISSION
 head('mission','Mission','오늘의 미션 · <span class="o">동네 꽃집</span>');
 [['01','가게 소개'],['02','대표 상품 3개'],['03','예약 신청']].forEach(([n,a],i)=>E('mission',1,`<div class="num">${n}</div><div class="t1" style="font-size:44px;margin-top:8px">${a}</div>`,170+i*540,300,{cls:'pc',w:500,off:i*0.45}));
@@ -268,7 +320,7 @@ E('mobile',1,`<div class="li">${ico('check',34)}<span>메뉴는 위로 접힘</s
 E('mobile',2,'<div class="tag" style="font-size:28px">처음에 "휴대폰"이라고 말해둔 덕분</div>',170,620,{anim:'pop'});
 // TIPS
 head('tips','Tips','막힐 때 <span class="o">꿀팁</span> 3가지',90);
-[[1,'card','01','내 사진은 직접','"이 사진 써 줘"'],[3,'eye','02','보이는 그대로 말하기','"버튼이 글자를 가려"'],[5,'clock','03','좋은 버전은 저장','"아까 버전으로 돌려 줘"']].forEach(([li,ic,n,t,q],i)=>E('tips',li,`<div class="row" style="justify-content:space-between;align-items:center">${ico(ic,52,'#1F1F1D')}<div class="num" style="font-size:30px">${n}</div></div><div class="t1" style="margin-top:26px;font-size:38px">${t}</div><div class="note" style="margin-top:14px;font-size:26px">${q}</div>`,170+i*540,280,{cls:'pc'+(i===0?' acc':''),w:500,h:300}));
+[[1,'card','01','내 사진은 직접','"이 사진 써 줘"'],[3,'eye','02','보이는 그대로 말하기','"버튼이 글자를 가려"'],[5,'clock','03','좋은 버전은 저장','"아까 버전으로 돌려 줘"']].forEach(([li,ic,n,t,q],i)=>E('tips',li,`<div class="row" style="justify-content:space-between;align-items:center">${ico(ic,52,'var(--ink)')}<div class="num" style="font-size:30px">${n}</div></div><div class="t1" style="margin-top:26px;font-size:38px">${t}</div><div class="note" style="margin-top:14px;font-size:26px">${q}</div>`,170+i*540,280,{cls:'pc'+(i===0?' acc':''),w:500,h:300}));
 E('tips',7,'이 세 가지면 <span class="o">중간에 포기</span>할 일은 거의 없어요',170,660,{cls:'band',style:'font-size:46px',anim:'wipe'});
 // SHARE
 head('share','Share','만들었으면 <span class="o">보여주기</span>',90);
@@ -277,8 +329,8 @@ E('share',2,`<div style="display:flex;justify-content:center">${ico('phone',96,'
 E('share',3,`<div class="cap">내 주소로 운영하려면</div><div class="t1" style="font-size:40px;margin-top:12px">깃허브 페이지 · 무료 호스팅</div><div class="note">올리는 순서도 AI한테 물어보면 하나씩 알려줘요</div>`,170,560,{cls:'pc',w:1580,style:'padding:30px 34px'});
 // LIMIT
 head('limit','Limits','물론 <span class="o">한계</span>도 있어요',90);
-E('limit',1,`${ico('mail',52,'#1F1F1D')}<div class="t1" style="margin-top:22px;font-size:38px">예약 알림 받기</div><div class="note">이메일·예약 서비스와 따로 연결 필요</div>`,170,280,{cls:'pc',w:760,h:280});
-E('limit',2,`${ico('lock',52,'#1F1F1D')}<div class="t1" style="margin-top:22px;font-size:38px">결제 · 개인정보</div><div class="note">보안 때문에 전문가 확인 필수</div>`,990,280,{cls:'pc',w:760,h:280});
+E('limit',1,`${ico('mail',52,'var(--ink)')}<div class="t1" style="margin-top:22px;font-size:38px">예약 알림 받기</div><div class="note">이메일·예약 서비스와 따로 연결 필요</div>`,170,280,{cls:'pc',w:760,h:280});
+E('limit',2,`${ico('lock',52,'var(--ink)')}<div class="t1" style="margin-top:22px;font-size:38px">결제 · 개인정보</div><div class="note">보안 때문에 전문가 확인 필수</div>`,990,280,{cls:'pc',w:760,h:280});
 E('limit',3,'그래도 <span class="o">소개 페이지</span> 하나는 오늘 바로',170,640,{cls:'band',style:'font-size:48px',anim:'wipe'});
 // END
 head('end','Summary','오늘의 <span class="o">정리</span>',90);
@@ -287,12 +339,14 @@ E('end',3,`<div class="cmt"><div class="av" style="background:var(--o)"></div><d
 // OUTRO
 E('outro',0,'넥서스 AI',200,400,{cls:'T',style:'font-size:150px;line-height:1',anim:'outro'});
 E('outro',1,'AI 뉴스 → 그래서 나는 뭘 하면 되는데?',200,600,{style:'font-weight:500;font-size:44px;color:var(--mut);white-space:nowrap',anim:'outro'});
-E('outro',2,`<div style="font-weight:800;font-size:30px;color:var(--o);margin:0 0 14px 6px">이전 영상도 보고 가세요 →</div><img src="img/prev.jpg" onerror="this.style.display='none'" style="width:640px;border-radius:24px;box-shadow:0 30px 60px -24px rgba(31,31,29,.45);display:block">`,1150,300,{w:660,anim:'outroBox'});
+E('outro',2,`<div style="font-weight:800;font-size:30px;color:var(--o);margin:0 0 14px 6px">이전 영상도 보고 가세요 →</div><img src="img/prev.jpg" onerror="this.style.display='none'" style="width:640px;border-radius:24px;box-shadow:0 30px 70px -24px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.08);display:block">`,1150,300,{w:660,anim:'outroBox'});
 
 const probe=makeProbe('pr');$('st').appendChild(probe);
 const EXPR={hook:{0:'wow',2:'happy'},zero:{0:'think',2:'wink'},mission:{0:'happy'},try1:{0:'idle',3:'angry',4:'think'},formula:{0:'think',3:'happy'},try2:{0:'idle',4:'wow',5:'happy'},fix:{0:'happy',6:'wow'},mobile:{0:'idle',2:'happy'},tips:{0:'wink',3:'think',5:'happy'},share:{0:'happy'},limit:{0:'think'},end:{0:'idle',3:'happy'},outro:{0:'happy',2:'wink'}};
 function exprAt(t){let sc=null;for(const s of ORDER)if(t>=span(s)[0])sc=s;if(!sc)return 'idle';const m=EXPR[sc]||{};let e='idle';
  for(const l of window.LINES){if(l[3]!==sc)continue;if(t>=l[0]-0.1&&m[l[4]]!==undefined)e=m[l[4]];}return e;}
+let CUES=null;function cueAt(t){if(!CUES){const a=[];for(const e of EL){const x=L(e.sc,e.li)+e.off;if(x<1e8&&e.sc!=='outro')a.push(x);}a.sort((p,q)=>p-q);CUES=a.filter((x,i)=>i===0||x-a[i-1]>0.9);}
+ let k=0;for(const c of CUES){if(t<c-0.1)break;const d=t-c+0.1;k=Math.max(k,oE(d/0.3)*(1-ioQ(sg(d,0.9,0.5))));}return k;}
 function talking(t){for(const l of window.LINES){if(t>=l[0]&&t<l[1])return true;}return false;}
 function uiK(t){let k=0;for(const s of UI){const sp=span(s);k=Math.max(k,sg(t,sp[0]+0.2,0.5)*(1-sg(t,sp[1]-0.7,0.4)));}return k;}
 function events(){const E2=[];const add=(t,s,p=0)=>E2.push([+t.toFixed(3),s,p]);
@@ -361,15 +415,14 @@ window.seek=function(t){
    if(rp>0)$('cur').style.transform+=` scale(${(1-0.12*Math.sin(Math.PI*rp)).toFixed(3)})`;}
   else{T($('cur'),0,0,1,0);T($('ripple'),0,0,1,0);}}
  // Probe
- {const ent=settle(sg(t,0.15,0.8));const bob=Math.sin(t*2.2)*6;
-  const hop=Math.abs(Math.sin(t*9))*(exprAt(t)==='happy'?10:0);
+ {const ent=oE(sg(t,0.15,0.7));const bob=Math.sin(t*1.6)*3;
+  const hop=0;
   const endOut=iE(sg(t,last()+1.0,0.8));
   let x=1600,y=600+bob-hop+(1-ent)*400,sc=0.95;
   const pk=psK(t);x=lerp(x,1680,pk);y=lerp(y,720+bob*0.5,pk);sc=lerp(sc,0.55,pk);
   const outroK=ioQ(sg(t,span('outro')[0],0.8));x=lerp(x,1460,outroK);y=lerp(y,690,outroK);sc=lerp(sc,0.85,outroK);
-  probe.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${sc.toFixed(3)}) rotate(${(Math.sin(t*1.3)*2).toFixed(2)}deg)`;probe.style.transformOrigin='50% 100%';probe.style.opacity=(1-endOut).toFixed(3);
-  probeFace(probe,{expr:exprAt(t),t,talk:talking(t)&&exprAt(t)!=='wow',look:[Math.sin(t*0.7)*0.4,0]});
-  const tg=settle(sg(t,L('hook',0)+0.2,0.4))*(1-ioQ(sg(t,L('hook',0)+3.0,0.4)));T($('ptag'),x+40,y-90,lerp(1.4,1,tg),clamp(tg,0,1),-4);}
+  probe.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${sc.toFixed(3)}) rotate(0deg)`;probe.style.transformOrigin='50% 100%';probe.style.opacity=(1-endOut).toFixed(3);
+  probeFace(probe,{expr:exprAt(t),t,talk:talking(t),cue:cueAt(t)});}
  T($('fade'),0,0,1,Math.max(1-oE(sg(t,0,0.4)),oE(sg(t,last()+1.6,0.8))));
 };
 window.seek(0);

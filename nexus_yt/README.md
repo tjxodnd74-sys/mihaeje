@@ -49,7 +49,7 @@ cd /home/claude/work/<slug>
   - `EXPR`
 - `E(scene, lineIdx, html, x, y, {w,h,cls,style,anim,off,out:[line,off]})`
   - anim: pop, fade, kin, wipe, stamp, slideL
-  - cls: pc (card), band (dark strip), acc (orange border)
+  - cls: pc (card), band (strip with yellow left bar), acc (yellow border), bad (red border)
 - `head(sc,'Eyebrow','Title <span class="o">highlight</span>',y)`; `PR(sc,li,html,x,y,w)` = prompt bubble; `ico(name,size,color)`.
 - Icons: check, puzzle, pin, lock, shield, card, user, trash, coin, mail, clock, slash, eye, cursor, nav, phone.
 - User dislikes:
@@ -150,7 +150,13 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - Shorts: 1 per long-form, title/topic leads to the long-form.
 
 ## 10. Long-form quality rules (user feedback 2026-11-08 — "타 AI 채널에 비하면 퀄리티·자막·목소리 별로")
-- MASCOT = 넥서스 펭귄 (assets/peng.png, blue felt penguin with glasses + phone). Probe is retired. Name tag "넥서스".
+- MASCOT = 넥서스 펭귄 (assets/peng.png, blue felt penguin with glasses + phone). Probe is retired. NO name tag above it (user: "넥서스 빼").
+- MASCOT MOTION (user 2026-11-08: "지랄발광 말고 설명에 맞춰 움직여"): calm only. probe.js = breathing + soft nod while talking + lean toward content when a new element appears (cueAt) + one gentle ease per EXPR change. Never constant hopping, shaking or squash. EXPR: use sparingly (≤1 change per scene), matching what the line says.
+- DESIGN THEME = "dark pro" (template.html last <style> block; user: "클로드 템플릿 같다, 강조색도, 검정 알약 칩도 별로"):
+  - bg #0D0F14 + dot grid + vignette, cards = dark panels, accent = YELLOW var(--o) #FFD23F (not orange), red var(--r), green var(--g), blue var(--b).
+  - In scenes use ONLY var(--ink/--mut/--o/--r/--g/--b/--pan2) — no light-theme hex (#1F1F1D, #1E7A41, #C9423A, #FDEEE6…). Brand logo tiles may stay white.
+  - Labels = .tag (dark chip + yellow dot). No black rounded pills. Red/negative cards = "pc bad".
+  - Captions: no box, white 60px with black outline, keyword in yellow.
 - LESS TEXT ON SCREEN: one scene = one headline (≤12 chars) + ONE visual (card/logo/number). No subtitle line + chips + stamp all at once. Max 2 small labels. Let the narration carry details.
 - NUMBERS: lines.py S (display/caption) uses digits ("9월", "11월 12일", "5.5"); Korean readings go ONLY in R (TTS). Never "구월" in S.
 - PACING: short spoken sentences (≤ 25 chars each), one idea per line, punchy reactions ("근데 여기서 반전.", "이거 진짜예요."), no filler ("정리해 볼게요" once max). build_voice gaps: line 0.22s, scene 0.65s, internal pauses ≤0.22s.
