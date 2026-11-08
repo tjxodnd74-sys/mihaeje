@@ -1,0 +1,6 @@
+v00.mp4 200 15803043 /contents/attribute/smartsence/new/video/avante/27fc/avante_forward_collision_avoidance_assist.mp4
+v01.mp4 200 8826347 /contents/attribute/smartsence/new/video/avante/27fc/avante_blind_spot_collision_avoidance_assist.mp4
+v02.mp4 200 5486888 /contents/attribute/smartsence/new/video/avante/27fc/avante_lane_keeping_assist2.mp4
+v03.mp4 200 19625943 /contents/attribute/smartsence/new/video/avante/27fc/avante_highway_driving_assistance2.mp4
+v04.mp4 200 22312934 /contents/attribute/smartsence/new/video/avante/27fc/avante_navigation_smart_cruise_control.mp4
+v05.mp4 200 6187818 /contents/attribute/smartsence/new/video/avante/27fc/avante_rear_cross_traffic_collision_avoidance_assist.mp4
