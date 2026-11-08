@@ -138,3 +138,13 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - Put the full copy-paste prompts in the description under "📋 그대로 복사해서 쓰세요" (right after the 2 intro lines).
 - Narration outro line: "오늘 지시문은 설명란에 그대로 적어 둘게요." (not 고정 댓글)
 - Video end card / scenes: "설명란에 있어요" wording only.
+
+## 9. Final QA before every upload (user: "유튜브 디테일 잘 살려야 돼, 전문적으로")
+- Title: search keyword first + curiosity (≤40 chars). Thumbnail text ≠ title text.
+- Description: 2 hook lines → 📋 full prompts (copy-ready) → chapters (00:00 …) → sources → 3 hashtags. No '고정 댓글'.
+- Chapters: add timestamps for every scene (from voice.json), first one 00:00.
+- Tags ~15 incl. exact model/feature names (EN + KR spelling).
+- Subtitles: upload SRT; check spelling of names (앤트로픽, 클로드, 제미나이…).
+- End: last 5–10s ask to watch a related video/series (same topic family).
+- Audio: voice clear, BGM low, no clipped words (ASR check). Video: no overlap/overflow (contact sheet).
+- Shorts: 1 per long-form, title/topic leads to the long-form.
