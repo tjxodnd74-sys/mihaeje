@@ -156,3 +156,4 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - PACING: short spoken sentences (≤ 25 chars each), one idea per line, punchy reactions ("근데 여기서 반전.", "이거 진짜예요."), no filler ("정리해 볼게요" once max). build_voice gaps: line 0.22s, scene 0.65s, internal pauses ≤0.22s.
 - CAPTIONS: phrase chunks ≤15 chars, one line, whisper-synced (build_voice writes voice.json "caps"; renderL/snapL pass them). Never split predicates (끊어 버려요, 못 보내요). Optional keyword highlight: KW=[...] in lines.py.
 - OUTRO: shows previous video thumbnail (assets/prev.jpg → img/prev.jpg). After each upload, save the new thumbnail as assets/prev.jpg (1280x720 jpg) and commit.
+- VOICE (user chose: keep cloned seed_audio): write for the ear — short sentences, use "?" and "!" for intonation, put the punchline word last, contractions/구어체 ("~거든요", "~잖아요"). Re-take any line that sounds flat or slow (ASR + listen-length check: >5.5 chars/sec target).
