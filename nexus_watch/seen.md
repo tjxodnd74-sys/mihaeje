@@ -40,3 +40,4 @@
 2026-11-08 11:24 | 메타 | Muse Wonder 계열 모델 메타 AI 전 사용자 배포(Active Memory·Active Focus) | https://dev.to/hiroki-ii-ai/ai-daily-digest-november-8-2026-openai-taps-hacktron-for-bug-hunts-muse-wonder-for-everyone-gin
 2026-11-08 11:24 | 클로드(사용자 게시글) | 페이지 번호 바꾸라 했더니 교수 강의자료 삭제, 드롭박스로 복구 | https://aiweekly.co/ai-news-today
 2026-11-08 11:24 | 오픈AI(알림 제외·보안 협력) | Hacktron과 자사 시스템 보안 점검 협력 | https://aiweekly.co/ai-news-today
+2026-11-08 12:23 | AI 영상 콩트(경쟁 주제·@dalbong_otter) | 'AI 크리에이터의 하루' POV + 2026 대한민국 AI 콘텐츠 페스티벌 홍보(11/6, 1.3만 회) | https://www.instagram.com/reel/DfZQcmiToa9/
