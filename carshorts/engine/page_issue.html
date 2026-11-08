@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(Pretendard-Black.woff2) format("woff2");font-weight:900}
+@font-face{font-family:P;src:url(Pretendard-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:P;src:url(Pretendard-Bold.woff2) format("woff2");font-weight:700}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000;font-family:P,sans-serif;color:#fff;word-break:keep-all}
+/* "이슈 근황" layout: black page, 2-line title on top, photo box in the middle, boxed captions */
+#title{position:absolute;left:40px;right:40px;top:190px;text-align:center;line-height:1.12;letter-spacing:-.03em;font-weight:900}
+#title .l1{font-size:92px;color:#fff}
+#title .l2{font-size:108px;color:#c8ff3a}
+#media{position:absolute;left:0;top:470px;width:1080px;height:880px;overflow:hidden;background:#111}
+.layer{position:absolute;inset:0;overflow:hidden;display:none}
+.layer img{position:absolute;left:0;top:0;width:1080px;height:880px;object-fit:cover;transform-origin:50% 50%;will-change:transform}
+#ov{position:absolute;left:0;top:470px;width:1080px;height:880px;overflow:hidden}
+#cap{position:absolute;left:40px;right:40px;top:1290px;display:flex;justify-content:center}
+#cap span{display:inline-block;background:rgba(0,0,0,.88);border-radius:22px;padding:22px 34px;text-align:center;
+ font-size:56px;font-weight:800;line-height:1.3;letter-spacing:-.025em;white-space:normal}
+#cap span em{font-style:normal;color:#c8ff3a}
+#src{position:absolute;left:0;right:0;bottom:120px;text-align:center;font-size:26px;font-weight:700;color:rgba(255,255,255,.45)}
+.stk{position:absolute;left:30px;top:30px;background:#c8ff3a;color:#0b0b0b;font-weight:900;font-size:44px;padding:14px 26px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.4);white-space:nowrap}
+.stk small{display:block;font-size:30px;font-weight:800;margin-bottom:2px;opacity:.75}
+</style></head><body>
+<div id="title"><div class="l1"></div><div class="l2"></div></div>
+<div id="media"></div><div id="ov"></div><div id="cap"></div><div id="src"></div>
+<script>
+const S = window.SPEC; const media = document.getElementById('media'); const ov = document.getElementById('ov'); const capEl = document.getElementById('cap');
+document.querySelector('#title .l1').textContent = S.title[0]; document.querySelector('#title .l2').textContent = S.title[1];
+document.getElementById('src').textContent = S.credit || '';
+const layers = {};
+for (const seg of S.segs) for (const sh of seg.shots) { if (layers[sh.src]) continue; const d = document.createElement('div'); d.className = 'layer'; const m = document.createElement('img'); m.src = sh.src; d.appendChild(m); media.appendChild(d); layers[sh.src] = { d, m }; }
+const ease = p => p < 0 ? 0 : p > 1 ? 1 : 1 - Math.pow(1 - p, 3); const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const fmt = n => Math.round(n).toLocaleString('ko-KR');
+const OV = {
+  stk(o, tau) { const a = ease((tau - 0.15) / 0.25), s = 0.6 + 0.4 * ease((tau - 0.15) / 0.3); return `<div class="stk" style="opacity:${a};transform:scale(${s});transform-origin:0 0">${o.small ? `<small>${o.small}</small>` : ''}${o.text}</div>`; },
+  sales(o, tau) {
+    const a = ease(tau / 0.3); const h1 = 440, h2 = 440 * 5501 / 6945; const p2 = ease((tau - 0.7) / 0.6);
+    const bar = (x, h, v, label, col, p) => `<div style="position:absolute;left:${x}px;bottom:80px;width:260px;text-align:center">
+      <div style="font-size:64px;font-weight:900;opacity:${p}">${fmt(v * p)}<span style="font-size:36px">대</span></div>
+      <div style="margin:10px auto 0;width:200px;height:${h * p}px;background:${col};border-radius:18px 18px 0 0"></div>
+      <div style="font-size:40px;font-weight:800;margin-top:14px">${label}</div></div>`;
+    const d = ease((tau - 1.5) / 0.3);
+    return `<div style="position:absolute;inset:0;background:rgba(0,0,0,.72);opacity:${a}"></div>${bar(200, h1, 6945, '9월', '#9ca3af', a)}${bar(620, h2, 5501, '10월', '#ff4d4d', p2)}
+      <div style="position:absolute;left:0;right:0;top:28px;text-align:center;font-size:44px;font-weight:900;opacity:${a}">신형 아반떼 월 판매</div>
+      <div style="position:absolute;right:40px;top:110px;background:#ff4d4d;color:#fff;font-size:54px;font-weight:900;padding:10px 24px;border-radius:14px;opacity:${d};transform:scale(${0.6 + 0.4 * d})">▼ 20.8%</div>`;
+  },
+};
+window.seek = async (t) => {
+  const segs = S.segs; let si = segs.findIndex((s, i) => t >= s.t0 && (i == segs.length - 1 || t < segs[i + 1].t0)); if (si < 0) si = 0;
+  const seg = segs[si], tau = t - seg.t0, dur = (si < segs.length - 1 ? segs[si + 1].t0 : S.total) - seg.t0;
+  let acc = 0, sh = seg.shots[0], shStart = 0, shDur = dur;
+  for (const s of seg.shots) { const d = s.frac * dur; if (tau < acc + d || s === seg.shots[seg.shots.length - 1]) { sh = s; shStart = acc; shDur = d; break; } acc += d; }
+  const ls = clamp((tau - shStart) / Math.max(shDur, 0.01));
+  for (const k in layers) layers[k].d.style.display = (k === sh.src) ? 'block' : 'none';
+  const L = layers[sh.src]; const sc = sh.s0 + (sh.s1 - sh.s0) * ls;
+  L.m.style.objectPosition = sh.pos || '50% 50%';
+  L.m.style.transform = `translate(${(sh.x || 0) + ((sh.x1 ?? sh.x ?? 0) - (sh.x || 0)) * ls}px,${(sh.y || 0) + ((sh.y1 ?? sh.y ?? 0) - (sh.y || 0)) * ls}px) scale(${sc})`;
+  L.m.style.filter = sh.blur ? `blur(${sh.blur}px)` : '';
+  ov.innerHTML = seg.ov ? OV[seg.ov.type](seg.ov, tau, dur) : '';
+  capEl.innerHTML = '<span>' + seg.cap.replace(/\|([^|]+)\|/g, '<em>$1</em>') + '</span>';
+  capEl.style.display = seg.cap ? 'block' : 'none';
+};
+window.ready = async () => { await document.fonts.ready; await Promise.all(Object.values(layers).map(l => l.m.complete ? 0 : new Promise(r => l.m.onload = r))); };
+</script></body></html>

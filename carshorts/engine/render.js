@@ -9,7 +9,7 @@ const { spawn } = require('child_process'); const fs = require('fs'), path = req
   const b = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required', '--allow-file-access-from-files'] });
   const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
   await p.addInitScript(s => { window.SPEC = s; }, spec);
-  await p.goto('file://' + path.join(__dirname, 'page.html'));
+  await p.goto('file://' + path.join(__dirname, process.env.PAGE || 'page.html'));
   await p.evaluate(() => window.ready());
   const FPS = 30, N = Math.round((to - from) * FPS);
   const ff = spawn('ffmpeg', ['-v', 'error', '-y', '-f', 'image2pipe', '-framerate', '30', '-i', '-', '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p', path.join(W, out)], { stdio: ['pipe', 'inherit', 'inherit'] });
