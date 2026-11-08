@@ -133,7 +133,8 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - Elements appear at phrase anchors ("p2", "p1+0.3") so visuals hit with the words; every entrance has an SFX.
 - Check a 16-frame contact sheet before upload (no empty stage, no overlap with caption, no overflow).
 
-## 8. Comment with prompts — REQUIRED on every upload
-- Never write "고정 댓글에 있어요" unless the comment really exists. A viewer complained it was missing (ep21).
-- On Metricool createScheduledPost, ALWAYS set `firstCommentText` to the full prompt text (the "[고정 댓글]" block). Metricool posts it automatically at publish time.
-- The API cannot pin comments. In the description write "📌 지시문은 첫 댓글에 있어요" (not "고정 댓글"), or paste the prompts in the description itself.
+## 8. Prompts go IN THE DESCRIPTION — REQUIRED (user rule 2026-11-08)
+- NEVER write or say "고정 댓글에 있어요" / "고정 댓글에 올려 둘게요" — nobody pins it, viewers complained.
+- Put the full copy-paste prompts in the description under "📋 그대로 복사해서 쓰세요" (right after the 2 intro lines).
+- Narration outro line: "오늘 지시문은 설명란에 그대로 적어 둘게요." (not 고정 댓글)
+- Video end card / scenes: "설명란에 있어요" wording only.
