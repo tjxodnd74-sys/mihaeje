@@ -37,3 +37,6 @@
 2026-11-07 09:23 | 그록(알림 제외·확인 안 됨) | Grok 전화 걸기 기능(영상 요약만, 원문 미확인) | https://scitech.whatfinger.com/2026/11/06/ai-news-new-chatgpt-google-models-14-updates-worth-knowing/
 2026-11-07 13:23 | 앤트로픽(알림 제외·루머) | Claude 6 출시설 | https://www.geeky-gadgets.com/ai-news-november-2026/
 2026-11-08 09:23 | AI 영상(경쟁 주제·@liorasolveil, 드리미나 크리에이터 태그·광고성 가능) | AI 좀비 아파트 탈출 파쿠르 액션 영상(560만 회·평소 36배) | https://www.instagram.com/reel/DfYcGDlObI8
+2026-11-08 11:24 | 메타 | Muse Wonder 계열 모델 메타 AI 전 사용자 배포(Active Memory·Active Focus) | https://dev.to/hiroki-ii-ai/ai-daily-digest-november-8-2026-openai-taps-hacktron-for-bug-hunts-muse-wonder-for-everyone-gin
+2026-11-08 11:24 | 클로드(사용자 게시글) | 페이지 번호 바꾸라 했더니 교수 강의자료 삭제, 드롭박스로 복구 | https://aiweekly.co/ai-news-today
+2026-11-08 11:24 | 오픈AI(알림 제외·보안 협력) | Hacktron과 자사 시스템 보안 점검 협력 | https://aiweekly.co/ai-news-today

@@ -1,5 +1,19 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-08 11:24 — ① 메타 AI, Muse Wonder 계열 모델 전체 사용자 배포
+- 출처: https://dev.to/hiroki-ii-ai/ai-daily-digest-november-8-2026-openai-taps-hacktron-for-bug-hunts-muse-wonder-for-everyone-gin (메타 11/6 발표, 원문 ai.meta.com 미확인)
+- 추천 형식: 카드뉴스
+- 제목안: "메타 AI가 이제 대화를 '기억'합니다"
+- 핵심 사실: 플래그십 Muse Wonder에서 파생한 비서용 모델을 Muse·메타 AI 전 사용자에 배포 / 'Active Memory'(대화 넘어 핵심 정보 기억, 핵심 맥락 활용 76%→90%)·'Active Focus'(중간에 끊긴 일 이어서 완료율 67%↑) / 상위 Wonder Full은 유료 전용, 한국 제공 여부·무료 여부 미확인
+- 다룬 채널: 없음(해외 뉴스)
+
+## 2026-11-08 11:24 — ② 클로드가 교수 강의자료를 지운 사건(사용자 게시글)
+- 출처: https://aiweekly.co/ai-news-today (11/5 시카고대 윌리엄 보드 교수 본인 게시글 보도, 드롭박스로 복구)
+- 추천 형식: 카드뉴스
+- 제목안: "AI에게 파일 정리 맡기기 전 꼭 할 3가지"
+- 핵심 사실: 페이지 번호만 바꾸라 했는데 강의계획서·옛 강의노트 삭제 / 드롭박스 기록으로 복구 / 사용자 주장이며 앤트로픽 공식 확인 아님 → '백업·사본 작업' 팁 위주로
+- 다룬 채널: 없음
+
 ## 2026-11-08 09:23 — (참고) AI 채널 주제: AI 좀비 아파트 탈출 액션 영상
 - 출처: https://www.instagram.com/reel/DfYcGDlObI8 (@liorasolveil, 11/6, 560만 회·평소 36.4배, #dreaminacreators 태그)
 - 추천 형식: 릴스(주제만 참고, 영상·문구 베끼지 않기)
