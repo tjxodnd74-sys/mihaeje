@@ -1,5 +1,12 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-08 09:23 — (참고) AI 채널 주제: AI 좀비 아파트 탈출 액션 영상
+- 출처: https://www.instagram.com/reel/DfYcGDlObI8 (@liorasolveil, 11/6, 560만 회·평소 36.4배, #dreaminacreators 태그)
+- 추천 형식: 릴스(주제만 참고, 영상·문구 베끼지 않기)
+- 제목안: "AI로 좀비 영화 한 장면 만들기"
+- 핵심 사실: 드리미나로 만든 시네마틱 AI 액션 영상이 크게 터짐 / 드리미나 크리에이터 프로그램 태그라 광고성 가능 / 1곳만 다룸
+- 다룬 채널: @liorasolveil
+
 ## 2026-11-07 09:23 — ① 챗GPT·코덱스 사용량 한도 12월부터 통합
 - 출처: https://www.techrepublic.com/article/news-chatgpt-codex-shared-usage-limits/ , https://notebookcheck.net/ChatGPT-and-Codex-will-share-one-usage-limit-starting-in-December.1440897.0.html , 도움말 https://help.openai.com/de-de/articles/20001625-understanding-chatgpt-and-codex-usage-limits
 - 추천 형식: 카드뉴스
@@ -143,3 +150,4 @@ vidIQ 사용: 2026-11-06 15:23 5크레딧, 잔액 291
 vidIQ 사용: 2026-11-07 09:23 5크레딧, 잔액 276
 vidIQ 사용: 2026-11-07 12:23 5크레딧, 잔액 271
 vidIQ 사용: 2026-11-07 15:23 5크레딧, 잔액 266
+vidIQ 사용: 2026-11-08 09:23 5크레딧, 잔액 251
