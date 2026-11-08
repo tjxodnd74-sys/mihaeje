@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(Pretendard-Black.woff2) format("woff2");font-weight:900}
+@font-face{font-family:P;src:url(Pretendard-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:P;src:url(Pretendard-Bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:P;src:url(Pretendard-Medium.woff2) format("woff2");font-weight:500}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000;font-family:P,sans-serif;color:#fff;word-break:keep-all}
+#stage{position:absolute;inset:0;overflow:hidden}
+.layer{position:absolute;inset:0;overflow:hidden;display:none}
+.layer img,.layer video{position:absolute;left:0;top:0;width:1080px;height:1920px;object-fit:cover;transform-origin:50% 50%;will-change:transform}
+#ov{position:absolute;inset:0}
+/* captions: bottom, white bold with dark outline (reference style) */
+#cap{position:absolute;left:60px;right:60px;bottom:330px;text-align:center;font-size:66px;font-weight:800;line-height:1.25;letter-spacing:-.02em;
+ color:#fff;-webkit-text-stroke:12px #111;paint-order:stroke fill;text-shadow:0 6px 18px rgba(0,0,0,.35)}
+#cap b{color:#ffd84a;font-weight:900}
+/* graphic building blocks */
+.dim{position:absolute;inset:0;background:rgba(10,14,24,.62)}
+.glass{position:absolute;background:rgba(255,255,255,.96);color:#111827;border-radius:36px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.chip{position:absolute;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.95);color:#111827;font-weight:800;border-radius:999px;padding:18px 34px;font-size:40px;white-space:nowrap;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.chip small{font-size:28px;color:#6b7280;font-weight:700;margin-left:10px}
+.t-sub{font-size:34px;font-weight:700;color:#6b7280}
+.big{font-weight:900;letter-spacing:-.04em}
+.bar{height:56px;border-radius:28px;background:#e5e7eb;overflow:hidden;position:relative}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:28px}
+.gas{color:#ef6c3a}.hev{color:#16a34a}
+.src{position:absolute;left:0;right:0;bottom:250px;text-align:center;font-size:26px;font-weight:700;color:rgba(255,255,255,.75)}
+</style></head><body>
+<div id="stage"></div><div id="ov"></div><div id="cap"></div>
+<script>
+const S = window.SPEC; const stage = document.getElementById('stage'); const ov = document.getElementById('ov'); const capEl = document.getElementById('cap');
+// build one layer per shot source
+const layers = {};
+for (const seg of S.segs) for (const sh of seg.shots) {
+  if (layers[sh.src]) continue;
+  const d = document.createElement('div'); d.className = 'layer';
+  const m = document.createElement(sh.src.endsWith('.webm') ? 'video' : 'img');
+  m.src = sh.src; if (m.tagName === 'VIDEO') { m.muted = true; m.preload = 'auto'; }
+  d.appendChild(m); stage.appendChild(d); layers[sh.src] = { d, m };
+}
+const ease = p => p < 0 ? 0 : p > 1 ? 1 : 1 - Math.pow(1 - p, 3);
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const fmt = n => Math.round(n).toLocaleString('ko-KR');
+// ---------- overlays ----------
+const OV = {
+  chip(o, tau) { const a = ease(tau / 0.35); return `<div class="chip" style="top:${o.top || 260}px;opacity:${a};transform:translateX(-50%) translateY(${(1 - a) * -30}px)">${o.text}${o.small ? `<small>${o.small}</small>` : ''}</div>`; },
+  prices(o, tau) {
+    const a = ease(tau / 0.4), b = ease((tau - 0.9) / 0.4);
+    const n1 = 3966 * ease(tau / 0.8), n2 = 4299 * ease((tau - 0.9) / 0.8);
+    const card = (y, op, label, num, cls, note) => `<div class="glass" style="left:90px;right:90px;top:${y}px;height:300px;opacity:${op};transform:translateY(${(1 - op) * 40}px);padding:44px 56px">
+      <div class="t-sub">${label}</div><div class="big ${cls}" style="font-size:120px;margin-top:6px">${fmt(num)}<span style="font-size:60px">만 원</span></div>${note ? `<div class="t-sub" style="font-size:28px;margin-top:4px">${note}</div>` : ''}</div>`;
+    return `<div class="dim"></div>${card(470, a, '2.5 가솔린 터보', n1, 'gas', '')}${card(810, b, '1.6 하이브리드', n2, 'hev', '세제 혜택 반영 가격')}<div class="src">기아 쏘렌토 가격표(2026.11.1 기준) · 노블레스 2WD 5인승</div>`;
+  },
+  diff(o, tau) {
+    const a = ease(tau / 0.35); const s = 0.6 + 0.4 * ease(tau / 0.45);
+    return `<div class="dim"></div><div style="position:absolute;left:0;right:0;top:640px;text-align:center;opacity:${a};transform:scale(${s})">
+      <div style="font-size:48px;font-weight:800;color:#e5e7eb">하이브리드가 더 비싼 금액</div>
+      <div class="big" style="font-size:210px;color:#ffd84a;margin-top:10px">+333<span style="font-size:110px">만 원</span></div></div>`;
+  },
+  mpg(o, tau) {
+    const a = ease(tau / 0.4); const w1 = 10.8 / 18 * ease((tau - .3) / 1.0), w2 = 15.7 / 18 * ease((tau - .9) / 1.2);
+    const v1 = 10.8 * ease((tau - .3) / 1.0), v2 = 15.7 * ease((tau - .9) / 1.2);
+    return `<div class="dim"></div><div class="glass" style="left:80px;right:80px;top:520px;padding:56px 56px 60px;opacity:${a}">
+      <div style="font-size:52px;font-weight:900">복합연비 <span class="t-sub" style="font-size:32px">km/L</span></div>
+      <div style="margin-top:46px" class="t-sub">2.5 가솔린 터보</div><div style="display:flex;align-items:center;gap:24px;margin-top:12px"><div class="bar" style="flex:1"><i style="width:${w1 * 100}%;background:#ef6c3a"></i></div><div class="big gas" style="font-size:72px;width:190px;text-align:right">${v1.toFixed(1)}</div></div>
+      <div style="margin-top:40px" class="t-sub">1.6 하이브리드</div><div style="display:flex;align-items:center;gap:24px;margin-top:12px"><div class="bar" style="flex:1"><i style="width:${w2 * 100}%;background:#16a34a"></i></div><div class="big hev" style="font-size:72px;width:190px;text-align:right">${v2.toFixed(1)}</div></div>
+    </div><div class="src">기아 공식 제원 · 2WD 기준 (가솔린 18인치, 하이브리드 17인치 5인승)</div>`;
+  },
+  perkm(o, tau) {
+    const a = ease(tau / 0.4), b = ease((tau - 1.6) / 0.4);
+    const col = (x, label, val, cls, h, d) => { const p = ease((tau - d) / 0.9); return `<div style="position:absolute;left:${x}px;width:330px;bottom:620px;text-align:center">
+      <div class="big ${cls}" style="font-size:96px;opacity:${p}">${Math.round(val * p)}<span style="font-size:48px">원</span></div>
+      <div style="margin:14px auto 0;width:180px;height:${h * p}px;border-radius:24px 24px 0 0;background:${cls == 'gas' ? '#ef6c3a' : '#16a34a'}"></div>
+      <div style="font-size:38px;font-weight:800;margin-top:18px">${label}</div></div>`; };
+    return `<div class="dim"></div><div style="position:absolute;left:0;right:0;top:330px;text-align:center;font-size:58px;font-weight:900;opacity:${a}">1km 달릴 때 기름값</div>
+      ${col(150, '가솔린 터보', 172, 'gas', 520, .3)}${col(600, '하이브리드', 118, 'hev', 357, .8)}
+      <div class="src" style="bottom:520px">휘발유 1,855원/L ÷ 복합연비</div>`;
+  },
+  save(o, tau) {
+    const a = ease(tau / 0.35), s = 0.7 + 0.3 * ease(tau / 0.4);
+    return `<div class="dim"></div><div style="position:absolute;left:0;right:0;top:620px;text-align:center;opacity:${a};transform:scale(${s})">
+      <div style="font-size:52px;font-weight:800">1km마다</div><div class="big" style="font-size:220px;color:#4ade80;line-height:1.05">54<span style="font-size:110px">원</span></div><div style="font-size:52px;font-weight:800">아끼는 셈</div></div>`;
+  },
+  gauge(o, tau, dur) {
+    // signature visual: odometer runs up while the "본전 게이지" (333만 원) fills with 54원 coins
+    const p = ease(clamp((tau - 0.3) / (dur - 0.9)));
+    const km = 62000 * p, won = 333 * p; const done = p > 0.995;
+    return `<div class="dim" style="background:rgba(10,14,24,.78)"></div>
+    <div style="position:absolute;left:0;right:0;top:300px;text-align:center;font-size:50px;font-weight:900">본전까지 남은 거리</div>
+    <div style="position:absolute;left:140px;right:140px;top:400px;height:170px;border-radius:30px;background:#0b0f1a;border:5px solid #374151;display:flex;align-items:center;justify-content:center">
+      <span class="big" style="font-size:118px;font-variant-numeric:tabular-nums;color:${done ? '#ffd84a' : '#fff'}">${fmt(km)}</span><span style="font-size:52px;font-weight:800;margin-left:14px;color:#9ca3af">km</span></div>
+    <div style="position:absolute;left:300px;width:480px;top:660px;height:720px;border-radius:40px;border:8px solid #e5e7eb;overflow:hidden;background:rgba(255,255,255,.06)">
+      <div style="position:absolute;left:0;right:0;bottom:0;height:${p * 100}%;background:linear-gradient(180deg,#ffe27a,#f4b400)"></div>
+      <div style="position:absolute;left:0;right:0;top:44%;text-align:center"><div class="big" style="font-size:86px;color:${p > .52 ? '#5b3a00' : '#fff'}">${fmt(won)}만 원</div><div style="font-size:30px;font-weight:800;color:${p > .45 ? '#5b3a00' : '#d1d5db'}">/ 333만 원</div></div></div>
+    <div style="position:absolute;left:0;right:0;top:1420px;text-align:center;font-size:40px;font-weight:800;color:#d1d5db">1km = 54원씩 채워져요</div>`;
+  },
+  years(o, tau) {
+    const ticks = [1, 2, 3, 4].map((y, i) => { const p = ease((tau - 0.5 - i * 0.45) / 0.3); return `<div style="flex:1;text-align:center;opacity:${0.25 + 0.75 * p}"><div style="width:58px;height:58px;margin:0 auto;border-radius:50%;background:${p > .5 ? '#ffd84a' : 'rgba(255,255,255,.3)'};transform:scale(${0.7 + 0.3 * p})"></div><div style="font-size:36px;font-weight:900;margin-top:10px">${y}년</div></div>`; }).join('');
+    const a = ease(tau / 0.35); const f = ease((tau - 2.4) / 0.4);
+    return `<div style="position:absolute;left:70px;right:70px;top:240px;background:rgba(17,24,39,.82);border-radius:34px;padding:36px 30px;opacity:${a}">
+      <div style="text-align:center;font-size:38px;font-weight:800;color:#d1d5db">1년에 1만 5천 km 탄다면</div>
+      <div style="display:flex;margin-top:30px">${ticks}<div style="flex:1;text-align:center;opacity:${f}"><div class="big" style="font-size:52px;color:#ffd84a;line-height:58px">+α</div><div style="font-size:30px;font-weight:900;margin-top:10px;color:#ffd84a">본전</div></div></div></div>`;
+  },
+  badge(o, tau) {
+    const a = ease((tau - (o.d || 0.4)) / 0.35), s = 0.8 + 0.2 * a;
+    return `<div style="position:absolute;left:80px;right:80px;top:${o.top || 300}px;background:${o.bg || '#fff'};color:${o.fg || '#111827'};border-radius:34px;padding:34px 40px;opacity:${a};transform:scale(${s});box-shadow:0 18px 50px rgba(0,0,0,.3);text-align:center">
+      <div style="font-size:40px;font-weight:800;opacity:.85">${o.label}</div><div class="big" style="font-size:${o.size || 104}px;margin-top:6px">${o.value}</div></div>`;
+  },
+  verdict(o, tau) {
+    const a = ease((tau - 0.3) / 0.35);
+    return `<div style="position:absolute;left:70px;right:70px;top:270px;background:#fff;color:#111827;border-radius:34px;padding:36px 40px;opacity:${a};transform:translateY(${(1 - a) * -30}px);box-shadow:0 18px 50px rgba(0,0,0,.3)">
+      <div style="font-size:36px;font-weight:800;color:#6b7280">${o.label}</div><div class="big" style="font-size:78px;margin-top:4px;color:${o.color}">✔ ${o.value}</div></div>`;
+  },
+  note(o, tau) { const a = ease((tau - 0.3) / 0.35); return `<div style="position:absolute;left:90px;right:90px;top:300px;background:rgba(17,24,39,.85);border-radius:28px;padding:30px 36px;opacity:${a};text-align:center;font-size:40px;font-weight:800;line-height:1.45">${o.text}</div>`; },
+  end(o, tau) { const a = ease((tau - 0.2) / 0.4); return `<div style="position:absolute;left:70px;right:70px;top:260px;background:#ffd84a;color:#111827;border-radius:34px;padding:40px 30px;opacity:${a};transform:scale(${0.85 + 0.15 * a});text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.3)"><div style="font-size:40px;font-weight:800">오늘의 결론</div><div class="big" style="font-size:72px;margin-top:6px;line-height:1.2">내 1년 주행거리부터<br>확인!</div></div>`; },
+};
+// ---------- seek ----------
+let lastKey = '';
+window.seek = async (t) => {
+  const segs = S.segs; let si = segs.findIndex((s, i) => t >= s.t0 && (i == segs.length - 1 || t < segs[i + 1].t0)); if (si < 0) si = 0;
+  const seg = segs[si], tau = t - seg.t0, dur = (si < segs.length - 1 ? segs[si + 1].t0 : S.total) - seg.t0;
+  // which shot inside the segment (hard cuts)
+  let acc = 0, sh = seg.shots[0], shStart = 0, shDur = dur;
+  for (const s of seg.shots) { const d = s.frac * dur; if (tau < acc + d || s === seg.shots[seg.shots.length - 1]) { sh = s; shStart = acc; shDur = d; break; } acc += d; }
+  const ls = (tau - shStart) / Math.max(shDur, 0.01);
+  for (const k in layers) layers[k].d.style.display = (k === sh.src) ? 'block' : 'none';
+  const L = layers[sh.src];
+  const sc = sh.s0 + (sh.s1 - sh.s0) * clamp(ls); const x = sh.x || 0, y = sh.y || 0, x1 = sh.x1 ?? x, y1 = sh.y1 ?? y;
+  const tx = x + (x1 - x) * clamp(ls), ty = y + (y1 - y) * clamp(ls);
+  L.m.style.transform = `translate(${tx}px,${ty}px) scale(${sc})`;
+  L.m.style.filter = sh.blur ? `blur(${sh.blur}px)` : '';
+  if (L.m.tagName === 'VIDEO') {
+    const vt = (sh.v0 || 0) + (tau - shStart) * (sh.rate || 1);
+    const target = Math.min(vt, (L.m.duration || 5) - 0.05);
+    if (Math.abs(L.m.currentTime - target) > 0.001) { await new Promise(r => { L.m.onseeked = r; L.m.currentTime = target; }); }
+  }
+  // overlay
+  ov.innerHTML = seg.ov ? OV[seg.ov.type](seg.ov, tau, dur) : '';
+  // captions
+  let c = ''; for (const k of seg.caps) if (tau >= k[0] && tau < k[1] + 0.001) c = k[2];
+  if (tau > seg.speakEnd - seg.t0 + 0.05) c = '';
+  capEl.innerHTML = c; capEl.style.display = seg.noCap ? 'none' : 'block';
+};
+window.ready = async () => { await document.fonts.ready; await Promise.all(Object.values(layers).map(l => l.m.tagName === 'VIDEO' ? new Promise(r => { if (l.m.readyState >= 2) r(); else l.m.onloadeddata = r; }) : (l.m.complete ? 0 : new Promise(r => l.m.onload = r)))); };
+</script></body></html>

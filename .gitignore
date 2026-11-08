@@ -1,3 +1,10 @@
 mystery-site/dist/
 mystery-site/node_modules/
 __pycache__/
+carshorts/*/narr/
+carshorts/*/_j/
+carshorts/*/bgmpack/
+carshorts/*/clips/*.mp4
+carshorts/*/video_silent.mp4
+carshorts/*/final.mp4
+carshorts/*/render.log
