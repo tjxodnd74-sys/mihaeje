@@ -148,3 +148,11 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - End: last 5–10s ask to watch a related video/series (same topic family).
 - Audio: voice clear, BGM low, no clipped words (ASR check). Video: no overlap/overflow (contact sheet).
 - Shorts: 1 per long-form, title/topic leads to the long-form.
+
+## 10. Long-form quality rules (user feedback 2026-11-08 — "타 AI 채널에 비하면 퀄리티·자막·목소리 별로")
+- MASCOT = 넥서스 펭귄 (assets/peng.png, blue felt penguin with glasses + phone). Probe is retired. Name tag "넥서스".
+- LESS TEXT ON SCREEN: one scene = one headline (≤12 chars) + ONE visual (card/logo/number). No subtitle line + chips + stamp all at once. Max 2 small labels. Let the narration carry details.
+- NUMBERS: lines.py S (display/caption) uses digits ("9월", "11월 12일", "5.5"); Korean readings go ONLY in R (TTS). Never "구월" in S.
+- PACING: short spoken sentences (≤ 25 chars each), one idea per line, punchy reactions ("근데 여기서 반전.", "이거 진짜예요."), no filler ("정리해 볼게요" once max). build_voice gaps: line 0.22s, scene 0.65s, internal pauses ≤0.22s.
+- CAPTIONS: phrase chunks ≤15 chars, one line, whisper-synced (build_voice writes voice.json "caps"; renderL/snapL pass them). Never split predicates (끊어 버려요, 못 보내요). Optional keyword highlight: KW=[...] in lines.py.
+- OUTRO: shows previous video thumbnail (assets/prev.jpg → img/prev.jpg). After each upload, save the new thumbnail as assets/prev.jpg (1280x720 jpg) and commit.

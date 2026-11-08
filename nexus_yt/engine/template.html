@@ -31,7 +31,7 @@ html,body{margin:0;background:#F3F2EF;}
 .arrow{height:8px;border-radius:4px;background:var(--o);transform-origin:0 50%}
 .tok.sp{outline:3px dashed var(--o);outline-offset:-3px}
 .tok{display:inline-block;padding:6px 14px 9px;border-radius:12px;margin:0 6px 10px 0;font-weight:800;font-size:44px}
-.probe{position:absolute;left:0;top:0;width:300px;will-change:transform;z-index:6}
+.probe{position:absolute;left:0;top:0;width:220px;will-change:transform;z-index:6}
 .probe img{width:100%;display:block;filter:drop-shadow(0 24px 30px rgba(31,31,29,.18))}
 #ptag{z-index:7}
 @font-face{font-family:"M";font-weight:400;src:url("fonts/DejaVuSansMono.ttf");}
@@ -90,7 +90,7 @@ mark{background:#FBD9C8;border-radius:4px;padding:0 3px;color:inherit}.dot{width
 #sec{font-size:26px;font-weight:500;color:var(--mut2);letter-spacing:.08em;z-index:4}
 #sec b{color:var(--ink);font-weight:700;margin-right:18px;}
 #sub{position:absolute;left:0;top:930px;width:1920px;text-align:center;pointer-events:none;z-index:8}
-#sub span{display:inline-block;padding:18px 40px 20px;border-radius:22px;background:rgba(255,255,255,.94);border:1.5px solid rgba(31,31,29,.08);box-shadow:0 14px 40px rgba(31,31,29,.08);font-weight:600;font-size:50px;letter-spacing:-0.01em;color:var(--ink);white-space:nowrap;line-height:1.25;}
+#sub span{display:inline-block;padding:18px 40px 20px;border-radius:22px;background:rgba(255,255,255,.94);border:1.5px solid rgba(31,31,29,.08);box-shadow:0 14px 40px rgba(31,31,29,.08);font-weight:800;font-size:58px;letter-spacing:-0.02em;color:var(--ink);white-space:nowrap;line-height:1.2;}
 #sub em{font-style:normal;color:var(--o);font-weight:700;}
 </style>
 <style>
@@ -162,7 +162,7 @@ mark{background:#FBD9C8;border-radius:4px;padding:0 3px;color:inherit}.dot{width
 <script src="probe.js"></script>
 </head><body>
 <div id="st"><div id="grid"></div><div id="cam"></div>
- <div class="a" id="ptag" style="font-weight:900;font-size:30px;color:#FFF;background:var(--ink);border-radius:14px;padding:6px 18px 9px;white-space:nowrap">프로브</div>
+ <div class="a" id="ptag" style="font-weight:900;font-size:30px;color:#FFF;background:var(--ink);border-radius:14px;padding:6px 18px 9px;white-space:nowrap">넥서스</div>
  <div id="ripple"></div>
  <svg id="cur" width="44" height="58" viewBox="0 0 100 130" style="filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))"><path d="M8 4 L8 104 L32 82 L48 120 L66 112 L50 76 L84 76 Z" fill="#1F1F1D" stroke="#fff" stroke-width="7" stroke-linejoin="round"/></svg>
  <div id="sub"></div>
@@ -287,7 +287,7 @@ E('end',3,`<div class="cmt"><div class="av" style="background:var(--o)"></div><d
 // OUTRO
 E('outro',0,'넥서스 AI',200,400,{cls:'T',style:'font-size:150px;line-height:1',anim:'outro'});
 E('outro',1,'AI 뉴스 → 그래서 나는 뭘 하면 되는데?',200,600,{style:'font-weight:500;font-size:44px;color:var(--mut);white-space:nowrap',anim:'outro'});
-E('outro',2,'다음 영상',1300,330,{w:460,h:420,style:'border:2px dashed rgba(31,31,29,.22);border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--mut2);font-weight:500;background:rgba(255,255,255,.4)',anim:'outroBox'});
+E('outro',2,`<div style="font-weight:800;font-size:30px;color:var(--o);margin:0 0 14px 6px">이전 영상도 보고 가세요 →</div><img src="img/prev.jpg" onerror="this.style.display='none'" style="width:640px;border-radius:24px;box-shadow:0 30px 60px -24px rgba(31,31,29,.45);display:block">`,1150,300,{w:660,anim:'outroBox'});
 
 const probe=makeProbe('pr');$('st').appendChild(probe);
 const EXPR={hook:{0:'wow',2:'happy'},zero:{0:'think',2:'wink'},mission:{0:'happy'},try1:{0:'idle',3:'angry',4:'think'},formula:{0:'think',3:'happy'},try2:{0:'idle',4:'wow',5:'happy'},fix:{0:'happy',6:'wow'},mobile:{0:'idle',2:'happy'},tips:{0:'wink',3:'think',5:'happy'},share:{0:'happy'},limit:{0:'think'},end:{0:'idle',3:'happy'},outro:{0:'happy',2:'wink'}};
@@ -309,7 +309,11 @@ function events(){const E2=[];const add=(t,s,p=0)=>E2.push([+t.toFixed(3),s,p]);
 window.getEvents=events;
 const KEYS=['코딩 한 줄','말로만','한 번도','바이브 코딩','동네 꽃집','가상의 꽃집','아무 생각 없이','글자만 덩그러니','하나도 안 말했으니까','공식','완전히 달라졌어요','말한 그대로','말로 고치면','가격','따뜻하게','접수됐다는','진짜로 작동','세로로','공유 링크','무료 호스팅','따로 연결','전문가 확인','오늘 바로','원하는 대로','한 번에 하나씩','설명란'];
 const subEl=$('sub');let last_='';
-function drawSub(t){let cur=null;for(const l of window.LINES){if(t>=l[0]-0.05&&t<l[1]+0.25)cur=l;}
+function drawSub(t){if(window.CAPS&&window.CAPS.length){let c=null;for(const x of window.CAPS){if(t>=x[0]-0.03&&t<x[1]+0.12)c=x;}
+ if(!c){subEl.innerHTML='';last_='';return;}
+ let h=c[2];if(h!==last_){subEl.innerHTML=`<span>${h}</span>`;last_=h;subEl.style.top='915px';}
+ const k=oE(sg(t,c[0]-0.03,0.16)),sp=subEl.firstChild;sp.style.opacity=k.toFixed(3);sp.style.transform=`scale(${(1.06-0.06*k).toFixed(3)})`;return;}
+ let cur=null;for(const l of window.LINES){if(t>=l[0]-0.05&&t<l[1]+0.25)cur=l;}
  if(!cur){subEl.innerHTML='';last_='';return;}
  let raw=cur[2],two=raw.length>36;if(two){const mid=raw.length/2;let best=-1,bd=1e9;for(let i=0;i<raw.length;i++){if(raw[i]===','||raw[i]===' '){const d=Math.abs(i-mid)-(raw[i]===','?4:0);if(d<bd){bd=d;best=i;}}}raw=raw.slice(0,best+1).trim()+'\n'+raw.slice(best+1).trim();}
  let h=raw;for(const k of KEYS){if(h.includes(k)){h=h.replace(k,`<em>${k}</em>`);break;}}h=h.replace('\n','<br>');
@@ -362,7 +366,7 @@ window.seek=function(t){
   const endOut=iE(sg(t,last()+1.0,0.8));
   let x=1580,y=660+bob-hop+(1-ent)*400,sc=0.82;
   const pk=psK(t);x=lerp(x,1660,pk);y=lerp(y,790+bob*0.5,pk);sc=lerp(sc,0.42,pk);
-  const outroK=ioQ(sg(t,span('outro')[0],0.8));x=lerp(x,1440,outroK);y=lerp(y,740,outroK);sc=lerp(sc,0.7,outroK);
+  const outroK=ioQ(sg(t,span('outro')[0],0.8));x=lerp(x,1440,outroK);y=lerp(y,640,outroK);sc=lerp(sc,0.7,outroK);
   probe.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${sc.toFixed(3)}) rotate(${(Math.sin(t*1.3)*2).toFixed(2)}deg)`;probe.style.transformOrigin='50% 100%';probe.style.opacity=(1-endOut).toFixed(3);
   probeFace(probe,{expr:exprAt(t),t,talk:talking(t)&&exprAt(t)!=='wow',look:[Math.sin(t*0.7)*0.4,0]});
   const tg=settle(sg(t,L('hook',0)+0.2,0.4))*(1-ioQ(sg(t,L('hook',0)+3.0,0.4)));T($('ptag'),x+40,y-90,lerp(1.4,1,tg),clamp(tg,0,1),-4);}
