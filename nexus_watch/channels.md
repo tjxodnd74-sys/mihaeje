@@ -76,3 +76,4 @@
 - 2026-11-08 16:24: B조 5개 채널·인스타(@dalbong_otter, @liorasolveil)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치(에이전트 경유) 긱뉴스·AI타임스 PROVENANCE_REQUIRED 차단, WebFetch·add_repo 도구 미노출. vidIQ 미사용(정해진 시각 아님). 새 소식 없음.
 - 2026-11-08 17:23: C조 6개 채널·인스타(@prompt_what, @biggie_ai)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치(에이전트 경유) 긱뉴스·AI타임스·AI Weekly·ExoBrain 모두 성공(긱뉴스는 상대 시간만). vidIQ 미사용(정해진 시각 아님). 새 소식 1건(클로드 코드 승인 기록 비밀키 노출).
 - 2026-11-08 18:23: A조 5개 채널·인스타(@reelta.gangsa, @momdi.tip)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치(에이전트 경유) 긱뉴스·AI타임스 PROVENANCE_REQUIRED 차단, add_repo 도구 미노출(바로 clone/push). vidIQ 미사용(정해진 시각 아님, 오늘 15크레딧 소진). 새 소식 없음.
+- 2026-11-09 08:23: C조 6개 채널·인스타(@horang.wave, @grit_park_)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음(참고: 유튜브 코리아 블로그 '11월 이달의 크리에이터'로 CONNECT AI LAB 선정, 주제 아님). 웹페치(에이전트 경유) 긱뉴스·AI타임스·dev.to·AI Weekly 전부 PROVENANCE_REQUIRED 차단, WebFetch·add_repo 도구 미노출(바로 clone/push). vidIQ 미사용(정해진 시각 아님). 새 소식 없음.
