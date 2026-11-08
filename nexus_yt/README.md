@@ -24,7 +24,7 @@ cd /home/claude/work/<slug>
   - '다음 영상에서 봬요'
 - Its audio is assets/outro/outro1.wav and outro2.wav. Copy them as the last two `ln/u{k}.wav`.
 - Run `python3 lines.py` to produce units.json.
-- Target length is 4–5 min, about 55–65 lines.
+- Target length is 5–6 min (user 2026-11-08: "앞으로 5~6분 분량으로 늘려"), about 90–105 lines, 8–10 scenes. Add SUBSTANCE, not padding: more concrete examples, a step-by-step 실전 demo scene, 비교/주의점 scene, real prompts. Same tight pacing rules (§10) — longer must not mean looser.
 - Script rules:
   - Do not list who the user is or the channels/blogs he runs.
   - No banned words: 최초·유일·완벽·가장·제일·최고·최대·100%·무조건.
@@ -161,6 +161,7 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - LESS TEXT ON SCREEN: one scene = one headline (≤12 chars) + ONE visual (card/logo/number). No subtitle line + chips + stamp all at once. Max 2 small labels. Let the narration carry details.
 - NUMBERS: lines.py S (display/caption) uses digits ("9월", "11월 12일", "5.5"); Korean readings go ONLY in R (TTS). Never "구월" in S.
 - PACING: short spoken sentences (≤ 25 chars each), one idea per line, punchy reactions ("근데 여기서 반전.", "이거 진짜예요."), no filler ("정리해 볼게요" once max). build_voice gaps: line 0.22s, scene 0.65s, internal pauses ≤0.22s.
+- CAPTIONS: never ahead of the voice — each chunk starts at its first spoken word +0.04s (build_voice), drawSub has no lead. Mux ONLY the voice.wav of the same build_voice run (old final.mp4 audio = desync).
 - CAPTIONS: phrase chunks ≤15 chars, one line, whisper-synced (build_voice writes voice.json "caps"; renderL/snapL pass them). Never split predicates (끊어 버려요, 못 보내요). Optional keyword highlight: KW=[...] in lines.py.
 - OUTRO: shows previous video thumbnail (assets/prev.jpg → img/prev.jpg). After each upload, save the new thumbnail as assets/prev.jpg (1280x720 jpg) and commit.
 - VOICE (user chose: keep cloned seed_audio): write for the ear — short sentences, use "?" and "!" for intonation, put the punchline word last, contractions/구어체 ("~거든요", "~잖아요"). Re-take any line that sounds flat or slow (ASR + listen-length check: >5.5 chars/sec target).

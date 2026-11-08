@@ -74,7 +74,8 @@ for (f,st),k in zip(place,range(len(place))):
                     if cum/wt>=fr-0.04:t0=w[0];break
                     cum+=len(_n(w[2])) or 1
             else:t0=a0+(a1-a0)*fr
-            if i==0:t0=a0
+            if i==0:t0=max(a0,wl[0][0]+0.04) if wl else a0
+            else:t0+=0.04
             elif t0<=caps[-1][0]-st+0.25:t0=caps[-1][0]-st+0.25
             caps.append([round(st+t0,3),None,c]);acc+=len(_n(c))
         for i in range(len(caps)-len(ch),len(caps)):

@@ -468,10 +468,10 @@ function events(){const E2=[];const add=(t,s,p=0)=>E2.push([+t.toFixed(3),s,p]);
 window.getEvents=events;
 const KEYS=['코딩 한 줄','말로만','한 번도','바이브 코딩','동네 꽃집','가상의 꽃집','아무 생각 없이','글자만 덩그러니','하나도 안 말했으니까','공식','완전히 달라졌어요','말한 그대로','말로 고치면','가격','따뜻하게','접수됐다는','진짜로 작동','세로로','공유 링크','무료 호스팅','따로 연결','전문가 확인','오늘 바로','원하는 대로','한 번에 하나씩','설명란'];
 const subEl=$('sub');let last_='';
-function drawSub(t){if(window.CAPS&&window.CAPS.length){let c=null;for(const x of window.CAPS){if(t>=x[0]-0.03&&t<x[1]+0.12)c=x;}
+function drawSub(t){if(window.CAPS&&window.CAPS.length){let c=null;for(const x of window.CAPS){if(t>=x[0]&&t<x[1]+0.12)c=x;}
  if(!c){subEl.innerHTML='';last_='';return;}
  let h=c[2];if(h!==last_){subEl.innerHTML=`<span>${h}</span>`;last_=h;subEl.style.top='915px';}
- const k=oE(sg(t,c[0]-0.03,0.16)),sp=subEl.firstChild;sp.style.opacity=k.toFixed(3);sp.style.transform=`scale(${(1.06-0.06*k).toFixed(3)})`;return;}
+ const k=oE(sg(t,c[0],0.12)),sp=subEl.firstChild;sp.style.opacity=k.toFixed(3);sp.style.transform=`scale(${(1.06-0.06*k).toFixed(3)})`;return;}
  let cur=null;for(const l of window.LINES){if(t>=l[0]-0.05&&t<l[1]+0.25)cur=l;}
  if(!cur){subEl.innerHTML='';last_='';return;}
  let raw=cur[2],two=raw.length>36;if(two){const mid=raw.length/2;let best=-1,bd=1e9;for(let i=0;i<raw.length;i++){if(raw[i]===','||raw[i]===' '){const d=Math.abs(i-mid)-(raw[i]===','?4:0);if(d<bd){bd=d;best=i;}}}raw=raw.slice(0,best+1).trim()+'\n'+raw.slice(best+1).trim();}
