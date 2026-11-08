@@ -6,12 +6,31 @@ def sil(f):
     o=subprocess.run(['ffmpeg','-i',f,'-af','silencedetect=noise=-38dB:d=0.12','-f','null','-'],capture_output=True,text=True).stderr
     s=[float(x) for x in re.findall(r'silence_start: ([\d.]+)',o)];e=[float(x) for x in re.findall(r'silence_end: ([\d.]+)',o)]
     return list(zip(s,e))
-# trim each unit
+# trim each unit — gentle: keep natural word endings (decay + breath), soft fade, internal pauses capped at 0.32s
+# (2026-11-08 user: "끝음 처리도 이상하고 답답하게 말함" — old silenceremove cut the decay at -40dB and squeezed pauses to 0.14s)
+def trim(src,dst,th=-50,head=0.05,tail=0.20,maxgap=0.32,fade=0.08):
+    import numpy as np,wave
+    a=np.frombuffer(subprocess.run(['ffmpeg','-v','error','-i',src,'-ac','1','-ar','48000','-f','s16le','-'],capture_output=True).stdout,np.int16).astype(np.float32)
+    fr=480;n=len(a)//fr;e=np.array([20*np.log10(np.sqrt(np.mean((a[k*fr:(k+1)*fr]/32768)**2))+1e-9) for k in range(n)])
+    on=np.where(e>th)[0]
+    s0=max(0,on[0]-int(head*100));s1=min(n,on[-1]+int(tail*100))
+    keep=[];k=s0;mg=int(maxgap*100)
+    while k<s1:
+        if e[k]<=th-6:
+            j=k
+            while j<s1 and e[j]<=th-6:j+=1
+            L=j-k
+            if L>mg and j<s1:keep+=list(range(k,k+mg//2))+list(range(j-mg//2,j))
+            else:keep+=list(range(k,j))
+            k=j
+        else:keep.append(k);k+=1
+    out=np.concatenate([a[q*fr:(q+1)*fr] for q in keep])
+    fi=int(0.01*48000);fo=int(fade*48000);out[:fi]*=np.linspace(0,1,fi);out[-fo:]*=np.linspace(1,0,fo)**1.5
+    w=wave.open(dst,'wb');w.setnchannels(1);w.setsampwidth(2);w.setframerate(48000);w.writeframes(np.clip(out,-32768,32767).astype(np.int16).tobytes());w.close()
 for i,u in enumerate(U):
     src=f'ln/u{i}.wav';dst=f'ln/t{i}.wav'
     if os.path.exists(dst) and os.path.getmtime(dst)>os.path.getmtime(src):continue
-    af='silenceremove=start_periods=1:start_threshold=-42dB,areverse,silenceremove=start_periods=1:start_threshold=-42dB,areverse,silenceremove=stop_periods=-1:stop_duration=0.22:stop_threshold=-40dB:stop_silence=0.14,apad=pad_dur=0.04'
-    subprocess.run(['ffmpeg','-y','-loglevel','error','-i',src,'-af',af,'-ar','48000','-ac','1',dst],check=True)
+    trim(src,dst)
 LG=0.22;SG=0.65;MIS=['m1','m2','m3','m4','m5']
 t=0.6;out=[];place=[];prev=None;rep=[]
 for k,u in enumerate(U):
@@ -75,8 +94,9 @@ for (f,st),k in zip(place,range(len(place))):
                     cum+=len(_n(w[2])) or 1
             else:t0=a0+(a1-a0)*fr
             if i==0:t0=max(a0,wl[0][0]+0.04) if wl else a0
-            else:t0+=0.04
-            elif t0<=caps[-1][0]-st+0.25:t0=caps[-1][0]-st+0.25
+            else:
+                t0+=0.04
+                if t0<=caps[-1][0]-st+0.25:t0=caps[-1][0]-st+0.25
             caps.append([round(st+t0,3),None,c]);acc+=len(_n(c))
         for i in range(len(caps)-len(ch),len(caps)):
             caps[i][1]=caps[i+1][0] if i+1<len(caps) else round(r[1],3)

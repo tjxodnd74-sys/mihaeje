@@ -39,7 +39,7 @@ cd /home/claude/work/<slug>
   - r < 0.85, or audible stuttering/garbling → retake (take 1). Reword the line if needed.
   - Differences that are only digits vs Korean numerals, or AI vs 에이아이, are fine.
 - Copy the good takes to `ln/u{k}.wav`.
-- `python3 build_voice.py` produces voice.json and voice.wav. Gaps are generous (LG 0.5, SG 1.7). User feedback: transitions and speech must not feel rushed.
+- `python3 build_voice.py` produces voice.json and voice.wav. Trimming is gentle (2026-11-08 user: "끝음 처리 이상, 답답"): keeps word-end decay (−50dB + 0.2s tail, soft fade), internal pauses capped at 0.32s. Never hard-cut line endings. Gaps are generous (LG 0.5, SG 1.7). User feedback: transitions and speech must not feel rushed.
 
 ## 3. Scenes: `ep.html`
 - template.html is ep16 itself. Keep the head, helpers, probe and seek parts.
