@@ -21,7 +21,7 @@
 - 핵심 사실: 드리미나로 만든 시네마틱 AI 액션 영상이 크게 터짐 / 드리미나 크리에이터 프로그램 태그라 광고성 가능 / 1곳만 다룸
 - 다룬 채널: @liorasolveil
 
-## 2026-11-07 09:23 — ① 챗GPT·코덱스 사용량 한도 12월부터 통합
+## 2026-11-07 09:23 — ① [완료 카드뉴스] 챗GPT·코덱스 사용량 한도 12월부터 통합
 - 출처: https://www.techrepublic.com/article/news-chatgpt-codex-shared-usage-limits/ , https://notebookcheck.net/ChatGPT-and-Codex-will-share-one-usage-limit-starting-in-December.1440897.0.html , 도움말 https://help.openai.com/de-de/articles/20001625-understanding-chatgpt-and-codex-usage-limits
 - 추천 형식: 카드뉴스
 - 제목안: "12월부터 챗GPT 한도 / 이렇게 바뀐다"

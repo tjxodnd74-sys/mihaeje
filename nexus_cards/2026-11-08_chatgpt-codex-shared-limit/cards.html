@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Regular.woff2);font-weight:400}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-SemiBold.woff2);font-weight:600}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+:root{--bg:#0D0F1E;--vi:#A394FF;--vi2:#7B6CFF;--am:#FFC861;--tx:#F3F4FA;--mu:#9EA3BD;--ln:rgba(255,255,255,.10);--red:#FF6B6B;--grn:#5BE0A0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#333;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.mono{font-family:'DejaVu Sans Mono',monospace;letter-spacing:.08em}
+.card{width:1080px;height:1350px;position:relative;overflow:hidden;margin:0 0 40px;color:var(--tx);
+ background:radial-gradient(900px 600px at 85% 0%,rgba(123,108,255,.22),transparent 60%),radial-gradient(700px 500px at 0% bottom,rgba(70,180,255,.10),transparent 60%),var(--bg)}
+.card:before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:54px 54px;pointer-events:none}
+.bar{position:absolute;left:64px;right:64px;top:52px;display:flex;justify-content:space-between;align-items:center;font-size:22px;color:var(--mu);padding-bottom:22px;border-bottom:2px dashed var(--ln)}
+.bar .l{display:flex;align-items:center;gap:14px}
+.bar img{width:34px;height:34px}
+.bar .r{color:var(--vi);font-weight:700}
+.wrap{position:absolute;left:64px;right:64px;top:150px}
+.lab{font-size:26px;color:var(--vi);font-weight:700;margin-bottom:22px}
+.h{font-weight:900;font-size:96px;line-height:1.12;letter-spacing:-.045em}
+.h .v{color:var(--vi)} .h .a{color:var(--am)}
+.s{margin-top:26px;font-size:34px;color:#C9CCDD;font-weight:500;letter-spacing:-.02em;line-height:1.5}
+.s b{color:var(--am);font-weight:800}
+.box{position:absolute;left:64px;right:64px;border:2px solid var(--ln);border-radius:28px;background:rgba(255,255,255,.035);padding:60px 56px}
+.box .tag{position:absolute;top:-17px;left:36px;background:var(--bg);padding:0 14px;font-size:22px;color:var(--mu)}
+.foot{position:absolute;left:64px;right:64px;bottom:56px;font-size:24px;color:#6E7390;font-weight:500;line-height:1.5}
+.stamp{display:inline-block;border:4px solid var(--vi);color:var(--vi);font-weight:900;font-size:30px;padding:6px 20px;border-radius:10px;transform:rotate(-6deg);letter-spacing:.12em}
+
+/* cover */
+#k1{background:url(cover.png) center/cover}
+#k1:before{display:none}
+#k1 .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,10,24,.92) 0%,rgba(9,10,24,.7) 38%,rgba(9,10,24,0) 60%,rgba(9,10,24,.25))}
+#k1 .tt{position:absolute;left:64px;top:118px}
+#k1 .h{font-size:112px;margin-top:30px}
+#k1 .s{font-size:34px}
+#k1 .bl{position:absolute;left:64px;bottom:52px;font-size:22px;color:rgba(255,255,255,.6)}
+#k1 .br{position:absolute;right:64px;bottom:52px;font-size:22px;color:rgba(255,255,255,.6)}
+
+/* map */
+.map{display:flex;flex-direction:column;gap:30px}
+.mrow{display:flex;align-items:center;gap:24px}
+.pill{flex:1;height:124px;border-radius:26px;display:flex;align-items:center;gap:20px;padding:0 30px;font-size:40px;font-weight:700}
+.pill.o{background:rgba(163,148,255,.12);border:2px solid rgba(163,148,255,.35);color:#D9D4FF}
+.pill.n{background:#fff;color:#14162A}
+.pill i{font-style:normal;font-size:44px}
+.arr{color:var(--am);font-size:46px;font-weight:900}
+
+/* quote */
+.q{background:#FBF7EA;color:#1C1D28;border-radius:20px;padding:48px 50px;font-family:Georgia,serif;font-size:44px;line-height:1.5}
+.q mark{background:#FFE37A;padding:0 4px}
+.qk{margin-top:44px;font-size:54px;font-weight:800;line-height:1.4;letter-spacing:-.03em}
+.qk span{color:var(--am)}
+
+/* list */
+.ol{display:flex;flex-direction:column;gap:54px}
+.ol .it{display:flex;align-items:baseline;gap:30px;font-size:50px;font-weight:700;letter-spacing:-.03em}
+.ol .it .n{font-size:30px;color:var(--vi);font-weight:700;width:52px}
+.ol .it small{display:block;font-size:33px;color:var(--mu);font-weight:500;margin-top:6px}
+.ol .it.hot{color:var(--am)}
+
+/* ox */
+.ox{position:absolute;left:64px;right:64px;top:620px;display:flex;gap:24px}
+.ox .c{flex:1;border-radius:28px;padding:50px 44px;min-height:560px;border:2px solid var(--ln);background:rgba(255,255,255,.03)}
+.ox .c.x{border-color:rgba(255,107,107,.6);background:rgba(255,107,107,.08)}
+.ox .hd{font-size:30px;font-weight:700;margin-bottom:26px;color:var(--grn)}
+.ox .x .hd{color:var(--red)}
+.ox li{list-style:none;font-size:44px;font-weight:700;line-height:1.35;margin-bottom:36px;letter-spacing:-.02em}
+
+/* copy box */
+.copy{font-size:46px;font-weight:700;line-height:1.9;letter-spacing:-.02em}
+.copy .f{background:rgba(255,200,97,.18);color:var(--am);border:2px solid rgba(255,200,97,.55);border-radius:10px;padding:0 10px}
+.tip{font-size:37px;color:#C9CCDD;line-height:1.65;font-weight:500}
+.tip b{color:var(--am)}
+.best{position:absolute;right:40px;top:-26px;border:4px solid var(--red);color:var(--red);font-weight:900;font-size:26px;padding:4px 16px;border-radius:8px;transform:rotate(6deg);background:var(--bg);letter-spacing:.1em}
+
+/* end */
+#k10 .glow{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(163,148,255,.45) 0%,rgba(123,108,255,.18) 45%,transparent 70%)}
+#k10 .floor{position:absolute;left:50%;top:640px;transform:translateX(-50%);width:420px;height:70px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.55),transparent 70%)}
+#k10 .peng{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:300px;filter:drop-shadow(0 20px 40px rgba(123,108,255,.5))}
+#k10 .bubble{position:absolute;left:610px;top:190px;background:#fff;color:#14162A;font-weight:800;font-size:32px;padding:18px 28px;border-radius:26px 26px 26px 6px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+#k10 .c{position:absolute;left:0;right:0;top:720px;text-align:center}
+#k10 .h{font-size:88px}
+#k10 .key{display:inline-block;margin-top:40px;border:4px solid var(--am);color:var(--am);font-size:54px;font-weight:900;padding:14px 46px;border-radius:14px}
+#k10 .s{text-align:center}
+</head><body>
+/* custom */
+#k1 .shade{background:linear-gradient(180deg,rgba(9,10,24,.94) 0%,rgba(9,10,24,.75) 36%,rgba(9,10,24,0) 58%,rgba(9,10,24,.3))}
+.merge{display:flex;align-items:center;gap:26px}
+.src{display:flex;flex-direction:column;gap:26px;flex:1}
+.src .p{height:118px;border-radius:24px;display:flex;align-items:center;padding:0 30px;font-size:42px;font-weight:800;background:rgba(163,148,255,.12);border:2px solid rgba(163,148,255,.35);color:#D9D4FF}
+.src .p small{margin-left:auto;font-size:26px;color:var(--mu);font-weight:600}
+.tank{width:300px;height:262px;border-radius:30px;background:#fff;color:#14162A;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-weight:900;font-size:44px;line-height:1.25;position:relative;overflow:hidden}
+.tank>*{position:relative;z-index:1}
+.tank:after{content:'';position:absolute;left:0;right:0;bottom:0;height:16%;background:linear-gradient(90deg,var(--vi2),var(--vi));opacity:.9}
+.tank small{display:block;font-size:26px;color:#5B5F7A;font-weight:700;margin-top:6px}
+.plans{display:flex;gap:22px}
+.plans .pl{flex:1;height:200px;border-radius:26px;background:rgba(255,200,97,.12);border:3px solid rgba(255,200,97,.6);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:52px;font-weight:900;color:var(--am)}
+.plans .pl small{font-size:26px;color:#E7D7B4;font-weight:600;margin-top:8px}
+.note{margin-top:40px;font-size:35px;color:#C9CCDD;line-height:1.6;font-weight:500}
+.note b{color:var(--tx)}
+.meter{margin-top:40px;display:flex;flex-direction:column;gap:30px}
+.mt{display:flex;align-items:center;gap:26px;font-size:40px;font-weight:800}
+.mt .lb{width:330px}
+.mt .tr{flex:1;height:44px;border-radius:22px;background:rgba(255,255,255,.08);overflow:hidden}
+.mt .tr i{display:block;height:inherit;border-radius:22px}
+.phone{background:#F6F6F8;color:#16171F;border-radius:30px;padding:42px 46px;font-size:36px}
+.phone .ttl{font-size:30px;color:#8A8D9C;font-weight:700;margin-bottom:22px}
+.phone .row{display:flex;justify-content:space-between;align-items:center;padding:26px 0;border-bottom:2px solid #E3E4EA;font-weight:700}
+.phone .row:last-child{border-bottom:0}
+.phone .row.on{color:#5B48F0}
+.phone .bar2{height:30px;border-radius:15px;background:#E3E4EA;margin-top:18px;overflow:hidden}
+.phone .bar2 i{display:block;height:inherit;width:58%;background:linear-gradient(90deg,#7B6CFF,#A394FF)}
+.phone .sm{font-size:28px;color:#6E7180;font-weight:600;margin-top:16px}
+.path{display:flex;align-items:center;gap:18px;font-size:44px;font-weight:900;margin-top:36px}
+.path span{background:rgba(163,148,255,.15);border:2px solid rgba(163,148,255,.45);border-radius:16px;padding:10px 24px;color:#D9D4FF}
+.path em{font-style:normal;color:var(--am)}
+.three{position:absolute;left:64px;right:64px;top:600px;display:flex;flex-direction:column;gap:26px}
+.three .o{display:flex;align-items:center;gap:34px;border:2px solid var(--ln);background:rgba(255,255,255,.035);border-radius:28px;padding:54px 44px}
+.three .o .ic{width:110px;height:110px;border-radius:26px;background:rgba(163,148,255,.16);display:flex;align-items:center;justify-content:center;font-size:56px;flex:none}
+.three .o b{display:block;font-size:54px;font-weight:900;letter-spacing:-.03em}
+.three .o small{display:block;font-size:32px;color:var(--mu);font-weight:500;margin-top:8px}
+</style></head><body>
+
+<section class="card" id="k1"><div class="shade"></div>
+ <div class="tt"><span class="stamp mono">DEC · NOTICE</span>
+  <div class="h">12월부터<br>챗GPT 한도,<br><span class="v">하나로</span> 합쳐요</div>
+  <div class="s">코덱스와 한 통 · 미리 알아 둘 것</div></div>
+ <div class="bl mono">@nexus_studio.kr</div><div class="br mono">FILE 01/10 · SWIPE →</div>
+</section>
+
+<section class="card" id="k2">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · CHATGPT</div><div class="r">FILE 02/10</div></div>
+ <div class="wrap"><div class="lab mono">WHAT HAPPENS</div>
+  <div class="h">따로 쓰던 한도가<br><span class="v">한 통</span>이 돼요</div>
+  <div class="s">챗GPT와 코딩 에이전트 <b>코덱스</b>가<br>사용량 한도 하나를 <b>같이 나눠</b> 써요.</div></div>
+ <div class="box" style="top:700px"><div class="tag mono">BEFORE → AFTER</div>
+  <div class="merge">
+   <div class="src"><div class="p">💬 챗GPT<small>따로</small></div><div class="p">⌨️ 코덱스<small>따로</small></div></div>
+   <div class="arr">→</div>
+   <div class="tank"><div>공유 한도<br>1개<small>토큰 기준</small></div></div>
+  </div></div>
+ <div class="foot">코덱스를 많이 쓰면 챗GPT에 쓸 양이 줄 수 있다는 뜻이에요.</div>
+</section>
+
+<section class="card" id="k3">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · CHATGPT</div><div class="r">FILE 03/10</div></div>
+ <div class="wrap"><div class="lab mono">WHO · WHEN</div>
+  <div class="h">누구한테<br><span class="a">해당돼요?</span></div>
+  <div class="s">오픈AI 안내 기준, <b>유료 요금제 3종</b>이에요.</div></div>
+ <div class="box" style="top:640px"><div class="tag mono">PLANS · 12월부터</div>
+  <div class="plans"><div class="pl">Plus<small>플러스</small></div><div class="pl">Pro<small>프로</small></div><div class="pl">Business<small>비즈니스</small></div></div>
+  <div class="note">무료·Go·엔터프라이즈는 <b>이번 안내에 없어요.</b><br>12월 <b>며칠부터인지</b>는 아직 안 나왔어요.</div></div>
+</section>
+
+<section class="card" id="k4">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · CHATGPT</div><div class="r">FILE 04/10</div></div>
+ <div class="wrap"><div class="lab mono">OFFICIAL</div>
+  <div class="h">이건 한도에서<br><span class="v">안 빠져요</span></div>
+  <div class="s">오픈AI가 딱 하나 예외를 밝혔어요.</div></div>
+ <div class="box" style="top:640px"><div class="tag mono">SOURCE · OPENAI 안내 (MIXED 보도)</div>
+  <div class="q">"<mark>Instant chat will not draw from your usage.</mark>"</div>
+  <div class="qk">"빠른 답변(Instant) 대화는<br><span>사용량에서 차감되지 않아요</span>"</div></div>
+ <div class="foot">어떤 기능이 차감되는지 전체 목록은 아직 공개되지 않았어요.</div>
+</section>
+
+<section class="card" id="k5">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · CHATGPT</div><div class="r">FILE 05/10</div></div>
+ <div class="wrap"><div class="lab mono">HOW IT COUNTS</div>
+  <div class="h">'몇 번'이 아니라<br><span class="a">'얼마나 무겁게'</span></div>
+  <div class="s">메시지 개수가 아니라 <b>토큰</b>으로 세요.<br>무거운 요청일수록 많이 빠져요.</div></div>
+ <div class="box" style="top:720px"><div class="tag mono">USAGE · 예시 그림</div>
+  <div class="meter">
+   <div class="mt"><div class="lb">빠른 답변</div><div class="tr"><i style="width:0%"></i></div><span style="color:var(--grn);font-size:32px">차감 X</span></div>
+   <div class="mt"><div class="lb">일반 질문</div><div class="tr"><i style="width:30%;background:var(--vi)"></i></div></div>
+   <div class="mt"><div class="lb">고급 모델</div><div class="tr"><i style="width:62%;background:var(--vi)"></i></div></div>
+   <div class="mt"><div class="lb">긴 코덱스 작업</div><div class="tr"><i style="width:90%;background:var(--am)"></i></div></div>
+  </div></div>
+ <div class="foot">막대 길이는 이해를 돕는 예시예요. 실제 차감량은 공개되지 않았어요.</div>
+</section>
+
+<section class="card" id="k6">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · CHATGPT</div><div class="r">FILE 06/10</div></div>
+ <div class="wrap"><div class="lab mono">CHECK</div>
+  <div class="h">남은 양은<br><span class="v">여기서</span> 봐요</div>
+  <div class="path"><span>설정</span><em>→</em><span>사용량(Usage)</span></div></div>
+ <div class="box" style="top:660px;padding:50px 46px"><div class="tag mono">SETTINGS · 화면 예시</div>
+  <div class="phone"><div class="ttl">설정</div>
+   <div class="row"><span>일반</span><span>›</span></div>
+   <div class="row on"><div style="flex:1">사용량<div class="bar2"><i></i></div><div class="sm">챗GPT + 코덱스 합산 남은 양 · 초기화 시간</div></div></div>
+  </div></div>
+ <div class="foot">합쳐진 남은 사용량과 초기화 시간을 같이 보여준다고 해요.</div>
+</section>
+
+<section class="card" id="k7">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · CHATGPT</div><div class="r">FILE 07/10</div></div>
+ <div class="wrap"><div class="lab mono">TIP · 아껴 쓰기</div>
+  <div class="h">큰 작업은<br><span class="a">계획부터</span> 받기</div>
+  <div class="s">처음부터 다 시키면 <b>헛돌다 한도만</b> 쓸 수 있어요.</div></div>
+ <div class="box" style="top:620px"><div class="tag mono">COPY · PASTE</div><div class="best mono">SAVE</div>
+  <div class="copy">[목표] <span class="f">하려는 일 한 줄</span><br>[범위] <span class="f">이 파일·이 부분만</span><br>[끝] <span class="f">○○되면 멈추기</span><br>바로 하지 말고 <span class="f">계획 3줄</span>만 먼저 보여줘.<br>내가 OK하면 그때 실행해.</div>
+  <div class="tip" style="margin-top:20px">계획을 보고 고치면 <b>다시 시키는 횟수</b>가 줄어요.</div></div>
+</section>
+
+<section class="card" id="k8">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · CHATGPT</div><div class="r">FILE 08/10</div></div>
+ <div class="wrap"><div class="lab mono">LIMIT REACHED</div>
+  <div class="h">다 쓰면<br><span class="v">어떻게 돼요?</span></div></div>
+ <div class="three" style="top:500px">
+  <div class="o"><div class="ic">⏳</div><div><b>초기화까지 기다리기</b><small>설정 → 사용량에서 시간 확인</small></div></div>
+  <div class="o"><div class="ic">⬆️</div><div><b>요금제 올리기</b><small>더 큰 한도의 상위 요금제로</small></div></div>
+  <div class="o"><div class="ic">🪙</div><div><b>크레딧 사기</b><small>지원되는 기능에 한해 추가 사용</small></div></div>
+ </div>
+ <div class="foot">오픈AI가 밝힌 선택지 3가지예요. 크레딧 가격은 따로 확인하세요.</div>
+</section>
+
+<section class="card" id="k9">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · CHATGPT</div><div class="r">FILE 09/10</div></div>
+ <div class="wrap"><div class="lab mono">CAUTION</div>
+  <div class="h">아직 <span class="a">모르는 것</span>도<br>있어요</div>
+  <div class="s">과장된 숫자는 믿지 마세요.</div></div>
+ <div class="box" style="top:620px"><div class="tag mono">NOT YET</div>
+  <div class="ol" style="gap:46px">
+   <div class="it"><span class="n mono">?</span><div>요금제별 한도 크기<small>새 한도가 얼마인지 공개 전이에요</small></div></div>
+   <div class="it"><span class="n mono">?</span><div>정확한 시작 날짜<small>"12월부터"까지만 나왔어요</small></div></div>
+   <div class="it hot"><span class="n mono">!</span><div>오픈AI 예상 (약속은 아님)<small>대부분은 지금보다 더 자주 기다리진 않을 거래요</small></div></div>
+  </div></div>
+ <div class="foot">출처: 오픈AI 안내를 인용한 MIXED·TechRepublic·Notebookcheck 보도 (11월 초)</div>
+</section>
+
+<section class="card" id="k10">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · CHATGPT</div><div class="r">END OF FILE</div></div>
+ <div class="glow"></div><div class="floor"></div><img class="peng" src="../assets/heart.png"><div class="bubble">한도 아껴 써요!</div>
+ <div class="c"><div class="h">12월 전에<br>저장해 두세요</div>
+  <div class="key">📌 저장 · 팔로우</div>
+  <div class="s" style="margin-top:36px">바로 써먹는 AI 소식, 넥서스가 쉽게 정리해요<br><span class="mono" style="color:var(--vi);font-size:28px">@nexus_studio.kr</span></div></div>
+</section>
+</body></html>
