@@ -1,5 +1,12 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-08 17:23 — ① 클로드 코드 '다시 묻지 않기' 승인 기록에 비밀키가 평문 저장, 공개 깃허브에서 노출
+- 출처: https://aiweekly.co/alerts/apiiro-claude-code-dont-ask-again-leaks-keys-in-1122-repos (보안업체 Apiiro 보고를 AI Weekly 11/8이 전함, 원문 미확인)
+- 추천 형식: 카드뉴스
+- 제목안: "클로드 코드 쓴다면 / 지금 이 파일 확인하세요"
+- 핵심 사실: '다시 묻지 않기'로 허용한 명령어가 설정 파일에 그대로 저장됨 / 명령어 안에 API 키·비밀번호가 있으면 평문으로 남아, 이 파일을 깃허브에 올린 저장소들에서 키 노출 / 원문(Apiiro)·앤트로픽 대응은 확인 후 제작 → '설정 파일 .gitignore·키는 환경변수로' 팁 위주(과장 금지)
+- 다룬 채널: 없음(해외 보안 소식)
+
 ## 2026-11-08 11:24 — ① 메타 AI, Muse Wonder 계열 모델 전체 사용자 배포
 - 출처: https://dev.to/hiroki-ii-ai/ai-daily-digest-november-8-2026-openai-taps-hacktron-for-bug-hunts-muse-wonder-for-everyone-gin (메타 11/6 발표, 원문 ai.meta.com 미확인)
 - 추천 형식: 카드뉴스

@@ -41,3 +41,6 @@
 2026-11-08 11:24 | 클로드(사용자 게시글) | 페이지 번호 바꾸라 했더니 교수 강의자료 삭제, 드롭박스로 복구 | https://aiweekly.co/ai-news-today
 2026-11-08 11:24 | 오픈AI(알림 제외·보안 협력) | Hacktron과 자사 시스템 보안 점검 협력 | https://aiweekly.co/ai-news-today
 2026-11-08 12:23 | AI 영상 콩트(경쟁 주제·@dalbong_otter) | 'AI 크리에이터의 하루' POV + 2026 대한민국 AI 콘텐츠 페스티벌 홍보(11/6, 1.3만 회) | https://www.instagram.com/reel/DfZQcmiToa9/
+2026-11-08 17:23 | 클로드 코드 | '다시 묻지 않기' 승인 명령에 비밀키 평문 저장, 공개 저장소 노출(Apiiro 보고) | https://aiweekly.co/alerts/apiiro-claude-code-dont-ask-again-leaks-keys-in-1122-repos
+2026-11-08 17:23 | 오픈AI·앤트로픽(알림 제외·투자 뉴스) | 오픈AI 110억 달러 투자 유치·앤트로픽 IPO 가치 추정 하향 | https://www.aitimes.com/news/articleView.html?idxno=217117
+2026-11-08 17:23 | 국산 모델(알림 제외·개발자용) | 한국어 특화 'Yejin 8B v3' 공개 | https://www.aitimes.com/news/articleView.html?idxno=217114
