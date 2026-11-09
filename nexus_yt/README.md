@@ -31,7 +31,7 @@ cd /home/claude/work/<slug>
   - Base content only on facts checked in official sources.
 
 ## 2. Narration (the user's cloned voice)
-- Use Higgsfield `generate_audio_batch` with `model "seed_audio"`, `medias [{"value":"eaa16e1c-9a48-4c4f-9d27-d506190ebf6d","role":"audio_references"}]`, `speech_rate 0`, `format "wav"`, `sample_rate 48000`. **Do not use other TTS.**
+- Use Higgsfield `generate_audio_batch` with `model "seed_audio"`, `medias [{"value":"6dec323c-9c8f-45f4-bb12-b9ad06495af3","role":"audio_references"}]`, `speech_rate 0`, `format "wav"`, `sample_rate 48000`. **Do not use other TTS.** Reference = the user's expressive re-recording (2026-11-09, 51s, YouTube-style intonation; old flat ref eaa16e1c retired — user: "어눌하고 답답, 높낮이 일정"). Measured pitch variation +24% vs old ref.
 - index = k*10 + take. Send up to 6 per batch; on a 429, wait and resend.
 - Wait with `jobs_wait` using `jobs:[{index,job_id}]`.
 - Download with `./dl2.sh <index> <url> …`. Files go to ln2/u{k}_{t}.wav.
@@ -74,6 +74,12 @@ cd /home/claude/work/<slug>
 - Check 6–8 frames from final.mp4.
 
 ## 5. Thumbnail (1280x720) — v2, follows trending Korean AI channels (checked 2026-11)
+### v3 CLEAN rule (user 2026-11-09: "자극적인 건 좋은데 너무 정신 사나움") — overrides anything below
+- Keep the provocative hook and the logo acting out ONE action, but: ONE focal scene (max 2 logos/objects), NO flying props, crumbs, stars, sparkles, envelopes, badges or tag pill.
+- Background: dark, one soft glow behind the subject. Max 3 colors on the whole thumbnail (bg + white + yellow; the logo's own color is fine). No cyan keyword — line1 all white.
+- Text: line1 ≤ 8 chars (white), line2 ≤ 7 chars (yellow). Nothing else written anywhere.
+- ≥ 30% empty space. Reference: thumb/clean_example.html (vs the old busy thumb/logo_example_mcp.html).
+- Check at 320px wide: can you read it and tell what it's about in 1 second? If the eye jumps around, remove things.
 Trend analysis (top AI channels): one bright hero object in the middle, huge 2-line text at the bottom, black outline, yellow/cyan highlight, emotional hook in quotes.
 - Background: Higgsfield `gpt_image_2_5`, 16:9, prompt must include:
   "YouTube thumbnail background, no text, no logos. <ONE hero object: glowing 3D symbol of the topic>. Hero large and centered in the upper 60% of frame, lower 35% darker and simpler for text. Ultra vivid saturated colors, dramatic rim light, high contrast, 3D render, crisp."
