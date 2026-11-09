@@ -55,3 +55,18 @@
 2026-11-09 11:25 | 씽킹머신즈(알림 제외·개발자용) | Inkling 2 Small(594B MoE) Tinker 플랫폼 공개 | https://aidapted.ro/en/articles/ai-news-8-november-2026/
 - 2026-11-09 12:24: A조 5개 채널·인스타(@biggie_ai, @reelta.gangsa)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치(에이전트 경유) 긱뉴스·AI타임스·챗GPT·제미나이 릴리스노트 PROVENANCE_REQUIRED 차단, mean.ceo만 성공(11/7 클로드 워터마크 — 11/5 이미 알림). vidIQ 미사용(잔액 50, 80 미만으로 릴스 조회 생략). 새 소식 없음.
 - 2026-11-09 13:24: B조 5개 채널·인스타(@prompt_what, @horang.wave)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치(에이전트 경유) 긱뉴스·AI타임스·오픈AI·앤트로픽·제미나이 릴리스노트 전부 PROVENANCE_REQUIRED 차단. vidIQ 미사용(정해진 시각 아님). 새 소식 없음.
+2026-11-09 14:24 | AI 비서(경쟁 주제·이종범) | Aside 어사이드 유료 기능 직접 써봤습니다(11/8, 1.5천) | https://www.youtube.com/watch?v=f468cHeuSUM
+2026-11-09 14:24 | AI 비서(경쟁 주제·유튜브신쌤) | AI 비서 6종(피클·닷츠 등) 정리(11/8, 9천) | https://www.youtube.com/watch?v=BC8XGfC7D4U
+2026-11-09 14:24 | AI 브라우저(경쟁 주제·찍봇) | 어사이드 가이드(11/6, 4.7천) | https://www.youtube.com/watch?v=8pmQSDetwZU
+2026-11-09 14:24 | 에이전트(경쟁 주제·데키랩) | 헤르메스 에이전트 설치·MCP 연결(11/8, 864) | https://www.youtube.com/watch?v=k2YoPXwlvHA
+2026-11-09 14:24 | 클로드 영상(경쟁 주제·데키랩) | 이제 클로드만으로 영상 제작(11/7, 1.7만) | https://www.youtube.com/watch?v=5tbz_rxo5Qo
+2026-11-09 14:24 | 챗GPT 이미지(경쟁 주제·조팀장) | GPT 이미지 2.6 업데이트 총정리(11/8, 9.3천) | https://www.youtube.com/watch?v=XhqSAZ6fANY
+2026-11-09 14:24 | AI 영상(경쟁 주제·AI 아스트라) | 시댄스보다 33% 싼 새 AI 영상툴(11/7, 8.2천) | https://www.youtube.com/watch?v=W1VkdC8feY8
+2026-11-09 14:24 | AI 영상 통계(경쟁 주제·@prompt_what) | 구글 Flow AI 영상 5억 개 돌파, 비슷한 영상 범람 | https://www.instagram.com/prompt_what/reel/DffI1MnvtX7/
+2026-11-09 14:24 | AI 데이터센터(경쟁 주제·@prompt_what) | 미국 주민들 표로 AI 데이터센터 막기 | https://www.instagram.com/prompt_what/p/DfeEKzMkQlv/
+2026-11-09 14:24 | 쇼츠 프롬프트(경쟁 주제·@prompt_what) | 프롬프트 한 장으로 쇼츠 5개 | https://www.instagram.com/prompt_what/reel/Dfdb2wnyvmT/
+2026-11-09 14:24 | 드리미나(광고성, 알림 제외·@biggie_ai) | 시댄스 2.5 첫 달 408원 | https://www.instagram.com/biggie_ai/reel/DfegBYGvOFW/
+2026-11-09 14:24 | 앤트로픽(알림 제외·연구) | '드리밍' 기억 스스로 수정 기술 실험 결과 | https://www.aitimes.com/
+2026-11-09 14:24 | 딥브레인AI(알림 제외·기업 서비스) | AI스튜디오 5.0 비디오 에이전트 | https://www.aitimes.com/
+2026-11-09 14:24 | 골드만삭스(알림 제외·기업) | 은행원·트레이더 Claude Code 사용 제한 | https://news.hada.io/
+- 2026-11-09 14:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts, 인스타 5개(@prompt_what·@biggie_ai·@reelta.gangsa·@momdi.tip·@horang.wave), AI타임스·긱뉴스 직접 확인. fire_trigger 권한 거부로 queue 🔥바로제작 표시.

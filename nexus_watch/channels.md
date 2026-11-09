@@ -82,3 +82,4 @@
 vidIQ 사용: 2026-11-09 09:50 5크레딧, 잔액 55
 - 2026-11-09 11:25: C조 6개 채널·인스타(@horang.wave, @grit_park_)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치(에이전트 경유) aidapted 11/8만 읽힘(Inkling 2 Small·투자·연구 뉴스, 소비자 기능 변화 없음), cryptobriefing·jmacweb 오류, AI타임스·긱뉴스 PROVENANCE_REQUIRED 차단. vidIQ 미사용(정해진 시각 아님). 새 소식 없음.
 - 2026-11-09 13:24: B조·인스타(@prompt_what, @horang.wave) 새 글 확인 안 됨, 웹페치 5개 URL 전부 차단. add_repo 도구 미노출(기존 클론으로 진행).
+- 2026-11-09 14:24: 브라우저 페이지 안 fetch로 유튜브 ytInitialData·인스타 og:description 읽기 성공(전 채널 확인 가능). fire_trigger는 권한 분류기에서 거부됨.

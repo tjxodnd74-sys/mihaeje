@@ -1,5 +1,13 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-09 14:24 — 🔥바로제작 ① AI 비서(에이전트) 3종 비교: Aside·챗GPT 닷츠·피클
+- 출처: https://www.youtube.com/watch?v=f468cHeuSUM (이종범 11/8) , https://www.youtube.com/watch?v=BC8XGfC7D4U (유튜브신쌤 11/8) , https://www.youtube.com/watch?v=8pmQSDetwZU (찍봇 11/6) , https://eesel.ai/blog/aside-ai-browser-review
+- 추천 형식: 카드뉴스
+- 제목안: "요즘 뜨는 AI 비서 3종 / 뭘 맡길 수 있을까?"
+- 핵심 사실: Aside 요금제 Free·Pro(사용량 3배)·Max(40배), 유료 시 딥 리서치·루틴 무제한·리모트 컨트롤 추가(이종범 설명) / 챗GPT 닷츠·피클·메타 뮤즈·그록 봇 등 AI 비서 6종 연달아 출시(신쌤 11/7 기준, 요금·국가 바뀔 수 있음) / 요금·한국 사용 가능 여부는 공식 페이지 확인 후 제작, 영상 구성 베끼지 말고 비교표+맡기기 전 체크리스트 각도로
+- 다룬 채널: AI 겸임교수 이종범, 유튜브신쌤, 찍봇 (3곳 🔥, 유료광고 표시 없음)
+- 메모: 긴급 제작 요청(fire_trigger)이 권한 거부돼 16:41 정규 회차가 먼저 가져가도록 표시만 함
+
 ## 2026-11-09 09:24 — ① [완료 카드뉴스] 삼성·젠틀몬스터 AI 글래스(구글 협업) 미국 11/12 사전예약
 - 출처: https://www.aitimes.com/news/articleView.html?idxno=217133 (11/7), https://supple.kr/news/cmw51x6c75sv9al9p5s52ig92 , 출시 시기 보도 https://www.wikitree.co.kr/articles/1170919
 - 추천 형식: 카드뉴스
