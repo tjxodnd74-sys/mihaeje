@@ -44,3 +44,9 @@
 - 실제 주행 영상 받기: 현대차그룹 TV(hyundaimotorgroup.com/ko/tv/...) 영상은 유튜브 임베드 → vidIQ `vidiq_edit_media` trim_media(유튜브 URL, 1크레딧) → 결과 S3 주소를 크롬 탭으로 열고 JS fetch → 다운로드 버튼 → device_stage_files.
 - 원본 컷 경계는 `ffmpeg select='gt(scene,0.25)'`로 찾고, 한 컷 안에서만 잘라 쓰기(r1~r10.webm, 1080x810 VP9). 자막 구절 단위로 문장당 1~2컷, 짧으면 rate<1로 느리게.
 - 렌더: make_spec4.py → `PAGE=page_shorts.html node ../../engine/render.js .`
+
+## !! 이 채널은 인스타그램 릴스용 (2026-11-09 사용자 확인: "릴스 버전이지, 너가 인스타 담당인데")
+- 기본 레이아웃 = page_reels.html: 세로 꽉 찬 실제 주행 영상(16:9 원본을 608px 폭으로 잘라 차 따라 팬), 처음 문장 동안만 훅 제목(좌상단, 흰/노랑), 자막은 1230px 높이 안전영역 안쪽 66px, 숫자는 어두운 테두리 큰 글씨.
+- 인스타 UI 피하기: 아래 ~20%, 오른쪽 140px에 글씨 금지. 화면에 출처 표기 금지. 기자 사진 금지.
+- page_shorts.html(검은 배경+가운데 박스)은 유튜브 쇼츠 감성이라 이 채널 기본 아님.
+- 렌더: make_spec5.py → `PAGE=page_reels.html node ../../engine/render.js .`, 결과 `완성본/NN_제목_릴스.mp4` + 커버 + 캡션.

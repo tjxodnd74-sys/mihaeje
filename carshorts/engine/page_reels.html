@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(Pretendard-Black.woff2) format("woff2");font-weight:900}
+@font-face{font-family:P;src:url(Pretendard-ExtraBold.woff2) format("woff2");font-weight:800}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000;font-family:P,sans-serif;color:#fff;word-break:keep-all}
+/* Instagram Reels: full-bleed 9:16 footage, hook text only at start, clean captions inside the safe zone */
+#media{position:absolute;inset:0;overflow:hidden}
+.layer{position:absolute;inset:0;display:none}
+.layer img,.layer video{position:absolute;left:0;top:0;width:1080px;height:1920px;object-fit:cover;transform-origin:50% 50%}
+#grad{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.35) 0,rgba(0,0,0,0) 420px,rgba(0,0,0,0) 900px,rgba(0,0,0,.55) 1400px,rgba(0,0,0,.25) 1920px)}
+#dim{position:absolute;inset:0;background:#000;opacity:0}
+.sh{text-shadow:0 4px 18px rgba(0,0,0,.65),0 0 2px rgba(0,0,0,.8)}
+#title{position:absolute;left:60px;right:140px;top:330px;text-align:left;font-weight:900;line-height:1.12;letter-spacing:-.045em}
+#title .l1{font-size:70px;color:#fff}#title .l2{font-size:104px;color:#ffe14a}
+#gfx{position:absolute;left:0;right:0;top:620px;height:560px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:18px}
+#gfx div{font-weight:900;letter-spacing:-.05em;line-height:1.1;white-space:nowrap;position:relative;text-shadow:0 8px 30px rgba(0,0,0,.6)}
+#cap{position:absolute;left:60px;right:60px;top:1230px;height:110px;display:flex;justify-content:center;align-items:center}
+#cap span{display:inline-block;white-space:nowrap;font-size:66px;font-weight:900;letter-spacing:-.035em;line-height:1;transform-origin:50% 60%;
+ -webkit-text-stroke:9px rgba(0,0,0,.9);paint-order:stroke fill;text-shadow:0 6px 20px rgba(0,0,0,.55)}
+#cap em{font-style:normal;color:#ffe14a}
+</style></head><body>
+<div id="media"></div><div id="grad"></div><div id="dim"></div>
+<div id="title" class="sh"><div class="l1"></div><div class="l2"></div></div><div id="gfx"></div>
+<div id="cap"></div>
+<script>
+const S = window.SPEC; const media = document.getElementById('media'), gfx = document.getElementById('gfx'), dim = document.getElementById('dim'), capEl = document.getElementById('cap');
+document.querySelector('#title .l1').textContent = S.title[0]; document.querySelector('#title .l2').textContent = S.title[1];
+const titleEl = document.getElementById('title');
+const layers = [];
+for (const sh of S.shots) { const d = document.createElement('div'); d.className = 'layer'; const isV = /\.(webm|mp4)$/.test(sh.src); const m = document.createElement(isV ? 'video' : 'img'); m.src = sh.src; if (isV) { m.muted = true; m.preload = 'auto'; } if (sh.pos) m.style.objectPosition = sh.pos; d.appendChild(m); media.appendChild(d); layers.push({ d, m }); }
+const ease = p => p < 0 ? 0 : p > 1 ? 1 : 1 - Math.pow(1 - p, 3);
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const fmt = n => Math.round(n).toLocaleString('ko-KR');
+window.seek = async (t) => {
+  let i = S.shots.findIndex(s => t >= s.t0 && t < s.t1); if (i < 0) i = t < S.shots[0].t0 ? 0 : S.shots.length - 1;
+  const sh = S.shots[i], L = layers[i], u = t - sh.t0, d = sh.t1 - sh.t0;
+  layers.forEach((l, k) => l.d.style.display = k === i ? 'block' : 'none');
+  L.m.style.transformOrigin = sh.origin || '50% 50%'; L.m.style.transform = `scale(${sh.s0 + (sh.s1 - sh.s0) * clamp(u / d)})`;
+  if (L.m.tagName === 'VIDEO') { const tg = Math.min((sh.v0 || 0) + u * (sh.rate || 1), (L.m.duration || 99) - 0.05); if (Math.abs(L.m.currentTime - tg) > 0.001) await new Promise(r => { L.m.onseeked = r; L.m.currentTime = tg; }); }
+  { const H = S.hookEnd || 2.0; const a = t < H - 0.25 ? 1 : Math.max(0, (H - t) / 0.25); const pin = 1 + 0.06 * (1 - ease(t / 0.3)); titleEl.style.opacity = a; titleEl.style.transform = `scale(${pin})`; titleEl.style.transformOrigin = '0 50%'; }
+  // big-number text: lines appear at their own time; optional strike / count-up
+  const g = S.gfx.find(g => t >= g.t0 && t < g.t1);
+  if (g) { const v = t - g.t0; dim.style.opacity = 0.35 * ease(v / 0.15);
+    gfx.innerHTML = g.lines.filter(l => v >= (l.at || 0)).map(l => { const k = v - (l.at || 0); const pop = 1 + 0.18 * (1 - ease(k / 0.15));
+      let txt = l.text; if (l.count) txt = fmt(l.count * ease(k / 0.8)) + l.unit;
+      const strike = (l.strikeAt != null && v >= l.strikeAt) ? `<i style="position:absolute;left:-12px;top:48%;height:22px;background:#ff2b2b;border:5px solid #fff;border-radius:12px;width:${clamp((v - l.strikeAt) / 0.2) * 105}%"></i>` : '';
+      const col = (l.strikeAt != null && v >= l.strikeAt) ? '#999' : (l.color || '#fff');
+      const sk = `-webkit-text-stroke:${Math.round(l.size*0.09)}px rgba(0,0,0,.85);paint-order:stroke fill`;
+      return `<div style="font-size:${l.size}px;color:${col};${sk};transform:scale(${pop})">${txt}${strike}</div>`; }).join('');
+  } else { dim.style.opacity = 0; gfx.innerHTML = ''; }
+  let c = null; for (const k of S.caps) if (t >= k[0] && t < k[1]) c = k;
+  if (c) { capEl.innerHTML = '<span>' + c[2].replace(/\|([^|]+)\|/g, '<em>$1</em>') + '</span>'; const sp = capEl.firstChild;
+    const w = sp.getBoundingClientRect().width; const fit = Math.min(1, 900 / Math.max(w, 1)); const pop = 1 + 0.05 * (1 - ease((t - c[0]) / 0.12));
+    sp.style.transform = `scale(${fit * pop})`; } else capEl.innerHTML = '';
+};
+window.ready = async () => { await document.fonts.ready; await Promise.all(layers.map(l => l.m.tagName === 'VIDEO' ? new Promise(r => { if (l.m.readyState >= 2) r(); else l.m.onloadeddata = r; }) : (l.m.complete ? 0 : new Promise(r => l.m.onload = r)))); };
+</script></body></html>

@@ -5,83 +5,84 @@
   "신형 아반떼 근황"
  ],
  "credit": "",
+ "hookEnd": 3.908,
  "shots": [
   {
-   "src": "drive/r1.webm",
+   "src": "drive/v1.webm",
    "s0": 1.0,
-   "s1": 1.04,
+   "s1": 1.03,
    "t0": 0.0,
    "t1": 1.83,
    "rate": 1.0
   },
   {
-   "src": "drive/r2.webm",
+   "src": "drive/v2.webm",
    "s0": 1.0,
-   "s1": 1.04,
+   "s1": 1.03,
    "t0": 1.83,
    "t1": 3.958,
    "rate": 1.0
   },
   {
-   "src": "drive/r3.webm",
+   "src": "drive/v3.webm",
    "s0": 1.0,
-   "s1": 1.04,
+   "s1": 1.03,
    "t0": 3.958,
    "t1": 6.848,
    "rate": 0.595
   },
   {
-   "src": "drive/r4.webm",
+   "src": "drive/v4.webm",
    "s0": 1.0,
-   "s1": 1.04,
+   "s1": 1.03,
    "t0": 6.848,
    "t1": 8.889,
    "rate": 0.745
   },
   {
-   "src": "drive/r5.webm",
+   "src": "drive/v5.webm",
    "s0": 1.0,
-   "s1": 1.04,
+   "s1": 1.03,
    "t0": 8.889,
    "t1": 14.472,
    "rate": 0.726
   },
   {
-   "src": "drive/r6.webm",
+   "src": "drive/v6.webm",
    "s0": 1.0,
-   "s1": 1.04,
+   "s1": 1.03,
    "t0": 14.472,
    "t1": 16.672,
    "rate": 0.873
   },
   {
-   "src": "drive/r7.webm",
+   "src": "drive/v7.webm",
    "s0": 1.0,
-   "s1": 1.04,
+   "s1": 1.03,
    "t0": 16.672,
    "t1": 18.263,
    "rate": 1.0
   },
   {
-   "src": "drive/r8.webm",
+   "src": "drive/v8.webm",
    "s0": 1.0,
-   "s1": 1.04,
+   "s1": 1.03,
    "t0": 18.263,
    "t1": 21.664,
    "rate": 0.555
   },
   {
-   "src": "drive/r9.webm",
+   "src": "drive/v9.webm",
    "s0": 1.0,
-   "s1": 1.04,
+   "s1": 1.03,
    "t0": 21.664,
    "t1": 23.764,
    "rate": 0.962
   },
   {
-   "src": "drive/r10.webm",
+   "src": "drive/v10.webm",
    "s0": 1.0,
-   "s1": 1.04,
+   "s1": 1.03,
    "t0": 23.764,
    "t1": 25.97,
    "rate": 1.0
