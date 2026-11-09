@@ -11,7 +11,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#000;font-family
 #title .l1{font-size:88px}#title .l2{font-size:104px;color:#ffe14a}
 #media{position:absolute;left:0;top:500px;width:1080px;height:810px;overflow:hidden;background:#000}
 .layer{position:absolute;inset:0;display:none}
-.layer img{position:absolute;left:0;top:0;width:1080px;height:810px;object-fit:cover;transform-origin:50% 50%}
+.layer img,.layer video{position:absolute;left:0;top:0;width:1080px;height:810px;object-fit:cover;transform-origin:50% 50%}
 #dim{position:absolute;left:0;top:500px;width:1080px;height:810px;background:#000;opacity:0}
 #gfx{position:absolute;left:0;top:500px;width:1080px;height:810px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:22px}
 #gfx div{font-weight:900;letter-spacing:-.05em;line-height:1.1;white-space:nowrap;paint-order:stroke fill;text-shadow:0 10px 30px rgba(0,0,0,.5);position:relative}
@@ -28,7 +28,7 @@ const S = window.SPEC; const media = document.getElementById('media'), gfx = doc
 document.querySelector('#title .l1').textContent = S.title[0]; document.querySelector('#title .l2').textContent = S.title[1];
 document.getElementById('src').textContent = S.credit || '';
 const layers = [];
-for (const sh of S.shots) { const d = document.createElement('div'); d.className = 'layer'; const m = document.createElement('img'); m.src = sh.src; if (sh.pos) m.style.objectPosition = sh.pos; d.appendChild(m); media.appendChild(d); layers.push({ d, m }); }
+for (const sh of S.shots) { const d = document.createElement('div'); d.className = 'layer'; const isV = /\.(webm|mp4)$/.test(sh.src); const m = document.createElement(isV ? 'video' : 'img'); m.src = sh.src; if (isV) { m.muted = true; m.preload = 'auto'; } if (sh.pos) m.style.objectPosition = sh.pos; d.appendChild(m); media.appendChild(d); layers.push({ d, m }); }
 const ease = p => p < 0 ? 0 : p > 1 ? 1 : 1 - Math.pow(1 - p, 3);
 const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const fmt = n => Math.round(n).toLocaleString('ko-KR');
@@ -37,6 +37,7 @@ window.seek = async (t) => {
   const sh = S.shots[i], L = layers[i], u = t - sh.t0, d = sh.t1 - sh.t0;
   layers.forEach((l, k) => l.d.style.display = k === i ? 'block' : 'none');
   L.m.style.transformOrigin = sh.origin || '50% 50%'; L.m.style.transform = `scale(${sh.s0 + (sh.s1 - sh.s0) * clamp(u / d)})`;
+  if (L.m.tagName === 'VIDEO') { const tg = Math.min((sh.v0 || 0) + u * (sh.rate || 1), (L.m.duration || 99) - 0.05); if (Math.abs(L.m.currentTime - tg) > 0.001) await new Promise(r => { L.m.onseeked = r; L.m.currentTime = tg; }); }
   // big-number text: lines appear at their own time; optional strike / count-up
   const g = S.gfx.find(g => t >= g.t0 && t < g.t1);
   if (g) { const v = t - g.t0; dim.style.opacity = 0.5 * ease(v / 0.15);
@@ -52,5 +53,5 @@ window.seek = async (t) => {
     const w = sp.getBoundingClientRect().width; const fit = Math.min(1, 1020 / Math.max(w, 1)); const pop = 1 + 0.05 * (1 - ease((t - c[0]) / 0.12));
     sp.style.transform = `scale(${fit * pop})`; } else capEl.innerHTML = '';
 };
-window.ready = async () => { await document.fonts.ready; await Promise.all(layers.map(l => l.m.complete ? 0 : new Promise(r => l.m.onload = r))); };
+window.ready = async () => { await document.fonts.ready; await Promise.all(layers.map(l => l.m.tagName === 'VIDEO' ? new Promise(r => { if (l.m.readyState >= 2) r(); else l.m.onloadeddata = r; }) : (l.m.complete ? 0 : new Promise(r => l.m.onload = r)))); };
 </script></body></html>

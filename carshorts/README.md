@@ -40,3 +40,7 @@
 - 검은 배경, 위 제목 2줄(흰/노랑, 검은 테두리), 가운데 4:3 사진(1080x810, 천천히 줌), 아래 한 줄 자막(박스 없이 흰 글씨+검은 테두리, 핵심어 노랑).
 - 숫자는 그래픽 카드 대신 사진 위 큰 글씨만(빨강/노랑 + 흰 테두리, 사진 살짝 어둡게), 말하는 순간에 등장.
 - 오토트리뷴 사진은 워터마크 안 보이게 1.16배 확대. 렌더: `PAGE=page_shorts.html node ../../engine/render.js .` (make_spec3.py)
+- (v6, 2026-11-09) 사용자: 화면에 사진 출처 표기 금지, 기자가 찍은 사진(오토트리뷴 등) 빼기, 사진 너무 빨리 바뀜 → 실제 주행 영상 사용.
+- 실제 주행 영상 받기: 현대차그룹 TV(hyundaimotorgroup.com/ko/tv/...) 영상은 유튜브 임베드 → vidIQ `vidiq_edit_media` trim_media(유튜브 URL, 1크레딧) → 결과 S3 주소를 크롬 탭으로 열고 JS fetch → 다운로드 버튼 → device_stage_files.
+- 원본 컷 경계는 `ffmpeg select='gt(scene,0.25)'`로 찾고, 한 컷 안에서만 잘라 쓰기(r1~r10.webm, 1080x810 VP9). 자막 구절 단위로 문장당 1~2컷, 짧으면 rate<1로 느리게.
+- 렌더: make_spec4.py → `PAGE=page_shorts.html node ../../engine/render.js .`
