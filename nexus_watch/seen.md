@@ -81,3 +81,8 @@
 2026-11-09 16:27 | AI 교육(경쟁 주제·CONNECT AI LAB) | 인공지능 문맹 벗어나기 AI 야학당(11/9, 162) | https://www.youtube.com/watch?v=0Hif6Y40uC8
 2026-11-09 16:27 | AI 비서 쇼츠(경쟁 주제·이종범) | DOTS로 AI 스킬 831개 옮기기 / 슬랙 AI 동료 DOTS / 메타 뮤즈 10억 토큰(쇼츠, 날짜 미표시) | https://www.youtube.com/shorts/QuM5jUGPl5w , https://www.youtube.com/shorts/uGUIbl1u-74 , https://www.youtube.com/shorts/dd7AHunU7Ro
 - 2026-11-09 16:27: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts, 인스타 5개(@prompt_what·@biggie_ai·@reelta.gangsa·@momdi.tip·@horang.wave), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건. 15:25 이후 새 영상은 CONNECT AI LAB 1개. 새 일반 사용자용 기능 소식 없음. 긴급 제작은 2시간 제한·16:41 정규 회차 30분 전이라 요청 안 하고 queue 🔥바로제작 표시.
+2026-11-09 17:24 | EBS(비AI·@ebsstory) | 자퇴 사연·요식업 청결·극한직업 뷔페 릴스 3개(11/8) | https://www.instagram.com/ebsstory/reel/DfgvSovHcNb/ , https://www.instagram.com/ebsstory/reel/DfgQF4HgsmB/ , https://www.instagram.com/ebsstory/reel/DfeYuz7ilTu/
+2026-11-09 17:24 | 달봉이(비AI 콩트·@dalbong_otter) | "그짓말 치지마라"(11/7) | https://www.instagram.com/dalbong_otter/p/DfcA5ccznPr/
+2026-11-09 17:24 | LG(알림 제외·개발자용) | K-엑사원 2.5 API 무료 개방(11/9) | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-09 17:24 | 오픈AI(알림 제외·벤치마크) | 생명과학 AI 벤치마크 공개 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-09 17:24: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch로 파싱), 인스타 5개(@ebsstory·@grit_park_·@dalbong_otter·@lightning_hand_·@ai.daily.kr — grit_park_ 그리드 8월 글만, ai.daily.kr 게시물 0개), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 16:27 이후 유튜브 새 영상 없음(최신: CONNECT AI LAB 'AI 야학당' 1시간 전 표기=16:27에 이미 봄). 인스타 새 글은 비AI만. 바로 만들 주제 없음.
