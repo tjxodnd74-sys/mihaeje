@@ -86,3 +86,10 @@
 2026-11-09 17:24 | LG(알림 제외·개발자용) | K-엑사원 2.5 API 무료 개방(11/9) | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-09 17:24 | 오픈AI(알림 제외·벤치마크) | 생명과학 AI 벤치마크 공개 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-09 17:24: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch로 파싱), 인스타 5개(@ebsstory·@grit_park_·@dalbong_otter·@lightning_hand_·@ai.daily.kr — grit_park_ 그리드 8월 글만, ai.daily.kr 게시물 0개), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 16:27 이후 유튜브 새 영상 없음(최신: CONNECT AI LAB 'AI 야학당' 1시간 전 표기=16:27에 이미 봄). 인스타 새 글은 비AI만. 바로 만들 주제 없음.
+2026-11-09 18:24 | AI 컴퓨터 조작(경쟁 주제·조팀장의 AI 공략집 쇼츠) | 딸깍으로 항공권까지? AI로 귀찮은 일 시키는 법(11/9) | https://www.youtube.com/shorts/jxRPUHcv118
+2026-11-09 18:24 | AI 커리어(경쟁 주제·바이브랩스) | AI로 돈 벌 수 있을까요? 퇴사한 개발자의 솔직한 대답(11/6, 5.7천) | https://www.youtube.com/watch?v=gGwGSw_U-XQ
+2026-11-09 18:24 | 클로드 카타나(광고성, 알림 제외·유튜브신쌤 쇼츠) | 힉스필드 카타나로 광고 한글 라벨 고치기(10/24) | https://www.youtube.com/shorts/q-4TxJOnujE
+2026-11-09 18:24 | 허성범(비AI·@horang.wave) | "올해의 끝을 향해 천천히 노저어 가는 중"(11/8) | https://www.instagram.com/horang.wave/p/Dfe0t5Snypr/
+2026-11-09 18:24 | 구글(알림 제외·개발자용) | 코딩 전 설계 검토 '코끼리-금붕어' 플러그인 오픈소스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-09 18:24 | 앤트로픽 등(알림 제외·연구) | 학습 데이터 0.1% 오염으로 에이전트 백도어 가능 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-09 18:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 파싱), 인스타 5개(@prompt_what·@biggie_ai·@reelta.gangsa·@momdi.tip·@horang.wave), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 17:24 이후 새 롱폼 없음, 새 쇼츠는 조팀장 '딸깍으로 항공권까지'(11/9) 1개. 인스타 새 글은 허성범 비AI 1개. 바로 만들 주제 없음(1곳만 다룬 주제·연구/개발자 소식뿐).
