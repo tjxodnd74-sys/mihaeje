@@ -1,6 +1,6 @@
 # 넥서스 제작 후보 (최신이 위)
 
-## 2026-11-09 09:24 — ① 삼성·젠틀몬스터 AI 글래스(구글 협업) 미국 11/12 사전예약
+## 2026-11-09 09:24 — ① [완료 카드뉴스] 삼성·젠틀몬스터 AI 글래스(구글 협업) 미국 11/12 사전예약
 - 출처: https://www.aitimes.com/news/articleView.html?idxno=217133 (11/7), https://supple.kr/news/cmw51x6c75sv9al9p5s52ig92 , 출시 시기 보도 https://www.wikitree.co.kr/articles/1170919
 - 추천 형식: 카드뉴스
 - 제목안: "삼성 AI 안경 / 드디어 예약 시작"
