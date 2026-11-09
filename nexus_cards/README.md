@@ -34,8 +34,16 @@
 - 만들고 나서 휴대폰 크기(가로 360px)로 줄여 보고 "피드에서 멈추나?"를 따져 아니면 다시.
 - 기준 예시: `example_comic/` 의 표지(카드01) — 큰 3줄 제목 + 노랑 핵심어 + 위쪽 장면.
 
+
+## ★ 속장은 MP4 (2026-11-09 사용자: "카드뉴스 표지랑 마지막 장 빼고는 MP4 파일로 만들라 하지 않았음?")
+- **표지(1장)·마지막 장 = JPG**, **그 사이 모든 장 = MP4(움직이는 슬라이드)**. 인스타 캐러셀에 사진·영상 섞어서 올림.
+- 만드는 법: `python3 render.py <폴더>/cards.html`(JPG 전부 + grid.jpg) → `python3 render_mp4.py <폴더>/cards.html`(2장~끝-1장을 `카드NN.mp4`로, 1080x1350·6초 루프·24fps·무음 오디오). 업로드할 때 속장은 JPG 대신 MP4 사용.
+- 움직임은 `motion/motion.css`가 자동으로 넣음(제목 살짝 올라옴, 핵심어 밑줄 쓸기, 상자 순서대로 등장, 태그·COPY 상자 빛, 커서 깜빡임, 화살표 움직임, 배경 빛 이동, 그림 천천히 확대). 주제에 맞게 cards.html에 직접 @keyframes를 더 넣어도 됨(숫자 올라가기, 그래프 차오르기, 채팅 말풍선 차례로 뜨기 등) — **매 편 최소 1장은 그 주제 전용 움직임**.
+- **첫 프레임부터 내용이 보여야 함**(빈 화면에서 등장 금지 — 사용자 2026-10-28). 렌더 후 각 MP4의 0초·3초 프레임을 뽑아 Read로 확인.
+- 시간: 8장 기준 약 5~8분.
+
 ## 올리는 법 (Metricool 브랜드 7758775만)
-- Higgsfield `media_upload(files=[카드01.jpg…])` → 각 upload_url에 `curl -X PUT -H "Content-Type: image/jpeg" --data-binary @파일 '<url>'` (520 등 실패는 그 파일만 다시) → `media_confirm(type image, media_ids)` → 공개 URL(`https://d2ol7oe51mr4n9.cloudfront.net/...`).
-- `createScheduledPost(blogId "7758775")`: providers `[{"network":"instagram"}]`만, `instagramData {"type":"POST","isAiGenerated":true}`, media = URL 순서대로, text = 캡션(BOM 없이).
+- Higgsfield `media_upload(files=[카드01.jpg, 카드02.mp4 …, 마지막.jpg])` → 각 upload_url에 `curl -X PUT -H "Content-Type: <image/jpeg|video/mp4>" --data-binary @파일 '<url>'` (520 등 실패는 그 파일만 다시) → `media_confirm`(JPG는 type image, MP4는 type video) → 공개 URL(`https://d2ol7oe51mr4n9.cloudfront.net/...`).
+- `createScheduledPost(blogId "7758775")`: providers `[{"network":"instagram"}]`만, `instagramData {"type":"POST","isAiGenerated":true}`, media = URL 순서대로(표지 JPG → 속장 MP4들 → 마지막 JPG), text = 캡션(BOM 없이). 섞인 캐러셀이 오류로 거절되면 그 회차만 속장을 JPG로 바꿔 올리고 알림에 적음.
 - **브랜드 7088172(로드로그)는 절대 사용 금지. 기존 예약 수정·삭제 금지. 유튜브·쓰레드 provider 넣지 않음.**
 - 올린 뒤 `done.md`에 한 줄: 날짜 | 예약 시각 | 주제 | 장수 | Metricool id | 크레딧
