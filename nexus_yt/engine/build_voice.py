@@ -55,7 +55,7 @@ def _chunks(t,mx=15):
     # keep negation/adverb + verb together (못 보내요, 안 돼요, 잘 돼요)
     m=[]
     for w in toks:
-        aux=w.rstrip(',.?!') in ('버려요','버렸어요','줘','줘요','주세요','봐요','봐','있어요','없어요','있고요','돼요','됐어요','해요','했어요','하면','해도','할','하는','거예요','거죠','수','것','적','때')
+        aux=w.rstrip(',.?!') in ('버려요','버렸어요','줘','줘요','주세요','봐요','봐','있어요','없어요','있고요','돼요','됐어요','해요','했어요','하면','해도','할','하는','거예요','거죠','수','것','적','때','뒀어요','놔요','되고요','남아요')
         if m and (m[-1] in ('못','안','잘','더','꼭','또','딱','확','한','두','세','네') or aux):m[-1]=m[-1]+' '+w
         else:m.append(w)
     out=[];cur=''
@@ -65,14 +65,20 @@ def _chunks(t,mx=15):
     if cur:out.append(cur)
     return [c.rstrip(',.') for c in out]
 _M=None
+_WC=json.load(open('wcache.json')) if os.path.exists('wcache.json') else {}
 def _words(f):
     global _M
+    import hashlib
+    h=hashlib.md5(open(f,'rb').read()).hexdigest()
+    if h in _WC:return [tuple(x) for x in _WC[h]]
     import numpy as np
     if _M is None:
         from faster_whisper import WhisperModel;_M=WhisperModel('medium',device='cpu',compute_type='int8')
     a=np.frombuffer(subprocess.run(['ffmpeg','-v','error','-i',f,'-ar','16000','-ac','1','-f','f32le','-'],capture_output=True).stdout,np.float32)
     segs,_=_M.transcribe(a,language='ko',beam_size=5,word_timestamps=True,condition_on_previous_text=False)
-    return [(w.start,w.end,w.word.strip()) for s_ in segs for w in s_.words if w.word.strip()]
+    r=[(w.start,w.end,w.word.strip()) for s_ in segs for w in s_.words if w.word.strip()]
+    _WC[h]=r;json.dump(_WC,open('wcache.json','w'),ensure_ascii=False)
+    return r
 _n=lambda x:_re.sub(r'[^가-힣0-9a-zA-Z]','',x)
 KW=g.get('KW',[])
 caps=[]
