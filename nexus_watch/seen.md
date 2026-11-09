@@ -70,3 +70,10 @@
 2026-11-09 14:24 | 딥브레인AI(알림 제외·기업 서비스) | AI스튜디오 5.0 비디오 에이전트 | https://www.aitimes.com/
 2026-11-09 14:24 | 골드만삭스(알림 제외·기업) | 은행원·트레이더 Claude Code 사용 제한 | https://news.hada.io/
 - 2026-11-09 14:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts, 인스타 5개(@prompt_what·@biggie_ai·@reelta.gangsa·@momdi.tip·@horang.wave), AI타임스·긱뉴스 직접 확인. fire_trigger 권한 거부로 queue 🔥바로제작 표시.
+2026-11-09 15:25 | AI 정서 의존(경쟁 주제·@ebsstory) | 하루 12시간 AI와 대화하는 청년들(다큐프라임 생각의 멸종 2부, 11/7) | https://www.instagram.com/ebsstory/reel/Dfd9Morkbtt/
+2026-11-09 15:25 | AI 코미디(광고성, 알림 제외·@lightning_hand_) | 반려동물 학대 알아보는 법(제작지원 vigloostudio, 11/6) | https://www.instagram.com/lightning_hand_/reel/DfbP4n9TRP5/
+2026-11-09 15:25 | AI 영상 툴(경쟁 주제·AI 리더스 연구소, 광고성) | HIX AI 올인원(11/5, 1만) | https://www.youtube.com/watch?v=EZ9HD9wxlOg
+2026-11-09 15:25 | 클로드 영상(경쟁 주제·원카AI) | 클로드 영상 제작법 5분(11/5, 3.8만) | https://www.youtube.com/watch?v=VXssLbMGr0w
+2026-11-09 15:25 | AI 1인 기업(경쟁 주제·CONNECT AI LAB) | AI 직원들이 밤새 영상 만드는 1인 기업(11/6, 1.7만) | https://www.youtube.com/watch?v=Yz3124ulHKE
+2026-11-09 15:25 | AI 커리어(경쟁 주제·허성범) | AI 시대 뽑히는 사람들의 공통점(11/6, 2.1만) | https://www.youtube.com/watch?v=EtZ2P0RPWsg
+- 2026-11-09 15:25: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch로 lockupViewModel 파싱), 인스타 5개(@grit_park_·@ebsstory·@dalbong_otter·@lightning_hand_·@ai.daily.kr — ai.daily.kr 게시물 0개, grit_park_ 그리드는 8월 사진만 노출), 긱뉴스·AI타임스 직접 확인. 14:24 이후 유튜브 새 영상 없음. fire_trigger 성공(AI 비서 비교 긴급 제작).
