@@ -77,3 +77,7 @@
 2026-11-09 15:25 | AI 1인 기업(경쟁 주제·CONNECT AI LAB) | AI 직원들이 밤새 영상 만드는 1인 기업(11/6, 1.7만) | https://www.youtube.com/watch?v=Yz3124ulHKE
 2026-11-09 15:25 | AI 커리어(경쟁 주제·허성범) | AI 시대 뽑히는 사람들의 공통점(11/6, 2.1만) | https://www.youtube.com/watch?v=EtZ2P0RPWsg
 - 2026-11-09 15:25: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch로 lockupViewModel 파싱), 인스타 5개(@grit_park_·@ebsstory·@dalbong_otter·@lightning_hand_·@ai.daily.kr — ai.daily.kr 게시물 0개, grit_park_ 그리드는 8월 사진만 노출), 긱뉴스·AI타임스 직접 확인. 14:24 이후 유튜브 새 영상 없음. fire_trigger 성공(AI 비서 비교 긴급 제작).
+2026-11-09 16:27 | AI 의존(경쟁 주제·@biggie_ai) | AI 자주 쓸수록 멍청해집니다(앤트로픽 엔지니어 경고 소개, 11/6) | https://www.instagram.com/biggie_ai/p/Dfbl0PwmCPw/
+2026-11-09 16:27 | AI 교육(경쟁 주제·CONNECT AI LAB) | 인공지능 문맹 벗어나기 AI 야학당(11/9, 162) | https://www.youtube.com/watch?v=0Hif6Y40uC8
+2026-11-09 16:27 | AI 비서 쇼츠(경쟁 주제·이종범) | DOTS로 AI 스킬 831개 옮기기 / 슬랙 AI 동료 DOTS / 메타 뮤즈 10억 토큰(쇼츠, 날짜 미표시) | https://www.youtube.com/shorts/QuM5jUGPl5w , https://www.youtube.com/shorts/uGUIbl1u-74 , https://www.youtube.com/shorts/dd7AHunU7Ro
+- 2026-11-09 16:27: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts, 인스타 5개(@prompt_what·@biggie_ai·@reelta.gangsa·@momdi.tip·@horang.wave), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건. 15:25 이후 새 영상은 CONNECT AI LAB 1개. 새 일반 사용자용 기능 소식 없음. 긴급 제작은 2시간 제한·16:41 정규 회차 30분 전이라 요청 안 하고 queue 🔥바로제작 표시.
