@@ -81,3 +81,4 @@
 - 2026-11-09 09:50: 사용자 지적 후 재확인. 유튜브는 웹페치가 robots로 전부 차단(검색·RSS·채널 페이지) → WebSearch로는 채널 최신 영상 확인 불가. vidIQ youtube_search(5크레딧, 한국·최근 3일·AI 키워드)로 소형 채널 주제 확인. 목록 16개 채널 개별 확인은 channel_videos 채널당 5크레딧 필요.
 vidIQ 사용: 2026-11-09 09:50 5크레딧, 잔액 55
 - 2026-11-09 11:25: C조 6개 채널·인스타(@horang.wave, @grit_park_)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치(에이전트 경유) aidapted 11/8만 읽힘(Inkling 2 Small·투자·연구 뉴스, 소비자 기능 변화 없음), cryptobriefing·jmacweb 오류, AI타임스·긱뉴스 PROVENANCE_REQUIRED 차단. vidIQ 미사용(정해진 시각 아님). 새 소식 없음.
+- 2026-11-09 13:24: B조·인스타(@prompt_what, @horang.wave) 새 글 확인 안 됨, 웹페치 5개 URL 전부 차단. add_repo 도구 미노출(기존 클론으로 진행).

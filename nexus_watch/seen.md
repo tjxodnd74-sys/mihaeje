@@ -54,3 +54,4 @@
 - 2026-11-09 10:24: B조 5개 채널·인스타(@reelta.gangsa, @momdi.tip)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치(에이전트 경유) 긱뉴스·AI타임스·앤트로픽·제미나이 릴리스노트 전부 PROVENANCE_REQUIRED 차단. 참고(미확인): aidapted 11/8 뉴스, fourweekmba '제미나이 메뉴에 기업용 차세대 에이전트 노출'(유출성, 제외). vidIQ 미사용(정해진 시각 아님, 잔액 55). 새 소식 없음.
 2026-11-09 11:25 | 씽킹머신즈(알림 제외·개발자용) | Inkling 2 Small(594B MoE) Tinker 플랫폼 공개 | https://aidapted.ro/en/articles/ai-news-8-november-2026/
 - 2026-11-09 12:24: A조 5개 채널·인스타(@biggie_ai, @reelta.gangsa)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치(에이전트 경유) 긱뉴스·AI타임스·챗GPT·제미나이 릴리스노트 PROVENANCE_REQUIRED 차단, mean.ceo만 성공(11/7 클로드 워터마크 — 11/5 이미 알림). vidIQ 미사용(잔액 50, 80 미만으로 릴스 조회 생략). 새 소식 없음.
+- 2026-11-09 13:24: B조 5개 채널·인스타(@prompt_what, @horang.wave)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치(에이전트 경유) 긱뉴스·AI타임스·오픈AI·앤트로픽·제미나이 릴리스노트 전부 PROVENANCE_REQUIRED 차단. vidIQ 미사용(정해진 시각 아님). 새 소식 없음.
