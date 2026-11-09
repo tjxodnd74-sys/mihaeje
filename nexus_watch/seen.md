@@ -44,3 +44,6 @@
 2026-11-08 17:23 | 클로드 코드 | '다시 묻지 않기' 승인 명령에 비밀키 평문 저장, 공개 저장소 노출(Apiiro 보고) | https://aiweekly.co/alerts/apiiro-claude-code-dont-ask-again-leaks-keys-in-1122-repos
 2026-11-08 17:23 | 오픈AI·앤트로픽(알림 제외·투자 뉴스) | 오픈AI 110억 달러 투자 유치·앤트로픽 IPO 가치 추정 하향 | https://www.aitimes.com/news/articleView.html?idxno=217117
 2026-11-08 17:23 | 국산 모델(알림 제외·개발자용) | 한국어 특화 'Yejin 8B v3' 공개 | https://www.aitimes.com/news/articleView.html?idxno=217114
+2026-11-09 09:24 | 삼성·구글 | 삼성·젠틀몬스터 AI 글래스 미국 11/12 사전예약 | https://www.aitimes.com/news/articleView.html?idxno=217133
+2026-11-09 09:24 | 앤트로픽(알림 제외·연구 글) | 에이전트 메모리 설계 연구 | https://news.hada.io/topic?id=36775
+2026-11-09 09:24 | 아마존(알림 제외·미국 한정) | 문자로 쓰는 알렉사 쇼핑 | https://www.aitimes.com/news/articleView.html?idxno=217142

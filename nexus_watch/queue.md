@@ -1,5 +1,12 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-09 09:24 — ① 삼성·젠틀몬스터 AI 글래스(구글 협업) 미국 11/12 사전예약
+- 출처: https://www.aitimes.com/news/articleView.html?idxno=217133 (11/7), https://supple.kr/news/cmw51x6c75sv9al9p5s52ig92 , 출시 시기 보도 https://www.wikitree.co.kr/articles/1170919
+- 추천 형식: 카드뉴스
+- 제목안: "삼성 AI 안경 / 드디어 예약 시작"
+- 핵심 사실: 삼성·젠틀몬스터 AI 글래스 미국 12일 사전예약(호아킨 피닉스 광고) / 말로 번역·촬영 등 AI 기능(5월 첫 공개) / 한국 판매 시기·가격은 보도마다 달라 원문 확인 후 제작(12월 중순 한국·미국 판매설은 보도 단계)
+- 다룬 채널: 없음(국내 언론 여러 곳)
+
 ## 2026-11-08 17:23 — ① 클로드 코드 '다시 묻지 않기' 승인 기록에 비밀키가 평문 저장, 공개 깃허브에서 노출
 - 출처: https://aiweekly.co/alerts/apiiro-claude-code-dont-ask-again-leaks-keys-in-1122-repos (보안업체 Apiiro 보고를 AI Weekly 11/8이 전함, 원문 미확인)
 - 추천 형식: 카드뉴스
