@@ -47,3 +47,7 @@
 2026-11-09 09:24 | 삼성·구글 | 삼성·젠틀몬스터 AI 글래스 미국 11/12 사전예약 | https://www.aitimes.com/news/articleView.html?idxno=217133
 2026-11-09 09:24 | 앤트로픽(알림 제외·연구 글) | 에이전트 메모리 설계 연구 | https://news.hada.io/topic?id=36775
 2026-11-09 09:24 | 아마존(알림 제외·미국 한정) | 문자로 쓰는 알렉사 쇼핑 | https://www.aitimes.com/news/articleView.html?idxno=217142
+2026-11-09 09:50 | 바이브코딩(경쟁 주제·브릿지AI에듀, 풀어봇) | 아티팩트·Sites·캔버스로 한 문장 업무 도구 / 클로드vs챗GPTvs제미나이 홈페이지 대결 | https://youtu.be/MHTLatchdk8 , https://youtu.be/SjS-VtJNuzs
+2026-11-09 09:50 | 프롬프트(경쟁 주제·밤부마마 AI) | 내 AI만 멍청한 이유: 지시문 4가지 바꾸기 | https://youtu.be/vLjGVqNpvdI
+2026-11-09 09:50 | 문자 작성(경쟁 주제·전미경의 사이다talk) | AI로 거절·사과·부탁 문자 쓰기 | https://youtu.be/nwO0R97b6tQ
+2026-11-09 09:50 | 문서 요약(경쟁 주제·히어로이) | 파일 올리고 한 줄로 내 할 일만 정리 | https://youtu.be/4i_BTYRdNzw

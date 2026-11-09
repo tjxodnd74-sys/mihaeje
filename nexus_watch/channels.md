@@ -78,3 +78,5 @@
 - 2026-11-08 18:23: A조 5개 채널·인스타(@reelta.gangsa, @momdi.tip)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치(에이전트 경유) 긱뉴스·AI타임스 PROVENANCE_REQUIRED 차단, add_repo 도구 미노출(바로 clone/push). vidIQ 미사용(정해진 시각 아님, 오늘 15크레딧 소진). 새 소식 없음.
 - 2026-11-09 08:23: C조 6개 채널·인스타(@horang.wave, @grit_park_)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음(참고: 유튜브 코리아 블로그 '11월 이달의 크리에이터'로 CONNECT AI LAB 선정, 주제 아님). 웹페치(에이전트 경유) 긱뉴스·AI타임스·dev.to·AI Weekly 전부 PROVENANCE_REQUIRED 차단, WebFetch·add_repo 도구 미노출(바로 clone/push). vidIQ 미사용(정해진 시각 아님). 새 소식 없음.
 - 2026-11-09 09:24: A조 5개 채널·인스타(@prompt_what, @biggie_ai)·화제 검색 2건·레딧·뉴스 검색 모두 최근 3일 날짜 확인되는 글 없음. 웹페치(에이전트 경유) 긱뉴스·AI타임스·앤트로픽·제미나이 릴리스노트 성공, The Neuron·openai.com 실패. vidIQ 잔액 60(80 미만)이라 아웃라이어 검색 생략. 새 소식 1건(삼성 AI 글래스 사전예약).
+- 2026-11-09 09:50: 사용자 지적 후 재확인. 유튜브는 웹페치가 robots로 전부 차단(검색·RSS·채널 페이지) → WebSearch로는 채널 최신 영상 확인 불가. vidIQ youtube_search(5크레딧, 한국·최근 3일·AI 키워드)로 소형 채널 주제 확인. 목록 16개 채널 개별 확인은 channel_videos 채널당 5크레딧 필요.
+vidIQ 사용: 2026-11-09 09:50 5크레딧, 잔액 55
