@@ -1,0 +1,151 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#444;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.k{width:1080px;height:1350px;position:relative;overflow:hidden;background:#EDF8F3;margin-bottom:20px}
+.hd{height:140px;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.hd .t{font-size:46px;font-weight:900;letter-spacing:-.04em;color:#10302C}
+.hd .t em{font-style:normal;color:#E8492E}
+.hd .c{font-size:28px;font-weight:900;color:#fff;background:#E8492E;border-radius:40px;padding:10px 24px}
+.pn{position:absolute;left:20px;width:1040px;height:580px;border:6px solid #10302C;border-radius:18px;overflow:hidden;background:#ddd}
+.pn img{width:100%;height:100%;object-fit:cover;display:block}
+.p1{top:140px}.p2{top:732px}
+.b{position:absolute;background:#fff;border:4px solid #10302C;border-radius:34px;padding:18px 26px;font-size:37px;font-weight:800;line-height:1.32;letter-spacing:-.035em;color:#10302C;box-shadow:0 6px 0 rgba(16,48,44,.25);max-width:540px}
+.b.pg{background:#E3EEFF}
+.b.fr{background:#FFF1C7}
+.b small{display:block;font-size:28px;font-weight:700;color:#4E6B66;margin-top:6px}
+.b:after{content:"";position:absolute;width:26px;height:26px;background:inherit;border-right:4px solid #10302C;border-bottom:4px solid #10302C;bottom:-16px;transform:rotate(45deg)}
+.b.tl:after{left:60px}.b.tr:after{right:60px}
+.b.no:after{display:none}
+.nar{position:absolute;background:#10302C;color:#fff;font-size:30px;font-weight:800;padding:10px 20px;border-radius:12px;letter-spacing:-.03em}
+.ft{position:absolute;bottom:6px;right:30px;font-size:22px;font-weight:700;color:#8AA39E}
+
+#k1{background:#0B2624}
+#k1 .img{position:absolute;left:0;top:0;width:1080px;height:820px;overflow:hidden}
+#k1 .img img{position:absolute;height:820px;left:-200px;top:0}
+#k1 .img:after{content:"";position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(transparent,#0B2624)}
+#k1 .tag{position:absolute;left:56px;top:46px;background:#FFD43B;color:#111;font-size:30px;font-weight:900;padding:8px 18px;border-radius:10px}
+#k1 .tt{position:absolute;left:56px;right:40px;top:780px;font-size:126px;font-weight:900;line-height:1.08;letter-spacing:-.055em;color:#fff;text-shadow:0 6px 24px rgba(0,0,0,.6)}
+#k1 .tt em{font-style:normal;color:#FFD43B}
+#k1 .hd2{position:absolute;left:60px;right:60px;bottom:44px;display:flex;justify-content:space-between;font-size:26px;font-weight:700;color:#7FA39C}
+
+#k6{background:#10302C;color:#fff}
+#k6 .in{padding:90px 64px 0}
+#k6 .lab{font-size:28px;font-weight:800;color:#7EE0C3;letter-spacing:.08em}
+#k6 h1{font-size:96px;font-weight:900;line-height:1.16;letter-spacing:-.045em;margin-top:18px}
+#k6 h1 em{font-style:normal;color:#FFD43B}
+#k6 .bars{margin-top:70px;display:flex;flex-direction:column;gap:30px}
+#k6 .bar{display:flex;align-items:center;gap:24px}
+#k6 .bar .nm{width:260px;font-size:42px;font-weight:800}
+#k6 .bar .tr{flex:1;height:110px;background:#1C4842;border-radius:16px;position:relative;overflow:hidden}
+#k6 .bar .fl{position:absolute;left:0;top:0;bottom:0;border-radius:16px;display:flex;align-items:center;justify-content:flex-end;padding-right:24px;font-size:54px;font-weight:900}
+#k6 .box{margin-top:70px;background:#173E39;border-radius:24px;padding:40px 40px;font-size:41px;font-weight:700;line-height:1.5;letter-spacing:-.03em}
+#k6 .box b{color:#FFD43B}
+#k6 .src{position:absolute;left:64px;right:64px;bottom:50px;font-size:24px;font-weight:600;color:#86A8A1;line-height:1.5}
+
+#k7{background:#10302C;color:#fff}
+#k7 .in{padding:80px 64px 0}
+#k7 .lab{font-size:28px;font-weight:800;color:#FF9A85;letter-spacing:.08em}
+#k7 h1{font-size:92px;font-weight:900;line-height:1.15;letter-spacing:-.045em;margin-top:16px}
+#k7 h1 em{font-style:normal;color:#FFD43B}
+#k7 .row{display:flex;flex-direction:column;gap:14px;margin-top:36px}
+#k7 .chip{background:#1C4842;border-radius:18px;padding:18px 26px;font-size:40px;font-weight:800}
+#k7 .chip i{font-style:normal;color:#7EE0C3;margin-right:12px}
+#k7 .copy{width:900px;margin-top:46px;border:3px dashed #7EE0C3;border-radius:24px;padding:36px 34px 28px;position:relative;background:#173E39}
+#k7 .copy .tg{position:absolute;top:-20px;left:30px;background:#7EE0C3;color:#10302C;font-size:24px;font-weight:900;padding:4px 16px;border-radius:10px}
+#k7 .copy p{font-size:41px;font-weight:700;line-height:1.5;letter-spacing:-.03em}
+#k7 .copy p b{color:#FFD43B}
+#k7 .bot{position:absolute;left:64px;right:40px;bottom:46px;display:flex;align-items:flex-end;justify-content:space-between}
+#k7 .bot .tx{font-size:38px;font-weight:800;line-height:1.4}
+#k7 .bot .tx span{display:block;font-size:26px;color:#9CC0B8;font-weight:700;margin-top:10px}
+#k7 .bot img{width:200px}
+#k7 .sb{position:absolute;right:200px;bottom:300px;background:#fff;color:#10302C;font-size:30px;font-weight:800;padding:14px 22px;border-radius:24px}
+</style></head><body>
+
+<div class="k" id="k1">
+ <div class="img"><img src="p8.png"></div>
+ <div class="tag">AI 공감툰</div>
+ <div class="tt">AI 꺼지면<br><em>멈춰 버리는</em><br>사람 4단계</div>
+ <div class="hd2"><span>@nexus_studio.kr</span><span>넘겨 보기 →</span></div>
+</div>
+
+<div class="k" id="k2">
+ <div class="hd"><div class="t">LV.1 <em>점심 메뉴</em>도 AI</div><div class="c">STAGE 1</div></div>
+ <div class="pn p1"><img src="p1.png"></div>
+ <div class="b tl" style="top:166px;left:44px">펭귄아, 점심<br>뭐 먹을지 골라 줘~</div>
+ <div class="b pg tr" style="top:166px;right:44px">어제도, 그제도<br>제가 골랐는데요…?</div>
+ <div class="pn p2"><img src="p2.png"></div>
+ <div class="b pg tl" style="top:736px;right:6px;width:575px;max-width:600px;min-height:200px;padding-top:40px;font-size:42px">오늘은 직접<br>골라 보실래요? 😅</div>
+ <div class="nar" style="top:1250px;left:44px">메뉴판 앞 15분째…</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+
+<div class="k" id="k3">
+ <div class="hd"><div class="t">LV.2 <em>카톡 답장</em>도 AI</div><div class="c">STAGE 2</div></div>
+ <div class="pn p1"><img src="p3.png"></div>
+ <div class="b tl" style="top:166px;left:44px">친구가 "ㅋㅋ 뭐해?"래<br>뭐라고 답하지?</div>
+ <div class="b pg tr" style="top:166px;right:44px">맡겨 주세요!<br>센스 있게!</div>
+ <div class="pn p2"><img src="p4.png"></div>
+ <div class="b fr no" style="top:756px;left:44px;max-width:560px;border-radius:20px"><small style="margin:0 0 6px">도착한 답장 💬</small>"좋은 질문이에요!<br>저는 현재 휴식 중이며,<br>다음과 같이 정리해 드릴게요…"</div>
+ <div class="b tr" style="top:1080px;left:44px;font-size:46px">너… 이거<br>AI 썼지? 🤨</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+
+<div class="k" id="k4">
+ <div class="hd"><div class="t">LV.3 <em>읽지도 않고</em> 제출</div><div class="c">STAGE 3</div></div>
+ <div class="pn p1"><img src="p5.png"></div>
+ <div class="b pg tl" style="top:166px;left:44px">보고서 다 됐어요!<br>한번 읽어 보세요~</div>
+ <div class="b tr" style="top:166px;right:44px">읽긴 뭘 읽어~<br>바로 제출!</div>
+ <div class="pn p2"><img src="p6.png"></div>
+ <div class="b fr tl" style="top:752px;left:44px">3쪽 이 부분,<br>직접 설명해 볼래요?</div>
+ <div class="b tr" style="top:752px;right:44px">그, 그건…<br>펭귄이…<small>(머릿속 하얘짐)</small></div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+
+<div class="k" id="k5">
+ <div class="hd"><div class="t">LV.MAX <em>AI 점검</em> 10분</div><div class="c">STAGE 4</div></div>
+ <div class="pn p1"><img src="p7.png"></div>
+ <div class="b pg tl" style="top:166px;left:44px">10분만 점검하고<br>올게요~ 👋</div>
+ <div class="b tr" style="top:166px;right:44px">가지 마…!<br>나 혼자 못 해…</div>
+ <div class="pn p2"><img src="p8.png"></div>
+ <div class="b pg tr" style="top:752px;right:40px">저 왔어요…<br>괜찮으세요?!</div>
+ <div class="nar" style="top:756px;left:44px">10분 뒤: 커서만 깜빡깜빡</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+
+<div class="k" id="k6">
+ <div class="in">
+  <div class="lab">REAL STUDY · 웃자고 한 얘기만은 아니에요</div>
+  <h1>AI한테 다 맡긴 쪽,<br>퀴즈 점수가 <em>뚝</em></h1>
+  <div class="bars">
+   <div class="bar"><div class="nm">직접 코딩</div><div class="tr"><div class="fl" style="width:67%;background:#7EE0C3;color:#10302C">67점</div></div></div>
+   <div class="bar"><div class="nm">AI 도움</div><div class="tr"><div class="fl" style="width:50%;background:#FF8A73;color:#10302C">50점</div></div></div>
+  </div>
+  <div class="box">앤트로픽 실험(52명)<br>처음 보는 코딩 도구를 배우게 했더니<br>AI 쓴 쪽이 <b>이해도 퀴즈 17점 낮음</b>.<br>시간은 겨우 <b>2분 빨랐어요</b>(의미 있는 차이 아님).<br>그런데 AI한테 <b>"왜 이렇게 돼?"</b>를 물은 사람들은<br>점수가 높게 나왔어요.</div>
+ </div>
+ <div class="src">출처: Anthropic 연구 "How AI assistance impacts the formation of coding skills"(2026.1.29). 소규모 실험이고, 일을 마친 직후 이해도만 잰 결과예요.</div>
+</div>
+
+<div class="k" id="k7">
+ <div class="in">
+  <div class="lab">HOW TO · 뇌 안 멈추게 AI 쓰는 법</div>
+  <h1>답만 받지 말고<br><em>'왜'</em>까지 받기</h1>
+  <div class="row">
+   <div class="chip"><i>①</i>시키기 전, 내 답부터 한 줄 적기</div>
+   <div class="chip"><i>②</i>받은 결과는 "왜?" 한 번 묻기</div>
+   <div class="chip"><i>③</i>틀린 곳 찾기는 내가 먼저</div>
+  </div>
+  <div class="copy"><div class="tg">COPY · PASTE</div>
+   <p>답을 바로 주지 말고 <b>먼저 내 생각을 물어봐.</b><br>내 답을 들은 뒤 <b>틀린 부분과 이유</b>를 알려 주고,<br>마지막에 <b>내가 이해했는지 질문 1개</b>로 확인해 줘.</p>
+  </div>
+ </div>
+ <div class="sb">뇌도 같이 써요! 🧠</div>
+ <div class="bot">
+  <div class="tx">AI는 대신 생각하는 게 아니라<br>같이 생각하는 거예요<span>📌 저장해 두고 AI 쓸 때 꺼내 보세요<br>@nexus_studio.kr · 팔로우하면 매일 AI 꿀팁</span></div>
+  <img src="../assets/heart.png">
+ </div>
+</div>
+</body></html>
