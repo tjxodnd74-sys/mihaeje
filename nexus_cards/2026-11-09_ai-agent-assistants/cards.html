@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Regular.woff2);font-weight:400}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-SemiBold.woff2);font-weight:600}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+:root{--bg:#0A1618;--vi:#4FD8C8;--vi2:#2BB3A3;--am:#FFC861;--tx:#F3F4FA;--mu:#9EA3BD;--ln:rgba(255,255,255,.10);--red:#FF6B6B;--grn:#5BE0A0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#333;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.mono{font-family:'DejaVu Sans Mono',monospace;letter-spacing:.08em}
+.card{width:1080px;height:1350px;position:relative;overflow:hidden;margin:0 0 40px;color:var(--tx);
+ background:radial-gradient(900px 600px at 85% 0%,rgba(43,179,163,.20),transparent 60%),radial-gradient(700px 500px at 0% bottom,rgba(70,180,255,.10),transparent 60%),var(--bg)}
+.card:before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:54px 54px;pointer-events:none}
+.bar{position:absolute;left:64px;right:64px;top:52px;display:flex;justify-content:space-between;align-items:center;font-size:22px;color:var(--mu);padding-bottom:22px;border-bottom:2px dashed var(--ln)}
+.bar .l{display:flex;align-items:center;gap:14px}
+.bar img{width:34px;height:34px}
+.bar .r{color:var(--vi);font-weight:700}
+.wrap{position:absolute;left:64px;right:64px;top:150px}
+.lab{font-size:26px;color:var(--vi);font-weight:700;margin-bottom:22px}
+.h{font-weight:900;font-size:96px;line-height:1.12;letter-spacing:-.045em}
+.h .v{color:var(--vi)} .h .a{color:var(--am)}
+.s{margin-top:26px;font-size:34px;color:#C9CCDD;font-weight:500;letter-spacing:-.02em;line-height:1.5}
+.s b{color:var(--am);font-weight:800}
+.box{position:absolute;left:64px;right:64px;border:2px solid var(--ln);border-radius:28px;background:rgba(255,255,255,.035);padding:60px 56px}
+.box .tag{position:absolute;top:-17px;left:36px;background:var(--bg);padding:0 14px;font-size:22px;color:var(--mu)}
+.foot{position:absolute;left:64px;right:64px;bottom:56px;font-size:24px;color:#6E7390;font-weight:500;line-height:1.5}
+.stamp{display:inline-block;border:4px solid var(--vi);color:var(--vi);font-weight:900;font-size:30px;padding:6px 20px;border-radius:10px;transform:rotate(-6deg);letter-spacing:.12em}
+
+/* cover */
+#k1{background:url(cover.png) center/cover}
+#k1:before{display:none}
+#k1 .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,10,24,.92) 0%,rgba(9,10,24,.7) 38%,rgba(9,10,24,0) 60%,rgba(9,10,24,.25))}
+#k1 .tt{position:absolute;left:64px;top:118px}
+#k1 .h{font-size:112px;margin-top:30px}
+#k1 .s{font-size:34px}
+#k1 .bl{position:absolute;left:64px;bottom:52px;font-size:22px;color:rgba(255,255,255,.6)}
+#k1 .br{position:absolute;right:64px;bottom:52px;font-size:22px;color:rgba(255,255,255,.6)}
+
+/* map */
+.map{display:flex;flex-direction:column;gap:30px}
+.mrow{display:flex;align-items:center;gap:24px}
+.pill{flex:1;height:124px;border-radius:26px;display:flex;align-items:center;gap:20px;padding:0 30px;font-size:40px;font-weight:700}
+.pill.o{background:rgba(79,216,200,.12);border:2px solid rgba(79,216,200,.35);color:#D9D4FF}
+.pill.n{background:#fff;color:#14162A}
+.pill i{font-style:normal;font-size:44px}
+.arr{color:var(--am);font-size:46px;font-weight:900}
+
+/* quote */
+.q{background:#FBF7EA;color:#1C1D28;border-radius:20px;padding:48px 50px;font-family:Georgia,serif;font-size:44px;line-height:1.5}
+.q mark{background:#FFE37A;padding:0 4px}
+.qk{margin-top:44px;font-size:54px;font-weight:800;line-height:1.4;letter-spacing:-.03em}
+.qk span{color:var(--am)}
+
+/* list */
+.ol{display:flex;flex-direction:column;gap:54px}
+.ol .it{display:flex;align-items:baseline;gap:30px;font-size:50px;font-weight:700;letter-spacing:-.03em}
+.ol .it .n{font-size:30px;color:var(--vi);font-weight:700;width:52px}
+.ol .it small{display:block;font-size:33px;color:var(--mu);font-weight:500;margin-top:6px}
+.ol .it.hot{color:var(--am)}
+
+/* ox */
+.ox{position:absolute;left:64px;right:64px;top:620px;display:flex;gap:24px}
+.ox .c{flex:1;border-radius:28px;padding:50px 44px;min-height:560px;border:2px solid var(--ln);background:rgba(255,255,255,.03)}
+.ox .c.x{border-color:rgba(255,107,107,.6);background:rgba(255,107,107,.08)}
+.ox .hd{font-size:30px;font-weight:700;margin-bottom:26px;color:var(--grn)}
+.ox .x .hd{color:var(--red)}
+.ox li{list-style:none;font-size:44px;font-weight:700;line-height:1.35;margin-bottom:36px;letter-spacing:-.02em}
+
+/* copy box */
+.copy{font-size:46px;font-weight:700;line-height:1.9;letter-spacing:-.02em}
+.copy .f{background:rgba(255,200,97,.18);color:var(--am);border:2px solid rgba(255,200,97,.55);border-radius:10px;padding:0 10px}
+.tip{font-size:37px;color:#C9CCDD;line-height:1.65;font-weight:500}
+.tip b{color:var(--am)}
+.best{position:absolute;right:40px;top:-26px;border:4px solid var(--red);color:var(--red);font-weight:900;font-size:26px;padding:4px 16px;border-radius:8px;transform:rotate(6deg);background:var(--bg);letter-spacing:.1em}
+
+/* end */
+#k9 .glow{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(79,216,200,.45) 0%,rgba(43,179,163,.18) 45%,transparent 70%)}
+#k9 .floor{position:absolute;left:50%;top:640px;transform:translateX(-50%);width:420px;height:70px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.55),transparent 70%)}
+#k9 .peng{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:300px;filter:drop-shadow(0 20px 40px rgba(43,179,163,.5))}
+#k9 .bubble{position:absolute;left:610px;top:190px;background:#fff;color:#14162A;font-weight:800;font-size:32px;padding:18px 28px;border-radius:26px 26px 26px 6px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+#k9 .c{position:absolute;left:0;right:0;top:720px;text-align:center}
+#k9 .h{font-size:88px}
+#k9 .key{display:inline-block;margin-top:40px;border:4px solid var(--am);color:var(--am);font-size:54px;font-weight:900;padding:14px 46px;border-radius:14px}
+#k9 .s{text-align:center}
+/* custom */
+.note{margin-top:40px;font-size:35px;color:#C9CCDD;line-height:1.6;font-weight:500}
+.note b{color:var(--tx)}
+.three{position:absolute;left:64px;right:64px;top:600px;display:flex;flex-direction:column;gap:26px}
+.three .o{display:flex;align-items:center;gap:34px;border:2px solid var(--ln);background:rgba(255,255,255,.035);border-radius:28px;padding:54px 44px}
+.three .o .ic{width:110px;height:110px;border-radius:26px;background:rgba(79,216,200,.16);display:flex;align-items:center;justify-content:center;font-size:56px;flex:none}
+.three .o b{display:block;font-size:54px;font-weight:900;letter-spacing:-.03em}
+.three .o small{display:block;font-size:32px;color:var(--mu);font-weight:500;margin-top:8px}
+.ox li{font-size:48px;margin-bottom:44px}
+
+#k1{background:#0E1A1C}
+#k1:before{display:none}
+#k1 .img{position:absolute;left:0;top:0;width:1080px;height:820px;overflow:hidden}
+#k1 .img img{position:absolute;height:820px;left:50%;transform:translateX(-50%);top:0}
+#k1 .img:after{content:"";position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(transparent,#0E1A1C)}
+#k1 .tg{position:absolute;left:60px;top:50px;background:#FFD43B;color:#111;font-size:30px;font-weight:900;padding:8px 20px;border-radius:10px;letter-spacing:-.02em}
+#k1 .tt{position:absolute;left:58px;right:40px;top:760px;font-size:128px;font-weight:900;line-height:1.08;letter-spacing:-.055em;color:#fff;text-shadow:0 6px 24px rgba(0,0,0,.6)}
+#k1 .tt em{font-style:normal;color:#FFD43B}
+#k1 .hd2{position:absolute;left:60px;right:60px;bottom:44px;display:flex;justify-content:space-between;font-size:24px;font-weight:700;color:#8A7F90}
+.parts{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.parts .pt{border-radius:26px;padding:40px 36px;background:rgba(79,216,200,.12);border:2px solid rgba(79,216,200,.35)}
+.parts .pt i{font-style:normal;font-size:60px;display:block}
+.parts .pt b{display:block;font-size:46px;font-weight:900;margin-top:14px;letter-spacing:-.03em}
+.parts .pt small{display:block;font-size:30px;color:var(--mu);font-weight:600;margin-top:8px}
+.parts .pt.no{background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.55)}
+.parts .pt.no b{color:var(--red)}
+.tl{position:relative;padding-left:60px;display:flex;flex-direction:column;gap:42px}
+.tl:before{content:'';position:absolute;left:18px;top:20px;bottom:20px;width:4px;background:linear-gradient(var(--vi),var(--am))}
+.tl .ev{position:relative}
+.tl .ev:before{content:'';position:absolute;left:-54px;top:14px;width:28px;height:28px;border-radius:50%;background:var(--bg);border:5px solid var(--vi)}
+.tl .ev.hot:before{border-color:var(--am);background:var(--am)}
+.tl .d{font-size:30px;color:var(--vi);font-weight:800}
+.tl .ev.hot .d{color:var(--am)}
+.tl b{display:block;font-size:48px;font-weight:900;letter-spacing:-.03em;margin-top:4px}
+.tl small{display:block;font-size:30px;color:var(--mu);font-weight:500;margin-top:4px}
+.sc{display:flex;flex-direction:column;gap:24px}
+.sc .r{display:flex;align-items:center;gap:30px;background:#F6F3EE;color:#17161C;border-radius:26px;padding:34px 38px}
+.sc .r .ic{width:104px;height:104px;border-radius:24px;background:#FFE7C2;display:flex;align-items:center;justify-content:center;font-size:56px;flex:none}
+.sc .r b{display:block;font-size:44px;font-weight:900;letter-spacing:-.03em}
+.sc .r small{display:block;font-size:30px;color:#6A6773;font-weight:600;margin-top:6px}
+.chk{display:flex;flex-direction:column;gap:30px}
+.chk .c1{display:flex;align-items:center;gap:26px;font-size:46px;font-weight:800;letter-spacing:-.03em}
+.chk .c1 .bx{width:62px;height:62px;border:4px solid var(--am);border-radius:14px;flex:none}
+.chk .c1 small{display:block;font-size:30px;color:var(--mu);font-weight:500;margin-top:4px}
+.big{font-size:150px;font-weight:900;letter-spacing:-.05em;line-height:1;color:var(--am)}
+.duo{display:flex;gap:22px}
+.duo .d1{flex:1;border-radius:26px;padding:60px 36px;text-align:center;border:3px solid rgba(255,200,97,.6);background:rgba(255,200,97,.1)}
+.duo .d1 b{display:block;font-size:110px;font-weight:900;color:var(--am);line-height:1}
+.duo .d1 span{display:block;font-size:40px;font-weight:800;margin-top:14px}
+.duo .d1 small{display:block;font-size:28px;color:var(--mu);margin-top:6px}
+#k6 .ox .c{min-height:680px;padding:56px 44px}
+.sc .r{padding:36px 40px}
+
+.cmp{width:100%;border-collapse:separate;border-spacing:0 16px}
+.cmp th{font-size:28px;color:var(--mu);font-weight:700;text-align:left;padding:0 18px}
+.cmp td{background:rgba(255,255,255,.05);font-size:34px;font-weight:700;padding:30px 20px;line-height:1.35;letter-spacing:-.02em;vertical-align:middle}
+.cmp td:first-child{border-radius:22px 0 0 22px;font-size:40px;font-weight:900;color:var(--vi);width:250px}
+.cmp td:last-child{border-radius:0 22px 22px 0}
+.cmp td small{display:block;font-size:26px;color:var(--mu);font-weight:500;margin-top:4px}
+.kv{display:flex;flex-direction:column;gap:22px}
+.kv .r{display:flex;gap:28px;align-items:flex-start;border-bottom:2px dashed var(--ln);padding-bottom:22px}
+.kv .r:last-child{border-bottom:0;padding-bottom:0}
+.kv .k{flex:none;width:170px;font-size:30px;color:var(--vi);font-weight:800;padding-top:8px}
+.kv .v{font-size:42px;font-weight:800;line-height:1.35;letter-spacing:-.03em}
+.kv .v small{display:block;font-size:29px;color:var(--mu);font-weight:500;margin-top:6px}
+
+.cmp{border-spacing:0 26px}
+.cmp th{font-size:32px}
+.cmp td{font-size:40px;padding:36px 22px}
+.cmp td:first-child{font-size:46px}
+.cmp td small{font-size:29px}
+.kv{gap:40px}.kv .r{padding-bottom:40px}
+.kv .v{font-size:46px}.kv .v small{font-size:31px}
+.kv .k{font-size:32px}
+#k5 .q{font-size:54px;padding:60px 56px}
+#k5 .qk{font-size:62px;margin-top:60px}
+#k5 .note{font-size:38px;margin-top:40px}
+.chk{gap:52px}.chk .c1{font-size:52px}.chk .c1 small{font-size:33px}
+.chk .c1 .bx{width:70px;height:70px}
+#k6 .box,#k7 .box{top:470px!important}
+.copy{font-size:50px}
+.tip{font-size:39px}
+.ox li{font-size:52px;margin-bottom:56px}
+</style></head><body>
+
+<section class="card" id="k1">
+ <div class="img"><img src="cover.png"></div>
+ <div class="tg">AI 꿀팁</div>
+ <div class="tt">자는 동안 일하는<br>AI 비서, <em>카드 주기 전</em><br>이것부터 켜세요</div>
+ <div class="hd2 mono"><span>@nexus_studio.kr</span><span>FILE 01/09 · SWIPE →</span></div>
+</section>
+
+<section class="card" id="k2">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AGENT</div><div class="r">FILE 02/09</div></div>
+ <div class="wrap"><div class="lab mono">WHAT HAPPENED</div>
+  <div class="h">이제 AI가<br><span class="a">대답 말고 '일'</span>을 해요</div>
+  <div class="s">내가 자고 있어도 <b>24시간</b> 돌아가는<br>'AI 비서'가 올해 줄줄이 나왔어요.</div></div>
+ <div class="box" style="top:720px;padding:54px 56px"><div class="tag mono">TIMELINE · 2026</div>
+  <div class="tl">
+   <div class="ev"><div class="d mono">6월</div><b>Aside</b><small>로그인한 사이트를 대신 다루는 AI 브라우저</small></div>
+   <div class="ev"><div class="d mono">8.11</div><b>그록 봇 (xAI)</b><small>자기 컴퓨터를 가진 상시 AI 비서</small></div>
+   <div class="ev hot"><div class="d mono">9.29</div><b>챗GPT 닷츠 (오픈AI)</b><small>4,000개 넘는 앱과 연결되는 상시 비서</small></div>
+  </div></div>
+</section>
+
+<section class="card" id="k3">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AGENT</div><div class="r">FILE 03/09</div></div>
+ <div class="wrap"><div class="lab mono">COMPARE · 한눈에</div>
+  <div class="h">셋 다 '비서'인데<br><span class="v">일하는 곳</span>이 달라요</div></div>
+ <div style="position:absolute;left:64px;right:64px;top:470px">
+  <table class="cmp">
+   <tr><th>이름</th><th>어디서 일하나</th><th>누가 쓰나</th></tr>
+   <tr><td>닷츠</td><td>자기 클라우드 컴퓨터·브라우저<small>슬랙·팀즈로 말 걸기</small></td><td>챗GPT Pro·<br>Business Premium<small>지원 국가부터</small></td></tr>
+   <tr><td>그록 봇</td><td>자기 컴퓨터<small>앱·도구 안에서 24시간</small></td><td>SuperGrok 등<small>xAI 공식 안내 기준</small></td></tr>
+   <tr><td>Aside</td><td>내 PC의 AI 브라우저<small>로그인된 사이트를 직접 조작</small></td><td>다운로드형<small>요금은 공식 페이지 확인</small></td></tr>
+  </table>
+ </div>
+ <div class="foot">국가별 제공 여부·요금은 자주 바뀌어요. 쓰기 전 공식 페이지 확인!</div>
+</section>
+
+<section class="card" id="k4">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AGENT</div><div class="r">FILE 04/09</div></div>
+ <div class="wrap"><div class="lab mono">CASE · 챗GPT 닷츠</div>
+  <div class="h">밀린 청구서,<br><span class="a">"보내도 돼요?"</span></div></div>
+ <div class="box" style="top:460px;padding:70px 52px"><div class="tag mono">OPENAI · 9.29 발표</div>
+  <div class="kv">
+   <div class="r"><div class="k mono">하는 일</div><div class="v">고객 의견 모으기, 버그 수정 준비<small>새 데이터 오면 분석 다시 돌리기</small></div></div>
+   <div class="r"><div class="k mono">실제 예</div><div class="v">밀린 청구서를 만들어 두고<br><span style="color:var(--am)">사용자가 승인한 뒤</span> 발송<small>초기 외부 테스트 사례(AA 보도)</small></div></div>
+   <div class="r"><div class="k mono">안전장치</div><div class="v">쓸 앱을 직접 고르고<br>'승인 필요·금지' 규칙 설정<small>배경 조사는 읽기 전용</small></div></div>
+  </div></div>
+</section>
+
+<section class="card" id="k5">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AGENT</div><div class="r">FILE 05/09</div></div>
+ <div class="wrap"><div class="lab mono">QUOTE · 공식 근거</div>
+  <div class="h">핵심은<br><span class="v">'얼마나 맡기나'</span></div></div>
+ <div style="position:absolute;left:64px;right:64px;top:440px">
+  <div class="q">"This allows you to trust your dot with <mark>as much responsibility as you're comfortable with.</mark>"</div>
+  <div class="qk">→ <span>내가 편한 만큼만</span><br>책임을 맡길 수 있게 했다</div>
+  <div class="note">샘 올트먼 오픈AI CEO가 닷츠의<br><b>승인 규칙</b>을 설명하며 한 말이에요.</div>
+ </div>
+ <div class="foot">출처: Anadolu Agency(9/29)·TechCrunch(9/29)</div>
+</section>
+
+<section class="card" id="k6">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AGENT</div><div class="r">FILE 06/09</div></div>
+ <div class="wrap"><div class="lab mono">RULE · 이것만 정하세요</div>
+  <div class="h">AI 비서에게<br><span class="a">'멈춤 버튼'</span> 4개</div></div>
+ <div class="box" style="top:500px"><div class="tag mono">CHECKLIST</div>
+  <div class="chk">
+   <div class="c1"><div class="bx"></div><div>결제 전엔 꼭 물어보기<small>금액 상관없이 승인 받고 진행</small></div></div>
+   <div class="c1"><div class="bx"></div><div>보내기 전엔 초안만<small>메일·메시지·청구서는 내가 확인 후 발송</small></div></div>
+   <div class="c1"><div class="bx"></div><div>지우기·덮어쓰기 금지<small>파일 정리는 사본으로만</small></div></div>
+   <div class="c1"><div class="bx"></div><div>연결 앱은 최소로<small>처음엔 읽기 전용부터</small></div></div>
+  </div></div>
+</section>
+
+<section class="card" id="k7">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AGENT</div><div class="r">FILE 07/09</div></div>
+ <div class="wrap"><div class="lab mono">COPY · PASTE · 첫 지시</div>
+  <div class="h">비서한테 맡길 때<br><span class="a">첫 메시지</span>는 이렇게</div></div>
+ <div class="box" style="top:500px"><div class="tag mono">COPY · PASTE</div><div class="best mono">SAVE</div>
+  <div class="copy">매일 아침 <span class="f">받은 메일</span>을 정리해 줘.<br><span class="f">답장 필요한 것</span>만 골라 초안을 써 두고,<br>보내기·결제·삭제는 <span class="f">꼭 나한테 먼저</span> 물어봐.<br>끝나면 한 일을 <span class="f">3줄</span>로 보고해 줘.</div>
+  <div class="tip" style="margin-top:20px"><b>받은 메일</b> 자리에 일정·영수증·고객 문의를 넣어도 돼요.</div></div>
+</section>
+
+<section class="card" id="k8">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AGENT</div><div class="r">FILE 08/09</div></div>
+ <div class="wrap"><div class="lab mono">DO · DON'T</div>
+  <div class="h">처음엔 이런 일부터<br><span class="v">맡겨 보세요</span></div></div>
+ <div class="ox" style="top:480px">
+  <div class="c"><div class="hd mono">✔ 먼저 맡기기</div><ul>
+   <li>자료 모아 요약</li><li>답장 초안</li><li>일정 정리</li><li>가격 비교표</li></ul></div>
+  <div class="c x"><div class="hd mono">✕ 아직은 직접</div><ul>
+   <li>결제·송금</li><li>계약·서명</li><li>파일 삭제</li><li>비밀번호 입력</li></ul></div>
+ </div>
+ <div class="foot">Aside 정보는 외부 리뷰(eesel, 6월) 기준이에요. 그록 봇은 xAI 공식 소식 기준.</div>
+</section>
+
+<section class="card" id="k9">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AGENT</div><div class="r">END OF FILE</div></div>
+ <div class="glow"></div><div class="floor"></div><img class="peng" src="../assets/heart.png"><div class="bubble">결제는 꼭 물어볼게요!</div>
+ <div class="c"><div class="h">AI 비서 쓰기 전<br>저장해 두세요</div>
+  <div class="key">📌 저장 · 팔로우</div>
+  <div class="s" style="margin-top:36px">바로 써먹는 AI 소식, 넥서스가 쉽게 정리해요<br><span class="mono" style="color:var(--vi);font-size:28px">@nexus_studio.kr</span></div></div>
+</section>
+</body></html>

@@ -7,7 +7,7 @@
 - 핵심 사실: 하루 12시간 AI와 대화하며 위로받는 청년 사례 / 무조건 맞장구치는 AI 문제 제기 / 넥서스 각도: '반대 의견도 말해 줘' 지시문 팁(1곳만 다룸, 11/7 'AI 없이 글쓰기'와 같은 시리즈)
 - 다룬 채널: @ebsstory
 
-## 2026-11-09 14:24 — [제작 요청됨 2026-11-09 15:25] 🔥바로제작 ① AI 비서(에이전트) 3종 비교: Aside·챗GPT 닷츠·피클
+## 2026-11-09 14:24 — [완료 카드뉴스] [제작 요청됨 2026-11-09 15:25] ① AI 비서(에이전트) 3종 비교: Aside·챗GPT 닷츠·피클
 - 출처: https://www.youtube.com/watch?v=f468cHeuSUM (이종범 11/8) , https://www.youtube.com/watch?v=BC8XGfC7D4U (유튜브신쌤 11/8) , https://www.youtube.com/watch?v=8pmQSDetwZU (찍봇 11/6) , https://eesel.ai/blog/aside-ai-browser-review
 - 추천 형식: 카드뉴스
 - 제목안: "요즘 뜨는 AI 비서 3종 / 뭘 맡길 수 있을까?"
