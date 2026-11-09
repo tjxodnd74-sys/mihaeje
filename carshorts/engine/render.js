@@ -5,7 +5,8 @@ const { spawn } = require('child_process'); const fs = require('fs'), path = req
 (async () => {
   const W = path.resolve(process.argv[2]); const spec = JSON.parse(fs.readFileSync(path.join(W, 'spec_full.json'), 'utf8'));
   const from = parseFloat(process.argv[3] || '0'), to = parseFloat(process.argv[4] || spec.total), out = process.argv[5] || 'video_silent.mp4';
-  for (const s of spec.segs) for (const sh of s.shots) sh.src = 'file://' + path.join(W, sh.src);
+  for (const s of (spec.segs || [])) for (const sh of s.shots) sh.src = 'file://' + path.join(W, sh.src);
+  for (const sh of (spec.shots || [])) sh.src = 'file://' + path.join(W, sh.src);
   const b = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required', '--allow-file-access-from-files'] });
   const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
   await p.addInitScript(s => { window.SPEC = s; }, spec);

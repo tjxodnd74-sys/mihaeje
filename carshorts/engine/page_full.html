@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(Pretendard-Black.woff2) format("woff2");font-weight:900}
+@font-face{font-family:P;src:url(Pretendard-ExtraBold.woff2) format("woff2");font-weight:800}
+@font-face{font-family:P;src:url(Pretendard-Bold.woff2) format("woff2");font-weight:700}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000;font-family:P,sans-serif;color:#fff;word-break:keep-all}
+/* full-bleed "issue" layout: blurred fill + photo, fixed title, big one-line stroke captions, pop graphics */
+#ph{position:absolute;inset:0;overflow:hidden}
+.layer img.b{left:-80px;top:-80px;inset:-80px;width:1240px;height:2080px;object-fit:cover;filter:blur(38px) brightness(.42) saturate(1.2)}
+.layer{position:absolute;inset:0;display:none;overflow:hidden}
+.layer img{position:absolute;transform-origin:50% 50%;will-change:transform}
+.full img.m{left:0;top:0;width:1080px;height:1920px;object-fit:cover}
+.wide img.m{left:0;top:560px;width:1080px;height:760px;object-fit:cover;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+#shade{position:absolute;inset:0;pointer-events:none;
+ background:linear-gradient(rgba(0,0,0,.88) 0,rgba(0,0,0,.55) 330px,rgba(0,0,0,0) 560px,rgba(0,0,0,0) 1180px,rgba(0,0,0,.72) 1500px,rgba(0,0,0,.9) 1920px)}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#title{position:absolute;left:30px;right:30px;top:120px;text-align:center;line-height:1.1;letter-spacing:-.035em;font-weight:900;text-shadow:0 6px 24px rgba(0,0,0,.7)}
+#title .l1{font-size:74px;color:#fff}
+#title .l2{font-size:98px;color:#ffe14a}
+#cap{position:absolute;left:0;right:0;top:1390px;height:140px;display:flex;justify-content:center;align-items:center}
+#cap span{display:inline-block;white-space:nowrap;font-size:84px;font-weight:900;letter-spacing:-.04em;line-height:1;
+ -webkit-text-stroke:16px #000;paint-order:stroke fill;text-shadow:0 8px 20px rgba(0,0,0,.6);transform-origin:50% 60%}
+#cap em{font-style:normal;color:#ffe14a}
+#src{position:absolute;left:0;right:0;bottom:64px;text-align:center;font-size:26px;font-weight:700;color:rgba(255,255,255,.45)}
+#gfx{position:absolute;inset:0;pointer-events:none}
+.card{position:absolute;left:90px;right:90px;background:rgba(10,10,10,.82);border-radius:36px;border:3px solid rgba(255,255,255,.12);box-shadow:0 30px 80px rgba(0,0,0,.6);text-align:center}
+</style></head><body>
+<div id="ph"></div><div id="shade"></div><div id="flash"></div>
+<div id="gfx"></div>
+<div id="title"><div class="l1"></div><div class="l2"></div></div>
+<div id="cap"></div><div id="src"></div>
+<script>
+const S = window.SPEC; const ph = document.getElementById('ph'), gfx = document.getElementById('gfx'), capEl = document.getElementById('cap'), fl = document.getElementById('flash');
+document.querySelector('#title .l1').textContent = S.title[0]; document.querySelector('#title .l2').textContent = S.title[1];
+document.getElementById('src').textContent = S.credit || '';
+const layers = []; const imgs = {};
+for (const sh of S.shots) { const d = document.createElement('div'); d.className = 'layer ' + (sh.mode || 'full'); const b = document.createElement('img'); b.className = 'b'; b.src = sh.src; d.appendChild(b); const m = document.createElement('img'); m.className = 'm'; m.src = sh.src; if (sh.pos) m.style.objectPosition = sh.pos; d.appendChild(m); ph.appendChild(d); layers.push({ d, m }); imgs[sh.src] = m; }
+const ease = p => p < 0 ? 0 : p > 1 ? 1 : 1 - Math.pow(1 - p, 3);
+const back = p => { p = Math.max(0, Math.min(1, p)); const c = 1.9; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); };
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const fmt = n => Math.round(n).toLocaleString('ko-KR');
+const rnd = k => { const x = Math.sin(k * 12.9898) * 43758.5453; return x - Math.floor(x); };
+const G = {
+  stamp(o, u) { const p = back(u / 0.28), a = clamp(u / 0.12); const sh = u < 0.35 ? (rnd(Math.floor(u * 30)) - .5) * 14 : 0;
+    return `<div style="position:absolute;left:0;right:0;top:${o.y || 760}px;text-align:center;opacity:${a};transform:translateX(${sh}px) rotate(-6deg) scale(${0.4 + 0.6 * p})">
+      <div style="display:inline-block;background:#ff2d2d;border:8px solid #fff;border-radius:28px;padding:26px 54px;box-shadow:0 24px 60px rgba(0,0,0,.55)">
+      <div style="font-size:46px;font-weight:800;opacity:.9">${o.small}</div><div style="font-size:150px;font-weight:900;letter-spacing:-.04em;line-height:1.05">${o.text}</div></div></div>`; },
+  price(o, u) { const a = ease(u / 0.25), s = 0.7 + 0.3 * back(u / 0.3); const k = u - o.strikeAt; const line = clamp(k / 0.25), z = back((k - 0.25) / 0.3);
+    return `<div class="card" style="top:${o.y || 640}px;padding:40px 0 48px;opacity:${a};transform:scale(${s})">
+      <div style="font-size:48px;font-weight:800;color:#bbb">${o.label}</div>
+      <div style="position:relative;display:inline-block;font-size:150px;font-weight:900;letter-spacing:-.04em;line-height:1.15;color:${k > 0 ? '#888' : '#fff'}">${o.from}
+        <div style="position:absolute;left:-10px;top:52%;height:16px;background:#ff2d2d;border-radius:8px;width:${line * 104}%"></div></div>
+      <div style="height:${k > 0.2 ? 170 : 0}px;overflow:visible;font-size:170px;font-weight:900;color:#ffe14a;line-height:1;transform:scale(${z});opacity:${clamp(z)}">${o.to}</div></div>`; },
+  count(o, u) { const a = ease(u / 0.2), s = 0.7 + 0.3 * back(u / 0.3), v = o.n * ease((u - 0.1) / 0.9);
+    return `<div class="card" style="top:${o.y || 660}px;padding:40px 0 46px;opacity:${a};transform:scale(${s})">
+      <div style="font-size:50px;font-weight:800;color:#bbb">${o.label}</div>
+      <div style="font-size:160px;font-weight:900;letter-spacing:-.04em;color:#ffe14a;line-height:1.1">${fmt(v)}<span style="font-size:80px;color:#fff">${o.unit}</span></div></div>`; },
+  sales(o, u) { const a = ease(u / 0.25); const H = 420, h2 = H * o.b / o.a; const p1 = ease(u / 0.5), p2 = ease((u - 0.6) / 0.6), d = back((u - 1.3) / 0.3);
+    const bar = (x, h, v, lab, col, p) => `<div style="position:absolute;left:${x}px;bottom:70px;width:300px;text-align:center">
+      <div style="font-size:66px;font-weight:900;opacity:${clamp(p * 2)}">${fmt(v * p)}<span style="font-size:36px">대</span></div>
+      <div style="margin:12px auto 0;width:210px;height:${h * p}px;background:${col};border-radius:20px 20px 0 0"></div>
+      <div style="font-size:46px;font-weight:800;margin-top:16px">${lab}</div></div>`;
+    return `<div class="card" style="top:520px;height:820px;opacity:${a}">
+      <div style="position:absolute;left:0;right:0;top:40px;font-size:50px;font-weight:900">${o.head}</div>
+      ${bar(90, H, o.a, o.la, '#8b929c', p1)}${bar(510, h2, o.b, o.lb, '#ff2d2d', p2)}
+      <div style="position:absolute;right:40px;top:120px;background:#ff2d2d;font-size:64px;font-weight:900;padding:10px 26px;border-radius:16px;opacity:${clamp(d)};transform:rotate(-5deg) scale(${d})">${o.badge}</div></div>`; },
+  ask(o, u) { const p = back(u / 0.35), a = clamp(u / 0.15); const bob = Math.sin(u * 6) * 6;
+    return `<div style="position:absolute;left:0;right:0;top:${o.y || 1110}px;text-align:center;opacity:${a};transform:translateY(${bob}px) scale(${0.5 + 0.5 * p})">
+      <div style="display:inline-block;position:relative;background:#ffe14a;color:#111;font-size:64px;font-weight:900;padding:24px 50px;border-radius:60px;box-shadow:0 20px 50px rgba(0,0,0,.5)">${o.text}
+      <div style="position:absolute;left:90px;bottom:-30px;width:0;height:0;border-left:22px solid transparent;border-right:22px solid transparent;border-top:36px solid #ffe14a"></div></div></div>`; },
+};
+window.seek = async (t) => {
+  let i = S.shots.findIndex(s => t >= s.t0 && t < s.t1); if (i < 0) i = t < S.shots[0].t0 ? 0 : S.shots.length - 1;
+  const sh = S.shots[i], L = layers[i], u = t - sh.t0, d = sh.t1 - sh.t0;
+  layers.forEach((l, k) => l.d.style.display = k === i ? 'block' : 'none');
+  const punch = sh.punch === false ? 0 : (sh.punch || 0.12); const pz = 1 + punch * (1 - ease(u / 0.28));
+  const sc = (sh.s0 + (sh.s1 - sh.s0) * clamp(u / d)) * pz;
+  let jx = 0, jy = 0; if (sh.shake && u < sh.shake) { const f = Math.floor(u * 30); jx = (rnd(f + i * 7) - .5) * 26; jy = (rnd(f * 3 + i) - .5) * 26; }
+  const x = (sh.x || 0) + ((sh.x1 ?? sh.x ?? 0) - (sh.x || 0)) * clamp(u / d);
+  L.m.style.transform = `translate(${x + jx}px,${jy}px) scale(${sc})`;
+  L.m.style.filter = sh.blur ? `blur(${sh.blur}px) brightness(.7)` : '';
+  fl.style.opacity = sh.flash ? Math.max(0, 0.75 * (1 - u / 0.14)) : 0;
+  gfx.innerHTML = S.gfx.filter(g => t >= g.t0 && t < g.t1).map(g => G[g.type](g, t - g.t0)).join('');
+  let c = null; for (const k of S.caps) if (t >= k[0] && t < k[1]) c = k;
+  if (c) { capEl.innerHTML = '<span>' + c[2].replace(/\|([^|]+)\|/g, '<em>$1</em>') + '</span>'; const sp = capEl.firstChild;
+    const w = sp.getBoundingClientRect().width; const fit = Math.min(1, 1010 / Math.max(w, 1)); const pop = 1 + 0.14 * (1 - ease((t - c[0]) / 0.14));
+    sp.style.transform = `scale(${fit * pop})`; } else capEl.innerHTML = '';
+};
+window.ready = async () => { await document.fonts.ready; await Promise.all(layers.map(l => l.m.complete ? 0 : new Promise(r => l.m.onload = r))); };
+</script></body></html>

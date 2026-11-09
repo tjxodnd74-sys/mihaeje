@@ -24,3 +24,11 @@
 - 끝은 결론 없이 한마디 던지기(댓글 유도). 사실·숫자는 기사 근거만, 과장 금지.
 - 사진 받기: 크롬에서 기사 페이지 열고 JS로 이미지 fetch → tar → 화면에 버튼 만들어 클릭해 다운로드. 한 탭에서 두 번째 다운로드는 막히니 새 탭에서 할 것. 클리앙 이미지는 핫링크 막혀서 안 됨.
 - 렌더: `PAGE=page_issue.html node ../engine/render.js .` (spec_full.json: title, credit, segs[t0, shots, ov(stk|sales), cap])
+
+## 형식 2-B (v3, 2026-11-09): 꽉 찬 화면 이슈 쇼츠 — 형식 2 대신 이걸 기본으로
+- 사용자 피드백: v2(검은 배경+사진 박스+3D 주행 CG)는 구성·목소리·디자인·영상 전부 별로. 3D 회색 차 영상 쓰지 말 것.
+- 화면: 세로 꽉 찬 실사진(full) 또는 흐린 배경+가로 사진(wide), 1~1.5초마다 컷, 컷마다 펀치 줌/흔들림/플래시.
+- 위 2줄 제목 고정(흰색/노랑 #ffe14a), 자막 한 줄 84px 흰 글씨+검은 테두리(핵심어 노랑), 숫자는 팝업 그래픽(stamp/price/count/sales/ask).
+- 대본: 첫 문장에 갈등("먼저 산 사람들 뒤통수"), 3번째에 "근데 진짜 ~는 따로 있음" 반전, 끝은 질문으로 댓글 유도.
+- 목소리: 타입캐스트 진우 1.1배(속도 늘리기 금지, 원래 속도로 녹음).
+- 렌더: `PAGE=page_full.html node ../../engine/render.js .` (spec: total,title,credit,shots[t0,t1,src,mode,pos,s0,s1,punch,shake,flash,blur],caps[[a,b,text]],gfx[...]) — 예시 20261109_avante/v3
