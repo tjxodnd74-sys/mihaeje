@@ -1,14 +1,13 @@
 import json, subprocess
-S = json.load(open('spec_full.json')); TOTAL = S['total']; G = {g['type']: g for g in S['gfx']}
+S = json.load(open('spec_full.json')); TOTAL = S['total']; G = S['gfx']
 SFX = '/home/claude/mihaeje/reels/pipeline/sfx/'
 ev = [(0.0, 'hook_impact', .3)] + [(s['t0'], 'whoosh_soft', .2) for s in S['shots'][1:]]
-g = G['stamp']; ev += [(g['t0'], 'hook_hit', .5), (g['t0'] + .1, 'cash', .35)]
-g = G['price']; ev += [(g['t0'], 'pop', .4), (g['t0'] + g['strikeAt'], 'whoosh_snap', .4), (g['t0'] + g['strikeAt'] + .28, 'ding', .45)]
-g = G['count']; k = g['t0'] + .1
-while k < g['t0'] + 1.0: ev.append((k, 'tick', .16)); k += .09
-ev.append((g['t0'] + 1.0, 'ding', .35))
-g = G['sales']; ev += [(g['t0'] + 1.3, 'alert', .32)]
-g = G['ask']; ev += [(g['t0'], 'pop', .45)]
+g = G[0]; ev += [(g['t0'], 'hook_hit', .4)]
+g = G[1]; sa = g['lines'][1]['strikeAt']; ev += [(g['t0'], 'pop', .35), (g['t0'] + sa, 'whoosh_snap', .35), (g['t0'] + g['lines'][2]['at'], 'ding', .4)]
+g = G[2]; k = g['t0'] + .05
+while k < g['t0'] + 0.8: ev.append((k, 'tick', .14)); k += .08
+ev.append((g['t0'] + .8, 'ding', .3))
+g = G[3]; ev += [(g['t0'], 'pop', .3), (g['t0'] + g['lines'][1]['at'], 'pop', .3), (g['t0'] + g['lines'][2]['at'], 'alert', .3)]
 inp = ['-i', 'narr.wav', '-i', '../bgm.mp3']
 flt = ['[0:a]loudnorm=I=-14:TP=-1.5:LRA=11,aresample=44100,aformat=channel_layouts=stereo[v]',
        f'[1:a]atrim=0:{TOTAL},asetpts=PTS-STARTPTS,loudnorm=I=-30:TP=-6,aresample=44100,aformat=channel_layouts=stereo,afade=t=out:st={TOTAL-1.2}:d=1.2[b]']

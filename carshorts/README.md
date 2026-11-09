@@ -34,3 +34,9 @@
 - 렌더: `PAGE=page_full.html node ../../engine/render.js .` (spec: total,title,credit,shots[t0,t1,src,mode,pos,s0,s1,punch,shake,flash,blur],caps[[a,b,text]],gfx[...]) — 예시 20261109_avante/v3
 - (v4 피드백 반영) "정신없고 자막·사진이 안 맞음" → 컷은 반드시 자막 구절이 바뀌는 순간에만, 사진 내용은 그 구절 내용과 맞출 것. 흔들림·플래시 빼고 컷 평균 2초.
 - 자막 타이밍은 글자 수 비례 추정 금지: faster-whisper(medium, word_timestamps)로 단어 시간 뽑아 words.json → make_spec2.py에서 구절 시작 = 첫 단어 시작.
+
+## 형식 2-C (v5, 2026-11-09) — 현재 기본: 유튜브 쇼츠 감성 (인스타 감성 X)
+- 사용자: "지금 감성은 인스타보단 쇼츠 감성", 빨간 도장·둥근 카드·스티커 같은 인스타식 그래픽 싫어함. 시안 A(검은 배경+가운데 사진) 선택.
+- 검은 배경, 위 제목 2줄(흰/노랑, 검은 테두리), 가운데 4:3 사진(1080x810, 천천히 줌), 아래 한 줄 자막(박스 없이 흰 글씨+검은 테두리, 핵심어 노랑).
+- 숫자는 그래픽 카드 대신 사진 위 큰 글씨만(빨강/노랑 + 흰 테두리, 사진 살짝 어둡게), 말하는 순간에 등장.
+- 오토트리뷴 사진은 워터마크 안 보이게 1.16배 확대. 렌더: `PAGE=page_shorts.html node ../../engine/render.js .` (make_spec3.py)
