@@ -1,7 +1,7 @@
 import json, subprocess
 S = json.load(open('spec_full.json')); TOTAL = S['total']; G = {g['type']: g for g in S['gfx']}
 SFX = '/home/claude/mihaeje/reels/pipeline/sfx/'
-ev = [(0.0, 'hook_impact', .45)] + [(s['t0'], 'whoosh_fast' if s.get('flash') or s.get('shake') else 'whoosh_soft', .32) for s in S['shots'][1:]]
+ev = [(0.0, 'hook_impact', .3)] + [(s['t0'], 'whoosh_soft', .2) for s in S['shots'][1:]]
 g = G['stamp']; ev += [(g['t0'], 'hook_hit', .5), (g['t0'] + .1, 'cash', .35)]
 g = G['price']; ev += [(g['t0'], 'pop', .4), (g['t0'] + g['strikeAt'], 'whoosh_snap', .4), (g['t0'] + g['strikeAt'] + .28, 'ding', .45)]
 g = G['count']; k = g['t0'] + .1

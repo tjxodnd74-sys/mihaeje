@@ -43,7 +43,7 @@ const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const fmt = n => Math.round(n).toLocaleString('ko-KR');
 const rnd = k => { const x = Math.sin(k * 12.9898) * 43758.5453; return x - Math.floor(x); };
 const G = {
-  stamp(o, u) { const p = back(u / 0.28), a = clamp(u / 0.12); const sh = u < 0.35 ? (rnd(Math.floor(u * 30)) - .5) * 14 : 0;
+  stamp(o, u) { const p = back(u / 0.28), a = clamp(u / 0.12); const sh = (u < 0.35 && !o.calm) ? (rnd(Math.floor(u * 30)) - .5) * 14 : 0;
     return `<div style="position:absolute;left:0;right:0;top:${o.y || 760}px;text-align:center;opacity:${a};transform:translateX(${sh}px) rotate(-6deg) scale(${0.4 + 0.6 * p})">
       <div style="display:inline-block;background:#ff2d2d;border:8px solid #fff;border-radius:28px;padding:26px 54px;box-shadow:0 24px 60px rgba(0,0,0,.55)">
       <div style="font-size:46px;font-weight:800;opacity:.9">${o.small}</div><div style="font-size:150px;font-weight:900;letter-spacing:-.04em;line-height:1.05">${o.text}</div></div></div>`; },
@@ -57,7 +57,7 @@ const G = {
     return `<div class="card" style="top:${o.y || 660}px;padding:40px 0 46px;opacity:${a};transform:scale(${s})">
       <div style="font-size:50px;font-weight:800;color:#bbb">${o.label}</div>
       <div style="font-size:160px;font-weight:900;letter-spacing:-.04em;color:#ffe14a;line-height:1.1">${fmt(v)}<span style="font-size:80px;color:#fff">${o.unit}</span></div></div>`; },
-  sales(o, u) { const a = ease(u / 0.25); const H = 420, h2 = H * o.b / o.a; const p1 = ease(u / 0.5), p2 = ease((u - 0.6) / 0.6), d = back((u - 1.3) / 0.3);
+  sales(o, u) { const a = ease(u / 0.25); const H = 420, h2 = H * o.b / o.a; const p1 = ease(u / 0.5), p2 = ease((u - 0.45) / 0.5), d = back((u - (o.badgeAt ?? 1.3)) / 0.3);
     const bar = (x, h, v, lab, col, p) => `<div style="position:absolute;left:${x}px;bottom:70px;width:300px;text-align:center">
       <div style="font-size:66px;font-weight:900;opacity:${clamp(p * 2)}">${fmt(v * p)}<span style="font-size:36px">대</span></div>
       <div style="margin:12px auto 0;width:210px;height:${h * p}px;background:${col};border-radius:20px 20px 0 0"></div>
@@ -85,7 +85,7 @@ window.seek = async (t) => {
   gfx.innerHTML = S.gfx.filter(g => t >= g.t0 && t < g.t1).map(g => G[g.type](g, t - g.t0)).join('');
   let c = null; for (const k of S.caps) if (t >= k[0] && t < k[1]) c = k;
   if (c) { capEl.innerHTML = '<span>' + c[2].replace(/\|([^|]+)\|/g, '<em>$1</em>') + '</span>'; const sp = capEl.firstChild;
-    const w = sp.getBoundingClientRect().width; const fit = Math.min(1, 1010 / Math.max(w, 1)); const pop = 1 + 0.14 * (1 - ease((t - c[0]) / 0.14));
+    const w = sp.getBoundingClientRect().width; const fit = Math.min(1, 1010 / Math.max(w, 1)); const pop = 1 + (S.capPop ?? 0.14) * (1 - ease((t - c[0]) / 0.14));
     sp.style.transform = `scale(${fit * pop})`; } else capEl.innerHTML = '';
 };
 window.ready = async () => { await document.fonts.ready; await Promise.all(layers.map(l => l.m.complete ? 0 : new Promise(r => l.m.onload = r))); };

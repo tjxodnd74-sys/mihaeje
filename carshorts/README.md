@@ -32,3 +32,5 @@
 - 대본: 첫 문장에 갈등("먼저 산 사람들 뒤통수"), 3번째에 "근데 진짜 ~는 따로 있음" 반전, 끝은 질문으로 댓글 유도.
 - 목소리: 타입캐스트 진우 1.1배(속도 늘리기 금지, 원래 속도로 녹음).
 - 렌더: `PAGE=page_full.html node ../../engine/render.js .` (spec: total,title,credit,shots[t0,t1,src,mode,pos,s0,s1,punch,shake,flash,blur],caps[[a,b,text]],gfx[...]) — 예시 20261109_avante/v3
+- (v4 피드백 반영) "정신없고 자막·사진이 안 맞음" → 컷은 반드시 자막 구절이 바뀌는 순간에만, 사진 내용은 그 구절 내용과 맞출 것. 흔들림·플래시 빼고 컷 평균 2초.
+- 자막 타이밍은 글자 수 비례 추정 금지: faster-whisper(medium, word_timestamps)로 단어 시간 뽑아 words.json → make_spec2.py에서 구절 시작 = 첫 단어 시작.
