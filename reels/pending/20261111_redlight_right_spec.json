@@ -1,0 +1,314 @@
+{
+ "style": "fullscreen",
+ "eyebrow": "이럴 땐 어떻게?",
+ "title": [],
+ "cta": [
+  "몇 번 골랐는지",
+  "댓글로 알려주세요"
+ ],
+ "cover": {
+  "clip": "bg_rr_empty_cross_v_40297816.mp4",
+  "start": 3.2,
+  "cx": 0.5,
+  "tag": "이럴 땐 어떻게?",
+  "title": "빨간불 |우회전|<br>사람 없으면<br>1번? 2번?",
+  "sub": "도로교통법 시행규칙 기준"
+ },
+ "segments": [
+  {
+   "cap": "빨간불, / |우회전|하려는데 / 횡단보도에 |아무도 없어요|",
+   "say": "빨간불, 우회전하려는데 횡단보도에 아무도 없어요.",
+   "clip": "bg_rr_redlight_v_30330260.mp4",
+   "start": 0.0,
+   "cx": 0.5,
+   "kin": true,
+   "t": 0.0,
+   "chunkT": [
+    2.41
+   ],
+   "e": 4.41,
+   "cut": true
+  },
+  {
+   "cap": "1번, / 사람 없으니까 / |그냥 돈다|",
+   "say": "일번, 사람이 없으니까 천천히 그냥 돈다.",
+   "clip": "bg_rr_empty_cross_v_40297816.mp4",
+   "start": 2.2,
+   "cx": 0.5,
+   "step": 1,
+   "num": "1번",
+   "name": "그냥 돈다",
+   "t": 4.41,
+   "chunkT": [],
+   "e": 8.43,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 4.41,
+     "html": "<span class=\"w\">1번</span>"
+    },
+    {
+     "t": 4.98,
+     "html": "<span class=\"w\">사람</span><span class=\"w\">없으니까</span>"
+    },
+    {
+     "t": 7.011,
+     "html": "<span class=\"w hl\">그냥</span><span class=\"w hl\">돈다</span>"
+    }
+   ]
+  },
+  {
+   "cap": "2번, / 횡단보도 앞에서 / |일단 멈췄다가| 돈다",
+   "say": "이번, 횡단보도 앞에서 일단 멈췄다가 돈다.",
+   "clip": "bg_yl_cab_16455066.mp4",
+   "start": 0.0,
+   "cx": 0.45,
+   "step": 2,
+   "num": "2번",
+   "name": "멈췄다 돈다",
+   "t": 8.43,
+   "chunkT": [],
+   "e": 12.41,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 8.43,
+     "html": "<span class=\"w\">2번</span>"
+    },
+    {
+     "t": 9.0,
+     "html": "<span class=\"w\">횡단보도</span><span class=\"w\">앞에서</span>"
+    },
+    {
+     "t": 10.381,
+     "html": "<span class=\"w hl\">일단</span><span class=\"w hl\">멈췄다가</span><span class=\"w\">돈다</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|몇 번|이 맞을까요?",
+   "say": "몇 번이 맞을까요?",
+   "t": 12.41,
+   "chunkT": [],
+   "clip": "bg_yl_crosswalk_2836277.mp4",
+   "start": 8.0,
+   "cx": 0.5,
+   "e": 15.13,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 12.41,
+     "html": "<span class=\"w hl\">몇</span><span class=\"w hl\">번이</span><span class=\"w\">맞을까요?</span>"
+    }
+   ]
+  },
+  {
+   "cap": "정답은 |2번|이에요",
+   "say": "정답은 이번이에요.",
+   "clip": "bg_yl_redgreen_17121177.mp4",
+   "start": 0.0,
+   "cx": 0.47,
+   "step": 3,
+   "num": "정답",
+   "name": "2번",
+   "stat": [
+    "2번",
+    "멈췄다가 우회전"
+   ],
+   "t": 15.13,
+   "chunkT": [],
+   "e": 16.77,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 15.13,
+     "html": "<span class=\"w\">정답은</span><span class=\"w hl\">2번이에요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "앞 차량 신호가 |빨간불|이면, / 사람이 없어도 / |먼저 멈춰야| 해요",
+   "say": "앞쪽 차량 신호가 빨간불이면, 사람이 없어도 먼저 멈춰야 해요.",
+   "clip": "bg_rr_corner_v_40156080.mp4",
+   "start": 0.0,
+   "cx": 0.5,
+   "t": 16.77,
+   "chunkT": [
+    19.33
+   ],
+   "e": 22.02,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 16.77,
+     "html": "<span class=\"w\">앞</span><span class=\"w\">차량</span><span class=\"w\">신호가</span><span class=\"w hl\">빨간불이면</span>"
+    },
+    {
+     "t": 19.33,
+     "html": "<span class=\"w\">사람이</span><span class=\"w\">없어도</span>"
+    },
+    {
+     "t": 20.192,
+     "html": "<span class=\"w hl\">먼저</span><span class=\"w hl\">멈춰야</span><span class=\"w\">해요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|2023년|부터 / 도로교통법 시행규칙으로 / 바뀐 내용이에요",
+   "say": "이천이십삼년부터 도로교통법 시행규칙으로 바뀐 내용이에요.",
+   "clip": "bg_rr_crowd_turn_38793243.mp4",
+   "start": 0.0,
+   "cx": 0.5,
+   "stat": [
+    "2023년",
+    "도로교통법 시행규칙"
+   ],
+   "t": 22.02,
+   "chunkT": [],
+   "e": 26.98,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 22.02,
+     "html": "<span class=\"w hl\">2023년부터</span>"
+    },
+    {
+     "t": 23.178,
+     "html": "<span class=\"w\">도로교통법</span><span class=\"w\">시행규칙으로</span>"
+    },
+    {
+     "t": 24.936,
+     "html": "<span class=\"w\">바뀐</span><span class=\"w\">내용이에요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "멈춘 다음엔, / 주변을 살피면서 / |천천히| 돌면 돼요",
+   "say": "멈춘 다음엔, 주변을 살피면서 천천히 돌면 돼요.",
+   "clip": "bg_rr_turn_slow_v_34032143.mp4",
+   "start": 3.8,
+   "cx": 0.5,
+   "t": 26.98,
+   "chunkT": [
+    28.81
+   ],
+   "e": 31.75,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 26.98,
+     "html": "<span class=\"w\">멈춘</span><span class=\"w\">다음엔</span>"
+    },
+    {
+     "t": 28.81,
+     "html": "<span class=\"w\">주변을</span><span class=\"w\">살피면서</span>"
+    },
+    {
+     "t": 29.899,
+     "html": "<span class=\"w hl\">천천히</span><span class=\"w\">돌면</span><span class=\"w\">돼요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "돌다가 / |건너려는 사람|이 보이면, / 그때도 |멈춰야| 해요",
+   "say": "돌다가 건너려는 사람이 보이면, 그때도 멈춰야 해요.",
+   "clip": "bg_rr_waiting_ped_11331083.mp4",
+   "start": 0.0,
+   "cx": 0.3,
+   "step": 4,
+   "num": "TIP",
+   "name": "건너려는 사람",
+   "t": 31.75,
+   "chunkT": [
+    32.4,
+    34.04
+   ],
+   "e": 35.58,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 31.75,
+     "html": "<span class=\"w\">돌다가</span>"
+    },
+    {
+     "t": 32.4,
+     "html": "<span class=\"w hl\">건너려는</span><span class=\"w hl\">사람이</span><span class=\"w\">보이면</span>"
+    },
+    {
+     "t": 34.04,
+     "html": "<span class=\"w\">그때도</span><span class=\"w hl\">멈춰야</span><span class=\"w\">해요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|우회전 신호등|이 / 따로 있으면, / 그 신호를 따르세요",
+   "say": "우회전 신호등이 따로 있으면, 그 신호를 따르세요.",
+   "clip": "bg_rr_arrow_signal_32001465.mp4",
+   "start": 4.0,
+   "cx": 0.48,
+   "step": 5,
+   "num": "TIP",
+   "name": "우회전 신호등",
+   "t": 35.58,
+   "chunkT": [
+    36.7,
+    37.72
+   ],
+   "e": 39.13,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 35.58,
+     "html": "<span class=\"w hl\">우회전</span><span class=\"w hl\">신호등이</span>"
+    },
+    {
+     "t": 36.7,
+     "html": "<span class=\"w\">따로</span><span class=\"w\">있으면</span>"
+    },
+    {
+     "t": 37.72,
+     "html": "<span class=\"w\">그</span><span class=\"w\">신호를</span><span class=\"w\">따르세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "몇 번 고르셨는지 / |댓글|로 남기고, / |저장|해 두세요",
+   "say": "몇 번 고르셨는지 댓글로 남기고, 저장해 두세요.",
+   "clip": "bg_rr_topcross_v_32625861.mp4",
+   "start": 2.0,
+   "cx": 0.5,
+   "cta": true,
+   "t": 39.13,
+   "chunkT": [
+    40.25,
+    41.74
+   ],
+   "e": 44.236,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 39.13,
+     "html": "<span class=\"w\">몇</span><span class=\"w\">번</span><span class=\"w\">고르셨는지</span>"
+    },
+    {
+     "t": 40.25,
+     "html": "<span class=\"w hl\">댓글로</span><span class=\"w\">남기고</span>"
+    },
+    {
+     "t": 41.74,
+     "html": "<span class=\"w hl\">저장해</span><span class=\"w\">두세요</span>"
+    }
+   ]
+  }
+ ],
+ "duration": 44,
+ "impacts": [
+  0.0,
+  4.41,
+  8.43,
+  15.13,
+  31.75,
+  35.58,
+  39.13
+ ]
+}
