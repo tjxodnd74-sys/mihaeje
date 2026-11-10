@@ -31,7 +31,7 @@ cd /home/claude/work/<slug>
   - Base content only on facts checked in official sources.
 
 ## 2. Narration (the user's cloned voice)
-- Use Higgsfield `generate_audio_batch` with `model "seed_audio"`, `medias [{"value":"6dec323c-9c8f-45f4-bb12-b9ad06495af3","role":"audio_references"}]`, `speech_rate 0`, `format "wav"`, `sample_rate 48000`. **Do not use other TTS.** Reference = the user's expressive re-recording (2026-11-09, 51s, YouTube-style intonation; old flat ref eaa16e1c retired — user: "어눌하고 답답, 높낮이 일정"). Measured pitch variation +24% vs old ref.
+- Use Higgsfield `generate_audio_batch` with `model "seed_audio"`, `medias [{"value":"078ee6b3-f533-4359-82a2-628141fcaa8d","role":"audio_references"}]`, `speech_rate 20`, `format "wav"`, `sample_rate 48000`. **Do not use other TTS.** Reference = 25s of the clear, explanatory parts of the user's 2026-11-09 re-recording (078ee6b3), speech_rate 20 (user 2026-11-10: "발음도 이상하고 속도도 너무 느려"). Measured ~7.9 syllables/s (was 6.1). Retired refs: eaa16e1c (flat), 6dec323c (full 51s exaggerated read → slow, slurred words). Target pace 7.5–8.5 syll/s; check it with python before render.
 - index = k*10 + take. Send up to 6 per batch; on a 429, wait and resend.
 - Wait with `jobs_wait` using `jobs:[{index,job_id}]`.
 - Download with `./dl2.sh <index> <url> …`. Files go to ln2/u{k}_{t}.wav.
@@ -39,7 +39,7 @@ cd /home/claude/work/<slug>
   - r < 0.85, or audible stuttering/garbling → retake (take 1). Reword the line if needed.
   - Differences that are only digits vs Korean numerals, or AI vs 에이아이, are fine.
 - Copy the good takes to `ln/u{k}.wav`.
-- `python3 build_voice.py` produces voice.json and voice.wav. Trimming is gentle (2026-11-08 user: "끝음 처리 이상, 답답"): keeps word-end decay (−50dB + 0.2s tail, soft fade), internal pauses capped at 0.32s. Never hard-cut line endings. Gaps are generous (LG 0.5, SG 1.7). User feedback: transitions and speech must not feel rushed.
+- `python3 build_voice.py` produces voice.json and voice.wav. Trimming is gentle (2026-11-08 user: "끝음 처리 이상, 답답"): keeps word-end decay (−50dB + 0.15s tail, soft fade), internal pauses capped at 0.24s. Never hard-cut line endings. Gaps are generous (LG 0.5, SG 1.7). User feedback: transitions and speech must not feel rushed.
 
 ## 3. Scenes: `ep.html`
 - template.html is ep16 itself. Keep the head, helpers, probe and seek parts.
