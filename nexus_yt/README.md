@@ -31,7 +31,7 @@ cd /home/claude/work/<slug>
   - Base content only on facts checked in official sources.
 
 ## 2. Narration (the user's cloned voice)
-- Use Higgsfield `generate_audio_batch` with `model "seed_audio"`, `medias [{"value":"6dec323c-9c8f-45f4-bb12-b9ad06495af3","role":"audio_references"}]`, `speech_rate 0`, `format "wav"`, `sample_rate 48000`. **Do not use other TTS.** Reference = the user's expressive re-recording (2026-11-09, 51s, YouTube-style intonation; old flat ref eaa16e1c retired — user: "어눌하고 답답, 높낮이 일정"). Measured pitch variation +24% vs old ref.
+- Use Higgsfield `generate_audio_batch` with `model "seed_audio"`, `medias [{"value":"6dec323c-9c8f-45f4-bb12-b9ad06495af3","role":"audio_references"}]`, `speech_rate 20`, `format "wav"`, `sample_rate 48000`. **Do not use other TTS.** Reference = the user's expressive re-recording (2026-11-09, 51s, YouTube-style intonation; old flat ref eaa16e1c retired — user: "어눌하고 답답, 높낮이 일정"). Measured pitch variation +24% vs old ref.
 - index = k*10 + take. Send up to 6 per batch; on a 429, wait and resend.
 - Wait with `jobs_wait` using `jobs:[{index,job_id}]`.
 - Download with `./dl2.sh <index> <url> …`. Files go to ln2/u{k}_{t}.wav.
@@ -39,7 +39,11 @@ cd /home/claude/work/<slug>
   - r < 0.85, or audible stuttering/garbling → retake (take 1). Reword the line if needed.
   - Differences that are only digits vs Korean numerals, or AI vs 에이아이, are fine.
 - Copy the good takes to `ln/u{k}.wav`.
-- `python3 build_voice.py` produces voice.json and voice.wav. Trimming is gentle (2026-11-08 user: "끝음 처리 이상, 답답"): keeps word-end decay (−50dB + 0.2s tail, soft fade), internal pauses capped at 0.32s. Never hard-cut line endings. Gaps are generous (LG 0.5, SG 1.7). User feedback: transitions and speech must not feel rushed.
+- `python3 build_voice.py` produces voice.json and voice.wav. Trimming is gentle (2026-11-08 user: "끝음 처리 이상, 답답"): keeps word-end decay (−50dB + 0.2s tail, soft fade), internal pauses capped at 0.32s. Never hard-cut line endings. Gaps: LG 0.22, SG 0.6 (do not widen).
+- ★ 2026-11-10 user: "발음도 이상하고, 속도도 너무 느리잖아" (페이블 5.2 롱폼). → speech_rate 20 (was 0) + **TTS ear gate before render**:
+  `python3 /home/claude/mihaeje/nexus_tts/tts_check.py --audio voice.wav --script read_lines.txt --rate-lo 5.0 --rate-hi 7.8 --avg-lo 6.0 --out tts_report` (read_lines.txt = R text, one line per unit, as read aloud).
+  Pass rules for YouTube: no ❌ lines, **every line 5.0~7.8 syllables/sec**, overall average ≥ 6.0. A slow line → regenerate with speech_rate 30; a misheard word → apply nexus_tts/README.md pronunciation dictionary (영어·약어·숫자는 한글로 풀어 씀) and retake. Max 3 rounds; then reword the line.
+  Run the same check with `--mixed` on final.mp4. Put total MOS / avg syll-per-sec in topics_done.md.
 
 ## 3. Scenes: `ep.html`
 - template.html is ep16 itself. Keep the head, helpers, probe and seek parts.

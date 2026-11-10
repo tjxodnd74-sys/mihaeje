@@ -80,6 +80,7 @@ def main():
     ap.add_argument("--audio", required=True); ap.add_argument("--script", required=True)
     ap.add_argument("--mixed", action="store_true"); ap.add_argument("--out", default="tts_report")
     ap.add_argument("--model", default="small")
+    ap.add_argument("--rate-lo", type=float, default=3.2); ap.add_argument("--rate-hi", type=float, default=7.8); ap.add_argument("--avg-lo", type=float, default=0)
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     lines = [l.strip() for l in open(a.script, encoding="utf-8-sig") if l.strip()]
@@ -103,7 +104,7 @@ def main():
     f0 = pitch.selected_array["frequency"]; tt = pitch.xs()
     st = lambda x: 12 * np.log2(np.maximum(x, 1) / 100)
 
-    TH = dict(cer=0.12, mos=2.6 if a.mixed else 3.0, rng=4.0, rate_hi=7.8, rate_lo=3.2, gap_hi=1.0)
+    TH = dict(cer=0.12, mos=2.6 if a.mixed else 3.0, rng=4.0, rate_hi=a.rate_hi, rate_lo=a.rate_lo, gap_hi=1.0)
     rows, fails = [], []
     prev_end = None
     for i, (line, hyp, s, e) in enumerate(al, 1):
@@ -145,9 +146,13 @@ def main():
         if prob: fails.append(i)
         rows.append(r)
 
+    rates=[r["syll_per_sec"] for r in rows if r.get("syll_per_sec")]
+    avg=sum(rates)/len(rates) if rates else 0
+    if a.avg_lo and avg < a.avg_lo: fails.append(0)
     total = mos(audio) if len(audio) < sr * 60 else None
     verdict = "통과" if not fails else "다시 녹음 필요"
     rep = [f"TTS 귀 검사: {verdict}  (전체 MOS {total:.2f})" if total else f"TTS 귀 검사: {verdict}"]
+    rep.append(f"평균 속도 {avg:.1f}음절/초" + (f" — 기준 {a.avg_lo} 미만, 전체가 느림" if a.avg_lo and avg < a.avg_lo else ""))
     for r in rows:
         tag = "❌" if r["problems"] else "✅"
         rep.append(f"{tag} {r['no']:>2}. {r['script']}")
