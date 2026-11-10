@@ -127,3 +127,9 @@
 2026-11-10 16:28 | 바이두(알림 제외·연구) | AI 연구 자동화 '어니 이볼브' 공개 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-10 16:28 | 월드랩스 등(알림 제외·모델 신작 모음) | 가상 세계 실시간 탐험 '프레임보이' 등 6종 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-10 16:28: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 파싱, 쇼츠는 watch 페이지 publishDate로 날짜 확인), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 15:25 이후 새 롱폼 없음(최신: AI 조교 'Fable 5.2 써보니' 8시간 전·7.8천). 48시간 내 새 쇼츠는 조팀장 '내 PC에 앱 설치'(11/8) 1개. vidIQ는 정해진 시각 아님. 인스타 브라우저 안 엶. ⛔게시 일시중지 중(~19:30)+16:41 앞뒤 30분이라 긴급 제작 요청 안 함, 페이블 5.2는 중지 풀린 뒤 1순위 유지.
+2026-11-10 17:28 | AI 드라마(경쟁 주제·AI 아스트라) | AI 드라마 제작 가이드 기획·시트·영상·오디오(11/10, 79) | https://www.youtube.com/@aiastra0/videos
+2026-11-10 17:28 | 바이트댄스 | 이미지 모델 '시드림 5.5' 공개(반복 편집 유지·투명 배경) | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-10 17:28 | BMW(알림·미국 한정) | 챗GPT에서 차량 추천·시승 예약 플러그인 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-10 17:28 | 오픈AI(알림 제외·연구 안전) | 연구용 킬스위치 '컨트롤 룸' 공개 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-10 17:28 | 소프트뱅크·디즈니(알림 제외·기업) | 미국 AI 데이터센터 재검토 / 어도비와 전용 AI 모델 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-10 17:28: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch, 새 lockupViewModel 구조로 파싱), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 새 롱폼 1개(AI 아스트라). 인스타 브라우저 안 엶. ⛔게시 일시중지 중이라 긴급 제작 요청 안 함
