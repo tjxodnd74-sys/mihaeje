@@ -133,3 +133,9 @@
 2026-11-10 17:28 | 오픈AI(알림 제외·연구 안전) | 연구용 킬스위치 '컨트롤 룸' 공개 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-10 17:28 | 소프트뱅크·디즈니(알림 제외·기업) | 미국 AI 데이터센터 재검토 / 어도비와 전용 AI 모델 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-10 17:28: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch, 새 lockupViewModel 구조로 파싱), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 새 롱폼 1개(AI 아스트라). 인스타 브라우저 안 엶. ⛔게시 일시중지 중이라 긴급 제작 요청 안 함
+2026-11-10 18:25 | 스마트폰 유즈(경쟁 주제·CONNECT AI LAB) | AI에게 내 스마트폰을 맡겼습니다, 스마트폰 유즈 THE FOUNDER EP.2(11/10, 101) | https://www.youtube.com/watch?v=K4QdeGqTSfQ
+2026-11-10 18:25 | AI 용어(경쟁 주제·조팀장 쇼츠) | 어려운 AI 용어들 하나도 몰라도 되는 이유(11/10) | https://www.youtube.com/shorts/H-HQE0ZuXpg
+2026-11-10 18:25 | 오픈AI(알림 제외·시장 통계) | 챗GPT 주요 AI 챗봇 이용량 81%, 클로드 급성장 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-10 18:25 | 앤트로픽(알림 제외·연구 사례) | 페이블 5.2 전자기기 3종 설계 / 클로드 로봇 팔 수채화 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-10 18:25 | 보스턴다이내믹스·텐센트·스페이스X·KT(알림 제외·기업) | 바퀴 아틀라스·RSI 연구·AI 데이터센터·3분기 실적 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-10 18:25: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, 쇼츠는 publishDate 확인), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 새 롱폼 1개(CONNECT AI LAB 스마트폰 유즈), 새 쇼츠 1개(조팀장). vidIQ 정해진 시각 아님. 인스타 브라우저 안 엶. ⛔게시 일시중지 중(~19:30)이라 긴급 제작 요청 안 함, 페이블 5.2는 중지 풀린 뒤 1순위 유지.
