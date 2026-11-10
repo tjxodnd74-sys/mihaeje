@@ -93,3 +93,10 @@
 2026-11-09 18:24 | 구글(알림 제외·개발자용) | 코딩 전 설계 검토 '코끼리-금붕어' 플러그인 오픈소스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-09 18:24 | 앤트로픽 등(알림 제외·연구) | 학습 데이터 0.1% 오염으로 에이전트 백도어 가능 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-09 18:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 파싱), 인스타 5개(@prompt_what·@biggie_ai·@reelta.gangsa·@momdi.tip·@horang.wave), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 17:24 이후 새 롱폼 없음, 새 쇼츠는 조팀장 '딸깍으로 항공권까지'(11/9) 1개. 인스타 새 글은 허성범 비AI 1개. 바로 만들 주제 없음(1곳만 다룬 주제·연구/개발자 소식뿐).
+2026-11-10 09:24 | 앤트로픽(알림·🔥바로제작 대기) | 클로드 페이블 5.2·미소스 5.2 출시, 유료 요금제 사용, API 20% 인하(11/9 현지) | https://www.cnbc.com/2026/11/09/anthropic-claude-fable-5-2-mythos-5-2.html
+2026-11-10 09:24 | 클로드 페이블(경쟁 주제·AI 조교) | Fable 5.2 써보니 성능 1위, 태스크당 26달러?(11/10, 363) | https://www.youtube.com/watch?v=KxUxK3NE2ZQ
+2026-11-10 09:24 | 힉스필드(경쟁 주제·찍봇) | 영상AI 초보자를 위한 힉스필드 7분 튜토리얼(11/9, 968) | https://www.youtube.com/watch?v=Zqn1j4fIVNQ
+2026-11-10 09:24 | AI 강의(경쟁 주제·바이브랩스) | AI 강사가 넘쳐나는 시대, 좋은 강의를 가르는 한 가지(11/9, 348) | https://www.youtube.com/watch?v=qOYy9cvOTlI
+2026-11-10 09:24 | 휴머노이드(경쟁 주제·에이아이하쥬) | 이런 휴머노이드가 곧 당신 옆에 옵니다(11/9, 313) | https://www.youtube.com/watch?v=RDUyg0NCcsY
+2026-11-10 09:24 | 엔비디아(알림 제외·기업) | 국내 AI 스타트업 3곳 투자·젠슨 황 논란 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-10 09:24: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch로 파싱), 긱뉴스·AI타임스 직접 확인 + 웹검색 4건. 인스타 브라우저 안 엶. ⛔게시 일시중지 중이라 긴급 제작 요청 안 함.
