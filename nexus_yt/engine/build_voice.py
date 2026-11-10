@@ -8,7 +8,7 @@ def sil(f):
     return list(zip(s,e))
 # trim each unit — gentle: keep natural word endings (decay + breath), soft fade, internal pauses capped at 0.32s
 # (2026-11-08 user: "끝음 처리도 이상하고 답답하게 말함" — old silenceremove cut the decay at -40dB and squeezed pauses to 0.14s)
-def trim(src,dst,th=-50,head=0.05,tail=0.20,maxgap=0.26,fade=0.08):
+def trim(src,dst,th=-50,head=0.05,tail=0.20,maxgap=0.32,fade=0.08):
     import numpy as np,wave
     a=np.frombuffer(subprocess.run(['ffmpeg','-v','error','-i',src,'-ac','1','-ar','48000','-f','s16le','-'],capture_output=True).stdout,np.int16).astype(np.float32)
     fr=480;n=len(a)//fr;e=np.array([20*np.log10(np.sqrt(np.mean((a[k*fr:(k+1)*fr]/32768)**2))+1e-9) for k in range(n)])
