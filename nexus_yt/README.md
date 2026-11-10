@@ -16,7 +16,7 @@ cd /home/claude/work/<slug>
 
 ## 1. Script: `lines.py`
 - `S` is a list of `(scene, [lines…])`.
-- `R` is the TTS reading substitutions. Example: `('AI','에이아이')`, `('Claude','클로드')`. Version numbers are read without breaks, e.g. 4.0 → "사점영". Count units use native Korean numbers (열 장, 열다섯 개).
+- `R` is the TTS reading substitutions. Example: `('AI','에이아이')`, `('Claude','클로드')`. Version/decimal numbers: Korean digits WITH SPACES, e.g. 5.2 → "오 점 이", 4.0 → "사 점 영", 88.2% → "팔십팔 점 이 퍼센트" (user 2026-11-10: "5.2 같은 숫자 발음 이상"). Tested: glued "오점이"/"오쩜이" or raw "5.2" come out garbled (ASR hears "5.1"); spaced "오 점 이" is clear. Never feed raw digits with a decimal point to TTS. After TTS, whisper must hear the right number on every line that has one. Count units use native Korean numbers (열 장, 열다섯 개).
 - `G={'outro':[[0,1]]}` keeps the outro's two lines as one unit.
 - The outro is always these three lines:
   - '이런 AI 소식'
