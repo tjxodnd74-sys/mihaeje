@@ -139,3 +139,9 @@
 2026-11-10 18:25 | 앤트로픽(알림 제외·연구 사례) | 페이블 5.2 전자기기 3종 설계 / 클로드 로봇 팔 수채화 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-10 18:25 | 보스턴다이내믹스·텐센트·스페이스X·KT(알림 제외·기업) | 바퀴 아틀라스·RSI 연구·AI 데이터센터·3분기 실적 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-10 18:25: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, 쇼츠는 publishDate 확인), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 새 롱폼 1개(CONNECT AI LAB 스마트폰 유즈), 새 쇼츠 1개(조팀장). vidIQ 정해진 시각 아님. 인스타 브라우저 안 엶. ⛔게시 일시중지 중(~19:30)이라 긴급 제작 요청 안 함, 페이블 5.2는 중지 풀린 뒤 1순위 유지.
+2026-11-11 09:14 | 클로드 모델 비교(경쟁 주제·스마트대디) | 클로드 Fable 5.2 vs 오퍼스 5.5 vs 챗GPT 아스트라(5시간 전, 2.7천) | https://www.youtube.com/watch?v=s4-n3qQ1BPQ
+2026-11-11 09:14 | 업무 자동화(경쟁 주제·조팀장) | 2026 업무 자동화 최신 무료 강의 12분 총정리(13시간 전, 1.8천) | https://www.youtube.com/watch?v=W1eWJjtARlE
+2026-11-11 09:14 | 구글 | 제미나이 4 카본 정식 출시(앱은 AI Ultra, API 페이블 5.2의 1/4 가격) — 알림·긴급 제작 요청 | https://9to5google.com/2026/11/10/gemini-app-4-carbon/
+2026-11-11 09:14 | 앤트로픽(알림 제외·기업) | 기업가치 1.4조달러 IPO 추진 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-11 09:14 | 과기정통부(알림 제외·정책) | IMD 디지털·AI 경쟁력 한국 10위 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-11 09:14: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch, lockupViewModel 파싱), 긱뉴스·AI타임스 직접 확인 + 웹검색 4건. 새 롱폼 2개(스마트대디·조팀장). 홀수 시각이라 쇼츠·vidIQ 생략. 인스타 브라우저 안 엶. 오늘 인스타 예약 1편(19:13 릴스). 페이블 5.2+제미나이 4 카본 긴급 제작 요청(fire_trigger 성공).
