@@ -160,3 +160,8 @@
 2026-11-11 13:24 | 엔비디아(알림 제외·기업) | CEO 스캔들·75억달러 중국 공급 의혹, 이틀간 시총 627조 증발 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-11 13:24: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch, lockupViewModel 파싱), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 12:24 이후 새 롱폼 없음(최신: 스마트대디 'Fable 5.2 vs 오퍼스 5.5 vs 아스트라' 9시간 전·1.2만). 홀수 시각이라 쇼츠·vidIQ 생략. 인스타 브라우저 안 엶. Claude Sheets 긴급 제작 3차 요청 → fire_trigger 또 권한 거부, 🔥바로제작 표시 유지(16:41 정규 회차용).
 - 2026-11-11 14:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, 쇼츠는 publishDate 확인), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 13:24 이후 새 롱폼·쇼츠 없음(최신: 스마트대디 'Fable 5.2 vs 오퍼스 5.5 vs 아스트라' 10시간 전·1.3만). AI타임스 새 글은 엔비디아 로펌·KT 메일보안(기업, 알림 제외). vidIQ 정해진 시각 아님. 인스타 브라우저 안 엶. Claude Sheets 긴급 제작 4차 요청 → fire_trigger 또 권한 거부, 🔥바로제작 표시 유지(16:41 정규 회차용).
+2026-11-11 15:25 | 오픈AI(알림·참고) | 챗GPT 비즈니스 허브 베타(기업 프로필·분석·고객 응대 에이전트) | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-11 15:25 | 앤트로픽(이미 알림, 국내 2차 확인) | AI타임스 '클로드 오피스 출시' Sheets·Whiteboards·Data | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-11 15:25 | 코어위브·이스트소프트·원프레딕트(알림 제외·기업) | 3분기 실적 / 세븐일레븐 AI 아바타 / CJ 공장 AI 팩토리 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-11 15:25 | 긱뉴스(알림 제외·의견글) | AI 사용은 취약한 코드베이스를 만든다 / 기업용 AI 가격 책정 | https://news.hada.io/
+- 2026-11-11 15:25: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch, lockupViewModel 파싱), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 14:24 이후 새 롱폼 없음(최신: 스마트대디 'Fable 5.2 vs 오퍼스 5.5 vs 아스트라' 11시간 전·1.4만). 홀수 시각이라 쇼츠 생략, vidIQ 잔액 4라 생략. 인스타 브라우저 안 엶. 오늘 인스타 예약 2편(11:52 카드뉴스는 '활동 제한' 경고와 함께 게시됨, 19:13 릴스 대기). Claude Sheets 긴급 제작 5차 요청 → fire_trigger 또 권한 거부, 🔥바로제작 표시 유지(16:41 정규 회차용).
