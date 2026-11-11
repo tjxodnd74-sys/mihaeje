@@ -157,3 +157,5 @@
 2026-11-11 12:24 | 정부(알림 제외·정책) | 피지컬 AI 신규 과제 센서·액추에이터·이차전지 선정 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-11 12:24 | Val Town(알림 제외·개발자용) | 단계적 서비스 종료 | https://news.hada.io/
 - 2026-11-11 12:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, 쇼츠는 publishDate 확인), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 11:25 이후 새 롱폼·쇼츠 없음(최신: 스마트대디 'Fable 5.2 vs 오퍼스 5.5 vs 아스트라' 8시간 전·1만). vidIQ 정해진 시각 아님. 인스타 브라우저 안 엶. Claude Sheets 긴급 제작 재요청 → fire_trigger 다시 권한 거부, 🔥바로제작 표시 유지.
+2026-11-11 13:24 | 엔비디아(알림 제외·기업) | CEO 스캔들·75억달러 중국 공급 의혹, 이틀간 시총 627조 증발 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-11 13:24: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch, lockupViewModel 파싱), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 12:24 이후 새 롱폼 없음(최신: 스마트대디 'Fable 5.2 vs 오퍼스 5.5 vs 아스트라' 9시간 전·1.2만). 홀수 시각이라 쇼츠·vidIQ 생략. 인스타 브라우저 안 엶. Claude Sheets 긴급 제작 3차 요청 → fire_trigger 또 권한 거부, 🔥바로제작 표시 유지(16:41 정규 회차용).
