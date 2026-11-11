@@ -30,7 +30,20 @@ cd /home/claude/work/<slug>
   - No banned words: 최초·유일·완벽·가장·제일·최고·최대·100%·무조건.
   - Base content only on facts checked in official sources.
 
-## 2. Narration (the user's cloned voice)
+## 1-B. RECORDING MODE — the user narrates (DEFAULT from 2026-11-11)
+User 2026-11-11: "걍 내가 녹음하는게 낫겠네" / "하루 1편에 쇼츠 1~2개, 급한 소식 있으면 하루 2개까지".
+TTS (§2) is NOT used any more unless the user explicitly asks for it again.
+1. Write the episode as usual (lines.py with R readings, scenes, thumbnail, upload info) + a shorts script (1–2 shorts, 11–12 lines each).
+   - Reading text must be easy to say aloud: short sentences, numbers spelled the way to read them (5.2 → 오 점 이), English names in Hangul.
+2. `python3 lines.py && python3 make_script.py shorts.json` → 녹음대본.txt + rec_units.json. Send 녹음대본.txt to the user (SendUserFile) and ask them to attach ONE phone recording in the same conversation. Then STOP and wait.
+3. When the recording arrives: `python3 from_recording.py <file> --units rec_units.json` → ln/u{k}.wav (long) + ln_s/s{k}.wav (shorts).
+   - Every unit must be OK/CHK. MISSING/BAD → ask the user to re-record only those numbers (send the list), then rerun on the new file for those units.
+   - Retakes inside the recording are handled (last good reading wins). Loudness is normalized, light denoise.
+4. `python3 build_voice.py` (gentle trim, whisper captions) → the usual render → mix → QA (§9) → send the preview mp4 + thumbnail to the user. Upload only after the user says OK.
+5. Shorts: short_v4 specs use wav='ln_s/s{k}.wav'. Schedule 1–2 shorts (next day, ≥3h apart).
+Tested 2026-11-11 on the user's 51s phone recording with a retake: 16/16 lines matched, retake picked correctly.
+
+## 2. Narration — TTS fallback ONLY if the user asks (cloned voice)
 - Use Higgsfield `generate_audio_batch` with `model "seed_audio"`, `medias [{"value":"078ee6b3-f533-4359-82a2-628141fcaa8d","role":"audio_references"}]`, `speech_rate 20`, `format "wav"`, `sample_rate 48000`. **Do not use other TTS.** Reference = 25s of the clear, explanatory parts of the user's 2026-11-09 re-recording (078ee6b3), speech_rate 20 (user 2026-11-10: "발음도 이상하고 속도도 너무 느려"). Measured ~7.9 syllables/s (was 6.1). Retired refs: eaa16e1c (flat), 6dec323c (full 51s exaggerated read → slow, slurred words). Target pace 7.5–8.5 syll/s; check it with python before render.
 - index = k*10 + take. Send up to 6 per batch; on a 429, wait and resend.
 - Wait with `jobs_wait` using `jobs:[{index,job_id}]`.
