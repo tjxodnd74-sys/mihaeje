@@ -29,7 +29,7 @@ def H(s):  # whisper writes English names in Latin letters; the script reads the
     return re.sub(r'[^가-힣a-z]', '', s)
 
 sr = 48000
-pcm = np.frombuffer(subprocess.run(['ffmpeg', '-v', 'error', '-i', A.rec, '-ac', '1', '-ar', str(sr), '-af', 'highpass=f=70,afftdn=nf=-28,loudnorm=I=-18:TP=-2:LRA=11',
+pcm = np.frombuffer(subprocess.run(['ffmpeg', '-v', 'error', '-i', A.rec, '-ac', '1', '-ar', str(sr), '-af', 'highpass=f=80,equalizer=f=250:t=q:w=1:g=-2,equalizer=f=4500:t=q:w=0.8:g=4,equalizer=f=9000:t=q:w=1:g=2,loudnorm=I=-18:TP=-2:LRA=11',
                                     '-f', 's16le', '-'], capture_output=True).stdout, np.int16)
 a16 = np.frombuffer(subprocess.run(['ffmpeg', '-v', 'error', '-i', A.rec, '-ac', '1', '-ar', '16000', '-f', 'f32le', '-'],
                                    capture_output=True).stdout, np.float32)
