@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Regular.woff2);font-weight:400}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-SemiBold.woff2);font-weight:600}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+:root{--bg:#0A1517;--vi:#5FD8FF;--vi2:#2FB7E6;--am:#FF9F6B;--tx:#F3F4FA;--mu:#9EA3BD;--ln:rgba(255,255,255,.10);--red:#FF6B6B;--grn:#5BE0A0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#333;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.mono{font-family:'DejaVu Sans Mono',monospace;letter-spacing:.08em}
+.card{width:1080px;height:1350px;position:relative;overflow:hidden;margin:0 0 40px;color:var(--tx);
+ background:radial-gradient(900px 600px at 85% 0%,rgba(47,183,230,.20),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(255,140,90,.10),transparent 60%),var(--bg)}
+.card:before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:54px 54px;pointer-events:none}
+.bar{position:absolute;left:64px;right:64px;top:52px;display:flex;justify-content:space-between;align-items:center;font-size:22px;color:var(--mu);padding-bottom:22px;border-bottom:2px dashed var(--ln)}
+.bar .l{display:flex;align-items:center;gap:14px}
+.bar img{width:34px;height:34px}
+.bar .r{color:var(--vi);font-weight:700}
+.wrap{position:absolute;left:64px;right:64px;top:150px}
+.lab{font-size:26px;color:var(--vi);font-weight:700;margin-bottom:22px}
+.h{font-weight:900;font-size:96px;line-height:1.12;letter-spacing:-.045em}
+.h .v{color:var(--vi)} .h .a{color:var(--am)}
+.s{margin-top:26px;font-size:34px;color:#C9CCDD;font-weight:500;letter-spacing:-.02em;line-height:1.5}
+.s b{color:var(--am);font-weight:800}
+.box{position:absolute;left:64px;right:64px;border:2px solid var(--ln);border-radius:28px;background:rgba(255,255,255,.035);padding:60px 56px}
+.box .tag{position:absolute;top:-17px;left:36px;background:var(--bg);padding:0 14px;font-size:22px;color:var(--mu)}
+.foot{position:absolute;left:64px;right:64px;bottom:56px;font-size:24px;color:#6E7390;font-weight:500;line-height:1.5}
+.stamp{display:inline-block;border:4px solid var(--vi);color:var(--vi);font-weight:900;font-size:30px;padding:6px 20px;border-radius:10px;transform:rotate(-6deg);letter-spacing:.12em}
+
+/* map */
+.map{display:flex;flex-direction:column;gap:30px}
+.mrow{display:flex;align-items:center;gap:24px}
+.pill{flex:1;height:124px;border-radius:26px;display:flex;align-items:center;gap:20px;padding:0 30px;font-size:40px;font-weight:700}
+.pill.o{background:rgba(163,148,255,.12);border:2px solid rgba(163,148,255,.35);color:#D9D4FF}
+.pill.n{background:#fff;color:#14162A}
+.pill i{font-style:normal;font-size:44px}
+.arr{color:var(--am);font-size:46px;font-weight:900}
+
+/* quote */
+.q{background:#FBF7EA;color:#1C1D28;border-radius:20px;padding:48px 50px;font-family:Georgia,serif;font-size:44px;line-height:1.5}
+.q mark{background:#FFE37A;padding:0 4px}
+.qk{margin-top:44px;font-size:54px;font-weight:800;line-height:1.4;letter-spacing:-.03em}
+.qk span{color:var(--am)}
+
+/* list */
+.ol{display:flex;flex-direction:column;gap:54px}
+.ol .it{display:flex;align-items:baseline;gap:30px;font-size:50px;font-weight:700;letter-spacing:-.03em}
+.ol .it .n{font-size:30px;color:var(--vi);font-weight:700;width:52px}
+.ol .it small{display:block;font-size:33px;color:var(--mu);font-weight:500;margin-top:6px}
+.ol .it.hot{color:var(--am)}
+
+/* ox */
+.ox{position:absolute;left:64px;right:64px;top:620px;display:flex;gap:24px}
+.ox .c{flex:1;border-radius:28px;padding:50px 44px;min-height:560px;border:2px solid var(--ln);background:rgba(255,255,255,.03)}
+.ox .c.x{border-color:rgba(255,107,107,.6);background:rgba(255,107,107,.08)}
+.ox .hd{font-size:30px;font-weight:700;margin-bottom:26px;color:var(--grn)}
+.ox .x .hd{color:var(--red)}
+.ox li{list-style:none;font-size:44px;font-weight:700;line-height:1.35;margin-bottom:36px;letter-spacing:-.02em}
+
+/* copy box */
+.copy{font-size:46px;font-weight:700;line-height:1.9;letter-spacing:-.02em}
+.copy .f{background:rgba(255,200,97,.18);color:var(--am);border:2px solid rgba(255,200,97,.55);border-radius:10px;padding:0 10px}
+.tip{font-size:37px;color:#C9CCDD;line-height:1.65;font-weight:500}
+.tip b{color:var(--am)}
+.best{position:absolute;right:40px;top:-26px;border:4px solid var(--red);color:var(--red);font-weight:900;font-size:26px;padding:4px 16px;border-radius:8px;transform:rotate(6deg);background:var(--bg);letter-spacing:.1em}
+
+
+#k1{background:#0A0F12}
+#k1:before{display:none}
+#k1 .img{position:absolute;left:0;top:0;width:1080px;height:830px;overflow:hidden}
+#k1 .img img{position:absolute;height:830px;left:50%;transform:translateX(-50%);top:0}
+#k1 .img:after{content:"";position:absolute;left:0;right:0;bottom:0;height:320px;background:linear-gradient(transparent,#0A0F12)}
+#k1 .tg{position:absolute;left:60px;top:50px;background:#FFD43B;color:#111;font-size:30px;font-weight:900;padding:8px 20px;border-radius:10px;letter-spacing:-.02em}
+#k1 .tt{position:absolute;left:58px;right:40px;top:730px;font-size:132px;font-weight:900;line-height:1.08;letter-spacing:-.055em;color:#fff;text-shadow:0 6px 24px rgba(0,0,0,.7)}
+#k1 .tt em{font-style:normal;color:#FFD43B}
+#k1 .hd2{position:absolute;left:60px;right:60px;bottom:44px;display:flex;justify-content:space-between;font-size:24px;font-weight:700;color:#7F8C90}
+.map{display:flex;flex-direction:column;gap:34px}
+.ev{display:flex;align-items:center;gap:28px;border-radius:26px;padding:34px 36px;font-size:44px;font-weight:800;letter-spacing:-.03em}
+.ev .d{font-size:30px;font-weight:700;width:120px;flex:none}
+.ev small{display:block;font-size:30px;font-weight:500;color:var(--mu);margin-top:6px}
+.ev.f{background:rgba(255,159,107,.12);border:2px solid rgba(255,159,107,.45)} .ev.f .d{color:var(--am)}
+.ev.g{background:rgba(95,216,255,.10);border:2px solid rgba(95,216,255,.40)} .ev.g .d{color:var(--vi)}
+.vs{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:120px;height:120px;border-radius:50%;background:#FFD43B;color:#111;font-weight:900;font-size:48px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 10px var(--bg)}
+.price{display:flex;flex-direction:column;gap:46px}
+.pr .k{font-size:32px;color:var(--mu);font-weight:600;margin-bottom:14px}
+.pr .row2{display:flex;align-items:center;gap:22px}
+.pr .old{font-size:44px;color:#6E7A80;text-decoration:line-through;font-weight:700;width:150px}
+.pr .bar2{flex:1;height:70px;border-radius:16px;background:rgba(255,255,255,.06);overflow:hidden;position:relative}
+.pr .fill{position:absolute;left:0;top:0;bottom:0;width:80%;background:linear-gradient(90deg,#FF9F6B,#FFD43B);border-radius:16px}
+.pr .new{font-size:60px;font-weight:900;color:#FFD43B;width:150px;text-align:right}
+.mx .pr .fill{animation:shrink 6s ease-in-out infinite}
+@keyframes shrink{0%,8%{width:100%}30%,88%{width:80%}100%{width:100%}}
+.mx .ev.f{animation:fromL .6s cubic-bezier(.2,.8,.2,1) both}
+.mx .ev.g{animation:fromR .6s .25s cubic-bezier(.2,.8,.2,1) both}
+@keyframes fromL{from{transform:translateX(-40px)}to{transform:none}}
+@keyframes fromR{from{transform:translateX(40px)}to{transform:none}}
+.mx .vs{animation:vsP 1.4s ease-in-out infinite}
+@keyframes vsP{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.12) rotate(-6deg)}}
+.tbl{display:flex;flex-direction:column;gap:20px}
+.tr{display:grid;grid-template-columns:1.25fr 1fr 1fr;align-items:center;gap:16px;border-radius:22px;padding:28px 30px;background:rgba(255,255,255,.04);border:2px solid var(--ln);font-size:38px;font-weight:800;letter-spacing:-.03em}
+.tr.hd{background:none;border:none;padding:0 30px;font-size:28px;color:var(--mu);font-weight:700}
+.tr .o{color:#5BE0A0;text-align:center;font-size:50px} .tr .x{color:#FF6B6B;text-align:center;font-size:50px}
+.tr .c{text-align:center}
+.tr small{display:block;font-size:26px;color:var(--mu);font-weight:500}
+.mx .tr .o{animation:pop 6s ease-in-out infinite}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+.copy{border:2px dashed rgba(255,212,59,.5);border-radius:20px;padding:34px 34px;background:rgba(255,212,59,.06);font-size:42px;line-height:1.7}
+/* end */
+#k9 .glow{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(95,216,255,.40) 0%,rgba(47,183,230,.16) 45%,transparent 70%)}
+#k9 .floor{position:absolute;left:50%;top:640px;transform:translateX(-50%);width:420px;height:70px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.55),transparent 70%)}
+#k9 .peng{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:300px;filter:drop-shadow(0 20px 40px rgba(47,183,230,.5))}
+#k9 .bubble{position:absolute;left:610px;top:190px;background:#fff;color:#14162A;font-weight:800;font-size:32px;padding:18px 28px;border-radius:26px 26px 26px 6px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+#k9 .c{position:absolute;left:0;right:0;top:720px;text-align:center}
+#k9 .h{font-size:88px}
+#k9 .key{display:inline-block;margin-top:40px;border:4px solid var(--am);color:var(--am);font-size:54px;font-weight:900;padding:14px 46px;border-radius:14px}
+#k9 .s{text-align:center}
+
+.s{font-size:38px}
+.ol{gap:64px}.ol .it{font-size:54px}.ol .it small{font-size:34px;margin-top:10px}
+.ev{padding:52px 40px;font-size:54px}.ev small{font-size:32px}.map{gap:44px}
+.vs{left:auto;right:40px;width:130px;height:130px;transform:translateY(-50%)}
+@keyframes vsP{0%,100%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.12) rotate(-6deg)}}
+.price{gap:70px}.pr .k{font-size:38px}.pr .bar2{height:100px}.pr .old{font-size:50px;width:170px}.pr .new{font-size:76px;width:190px}
+.tr{padding:28px 34px;font-size:46px}.tr small{font-size:28px}.tr .o,.tr .x{font-size:60px}.tbl{gap:26px}.tr.hd{font-size:32px}
+.copy{font-size:47px}
+.foot{font-size:26px}
+</style></head><body>
+<section class="card" id="k1">
+ <div class="img"><img src="cover.png"></div>
+ <div class="tg">AI 뉴스</div>
+ <div class="tt">새 AI 2개,<br>무료로는<br><em>둘 다 못 써요</em></div>
+ <div class="hd2 mono"><span>@nexus_studio.kr</span><span>넘겨 보기 →</span></div>
+</section>
+
+<section class="card" id="k2"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · NEW AI</div><div class="r">FILE 02/09</div></div>
+ <div class="wrap"><div class="lab mono">WHAT HAPPENED</div>
+  <div class="h">이틀 사이<br><span class="v">새 AI가 2개</span></div>
+  <div class="s">클로드와 제미나이가 <b>하루 차이로</b><br>새 상위 모델을 내놨어요.</div></div>
+ <div class="box" style="top:640px"><div class="tag mono">TIMELINE · 미국 현지 날짜</div>
+  <div class="map" style="position:relative">
+   <div class="ev f"><span class="d mono">11/9</span><div>클로드 페이블 5.2<small>앤트로픽 · 미소스 5.2도 함께 공개</small></div></div>
+   <div class="ev g"><span class="d mono">11/10</span><div>제미나이 4 카본<small>구글 · 정식 공개(Public)</small></div></div>
+   <div class="vs">VS</div>
+  </div></div>
+ <div class="foot" style="font-size:32px;color:#9EA3BD">누가 바로 쓸 수 있는지는 <b style="color:#FFD43B">요금제마다 달라요</b> → 5번째 장</div>
+</section>
+
+<section class="card" id="k3"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · CLAUDE</div><div class="r">FILE 03/09</div></div>
+ <div class="wrap"><div class="lab mono">CLAUDE FABLE 5.2</div>
+  <div class="h">페이블 5.2,<br><span class="a">값이 20% 내렸어요</span></div>
+  <div class="s">클로드 <b>모든 유료 요금제</b>에서 바로 쓸 수 있고,<br>API 가격은 5.1보다 20% 낮아졌어요.</div></div>
+ <div class="box" style="top:640px"><div class="tag mono">API PRICE · 100만 토큰당</div>
+  <div class="price">
+   <div class="pr"><div class="k">입력</div><div class="row2"><span class="old mono">$10</span><div class="bar2"><div class="fill"></div></div><span class="new mono">$8</span></div></div>
+   <div class="pr"><div class="k">출력</div><div class="row2"><span class="old mono">$50</span><div class="bar2"><div class="fill"></div></div><span class="new mono">$40</span></div></div>
+  </div></div>
+ <div class="foot" style="font-size:30px">무료 요금제는 대상이 아니에요. API는 개발자용 사용량 요금이에요.</div>
+</section>
+
+<section class="card" id="k4"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 04/09</div></div>
+ <div class="wrap"><div class="lab mono">GEMINI 4 CARBON</div>
+  <div class="h">제미나이 4 카본,<br><span class="v">앱은 울트라부터</span></div>
+  <div class="s">제미나이 앱에서는 <b>AI Ultra 구독자</b>에게<br>먼저 배포되고, 기존 아르곤도 그대로 남아요.</div></div>
+ <div class="box" style="top:620px"><div class="tag mono">KEY POINT</div>
+  <div class="ol">
+   <div class="it hot"><span class="n mono">01</span><div>API 가격은 더 낮아요<small>페이블 5.2·오퍼스 5.5보다 싸다고 벤처비트가 보도</small></div></div>
+   <div class="it"><span class="n mono">02</span><div>아르곤 출시 때 할인가 그대로<small>런타임와이어 보도 기준</small></div></div>
+   <div class="it"><span class="n mono">03</span><div>기존 아르곤도 계속 써요<small>카본이 나와도 앱에서 빠지지 않아요</small></div></div>
+  </div></div>
+</section>
+
+<section class="card" id="k5"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · NEW AI</div><div class="r">FILE 05/09</div></div>
+ <div class="wrap"><div class="lab mono">CHECK · 앱 기준</div>
+  <div class="h">내 요금제로<br><span class="a">뭘 쓸 수 있나?</span></div></div>
+ <div class="box" style="top:450px;padding:46px 46px"><div class="tag mono">MY PLAN</div>
+  <div class="tbl">
+   <div class="tr hd"><span>내 상황</span><span class="c">페이블 5.2</span><span class="c">4 카본</span></div>
+   <div class="tr"><span>무료로만 써요</span><span class="x">✕</span><span class="x">✕</span></div>
+   <div class="tr"><span>클로드 유료<small>Pro 등 유료 요금제</small></span><span class="o">○</span><span class="x">✕</span></div>
+   <div class="tr"><span>구글 AI Ultra<small>순차 배포</small></span><span class="x">✕</span><span class="o">○</span></div>
+   <div class="tr"><span>개발자(API)<small>쓴 만큼 결제</small></span><span class="o">○</span><span class="o">○</span></div>
+  </div></div>
+</section>
+
+<section class="card" id="k6"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · NEW AI</div><div class="r">FILE 06/09</div></div>
+ <div class="wrap"><div class="lab mono">HOW TO PICK</div>
+  <div class="h">그럼<br><span class="v">뭘 고를까?</span></div>
+  <div class="s">새 모델이라고 바로 갈아탈 필요는 없어요.</div></div>
+ <div class="box" style="top:600px"><div class="tag mono">상황별</div>
+  <div class="ol" style="gap:46px">
+   <div class="it"><span class="n mono">01</span><div>클로드 유료라면<small>모델 고르는 칸에서 페이블 5.2로 바꿔 보기</small></div></div>
+   <div class="it"><span class="n mono">02</span><div>구글 AI Ultra라면<small>앱에 카본이 보이면 아르곤과 번갈아 써 보기</small></div></div>
+   <div class="it hot"><span class="n mono">03</span><div>API로 많이 돌린다면<small>같은 일 하나로 두 모델 비용부터 비교</small></div></div>
+   <div class="it"><span class="n mono">04</span><div>무료라면<small>지금 모델로 다음 장 지시문부터</small></div></div>
+  </div></div>
+</section>
+
+<section class="card" id="k7"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · NEW AI</div><div class="r">FILE 07/09</div></div>
+ <div class="wrap"><div class="lab mono">TRY THIS</div>
+  <div class="h">새 모델,<br><span class="a">이렇게 시험해요</span></div>
+  <div class="s">두 AI에 <b>똑같이 붙여 넣고</b> 답을 나란히 비교해요.</div></div>
+ <div class="box" style="top:640px"><div class="tag mono">COPY · PASTE</div><div class="best mono">TEST</div>
+  <div class="copy">내가 자주 하는 일은 <span class="f">○○</span>이야.<br>이 일로 아래 질문에 답해 줘.<br><span class="f">질문</span><br>① 결론 3줄 ② 근거 ③ 확실하지 않은 부분<br>으로 나눠서 써 줘.</div>
+  <div class="tip" style="margin-top:28px">③번을 솔직하게 적는 쪽이<br><b>내 일에 믿고 맡기기 좋은 모델</b>이에요.</div></div>
+</section>
+
+<section class="card" id="k8"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · NEW AI</div><div class="r">FILE 08/09</div></div>
+ <div class="wrap"><div class="lab mono">CAUTION</div>
+  <div class="h">쓰기 전에<br><span class="a">이건 확인</span></div></div>
+ <div class="box" style="top:480px"><div class="tag mono">GOOD TO KNOW</div>
+  <div class="ol" style="gap:80px">
+   <div class="it"><span class="n mono">!</span><div>앱 배포는 순차예요<small>오늘 안 보여도 며칠 뒤 생길 수 있어요</small></div></div>
+   <div class="it"><span class="n mono">!</span><div>한국 적용 시점은 공식 안내로<small>국가·계정마다 다를 수 있어요</small></div></div>
+   <div class="it"><span class="n mono">!</span><div>API 가격은 바뀔 수 있어요<small>결제 전 공식 가격표 한 번 더</small></div></div>
+  </div></div>
+ <div class="foot">출처: Datastudios·AlternativeTo·Dataconomy(페이블 5.2, 11/9~10)<br>9to5Google·VentureBeat·RuntimeWire(제미나이 4 카본, 11/10)</div>
+</section>
+
+<section class="card" id="k9">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · NEW AI</div><div class="r">END OF FILE</div></div>
+ <div class="glow"></div><div class="floor"></div><img class="peng" src="../assets/heart.png"><div class="bubble">내 요금제부터 확인!</div>
+ <div class="c"><div class="h">갈아타기 전에<br>저장해 두세요</div>
+  <div class="key">📌 저장 · 팔로우</div>
+  <div class="s" style="margin-top:36px">바로 써먹는 AI 소식, 넥서스가 쉽게 정리해요<br><span class="mono" style="color:var(--vi);font-size:28px">@nexus_studio.kr</span></div></div>
+</section>
+</body></html>

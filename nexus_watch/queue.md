@@ -1,6 +1,6 @@
 # 넥서스 제작 후보 (최신이 위)
 
-## 2026-11-11 09:14 — 🔥바로제작 [제작 요청됨 2026-11-11 09:14] 새 최상위 AI 2개 — 클로드 페이블 5.2 + 제미나이 4 카본 정식 출시
+## 2026-11-11 09:14 — [완료 카드뉴스] 🔥바로제작 [제작 요청됨 2026-11-11 09:14] 새 최상위 AI 2개 — 클로드 페이블 5.2 + 제미나이 4 카본 정식 출시
 - 출처: https://9to5google.com/2026/11/10/gemini-app-4-carbon/ , https://venturebeat.com/technology/google-gemini-4-carbon-is-now-publicly-available-and-it-undercuts-claude-fable-5-2-and-opus-5-5-on-api-price , https://www.aitimes.com/news/articleView.html?idxno=217249 (11/11 08:12) , https://www.cnbc.com/2026/11/09/anthropic-claude-fable-5-2-mythos-5-2.html
 - 추천 형식: 카드뉴스
 - 제목안: "새 최상위 AI 2개 나왔다 / 페이블 5.2 vs 제미나이 4 카본, 나는 뭘 쓰지?"
@@ -14,7 +14,7 @@
 - 핵심 사실: 반복 편집 시 수정 안 한 영역 픽셀 단위 유지 / 투명 배경·정교한 텍스트 / 1곳만 확인돼 바로 제작 제외
 - 다룬 채널: 없음(뉴스)
 
-## 2026-11-10 09:24 — 🔥바로제작 [제작 요청됨 2026-11-11 09:14 — 제미나이 4 카본과 묶어 요청] 클로드 페이블 5.2 출시 — 유료 요금제 바로 사용·가격 20% 인하
+## 2026-11-10 09:24 — [완료 카드뉴스] 🔥바로제작 [제작 요청됨 2026-11-11 09:14 — 제미나이 4 카본과 묶어 요청] 클로드 페이블 5.2 출시 — 유료 요금제 바로 사용·가격 20% 인하
 - 출처: https://www.cnbc.com/2026/11/09/anthropic-claude-fable-5-2-mythos-5-2.html , https://www.macrumors.com/2026/11/09/anthropic-launches-claude-fable-5-2/ , https://www.aitimes.com/news/articleView.html?idxno=217196 , https://x.com/claudeai/status/2119867138987176141
 - 추천 형식: 카드뉴스
 - 제목안: "클로드 새 모델 '페이블 5.2' 나왔다 / 뭐가 달라졌나 3줄 정리"
