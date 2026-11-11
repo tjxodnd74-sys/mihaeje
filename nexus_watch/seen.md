@@ -168,3 +168,7 @@
 2026-11-11 16:25 | 어도비(참고) | 파이어플라이 AI 크리에이티브 스튜디오 확장·새 영상 편집기(어도비 맥스 11/10) | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-11 16:25 | 오픈AI·중기부·엔스케일·구글(알림 제외·기업/정책) | 3분기 매출 100억달러·손실 109억달러 / AI 유니콘 20곳 전략 / IPO 연기 검토 / AI 검색 광고 수익성 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-11 16:25: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, 쇼츠는 publishDate 확인), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 15:25 이후 새 롱폼 없음(최신: 스마트대디 'Fable 5.2 vs 오퍼스 5.5 vs 아스트라' 12시간 전·1.5만). 48시간 내 새 쇼츠 없음(목록 쇼츠는 모두 11/4 이전). vidIQ 정해진 시각 아님. 인스타 브라우저 안 엶. 16:41 정규 회차 앞뒤 30분이라 긴급 제작 요청 안 함 — Claude Sheets 🔥바로제작 표시 유지.
+2026-11-11 17:24 | AI 드라마 제작(경쟁 주제·AI 아스트라) | AI 드라마 제작 가이드, 기획·시트·영상·오디오(1일 전, 1.1만) | https://www.youtube.com/watch?v=tA3ad8v6OQw
+2026-11-11 17:24 | AI 강의(알림 제외·바이브랩스 소형) | 도구보다 문제 정의가 먼저입니다(48분 전, 20) | https://www.youtube.com/watch?v=vL7oR6kyvD4
+2026-11-11 17:24 | TSMC·소프트뱅크·오픈AI(알림 제외·기업) | 오픈AI·앤트로픽에 최대 10억달러 투자 / 발전설비 5조 손실 / 여행 AI 오데시아 인수 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-11 17:24: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch, lockupViewModel 파싱), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 새 롱폼 2개(AI 아스트라 'AI 드라마 제작 가이드', 바이브랩스). 홀수 시각이라 쇼츠·vidIQ 생략. 인스타 브라우저 안 엶. 16:41 정규 회차가 Claude Sheets를 아직 안 만들어(커밋 없음) 긴급 제작 6차 요청 → fire_trigger 또 권한 거부, 🔥바로제작 표시 유지.

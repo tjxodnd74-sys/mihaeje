@@ -11,7 +11,7 @@
 - 추천 형식: 카드뉴스(사장님·1인 사업자 대상이면 가능, 공식 블로그·두 번째 언론 확인 후. 한국 이용 가능 여부 확인 필요)
 - 제목안: "챗GPT에 내 가게 등록하는 시대 / 비즈니스 허브"
 
-## 2026-11-11 11:25 — 🔥바로제작 [긴급 제작 요청 실패: fire_trigger 권한 거부(11:25·12:24·13:24·14:24·15:25 다섯 번) → 16:41 정규 회차가 가져가도록 표시, 16:25는 16:41 앞뒤 30분이라 요청 안 함] 클로드에 '시트·화이트보드' 생겼다 — Claude Sheets·Whiteboards 베타 + Claude Data 정식 (+Meetings 베타)
+## 2026-11-11 11:25 — 🔥바로제작 [긴급 제작 요청 실패: fire_trigger 권한 거부(11:25·12:24·13:24·14:24·15:25·17:24 여섯 번, 16:41 정규 회차도 아직 안 만듦) → 16:41 정규 회차가 가져가도록 표시, 16:25는 16:41 앞뒤 30분이라 요청 안 함] 클로드에 '시트·화이트보드' 생겼다 — Claude Sheets·Whiteboards 베타 + Claude Data 정식 (+Meetings 베타)
 - 출처: https://claude.com/resources/articles/sheets-whiteboards-data (11/10 공식) , https://techcrunch.com/2026/11/10/anthropic-launches-claude-meetings-to-turn-workplace-discussions-into-plans-and-tasks/ , AI타임스 '앤트로픽, 클로드 오피스 출시'(11/11 14:56) , https://techstartups.com/2026/11/10/anthropic-unveils-claude-sheets-whiteboards-and-data-as-ai-powered-microsoft-office-alternatives-ahead-of-ipo/ , 긱뉴스(11/11)
 - 추천 형식: 카드뉴스
 - 제목안: "클로드에 엑셀이 생겼다? / 유료면 오늘부터 되는 3가지"
@@ -254,3 +254,4 @@ vidIQ 사용: 2026-11-11 10:24 0크레딧(잔액 4, 80 미만으로 생략)
 긴급 제작 요청(실패·권한 거부, 횟수 미포함): 2026-11-11 14:24 Claude Sheets·Whiteboards·Data 4차 시도
 긴급 제작 요청(실패·권한 거부, 횟수 미포함): 2026-11-11 15:25 Claude Sheets·Whiteboards·Data 5차 시도
 vidIQ 사용: 2026-11-11 15:25 0크레딧(잔액 4, 80 미만으로 생략)
+긴급 제작 요청(실패·권한 거부, 횟수 미포함): 2026-11-11 17:24 Claude Sheets·Whiteboards·Data 6차 시도
