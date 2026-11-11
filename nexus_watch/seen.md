@@ -172,3 +172,8 @@
 2026-11-11 17:24 | AI 강의(알림 제외·바이브랩스 소형) | 도구보다 문제 정의가 먼저입니다(48분 전, 20) | https://www.youtube.com/watch?v=vL7oR6kyvD4
 2026-11-11 17:24 | TSMC·소프트뱅크·오픈AI(알림 제외·기업) | 오픈AI·앤트로픽에 최대 10억달러 투자 / 발전설비 5조 손실 / 여행 AI 오데시아 인수 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-11 17:24: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch, lockupViewModel 파싱), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 새 롱폼 2개(AI 아스트라 'AI 드라마 제작 가이드', 바이브랩스). 홀수 시각이라 쇼츠·vidIQ 생략. 인스타 브라우저 안 엶. 16:41 정규 회차가 Claude Sheets를 아직 안 만들어(커밋 없음) 긴급 제작 6차 요청 → fire_trigger 또 권한 거부, 🔥바로제작 표시 유지.
+2026-11-11 18:24 | AI 구독(경쟁 주제·조팀장 쇼츠) | AI 툴 유료 구독하면 안되는 이유(11/11 18:00, 15) | https://www.youtube.com/shorts/A5lBn2uaDSg
+2026-11-11 18:24 | 앤트로픽(알림·참고) | 페이블 5.2 프롬프트 가이드 공개, 기존 지침 재검토 권고 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-11 18:24 | 메타(알림·한국 미지원 추정) | AI 에이전트 '뮤즈' 애플워치·웨어OS로 확대 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-11 18:24 | 구글·문샷(알림 제외·연구/기업) | 제미나이 로보틱스 2.5 휴머노이드 공장 성공률 96% / 엔비디아 B300 임대 정황 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-11 18:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, 쇼츠는 publishDate 확인), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 17:24 이후 새 롱폼 없음(최신: 바이브랩스 '도구보다 문제 정의가 먼저' 1시간 전·34). 새 쇼츠 1개(조팀장 'AI 툴 유료 구독하면 안되는 이유'). vidIQ 정해진 시각 아님. 인스타 브라우저 안 엶. Claude Sheets 긴급 제작 7차 요청 → fire_trigger 또 권한 거부, 🔥바로제작 표시 유지.
