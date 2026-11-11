@@ -150,3 +150,7 @@
 2026-11-11 10:24 | 버셀(알림 제외·개발자용) | agent-desktop, AI 에이전트 데스크톱 앱 조작 CLI | https://news.hada.io/
 2026-11-11 10:24 | 아마존(알림 제외·기업) | 사내 티켓 분류 Sonnet 4.6→Strands Decider로 바꿔 비용 98% 절감 | https://news.hada.io/
 - 2026-11-11 10:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, 쇼츠는 publishDate 확인), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 09:24 이후 새 롱폼 없음(최신: 스마트대디 'Fable 5.2 vs 오퍼스 5.5 vs 아스트라' 6시간 전·5.6천). 48시간 내 새 쇼츠는 유튜브신쌤 '피클'(11/10) 1개. vidIQ 잔액 4(80 미만) 생략. 인스타 브라우저 안 엶. 바로 만들 주제 없음(+09:14 요청 후 2시간 안·10:41 정규 회차 30분 안).
+2026-11-11 11:25 | 앤트로픽(알림·🔥바로제작) | Claude Sheets·Whiteboards 베타 + Claude Data 정식, 모든 유료 요금제(11/10) / Claude Meetings 베타(Team·Enterprise) | https://claude.com/resources/articles/sheets-whiteboards-data
+2026-11-11 11:25 | 페이블 5.2(알림 제외·사례) | 조카 그림으로 12스테이지 게임 한 번에 구현 | https://news.hada.io/
+2026-11-11 11:25 | 딥마인드(알림 제외·연구) | AlphaProof Code, Signal 암호 구현 형식 검증 | https://news.hada.io/
+- 2026-11-11 11:25: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch, lockupViewModel 파싱), 긱뉴스·AI타임스 직접 확인 + 웹검색 5건. 10:24 이후 새 롱폼 없음(최신: 스마트대디 'Fable 5.2 vs 오퍼스 5.5 vs 아스트라' 7시간 전·7.8천). 홀수 시각이라 쇼츠·vidIQ 생략. 인스타 브라우저 안 엶. 오늘 인스타 예약 2편. Claude Sheets 등 긴급 제작 요청 → fire_trigger 권한 거부, queue에 🔥바로제작 표시만.

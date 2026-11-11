@@ -1,5 +1,12 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-11 11:25 — 🔥바로제작 [긴급 제작 요청 실패: fire_trigger 권한 거부 → 16:41 정규 회차가 가져가도록 표시] 클로드에 '시트·화이트보드' 생겼다 — Claude Sheets·Whiteboards 베타 + Claude Data 정식 (+Meetings 베타)
+- 출처: https://claude.com/resources/articles/sheets-whiteboards-data (11/10 공식) , https://techcrunch.com/2026/11/10/anthropic-launches-claude-meetings-to-turn-workplace-discussions-into-plans-and-tasks/ , https://techstartups.com/2026/11/10/anthropic-unveils-claude-sheets-whiteboards-and-data-as-ai-powered-microsoft-office-alternatives-ahead-of-ipo/ , 긱뉴스(11/11)
+- 추천 형식: 카드뉴스
+- 제목안: "클로드에 엑셀이 생겼다? / 유료면 오늘부터 되는 3가지"
+- 핵심 사실: Sheets(베타) 탭·수식·서식·드롭다운, 고친 칸 표시, 복잡하면 .xlsx·CSV 내보내기 / Whiteboards(베타) 팀 보드→담당자·날짜 일정표, 문서·덱 내보내기·Lucid·Miro 이동 / Data = Dashboards 정식(커넥터 필요) / 셋 다 모든 유료 요금제·웹·데스크톱·모바일, 무료 제외, Enterprise는 Whiteboards·Sheets 기본 꺼짐 / Meetings(베타) 구글 미트 참가, Team·Enterprise만. 과장 금지(베타·기능 단순)
+- 다룬 채널: 없음(뉴스 선점)
+
 ## 2026-11-11 09:14 — [완료 카드뉴스] 🔥바로제작 [제작 요청됨 2026-11-11 09:14] 새 최상위 AI 2개 — 클로드 페이블 5.2 + 제미나이 4 카본 정식 출시
 - 출처: https://9to5google.com/2026/11/10/gemini-app-4-carbon/ , https://venturebeat.com/technology/google-gemini-4-carbon-is-now-publicly-available-and-it-undercuts-claude-fable-5-2-and-opus-5-5-on-api-price , https://www.aitimes.com/news/articleView.html?idxno=217249 (11/11 08:12) , https://www.cnbc.com/2026/11/09/anthropic-claude-fable-5-2-mythos-5-2.html
 - 추천 형식: 카드뉴스
@@ -230,3 +237,4 @@ vidIQ 사용: 2026-11-10 15:25 0크레딧(잔액 55, 80 미만으로 생략)
 vidIQ 사용: 2026-11-11 10:24 0크레딧(잔액 4, 80 미만으로 생략)
 긴급 제작 요청: 2026-11-09 15:25 AI 비서(에이전트) 비교 — Aside·닷츠·그록봇·피클
 긴급 제작 요청: 2026-11-11 09:14 페이블 5.2 + 제미나이 4 카본
+긴급 제작 요청(실패·권한 거부, 횟수 미포함): 2026-11-11 11:25 Claude Sheets·Whiteboards·Data
