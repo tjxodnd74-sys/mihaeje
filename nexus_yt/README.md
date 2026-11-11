@@ -29,6 +29,7 @@ cd /home/claude/work/<slug>
   - Do not list who the user is or the channels/blogs he runs.
   - No banned words: 최초·유일·완벽·가장·제일·최고·최대·100%·무조건.
   - Base content only on facts checked in official sources.
+  - TONE (user 2026-11-11): casual, like talking to a friend ("편하게 말하는 듯한 느낌") — NOT a news/information read; the info style overlaps with the user's other channels. Short spoken sentences, reactions ("이거 진짜 편하더라고요", "근데 여기서 문제"), questions to the viewer, fewer formal endings.
 
 ## 1-B. RECORDING MODE — the user narrates (DEFAULT from 2026-11-11)
 User 2026-11-11: "걍 내가 녹음하는게 낫겠네" / "하루 1편에 쇼츠 1~2개, 급한 소식 있으면 하루 2개까지".
@@ -39,6 +40,8 @@ TTS (§2) is NOT used any more unless the user explicitly asks for it again.
 3. When the recording arrives: `python3 from_recording.py <file> --units rec_units.json` → ln/u{k}.wav (long) + ln_s/s{k}.wav (shorts).
    - Every unit must be OK/CHK. MISSING/BAD → ask the user to re-record only those numbers (send the list), then rerun on the new file for those units.
    - Retakes inside the recording are handled (last good reading wins). Loudness is normalized, light denoise.
+   - The user says "다시" before a retake; sometimes "시" survives. ALWAYS run `python3 rec_scan.py` (copy from engine/) after cutting: it re-transcribes every cut split at pauses and flags '다시', extra runs, bleed ("그래"/"자" from the next line at the end), and missing words at the start. Fix flagged units by hand with exact times (energy dump at 0.1s/0.01s + whisper on small slices), splicing two spans when a retake restarts mid-line. 피클 ep: 15 of 107 units needed this.
+   - After cutting, update lines.py S to what the user ACTUALLY said (captions must match the voice; e.g. dropped "댓글로 알려 주세요").
 4. `python3 build_voice.py` (gentle trim, whisper captions) → the usual render → mix → QA (§9) → send the preview mp4 + thumbnail to the user. Upload only after the user says OK.
 5. Shorts: short_v4 specs use wav='ln_s/s{k}.wav'. Schedule 1–2 shorts (next day, ≥3h apart).
 Tested 2026-11-11 on the user's 51s phone recording with a retake: 16/16 lines matched, retake picked correctly.
