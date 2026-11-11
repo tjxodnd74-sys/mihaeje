@@ -1,11 +1,17 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-11 16:25 — (참고) 어도비 '파이어플라이' AI 크리에이티브 스튜디오로 확장 — 새 영상 편집기·AI 어시스턴트(베타)
+- 출처: https://www.aitimes.com/news/articleList.html?view_type=sm (11/11 15:55, 어도비 맥스 2026 11/10 현지 발표)
+- 추천 형식: 카드뉴스 또는 🔥릴스 우선(영상 편집 기능이라 화면 시연이 나음). 공식 발표·두 번째 언론 확인 후, 무료/유료·한국어 지원 확인 필요
+- 제목안: "캡컷 대신 어도비? / 파이어플라이 새 영상 편집기"
+- 다룬 채널: 없음(뉴스 1곳만 확인, 바로 제작 제외)
+
 ## 2026-11-11 15:25 — (참고) 오픈AI, 챗GPT '비즈니스 허브' 베타 — 기업 프로필·이용자 분석·고객 응대 AI 에이전트
 - 출처: https://www.aitimes.com/news/articleList.html?view_type=sm (11/11 15:08, 오픈AI 공식 블로그 11/10 현지)
 - 추천 형식: 카드뉴스(사장님·1인 사업자 대상이면 가능, 공식 블로그·두 번째 언론 확인 후. 한국 이용 가능 여부 확인 필요)
 - 제목안: "챗GPT에 내 가게 등록하는 시대 / 비즈니스 허브"
 
-## 2026-11-11 11:25 — 🔥바로제작 [긴급 제작 요청 실패: fire_trigger 권한 거부(11:25·12:24·13:24·14:24·15:25 다섯 번) → 16:41 정규 회차가 가져가도록 표시] 클로드에 '시트·화이트보드' 생겼다 — Claude Sheets·Whiteboards 베타 + Claude Data 정식 (+Meetings 베타)
+## 2026-11-11 11:25 — 🔥바로제작 [긴급 제작 요청 실패: fire_trigger 권한 거부(11:25·12:24·13:24·14:24·15:25 다섯 번) → 16:41 정규 회차가 가져가도록 표시, 16:25는 16:41 앞뒤 30분이라 요청 안 함] 클로드에 '시트·화이트보드' 생겼다 — Claude Sheets·Whiteboards 베타 + Claude Data 정식 (+Meetings 베타)
 - 출처: https://claude.com/resources/articles/sheets-whiteboards-data (11/10 공식) , https://techcrunch.com/2026/11/10/anthropic-launches-claude-meetings-to-turn-workplace-discussions-into-plans-and-tasks/ , AI타임스 '앤트로픽, 클로드 오피스 출시'(11/11 14:56) , https://techstartups.com/2026/11/10/anthropic-unveils-claude-sheets-whiteboards-and-data-as-ai-powered-microsoft-office-alternatives-ahead-of-ipo/ , 긱뉴스(11/11)
 - 추천 형식: 카드뉴스
 - 제목안: "클로드에 엑셀이 생겼다? / 유료면 오늘부터 되는 3가지"
