@@ -1,0 +1,157 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#444;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.k{width:1080px;height:1350px;position:relative;overflow:hidden;background:#EEF6EF;margin-bottom:20px}
+.hd{height:140px;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.hd .t{font-size:46px;font-weight:900;letter-spacing:-.04em;color:#12301F}
+.hd .t em{font-style:normal;color:#14874A}
+.hd .c{font-size:26px;font-weight:800;color:#fff;background:#14874A;border-radius:40px;padding:10px 22px}
+.pn{position:absolute;left:20px;width:1040px;height:580px;border:6px solid #12301F;border-radius:18px;overflow:hidden;background:#ddd}
+.pn img{width:100%;height:100%;object-fit:cover;display:block}
+.p1{top:140px}.p2{top:732px}
+.b{position:absolute;z-index:3;background:#fff;border:4px solid #12301F;border-radius:34px;padding:18px 26px;font-size:36px;font-weight:800;line-height:1.32;letter-spacing:-.035em;color:#12301F;box-shadow:0 6px 0 rgba(18,48,31,.25);max-width:540px}
+.b.pg{background:#E3F6E9}
+.b small{display:block;font-size:28px;font-weight:700;color:#3F6B52;margin-top:6px}
+.b:after{content:"";position:absolute;width:26px;height:26px;background:inherit;border-right:4px solid #12301F;border-bottom:4px solid #12301F;bottom:-16px;transform:rotate(45deg)}
+.b.tl:after{left:60px}.b.tr:after{right:60px}
+.b.no:after{display:none}
+.ft{position:absolute;bottom:6px;right:30px;font-size:22px;font-weight:700;color:#8AA595}
+/* cover */
+#k1{background:#0D1A24}
+#k1 .img{position:absolute;left:0;top:0;width:1080px;height:810px;overflow:hidden}
+#k1 .img img{width:1080px;height:810px;object-fit:cover;display:block}
+#k1 .img:after{content:"";position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(transparent,#0D1A24)}
+#k1 .tag{position:absolute;left:60px;top:46px;background:#FFD43B;color:#111;font-size:30px;font-weight:900;padding:8px 18px;border-radius:10px;letter-spacing:-.02em;z-index:2}
+#k1 .tt{position:absolute;left:56px;right:40px;top:812px;font-size:132px;font-weight:900;line-height:1.1;letter-spacing:-.055em;color:#fff;text-shadow:0 6px 24px rgba(0,0,0,.7)}
+#k1 .tt em{font-style:normal;color:#FFD43B}
+#k1 .hd2{position:absolute;left:60px;right:60px;bottom:44px;display:flex;justify-content:space-between;font-size:26px;font-weight:700;color:#7E98A8}
+/* info */
+#k6{background:#FFFFFF}
+#k6 .in{padding:76px 60px 0}
+#k6 .lab{font-size:28px;font-weight:800;color:#14874A;letter-spacing:.08em}
+#k6 .h{font-size:88px;font-weight:900;line-height:1.14;letter-spacing:-.045em;margin-top:14px;color:#12301F}
+#k6 .h .v{color:#14874A}
+#k6 .grid{margin-top:44px;border:3px solid #12301F;border-radius:18px;overflow:hidden}
+#k6 .gr{display:flex;border-top:2px solid #CFE3D5}
+#k6 .gr:first-child{border-top:0}
+#k6 .gr .n{width:64px;background:#EEF6EF;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:#7A9887;border-right:2px solid #CFE3D5}
+#k6 .gr .c1{width:330px;padding:24px 22px;font-size:38px;font-weight:900;color:#12301F;border-right:2px solid #CFE3D5;letter-spacing:-.04em}
+#k6 .gr .c2{flex:1;padding:24px 22px;font-size:34px;font-weight:700;color:#24452F;line-height:1.36;letter-spacing:-.035em}
+#k6 .gr .c2 b{color:#14874A}
+#k6 .gr.cr{animation:cellHi 6s ease-in-out infinite}
+#k6 .gr.cr:nth-child(2){animation-delay:.9s}#k6 .gr.cr:nth-child(3){animation-delay:1.8s}#k6 .gr.cr:nth-child(4){animation-delay:2.7s}
+@keyframes cellHi{0%,4%{background:#fff;box-shadow:inset 0 0 0 0 #FF8A1F}8%,22%{background:#FFF4E5;box-shadow:inset 0 0 0 5px #FF8A1F}30%,100%{background:#fff;box-shadow:inset 0 0 0 0 #FF8A1F}}
+#k6 .box{margin-top:36px;background:#12301F;border-radius:22px;padding:30px 36px;color:#fff;font-size:36px;font-weight:700;line-height:1.5;letter-spacing:-.03em;position:relative}
+#k6 .box b{color:#FFD43B}
+#k6 .src{position:absolute;left:60px;right:60px;bottom:42px;font-size:23px;font-weight:600;color:#7A9887;line-height:1.5}
+/* last */
+#k7{background:#12301F;color:#fff}
+#k7 .in{padding:96px 64px 0}
+#k7 .lab{font-size:26px;font-weight:800;color:#7EE0A6;letter-spacing:.08em}
+#k7 h1{font-size:100px;font-weight:900;line-height:1.15;letter-spacing:-.045em;margin-top:18px}
+#k7 h1 em{font-style:normal;color:#FFD43B}
+#k7 .row{display:flex;gap:14px;flex-wrap:wrap;margin-top:40px}
+#k7 .chip{background:#1E4A31;border-radius:18px;padding:18px 24px;font-size:36px;font-weight:800}
+#k7 .chip i{font-style:normal;color:#7EE0A6;margin-right:10px}
+#k7 .copy{width:900px;margin-top:52px;border:3px dashed #7EE0A6;border-radius:24px;padding:36px 36px 30px;position:relative;background:#173D28}
+#k7 .copy .tg{position:absolute;top:-20px;left:30px;background:#7EE0A6;color:#12301F;font-size:24px;font-weight:900;padding:4px 16px;border-radius:10px}
+#k7 .copy p{font-size:40px;font-weight:700;line-height:1.5;letter-spacing:-.03em}
+#k7 .copy p b{color:#FFD43B}
+#k7 .bot{position:absolute;left:64px;right:64px;bottom:56px;display:flex;align-items:flex-end;justify-content:space-between}
+#k7 .bot .tx{font-size:40px;font-weight:800;line-height:1.4}
+#k7 .bot .tx span{display:block;font-size:26px;color:#9CC4AC;font-weight:700;margin-top:10px}
+#k7 .bot img{width:235px}
+/* 주제 전용 움직임: 말풍선 톡 */
+.b{animation:pop .5s cubic-bezier(.3,1.6,.5,1) both}
+.b.d2{animation-delay:.5s}.b.d3{animation-delay:1s}
+@keyframes pop{from{transform:scale(.9)}to{transform:scale(1)}}
+</style></head><body>
+
+<div class="k" id="k1">
+ <div class="img"><img src="cover.png"></div>
+ <div class="tag">AI 공감툰</div>
+ <div class="tt">클로드에 엑셀<br>생기자 <em>들통난</em><br>사람들</div>
+ <div class="hd2"><span>@nexus_studio.kr</span><span>넘겨 보기 →</span></div>
+</div>
+
+<div class="k" id="k2">
+ <div class="hd"><div class="t"><em>수식 장인</em> 김대리</div><div class="c">CASE 1</div></div>
+ <div class="pn p1"><img src="p1.png"></div>
+ <div class="b tl" style="top:168px;left:50px">사흘 걸려 만든<br>내 수식 작품…</div>
+ <div class="b pg tr d2" style="top:174px;right:50px">와… 선이<br>스파게티 같아요</div>
+ <div class="pn p2"><img src="p2.png"></div>
+ <div class="b tl" style="top:760px;left:50px">부서별 합계 시트<br>만들어 줘~</div>
+ <div class="b pg tl d2" style="top:752px;right:40px">탭 3개, 수식까지<br>다 넣었어요!<small>말로 한 문장이면 돼요</small></div>
+ <div class="b no d3" style="top:1150px;right:60px;font-size:32px">…내 사흘은?</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+
+<div class="k" id="k3">
+ <div class="hd"><div class="t"><em>숫자 살짝</em> 고친 팀장님</div><div class="c">CASE 2</div></div>
+ <div class="pn p1"><img src="p3.png"></div>
+ <div class="b tl" style="top:168px;left:50px">매출 숫자 좀…<br>살짝만 바꿔 줘</div>
+ <div class="b pg tr d2" style="top:174px;right:50px">네! 바꾼 칸은<br>표시해 둘게요</div>
+ <div class="pn p2"><img src="p4.png"></div>
+ <div class="b pg tr" style="top:752px;right:40px">어제 바뀐 칸,<br>여기 3개예요!</div>
+ <div class="b tl d2" style="top:760px;left:50px">…반올림이야,<br>반올림</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+
+<div class="k" id="k4">
+ <div class="hd"><div class="t"><em>아이디어 폭격</em> 박과장</div><div class="c">CASE 3</div></div>
+ <div class="pn p1"><img src="p5.png"></div>
+ <div class="b tl" style="top:168px;left:50px">이것도 하고!<br>저것도 하면 좋겠고!</div>
+ <div class="b pg tr d2" style="top:174px;right:50px">말씀하신 거<br>전부 받아 적는 중…</div>
+ <div class="pn p2"><img src="p6.png"></div>
+ <div class="b pg tl" style="top:756px;left:40px">일정표<br>완성!<small>담당은 말한 분!</small></div>
+ <div class="b tr d2" style="top:756px;right:40px">어… 이게<br>다 나야?</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+
+<div class="k" id="k5">
+ <div class="hd"><div class="t"><em>"그래서 파일은?"</em> 부장님</div><div class="c">CASE 4</div></div>
+ <div class="pn p1"><img src="p7.png"></div>
+ <div class="b tl" style="top:168px;left:50px">부장님, 이제 표는<br>클로드가 만들어요!</div>
+ <div class="b pg tr d2" style="top:174px;right:50px">그래서…<br>엑셀 파일은?</div>
+ <div class="pn p2"><img src="p8.png"></div>
+ <div class="b pg tl" style="top:760px;left:50px">엑셀(XLSX)로<br>내보내 드렸더니…</div>
+ <div class="b tr d2" style="top:752px;right:40px">역시 서류는<br>종이로 봐야지!</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+
+<div class="k" id="k6">
+ <div class="in">
+  <div class="lab">REAL NEWS · 만화 속 기능은 진짜예요</div>
+  <div class="h">그래서 <span class="v">클로드 시트</span>가<br>뭔데요?</div>
+  <div class="grid">
+   <div class="gr cr"><div class="n">1</div><div class="c1">시트<br><span style="font-size:28px;color:#14874A">베타</span></div><div class="c2">말로 시키면 <b>탭·수식·서식·드롭다운</b>까지 넣은 표</div></div>
+   <div class="gr cr"><div class="n">2</div><div class="c1">바뀐 곳 표시</div><div class="c2">클로드가 <b>어디를 고쳤는지</b> 따라가 볼 수 있어요</div></div>
+   <div class="gr cr"><div class="n">3</div><div class="c1">내보내기</div><div class="c2"><b>엑셀(XLSX)·CSV</b> 파일로 받기</div></div>
+   <div class="gr cr"><div class="n">4</div><div class="c1">화이트보드<br><span style="font-size:28px;color:#14874A">베타</span></div><div class="c2">회의 메모 → <b>담당자·날짜</b> 들어간 일정표</div></div>
+  </div>
+  <div class="box">11월 10일 공개 · <b>유료 요금제</b> · 웹·데스크톱·모바일<br>엔터프라이즈는 시트·화이트보드가 <b>기본 꺼짐</b>(관리자가 켬)<br>아직 베타라 기능은 단순한 편이에요</div>
+ </div>
+ <div class="src">출처: Anthropic 공식 블로그 'More ways to work with Claude'(2026.11.10), Unite.AI(2026.11.10)<br>만화 속 상황은 웃자고 만든 이야기예요. 그림은 AI로 만들었어요.</div>
+</div>
+
+<div class="k" id="k7">
+ <div class="in">
+  <div class="lab">HOW TO · 클로드 시트 이렇게 시켜요</div>
+  <h1>수식 몰라도<br><em>한 문장</em>이면 돼요</h1>
+  <div class="row">
+   <div class="chip"><i>①</i>무슨 표</div><div class="chip"><i>②</i>열 이름</div><div class="chip"><i>③</i>계산</div><div class="chip"><i>④</i>고친 곳 알려 줘</div>
+  </div>
+  <div class="copy"><div class="tg">COPY · PASTE</div>
+   <p><b>11월 팀 지출</b> 시트 만들어 줘.<br>열은 <b>날짜·부서·항목·금액</b>,<br>부서별 <b>합계 탭</b>은 따로 만들고,<br>수식 넣은 칸은 <b>어디인지 알려 줘.</b></p>
+  </div>
+ </div>
+ <div class="bot">
+  <div class="tx">마지막 줄이 핵심!<br>"어디 고쳤는지 알려 줘"<span>📌 저장해 두고 표 만들 때 꺼내 보세요<br>@nexus_studio.kr</span></div>
+  <img src="heart.png">
+ </div>
+</div>
+</body></html>
