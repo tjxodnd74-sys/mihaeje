@@ -1,0 +1,316 @@
+{
+ "style": "fullscreen",
+ "eyebrow": "이럴 땐 어떻게?",
+ "title": [],
+ "cta": [
+  "스쿨존 지나는 친구에게",
+  "공유해 주세요"
+ ],
+ "cover": {
+  "clip": "bg_sz_empty_cross_5009493.mp4",
+  "start": 3.0,
+  "cx": 0.45,
+  "tag": "이럴 땐 어떻게?",
+  "title": "스쿨존 횡단보도<br>|아무도 없으면|<br>1번? 2번?",
+  "sub": "도로교통법 제27조 기준"
+ },
+ "segments": [
+  {
+   "cap": "스쿨존 안, / 신호등 없는 횡단보도에 / |아무도 없어요|",
+   "say": "스쿨존 안, 신호등 없는 횡단보도에 아무도 없어요.",
+   "clip": "bg_sz_empty_cross_5009493.mp4",
+   "start": 1.5,
+   "cx": 0.45,
+   "kin": true,
+   "cut": true,
+   "t": 0.0,
+   "chunkT": [
+    1.81,
+    3.5
+   ],
+   "e": 4.79
+  },
+  {
+   "cap": "1번, / 사람 없으니까 천천히 / |그냥 지나간다|",
+   "say": "일번, 사람이 없으니까 천천히 그냥 지나간다.",
+   "clip": "bg_sz_car_pass_4648177.mp4",
+   "start": 7.3,
+   "cx": 0.55,
+   "step": 1,
+   "num": "1번",
+   "name": "그냥 지나간다",
+   "cut": true,
+   "t": 4.79,
+   "chunkT": [
+    6.06,
+    8.48
+   ],
+   "e": 10.05,
+   "capChunks": [
+    {
+     "t": 4.79,
+     "html": "<span class=\"w\">1번</span>"
+    },
+    {
+     "t": 6.06,
+     "html": "<span class=\"w\">사람</span><span class=\"w\">없으니까</span><span class=\"w\">천천히</span>"
+    },
+    {
+     "t": 8.48,
+     "html": "<span class=\"w hl\">그냥</span><span class=\"w hl\">지나간다</span>"
+    }
+   ]
+  },
+  {
+   "cap": "2번, / 횡단보도 앞에서 / |일단 멈췄다가| 지나간다",
+   "say": "이번, 횡단보도 앞에서 일단 멈췄다가 지나간다.",
+   "clip": "bg_yl_cab_16455066.mp4",
+   "start": 0.0,
+   "cx": 0.45,
+   "step": 2,
+   "num": "2번",
+   "name": "멈췄다 간다",
+   "cut": true,
+   "t": 10.05,
+   "chunkT": [
+    10.84,
+    12.16
+   ],
+   "e": 14.18,
+   "capChunks": [
+    {
+     "t": 10.05,
+     "html": "<span class=\"w\">2번</span>"
+    },
+    {
+     "t": 10.84,
+     "html": "<span class=\"w\">횡단보도</span><span class=\"w\">앞에서</span>"
+    },
+    {
+     "t": 12.16,
+     "html": "<span class=\"w hl\">일단</span><span class=\"w hl\">멈췄다가</span><span class=\"w\">지나간다</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|몇 번|이 맞을까요?",
+   "say": "몇 번이 맞을까요?",
+   "clip": "bg_rr_empty_cross_v_40297816.mp4",
+   "start": 9.5,
+   "cx": 0.5,
+   "cut": true,
+   "t": 14.18,
+   "chunkT": [],
+   "e": 17.12,
+   "capChunks": [
+    {
+     "t": 14.18,
+     "html": "<span class=\"w hl\">몇</span><span class=\"w hl\">번이</span><span class=\"w\">맞을까요?</span>"
+    }
+   ]
+  },
+  {
+   "cap": "정답은 |2번|이에요",
+   "say": "정답은 이번이에요.",
+   "clip": "bg_sz_kids_cross_v_5882149.mp4",
+   "start": 4.0,
+   "cx": 0.5,
+   "step": 3,
+   "num": "정답",
+   "name": "2번",
+   "stat": [
+    "2번",
+    "멈췄다가 지나가기"
+   ],
+   "cut": true,
+   "t": 17.12,
+   "chunkT": [],
+   "e": 18.61,
+   "capChunks": [
+    {
+     "t": 17.12,
+     "html": "<span class=\"w\">정답은</span><span class=\"w hl\">2번이에요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "스쿨존 안 / 신호등 없는 횡단보도에선, / 사람이 |있든 없든| / |꼭 멈춰야| 해요",
+   "say": "스쿨존 안 신호등 없는 횡단보도에선, 사람이 있든 없든 꼭 멈춰야 해요.",
+   "clip": "bg_sz_kids_walk_5088135.mp4",
+   "start": 1.0,
+   "cx": 0.45,
+   "cut": true,
+   "t": 18.61,
+   "chunkT": [
+    19.56,
+    21.6,
+    23.08
+   ],
+   "e": 24.66,
+   "capChunks": [
+    {
+     "t": 18.61,
+     "html": "<span class=\"w\">스쿨존</span><span class=\"w\">안</span>"
+    },
+    {
+     "t": 19.56,
+     "html": "<span class=\"w\">신호등</span><span class=\"w\">없는</span><span class=\"w\">횡단보도에선</span>"
+    },
+    {
+     "t": 21.6,
+     "html": "<span class=\"w\">사람이</span><span class=\"w hl\">있든</span><span class=\"w hl\">없든</span>"
+    },
+    {
+     "t": 23.08,
+     "html": "<span class=\"w hl\">꼭</span><span class=\"w hl\">멈춰야</span><span class=\"w\">해요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|2022년| 법 개정으로 / 새로 생긴 규정이에요",
+   "say": "이천이십이년 도로교통법 개정으로 새로 생긴 규정이에요.",
+   "clip": "bg_sz_school_v_8935554.mp4",
+   "start": 1.0,
+   "cx": 0.5,
+   "stat": [
+    "제27조 7항",
+    "2022년 신설"
+   ],
+   "cut": true,
+   "t": 24.66,
+   "chunkT": [
+    27.93
+   ],
+   "e": 29.68,
+   "capChunks": [
+    {
+     "t": 24.66,
+     "html": "<span class=\"w hl\">2022년</span><span class=\"w\">법</span><span class=\"w\">개정으로</span>"
+    },
+    {
+     "t": 27.93,
+     "html": "<span class=\"w\">새로</span><span class=\"w\">생긴</span><span class=\"w\">규정이에요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "멈춘 다음엔, / 좌우를 살피고 / |천천히| 지나가면 돼요",
+   "say": "멈춘 다음엔, 좌우를 살피고 천천히 지나가면 돼요.",
+   "clip": "bg_rr_turn_slow_v_34032143.mp4",
+   "start": 3.8,
+   "cx": 0.5,
+   "cut": true,
+   "t": 29.68,
+   "chunkT": [
+    31.15,
+    32.4
+   ],
+   "e": 33.97,
+   "capChunks": [
+    {
+     "t": 29.68,
+     "html": "<span class=\"w\">멈춘</span><span class=\"w\">다음엔</span>"
+    },
+    {
+     "t": 31.15,
+     "html": "<span class=\"w\">좌우를</span><span class=\"w\">살피고</span>"
+    },
+    {
+     "t": 32.4,
+     "html": "<span class=\"w hl\">천천히</span><span class=\"w\">지나가면</span><span class=\"w\">돼요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "스쿨존 밖이라도, / |건너려는 사람|이 보이면 / |멈춰야| 해요",
+   "say": "스쿨존 밖이라도, 건너려는 사람이 보이면 멈춰야 해요.",
+   "clip": "bg_rr_waiting_ped_11331083.mp4",
+   "start": 0.0,
+   "cx": 0.3,
+   "step": 4,
+   "num": "TIP",
+   "name": "스쿨존 밖에서도",
+   "cut": true,
+   "t": 33.97,
+   "chunkT": [
+    35.63,
+    37.28
+   ],
+   "e": 38.47,
+   "capChunks": [
+    {
+     "t": 33.97,
+     "html": "<span class=\"w\">스쿨존</span><span class=\"w\">밖이라도</span>"
+    },
+    {
+     "t": 35.63,
+     "html": "<span class=\"w hl\">건너려는</span><span class=\"w hl\">사람이</span><span class=\"w\">보이면</span>"
+    },
+    {
+     "t": 37.28,
+     "html": "<span class=\"w hl\">멈춰야</span><span class=\"w\">해요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "스쿨존 속도는 / 보통 |시속 30km| 이하예요",
+   "say": "스쿨존 속도는 보통 시속 삼십 킬로미터 이하예요.",
+   "clip": "bg_speedo_6312479.mp4",
+   "start": 2.0,
+   "cx": 0.05,
+   "step": 5,
+   "num": "TIP",
+   "name": "속도",
+   "cut": true,
+   "t": 38.47,
+   "chunkT": [
+    39.95
+   ],
+   "e": 42.56,
+   "capChunks": [
+    {
+     "t": 38.47,
+     "html": "<span class=\"w\">스쿨존</span><span class=\"w\">속도는</span>"
+    },
+    {
+     "t": 39.95,
+     "html": "<span class=\"w\">보통</span><span class=\"w hl\">시속</span><span class=\"w hl\">30km</span><span class=\"w\">이하예요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "스쿨존 자주 지나는 / 친구에게 |공유|해 주세요",
+   "say": "스쿨존 자주 지나는 친구에게, 이 영상 공유해 주세요.",
+   "clip": "bg_sz_kids_park_3191109.mp4",
+   "start": 2.0,
+   "cx": 0.5,
+   "cta": true,
+   "cut": true,
+   "t": 42.56,
+   "chunkT": [
+    43.94
+   ],
+   "e": 47.58,
+   "capChunks": [
+    {
+     "t": 42.56,
+     "html": "<span class=\"w\">스쿨존</span><span class=\"w\">자주</span><span class=\"w\">지나는</span>"
+    },
+    {
+     "t": 43.94,
+     "html": "<span class=\"w\">친구에게</span><span class=\"w hl\">공유해</span><span class=\"w\">주세요</span>"
+    }
+   ]
+  }
+ ],
+ "duration": 48,
+ "impacts": [
+  0.0,
+  4.79,
+  10.05,
+  17.12,
+  33.97,
+  38.47,
+  42.56
+ ]
+}
