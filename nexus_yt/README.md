@@ -200,3 +200,16 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
   - Chapter indicator (top-left "02 / 06 title" + progress) is automatic from head().
 - Type: headline 66px/800, body 28–36px/600, labels mono uppercase. Yellow only for the key word. Generous empty space; align everything to x=170.
 - Before render: snapshot ~14 frames (contact sheet) and check: nothing cramped, no text wrapping mid-word (set widths), every element appears exactly when it is said.
+
+
+## 12. STYLE v5 — foreign IT channel editing (user OK 2026-11-12 "오우 좋다 이런 느낌")
+- Reference: Fireship-type faceless IT channels. Sample: engine/style_v5/demo.html (+ r.js renders frames), thumb/th_v5_example.html.
+- Cut every 2–3s, 2-frame white flash (opacity .18) on hard cuts; slow camera push-in inside a shot.
+- Big full-screen quote/number (150–260px Pretendard Black) instead of multi-box layouts; punch-in zoom 1.25→1.0 in 0.22s on the key line.
+- Split screen for comparisons (red vs yellow, numbers count up).
+- Gag beats: stamp slam + shake + penguin reaction pose; small grey sarcastic tag ("(아무도 시킨 적 없음)").
+- Prompts: typed on a dark card, highlighter on key words, then zoom to them.
+- Chat scenes: bubbles stack fast (0.4s each), labels like "Claude 계열 · 3번" (never invent model names).
+- Thumbnail: 3 colors (black, white, yellow #FFD23F), 2–4 big chars + 2–3 real quote bubbles, one glow. Titles: casual, specific number, end with "…".
+- No borrowed memes/movie clips (copyright) — gags are our own graphics + penguin poses.
+- TODO: background music to be revised (user: "배경음만 손 보면 될듯").
