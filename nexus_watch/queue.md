@@ -1,5 +1,16 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-13 08:24 — 🔥바로제작 [긴급 제작 요청 실패: fire_trigger 권한 거부 → 10:41 정규 회차가 가져가도록 표시] 무료 제미나이가 바뀌었다 — 구글 '제미나이 4 하이드로젠' 출시(3.8 Flash 대체)
+- 출처: https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/ , https://9to5google.com/2026/11/12/gemini-4-hydrogen-launch/ , https://www.iclarified.com/103485/google-launches-gemini-4-hydrogen-bringing-its-latest-ai-to-free-users , AI타임스(11/13 07:58) https://www.aitimes.com/news/articleList.html?view_type=sm
+- 추천 형식: 카드뉴스('무료로 쓰는 사람 입장에서 뭐가 달라졌나·모델 고르는 법' 각도, 11/11 카본 카드와 겹치지 않게)
+- 제목안: "무료 제미나이가 오늘부터 달라졌다 / 4 하이드로젠, 뭘 고르면 되나"
+- 핵심 사실: 11/12(현지) 공식. 앱 모델 선택 '일상 도움'=4 하이드로젠, 무료는 '자동' 선택 시 적용 / 3.8 Flash 대비 2.5배 빠름, 지어낸 주장 5배↓, 말투·형식 지시 준수·표 정리 강화 / 검색 AI 모드 기본 모델 / Artificial Analysis 51로 아르곤(50) 추월 / 모델 정리: 3.5 Flash-Lite 빠른 답·4 하이드로젠 일상·3.1 Pro 리서치(Pro)·4 아르곤 코딩·4 카본 최상위 / API $1.5/$7.5. 한국 계정 화면 확인 필요
+- 다룬 채널: 없음(뉴스 선점)
+
+## 2026-11-13 08:24 — (참고) 젠슨 황 엔비디아 CEO 사임 — 주가 14% 급락, 콜레트 크레스 임시 CEO
+- 출처: AI타임스(11/13 04:47·05:56, 엔비디아 공식 발표·CNBC 인용) https://www.aitimes.com/news/articleList.html?view_type=sm
+- 추천 형식: 넥서스(AI 꿀팁) 성격과 거리 있음 — 기업 뉴스라 제작 제외, 참고만
+
 ## 2026-11-12 18:24 — (참고) AI가 실제 프리랜서 업무 41.3%를 전문가 수준으로 — 1년 전 2.5%에서 급상승(원격 노동 지수 RLI)
 - 출처: AI타임스 'AI, 프리랜서 업무 41.3% 전문가 수준 수행'(11/12 17:41, 미국 AI 안전센터·스케일 AI 발표 인용) https://www.aitimes.com/news/articleList.html?view_type=sm
 - 추천 형식: 카드뉴스('내 일 중 AI가 이미 해내는 것' 각도). 원문(CAIS·Scale AI RLI 발표)·두 번째 언론 확인 후
@@ -289,3 +300,4 @@ vidIQ 사용: 2026-11-11 15:25 0크레딧(잔액 4, 80 미만으로 생략)
 vidIQ 사용: 2026-11-12 10:14 0크레딧(잔액 0, 80 미만으로 생략)
 vidIQ 사용: 2026-11-12 10:24 0크레딧(잔액 0, 80 미만으로 생략)
 vidIQ 사용: 2026-11-12 15:24 0크레딧(잔액 0, 80 미만으로 생략)
+긴급 제작 요청(실패·권한 거부, 횟수 미포함): 2026-11-13 08:24 제미나이 4 하이드로젠

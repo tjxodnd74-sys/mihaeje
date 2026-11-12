@@ -210,3 +210,14 @@
 2026-11-12 18:24 | AI 프리랜서 업무 수행(알림·참고) | RLI 최신 결과 41.3% 전문가 수준, 1년 전 2.5% | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-12 18:24 | 구글·메타·앤트로픽·바이트댄스(알림 제외·연구/기업) | 알파게놈 2 / e-민즈 / 가중치 0.05% 삭제 연구 / 미소스 전력망 보안 / 뮤즈 유사 에이전트 준비 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-12 18:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, lockupViewModel 파싱, 쇼츠는 publishDate 확인), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 17:24 이후 새 롱폼 없음(최신: 찍봇 '힉스필드 기능 8가지' 20시간 전·966). 새 쇼츠 1개(조팀장 'GPT로 반복 업무 자동화'). 긱뉴스 새 글 없음(개발자용뿐). vidIQ 정해진 시각 아님. 인스타 브라우저 안 엶. 바로 제작 없음(새 기능 출시 없음, RLI는 뉴스 1곳).
+2026-11-13 08:24 | 클로드 AI 비서(경쟁 주제·조팀장) | 클로드가 자동으로 카톡 읽고 일 끝냄, 매일 쓰는 AI 비서(13시간 전, 1.2천) | https://www.youtube.com/@조팀장의ai공략집/videos
+2026-11-13 08:24 | 클로드+힉스필드 숏드라마(경쟁 주제·AI 조교) | 클로드에 줄거리만 넣었더니 AI 숏드라마 1화, 힉스필드 MCP(3시간 전, 151) | https://www.youtube.com/@aiadjunct/videos
+2026-11-13 08:24 | AI 쇼츠 입문(경쟁 주제·AI하조) | 첫 AI 쇼츠, 4단계만 따라 하세요(12시간 전, 264) | https://www.youtube.com/@aihazoo/videos
+2026-11-13 08:24 | AI 직원(경쟁 주제·CONNECT AI LAB) | AI 직원에게 정부과제 맡겨보기(13시간 전, 4.6천) | https://www.youtube.com/@connect-ai-lab/videos
+2026-11-13 08:24 | 비AI(호랑웨이브) | 수능 앞두고 멘헤라 된 사람 모여라 EP.1(9시간 전) | https://www.youtube.com/@horangwave/videos
+2026-11-13 08:24 | AI 비서 주의점(경쟁 주제·유튜브신쌤 쇼츠, 11/9 완료 주제) | AI 비서 처음이면 이 3가지만 지키세요(11/12 20:00) | https://www.youtube.com/shorts/CYD1CZSKmN8
+2026-11-13 08:24 | 구글(알림·🔥바로제작) | 제미나이 4 하이드로젠 출시, 3.8 Flash 대체·무료 자동 선택·검색 AI 모드 기본 | https://9to5google.com/2026/11/12/gemini-4-hydrogen-launch/
+2026-11-13 08:24 | 엔비디아(알림·참고) | 젠슨 황 CEO 사임, 주가 14% 급락, 크레스 임시 CEO | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-13 08:24 | 구글·삼성 AI 안경(알림 제외·11/9 완료 주제) | 한국·미국 사전예약, 12/10 정식 출시 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-13 08:24 | 미 상무부·AI 퓨처스(알림 제외·정책/전망) | 중국 해외 GPU 임대 규제 / 2027 지능 폭발 전망 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-13 08:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, lockupViewModel 파싱, 쇼츠는 publishDate 확인), 긱뉴스·AI타임스 직접 확인 + 웹검색 4건. 어제 18:24 이후 새 롱폼 5개(조팀장·AI 조교·AI하조·CONNECT AI LAB·호랑웨이브), 새 쇼츠 1개(유튜브신쌤). 긱뉴스 새 글은 Show GN 소형뿐. 인스타 브라우저 안 엶, vidIQ 정해진 시각 아님. 제미나이 4 하이드로젠 긴급 제작 요청 → fire_trigger 권한 거부, 🔥바로제작 표시(10:41 정규 회차용). 오늘 인스타 예약 0편(유튜브 쇼츠 2편만).
