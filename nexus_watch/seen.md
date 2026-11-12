@@ -177,3 +177,13 @@
 2026-11-11 18:24 | 메타(알림·한국 미지원 추정) | AI 에이전트 '뮤즈' 애플워치·웨어OS로 확대 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-11 18:24 | 구글·문샷(알림 제외·연구/기업) | 제미나이 로보틱스 2.5 휴머노이드 공장 성공률 96% / 엔비디아 B300 임대 정황 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-11 18:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, 쇼츠는 publishDate 확인), 긱뉴스·AI타임스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 17:24 이후 새 롱폼 없음(최신: 바이브랩스 '도구보다 문제 정의가 먼저' 1시간 전·34). 새 쇼츠 1개(조팀장 'AI 툴 유료 구독하면 안되는 이유'). vidIQ 정해진 시각 아님. 인스타 브라우저 안 엶. Claude Sheets 긴급 제작 7차 요청 → fire_trigger 또 권한 거부, 🔥바로제작 표시 유지.
+2026-11-12 10:14 | AI 영상·힉스필드(경쟁 주제·데키랩) | 최신 AI 영상 제작 입문, 클로드와 힉스필드로 첫 영상(15시간 전, 1천) | https://www.youtube.com/watch?v=beU4kyFUmyY
+2026-11-12 10:14 | 힉스필드(경쟁 주제·찍봇) | 사용자 99%는 모르는 힉스필드 기능 8가지(12시간 전, 781) | https://www.youtube.com/watch?v=Gj7G06G6NQQ
+2026-11-12 10:14 | AI 영상(경쟁 주제·AI 리더스랩) | 편의점 알바 격투신 AI로 만드는 법, Lumina AI×시댄스 2.5(15시간 전, 335) | https://www.youtube.com/watch?v=1sZc9YSwOjc
+2026-11-12 10:14 | 자동 배포(알림 제외·바이브랩스 개발자용) | 카드 결제하면 아이폰 단축어로 서버 자동 배포(14시간 전, 514) | https://www.youtube.com/watch?v=auvwiKFV-ss
+2026-11-12 10:14 | AI 비서 비교(경쟁 주제·유튜브신쌤 쇼츠, 11/9 완료 주제) | AI 비서 6개 중 나는 뭘 써야 할까?(11/11 20:00, 990) | https://www.youtube.com/shorts/nImnUKfhC3o
+2026-11-12 10:14 | 구글(알림·참고) | 제미나이 '메모리 요약' 기억 정보 확인·수정·삭제 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-12 10:14 | 엔비디아·코어위브(알림 제외·기업) | 이사회 젠슨 황 해임 논의 / 코어위브 25% 급등 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-12 10:14 | 애플(알림 제외·개발 중 보도) | 여러 Mac 묶어 로컬 AI 돌리는 'Harbor' 준비 중 | https://news.hada.io/
+2026-11-12 10:14 | 쌤컷·OpenMAIC(알림 제외·소형/오픈소스) | 무료 웹 영상 편집기(MCP) / AI 교사 수업 플랫폼 | https://news.hada.io/
+- 2026-11-12 10:14: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, 쇼츠는 publishDate 확인), 긱뉴스·AI타임스 직접 확인 + 웹검색 4건(최근 24시간 결과 없음). 어제 18:24 이후 새 롱폼 4개(데키랩·찍봇·AI 리더스랩·바이브랩스), 새 쇼츠 1개(유튜브신쌤). vidIQ 잔액 0이라 생략. 인스타 브라우저 안 엶. 10:41 정규 회차 앞뒤 30분이라 긴급 제작 요청 안 함 — Claude Sheets 🔥바로제작 표시 유지(아직 done.md에 없음).
