@@ -213,3 +213,8 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - Thumbnail: 3 colors (black, white, yellow #FFD23F), 2–4 big chars + 2–3 real quote bubbles, one glow. Titles: casual, specific number, end with "…".
 - No borrowed memes/movie clips (copyright) — gags are our own graphics + penguin poses.
 - TODO: background music to be revised (user: "배경음만 손 보면 될듯").
+
+- 2026-11-12 v5 engine used for AI들의 언어 편: engine/style_v5/ep5.html (shot renderers: big/chat/split/stamp/prompt/tiles/logos/bars/list/flow/net/plan/end) + make_shots.py (shot list keyed 'scene:line', writes shots.js + events.json) + sh5.html/sh_build.py (vertical short, captions on top). Render 30fps with rl.js frames → ffmpeg → mix.py (music.mp3 = ElevenLabs Music v2.5 tech beat, BGM -36).
+- Cut fixes: engine/recut_all.py reads rec/fix.json {"unit#":[[t0,t1],...]} (multiple spans = splice). MISSING units: drop the line from lines.py and renumber ln/u*.wav (recut_all rewrites by report index — re-apply the rename after every rerun!).
+- '다시' check: engine/scanL.py per unit AND the per-caption-line large-v3 scan on the final voice — the second one caught a '예를 들어 / 다시 / 예를 들어' the first missed. Run both.
+- Chat scenes: don't attribute quotes to specific model brands ('주민 AI · 3번'); Grok has no logo file (x.svg is X, not xAI) → text badge.
