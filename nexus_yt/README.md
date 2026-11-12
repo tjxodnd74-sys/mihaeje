@@ -218,3 +218,13 @@ Trend analysis (top AI channels): one bright hero object in the middle, huge 2-l
 - Cut fixes: engine/recut_all.py reads rec/fix.json {"unit#":[[t0,t1],...]} (multiple spans = splice). MISSING units: drop the line from lines.py and renumber ln/u*.wav (recut_all rewrites by report index — re-apply the rename after every rerun!).
 - '다시' check: engine/scanL.py per unit AND the per-caption-line large-v3 scan on the final voice — the second one caught a '예를 들어 / 다시 / 예를 들어' the first missed. Run both.
 - Chat scenes: don't attribute quotes to specific model brands ('주민 AI · 3번'); Grok has no logo file (x.svg is X, not xAI) → text badge.
+
+- 2026-11-12 user feedback on v5 first cut (all fixed in engine/style_v5):
+  - NO mouth/mic noise at the start: trim unit 0 to the first real word; open on a sfx synced to the first visual.
+  - Captions = whole spoken line (1 line ≤26 chars, else 2 balanced lines), centered, never word-by-word chunks.
+  - Center every graphic (lists/blocks centered, not left-anchored).
+  - Less text-only: mix in AI images (gpt_image_2_6, 0.25 cr each, 3D isometric cute robots, dark + yellow rim) with Ken Burns + centered overlay (R.img).
+  - SFX must vary and hit on visual events (each bubble, list item, logo, highlight, stamp), not one sound per shot.
+  - Voice: gentle EQ (hp80, 250 -2, 3.2k oct2 +3, highshelf 5k +6) + TWO-PASS LINEAR loudnorm. No compressor, no single-pass loudnorm (pumping = '음질 이상').
+  - '다시' detection: ALSO flag units with an internal silence gap >0.6s and transcribe each run — that caught 2 retakes both whisper scans missed.
+  - Captions must match exact words (user said '뵙겠습니다', not '봬요').

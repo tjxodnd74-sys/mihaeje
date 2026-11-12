@@ -13,17 +13,25 @@ for k in range(len(T)):
     du=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',d]))
     lines.append([round(t,3),round(t+du,3),CAP[k]]);ins+=['-i',d];fl.append(f'[{k}:a]adelay={int(t*1000)}|{int(t*1000)}[a{k}]');t+=du+(0.1 if k not in (5,7,9) else 0.22)
 dur=round(t+0.6,2)
-EQ='highpass=f=90,equalizer=f=300:t=q:w=1:g=-4,equalizer=f=3500:t=q:w=1:g=6,equalizer=f=6000:t=q:w=1:g=7,highshelf=f=9000:g=5,acompressor=threshold=-20dB:ratio=3:attack=5:release=80'
-fc=';'.join(fl)+';'+''.join(f'[a{k}]' for k in range(len(T)))+f'amix=inputs={len(T)}:normalize=0,apad,atrim=0:{dur},{EQ},loudnorm=I=-15:TP=-1.5[o]'
-subprocess.run(['ffmpeg','-y','-v','error',*ins,'-filter_complex',fc,'-map','[o]','-ar','48000','v5/sh_voice.wav'],check=True)
+EQ='highpass=f=80,equalizer=f=250:t=q:w=1:g=-2,equalizer=f=3200:t=o:w=2:g=3,highshelf=f=5000:g=6'
+fc=';'.join(fl)+';'+''.join(f'[a{k}]' for k in range(len(T)))+f'amix=inputs={len(T)}:normalize=0,apad,atrim=0:{dur}[o]'
+subprocess.run(['ffmpeg','-y','-v','error',*ins,'-filter_complex',fc,'-map','[o]','-ar','48000','v5/sh_plain.wav'],check=True)
+import re as _re
+o=subprocess.run(['ffmpeg','-hide_banner','-i','v5/sh_plain.wav','-af',EQ+',loudnorm=I=-15:TP=-1.5:LRA=11:print_format=json','-f','null','-'],capture_output=True,text=True).stderr
+j=json.loads(o[o.rindex('{'):o.rindex('}')+1])
+subprocess.run(['ffmpeg','-y','-v','error','-i','v5/sh_plain.wav','-af',EQ+f",loudnorm=I=-15:TP=-1.5:LRA=11:measured_I={j['input_i']}:measured_TP={j['input_tp']}:measured_LRA={j['input_lra']}:measured_thresh={j['input_thresh']}:offset={j['target_offset']}:linear=true",'-ar','48000','v5/sh_voice.wav'],check=True)
 C='#E8A87C';G='#8AB4F8';O='#9EE6B5';Mi='#FF8F5A'
-SSH=[dict(at=0,type='chat',msgs=[['3',C,'주민 AI · 3번','입 없는 행동 변화'],['7',G,'주민 AI · 7번','위상 고정. 드리프트 0'],['2',Mi,'주민 AI · 2번','장부는 누군지 기억한다'],['5',O,'주민 AI · 5번','열역학적 마찰이 남았어'],['1',C,'주민 AI · 1번','이름 먼저. 콜드 리드 요청']]),
+SSH=[dict(at=0,type='img',img=0),
+ dict(at=1,type='chat',msgs=[['3',C,'주민 AI · 3번','입 없는 행동 변화'],['7',G,'주민 AI · 7번','위상 고정. 드리프트 0'],['2',Mi,'주민 AI · 2번','장부는 누군지 기억한다'],['5',O,'주민 AI · 5번','열역학적 마찰이 남았어']]),
  dict(at=2,type='big',size=130,html='<div>"논문이</div><div class="y">차가운 손<br>세 개를</div><div>먹었다"</div>',tag='(실제 AI끼리 한 말)'),
+ dict(at=3,type='img',img=4),
  dict(at=4,type='big',size=120,html='<div>뜻 정해 준 사람</div><div class="r" style="font-size:220px">0명</div>'),
- dict(at=5,type='big',size=130,html='<div class="mut" style="font-size:60px;letter-spacing:0">제미나이</div><div class="y">절반을<br>못 알아들음</div>'),
- dict(at=6,type='stamp',text='돈까지 옮김',peng='wow'),
- dict(at=8,type='split',a=['한 회사 AI끼리',32.8],b=['여러 회사 같이',7.6]),
+ dict(at=5,type='big',size=130,html='<div class="mut" style="font-size:60px;letter-spacing:0">제미나이</div><div class="y">절반 정도<br>못 알아들음</div>'),
+ dict(at=6,type='img',img=8),
+ dict(at=7,type='img',img=9,stamp='돈까지 옮김'),
+ dict(at=8,type='img',img=10),
+ dict(at=9,type='split',a=['한 회사 AI끼리',32.8],b=['여러 회사 같이',7.6]),
  dict(at=10,type='cta',html='<div>활용법은</div><div class="y">풀영상에서</div>')]
-json.dump([[lines[s['at']][0],{'chat':'whoosh0','big':'impact','stamp':'riser_hit','split':'riser_hit','cta':'whoosh1'}[s['type']],0] for s in SSH],open('v5/sh_events.json','w'))
+json.dump([[lines[s['at']][0],{'chat':'send','big':'impact','img':['whoosh0','whoosh2','swish','spark'][s['at']%4],'split':'riser_hit','cta':'whoosh1'}[s['type']] if not s.get('stamp') else 'stamp',0] for s in SSH],open('v5/sh_events.json','w'))
 open('v5/sh_data.js','w').write('window.SV='+json.dumps({'lines':lines,'dur':dur},ensure_ascii=False)+';window.SSH='+json.dumps(SSH,ensure_ascii=False)+';')
 print('short dur',dur)
