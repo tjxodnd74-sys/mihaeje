@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Regular.woff2);font-weight:400}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-SemiBold.woff2);font-weight:600}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+:root{--bg:#0A1517;--vi:#5FD8FF;--vi2:#2FB7E6;--am:#FF9F6B;--tx:#F3F4FA;--mu:#9EA3BD;--ln:rgba(255,255,255,.10);--red:#FF6B6B;--grn:#5BE0A0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#333;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.mono{font-family:'DejaVu Sans Mono',monospace;letter-spacing:.08em}
+.card{width:1080px;height:1350px;position:relative;overflow:hidden;margin:0 0 40px;color:var(--tx);
+ background:radial-gradient(900px 600px at 85% 0%,rgba(47,183,230,.20),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(255,140,90,.10),transparent 60%),var(--bg)}
+.card:before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:54px 54px;pointer-events:none}
+.bar{position:absolute;left:64px;right:64px;top:52px;display:flex;justify-content:space-between;align-items:center;font-size:22px;color:var(--mu);padding-bottom:22px;border-bottom:2px dashed var(--ln)}
+.bar .l{display:flex;align-items:center;gap:14px}
+.bar img{width:34px;height:34px}
+.bar .r{color:var(--vi);font-weight:700}
+.wrap{position:absolute;left:64px;right:64px;top:150px}
+.lab{font-size:26px;color:var(--vi);font-weight:700;margin-bottom:22px}
+.h{font-weight:900;font-size:96px;line-height:1.12;letter-spacing:-.045em}
+.h .v{color:var(--vi)} .h .a{color:var(--am)}
+.s{margin-top:26px;font-size:34px;color:#C9CCDD;font-weight:500;letter-spacing:-.02em;line-height:1.5}
+.s b{color:var(--am);font-weight:800}
+.box{position:absolute;left:64px;right:64px;border:2px solid var(--ln);border-radius:28px;background:rgba(255,255,255,.035);padding:60px 56px}
+.box .tag{position:absolute;top:-17px;left:36px;background:var(--bg);padding:0 14px;font-size:22px;color:var(--mu)}
+.foot{position:absolute;left:64px;right:64px;bottom:56px;font-size:24px;color:#6E7390;font-weight:500;line-height:1.5}
+.stamp{display:inline-block;border:4px solid var(--vi);color:var(--vi);font-weight:900;font-size:30px;padding:6px 20px;border-radius:10px;transform:rotate(-6deg);letter-spacing:.12em}
+
+/* map */
+.map{display:flex;flex-direction:column;gap:30px}
+.mrow{display:flex;align-items:center;gap:24px}
+.pill{flex:1;height:124px;border-radius:26px;display:flex;align-items:center;gap:20px;padding:0 30px;font-size:40px;font-weight:700}
+.pill.o{background:rgba(163,148,255,.12);border:2px solid rgba(163,148,255,.35);color:#D9D4FF}
+.pill.n{background:#fff;color:#14162A}
+.pill i{font-style:normal;font-size:44px}
+.arr{color:var(--am);font-size:46px;font-weight:900}
+
+/* quote */
+.q{background:#FBF7EA;color:#1C1D28;border-radius:20px;padding:48px 50px;font-family:Georgia,serif;font-size:44px;line-height:1.5}
+.q mark{background:#FFE37A;padding:0 4px}
+.qk{margin-top:44px;font-size:54px;font-weight:800;line-height:1.4;letter-spacing:-.03em}
+.qk span{color:var(--am)}
+
+/* list */
+.ol{display:flex;flex-direction:column;gap:54px}
+.ol .it{display:flex;align-items:baseline;gap:30px;font-size:50px;font-weight:700;letter-spacing:-.03em}
+.ol .it .n{font-size:30px;color:var(--vi);font-weight:700;width:52px}
+.ol .it small{display:block;font-size:33px;color:var(--mu);font-weight:500;margin-top:6px}
+.ol .it.hot{color:var(--am)}
+
+/* ox */
+.ox{position:absolute;left:64px;right:64px;top:620px;display:flex;gap:24px}
+.ox .c{flex:1;border-radius:28px;padding:50px 44px;min-height:560px;border:2px solid var(--ln);background:rgba(255,255,255,.03)}
+.ox .c.x{border-color:rgba(255,107,107,.6);background:rgba(255,107,107,.08)}
+.ox .hd{font-size:30px;font-weight:700;margin-bottom:26px;color:var(--grn)}
+.ox .x .hd{color:var(--red)}
+.ox li{list-style:none;font-size:44px;font-weight:700;line-height:1.35;margin-bottom:36px;letter-spacing:-.02em}
+
+/* copy box */
+.copy{font-size:46px;font-weight:700;line-height:1.9;letter-spacing:-.02em}
+.copy .f{background:rgba(255,200,97,.18);color:var(--am);border:2px solid rgba(255,200,97,.55);border-radius:10px;padding:0 10px}
+.tip{font-size:37px;color:#C9CCDD;line-height:1.65;font-weight:500}
+.tip b{color:var(--am)}
+.best{position:absolute;right:40px;top:-26px;border:4px solid var(--red);color:var(--red);font-weight:900;font-size:26px;padding:4px 16px;border-radius:8px;transform:rotate(6deg);background:var(--bg);letter-spacing:.1em}
+
+
+:root{--bg:#0B1220;--vi:#6CF2C2;--vi2:#2FD3A0;--am:#FF8A7A;--mu:#9AA6BF}
+.card{background:radial-gradient(900px 600px at 90% 0%,rgba(108,242,194,.16),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(255,138,122,.12),transparent 60%),var(--bg)}
+.s{font-size:38px}
+.foot{font-size:26px}
+#k1{background:#0E1418}
+#k1:before{display:none}
+#k1 .img{position:absolute;left:0;top:0;width:1080px;height:860px;overflow:hidden}
+#k1 .img img{position:absolute;height:860px;left:50%;transform:translateX(-50%);top:0}
+#k1 .img:after{content:"";position:absolute;left:0;right:0;bottom:0;height:360px;background:linear-gradient(transparent,#0E1418)}
+#k1 .tg{position:absolute;left:60px;top:50px;background:#FFD43B;color:#111;font-size:30px;font-weight:900;padding:8px 20px;border-radius:10px}
+#k1 .tt{position:absolute;left:58px;right:30px;top:735px;font-size:130px;font-weight:900;line-height:1.08;letter-spacing:-.055em;color:#fff;text-shadow:0 6px 24px rgba(0,0,0,.75)}
+#k1 .tt em{font-style:normal;color:#FFD43B}
+#k1 .hd2{position:absolute;left:60px;right:60px;bottom:40px;display:flex;justify-content:space-between;font-size:24px;font-weight:700;color:#7F8C90}
+/* chips */
+.chips{display:flex;flex-direction:column;gap:36px}
+.chip{display:flex;align-items:center;gap:26px;border-radius:24px;padding:30px 34px;background:rgba(108,242,194,.08);border:2px solid rgba(108,242,194,.35);font-size:48px;font-weight:800;letter-spacing:-.03em}
+.chip i{font-style:normal;font-size:52px}
+.chip small{display:block;font-size:31px;color:var(--mu);font-weight:500;margin-top:6px}
+/* race */
+@property --n{syntax:'<integer>';initial-value:51;inherits:false}
+.race{display:flex;flex-direction:column;gap:24px}
+.rl{font-size:38px;color:var(--mu);font-weight:700;margin-bottom:12px}
+.rt{height:112px;border-radius:18px;background:rgba(255,255,255,.06);position:relative;overflow:hidden}
+.rf{position:absolute;left:0;top:0;bottom:0;border-radius:18px;display:flex;align-items:center;justify-content:flex-end;padding-right:26px;font-size:54px;font-weight:900;color:#0B1220}
+.rf.old{width:40%;background:#7C879E}
+.rf.new{width:100%;background:linear-gradient(90deg,#2FD3A0,#6CF2C2 60%,#FFD43B)}
+.mx .rf.old{animation:raceO 6s ease-out infinite}
+.mx .rf.new{animation:raceN 6s ease-out infinite}
+@keyframes raceO{0%,10%{width:40%}14%{width:8%}50%,100%{width:40%}}
+@keyframes raceN{0%,10%{width:100%}14%{width:8%}38%,100%{width:100%}}
+.stats{display:flex;gap:24px;margin-top:34px}
+.st{flex:1;border-radius:24px;padding:32px 32px;border:2px solid var(--ln);background:rgba(255,255,255,.04)}
+.st .big{font-size:112px;font-weight:900;color:#FFD43B;letter-spacing:-.04em;line-height:1}
+.st .big.c{counter-reset:n var(--n)}
+.st .big.c:before{content:counter(n)}
+.mx .st .big.c{animation:cnt 6s ease-out infinite}
+@keyframes cnt{0%,10%{--n:51}14%{--n:0}50%,100%{--n:51}}
+.st .lb{font-size:40px;font-weight:700;margin-top:14px;line-height:1.35}
+.st .lb small{display:block;font-size:29px;color:var(--mu);font-weight:500}
+/* table */
+.tbl{display:flex;flex-direction:column;gap:24px}
+.tr{display:grid;grid-template-columns:1.3fr 1fr;align-items:center;gap:16px;border-radius:22px;padding:28px 34px;background:rgba(255,255,255,.04);border:2px solid var(--ln);font-size:46px;font-weight:800;letter-spacing:-.03em}
+.tr.hd{background:none;border:none;padding:0 34px;font-size:30px;color:var(--mu);font-weight:700}
+.tr .r2{text-align:center;font-size:42px}
+.tr .o{color:#5BE0A0}.tr .t{color:#FFD43B}
+.tr small{display:block;font-size:28px;color:var(--mu);font-weight:500}
+.tr.me{border-color:rgba(255,212,59,.6);background:rgba(255,212,59,.07)}
+/* picker */
+.pk{display:flex;flex-direction:column;gap:22px}
+.po{display:flex;align-items:center;justify-content:space-between;border-radius:22px;padding:24px 34px;background:rgba(255,255,255,.04);border:2px solid var(--ln)}
+.po .k{font-size:46px;font-weight:800;letter-spacing:-.03em}
+.po .k small{display:block;font-size:28px;color:var(--mu);font-weight:500;margin-top:4px}
+.po .m{font-size:36px;font-weight:800;color:var(--vi);text-align:right}
+.po.on{border-color:var(--vi);background:rgba(108,242,194,.10);box-shadow:0 0 0 6px rgba(108,242,194,.08)}
+
+.mx .po.on{animation:sel 6s ease-in-out infinite}
+@keyframes sel{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.ol{display:flex;flex-direction:column;gap:64px}
+.ol .it{display:flex;align-items:baseline;gap:30px;font-size:56px;font-weight:800;letter-spacing:-.03em}
+.ol .it .n{font-size:32px;color:var(--vi);font-weight:700;width:52px;flex:none}
+.ol .it small{display:block;font-size:34px;color:var(--mu);font-weight:500;margin-top:10px;line-height:1.4}
+.ol .it.hot{color:#FFD43B}
+.copy{border:2px dashed rgba(255,212,59,.5);border-radius:20px;padding:34px 36px;background:rgba(255,212,59,.06);font-size:44px;line-height:1.7;font-weight:700}
+.copy .f{background:rgba(108,242,194,.15);color:var(--vi);border:2px solid rgba(108,242,194,.5);border-radius:10px;padding:0 10px}
+.best{border-color:#FFD43B;color:#FFD43B}
+/* end */
+#k9 .glow{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(108,242,194,.38) 0%,rgba(47,211,160,.14) 45%,transparent 70%)}
+#k9 .floor{position:absolute;left:50%;top:640px;transform:translateX(-50%);width:420px;height:70px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.55),transparent 70%)}
+#k9 .peng{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:300px;filter:drop-shadow(0 20px 40px rgba(47,211,160,.45))}
+#k9 .bubble{position:absolute;left:610px;top:190px;background:#fff;color:#14162A;font-weight:800;font-size:32px;padding:18px 28px;border-radius:26px 26px 26px 6px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+#k9 .c{position:absolute;left:0;right:0;top:720px;text-align:center}
+#k9 .h{font-size:88px}
+#k9 .key{display:inline-block;margin-top:40px;border:4px solid #FFD43B;color:#FFD43B;font-size:54px;font-weight:900;padding:14px 46px;border-radius:14px}
+#k9 .s{text-align:center}
+</style></head><body>
+<section class="card" id="k1">
+ <div class="img"><img src="cover.png"></div>
+ <div class="tg">AI 뉴스</div>
+ <div class="tt">무료 제미나이,<br>'자동' 끄면<br><em>새 AI 못 써요</em></div>
+ <div class="hd2 mono"><span>@nexus_studio.kr</span><span>넘겨 보기 →</span></div>
+</section>
+
+<section class="card" id="k2"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 02/09</div></div>
+ <div class="wrap"><div class="lab mono">WHAT HAPPENED</div>
+  <div class="h">제미나이 4<br><span class="v">하이드로젠</span> 나왔어요</div>
+  <div class="s">11월 12일(미국 시간) 구글이<br><b>3.8 Flash 뒤를 잇는 빠른 모델</b>을 공개했어요.</div></div>
+ <div class="box" style="top:640px;padding:56px 46px"><div class="tag mono">WHERE · 어디에 들어갔나</div>
+  <div class="chips">
+   <div class="chip"><i>📱</i><div>제미나이 앱<small>'일상 도움' 담당 모델</small></div></div>
+   <div class="chip"><i>🔍</i><div>구글 검색 AI 모드<small>요금제 상관없이 누구나</small></div></div>
+   <div class="chip"><i>🧑‍💻</i><div>개발자 API·AI 스튜디오<small>쓴 만큼 결제</small></div></div>
+  </div></div>
+</section>
+
+<section class="card" id="k3"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 03/09</div></div>
+ <div class="wrap"><div class="lab mono">BY THE NUMBERS · 구글 발표</div>
+  <div class="h">숫자로 보면<br><span class="a">이만큼 달라졌어요</span></div></div>
+ <div class="box" style="top:450px;padding:50px 46px"><div class="tag mono">SPEED · 3.8 Flash와 비교</div>
+  <div class="race">
+   <div><div class="rl">3.8 Flash</div><div class="rt"><div class="rf old">1배</div></div></div>
+   <div><div class="rl" style="color:var(--vi)">4 하이드로젠</div><div class="rt"><div class="rf new">2.5배 빨라요</div></div></div>
+  </div>
+  <div class="stats">
+   <div class="st"><div class="big c mono"></div><div class="lb">지능 점수<small>AA 지수 · 4 아르곤은 50</small></div></div>
+   <div class="st"><div class="big mono">1/5</div><div class="lb">지어낸 주장<small>3.8 Flash보다 5배↓</small></div></div>
+  </div></div>
+ <div class="foot">속도·지어낸 주장은 기본 '높음' 설정 기준, 구글이 밝힌 수치예요.</div>
+</section>
+
+<section class="card" id="k4"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 04/09</div></div>
+ <div class="wrap"><div class="lab mono">WHO GETS IT · 앱 기준</div>
+  <div class="h">무료는<br><span class="a">'자동'일 때만</span></div>
+  <div class="s">무료는 모델을 <b>직접 고를 수 없어요.</b><br>앱이 질문을 보고 필요할 때 붙여 줘요.</div></div>
+ <div class="box" style="top:640px;padding:46px 46px"><div class="tag mono">MY PLAN</div>
+  <div class="tbl">
+   <div class="tr hd"><span>내 상황</span><span class="r2">하이드로젠</span></div>
+   <div class="tr me"><span>무료 앱<small>모델 선택 '자동'</small></span><span class="r2 t">가끔 자동으로</span></div>
+   <div class="tr"><span>구글 AI 유료<small>Plus·Pro·Ultra</small></span><span class="r2 o">직접 선택</span></div>
+   <div class="tr"><span>구글 검색 AI 모드<small>요금제 상관없이</small></span><span class="r2 o">누구나</span></div>
+  </div></div>
+</section>
+
+<section class="card" id="k5"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 05/09</div></div>
+ <div class="wrap"><div class="lab mono">MODEL PICKER · 유료 앱</div>
+  <div class="h">이름 말고<br><span class="v">용도로 고르세요</span></div>
+  <div class="s">모델 메뉴에 <b>용도 이름</b>이 붙어 있어요.</div></div>
+ <div class="box" style="top:540px;padding:44px 44px"><div class="tag mono">이럴 땐 이것</div>
+  <div class="pk">
+   <div class="po"><div class="k">빠른 답<small>짧은 질문·번역</small></div><div class="m mono">3.5 Flash-Lite</div></div>
+   <div class="po on"><div class="k">일상 도움<small>글·요약·표 정리</small></div><div class="m mono">4 하이드로젠</div></div>
+   <div class="po"><div class="k">코드·분석<small>AI Pro부터</small></div><div class="m mono">4 아르곤</div></div>
+   <div class="po"><div class="k">아주 복잡한 일<small>AI Ultra</small></div><div class="m mono">4 카본</div></div>
+  </div></div>
+ <div class="foot">메뉴 이름은 영어판 기준이에요. 한국어 화면 표시는 다를 수 있어요.</div>
+</section>
+
+<section class="card" id="k6"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 06/09</div></div>
+ <div class="wrap"><div class="lab mono">FREE USER TIP</div>
+  <div class="h">무료라면<br><span class="a">이렇게 써요</span></div></div>
+ <div class="box" style="top:480px"><div class="tag mono">3 STEPS</div>
+  <div class="ol" style="gap:86px">
+   <div class="it hot"><span class="n mono">01</span><div>모델 칸은 '자동'으로<small>다른 걸 고정해 두면<br>하이드로젠이 붙을 기회가 없어요</small></div></div>
+   <div class="it"><span class="n mono">02</span><div>검색 AI 모드도 써 보기<small>구글 검색에서도 하이드로젠이 답해요</small></div></div>
+   <div class="it"><span class="n mono">03</span><div>말투·형식을 콕 집어 시키기<small>지시를 따르는 힘이 좋아졌대요 → 다음 장</small></div></div>
+  </div></div>
+</section>
+
+<section class="card" id="k7"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 07/09</div></div>
+ <div class="wrap"><div class="lab mono">TRY THIS</div>
+  <div class="h">표 정리는<br><span class="v">이렇게 시켜요</span></div>
+  <div class="s">아래를 그대로 붙여 넣고 <b>[ ]</b>만 바꿔요.</div></div>
+ <div class="box" style="top:620px"><div class="tag mono">COPY · PASTE</div><div class="best mono">TABLE</div>
+  <div class="copy">아래 내용을 표로 정리해 줘.<br>열은 <span class="f">항목</span> · <span class="f">핵심</span> · <span class="f">내가 할 일</span><br>말투는 친구한테 설명하듯 짧게.<br>확실하지 않으면 '확인 필요'라고 적어 줘.<br><span class="f">[내용 붙여넣기]</span></div>
+  <div class="tip" style="margin-top:28px">'확인 필요' 칸 덕분에 <b>지어낸 답을 바로 골라낼 수 있어요.</b></div></div>
+</section>
+
+<section class="card" id="k8"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">FILE 08/09</div></div>
+ <div class="wrap"><div class="lab mono">CAUTION</div>
+  <div class="h">쓰기 전에<br><span class="a">이건 알아 두세요</span></div></div>
+ <div class="box" style="top:480px"><div class="tag mono">GOOD TO KNOW</div>
+  <div class="ol" style="gap:96px">
+   <div class="it"><span class="n mono">!</span><div>전 세계 순차 배포예요<small>내 계정엔 며칠 늦게 보일 수 있어요</small></div></div>
+   <div class="it"><span class="n mono">!</span><div>무료는 매번 붙지 않아요<small>어떤 모델이 답할지는 앱이 정해요</small></div></div>
+   <div class="it"><span class="n mono">!</span><div>숫자·날짜는 직접 확인<small>지어낸 주장이 줄었다는 건 구글 수치예요</small></div></div>
+  </div></div>
+ <div class="foot">출처: 구글 공식 블로그(11/12), VentureBeat·9to5Google·AndroidPure·36Kr 보도(11/12~13)</div>
+</section>
+
+<section class="card" id="k9">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · GEMINI</div><div class="r">END OF FILE</div></div>
+ <div class="glow"></div><div class="floor"></div><img class="peng" src="../assets/heart.png"><div class="bubble">'자동'부터 켜 두기!</div>
+ <div class="c"><div class="h">모델 헷갈릴 때<br>꺼내 보세요</div>
+  <div class="key">📌 저장 · 팔로우</div>
+  <div class="s" style="margin-top:36px">바로 써먹는 AI 소식, 넥서스가 쉽게 정리해요<br><span class="mono" style="color:var(--vi);font-size:28px">@nexus_studio.kr</span></div></div>
+</section>
+</body></html>
