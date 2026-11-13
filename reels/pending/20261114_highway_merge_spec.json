@@ -1,0 +1,368 @@
+{
+ "style": "fullscreen",
+ "eyebrow": "이것도 법이에요",
+ "title": [],
+ "cta": [
+  "합류가 어려운 초보 운전자에게",
+  "공유해 주세요"
+ ],
+ "cover": {
+  "clip": "bg_merge_ramp_4036000.mp4",
+  "start": 6.0,
+  "cx": 0.5,
+  "tag": "이것도 법이에요",
+  "title": "고속도로 합류<br>|누가 양보|<br>해야 할까?",
+  "sub": "도로교통법 제65조 기준"
+ },
+ "segments": [
+  {
+   "cap": "고속도로 합류 구간, / 본선 차가 비켜줄 때까지 / 기다리시나요?",
+   "say": "고속도로 합류 구간, 본선 차가 비켜줄 때까지 기다리시나요?",
+   "clip": "bg_merge_birdseye_9700462.mp4",
+   "start": 0.5,
+   "cx": 0.5,
+   "kin": true,
+   "t": 0.0,
+   "chunkT": [
+    1.42,
+    2.66
+   ],
+   "e": 3.94,
+   "cut": true
+  },
+  {
+   "cap": "사실 법은, / 들어가는 차에 / |더 큰 의무|를 둬요",
+   "say": "사실 법은, 들어가는 차에 더 큰 의무를 두고 있어요.",
+   "clip": "bg_merge_ramp_4036000.mp4",
+   "start": 1.0,
+   "cx": 0.5,
+   "t": 3.94,
+   "chunkT": [
+    4.98,
+    6.4
+   ],
+   "e": 8.34,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 3.94,
+     "html": "<span class=\"w\">사실</span><span class=\"w\">법은</span>"
+    },
+    {
+     "t": 4.98,
+     "html": "<span class=\"w\">들어가는</span><span class=\"w\">차에</span>"
+    },
+    {
+     "t": 6.4,
+     "html": "<span class=\"w hl\">더</span><span class=\"w hl\">큰</span><span class=\"w hl\">의무를</span><span class=\"w\">둬요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "첫째, / |합류하는 차|가 / 양보해야 해요",
+   "say": "첫째, 합류하는 차가 양보해야 해요.",
+   "clip": "bg_ramp_overpass_30106976.mp4",
+   "start": 2.0,
+   "cx": 0.5,
+   "step": 1,
+   "num": "01",
+   "name": "합류 차 양보",
+   "t": 8.34,
+   "chunkT": [
+    9.2,
+    9.96
+   ],
+   "e": 11.48,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 8.34,
+     "html": "<span class=\"w\">첫째</span>"
+    },
+    {
+     "t": 9.2,
+     "html": "<span class=\"w hl\">합류하는</span><span class=\"w hl\">차가</span>"
+    },
+    {
+     "t": 9.96,
+     "html": "<span class=\"w\">양보해야</span><span class=\"w\">해요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "도로교통법 제65조, / 들어갈 땐 달리던 차의 / 통행을 |방해하면 안 돼요|",
+   "say": "도로교통법 제육십오조, 고속도로에 들어갈 땐 달리던 차의 통행을 방해하면 안 돼요.",
+   "clip": "bg_mainline_flow_2293417.mp4",
+   "start": 1.0,
+   "cx": 0.5,
+   "stat": [
+    "도로교통법 제65조",
+    "진입 차가 통행 방해 금지"
+   ],
+   "t": 11.48,
+   "chunkT": [
+    14.06,
+    15.82
+   ],
+   "e": 17.44,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 11.48,
+     "html": "<span class=\"w\">도로교통법</span><span class=\"w\">제65조</span>"
+    },
+    {
+     "t": 14.06,
+     "html": "<span class=\"w\">들어갈</span><span class=\"w\">땐</span><span class=\"w\">달리던</span><span class=\"w\">차의</span>"
+    },
+    {
+     "t": 15.82,
+     "html": "<span class=\"w\">통행을</span><span class=\"w hl\">방해하면</span><span class=\"w hl\">안</span><span class=\"w hl\">돼요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "그래서 본선 흐름을 보고, / |빈 공간|에 맞춰 / 들어가야 해요",
+   "say": "그래서 본선 흐름을 보고, 빈 공간에 맞춰 들어가야 해요.",
+   "clip": "bg_overhead_cars_38774214.mp4",
+   "start": 2.0,
+   "cx": 0.5,
+   "t": 17.44,
+   "chunkT": [
+    18.9,
+    20.4
+   ],
+   "e": 21.06,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 17.44,
+     "html": "<span class=\"w\">그래서</span><span class=\"w\">본선</span><span class=\"w\">흐름을</span><span class=\"w\">보고</span>"
+    },
+    {
+     "t": 18.9,
+     "html": "<span class=\"w hl\">빈</span><span class=\"w hl\">공간에</span><span class=\"w\">맞춰</span>"
+    },
+    {
+     "t": 20.4,
+     "html": "<span class=\"w\">들어가야</span><span class=\"w\">해요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "둘째, / |가속차로|에서 / 속도를 올리세요",
+   "say": "둘째, 가속차로에서 속도를 올리세요.",
+   "clip": "bg_ramp_overpass_30106976.mp4",
+   "start": 9.0,
+   "cx": 0.5,
+   "step": 2,
+   "num": "02",
+   "name": "가속차로",
+   "t": 21.06,
+   "chunkT": [
+    22.76,
+    23.56
+   ],
+   "e": 25.46,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 21.06,
+     "html": "<span class=\"w\">둘째</span>"
+    },
+    {
+     "t": 22.76,
+     "html": "<span class=\"w hl\">가속차로에서</span>"
+    },
+    {
+     "t": 23.56,
+     "html": "<span class=\"w\">속도를</span><span class=\"w\">올리세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "본선과 속도 차이가 크면, / |끼어들 틈|을 / 잡기 어렵거든요",
+   "say": "본선과 속도 차이가 크면, 끼어들 틈을 잡기 어렵거든요.",
+   "clip": "bg_mainline_flow_2293417.mp4",
+   "start": 10.0,
+   "cx": 0.5,
+   "t": 25.46,
+   "chunkT": [
+    27.42,
+    28.58
+   ],
+   "e": 30.22,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 25.46,
+     "html": "<span class=\"w\">본선과</span><span class=\"w\">속도</span><span class=\"w\">차이가</span><span class=\"w\">크면</span>"
+    },
+    {
+     "t": 27.42,
+     "html": "<span class=\"w hl\">끼어들</span><span class=\"w hl\">틈을</span>"
+    },
+    {
+     "t": 28.58,
+     "html": "<span class=\"w\">잡기</span><span class=\"w\">어렵거든요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "가속차로가 끝나기 전에, / |본선 속도|까지 / 높여 두세요",
+   "say": "가속차로가 끝나기 전에, 본선 속도까지 높여 두세요.",
+   "clip": "bg_merge_ramp_4036000.mp4",
+   "start": 9.0,
+   "cx": 0.5,
+   "t": 30.22,
+   "chunkT": [
+    31.64,
+    33.22
+   ],
+   "e": 34.66,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 30.22,
+     "html": "<span class=\"w\">가속차로가</span><span class=\"w\">끝나기</span><span class=\"w\">전에</span>"
+    },
+    {
+     "t": 31.64,
+     "html": "<span class=\"w hl\">본선</span><span class=\"w hl\">속도까지</span>"
+    },
+    {
+     "t": 33.22,
+     "html": "<span class=\"w\">높여</span><span class=\"w\">두세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "셋째, / |방향지시등|은 / 미리 켜세요",
+   "say": "셋째, 방향지시등은 미리 켜세요.",
+   "clip": "bg_cars_above_33445783.mp4",
+   "start": 1.0,
+   "cx": 0.5,
+   "step": 3,
+   "num": "03",
+   "name": "방향지시등",
+   "t": 34.66,
+   "chunkT": [
+    35.56,
+    36.38
+   ],
+   "e": 37.5,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 34.66,
+     "html": "<span class=\"w\">셋째</span>"
+    },
+    {
+     "t": 35.56,
+     "html": "<span class=\"w hl\">방향지시등은</span>"
+    },
+    {
+     "t": 36.38,
+     "html": "<span class=\"w\">미리</span><span class=\"w\">켜세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "뒤에서 오는 차가 / |미리 알아야|, / 공간을 내주기 쉬워요",
+   "say": "뒤에서 오는 차가 미리 알아야, 공간을 내주기 쉬워요.",
+   "clip": "bg_overhead_cars_38774214.mp4",
+   "start": 10.0,
+   "cx": 0.5,
+   "t": 37.5,
+   "chunkT": [
+    38.78,
+    39.28
+   ],
+   "e": 41.1,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 37.5,
+     "html": "<span class=\"w\">뒤에서</span><span class=\"w\">오는</span><span class=\"w\">차가</span>"
+    },
+    {
+     "t": 38.78,
+     "html": "<span class=\"w hl\">미리</span><span class=\"w hl\">알아야</span>"
+    },
+    {
+     "t": 39.28,
+     "html": "<span class=\"w\">공간을</span><span class=\"w\">내주기</span><span class=\"w\">쉬워요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "들어간 뒤엔 바로 끄고, / |안전거리|를 / 확보하세요",
+   "say": "들어간 뒤엔 바로 끄고, 안전거리를 확보하세요.",
+   "clip": "bg_cars_above_33445783.mp4",
+   "start": 6.0,
+   "cx": 0.5,
+   "step": 4,
+   "num": "TIP",
+   "name": "안전거리",
+   "t": 41.1,
+   "chunkT": [
+    42.88,
+    43.54
+   ],
+   "e": 43.96,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 41.1,
+     "html": "<span class=\"w\">들어간</span><span class=\"w\">뒤엔</span><span class=\"w\">바로</span><span class=\"w\">끄고</span>"
+    },
+    {
+     "t": 42.88,
+     "html": "<span class=\"w hl\">안전거리를</span>"
+    },
+    {
+     "t": 43.54,
+     "html": "<span class=\"w\">확보하세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "합류가 어려운 / 초보 운전자에게, / 이 영상 |공유|해 주세요",
+   "say": "합류가 어려운 초보 운전자에게, 이 영상 공유해 주세요.",
+   "clip": "bg_interchange_34665064.mp4",
+   "start": 4.0,
+   "cx": 0.5,
+   "cta": true,
+   "t": 43.96,
+   "chunkT": [
+    45.48,
+    46.48
+   ],
+   "e": 50.036,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 43.96,
+     "html": "<span class=\"w\">합류가</span><span class=\"w\">어려운</span>"
+    },
+    {
+     "t": 45.48,
+     "html": "<span class=\"w\">초보</span><span class=\"w\">운전자에게</span>"
+    },
+    {
+     "t": 46.48,
+     "html": "<span class=\"w\">이</span><span class=\"w\">영상</span><span class=\"w hl\">공유해</span><span class=\"w\">주세요</span>"
+    }
+   ]
+  }
+ ],
+ "duration": 50,
+ "impacts": [
+  0.0,
+  8.34,
+  21.06,
+  34.66,
+  41.1,
+  43.96
+ ]
+}
