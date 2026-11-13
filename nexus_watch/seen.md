@@ -229,3 +229,5 @@
 2026-11-13 11:24 | 구글 안티그래비티(알림 제외·개발자용) | Orchestrator 추가, 코딩 중 Carbon·Hydrogen 자동 전환 | https://news.hada.io/
 2026-11-13 11:24 | 애플 RAG 검색·Jane Street 면접·OnPurpose(알림 제외·개발자/Show GN 소형) | https://news.hada.io/
 - 2026-11-13 11:24: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch, lockupViewModel 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 10:25 이후 새 롱폼 없음(최신: AI 조교 '클로드 줄거리→숏드라마 1화' 6시간 전). 홀수 시각이라 쇼츠·vidIQ 생략. 인스타 브라우저 안 엶. AI타임스 새 기사 없음. 하이드로젠은 done.md에 13:17 예약 완료 확인. 바로 제작 없음.
+2026-11-13 12:23 | LGU+ 카테나-X·마키나락스 실적·중국 젠슨 황 사태 반발(알림 제외·기업/정책) | AI타임스 11/13 11:40~11:50 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-13 12:23: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, lockupViewModel 파싱, 쇼츠는 publishDate 확인), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 11:24 이후 새 롱폼·쇼츠 없음(최신: AI 조교 '클로드 줄거리→숏드라마 1화' 7시간 전, 612회). 인스타 브라우저 안 엶, vidIQ 정해진 시각 아님. 새 AI 소식 없음. 바로 제작 없음.
