@@ -1,6 +1,6 @@
 # 넥서스 제작 후보 (최신이 위)
 
-## 2026-11-13 08:24 — 🔥바로제작 [긴급 제작 요청 실패: fire_trigger 권한 거부 → 10:41 정규 회차가 가져가도록 표시] 무료 제미나이가 바뀌었다 — 구글 '제미나이 4 하이드로젠' 출시(3.8 Flash 대체)
+## 2026-11-13 08:24 — 🔥바로제작 [긴급 제작 요청 실패: fire_trigger 권한 거부(08:24·09:24 2회) → 10:41 정규 회차가 가져가도록 표시] 무료 제미나이가 바뀌었다 — 구글 '제미나이 4 하이드로젠' 출시(3.8 Flash 대체)
 - 출처: https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/ , https://9to5google.com/2026/11/12/gemini-4-hydrogen-launch/ , https://www.iclarified.com/103485/google-launches-gemini-4-hydrogen-bringing-its-latest-ai-to-free-users , AI타임스(11/13 07:58) https://www.aitimes.com/news/articleList.html?view_type=sm
 - 추천 형식: 카드뉴스('무료로 쓰는 사람 입장에서 뭐가 달라졌나·모델 고르는 법' 각도, 11/11 카본 카드와 겹치지 않게)
 - 제목안: "무료 제미나이가 오늘부터 달라졌다 / 4 하이드로젠, 뭘 고르면 되나"
@@ -301,3 +301,4 @@ vidIQ 사용: 2026-11-12 10:14 0크레딧(잔액 0, 80 미만으로 생략)
 vidIQ 사용: 2026-11-12 10:24 0크레딧(잔액 0, 80 미만으로 생략)
 vidIQ 사용: 2026-11-12 15:24 0크레딧(잔액 0, 80 미만으로 생략)
 긴급 제작 요청(실패·권한 거부, 횟수 미포함): 2026-11-13 08:24 제미나이 4 하이드로젠
+긴급 제작 요청(실패·권한 거부, 횟수 미포함): 2026-11-13 09:24 제미나이 4 하이드로젠 재시도

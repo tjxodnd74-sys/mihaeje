@@ -221,3 +221,6 @@
 2026-11-13 08:24 | 구글·삼성 AI 안경(알림 제외·11/9 완료 주제) | 한국·미국 사전예약, 12/10 정식 출시 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-13 08:24 | 미 상무부·AI 퓨처스(알림 제외·정책/전망) | 중국 해외 GPU 임대 규제 / 2027 지능 폭발 전망 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-13 08:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, lockupViewModel 파싱, 쇼츠는 publishDate 확인), 긱뉴스·AI타임스 직접 확인 + 웹검색 4건. 어제 18:24 이후 새 롱폼 5개(조팀장·AI 조교·AI하조·CONNECT AI LAB·호랑웨이브), 새 쇼츠 1개(유튜브신쌤). 긱뉴스 새 글은 Show GN 소형뿐. 인스타 브라우저 안 엶, vidIQ 정해진 시각 아님. 제미나이 4 하이드로젠 긴급 제작 요청 → fire_trigger 권한 거부, 🔥바로제작 표시(10:41 정규 회차용). 오늘 인스타 예약 0편(유튜브 쇼츠 2편만).
+2026-11-13 09:24 | 엔비디아(알림 제외·기업) | 트럼프 "젠슨 황 후임은 팀 쿡" 추천 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-13 09:24 | kr-career-skill(알림 제외·Show GN 소형) | 채용 사이트 270곳 공고 검색·자소서 초안 에이전트 스킬 | https://news.hada.io/
+- 2026-11-13 09:24: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch, lockupViewModel 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 08:24 이후 새 롱폼 없음(최신: AI 조교 '클로드 줄거리→숏드라마 1화' 4시간 전). 홀수 시각이라 쇼츠·vidIQ 생략. 인스타 브라우저 안 엶. AI타임스에 하이드로젠 기사 확인(두 번째 국내 출처). 하이드로젠 긴급 제작 재요청 → fire_trigger 또 권한 거부, 🔥바로제작 표시 유지(10:41 정규 회차용).
