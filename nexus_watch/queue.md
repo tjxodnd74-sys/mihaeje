@@ -1,5 +1,11 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-14 12:25 — (참고) 오픈AI '챗GPT 월렛' 출시 — AI 에이전트가 대신 결제(생체인증, 실제 카드번호 미노출)
+- 출처: AI타임스(11/14 10:41, 오픈AI 공식 블로그 인용) https://www.aitimes.com/news/articleList.html?view_type=sm
+- 추천 형식: 지금은 미국 거주 18세 이상 챗GPT 프로 + 미국 카드만 → 한국 사용자 사용 불가라 바로 제작 제외. 한국 확대 시 카드뉴스('AI한테 결제 맡겨도 되나' 각도)
+- 다룬 채널: 없음
+
+
 ## 2026-11-13 08:24 — [완료 카드뉴스] 🔥바로제작 [긴급 제작 요청 실패: fire_trigger 권한 거부(08:24·09:24 2회), 10:25는 10:41 앞뒤 30분이라 요청 안 함 → 10:41 정규 회차가 가져가도록 표시] 무료 제미나이가 바뀌었다 — 구글 '제미나이 4 하이드로젠' 출시(3.8 Flash 대체)
 - 출처: https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/ , https://9to5google.com/2026/11/12/gemini-4-hydrogen-launch/ , https://www.iclarified.com/103485/google-launches-gemini-4-hydrogen-bringing-its-latest-ai-to-free-users , AI타임스(11/13 07:58) https://www.aitimes.com/news/articleList.html?view_type=sm
 - 추천 형식: 카드뉴스('무료로 쓰는 사람 입장에서 뭐가 달라졌나·모델 고르는 법' 각도, 11/11 카본 카드와 겹치지 않게)

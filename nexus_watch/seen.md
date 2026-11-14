@@ -249,3 +249,11 @@
 2026-11-13 18:24 | 구글 검색 '역대 최대 AI 업그레이드'·제미나이 4 하이드로젠 적용(알림 제외·오늘 카드뉴스에 검색 AI 모드 포함, 이미 다룸) | AI타임스 11/13 저녁 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-13 18:24 | 앤트로픽 제조업용 클로드(알림 제외·기업용) / 스페이스X·테슬라 합병 협상(알림 제외·기업) | AI타임스 11/13 저녁 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-13 18:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, lockupViewModel 파싱, 쇼츠는 최신 1개 publishDate 확인), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 17:24 이후 새 롱폼 없음, 새 쇼츠 1개(조팀장 'AI 공부법' 24분 전). 인스타 브라우저 안 엶, vidIQ 정해진 시각 아님. 새 일반 사용자용 AI 소식 없음(구글 검색 하이드로젠은 오늘 카드에서 다룸). 바로 제작 없음.
+2026-11-14 12:25 | 클로드 vs 제미나이 비교(경쟁 주제·스마트대디AI, 11/11 완료 주제) | 제미나이 카본 VS 클로드 페이블 완전 비교(12시간 전, 2.2만) | https://www.youtube.com/watch?v=f9_ER2gbclA
+2026-11-14 12:25 | AI 에이전트(경쟁 주제·CONNECT AI LAB) | 웹 잘하는 AI 에이전트, 누구를 고용할까? 뮤즈부터 컴퓨터 유즈까지(17시간 전, 7천) | https://www.youtube.com/watch?v=p7KaCOuJP2M
+2026-11-14 12:25 | 오픈AI(알림·참고, 미국 프로 한정) | 챗GPT 월렛 출시, AI 에이전트 대신 결제 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-14 12:25 | MS 365(알림·참고) | 전 세계 장애 이틀째, 챗GPT·클로드 업무 연동도 영향, 복구 진행 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-14 12:25 | 스페이스X(알림 제외·기업) | 그록 이매진 개발팀 대부분 해고, 서비스는 유지 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-14 12:25 | 블랙웰 사용 흔적·앤트로픽 IPO 중국 배정 제한·아모데이 컴퓨팅 발언(알림 제외·기업/정책) | AI타임스 11/14 오전 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-14 12:25 | Edge0-145B·Ace·No AI Slop 선언문(알림 제외·개발자용) | https://news.hada.io/
+- 2026-11-14 12:25: 오늘 첫 감시 회차(08~11시 기록 없음). 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, JSON 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 어제 18:24 이후 새 롱폼 2개(스마트대디AI 카본vs페이블, CONNECT AI LAB 웹 에이전트). 쇼츠는 날짜 미확인(상위 목록 변화 없음 위주). vidIQ 정해진 시각 아님. 인스타 브라우저 안 엶. 바로 제작 없음(챗GPT 월렛은 미국 프로 한정, 카본vs페이블은 11/11 완료).
