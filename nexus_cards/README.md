@@ -48,3 +48,12 @@
 - `createScheduledPost(blogId "7758775")`: providers `[{"network":"instagram"}]`만, `instagramData {"type":"POST","isAiGenerated":true}`, media = URL 순서대로(표지 JPG → 속장 MP4들 → 마지막 JPG), text = 캡션(BOM 없이). 섞인 캐러셀이 오류로 거절되면 그 회차만 속장을 JPG로 바꿔 올리고 알림에 적음.
 - **브랜드 7088172(로드로그)는 절대 사용 금지. 기존 예약 수정·삭제 금지. 유튜브·쓰레드 provider 넣지 않음.**
 - 올린 뒤 `done.md`에 한 줄: 날짜 | 예약 시각 | 주제 | 장수 | Metricool id | 크레딧
+
+## ★★ 2026-11-14 사용자 결정: 카드뉴스는 '릴스'로 올림 (캐러셀 X)
+- 근거(메트리쿨 분석): 캐러셀 9편 도달 1~2명, 릴스 19편 45~330명. 팔로워가 거의 없어서 캐러셀은 안 퍼지고 릴스만 퍼짐. 잘된 릴스는 첫 3초 이탈률 70%대(나머지 85~98%).
+- 만드는 법: cards.html(1080x1350 장들, 7~9장)을 평소처럼 만들고 `render.py`로 검수 → `python3 render_reel.py <폴더>/cards.html --hook "<첫 1초 한 줄>" --tag "<AI 뉴스|AI 꿀팁|AI 공감툰>"` → `릴스.mp4`(1080x1920, 약 20~25초, 장마다 움직임+장 바뀔 때 펀치, 합성 배경음) + `릴스_썸네일.jpg` + `릴스_프레임.jpg`(0초·1초·중간·끝 확인용, Read로 꼭 봄).
+- **--hook은 표지 제목을 반복하지 말고** 멈추게 하는 다른 한 줄(손해·질문·숫자, 20~26자). 표지의 '넘겨 보기 →' 같은 캐러셀 문구는 빼거나 '끝까지 보세요'로.
+- 한 장에 글은 2.8초 안에 읽히는 양만(제목 + 상자 2~3개). 꼭 읽혀야 하는 글은 장 위쪽 70% 안에(아래쪽은 인스타 캡션이 덮음).
+- 올리기: Higgsfield 업로드(릴스.mp4 video, 릴스_썸네일.jpg image) → `createScheduledPost` instagramData `{"type":"REEL","showReelOnFeed":true,"isAiGenerated":true}`, media=[mp4], videoThumbnailUrl=썸네일.
+- 캡션에 "7번째 장" 같은 장 번호 대신 "영상 멈추고 보세요", "저장해 두고 따라 해 보세요".
+
