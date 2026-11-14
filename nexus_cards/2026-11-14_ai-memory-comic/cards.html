@@ -1,0 +1,162 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#444;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.k{width:1080px;height:1350px;position:relative;overflow:hidden;background:#FFF4EC;margin-bottom:20px}
+.hd{height:140px;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.hd .t{font-size:46px;font-weight:900;letter-spacing:-.04em;color:#2B1A14}
+.hd .t em{font-style:normal;color:#E8572A}
+.hd .c{font-size:26px;font-weight:800;color:#fff;background:#E8572A;border-radius:40px;padding:10px 22px}
+.pn{position:absolute;left:20px;width:1040px;height:580px;border:6px solid #2B1A14;border-radius:18px;overflow:hidden;background:#ddd}
+.pn img{width:100%;height:100%;object-fit:cover;display:block}
+.p1{top:140px}.p2{top:732px}
+.b{position:absolute;z-index:3;background:#fff;border:4px solid #2B1A14;border-radius:34px;padding:18px 26px;font-size:36px;font-weight:800;line-height:1.32;letter-spacing:-.035em;color:#2B1A14;box-shadow:0 6px 0 rgba(43,26,20,.25);max-width:560px}
+.b.pg{background:#FFE7D9}
+.b small{display:block;font-size:28px;font-weight:700;color:#A2543A;margin-top:6px}
+.b:after{content:"";position:absolute;width:26px;height:26px;background:inherit;border-right:4px solid #2B1A14;border-bottom:4px solid #2B1A14;bottom:-16px;transform:rotate(45deg)}
+.b.tl:after{left:60px}.b.tr:after{right:60px}
+.b.no:after{display:none}
+.ft{position:absolute;bottom:6px;right:30px;font-size:22px;font-weight:700;color:#C29A86}
+/* cover */
+#k1{background:#10262B}
+#k1 .img{position:absolute;left:0;top:0;width:1080px;height:860px;overflow:hidden}
+#k1 .img img{width:1080px;height:860px;object-fit:cover;display:block}
+#k1 .img:after{content:"";position:absolute;left:0;right:0;bottom:0;height:320px;background:linear-gradient(transparent,#10262B)}
+#k1 .tag{position:absolute;left:60px;top:46px;background:#FFD43B;color:#111;font-size:30px;font-weight:900;padding:8px 18px;border-radius:10px;letter-spacing:-.02em;z-index:2}
+#k1 .tt{position:absolute;left:56px;right:40px;top:850px;font-size:142px;font-weight:900;line-height:1.1;letter-spacing:-.055em;color:#fff;text-shadow:0 6px 24px rgba(0,0,0,.7)}
+#k1 .tt em{font-style:normal;color:#FFD43B}
+#k1 .hd2{position:absolute;left:60px;right:60px;bottom:44px;display:flex;justify-content:space-between;font-size:26px;font-weight:700;color:#7FA3A8}
+/* info */
+#k6{background:#FFFFFF}
+#k6 .in{padding:70px 60px 0}
+#k6 .lab{font-size:28px;font-weight:800;color:#E8572A;letter-spacing:.08em}
+#k6 .h{font-size:90px;font-weight:900;line-height:1.14;letter-spacing:-.045em;margin-top:14px;color:#2B1A14}
+#k6 .h .v{color:#E8572A}
+#k6 .mem{margin-top:40px;border:3px solid #2B1A14;border-radius:22px;overflow:hidden;background:#FFF9F4}
+#k6 .mem .top{background:#2B1A14;color:#fff;font-size:28px;font-weight:800;padding:14px 26px;display:flex;justify-content:space-between}
+#k6 .mem .top span{color:#FFB38F}
+#k6 .mi{display:flex;align-items:center;border-top:2px solid #F2D9CB;padding:20px 24px;gap:20px;min-height:118px;animation:memIn 6s ease-out infinite both}
+#k6 .mi:nth-child(2){border-top:0}
+#k6 .mi:nth-child(3){animation-delay:.5s}#k6 .mi:nth-child(4){animation-delay:1s}#k6 .mi:nth-child(5){animation-delay:1.5s}
+#k6 .mi .ic{width:64px;height:64px;border-radius:16px;background:#E8572A;color:#fff;font-size:32px;font-weight:900;display:flex;align-items:center;justify-content:center;flex:none}
+#k6 .mi .c1{width:220px;font-size:38px;font-weight:900;color:#2B1A14;letter-spacing:-.04em;flex:none}
+#k6 .mi .c2{flex:1;font-size:35px;font-weight:700;color:#4A3229;line-height:1.36;letter-spacing:-.035em}
+#k6 .mi .c2 b{color:#E8572A}
+@keyframes memIn{0%{transform:translateX(0);background:#FFF9F4}6%{background:#FFE2D1}20%{background:#FFF9F4}100%{background:#FFF9F4}}
+#k6 .box{margin-top:40px;background:#2B1A14;border-radius:22px;padding:32px 36px;color:#fff;font-size:35px;font-weight:700;line-height:1.5;letter-spacing:-.03em}
+#k6 .box b{color:#FFD43B}
+#k6 .src{position:absolute;left:60px;right:60px;bottom:36px;font-size:22px;font-weight:600;color:#A88A7C;line-height:1.5}
+/* last */
+#k7{background:#2B1A14;color:#fff}
+#k7 .in{padding:90px 64px 0}
+#k7 .lab{font-size:26px;font-weight:800;color:#FFB38F;letter-spacing:.08em}
+#k7 h1{font-size:104px;font-weight:900;line-height:1.15;letter-spacing:-.045em;margin-top:18px}
+#k7 h1 em{font-style:normal;color:#FFD43B}
+#k7 .row{display:flex;gap:14px;flex-wrap:wrap;margin-top:48px}
+#k7 .chip{background:#4A2C20;border-radius:18px;padding:16px 22px;font-size:34px;font-weight:800}
+#k7 .chip i{font-style:normal;color:#FFB38F;margin-right:10px}
+#k7 .copy{width:952px;margin-top:64px;border:3px dashed #FFB38F;border-radius:24px;padding:36px 36px 30px;position:relative;background:#3A2219}
+#k7 .copy .tg{position:absolute;top:-20px;left:30px;background:#FFB38F;color:#2B1A14;font-size:24px;font-weight:900;padding:4px 16px;border-radius:10px}
+#k7 .copy p{font-size:43px;font-weight:700;line-height:1.5;letter-spacing:-.03em}
+#k7 .copy p b{color:#FFD43B}
+#k7 .bot{position:absolute;left:64px;right:64px;bottom:50px;display:flex;align-items:flex-end;justify-content:space-between}
+#k7 .bot .tx{font-size:38px;font-weight:800;line-height:1.4}
+#k7 .bot .tx span{display:block;font-size:26px;color:#D9AE98;font-weight:700;margin-top:10px}
+#k7 .bot img{width:230px}
+/* 말풍선 톡 */
+.b{animation:pop .5s cubic-bezier(.3,1.6,.5,1) both}
+.b.d2{animation-delay:.5s}.b.d3{animation-delay:1s}
+@keyframes pop{from{transform:scale(.9)}to{transform:scale(1)}}
+/* 기억 스티커: 도장 쾅 */
+.st{position:absolute;z-index:4;background:#E8572A;color:#fff;font-size:30px;font-weight:900;padding:10px 20px;border-radius:12px;transform:rotate(-6deg);box-shadow:0 5px 0 rgba(0,0,0,.25);animation:stamp 6s ease-out infinite both;animation-delay:.8s}
+@keyframes stamp{0%{transform:rotate(-6deg) scale(1)}3%{transform:rotate(-6deg) scale(1.25)}7%{transform:rotate(-6deg) scale(1)}100%{transform:rotate(-6deg) scale(1)}}
+</style></head><body>
+
+<div class="k" id="k1">
+ <div class="img"><img src="cover.png"></div>
+ <div class="tag">AI 공감툰</div>
+ <div class="tt">AI가 나에 대해<br><em>다 알고</em> 있었다</div>
+ <div class="hd2"><span>@nexus_studio.kr</span><span>넘겨 보기 →</span></div>
+</div>
+
+<div class="k" id="k2">
+ <div class="hd"><div class="t"><em>다이어트 3회차</em> 지은 씨</div><div class="c">CASE 1</div></div>
+ <div class="pn p1"><img src="p1.png"></div>
+ <div class="b tl" style="top:166px;left:44px">AI야, 나에 대해<br>기억하는 거 보여 줘!</div>
+ <div class="b pg tr d2" style="top:172px;right:44px">잠깐만요!<br>정리해 왔어요~</div>
+ <div class="pn p2"><img src="p2.png"></div>
+ <div class="b pg tl" style="top:752px;left:40px">다이어트 시작:<br>3월, 6월, 9월!<small>셋 다 일주일 만에 끝</small></div>
+ <div class="b tr d2" style="top:760px;right:40px">…그건 좀<br>잊어 주지</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+
+<div class="k" id="k3">
+ <div class="hd"><div class="t"><em>월요일마다</em> 퇴사각 이대리</div><div class="c">CASE 2</div></div>
+ <div class="pn p1"><img src="p3.png"></div>
+ <div class="b tl" style="top:166px;left:44px">월요일인데…<br>퇴사 각 좀 봐 줘</div>
+ <div class="b pg tr d2" style="top:172px;right:44px">오늘도<br>기억해 둘게요!</div>
+ <div class="pn p2"><img src="p4.png"></div>
+ <div class="b pg tl" style="top:752px;left:40px">월요일마다 퇴사 상담<br>4주 연속이에요!</div>
+ <div class="b tr d2" style="top:760px;right:40px">이대리,<br>잠깐 나 좀 볼까?</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+
+<div class="k" id="k4">
+ <div class="hd"><div class="t"><em>개발자인 척</em> 한 민수 씨</div><div class="c">CASE 3</div></div>
+ <div class="pn p1"><img src="p5.png"></div>
+ <div class="b tl" style="top:166px;left:44px">나 10년 차<br>개발자인데~</div>
+ <div class="b pg tr d2" style="top:172px;right:44px">와! 선배님이시군요!<br>기억해 둘게요</div>
+ <div class="pn p2"><img src="p6.png"></div>
+ <div class="st" style="top:1100px;left:60px">기억: 10년 차 개발자</div>
+ <div class="b pg tl" style="top:752px;left:40px">그럼 앞으로 전부<br>코드로 설명할게요!</div>
+ <div class="b tr d2" style="top:760px;right:40px">…사실<br>엑셀도 잘 몰라</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+
+<div class="k" id="k5">
+ <div class="hd"><div class="t"><em>고양이 집사</em> 소연 씨</div><div class="c">CASE 4</div></div>
+ <div class="pn p1"><img src="p7.png"></div>
+ <div class="b tl" style="top:166px;left:44px">우리 치즈,<br>오늘 너무 귀엽지?</div>
+ <div class="b pg tr d2" style="top:172px;right:44px">치즈 이야기<br>또 적는 중…</div>
+ <div class="pn p2"><img src="p8.png"></div>
+ <div class="b pg tl" style="top:752px;left:40px">기억 목록 절반이<br>치즈예요!<small>관심사 1위: 치즈(고양이)</small></div>
+ <div class="b tr d2" style="top:760px;right:40px">그럼… 내 얘기는?</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+
+<div class="k" id="k6">
+ <div class="in">
+  <div class="lab">REAL NEWS · 만화 속 기능은 진짜예요</div>
+  <div class="h">제미나이가 <span class="v">날 기억한 걸</span><br>보여 주기 시작했어요</div>
+  <div class="mem">
+   <div class="top">제미나이 '메모리 요약' <span>11월 9일 보도</span></div>
+   <div class="mi"><div class="ic">①</div><div class="c1">한눈에 보기</div><div class="c2">기본 정보·일·여행·취미 등 <b>분야별 정리</b></div></div>
+   <div class="mi"><div class="ic">②</div><div class="c1">말로 고치기</div><div class="c2">"이건 <b>지워 줘</b>", "이건 <b>추가해 줘</b>" 채팅하듯</div></div>
+   <div class="mi"><div class="ic">③</div><div class="c1">메모리 기록</div><div class="c2"><b>언제 저장·수정</b>됐는지 확인</div></div>
+   <div class="mi"><div class="ic">④</div><div class="c1">저장 멈추기</div><div class="c2">메모리 설정에서 <b>끌 수 있어요</b></div></div>
+  </div>
+  <div class="box">지금은 <b>미국·영어·만 18세 이상·구글 AI 유료</b> 기준으로<br>순차 배포 중이라 한국 계정엔 <b>아직 안 보일 수</b> 있어요<br>챗GPT·클로드도 설정의 <b>메모리</b>에서 보고 지울 수 있어요</div>
+ </div>
+ <div class="src">출처: 9to5Google(2026.11.9), Android Central(2026.11.10), Tom's Guide(2026.11.11)<br>만화 속 상황은 웃자고 만든 이야기예요. 그림은 AI로 만들었어요.</div>
+</div>
+
+<div class="k" id="k7">
+ <div class="in">
+  <div class="lab">HOW TO · 내 AI 기억 1분 점검</div>
+  <h1>AI가 날 어떻게<br>기억하는지 <em>물어보세요</em></h1>
+  <div class="row">
+   <div class="chip"><i>①</i>목록 보기</div><div class="chip"><i>②</i>틀린 것 고치기</div><div class="chip"><i>③</i>민감한 건 빼기</div>
+  </div>
+  <div class="copy"><div class="tg">COPY · PASTE</div>
+   <p>지금까지 <b>나에 대해 기억하는 것</b>을<br>항목별로 전부 보여 줘.<br><b>틀렸거나 오래된 것</b>은 표시해 주고,<br><b>건강·돈 이야기</b>는 기억하지 말아 줘.</p>
+  </div>
+ </div>
+ <div class="bot">
+  <div class="tx">지우는 건 설정 → 메모리에서!<br>한 달에 한 번이면 충분해요<span>📌 저장해 두고 가끔 점검해 보세요<br>@nexus_studio.kr</span></div>
+  <img src="heart.png">
+ </div>
+</div>
+</body></html>
