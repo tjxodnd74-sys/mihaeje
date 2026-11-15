@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Regular.woff2);font-weight:400}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-SemiBold.woff2);font-weight:600}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+:root{--bg:#0A1517;--vi:#5FD8FF;--vi2:#2FB7E6;--am:#FF9F6B;--tx:#F3F4FA;--mu:#9EA3BD;--ln:rgba(255,255,255,.10);--red:#FF6B6B;--grn:#5BE0A0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#333;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.mono{font-family:'DejaVu Sans Mono',monospace;letter-spacing:.08em}
+.card{width:1080px;height:1350px;position:relative;overflow:hidden;margin:0 0 40px;color:var(--tx);
+ background:radial-gradient(900px 600px at 85% 0%,rgba(47,183,230,.20),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(255,140,90,.10),transparent 60%),var(--bg)}
+.card:before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:54px 54px;pointer-events:none}
+.bar{position:absolute;left:64px;right:64px;top:52px;display:flex;justify-content:space-between;align-items:center;font-size:22px;color:var(--mu);padding-bottom:22px;border-bottom:2px dashed var(--ln)}
+.bar .l{display:flex;align-items:center;gap:14px}
+.bar img{width:34px;height:34px}
+.bar .r{color:var(--vi);font-weight:700}
+.wrap{position:absolute;left:64px;right:64px;top:150px}
+.lab{font-size:26px;color:var(--vi);font-weight:700;margin-bottom:22px}
+.h{font-weight:900;font-size:96px;line-height:1.12;letter-spacing:-.045em}
+.h .v{color:var(--vi)} .h .a{color:var(--am)}
+.s{margin-top:26px;font-size:34px;color:#C9CCDD;font-weight:500;letter-spacing:-.02em;line-height:1.5}
+.s b{color:var(--am);font-weight:800}
+.box{position:absolute;left:64px;right:64px;border:2px solid var(--ln);border-radius:28px;background:rgba(255,255,255,.035);padding:60px 56px}
+.box .tag{position:absolute;top:-17px;left:36px;background:var(--bg);padding:0 14px;font-size:22px;color:var(--mu)}
+.foot{position:absolute;left:64px;right:64px;bottom:56px;font-size:24px;color:#6E7390;font-weight:500;line-height:1.5}
+.stamp{display:inline-block;border:4px solid var(--vi);color:var(--vi);font-weight:900;font-size:30px;padding:6px 20px;border-radius:10px;transform:rotate(-6deg);letter-spacing:.12em}
+
+/* map */
+.map{display:flex;flex-direction:column;gap:30px}
+.mrow{display:flex;align-items:center;gap:24px}
+.pill{flex:1;height:124px;border-radius:26px;display:flex;align-items:center;gap:20px;padding:0 30px;font-size:40px;font-weight:700}
+.pill.o{background:rgba(163,148,255,.12);border:2px solid rgba(163,148,255,.35);color:#D9D4FF}
+.pill.n{background:#fff;color:#14162A}
+.pill i{font-style:normal;font-size:44px}
+.arr{color:var(--am);font-size:46px;font-weight:900}
+
+/* quote */
+.q{background:#FBF7EA;color:#1C1D28;border-radius:20px;padding:48px 50px;font-family:Georgia,serif;font-size:44px;line-height:1.5}
+.q mark{background:#FFE37A;padding:0 4px}
+.qk{margin-top:44px;font-size:54px;font-weight:800;line-height:1.4;letter-spacing:-.03em}
+.qk span{color:var(--am)}
+
+/* list */
+.ol{display:flex;flex-direction:column;gap:54px}
+.ol .it{display:flex;align-items:baseline;gap:30px;font-size:50px;font-weight:700;letter-spacing:-.03em}
+.ol .it .n{font-size:30px;color:var(--vi);font-weight:700;width:52px}
+.ol .it small{display:block;font-size:33px;color:var(--mu);font-weight:500;margin-top:6px}
+.ol .it.hot{color:var(--am)}
+
+/* ox */
+.ox{position:absolute;left:64px;right:64px;top:620px;display:flex;gap:24px}
+.ox .c{flex:1;border-radius:28px;padding:50px 44px;min-height:560px;border:2px solid var(--ln);background:rgba(255,255,255,.03)}
+.ox .c.x{border-color:rgba(255,107,107,.6);background:rgba(255,107,107,.08)}
+.ox .hd{font-size:30px;font-weight:700;margin-bottom:26px;color:var(--grn)}
+.ox .x .hd{color:var(--red)}
+.ox li{list-style:none;font-size:44px;font-weight:700;line-height:1.35;margin-bottom:36px;letter-spacing:-.02em}
+
+/* copy box */
+.copy{font-size:46px;font-weight:700;line-height:1.9;letter-spacing:-.02em}
+.copy .f{background:rgba(255,200,97,.18);color:var(--am);border:2px solid rgba(255,200,97,.55);border-radius:10px;padding:0 10px}
+.tip{font-size:37px;color:#C9CCDD;line-height:1.65;font-weight:500}
+.tip b{color:var(--am)}
+.best{position:absolute;right:40px;top:-26px;border:4px solid var(--red);color:var(--red);font-weight:900;font-size:26px;padding:4px 16px;border-radius:8px;transform:rotate(6deg);background:var(--bg);letter-spacing:.1em}
+
+
+
+:root{--bg:#14101A;--vi:#FFB547;--vi2:#FF8F3D;--am:#4FD8C8;--mu:#A9A2B8;--ln:rgba(255,255,255,.11)}
+.card{background:radial-gradient(900px 600px at 90% 0%,rgba(255,165,70,.17),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(79,216,200,.12),transparent 60%),var(--bg)}
+.s{font-size:38px}.foot{font-size:26px}
+#k1{background:#15121A}#k1:before{display:none}
+#k1 .img{position:absolute;left:0;top:0;width:1080px;height:900px;overflow:hidden}
+#k1 .img img{position:absolute;width:1080px;left:0;top:-40px}
+#k1 .img:after{content:"";position:absolute;left:0;right:0;bottom:0;height:460px;background:linear-gradient(transparent,rgba(21,18,26,.85) 55%,#15121A)}
+#k1 .tg{position:absolute;left:60px;top:50px;background:#FFD43B;color:#111;font-size:30px;font-weight:900;padding:8px 20px;border-radius:10px}
+#k1 .tt{position:absolute;left:58px;right:30px;top:745px;font-size:130px;font-weight:900;line-height:1.08;letter-spacing:-.055em;color:#fff;text-shadow:0 6px 24px rgba(0,0,0,.75)}
+#k1 .tt em{font-style:normal;color:#FFD43B}
+#k1 .hd2{position:absolute;left:60px;right:60px;bottom:40px;display:flex;justify-content:space-between;font-size:24px;font-weight:700;color:#8C8496}
+/* counter */
+@property --n{syntax:'<integer>';initial-value:41;inherits:false}
+.cnt{display:flex;align-items:flex-end;justify-content:center;gap:40px}
+.cnt .from{font-size:96px;font-weight:900;color:#7E768E;letter-spacing:-.04em;line-height:1}
+.cnt .ar{font-size:80px;color:var(--vi);font-weight:900;line-height:1.1}
+.cnt .to{font-size:230px;font-weight:900;color:#FFD43B;letter-spacing:-.06em;line-height:.9}
+.cnt .to .c{counter-reset:n var(--n)}.cnt .to .c:before{content:counter(n)}
+.cnt .to small{font-size:110px}
+.mx .cnt .to .c{animation:cnt 6s ease-out infinite}
+@keyframes cnt{0%{--n:2}30%,100%{--n:41}}
+.cl{display:flex;justify-content:space-between;margin-top:34px;font-size:34px;color:var(--mu);font-weight:700}
+/* bars */
+.bars{display:flex;flex-direction:column;gap:30px}
+.bl{display:flex;justify-content:space-between;font-size:38px;font-weight:800;margin-bottom:12px;letter-spacing:-.02em}
+.bl small{font-size:28px;color:var(--mu);font-weight:600;margin-left:12px}
+.bl .p{color:#FFD43B}
+.bt{height:64px;border-radius:16px;background:rgba(255,255,255,.06);overflow:hidden}
+.bf{height:100%;border-radius:16px;background:#6F6880;transform-origin:left}
+.bf.top{background:linear-gradient(90deg,#FF8F3D,#FFB547 60%,#FFD43B)}
+.bf.tl{background:linear-gradient(90deg,#2FB8A8,#4FD8C8)}
+.mx .bf{animation:grow 6s cubic-bezier(.2,.8,.2,1) infinite}
+@keyframes grow{0%{transform:scaleX(.04)}35%,100%{transform:scaleX(1)}}
+/* pic */
+.pic{position:absolute;left:64px;right:64px;top:470px;height:400px;border-radius:28px;overflow:hidden;border:2px solid var(--ln)}
+.pic img{width:100%;height:100%;object-fit:cover}
+.mx .pic img{animation:zoom 6s ease-in-out infinite}
+@keyframes zoom{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.tags{display:flex;flex-wrap:wrap;gap:18px}
+.tags span{font-size:38px;font-weight:800;padding:14px 26px;border-radius:999px;background:rgba(255,181,71,.10);border:2px solid rgba(255,181,71,.4);letter-spacing:-.02em}
+.nums{display:flex;gap:24px;margin-top:30px}
+.nums div{flex:1;border-radius:22px;padding:24px 28px;background:rgba(79,216,200,.08);border:2px solid rgba(79,216,200,.35);font-size:30px;color:var(--mu);font-weight:600}
+.nums b{display:block;font-size:58px;color:#fff;font-weight:900;letter-spacing:-.03em}
+.ox{top:560px}.ox li{font-size:46px;margin-bottom:44px}.ox .c{min-height:540px}
+.ox .hd{color:var(--am)}
+.ox li small{display:block;font-size:30px;color:var(--mu);font-weight:500;margin-top:4px}
+.copy{border:2px dashed rgba(255,212,59,.5);border-radius:20px;padding:34px 36px;background:rgba(255,212,59,.06);font-size:46px;line-height:1.7;font-weight:700}
+.copy .f{background:rgba(79,216,200,.15);color:var(--am);border:2px solid rgba(79,216,200,.5);border-radius:10px;padding:0 10px}
+.best{border-color:#FFD43B;color:#FFD43B}
+.ol{display:flex;flex-direction:column;gap:64px}
+.ol .it{display:flex;align-items:baseline;gap:30px;font-size:54px;font-weight:800;letter-spacing:-.03em}
+.ol .it .n{font-size:32px;color:var(--vi);font-weight:700;width:52px;flex:none}
+.ol .it small{display:block;font-size:34px;color:var(--mu);font-weight:500;margin-top:10px;line-height:1.4}
+#k9 .glow{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(255,181,71,.36) 0%,rgba(255,143,61,.13) 45%,transparent 70%)}
+#k9 .floor{position:absolute;left:50%;top:640px;transform:translateX(-50%);width:420px;height:70px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.55),transparent 70%)}
+#k9 .peng{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:300px;filter:drop-shadow(0 20px 40px rgba(255,165,70,.45))}
+#k9 .bubble{position:absolute;left:600px;top:190px;background:#fff;color:#14162A;font-weight:800;font-size:32px;padding:18px 28px;border-radius:26px 26px 26px 6px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+#k9 .c{position:absolute;left:0;right:0;top:720px;text-align:center}
+#k9 .h{font-size:88px}
+#k9 .key{display:inline-block;margin-top:40px;border:4px solid #FFD43B;color:#FFD43B;font-size:54px;font-weight:900;padding:14px 46px;border-radius:14px}
+#k9 .s{text-align:center}
+</style></head><body>
+<section class="card" id="k1">
+ <div class="img"><img src="cover.png"></div>
+ <div class="tg">AI 뉴스</div>
+ <div class="tt">프리랜서 일감<br>10개 중 4개,<br>AI가 <em>해냈다</em></div>
+ <div class="hd2 mono"><span>@nexus_studio.kr</span><span>끝까지 보세요</span></div>
+</section>
+
+<section class="card" id="k2"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AT WORK</div><div class="r">FILE 02/09</div></div>
+ <div class="wrap"><div class="lab mono">WHAT HAPPENED</div>
+  <div class="h">돈 받던 일<br><span class="v">240건</span>을 맡겨 봤어요</div>
+  <div class="s">고객이 <b>"이대로 받을게요"</b> 할 만한<br>결과물을 낸 비율이에요.</div></div>
+ <div class="box" style="top:640px;padding:80px 50px 60px"><div class="tag mono">AUTOMATION RATE · 받아 줄 만한 비율</div>
+  <div class="cnt"><div class="from mono">2.5%</div><div class="ar">→</div><div class="to mono"><span class="c"></span><small>.3%</small></div></div>
+  <div class="cl"><span>2025년 10월 첫 시험</span><span style="color:#FFD43B">2026년 11월</span></div>
+  <div class="tip" style="margin-top:40px;text-align:center;font-size:42px;font-weight:800;color:#fff">= 10개 중 <b>4개</b>꼴로 통과</div>
+ </div>
+</section>
+
+<section class="card" id="k3"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AT WORK</div><div class="r">FILE 03/09</div></div>
+ <div class="wrap"><div class="lab mono">1 YEAR LATER</div>
+  <div class="h">1년 만에<br><span class="v">16배</span> 넘게 뛰었어요</div></div>
+ <div class="box" style="top:500px;padding:56px 46px"><div class="tag mono">REMOTE LABOR INDEX · 원격 노동 지수</div>
+  <div class="bars">
+   <div><div class="bl"><span>마누스<small>2025.10 첫 1등</small></span><span class="mono">2.5%</span></div><div class="bt"><div class="bf" style="width:6%"></div></div></div>
+   <div><div class="bl"><span>GPT-6 아스트라</span><span class="mono">20.8%</span></div><div class="bt"><div class="bf tl" style="width:50.4%"></div></div></div>
+   <div><div class="bl"><span>클로드 오푸스 5.5</span><span class="mono">21.3%</span></div><div class="bt"><div class="bf tl" style="width:51.6%"></div></div></div>
+   <div><div class="bl"><span>클로드 페이블 5.2</span><span class="mono p">41.3%</span></div><div class="bt"><div class="bf top" style="width:100%"></div></div></div>
+  </div></div>
+ <div class="foot">스케일 AI·AI안전센터(CAIS)가 만든 시험. 2025년은 첫 논문, 2026년 수치는 각 회사 발표예요.</div>
+</section>
+
+<section class="card" id="k4"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AT WORK</div><div class="r">FILE 04/09</div></div>
+ <div class="wrap"><div class="lab mono">WHAT KIND OF WORK</div>
+  <div class="h">이런 일이었어요</div>
+  <div class="s">실제 프리랜서 사이트에 올라온 일감이에요.</div></div>
+ <div class="pic"><img src="work.png"></div>
+ <div class="box" style="top:920px;padding:50px 40px 40px"><div class="tag mono">23개 분야</div>
+  <div class="tags"><span>🎮 게임 개발</span><span>🏠 건축 도면</span><span>🎬 영상·애니</span><span>🧊 3D 모델</span><span>📊 데이터 분석</span><span>🎨 디자인</span></div>
+ </div>
+ <div class="foot" style="bottom:40px">합치면 6,000시간 넘는 일, 14만 달러어치예요.</div>
+</section>
+
+<section class="card" id="k5"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AT WORK</div><div class="r">FILE 05/09</div></div>
+ <div class="wrap"><div class="lab mono">STILL REJECTED</div>
+  <div class="h">그래도 <span class="a">6개</span>는<br>퇴짜예요</div>
+  <div class="s">첫 시험 때 퇴짜 맞은 이유 TOP 3</div></div>
+ <div class="box" style="top:620px;padding:56px 46px"><div class="tag mono">WHY REJECTED · 겹쳐 셈</div>
+  <div class="bars" style="gap:40px">
+   <div><div class="bl"><span>품질이 모자람</span><span class="mono p">45.6%</span></div><div class="bt"><div class="bf top" style="width:100%"></div></div></div>
+   <div><div class="bl"><span>덜 끝냄<small>8분 영상 → 8초</small></span><span class="mono">35.7%</span></div><div class="bt"><div class="bf tl" style="width:78%"></div></div></div>
+   <div><div class="bl"><span>파일이 깨짐</span><span class="mono">17.6%</span></div><div class="bt"><div class="bf tl" style="width:38.6%"></div></div></div>
+  </div></div>
+</section>
+
+<section class="card" id="k6"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AT WORK</div><div class="r">FILE 06/09</div></div>
+ <div class="wrap"><div class="lab mono">GOOD AT / BAD AT</div>
+  <div class="h">맡길 일,<br><span class="v">내가 볼 일</span></div>
+  <div class="s">첫 시험에서 사람만큼 해낸 일도 있었어요.</div></div>
+ <div class="ox">
+  <div class="c"><div class="hd mono">AI가 해낸 일</div><ul><li>🎧 음성 편집·믹싱</li><li>🖼 광고·로고 이미지</li><li>📝 보고서 쓰기</li><li>📈 데이터 그래프</li></ul></div>
+  <div class="c x"><div class="hd mono">약했던 일</div><ul><li>🎬 긴 영상 분량</li><li>🗣 어색한 목소리</li><li>📐 도면 맞추기</li></ul></div>
+ </div>
+</section>
+
+<section class="card" id="k7"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AT WORK</div><div class="r">FILE 07/09</div></div>
+ <div class="wrap"><div class="lab mono">TRY THIS</div>
+  <div class="h">퇴짜 막는<br><span class="v">한 줄 검사</span></div>
+  <div class="s">결과물 받기 전에 붙여 넣어요.</div></div>
+ <div class="box" style="top:600px"><div class="tag mono">COPY · PASTE</div><div class="best mono">CHECK</div>
+  <div class="copy">넘기기 전에 스스로 검사해 줘.<br><span class="f">분량·형식</span> 다 채웠는지,<br><span class="f">빠진 것</span>이 뭔지 목록으로.</div>
+  <div class="tip" style="margin-top:30px">퇴짜 이유 1·2위(품질·덜 끝냄)를<br><b>내 손에 오기 전에 걸러요.</b> 파일은 직접 열어 봐요.</div></div>
+</section>
+
+<section class="card" id="k8"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AT WORK</div><div class="r">FILE 08/09</div></div>
+ <div class="wrap"><div class="lab mono">GOOD TO KNOW</div>
+  <div class="h">이건 알고<br><span class="a">보세요</span></div></div>
+ <div class="box" style="top:450px"><div class="tag mono">CAUTION</div>
+  <div class="ol" style="gap:80px">
+   <div class="it"><span class="n mono">!</span><div>41.3%는 앤트로픽 발표<small>시험은 스케일 AI가 돌렸고<br>다른 기관 재검증은 아직이에요</small></div></div>
+   <div class="it"><span class="n mono">!</span><div>페이블 5.2는 유료<small>클로드 유료 요금제에서 써요</small></div></div>
+   <div class="it"><span class="n mono">!</span><div>마무리는 사람 몫<small>10개 중 6개는 아직 퇴짜예요</small></div></div>
+  </div></div>
+ <div class="foot">출처: Remote Labor Index 논문(arXiv 2510.26787, 2025.10), 앤트로픽 클로드 페이블 5.2 시스템 카드·BenchLM 정리(2026.11.13)</div>
+</section>
+
+<section class="card" id="k9">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · AI AT WORK</div><div class="r">END OF FILE</div></div>
+ <div class="glow"></div><div class="floor"></div><img class="peng" src="../assets/heart.png"><div class="bubble">초안은 AI, 검사는 나!</div>
+ <div class="c"><div class="h">AI한테 일 맡길 때<br>꺼내 보세요</div>
+  <div class="key">📌 저장 · 팔로우</div>
+  <div class="s" style="margin-top:36px">바로 써먹는 AI 소식, 넥서스가 쉽게 정리해요<br><span class="mono" style="color:var(--vi);font-size:28px">@nexus_studio.kr</span></div></div>
+</section>
+</body></html>
