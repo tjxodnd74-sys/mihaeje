@@ -297,3 +297,7 @@
 2026-11-15 15:24 | ggml 1.0·AWS 에뮬레이터·Freeze Show GN·코웨이 역공학(알림 제외·개발자) | 긱뉴스 | https://news.hada.io/
 2026-11-15 16:24 | KDE 다큐·Jonathan Blow AI 코딩 영상·눈팅티비 Show GN(알림 제외·개발자/비AI) | 긱뉴스 | https://news.hada.io/
 - 2026-11-15 16:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 ytInitialData 파싱, 쇼츠는 최신 1개 publishDate 확인), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 15:24 이후 새 롱폼·쇼츠 없음(마지막 새 글: AI 겸임교수 이종범 'AI 숏폼 드라마 1화 제작비 1,134크레딧' 17시간 전, 990). AI타임스 12:54 이후 새 기사 없음. vidIQ는 10·15시만이라 생략. 바로 제작 없음.
+2026-11-15 17:25 | 창업 서비스 고르기(경쟁 주제·CONNECT AI LAB) | 더 파운더 — 돈 벌고 있는 서비스 34개 중에서 내 것 고르기(26분 전) | https://www.youtube.com/@connect-ai-lab/videos
+2026-11-15 17:25 | AI 광고 제작(경쟁 주제·원카AI) | AI 광고 제작 — 원카 사진관 가상 광고(53분 전, 48) | https://www.youtube.com/@wonkaai/videos
+2026-11-15 17:25 | 더플레이토 AI 회의록 '티로' ARR 300만달러 인터뷰(알림 제외·기업) | AI타임스 11/15 17:00 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-15 17:25: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch로 ytInitialData 파싱, 홀수 시라 쇼츠 생략), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 16:24 이후 새 롱폼 2개(CONNECT AI LAB '더 파운더', 원카AI 'AI 광고 원카 사진관'). 48시간 주제: AI 영상·숏드라마(클로드+힉스필드) 이종범·AI아스트라·데키랩·찍봇·AI리더스 5곳🔥(튜토리얼, 제외). vidIQ 정해진 시각 아님. 인스타 브라우저 안 엶. 새 일반 사용자용 소식 없음, 바로 제작 없음.
