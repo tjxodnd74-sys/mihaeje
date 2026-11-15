@@ -1,0 +1,295 @@
+{
+ "style": "fullscreen",
+ "eyebrow": "겨울 아침 필수",
+ "title": [],
+ "noDots": true,
+ "bed": "car_bed",
+ "bedVolume": 0.35,
+ "cta": [
+  "저장해 두고",
+  "가족에게 공유해 주세요"
+ ],
+ "cover": {
+  "clip": "bg_frost_handle_v_6873502_b.mp4",
+  "start": 1.0,
+  "cx": 0.5,
+  "tag": "겨울 아침 필수",
+  "title": "스마트키 |먹통|이면<br>견인부터<br>부르시나요?",
+  "sub": "제조사 취급설명서 기준"
+ },
+ "segments": [
+  {
+   "cap": "추운 아침, / 스마트키가 |먹통|이면 / 견인부터 부르시나요?",
+   "say": "추운 아침, 스마트키가 먹통이면 견인부터 부르시나요?",
+   "clip": "bg_frost_handle_v_6873502_b.mp4",
+   "start": 0.0,
+   "cx": 0.5,
+   "kin": true,
+   "t": 0.0,
+   "e": 4.4,
+   "cut": true
+  },
+  {
+   "cap": "키 배터리만 나간 거라면, / |직접 해결|할 수 있어요",
+   "say": "키 배터리만 나간 거라면, 직접 해결할 수 있어요.",
+   "clip": "bg_fob_hand_v_27807956.mp4",
+   "start": 0.0,
+   "cx": 0.5,
+   "t": 4.4,
+   "e": 8.06,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 4.4,
+     "html": "<span class=\"w\">키</span><span class=\"w\">배터리만</span><span class=\"w\">나간</span><span class=\"w\">거라면</span>"
+    },
+    {
+     "t": 6.058,
+     "html": "<span class=\"w hl\">직접</span><span class=\"w hl\">해결할</span><span class=\"w\">수</span><span class=\"w\">있어요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "첫째, / |비상키|로 문을 여세요",
+   "say": "첫째, 비상키로 문을 여세요.",
+   "clip": "bg_key_doorlock_8104039_b.mp4",
+   "start": 6.2,
+   "cx": 0.55,
+   "step": 1,
+   "num": "첫째",
+   "name": "비상키로 문 열기",
+   "t": 8.06,
+   "e": 10.6,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 8.06,
+     "html": "<span class=\"w\">첫째</span>"
+    },
+    {
+     "t": 8.754,
+     "html": "<span class=\"w hl\">비상키로</span><span class=\"w\">문을</span><span class=\"w\">여세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "키 배터리가 없어도 / 문을 여는 |열쇠|예요",
+   "say": "키 배터리가 없어도 문을 여는 열쇠예요.",
+   "clip": "bg_key_doorlock_8104039_b.mp4",
+   "start": 8.6,
+   "cx": 0.62,
+   "t": 10.6,
+   "e": 14.24,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 10.6,
+     "html": "<span class=\"w\">키</span><span class=\"w\">배터리가</span><span class=\"w\">없어도</span>"
+    },
+    {
+     "t": 12.167,
+     "html": "<span class=\"w\">문을</span><span class=\"w\">여는</span><span class=\"w hl\">열쇠예요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "스마트키 |안에 들어 있거나|, / 따로 받은 열쇠예요",
+   "say": "스마트키 안에 들어 있거나, 따로 받은 열쇠예요.",
+   "clip": "bg_fob_column_6421467_b.mp4",
+   "start": 0.6,
+   "cx": 0.42,
+   "t": 14.24,
+   "e": 17.39,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 14.24,
+     "html": "<span class=\"w\">스마트키</span><span class=\"w hl\">안에</span><span class=\"w hl\">들어</span><span class=\"w hl\">있거나</span>"
+    },
+    {
+     "t": 15.867,
+     "html": "<span class=\"w\">따로</span><span class=\"w\">받은</span><span class=\"w\">열쇠예요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "둘째, / 스마트키로 |시동 버튼|을 / 직접 누르세요",
+   "say": "둘째, 스마트키로 시동 버튼을 직접 누르세요.",
+   "clip": "bg_fob_column_6421467_b.mp4",
+   "start": 3.5,
+   "cx": 0.36,
+   "step": 2,
+   "num": "둘째",
+   "name": "키로 버튼 누르기",
+   "t": 17.39,
+   "e": 20.77,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 17.39,
+     "html": "<span class=\"w\">둘째</span>"
+    },
+    {
+     "t": 18.207,
+     "html": "<span class=\"w\">스마트키로</span><span class=\"w hl\">시동</span><span class=\"w hl\">버튼을</span>"
+    },
+    {
+     "t": 19.443,
+     "html": "<span class=\"w\">직접</span><span class=\"w\">누르세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "배터리가 약하면, / 손가락으로 눌러선 / 키를 |못 알아봐요|",
+   "say": "배터리가 약하면, 손가락으로 눌러선 키를 못 알아봐요.",
+   "clip": "bg_start_finger_v_35585186.mp4",
+   "start": 0.0,
+   "cx": 0.5,
+   "t": 20.77,
+   "e": 25.1,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 20.77,
+     "html": "<span class=\"w\">배터리가</span><span class=\"w\">약하면</span>"
+    },
+    {
+     "t": 22.16,
+     "html": "<span class=\"w\">손가락으로</span><span class=\"w\">눌러선</span>"
+    },
+    {
+     "t": 23.329,
+     "html": "<span class=\"w\">키를</span><span class=\"w hl\">못</span><span class=\"w hl\">알아봐요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|키로 직접| 누르라고, / 설명서에 나와 있어요",
+   "say": "키로 직접 누르라고, 설명서에 나와 있어요.",
+   "clip": "bg_fob_column_6421467_b.mp4",
+   "start": 6.6,
+   "cx": 0.58,
+   "stat": [
+    "키로 버튼 꾹",
+    "제조사 취급설명서"
+   ],
+   "t": 25.1,
+   "e": 28.71,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 25.1,
+     "html": "<span class=\"w hl\">키로</span><span class=\"w hl\">직접</span><span class=\"w\">누르라고</span>"
+    },
+    {
+     "t": 26.754,
+     "html": "<span class=\"w\">설명서에</span><span class=\"w\">나와</span><span class=\"w\">있어요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "셋째, / 미리 오는 |신호|를 보세요",
+   "say": "셋째, 미리 오는 신호를 보세요.",
+   "clip": "bg_cluster_warn_v_35585184.mp4",
+   "start": 0.4,
+   "cx": 0.5,
+   "step": 3,
+   "num": "셋째",
+   "name": "미리 오는 신호",
+   "t": 28.71,
+   "e": 31.43,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 28.71,
+     "html": "<span class=\"w\">셋째</span>"
+    },
+    {
+     "t": 29.481,
+     "html": "<span class=\"w\">미리</span><span class=\"w\">오는</span><span class=\"w hl\">신호를</span><span class=\"w\">보세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "계기판에 / |키 배터리 경고|가 / 뜰 수 있어요",
+   "say": "계기판에 키 배터리 경고가 뜰 수 있어요.",
+   "clip": "bg_cluster_msg_13850345.mp4",
+   "start": 1.0,
+   "cx": 0.38,
+   "t": 31.43,
+   "e": 35.7,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 31.43,
+     "html": "<span class=\"w\">계기판에</span>"
+    },
+    {
+     "t": 32.113,
+     "html": "<span class=\"w hl\">키</span><span class=\"w hl\">배터리</span><span class=\"w hl\">경고가</span>"
+    },
+    {
+     "t": 33.767,
+     "html": "<span class=\"w\">뜰</span><span class=\"w\">수</span><span class=\"w\">있어요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "그땐 / 키 |건전지|를 / 미리 바꿔 두세요",
+   "say": "그땐 키 건전지를 미리 바꿔 두세요.",
+   "clip": "bg_keys_hand_v_7986204.mp4",
+   "start": 0.0,
+   "cx": 0.5,
+   "t": 35.7,
+   "e": 38.95,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 35.7,
+     "html": "<span class=\"w\">그땐</span>"
+    },
+    {
+     "t": 36.27,
+     "html": "<span class=\"w\">키</span><span class=\"w hl\">건전지를</span>"
+    },
+    {
+     "t": 37.134,
+     "html": "<span class=\"w\">미리</span><span class=\"w\">바꿔</span><span class=\"w\">두세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|저장|해 두고, / 차 쓰는 가족에게도 / 공유해 주세요",
+   "say": "저장해 두고, 차 쓰는 가족에게도 공유해 주세요.",
+   "clip": "bg_open_door_4281253.mp4",
+   "start": 0.5,
+   "cx": 0.42,
+   "cta": true,
+   "t": 38.95,
+   "e": 44.08,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 38.95,
+     "html": "<span class=\"w hl\">저장해</span><span class=\"w\">두고</span>"
+    },
+    {
+     "t": 39.941,
+     "html": "<span class=\"w\">차</span><span class=\"w\">쓰는</span><span class=\"w\">가족에게도</span>"
+    },
+    {
+     "t": 41.142,
+     "html": "<span class=\"w\">공유해</span><span class=\"w\">주세요</span>"
+    }
+   ]
+  }
+ ],
+ "duration": 44,
+ "impacts": [
+  0.0,
+  8.06,
+  17.39,
+  28.71,
+  38.95
+ ]
+}
