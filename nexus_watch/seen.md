@@ -295,3 +295,5 @@
 2026-11-15 15:24 | AI 입문 후기(경쟁 주제·@molo_nexttable, vidIQ) | 40대 엄마 6개월 AI 배우기(12만·46배) | https://www.instagram.com/reel/DfrMXahA8U5
 2026-11-15 15:24 | 첫 AI 쇼츠 4단계(경쟁 주제·AI하쥬) | 첫 AI 쇼츠, 4단계만 따라 하세요(2일 전, 741) | https://www.youtube.com/@aihazoo/videos
 2026-11-15 15:24 | ggml 1.0·AWS 에뮬레이터·Freeze Show GN·코웨이 역공학(알림 제외·개발자) | 긱뉴스 | https://news.hada.io/
+2026-11-15 16:24 | KDE 다큐·Jonathan Blow AI 코딩 영상·눈팅티비 Show GN(알림 제외·개발자/비AI) | 긱뉴스 | https://news.hada.io/
+- 2026-11-15 16:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 ytInitialData 파싱, 쇼츠는 최신 1개 publishDate 확인), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 15:24 이후 새 롱폼·쇼츠 없음(마지막 새 글: AI 겸임교수 이종범 'AI 숏폼 드라마 1화 제작비 1,134크레딧' 17시간 전, 990). AI타임스 12:54 이후 새 기사 없음. vidIQ는 10·15시만이라 생략. 바로 제작 없음.
