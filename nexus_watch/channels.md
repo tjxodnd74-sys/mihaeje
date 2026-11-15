@@ -11,6 +11,9 @@
 - @picsart.jane (2026-11-06 vidIQ로 발견, AI 햄스터 썰 영상·광고성)
 - @dalbong_otter (2026-11-07 vidIQ로 발견, AI 수달 캐릭터 직장 콩트)
 - @liorasolveil (2026-11-08 vidIQ로 발견, 드리미나 AI 시네마틱 액션 영상·광고성 가능)
+- @hanqcompany (2026-11-15 vidIQ로 발견, AI 직장 공감 POV)
+- @raaaami222_ (2026-11-15 vidIQ로 발견, AI 사이트 추천)
+- @molo_nexttable (2026-11-15 vidIQ로 발견, 40대 AI 입문 후기)
 
 ## 유튜브 A조 (HOUR%3==0)
 - 조팀장의 AI 공략집

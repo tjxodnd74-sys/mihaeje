@@ -290,3 +290,8 @@
 - 2026-11-15 13:24: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch로 ytInitialData 파싱, 홀수 시라 쇼츠 생략), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 12:24 이후 새 롱폼 없음(최신: 이종범 'AI 숏드라마 1화 1,134크레딧' 14시간 전 910). vidIQ 정해진 시각 아님. 인스타 브라우저 안 엶. 새 소식: 제미나이 월렛 연결(미국 한정) — 바로 제작 없음.
 2026-11-15 14:24 | CoinETF Show GN(알림 제외·비AI 소형) | 긱뉴스 4시간 전 | https://news.hada.io/
 - 2026-11-15 14:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 ytInitialData 파싱, 쇼츠는 최신 1개 publishDate 확인), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 13:24 이후 새 롱폼·쇼츠 없음(마지막 새 글: AI 겸임교수 이종범 'AI 숏폼 드라마 1화 제작비 1,134크레딧' 15시간 전, 944). AI타임스 12:54 이후 새 기사 없음. vidIQ는 10·15시만이라 생략. 바로 제작 없음.
+2026-11-15 15:24 | AI 직장 공감(경쟁 주제·@hanqcompany, vidIQ) | POV: 회사가 원한 AI 인재가 된 나 VS("가라 걍…"도 프롬프트, 30만·218배) | https://www.instagram.com/reel/DfrRnqghGNC
+2026-11-15 15:24 | AI 사이트 추천(경쟁 주제·@raaaami222_, vidIQ) | 불법 같은 사이트 3가지(31만·116배) | https://www.instagram.com/reel/DfrCjk9yjz_
+2026-11-15 15:24 | AI 입문 후기(경쟁 주제·@molo_nexttable, vidIQ) | 40대 엄마 6개월 AI 배우기(12만·46배) | https://www.instagram.com/reel/DfrMXahA8U5
+2026-11-15 15:24 | 첫 AI 쇼츠 4단계(경쟁 주제·AI하쥬) | 첫 AI 쇼츠, 4단계만 따라 하세요(2일 전, 741) | https://www.youtube.com/@aihazoo/videos
+2026-11-15 15:24 | ggml 1.0·AWS 에뮬레이터·Freeze Show GN·코웨이 역공학(알림 제외·개발자) | 긱뉴스 | https://news.hada.io/
