@@ -1,5 +1,10 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-16 16:24 — (참고) 네이버 카페에 'AI 카페 에이전트' 비공개 베타 — 카페 글·댓글 경험담 요약해 답하고 원문 연결
+- 출처: AI타임스(11/16 15:55, 네이버 발표) https://www.aitimes.com/news/articleList.html?view_type=sm
+- 추천 형식: 지금은 3개 카페 비공개 베타라 바로 제작 제외. 정식 출시되면 카드뉴스('카페 경험담을 AI가 찾아준다' 각도) 후보
+- 다룬 채널: 없음
+
 ## 2026-11-16 15:25 — (참고) 인스타에서 터진 AI 공감·실용 릴스 2종 (vidIQ, 11/14 게시)
 - @koreaaicampus '면접관이 "자소서 AI로 쓰셨죠?" 물으면 — 당당하게 "네" + 이렇게 덧붙이기'(67만·평소 139배) https://www.instagram.com/reel/DfuIoXWyoIm
 - @emily_ai.design '클로드로 30분 만에 만든 붕어빵 가게 사이트'(40만·188배) https://www.instagram.com/reel/DfuF_bmh7ns
