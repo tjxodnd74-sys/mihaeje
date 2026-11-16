@@ -1,0 +1,295 @@
+{
+ "style": "fullscreen",
+ "eyebrow": "이럴 땐 어떻게?",
+ "title": [],
+ "noDots": true,
+ "bed": "car_bed",
+ "bedVolume": 0.35,
+ "cta": [
+  "몇 번 골랐는지",
+  "댓글로 알려주세요"
+ ],
+ "cover": {
+  "clip": "bg_fl_red_4524964.mp4",
+  "start": 0.8,
+  "cx": 0.47,
+  "tag": "이럴 땐 어떻게?",
+  "title": "빨간불이 |깜빡|이면<br>1번? 2번?",
+  "sub": "도로교통법 시행규칙 기준"
+ },
+ "segments": [
+  {
+   "cap": "신호등에 |빨간불|이, / |깜빡깜빡|하고 있어요",
+   "say": "신호등에 빨간불이, 깜빡깜빡하고 있어요.",
+   "clip": "bg_fl_red_4524964.mp4",
+   "start": 0.3,
+   "cx": 0.47,
+   "kin": true,
+   "t": 0.0,
+   "e": 3.76,
+   "cut": true
+  },
+  {
+   "cap": "1번, / 속도를 줄이고 / |그대로 지나간다|",
+   "say": "일번, 속도를 줄이고 그대로 지나간다.",
+   "clip": "bg_fl_nightpov_5269056.mp4",
+   "start": 1.0,
+   "cx": 0.5,
+   "step": 1,
+   "num": "1번",
+   "name": "그대로 지나간다",
+   "t": 3.76,
+   "e": 7.17,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 3.76,
+     "html": "<span class=\"w\">1번</span>"
+    },
+    {
+     "t": 4.476,
+     "html": "<span class=\"w\">속도를</span><span class=\"w\">줄이고</span>"
+    },
+    {
+     "t": 5.687,
+     "html": "<span class=\"w hl\">그대로</span><span class=\"w hl\">지나간다</span>"
+    }
+   ]
+  },
+  {
+   "cap": "2번, / 정지선 앞에서 / |멈췄다가| 지나간다",
+   "say": "이번, 정지선 앞에서 멈췄다가 지나간다.",
+   "clip": "bg_yl_cab_16455066.mp4",
+   "start": 0.6,
+   "cx": 0.45,
+   "step": 2,
+   "num": "2번",
+   "name": "멈췄다 지나간다",
+   "t": 7.17,
+   "e": 10.59,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 7.17,
+     "html": "<span class=\"w\">2번</span>"
+    },
+    {
+     "t": 7.74,
+     "html": "<span class=\"w\">정지선</span><span class=\"w\">앞에서</span>"
+    },
+    {
+     "t": 8.775,
+     "html": "<span class=\"w hl\">멈췄다가</span><span class=\"w\">지나간다</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|몇 번|이 맞을까요?",
+   "say": "몇 번이 맞을까요?",
+   "clip": "bg_fl_red_4524964.mp4",
+   "start": 4.3,
+   "cx": 0.47,
+   "t": 10.59,
+   "e": 13.45,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 10.59,
+     "html": "<span class=\"w hl\">몇</span><span class=\"w hl\">번이</span><span class=\"w\">맞을까요?</span>"
+    }
+   ]
+  },
+  {
+   "cap": "정답은 |2번|이에요",
+   "say": "정답은 이번이에요.",
+   "clip": "bg_fl_red_4524964.mp4",
+   "start": 7.2,
+   "cx": 0.47,
+   "step": 3,
+   "num": "정답",
+   "name": "2번",
+   "stat": [
+    "2번",
+    "멈췄다가 진행"
+   ],
+   "t": 13.45,
+   "e": 15.01,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 13.45,
+     "html": "<span class=\"w\">정답은</span><span class=\"w hl\">2번이에요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "빨간불이 |깜빡이면|, / 정지선 앞에서 / |일단 멈춰야| 해요",
+   "say": "빨간불이 깜빡이면, 정지선 앞에서 일단 멈춰야 해요.",
+   "clip": "bg_yl_cab_16455066.mp4",
+   "start": 0.0,
+   "cx": 0.5,
+   "t": 15.01,
+   "e": 18.91,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 15.01,
+     "html": "<span class=\"w\">빨간불이</span><span class=\"w hl\">깜빡이면</span>"
+    },
+    {
+     "t": 16.454,
+     "html": "<span class=\"w\">정지선</span><span class=\"w\">앞에서</span>"
+    },
+    {
+     "t": 17.294,
+     "html": "<span class=\"w hl\">일단</span><span class=\"w hl\">멈춰야</span><span class=\"w\">해요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "도로교통법 시행규칙, / |신호의 뜻|에 / 이렇게 적혀 있어요",
+   "say": "도로교통법 시행규칙, 신호의 뜻에 이렇게 적혀 있어요.",
+   "clip": "bg_fl_red_4524964.mp4",
+   "start": 8.4,
+   "cx": 0.47,
+   "stat": [
+    "빨간불 점멸",
+    "일시정지 후 진행"
+   ],
+   "t": 18.91,
+   "e": 23.02,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 18.91,
+     "html": "<span class=\"w\">도로교통법</span><span class=\"w\">시행규칙</span>"
+    },
+    {
+     "t": 20.606,
+     "html": "<span class=\"w hl\">신호의</span><span class=\"w hl\">뜻에</span>"
+    },
+    {
+     "t": 21.363,
+     "html": "<span class=\"w\">이렇게</span><span class=\"w\">적혀</span><span class=\"w\">있어요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|노란불|이 깜빡이면, / |주의하면서| / 지나가면 돼요",
+   "say": "노란불이 깜빡이면, 주의하면서 지나가면 돼요.",
+   "clip": "bg_fl_yellow_4524880.mp4",
+   "start": 0.3,
+   "cx": 0.45,
+   "step": 4,
+   "num": "TIP",
+   "name": "노란불 점멸",
+   "t": 23.02,
+   "e": 26.62,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 23.02,
+     "html": "<span class=\"w hl\">노란불이</span><span class=\"w\">깜빡이면</span>"
+    },
+    {
+     "t": 24.515,
+     "html": "<span class=\"w hl\">주의하면서</span>"
+    },
+    {
+     "t": 25.176,
+     "html": "<span class=\"w\">지나가면</span><span class=\"w\">돼요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "빨간불은 |멈춤|, / 노란불은 |주의|, / 이렇게 기억하세요",
+   "say": "빨간불은 멈춤, 노란불은 주의, 이렇게 기억하세요.",
+   "clip": "bg_fl_yellow_4524880.mp4",
+   "start": 4.8,
+   "cx": 0.45,
+   "stat": [
+    "멈춤 · 주의",
+    "빨간 점멸 · 노란 점멸"
+   ],
+   "t": 26.62,
+   "e": 30.58,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 26.62,
+     "html": "<span class=\"w\">빨간불은</span><span class=\"w hl\">멈춤</span>"
+    },
+    {
+     "t": 27.829,
+     "html": "<span class=\"w\">노란불은</span><span class=\"w hl\">주의</span>"
+    },
+    {
+     "t": 29.207,
+     "html": "<span class=\"w\">이렇게</span><span class=\"w\">기억하세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "멈춘 다음엔, / 좌우를 살피고 / |천천히| 출발하세요",
+   "say": "멈춘 다음엔, 좌우를 살피고 천천히 출발하세요.",
+   "clip": "bg_rr_turn_slow_v_34032143.mp4",
+   "start": 3.8,
+   "cx": 0.5,
+   "t": 30.58,
+   "step": 5,
+   "num": "TIP",
+   "name": "천천히 출발",
+   "e": 34.69,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 30.58,
+     "html": "<span class=\"w\">멈춘</span><span class=\"w\">다음엔</span>"
+    },
+    {
+     "t": 31.696,
+     "html": "<span class=\"w\">좌우를</span><span class=\"w\">살피고</span>"
+    },
+    {
+     "t": 32.942,
+     "html": "<span class=\"w hl\">천천히</span><span class=\"w\">출발하세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "몇 번 고르셨는지 / |댓글|로 남기고, / |저장|해 두세요",
+   "say": "몇 번 고르셨는지 댓글로 남기고, 저장해 두세요.",
+   "clip": "bg_fl_nightpov_5269056.mp4",
+   "start": 24.4,
+   "cx": 0.5,
+   "cta": true,
+   "t": 34.69,
+   "e": 39.769,
+   "cut": true,
+   "capChunks": [
+    {
+     "t": 34.69,
+     "html": "<span class=\"w\">몇</span><span class=\"w\">번</span><span class=\"w\">고르셨는지</span>"
+    },
+    {
+     "t": 35.894,
+     "html": "<span class=\"w hl\">댓글로</span><span class=\"w\">남기고</span>"
+    },
+    {
+     "t": 36.777,
+     "html": "<span class=\"w hl\">저장해</span><span class=\"w\">두세요</span>"
+    }
+   ]
+  }
+ ],
+ "duration": 40,
+ "impacts": [
+  0.0,
+  3.76,
+  7.17,
+  13.45,
+  23.02,
+  30.58,
+  34.69
+ ]
+}
