@@ -1,5 +1,9 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-16 18:24 — (참고) AI 드라마 만들기 3곳째 🔥 — AInspire '진짜 같은 AI 드라마 만드는 3단계'(25분 전) + 이종범·AI아스트라 + AI타임스 '영상 생성 AI 중국 모델이 상위권 장악(완 3.0 1위·시댄스 2.5 4위)'(11/16 18:00)
+- 출처: https://www.youtube.com/@ainspire_kr/videos , https://www.youtube.com/@aiadjunct/videos , https://www.youtube.com/@aiastra0/videos , https://www.aitimes.com/news/articleList.html?view_type=sm
+- 추천 형식: 🔥릴스 우선('요즘 AI 영상 1위는 중국 모델 — 뭐로 만들까' 비교). 제작법·순위 기사라 새 기능 출시 아님 → 바로 제작 제외
+
 ## 2026-11-16 17:24 — (참고) AI 음악 — AI하쥬 '수노 끝판왕 정리·클로드 단독으로 AI 음악 만드는 법'(25분 전) + 중국 '에이스 뮤직 v1'이 음악 생성 평가에서 수노 제치고 1위(AI타임스 11/16 16:43)
 - 출처: https://www.youtube.com/@aihazoo/videos , https://www.aitimes.com/news/articleList.html?view_type=sm
 - 추천 형식: 🔥릴스 우선('AI 음악 도구 뭐 쓰나 — 수노 vs 에이스 vs 클로드' 결과물 비교). 유튜브 1곳 + 뉴스 1곳, 새 기능 출시 아님이라 바로 제작 제외
