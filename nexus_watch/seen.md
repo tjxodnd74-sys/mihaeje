@@ -323,3 +323,7 @@
 2026-11-16 13:24 | 애플 AI 안경 '시리 앱 제어' 전략(보도·알림 제외·루머성)·LGU+ U+SASE(알림 제외·기업)·트럼프-시진핑 회담(알림 제외·정책) / 긱뉴스 DBDelve·Woz BASIC·세스 고딘·Show GN agent-monitor(알림 제외·개발자) | AI타임스 11/16·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-16 13:24: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch로 ytInitialData 파싱, 홀수 시라 쇼츠 생략) — 12:24 이후 새 영상 없음(최신: CONNECT AI LAB 'AI 리버스 엔지니어링' 라이브 1시간 전). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 바로 제작 주제 없음
 - 2026-11-16 14:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 ytInitialData 파싱, 쇼츠 18개 최신 publishDate 확인 — 48시간 내 새 쇼츠 없음), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 13:24 이후 새 영상·새 기사 없음(최신: CONNECT AI LAB 'AI 리버스 엔지니어링' 라이브 2시간 전). 바로 제작 주제 없음. 인스타 브라우저 안 엶, vidIQ 미사용(10·15시만).
+2026-11-16 15:25 | 자소서 AI 면접 답변(경쟁 주제·@koreaaicampus, vidIQ) | 면접관이 "자소서 AI로 쓰셨죠?"(67만·139배) | https://www.instagram.com/reel/DfuIoXWyoIm
+2026-11-16 15:25 | 클로드로 웹사이트(경쟁 주제·@emily_ai.design, vidIQ) | 클로드로 30분 만에 만든 붕어빵 가게 사이트(40만·188배) | https://www.instagram.com/reel/DfuF_bmh7ns
+2026-11-16 15:25 | 백악관 AI 보안사고 자진신고 책임 완화(알림 제외·정책)·인텔 주주 소송(알림 제외·기업)·웹케시-하나은행 AI CMS(알림 제외·기업) / 긱뉴스 Poly Duo·newmean-pii(알림 제외·소형) | AI타임스 11/16 14:48~15:07·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-16 15:25: 브라우저(내장)로 유튜브 18개 채널 /videos(페이지 안 fetch로 ytInitialData 파싱, 홀수 시라 쇼츠 생략) — 14:24 이후 새 영상 없음(최신: CONNECT AI LAB 'AI 리버스 엔지니어링' 라이브 3시간 전, 스마트대디AI 'AI 시험 부정행위' 13시간 전 7.5만). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 5크레딧(잔액 1965에서). 인스타 브라우저 안 엶. 새 소식(AI 꿀팁 성격) 없음, 바로 제작 없음.
