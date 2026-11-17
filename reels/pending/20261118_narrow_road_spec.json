@@ -1,0 +1,311 @@
+{
+ "style": "fullscreen",
+ "eyebrow": "누가 양보?",
+ "title": [],
+ "noDots": true,
+ "bed": "car_bed",
+ "bedVolume": 0.35,
+ "cta": [
+  "몇 번 골랐는지",
+  "댓글로 알려주세요"
+ ],
+ "cover": {
+  "clip": "bg_nr_cliff_road_40686506.mp4",
+  "start": 3.0,
+  "cx": 0.45,
+  "tag": "누가 양보?",
+  "title": "좁은 비탈길<br>|누가| 비켜야<br>할까?",
+  "sub": "도로교통법 제20조 기준"
+ },
+ "segments": [
+  {
+   "cap": "좁은 길에서, / 마주 오는 차와 / |딱| 만났어요",
+   "say": "좁은 길에서, 마주 오는 차와 딱 만났어요.",
+   "clip": "bg_nr_meet_top_32449881.mp4",
+   "start": 3.3,
+   "cx": 0.56,
+   "kin": true,
+   "t": 0.0,
+   "cut": true,
+   "e": 4.299
+  },
+  {
+   "cap": "그런데 여기가 |비탈길|이라면, / |누가| 비켜야 할까요?",
+   "say": "그런데 여기가 비탈길이라면, 누가 비켜야 할까요?",
+   "clip": "bg_nr_cliff_road_40686506.mp4",
+   "start": 0.4,
+   "cx": 0.45,
+   "t": 4.299,
+   "cut": true,
+   "e": 7.937,
+   "capChunks": [
+    {
+     "t": 4.299,
+     "html": "<span class=\"w\">그런데</span><span class=\"w\">여기가</span>"
+    },
+    {
+     "t": 5.107,
+     "html": "<span class=\"w hl\">비탈길이라면</span>"
+    },
+    {
+     "t": 5.996,
+     "html": "<span class=\"w hl\">누가</span><span class=\"w\">비켜야</span><span class=\"w\">할까요?</span>"
+    }
+   ]
+  },
+  {
+   "cap": "1번, / |올라가는 차|가 비킨다",
+   "say": "일번, 올라가는 차가 비킨다.",
+   "clip": "bg_nr_climb_12430396.mp4",
+   "start": 2.0,
+   "cx": 0.6,
+   "step": 1,
+   "num": "1번",
+   "name": "올라가는 차",
+   "t": 7.937,
+   "cut": true,
+   "e": 10.66,
+   "capChunks": [
+    {
+     "t": 7.937,
+     "html": "<span class=\"w\">1번</span>"
+    },
+    {
+     "t": 8.749,
+     "html": "<span class=\"w hl\">올라가는</span><span class=\"w hl\">차가</span><span class=\"w\">비킨다</span>"
+    }
+   ]
+  },
+  {
+   "cap": "2번, / |내려오는 차|가 비킨다",
+   "say": "이번, 내려오는 차가 비킨다.",
+   "clip": "bg_nr_canyon_trucks_27278646.mp4",
+   "start": 1.5,
+   "cx": 0.55,
+   "step": 2,
+   "num": "2번",
+   "name": "내려오는 차",
+   "t": 10.66,
+   "cut": true,
+   "e": 13.135,
+   "capChunks": [
+    {
+     "t": 10.66,
+     "html": "<span class=\"w\">2번</span>"
+    },
+    {
+     "t": 11.311,
+     "html": "<span class=\"w hl\">내려오는</span><span class=\"w hl\">차가</span><span class=\"w\">비킨다</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|몇 번|이 맞을까요?",
+   "say": "몇 번이 맞을까요?",
+   "clip": "bg_nr_winding_meet_32570949.mp4",
+   "start": 10.3,
+   "cx": 0.62,
+   "t": 13.135,
+   "cut": true,
+   "e": 15.922,
+   "capChunks": [
+    {
+     "t": 13.135,
+     "html": "<span class=\"w hl\">몇</span><span class=\"w hl\">번이</span><span class=\"w\">맞을까요?</span>"
+    }
+   ]
+  },
+  {
+   "cap": "정답은 |1번|, / 올라가는 차예요",
+   "say": "정답은 일번, 올라가는 차예요.",
+   "clip": "bg_nr_climb_12430396.mp4",
+   "start": 7.4,
+   "cx": 0.68,
+   "step": 3,
+   "num": "정답",
+   "name": "1번",
+   "stat": [
+    "1번",
+    "올라가는 차가 양보"
+   ],
+   "t": 15.922,
+   "cut": true,
+   "e": 18.578,
+   "capChunks": [
+    {
+     "t": 15.922,
+     "html": "<span class=\"w\">정답은</span><span class=\"w hl\">1번</span>"
+    },
+    {
+     "t": 16.999,
+     "html": "<span class=\"w\">올라가는</span><span class=\"w\">차예요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|도로교통법 제20조|에 / 그렇게 정해져 있어요",
+   "say": "도로교통법 제이십조에 그렇게 정해져 있어요.",
+   "clip": "bg_nr_cliff_road_40686506.mp4",
+   "start": 4.6,
+   "cx": 0.45,
+   "stat": [
+    "제20조 ②",
+    "비탈진 좁은 도로"
+   ],
+   "t": 18.578,
+   "cut": true,
+   "e": 22.026,
+   "capChunks": [
+    {
+     "t": 18.578,
+     "html": "<span class=\"w hl\">도로교통법</span><span class=\"w hl\">제20조에</span>"
+    },
+    {
+     "t": 19.962,
+     "html": "<span class=\"w\">그렇게</span><span class=\"w\">정해져</span><span class=\"w\">있어요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "올라가는 차가 / |오른쪽 가장자리|로 피해서, / 길을 내줘야 해요",
+   "say": "올라가는 차가 오른쪽 가장자리로 피해서, 길을 내줘야 해요.",
+   "clip": "bg_nr_winding_meet_32570949.mp4",
+   "start": 12.9,
+   "cx": 0.62,
+   "t": 22.026,
+   "cut": true,
+   "e": 26.725,
+   "capChunks": [
+    {
+     "t": 22.026,
+     "html": "<span class=\"w\">올라가는</span><span class=\"w\">차가</span>"
+    },
+    {
+     "t": 22.952,
+     "html": "<span class=\"w hl\">오른쪽</span><span class=\"w hl\">가장자리로</span><span class=\"w\">피해서</span>"
+    },
+    {
+     "t": 25.056,
+     "html": "<span class=\"w\">길을</span><span class=\"w\">내줘야</span><span class=\"w\">해요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "|평지|의 좁은 길은 / 기준이 달라요",
+   "say": "평지의 좁은 길은 기준이 달라요.",
+   "clip": "bg_nr_dirt_top_9281977.mp4",
+   "start": 1.0,
+   "cx": 0.46,
+   "step": 4,
+   "num": "TIP",
+   "name": "평지 좁은 길",
+   "t": 26.725,
+   "cut": true,
+   "e": 29.783,
+   "capChunks": [
+    {
+     "t": 26.725,
+     "html": "<span class=\"w hl\">평지의</span><span class=\"w\">좁은</span><span class=\"w\">길은</span>"
+    },
+    {
+     "t": 28.361,
+     "html": "<span class=\"w\">기준이</span><span class=\"w\">달라요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "사람이나 |짐을 실은 차|와 / 빈 차가 만나면, / |동승자도 짐도 없는 차|가 비켜야 해요",
+   "say": "사람이나 짐을 실은 차와 빈 차가 만나면, 동승자도 짐도 없는 차가 비켜야 해요.",
+   "clip": "bg_nr_canyon_trucks_27278646.mp4",
+   "start": 21.0,
+   "cx": 0.55,
+   "stat": [
+    "빈 차가 양보",
+    "평지 좁은 길"
+   ],
+   "t": 29.783,
+   "cut": true,
+   "e": 36.359,
+   "capChunks": [
+    {
+     "t": 29.783,
+     "html": "<span class=\"w\">사람이나</span><span class=\"w hl\">짐을</span><span class=\"w hl\">실은</span><span class=\"w hl\">차와</span>"
+    },
+    {
+     "t": 31.498,
+     "html": "<span class=\"w\">빈</span><span class=\"w\">차가</span><span class=\"w\">만나면</span>"
+    },
+    {
+     "t": 33.197,
+     "html": "<span class=\"w hl\">동승자도</span><span class=\"w hl\">짐도</span><span class=\"w hl\">없는</span><span class=\"w hl\">차가</span>"
+    },
+    {
+     "t": 34.873,
+     "html": "<span class=\"w\">비켜야</span><span class=\"w\">해요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "비탈길은 |올라가는 차|, / 평지는 |빈 차|, / 이렇게 기억하세요",
+   "say": "비탈길은 올라가는 차, 평지는 빈 차. 이렇게 기억하세요.",
+   "clip": "bg_nr_meet_top_32449881.mp4",
+   "start": 4.2,
+   "cx": 0.56,
+   "stat": [
+    "양보 정리",
+    "비탈길 올라가는 차 · 평지 빈 차"
+   ],
+   "t": 36.359,
+   "cut": true,
+   "e": 40.189,
+   "capChunks": [
+    {
+     "t": 36.359,
+     "html": "<span class=\"w\">비탈길은</span><span class=\"w hl\">올라가는</span><span class=\"w hl\">차</span>"
+    },
+    {
+     "t": 37.717,
+     "html": "<span class=\"w\">평지는</span><span class=\"w hl\">빈</span><span class=\"w hl\">차</span>"
+    },
+    {
+     "t": 38.446,
+     "html": "<span class=\"w\">이렇게</span><span class=\"w\">기억하세요</span>"
+    }
+   ]
+  },
+  {
+   "cap": "몇 번 고르셨는지 / |댓글|로 남기고, / |저장|해 두세요",
+   "say": "몇 번 고르셨는지 댓글로 남기고, 저장해 두세요.",
+   "clip": "bg_nr_flat_top_31948535.mp4",
+   "start": 0.2,
+   "cx": 0.48,
+   "cta": true,
+   "t": 40.189,
+   "cut": true,
+   "e": 45.569,
+   "capChunks": [
+    {
+     "t": 40.189,
+     "html": "<span class=\"w\">몇</span><span class=\"w\">번</span><span class=\"w\">고르셨는지</span>"
+    },
+    {
+     "t": 41.481,
+     "html": "<span class=\"w hl\">댓글로</span><span class=\"w\">남기고</span>"
+    },
+    {
+     "t": 42.894,
+     "html": "<span class=\"w hl\">저장해</span><span class=\"w\">두세요</span>"
+    }
+   ]
+  }
+ ],
+ "duration": 46,
+ "impacts": [
+  0.0,
+  7.937,
+  10.66,
+  15.922,
+  26.725,
+  40.189
+ ]
+}
