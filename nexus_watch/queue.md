@@ -1,6 +1,6 @@
 # 넥서스 제작 후보 (최신이 위)
 
-## [제작 요청됨 2026-11-18 08:24] 2026-11-18 08:24 — 🔥바로제작 🔥릴스 우선 챗GPT 새 AI 'GPT-6.2 아스트라'·'솔' 출시 — 플러스면 지금 '챗GPT 워크'·코덱스에서 (일반 채팅은 아직)
+## [제작 요청됨 2026-11-18 08:24] 2026-11-18 08:24 — 🔥바로제작 (11/18 정규는 짝수일 만화형(AI 칭찬)으로 나감 — 원문 접속 확인 못 해 보류, 11/19 정보형 1순위) 🔥릴스 우선 챗GPT 새 AI 'GPT-6.2 아스트라'·'솔' 출시 — 플러스면 지금 '챗GPT 워크'·코덱스에서 (일반 채팅은 아직)
 - 핵심: 11/17(현지) 오픈AI 공식 발표, 9월 말 6.1 취소 후 50일 만. AA 지수 아스트라 62점 2위(페이블 5.2 65), 솔 57점(GPT-6 아스트라급을 비용 15%로). PPT·시트·보고서 강화. API 20%↓. 플러스·프로·엔터·에듀 워크/코덱스부터, 일반 채팅 미적용
 - 출처: AI타임스 https://www.aitimes.com/news/articleView.html?idxno=217513 , The Decoder https://the-decoder.com/openai-launches-gpt-6-2-astra-and-sol-with-lower-api-prices-and-some-benchmark-gains/ , Quartz https://qz.com/openai-gpt-6-2-astra-release-scrapped-version-111726
 - 다룬 채널: AI어정쩡(이종범) 'GPT-6.2 Astra 망작이라더니? 클로드 페이블 5.2와 붙여 봄'
