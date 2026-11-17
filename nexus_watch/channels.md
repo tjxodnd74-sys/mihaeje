@@ -14,6 +14,8 @@
 - @hanqcompany (2026-11-15 vidIQ로 발견, AI 직장 공감 POV)
 - @raaaami222_ (2026-11-15 vidIQ로 발견, AI 사이트 추천)
 - @molo_nexttable (2026-11-15 vidIQ로 발견, 40대 AI 입문 후기)
+- @stkang24 (2026-11-17 vidIQ로 발견, AI 안경 부정행위)
+- @tori.jour (2026-11-17 vidIQ로 발견, 제미나이 API 블로그 자동화)
 
 ## 유튜브 A조 (HOUR%3==0)
 - 조팀장의 AI 공략집

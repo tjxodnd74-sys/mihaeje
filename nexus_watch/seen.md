@@ -335,3 +335,10 @@
 2026-11-16 18:24 | AI 드라마 3단계(경쟁 주제·AInspire)·이렇게 쓰라고 만든 AI 아닙니다(허성범)·AI 인플루언서 클로드로 8분(찍봇, 광고성 '+3일 무료') | 유튜브 25~36분 전 | https://www.youtube.com/@ainspire_kr/videos
 2026-11-16 18:24 | 영상 생성 AI 중국 상위권(완 3.0 1위, 알림·참고)·미국 AI 국가대표기업 20곳 지정 추진·앤트 링봇 터치·AI 인프라 수주잔고·[게시판] 그렙 모니토 VLM(알림 제외·정책/기업) / 긱뉴스 Vibnote·Landlink(알림 제외·소형) | AI타임스 11/16 17:00~18:06·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-16 18:24: 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 ytInitialData 파싱, 쇼츠 18개 최신 publishDate 확인 — 48시간 내 새 쇼츠 없음), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 17:24 이후 새 영상 3개(AInspire·허성범·찍봇). 48시간 주제: AI 드라마·영상 3곳🔥(튜토리얼, 제외), AI 시험 부정행위(스마트대디 8.7만), 클로드 아티팩트 2.0(소소한), 제미나이 4 하이드로젠 AI 스튜디오(CONNECT, 11/13 완료와 겹침). 인스타 브라우저 안 엶, vidIQ 미사용. 바로 제작 없음.
+2026-11-17 10:22 | AI 숏드라마 4K(경쟁 주제·이종범) | 시댄스 2.5 4K, 480p 초안으로 크레딧 아끼는 법(21분 전) | https://www.youtube.com/@aiadjunct/videos
+2026-11-17 10:22 | AI 논문 억셉트(경쟁 주제·CONNECT AI LAB) | 비전공자 구독자들과 쓴 논문 해외 학회 억셉트(12시간 전, 4.3천) | https://www.youtube.com/@connect-ai-lab/videos
+2026-11-17 10:22 | AI 안경 부정행위(경쟁 주제·@stkang24, vidIQ) | AI안경 뿔테만 잡는다(94만·67배) | https://www.instagram.com/reel/DfwzFSlGebC
+2026-11-17 10:22 | 블로그 자동화(경쟁 주제·@tori.jour, vidIQ) | 제미나이 무료 API 블로그 자동화(11.9만·31배) | https://www.instagram.com/reel/DfwX6onSl6F
+2026-11-17 10:22 | 수능 AI 안경 부정행위 대책(🔥바로제작 표시) | SBS Biz·더팩트·KBS·서울경제 | https://biz.sbs.co.kr/amp/article/20000341848
+2026-11-17 10:22 | 알리바바 큐원4 맥스 정식 출시(알림·참고)·미국 중국 해외 GPU 우회 차단·트럼프 젠슨 황 복귀 지지(알림 제외·정책/기업) / 긱뉴스 docs-suit·BC카드 잇플 AI 챌린지(~12/3)·AdaptOrch(알림 제외·소형) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-17 10:22: 오늘 첫 감시 회차. 브라우저(내장)로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 ytInitialData 파싱, 쇼츠 18개 최신 publishDate 확인 — 48시간 내 새 쇼츠 없음), AI타임스·긱뉴스 직접 확인 + 웹검색 4건(최근 24시간 공식 기능 출시 결과 없음). 어제 18:24 이후 새 롱폼 2개(이종범 '시댄스 4K', CONNECT AI LAB '논문 억셉트'). vidIQ 5크레딧(잔액 1907). 인스타 브라우저 안 엶. 10:41 앞뒤 30분이라 AI 안경 부정행위 주제는 queue에 🔥바로제작 표시만(fire_trigger 안 함). add_repo 도구 미노출(바로 clone/push).
