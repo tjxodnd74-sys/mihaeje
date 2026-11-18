@@ -384,3 +384,6 @@
 2026-11-18 15:24 | 클로드 편집 5단계(studiooo.sisi 7.1만)·쇼핑쇼츠 AI 편집(newgugbulon 16.5만)·FreeLLMAPI 클로드 코드 무료(제외)·강성태 수능의 종말·AI 안경 초딩문제(vidIQ, 알림·참고) | https://www.instagram.com/reel/DfuM55mq56d
 2026-11-18 15:24 | MS 코파일럿 오토파일럿 기업 제공(알림·참고)·오픈AI NATO 사이버 보안 AI(알림·참고)·노타 에이전트 풀스택 최적화(알림 제외) / 긱뉴스 Tesseract NPU·옥토모·USN CRaC(알림 제외·개발자) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-18 15:24: 내장 브라우저로 유튜브 18개 채널 /videos 확인(페이지 안 fetch로 ytInitialData 파싱, 홀수 시라 쇼츠 생략) — 14:23 이후 새 영상 1개(커넥트AI랩). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 아웃라이어 1회(5크레딧). 바로 제작 없음.
+2026-11-18 16:24 | 구글 하이드로젠 3D 웹사이트(쇼츠, 커넥트AI랩 — 15:24 알린 롱폼의 쇼츠판) | 구글 하이드로젠으로 만지고 움직이는 3D 웹사이트 만드는 방법(528회) | https://www.youtube.com/shorts/k8k7prEQ8Fc
+2026-11-18 16:24 | 초록소프트-한국이엔씨 AI 스마트팜·몬드리안AI 서울대 공대 프라이빗 AI 클라우드(알림 제외·기업) / 긱뉴스 Rust·도서 목록·SaaS 바이럴 루프·오픈소스(알림 제외·개발자) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-18 16:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts 확인(페이지 안 fetch로 ytInitialData 파싱) — 15:24 이후 새 롱폼 없음, 새 쇼츠 1개(커넥트AI랩 하이드로젠 3D). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 새 기능 결과 없음, 뉴런 '워크스페이스' 글은 11/11자). vidIQ 생략(10·15시만). 16:41 창 안이라 긴급 제작 요청 안 함, 바로 만들 주제도 없음.
