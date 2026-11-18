@@ -5,40 +5,73 @@
 <meta name="apple-mobile-web-app-title" content="즉흥촬영">
 <meta name="theme-color" content="#000000">
 <title>즉흥연기 촬영기</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700;900&display=swap">
 <style>
-html,body{margin:0;height:100%;background:#000;color:#fff;font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-#cv{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);height:100vh;height:100dvh;max-width:100vw;aspect-ratio:9/16;object-fit:contain;background:#111}
-.top{position:fixed;left:0;right:0;top:0;display:flex;gap:6px;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 8px) 10px 8px;z-index:5}
+html,body{margin:0;height:100%;background:#000;color:#fff;font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#vid{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;background:#111}
+#vid.mirror{transform:scaleX(-1)}
+/* 필터 화면: 9:16 영역 기준 */
+.frame{position:fixed;left:50%;top:50%;width:min(100vw,56.25vh);aspect-ratio:9/16;transform:translate(-50%,-50%);pointer-events:none;container-type:size}
+@supports not (aspect-ratio:1){.frame{width:56.25vh}}
+.title{position:absolute;top:4.6cqh;left:0;right:0;display:flex;flex-direction:column;align-items:center}
+.title span{background:#000;color:#fff;font-weight:700;font-size:3cqh;line-height:1.35;padding:.2em .6em;border-radius:.35em}
+.title span+span{margin-top:-.1em}
+.rail{position:absolute;top:0;bottom:0;left:27.8%;width:.36cqh;background:#fff;transform:translateX(-50%)}
+.track{position:absolute;left:0;right:0;top:0;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.node{position:absolute;left:0;right:0;height:0}
+.dot{position:absolute;left:27.8%;top:0;width:4.2cqh;height:4.2cqh;border-radius:50%;background:#8C8C8C;border:.42cqh solid #fff;transform:translate(-50%,-50%);box-sizing:border-box}
+.node.on .dot{background:#F7D417}
+.lab{position:absolute;right:calc(72.2% + 3cqh);top:0;transform:translateY(-50%);font-weight:700;font-size:2.1cqh;white-space:nowrap;text-shadow:0 .1cqh .4cqh rgba(0,0,0,.6)}
+.val{position:absolute;left:calc(27.8% + 3.2cqh);right:2.5cqh;top:0;transform:translateY(-50%);font-weight:700;font-size:2.5cqh;line-height:1.25;text-shadow:0 .1cqh .4cqh rgba(0,0,0,.6);overflow-wrap:anywhere}
+.node.used .val::after{content:" ✓";color:#F7D417}
+.count{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20cqh;text-shadow:0 .4cqh 2cqh rgba(0,0,0,.5)}
+.count[hidden]{display:none}
+/* 조작부 */
+.top{position:fixed;left:0;right:0;top:0;display:flex;gap:6px;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 6px) 8px 6px;z-index:5}
 .top select,.top button{font:inherit;font-size:13px;border:0;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;padding:8px 12px;-webkit-appearance:none;appearance:none}
-.bottom{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-around;gap:6px;padding:10px 10px calc(env(safe-area-inset-bottom,0px) + 14px);z-index:5}
-.btn{border:0;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font:inherit;font-weight:700;font-size:14px;min-width:64px;height:52px;padding:0 12px}
-.btn:disabled{opacity:.35}
-.rec{width:78px;height:78px;min-width:78px;border-radius:50%;border:5px solid #fff;background:#E5484D;font-size:0}
-.rec.on{background:#fff}
-.rec.on::after{content:"";display:block;width:26px;height:26px;margin:auto;border-radius:6px;background:#E5484D}
+.rectime{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 8px);transform:translateX(-50%);background:#E5484D;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700;z-index:5}
+.rectime[hidden]{display:none}
+.bottom{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-around;padding:10px 10px calc(env(safe-area-inset-bottom,0px) + 14px);z-index:5}
+.btn{border:0;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font:inherit;font-weight:700;font-size:14px;min-width:62px;height:50px;padding:0 12px}
+.btn:disabled{opacity:.3}
 .ok{background:#F7D417;color:#111}
-.toast{position:fixed;left:50%;top:44%;transform:translate(-50%,-50%);background:rgba(0,0,0,.75);padding:14px 18px;border-radius:14px;font-size:15px;text-align:center;z-index:6;max-width:80vw;line-height:1.5}
+.rec{width:76px;height:76px;min-width:76px;border-radius:50%;border:5px solid #fff;background:#E5484D;padding:0}
+.rec.on{background:rgba(255,255,255,.25)}
+.rec.on::after{content:"";display:block;width:26px;height:26px;margin:auto;border-radius:6px;background:#E5484D}
+.toast{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%);background:rgba(0,0,0,.78);padding:14px 18px;border-radius:14px;font-size:15px;text-align:center;z-index:8;max-width:82vw;line-height:1.5}
 .toast[hidden]{display:none}
-.save{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 110px);transform:translateX(-50%);z-index:7;background:#F7D417;color:#111;border:0;border-radius:999px;font:inherit;font-weight:900;font-size:17px;padding:14px 26px}
-.save[hidden]{display:none}
+.sheet{position:fixed;left:0;right:0;bottom:0;background:#15171c;border-radius:18px 18px 0 0;padding:18px 16px calc(env(safe-area-inset-bottom,0px) + 18px);z-index:9;display:flex;flex-direction:column;gap:10px}
+.sheet[hidden]{display:none}
+.sheet p{margin:0 0 4px;font-size:14px;color:#aab;line-height:1.5}
+.sheet button{font:inherit;font-weight:800;font-size:16px;border:0;border-radius:12px;padding:15px;background:#2a2d35;color:#fff}
+.sheet .primary{background:#F7D417;color:#111}
 </style></head><body>
-<canvas id="cv" width="1080" height="1920"></canvas>
+<video id="vid" playsinline muted autoplay class="mirror"></video>
+<div class="frame">
+  <div class="title"><span>단어 끼워넣기 즉흥연기</span><span id="sitText">-이별-</span></div>
+  <div class="rail"></div>
+  <div class="track" id="track"></div>
+  <div class="count" id="count" hidden></div>
+</div>
 <div class="top" id="top">
   <select id="sitSel" aria-label="상황"></select>
   <select id="gapSel" aria-label="속도"><option value="2500">빠르게</option><option value="4000" selected>보통</option><option value="6000">느리게</option><option value="0">직접</option></select>
   <button id="flipBtn" type="button">카메라 전환</button>
 </div>
+<div class="rectime" id="recTime" hidden>● 0:00</div>
 <div class="bottom">
   <button class="btn" id="resetBtn" disabled>다시</button>
   <button class="btn" id="nextBtn" disabled>다음</button>
   <button class="rec" id="recBtn" aria-label="녹화"></button>
   <button class="btn ok" id="usedBtn" disabled>썼다 ✓</button>
-  <button class="btn" id="spacer" disabled style="visibility:hidden">-</button>
+  <span style="min-width:62px"></span>
 </div>
 <div class="toast" id="toast">카메라·마이크 권한을 허용해 주세요</div>
-<button class="save" id="saveBtn" hidden>영상 저장하기</button>
-<video id="vid" playsinline muted autoplay style="display:none"></video>
+<div class="sheet" id="sheet" hidden>
+  <p>녹화 끝! 영상은 필터 없이 원본 화질로 저장돼요. 필터는 기록을 보고 편집할 때 똑같이 입혀요.</p>
+  <button class="primary" id="saveBtn">1. 영상 저장하기</button>
+  <button id="copyBtn">2. 기록 복사하기 (클로드에게 붙여넣기)</button>
+  <button id="closeBtn">닫기</button>
+</div>
 <script>
 const WORDS_KO=["삼겹살","국민연금","공룡","비둘기","연말정산","탕후루","김장","고등어","세탁기","마라탕","헬스장","로또","미역국","펭귄","전기장판","붕어빵","월세","문어","치킨무","노래방","감자탕","지하철 2호선","고구마","청약","주차 딱지","포크레인","해녀","방어회","단톡방","손톱깎이","외계인","빨래 건조대","알로에","전동 킥보드","찜질방 계란","축의금","돼지국밥","이장님","동치미","군고구마","트로트","노가리","고무장갑","양말 한 짝","거북이","산낙지","족발","고추냉이","할머니 집","택배 상자","콧털","대머리 독수리","오징어 게임","면봉","줄넘기","소금빵","도라지","청국장","목욕탕 의자","관광버스"];
 const WORDS_IDIOM=["우왕좌왕","동문서답","일석이조","자업자득","금시초문","오리무중","적반하장","작심삼일","천고마비","유비무환","어부지리","호시탐탐","사면초가","대기만성"];
@@ -60,87 +93,71 @@ function wordSet(){
 
 const SITS=["이별","고백","프러포즈","소개팅","부모님께 인사","싸우고 화해","전 애인과 재회","결혼식 서약"];
 const LABELS=["Word 1","Word 2","Word 3","Bonus"];
-const W=1080,H=1920,RAILX=W*0.278,STEP=H*0.24,CUR=H*0.50;
-const FONT="'Noto Sans KR','Apple SD Gothic Neo',sans-serif";
-const cv=document.getElementById("cv"),g=cv.getContext("2d"),vid=document.getElementById("vid");
-const $=id=>document.getElementById(id);
+const STEP=24,CUR=50;
+const $=id=>document.getElementById(id),vid=$("vid");
 {const o=document.createElement("option");o.value="__rand";o.textContent="상황: 랜덤";$("sitSel").appendChild(o);
  SITS.forEach(s=>{const p=document.createElement("option");p.value=s;p.textContent="상황: "+s;$("sitSel").appendChild(p);});}
-
-let stream=null,facing="user",rec=null,chunks=[],state=null,timer=null,offset=0,targetOff=0,countdown=null,sit="이별",t0=0,lastBlob=null,lastName="",mime="";
+let stream=null,facing="user",rec=null,chunks=[],state=null,timer=null,t0=0,mime="",lastBlob=null,lastName="",lastLog="",tick=null;
 function toast(t,ms){const el=$("toast");el.textContent=t;el.hidden=false;clearTimeout(toast.t);if(ms)toast.t=setTimeout(()=>el.hidden=true,ms);}
 async function openStream(){
   if(stream)stream.getTracks().forEach(t=>t.stop());
   stream=await navigator.mediaDevices.getUserMedia({
-    video:{facingMode:facing,width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30}},
+    video:{facingMode:facing,width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30,max:30}},
     audio:{echoCancellation:false,noiseSuppression:true,autoGainControl:true}});
-  vid.srcObject=stream;await vid.play().catch(()=>{});
+  vid.srcObject=stream;vid.classList.toggle("mirror",facing==="user");await vid.play().catch(()=>{});
   $("toast").hidden=true;
 }
-openStream().catch(e=>toast("카메라를 열 수 없어요. 사파리 설정에서 카메라·마이크를 허용해 주세요 ("+e.name+")"));
+openStream().catch(e=>toast("카메라를 열 수 없어요. 설정 > 사파리 > 카메라·마이크를 허용해 주세요 ("+e.name+")"));
 $("flipBtn").onclick=()=>{if(state)return;facing=facing==="user"?"environment":"user";openStream().catch(e=>toast(e.name,2500));};
 
-function roundRect(x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();}
-function titleBox(text,cy,size){g.font="700 "+size+"px "+FONT;const tw=g.measureText(text).width,pad=size*.55,h=size*1.45;
-  g.fillStyle="#000";roundRect(W/2-tw/2-pad,cy-h/2,tw+pad*2,h,size*.32);g.fill();g.fillStyle="#fff";g.textAlign="center";g.textBaseline="middle";g.fillText(text,W/2,cy+size*.04);}
-function shadowText(text,x,y,align,size){g.font="700 "+size+"px "+FONT;g.textAlign=align;g.textBaseline="middle";
-  g.shadowColor="rgba(0,0,0,.55)";g.shadowBlur=10;g.shadowOffsetY=3;g.fillStyle="#fff";g.fillText(text,x,y);g.shadowColor="transparent";g.shadowBlur=0;g.shadowOffsetY=0;}
-function wrap(text,maxW,size){g.font="700 "+size+"px "+FONT;const out=[];let line="";const parts=text.includes(" ")?text.split(/(\s+)/):[...text];
-  for(const p of parts){const t=line+p;if(g.measureText(t).width>maxW&&line.trim()){out.push(line.trim());line=p.trimStart();}else line=t;}if(line.trim())out.push(line.trim());return out;}
-function drawCover(){const vw=vid.videoWidth,vh=vid.videoHeight;if(!vw){g.fillStyle="#222";g.fillRect(0,0,W,H);return;}
-  const s=Math.max(W/vw,H/vh),dw=vw*s,dh=vh*s;g.drawImage(vid,(W-dw)/2,(H-dh)/2,dw,dh);}
-function draw(){
-  drawCover();offset+=(targetOff-offset)*0.18;
-  g.fillStyle="#fff";g.fillRect(RAILX-3.5,0,7,H);
-  if(state&&state.cur){const a=state.cur;
-    for(let i=0;i<LABELS.length;i++){const y=CUR+STEP*i-offset;if(y<-100||y>H+100)continue;
-      const opened=i<a.idx,rolling=(i===a.idx-1&&a.rolling);
-      g.beginPath();g.arc(RAILX,y,40,0,Math.PI*2);g.fillStyle=opened?"#F7D417":"#8C8C8C";g.fill();g.lineWidth=8;g.strokeStyle="#fff";g.stroke();
-      shadowText(LABELS[i],RAILX-62,y,"right",40);
-      if(opened){const txt=rolling?a.spinText:(a.plan[i]+(a.used[i]?"  ✓":""));const lines=wrap(txt,W-(RAILX+62)-50,48);
-        lines.forEach((l,k)=>shadowText(l,RAILX+62,y+(k-(lines.length-1)/2)*60,"left",48));}}}
-  titleBox("단어 끼워넣기 즉흥연기",H*0.072,58);titleBox("-"+sit+"-",H*0.072+86,58);
-  if(countdown){g.fillStyle="rgba(0,0,0,.25)";g.fillRect(0,0,W,H);g.font="900 360px "+FONT;g.textAlign="center";g.textBaseline="middle";g.fillStyle="#fff";g.fillText(countdown,W/2,H/2);}
-  requestAnimationFrame(draw);
-}
-requestAnimationFrame(draw);
-
+function buildTrack(){const tr=$("track");tr.textContent="";tr.style.transform="translateY(0)";
+  LABELS.forEach((l,i)=>{const n=document.createElement("div");n.className="node";n.style.top=(CUR+STEP*i)+"cqh";n.dataset.i=i;
+    n.innerHTML='<div class="dot"></div><div class="lab"></div><div class="val"></div>';n.querySelector(".lab").textContent=l;tr.appendChild(n);});}
+buildTrack();
 const nowMs=()=>Math.round(performance.now()-t0);
 function newAttempt(){clearTimeout(timer);
-  state.cur={start:nowMs(),plan:wordSet(),idx:0,rolling:false,spinText:"",used:{},items:[]};state.attempts.push(state.cur);targetOff=0;offset=0;
-  timer=setTimeout(reveal,1200);}
+  state.cur={start:nowMs(),plan:wordSet(),idx:0,rolling:false,items:[]};state.attempts.push(state.cur);buildTrack();timer=setTimeout(reveal,1200);}
 function reveal(){if(!state||!state.cur)return;const a=state.cur;if(a.idx>=LABELS.length||a.rolling)return;clearTimeout(timer);
-  const i=a.idx;a.idx++;a.rolling=true;targetOff=STEP*i;const t=nowMs();let n=0;
-  const spin=setInterval(()=>{a.spinText=i===3?randomBonus():randomWord();n++;
-    if(n>=10){clearInterval(spin);if(state&&state.cur===a){a.rolling=false;a.items.push({k:LABELS[i],v:a.plan[i],t});if(a.idx<LABELS.length&&state.gap)timer=setTimeout(reveal,state.gap);}}},65);}
-function markUsed(){if(!state||!state.cur)return;const a=state.cur;for(let i=0;i<a.idx;i++){if(!a.used[i]){a.used[i]=nowMs();const it=a.items.find(x=>x.k===LABELS[i]);if(it)it.usedAt=a.used[i];return;}}}
-function pickMime(){const c=["video/mp4;codecs=avc1","video/mp4","video/webm;codecs=vp9,opus","video/webm;codecs=vp8,opus","video/webm"];return c.find(t=>window.MediaRecorder&&MediaRecorder.isTypeSupported(t))||"";}
+  const i=a.idx;a.idx++;a.rolling=true;$("track").style.transform="translateY(-"+(STEP*i)+"cqh)";
+  const node=$("track").querySelector('[data-i="'+i+'"]'),v=node.querySelector(".val");node.classList.add("on");
+  const t=nowMs();let n=0;
+  const spin=setInterval(()=>{v.textContent=i===3?randomBonus():randomWord();n++;
+    if(n>=8){clearInterval(spin);v.textContent=a.plan[i];if(state&&state.cur===a){a.rolling=false;a.items.push({k:LABELS[i],v:a.plan[i],t});if(a.idx<LABELS.length&&state.gap)timer=setTimeout(reveal,state.gap);}}},80);}
+function markUsed(){if(!state||!state.cur)return;const a=state.cur;
+  for(const it of a.items){if(!it.usedAt){it.usedAt=nowMs();$("track").querySelector('[data-i="'+LABELS.indexOf(it.k)+'"]').classList.add("used");return;}}}
+function pickMime(){const c=["video/mp4;codecs=avc1","video/mp4","video/webm;codecs=vp9,opus","video/webm"];return c.find(t=>window.MediaRecorder&&MediaRecorder.isTypeSupported(t))||"";}
 function startRec(){
   if(!stream){toast("카메라가 아직 안 켜졌어요",2000);return;}
-  sit=$("sitSel").value==="__rand"?SITS[Math.floor(Math.random()*SITS.length)]:$("sitSel").value;
-  const out=cv.captureStream(30);stream.getAudioTracks().forEach(t=>out.addTrack(t));
+  const sit=$("sitSel").value==="__rand"?SITS[Math.floor(Math.random()*SITS.length)]:$("sitSel").value;
+  $("sitText").textContent="-"+sit+"-";
   mime=pickMime();
-  try{rec=new MediaRecorder(out,mime?{mimeType:mime,videoBitsPerSecond:8000000}:{videoBitsPerSecond:8000000});}catch(e){toast("이 기기에선 녹화가 안 돼요 ("+e.name+")",3000);return;}
+  try{rec=new MediaRecorder(stream,mime?{mimeType:mime,videoBitsPerSecond:12000000}:{videoBitsPerSecond:12000000});}catch(e){toast("이 기기에선 녹화가 안 돼요 ("+e.name+")",3000);return;}
   chunks=[];rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};rec.onstop=done;rec.start(1000);t0=performance.now();
-  state={sit,gap:+$("gapSel").value,attempts:[],cur:null};
-  $("recBtn").classList.add("on");$("top").style.visibility="hidden";$("saveBtn").hidden=true;
+  state={sit,gap:+$("gapSel").value,camera:facing,attempts:[],cur:null};
+  $("recBtn").classList.add("on");$("top").style.visibility="hidden";$("recTime").hidden=false;
+  tick=setInterval(()=>{const s=Math.floor(nowMs()/1000);$("recTime").textContent="● "+Math.floor(s/60)+":"+String(s%60).padStart(2,"0");},500);
   ["resetBtn","nextBtn","usedBtn"].forEach(id=>$(id).disabled=false);
   try{navigator.wakeLock&&navigator.wakeLock.request("screen").catch(()=>{});}catch(e){}
-  let n=3;countdown=n;const cd=setInterval(()=>{n--;if(n>0){countdown=n;return;}clearInterval(cd);countdown=null;newAttempt();},1000);
+  const c=$("count");let n=3;c.textContent=n;c.hidden=false;
+  const cd=setInterval(()=>{n--;if(n>0){c.textContent=n;return;}clearInterval(cd);c.hidden=true;newAttempt();},1000);
 }
-function stopRec(){if(rec&&rec.state==="recording"){clearTimeout(timer);rec.stop();}}
+function stopRec(){if(rec&&rec.state==="recording"){clearTimeout(timer);clearInterval(tick);rec.stop();}}
 function stamp(){const d=new Date(),p=n=>String(n).padStart(2,"0");return p(d.getMonth()+1)+p(d.getDate())+"_"+p(d.getHours())+p(d.getMinutes());}
 function done(){
   const type=(mime||"video/webm").split(";")[0],ext=type.includes("mp4")?"mp4":"webm";
-  lastBlob=new Blob(chunks,{type});lastName="즉흥연기_"+sit+"_"+stamp()+"."+ext;
-  state=null;$("recBtn").classList.remove("on");$("top").style.visibility="visible";["resetBtn","nextBtn","usedBtn"].forEach(id=>$(id).disabled=true);
-  $("saveBtn").hidden=false;toast("녹화 끝! 아래 '영상 저장하기'를 눌러주세요",2500);
+  lastBlob=new Blob(chunks,{type});lastName="즉흥_"+state.sit+"_"+stamp()+"."+ext;
+  lastLog="[즉흥연기 기록] "+lastName+"\n"+JSON.stringify({sit:state.sit,camera:state.camera,attempts:state.attempts.map(a=>({start:a.start,items:a.items}))});
+  try{localStorage.setItem("last_log",lastLog);}catch(e){}
+  state=null;$("recBtn").classList.remove("on");$("top").style.visibility="visible";$("recTime").hidden=true;
+  ["resetBtn","nextBtn","usedBtn"].forEach(id=>$(id).disabled=true);$("sheet").hidden=false;
 }
 $("saveBtn").onclick=async()=>{
   if(!lastBlob)return;const file=new File([lastBlob],lastName,{type:lastBlob.type});
-  try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file]});$("saveBtn").hidden=true;return;}}catch(e){if(e.name==="AbortError")return;}
-  const a=document.createElement("a");a.href=URL.createObjectURL(lastBlob);a.download=lastName;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},3000);$("saveBtn").hidden=true;
+  try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file]});toast("저장했으면 이제 2번 기록 복사!",2200);return;}}catch(e){if(e.name==="AbortError")return;}
+  const a=document.createElement("a");a.href=URL.createObjectURL(lastBlob);a.download=lastName;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},3000);
 };
+$("copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(lastLog);toast("복사했어요. 영상 보낼 때 같이 붙여넣어 주세요",2500);}catch(e){toast("복사가 안 됐어요. 화면을 캡처해서 보내주세요",2500);}};
+$("closeBtn").onclick=()=>{$("sheet").hidden=true;};
 $("recBtn").onclick=()=>{if(rec&&rec.state==="recording")stopRec();else startRec();};
 $("resetBtn").onclick=()=>state&&state.cur&&newAttempt();
 $("nextBtn").onclick=reveal;$("usedBtn").onclick=markUsed;
