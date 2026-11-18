@@ -1,6 +1,6 @@
 # 넥서스 제작 후보 (최신이 위)
 
-## [제작 요청됨 2026-11-18 18:24] 2026-11-18 18:24 — 🔥바로제작 🔥릴스 우선 제미나이 '태스크 모드' 한국 포함 6개국 무료 개방 — 채팅 대신 'Task'로 바꾸면 예약·쇼핑 대행
+## [제작 요청됨 2026-11-18 18:24] 2026-11-18 18:24 — 🔥바로제작(내일 1순위) 🔥릴스 우선 제미나이 '태스크 모드' 한국 포함 6개국 무료 개방 — 채팅 대신 'Task'로 바꾸면 예약·쇼핑 대행
 - 핵심: 구글 11/17(현지) 공식 발표, 제미나이 4 하이드로젠 기반. 한국·미국·일본·캐나다·호주·인도 무료(기존 AI Pro·Ultra 전용, 10/13 도입). 60개+ 앱 연동, 쇼핑·결제(승인·상한). 전화·문자·이메일 전달은 미국부터. 무료 한도 미공개
 - 출처: AI타임스 11/18 17:50 https://www.aitimes.com/news/articleList.html?view_type=sm , https://www.digitaltoday.co.kr/en/view/127105/google-revamps-ai-agent-gemini-spark-into-tasks-adds-support-in-south-korea , https://ppc.land/geminis-19-99-task-mode-goes-free-in-6-countries/
 - 다룬 채널: 국내 유튜브 18곳 아직 없음(선점). 오늘 인스타 2편 예약돼 있어 내일(11/19) 정보형 1순위 예상
