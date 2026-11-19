@@ -407,3 +407,6 @@
 - 2026-11-19 12:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts 확인(페이지 안 fetch로 ytInitialData·publishDate 파싱) — 11:24 이후 새 롱폼·쇼츠 없음(최신 롱폼: 스마트대디 'Astra 6.2 vs 페이블 vs 카본' 9시간 전 1.2만). AI타임스·긱뉴스 직접 확인 + 웹검색 3건. 바로 제작 없음.
 2026-11-19 13:23 | 구글 스티치 루프 실험 에이전트(AI타임스 12:59, 알림·참고·개발자용) / SKT 누구 스마트홈 2028년 종료·긱뉴스 Reticle·NGINX CVE(알림 제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-19 13:23: 내장 브라우저로 유튜브 18개 채널 /videos 확인(페이지 안 fetch로 ytInitialData lockupViewModel 파싱, 홀수 시라 쇼츠 생략) — 12:23 이후 새 롱폼 없음(최신: 스마트대디 'Astra 6.2 vs 페이블 vs 카본' 10시간 전 1.3만). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 바로 제작 없음. 인스타 브라우저 안 엶, vidIQ 미사용.
+2026-11-19 14:24 | AI 쇼츠 만드는 법, 내 얼굴·내 목소리로 촬영 없이 (클로드 명령어 공개)(경쟁 주제·이종범, 3분 전 — AI아스트라·조팀장과 'AI 쇼츠 제작' 3곳🔥, 튜토리얼) | 유튜브 | https://www.youtube.com/@aiadjunct/videos
+2026-11-19 14:24 | 케임브리지 올해의 단어 '인간'(AI타임스 14:19)·데이터메이커 중기부 표창(14:03)(알림 제외) / 긱뉴스 Show GN Argus(알림 제외·소형) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-19 14:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts 확인(페이지 안 fetch로 ytInitialData·publishDate 파싱) — 13:23 이후 새 롱폼 1개(이종범 AI 쇼츠), 새 쇼츠 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음.
