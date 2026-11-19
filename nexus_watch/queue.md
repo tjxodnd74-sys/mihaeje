@@ -1,5 +1,9 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-19 10:23 — (참고·🔥릴스 우선 후보) 'A2O LITE 미혼앤비혼(NEON) 챌린지 AI로 만들기' 쇼츠 2곳 — AI하쥬(2.1만)·AI리더스랩(3.2천, Pollo AI Recast 소개·광고성 가능) / 인스타 @geminies.zip 'AI 안경도 포기한 예체능 입시 Top3'(120만·평소 83배, 11/17, 구글 제미나이 팀 계정·광고성)
+- 출처: https://www.youtube.com/shorts/8lsMbY0ywiw , https://www.youtube.com/shorts/RDRhzXbisfA , https://www.instagram.com/reel/Df1ONwZxjq4
+- 추천 형식: 새 기능 아님(챌린지 영상 튜토리얼·광고성) → 바로 제작 제외. 10:41 창 안이라 요청도 안 함. 09:18 네온 카드(11:47 예약) 이후 새 소비자 기능 소식 없음
+
 ## [완료 카드뉴스] [제작 요청됨 2026-11-19 09:18] 2026-11-19 09:18 — 🔥바로제작 구글 새 AI '제미나이 4 네온' 출시 — 카본보다 싸고 살짝 더 똑똑, AI 프로·울트라면 지금 제미나이 앱에서 선택
 - 핵심: 구글 11/18(현지) 공식 블로그. 카본과 하이드로젠 사이 모델. AA 지능지수 61(전체 3위, 페이블 5.2 65·아스트라 62 다음). 작업당 비용 카본보다 32%↓. API 3/15달러. AI 프로·울트라 제미나이 앱에서 선택(무료 제외). 7주 새 4번째 새 모델
 - 출처: https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/ , https://www.aitimes.com/news/articleView.html?idxno=217546 , https://www.unite.ai/google-launches-gemini-4-neon-for-coding-knowledge-work-and-science/
