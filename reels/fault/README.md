@@ -3,5 +3,8 @@
 - 3D(three.js + Kenney Car Kit CC0) 교차로, 0~1초 안에 쾅 → "몇 대 몇?" → 느린 다시 보기(A·B 표시, 신호) → 3·2·1 → 정답 "A 100 : 0 B" + 이유 한 줄 + 출처.
 - 나레이션 없음(글씨+효과음) → isAiGenerated false. 12~15초. 정답은 캡션에 쓰지 않음(댓글로 먼저 찍게).
 - 과실은 손해보험협회 과실비율 인정기준(보도자료·과실비율정보포털)에 있는 '기본 과실'만. 캡션에 "실제 과실은 상황에 따라 달라짐".
+- 준비: `bash reels/fault/setup.sh` (Kenney GLB는 저장소 `reels/fault/glb/`에 있음, CC0).
+- 사례는 `reels/fault/cases.md`의 '대기' 맨 위부터. 끝나면 [완료 날짜].
+- 태웅: "그치 저렇게, 보기 쉽게 해야 돼"(11/19) → 교차로·주차장 전체가 한눈에 보이게 넓게, A(노랑)·B(파랑) 표시, 필요한 신호만 패널로, 글씨는 한두 줄 크게.
 - 만들기: web 폴더에 fault.html·three(npm three@0.170.0)·glb(Kenney GLB format)·폰트 → `node render.js spec.json silent.mp4` (약 3.5분, `require('playwright')` 전역) → `python3 mix.py`. 장면이 다른 사고면 fault.html의 posA/stateAt(경로)을 그 사고에 맞게 새로 짬.
 - 후보(2021.1 손해보험협회 신설 기준): 주차장 통로 후진 vs 출차 40:60, 정차 후 출발 vs 진로변경 70:30, 비보호 좌회전 vs 우회전 60:40, 신호 없는 사거리 좌회전 vs 맞은편 우회전 60:40, 적색점멸 직진 vs 황색점멸 직진 70:30.
