@@ -1,0 +1,5 @@
+{"total":13.0,"crashAt":1.0,"carA":"sedan.glb","carB":"suv.glb",
+ "phase":{"replay":2.2,"ask":5.6,"reveal":8.6},
+ "text":{"hook":"우회전하다 <em>쾅!</em><br>몇 대 몇?","replay":"보행자 <em>초록불</em>인데<br>우회전한 A","replaySub":"B는 초록불에 직진 중",
+ "ask":"A : B<br>몇 대 몇?","askSub":"댓글로 먼저 찍어봐 👇","revealTop":"정답","reveal":"A <em>100</em> : 0 B","why":"보행자 신호에 우회전 = 신호 위반",
+ "src":"손해보험협회 과실비율 기준 (2021년 신설)"}}

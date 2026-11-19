@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(Pretendard-Black.woff2) format("woff2");font-weight:900}
+@font-face{font-family:P;src:url(Pretendard-ExtraBold.woff2) format("woff2");font-weight:800}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#8fb5d6;font-family:P,sans-serif;color:#fff;word-break:keep-all}
+canvas{position:absolute;inset:0}
+.ov{position:absolute;left:0;right:0;text-align:center;font-weight:900;letter-spacing:-.04em;-webkit-text-stroke:14px #000;paint-order:stroke fill;text-shadow:0 8px 24px rgba(0,0,0,.45)}
+#top{top:250px;font-size:92px;line-height:1.15}
+#top em,#mid em{font-style:normal;color:#ffe14a}
+#mid{top:720px;font-size:120px;line-height:1.1}
+#sub{top:1300px;font-size:58px;font-weight:800;-webkit-text-stroke:10px #000}
+.tag{position:absolute;font-weight:900;font-size:44px;padding:8px 20px;border-radius:14px;border:5px solid #000;color:#000;white-space:nowrap;transform:translate(-50%,-100%)}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#dim{position:absolute;inset:0;background:#000;opacity:0}
+#sig{position:absolute;right:50px;top:560px;display:none;background:#111;border:5px solid #000;border-radius:22px;padding:16px 18px;text-align:center}
+#sig .l{width:62px;height:62px;border-radius:50%;margin:8px auto;background:#333}
+#sig .t{font-size:30px;font-weight:800;margin-top:6px;-webkit-text-stroke:0}
+#src{position:absolute;left:0;right:0;bottom:430px;text-align:center;font-size:34px;font-weight:800;color:#fff;-webkit-text-stroke:7px #000;paint-order:stroke fill;opacity:0}
+</style>
+<script type="importmap">{"imports":{"three":"./three/build/three.module.js","three/addons/":"./three/examples/jsm/"}}</script>
+</head><body>
+<div id="dim"></div>
+<div id="top" class="ov"></div><div id="mid" class="ov"></div><div id="sub" class="ov"></div>
+<div id="tagA" class="tag" style="background:#ffe14a;display:none">A</div><div id="tagB" class="tag" style="background:#7fd3ff;display:none">B</div>
+<div id="sig"><div class="l" id="sr"></div><div class="l" id="sg"></div><div class="t">보행자 신호</div></div>
+<div id="src"></div><div id="flash"></div>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+const S = window.SPEC;
+const W = 1080, H = 1920;
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.insertBefore(renderer.domElement, document.body.firstChild);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x9cc3e6); scene.fog = new THREE.Fog(0x9cc3e6, 60, 140);
+const cam = new THREE.PerspectiveCamera(42, W / H, 0.1, 400);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x6b7a5a, 1.6));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(-20, 40, 15); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -40, right: 40, top: 40, bottom: -40 }); scene.add(sun);
+// ground + roads
+const mat = c => new THREE.MeshStandardMaterial({ color: c, roughness: 0.95 });
+const plane = (w, h, c, x, z, y = 0) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat(c)); m.rotation.x = -Math.PI / 2; m.position.set(x, y, z); m.receiveShadow = true; scene.add(m); return m; };
+plane(400, 400, 0x7a9c5c, 0, 0);
+const RW = 10; // road width (two lanes)
+plane(400, RW, 0x3b3f45, 0, 0, 0.01); plane(RW, 400, 0x3b3f45, 0, 0, 0.012);
+// sidewalks
+for (const [x, z] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) { plane(194, 3, 0xb9b4aa, x * 100, z * (RW / 2 + 1.5), 0.02); plane(3, 194, 0xb9b4aa, x * (RW / 2 + 1.5), z * 100, 0.021); }
+// center yellow lines (not inside the box)
+const line = (w, h, c, x, z) => plane(w, h, c, x, z, 0.03);
+for (const s of [1, -1]) { line(180, 0.18, 0xf2c200, s * (RW / 2 + 90 + 3), -0.15); line(180, 0.18, 0xf2c200, s * (RW / 2 + 90 + 3), 0.15); line(0.18, 180, 0xf2c200, -0.15, s * (RW / 2 + 90 + 3)); line(0.18, 180, 0xf2c200, 0.15, s * (RW / 2 + 90 + 3)); }
+// crosswalks on each arm + stop lines
+const cw = (horiz, c0) => { for (let i = -4; i <= 4; i++) { if (horiz) line(0.6, 3.2, 0xffffff, i * 1.1, c0); else line(3.2, 0.6, 0xffffff, c0, i * 1.1); } };
+cw(true, RW / 2 + 2.4); cw(true, -(RW / 2 + 2.4)); cw(false, RW / 2 + 2.4); cw(false, -(RW / 2 + 2.4));
+line(RW / 2, 0.4, 0xffffff, RW / 4, RW / 2 + 4.6); // A's stop line (south arm, northbound lane)
+// buildings for depth
+const bmat = [0xd9d2c5, 0xc7ced6, 0xe6dcc8, 0xbfc7bf];
+let k = 0; for (const [x, z] of [[-16, -16], [16, -16], [-16, 16], [17, 17], [-30, -30], [30, -28], [-30, 30], [32, 30]]) { const h = 6 + (k * 7) % 12; const b = new THREE.Mesh(new THREE.BoxGeometry(14, h, 14), mat(bmat[k++ % 4])); b.position.set(x, h / 2, z); b.castShadow = b.receiveShadow = true; scene.add(b); }
+// cars
+const loader = new GLTFLoader();
+const load = f => new Promise(r => loader.load('glb/' + f, g => r(g.scene)));
+const [A, B] = await Promise.all([load(S.carA || 'sedan.glb'), load(S.carB || 'suv.glb')]);
+for (const c of [A, B]) { c.scale.setScalar(1.9); c.traverse(o => { if (o.isMesh) { o.castShadow = true; } }); scene.add(c); }
+const debris = await Promise.all(['debris-door.glb', 'debris-bumper.glb', 'debris-plate-a.glb', 'debris-spoiler-a.glb'].map(load));
+debris.forEach(d => { d.scale.setScalar(1.9); d.visible = false; scene.add(d); });
+// paths (x east, -z north). A: northbound lane x=+2.5 turning right into eastbound lane z=+2.5
+const LA = 2.5, R = 4.0, cx = LA + R, cz = LA + R;
+function posA(s) { // s = metres along A path, 0 = start of arc
+  if (s < 0) return { x: LA, z: cz - s, yaw: Math.PI };          // heading north (-z)
+  const arc = R * Math.PI / 2;
+  if (s <= arc) { const a = s / R; return { x: cx - R * Math.cos(a), z: cz - R * Math.sin(a), yaw: Math.PI - a }; }
+  return { x: cx + (s - arc), z: LA, yaw: Math.PI / 2 };
+}
+const VA = 3.2, VB = 11.0, TC = S.crashAt; // crash time (global)
+const sCrash = R * Math.PI / 4 * 1.05;        // A is ~half way through the turn at the crash
+const pc = posA(sCrash); const bCrashX = pc.x - 2.6;   // B's centre when it hits A's left side
+function stateAt(tt) { // tt = time relative to crash (seconds), negative = before
+  if (tt <= 0) { const a = posA(sCrash + tt * VA); return { A: { ...a, spin: 0, dx: 0 }, B: { x: bCrashX + tt * VB, z: LA, yaw: Math.PI / 2, spin: 0, dx: 0 } }; }
+  const e = 1 - Math.exp(-tt * 3.2);
+  return { A: { ...pc, x: pc.x + 3.4 * e, z: pc.z - 0.6 * e, yaw: pc.yaw - 0.9 * e, spin: e }, B: { x: bCrashX + 2.2 * e, z: LA + 0.5 * e, yaw: Math.PI / 2 + 0.35 * e, spin: e } };
+}
+const put = (o, s) => { o.position.set(s.x, 0, s.z); o.rotation.y = s.yaw; };
+const ease = p => p < 0 ? 0 : p > 1 ? 1 : 1 - Math.pow(1 - p, 3);
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const rnd = n => { const x = Math.sin(n * 12.9898) * 43758.5453; return x - Math.floor(x); };
+const $ = id => document.getElementById(id);
+const proj = (o, dy) => { const v = new THREE.Vector3(o.position.x, dy, o.position.z).project(cam); return [(v.x + 1) / 2 * W, (1 - v.y) / 2 * H]; };
+const setText = (el, html, t0, t, pop = true) => { if (html == null) { el.style.opacity = 0; return; } el.innerHTML = html; const u = t - t0; el.style.opacity = clamp(u / 0.08); el.style.transform = pop ? `scale(${1 + 0.25 * (1 - ease(u / 0.18))})` : ''; };
+window.seek = async t => {
+  // phases from spec
+  const P = S.phase; let tt, camMode;
+  if (t < P.replay) { tt = t - TC; camMode = 'live'; }
+  else if (t < P.ask) { const u = (t - P.replay) / (P.ask - P.replay); tt = -1.9 + u * 2.1; camMode = 'replay'; if (tt > 0.15) tt = 0.15; }
+  else { tt = 1.2; camMode = 'hold'; }
+  const st = stateAt(tt); put(A, st.A); put(B, st.B);
+  // debris
+  debris.forEach((d, i) => { const u = tt; if (u <= 0 || camMode === 'replay' && u < 0.02) { d.visible = false; return; } d.visible = true; const ang = rnd(i + 1) * 6.28, sp = 3 + rnd(i + 7) * 4; const e = 1 - Math.exp(-u * 3);
+    d.position.set(pc.x - 1.2 + Math.cos(ang) * sp * e, Math.max(0, 2.2 * Math.sin(Math.min(u, 0.6) / 0.6 * Math.PI) * (0.5 + rnd(i))), pc.z + Math.sin(ang) * sp * e); d.rotation.set(u * 6 * rnd(i + 3), u * 5, u * 4 * rnd(i + 5)); });
+  // camera
+  let cp, look;
+  if (camMode === 'live') { const z = clamp((t - TC) / 0.6); cp = new THREE.Vector3(-13 + 5 * z, 27 - 9 * z, 31 - 10 * z); look = new THREE.Vector3(2 + 1.5 * z, 0, 1 + 1.5 * z); }
+  else if (camMode === 'replay') { cp = new THREE.Vector3(-12, 30, 30); look = new THREE.Vector3(1, 0, 1); }
+  else { const u = clamp((t - P.ask) / 1.5); cp = new THREE.Vector3(-7 + 1.5 * u, 13, 17 - 2 * u); look = new THREE.Vector3(pc.x, 0, pc.z); }
+  const sh = (camMode === 'live' && t > TC && t < TC + 0.45) ? (1 - (t - TC) / 0.45) * 0.6 : 0;
+  cam.position.copy(cp).add(new THREE.Vector3((rnd(Math.floor(t * 30)) - .5) * sh, (rnd(Math.floor(t * 30) + 9) - .5) * sh, 0)); cam.lookAt(look);
+  renderer.render(scene, cam);
+  // overlays
+  $('flash').style.opacity = (t > TC && t < TC + 0.12) ? 0.85 * (1 - (t - TC) / 0.12) : 0;
+  $('dim').style.opacity = t >= P.ask ? 0.45 * ease((t - P.ask) / 0.3) : 0;
+  const T = S.text;
+  setText($('top'), t >= 0.15 && t < P.replay ? T.hook : t >= P.replay && t < P.ask ? T.replay : t >= P.ask && t < P.reveal ? T.ask : t >= P.reveal ? T.revealTop : null, t >= P.reveal ? P.reveal : t >= P.ask ? P.ask : t >= P.replay ? P.replay : 0.15, t);
+  let mid = null, m0 = 0;
+  if (t >= P.ask && t < P.reveal) { const left = Math.ceil(P.reveal - t); const n = Math.min(3, left); mid = `<em>${n}</em>`; m0 = P.reveal - n; }
+  if (t >= P.reveal) { mid = T.reveal; m0 = P.reveal; }
+  setText($('mid'), mid, m0, t);
+  setText($('sub'), t >= P.replay && t < P.ask ? T.replaySub : t >= P.reveal + 0.6 ? T.why : t >= P.ask && t < P.reveal ? T.askSub : null, t >= P.reveal + 0.6 ? P.reveal + 0.6 : t >= P.ask ? P.ask : P.replay, t, false);
+  $('src').textContent = T.src; $('src').style.opacity = t >= P.reveal + 1.2 ? ease((t - P.reveal - 1.2) / 0.3) : 0;
+  // tags over cars during replay
+  const showTags = camMode !== 'live' || t > TC + 0.3;
+  for (const [id, o] of [['tagA', A], ['tagB', B]]) { const el = $(id); el.style.display = showTags && t < P.ask ? 'block' : 'none'; const [x, y] = proj(o, 2.6); el.style.left = x + 'px'; el.style.top = y + 'px'; }
+  // signal panel during replay: pedestrian green for A's crosswalk
+  $('sig').style.display = (t >= P.replay && t < P.ask) ? 'block' : 'none'; $('sr').style.background = '#3a1010'; $('sg').style.background = '#22e06b';
+};
+window.ready = async () => { await document.fonts.ready; };
+window.__ok = true;
+</script></body></html>
