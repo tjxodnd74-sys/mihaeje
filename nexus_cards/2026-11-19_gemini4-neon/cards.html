@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Regular.woff2);font-weight:400}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-SemiBold.woff2);font-weight:600}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+:root{--bg:#0A1517;--vi:#5FD8FF;--vi2:#2FB7E6;--am:#FF9F6B;--tx:#F3F4FA;--mu:#9EA3BD;--ln:rgba(255,255,255,.10);--red:#FF6B6B;--grn:#5BE0A0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#333;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.mono{font-family:'DejaVu Sans Mono',monospace;letter-spacing:.08em}
+.card{width:1080px;height:1350px;position:relative;overflow:hidden;margin:0 0 40px;color:var(--tx);
+ background:radial-gradient(900px 600px at 85% 0%,rgba(47,183,230,.20),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(255,140,90,.10),transparent 60%),var(--bg)}
+.card:before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:54px 54px;pointer-events:none}
+.bar{position:absolute;left:64px;right:64px;top:52px;display:flex;justify-content:space-between;align-items:center;font-size:22px;color:var(--mu);padding-bottom:22px;border-bottom:2px dashed var(--ln)}
+.bar .l{display:flex;align-items:center;gap:14px}
+.bar img{width:34px;height:34px}
+.bar .r{color:var(--vi);font-weight:700}
+.wrap{position:absolute;left:64px;right:64px;top:150px}
+.lab{font-size:26px;color:var(--vi);font-weight:700;margin-bottom:22px}
+.h{font-weight:900;font-size:96px;line-height:1.12;letter-spacing:-.045em}
+.h .v{color:var(--vi)} .h .a{color:var(--am)}
+.s{margin-top:26px;font-size:34px;color:#C9CCDD;font-weight:500;letter-spacing:-.02em;line-height:1.5}
+.s b{color:var(--am);font-weight:800}
+.box{position:absolute;left:64px;right:64px;border:2px solid var(--ln);border-radius:28px;background:rgba(255,255,255,.035);padding:60px 56px}
+.box .tag{position:absolute;top:-17px;left:36px;background:var(--bg);padding:0 14px;font-size:22px;color:var(--mu)}
+.foot{position:absolute;left:64px;right:64px;bottom:56px;font-size:24px;color:#6E7390;font-weight:500;line-height:1.5}
+.stamp{display:inline-block;border:4px solid var(--vi);color:var(--vi);font-weight:900;font-size:30px;padding:6px 20px;border-radius:10px;transform:rotate(-6deg);letter-spacing:.12em}
+
+/* map */
+.map{display:flex;flex-direction:column;gap:30px}
+.mrow{display:flex;align-items:center;gap:24px}
+.pill{flex:1;height:124px;border-radius:26px;display:flex;align-items:center;gap:20px;padding:0 30px;font-size:40px;font-weight:700}
+.pill.o{background:rgba(163,148,255,.12);border:2px solid rgba(163,148,255,.35);color:#D9D4FF}
+.pill.n{background:#fff;color:#14162A}
+.pill i{font-style:normal;font-size:44px}
+.arr{color:var(--am);font-size:46px;font-weight:900}
+
+/* quote */
+.q{background:#FBF7EA;color:#1C1D28;border-radius:20px;padding:48px 50px;font-family:Georgia,serif;font-size:44px;line-height:1.5}
+.q mark{background:#FFE37A;padding:0 4px}
+.qk{margin-top:44px;font-size:54px;font-weight:800;line-height:1.4;letter-spacing:-.03em}
+.qk span{color:var(--am)}
+
+/* list */
+.ol{display:flex;flex-direction:column;gap:54px}
+.ol .it{display:flex;align-items:baseline;gap:30px;font-size:50px;font-weight:700;letter-spacing:-.03em}
+.ol .it .n{font-size:30px;color:var(--vi);font-weight:700;width:52px}
+.ol .it small{display:block;font-size:33px;color:var(--mu);font-weight:500;margin-top:6px}
+.ol .it.hot{color:var(--am)}
+
+/* ox */
+.ox{position:absolute;left:64px;right:64px;top:620px;display:flex;gap:24px}
+.ox .c{flex:1;border-radius:28px;padding:50px 44px;min-height:560px;border:2px solid var(--ln);background:rgba(255,255,255,.03)}
+.ox .c.x{border-color:rgba(255,107,107,.6);background:rgba(255,107,107,.08)}
+.ox .hd{font-size:30px;font-weight:700;margin-bottom:26px;color:var(--grn)}
+.ox .x .hd{color:var(--red)}
+.ox li{list-style:none;font-size:44px;font-weight:700;line-height:1.35;margin-bottom:36px;letter-spacing:-.02em}
+
+/* copy box */
+.copy{font-size:46px;font-weight:700;line-height:1.9;letter-spacing:-.02em}
+.copy .f{background:rgba(255,200,97,.18);color:var(--am);border:2px solid rgba(255,200,97,.55);border-radius:10px;padding:0 10px}
+.tip{font-size:37px;color:#C9CCDD;line-height:1.65;font-weight:500}
+.tip b{color:var(--am)}
+.best{position:absolute;right:40px;top:-26px;border:4px solid var(--red);color:var(--red);font-weight:900;font-size:26px;padding:4px 16px;border-radius:8px;transform:rotate(6deg);background:var(--bg);letter-spacing:.1em}
+
+
+:root{--bg:#0D1326;--vi:#7DB1FF;--vi2:#3F7BFF;--am:#FF6B5B;--mu:#A3ABC4;--ln:rgba(255,255,255,.11)}
+.card{background:radial-gradient(900px 600px at 90% 0%,rgba(63,123,255,.20),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(255,107,91,.12),transparent 60%),var(--bg)}
+.s{font-size:38px}.foot{font-size:26px}
+#k1{background:#101425}#k1:before{display:none}
+#k1 .img{position:absolute;left:0;top:0;width:1080px;height:920px;overflow:hidden}
+#k1 .img img{position:absolute;width:1080px;left:0;top:-30px}
+#k1 .img:after{content:"";position:absolute;left:0;right:0;bottom:0;height:440px;background:linear-gradient(transparent,rgba(16,20,37,.85) 55%,#101425)}
+#k1 .tg{position:absolute;left:60px;top:50px;background:#FFD43B;color:#111;font-size:30px;font-weight:900;padding:8px 20px;border-radius:10px}
+#k1 .tt{position:absolute;left:58px;right:30px;top:770px;font-size:128px;font-weight:900;line-height:1.08;letter-spacing:-.055em;color:#fff;text-shadow:0 6px 24px rgba(0,0,0,.75)}
+#k1 .tt em{font-style:normal;color:#FFD43B}
+#k1 .hd2{position:absolute;left:60px;right:60px;bottom:40px;display:flex;justify-content:space-between;font-size:24px;font-weight:700;color:#8790AA}
+/* banned chips */
+.chips{display:flex;flex-wrap:wrap;gap:20px}
+.chips span{font-size:42px;font-weight:800;padding:16px 28px;border-radius:999px;background:rgba(255,255,255,.05);border:2px solid var(--ln);letter-spacing:-.02em;color:#C9CEE0}
+.chips span.new{background:#FFD43B;color:#111;border-color:#FFD43B;position:relative}
+.chips span.new b{position:absolute;right:-14px;top:-22px;background:var(--am);color:#fff;font-size:22px;padding:4px 12px;border-radius:8px;font-weight:900}
+.mx .chips span.new{animation:pop 6s ease-out infinite}
+@keyframes pop{0%{transform:scale(1)}8%{transform:scale(1.18) rotate(-3deg)}16%,100%{transform:scale(1)}}
+.dday{display:flex;align-items:center;gap:34px;margin-top:44px}
+.dday .d{font-size:120px;font-weight:900;color:#FFD43B;letter-spacing:-.05em;line-height:1}
+.dday .t{font-size:38px;font-weight:700;line-height:1.45}
+.dday .t small{display:block;font-size:30px;color:var(--mu);font-weight:500}
+/* ladder */
+.lad{display:flex;flex-direction:column;gap:30px}
+.lv{display:flex;align-items:center;gap:26px;border-radius:26px;padding:34px 36px;border:2px solid var(--ln);background:rgba(255,255,255,.04)}
+.lv .k{flex:none;width:300px;font-size:40px;font-weight:800;color:#C9CEE0;letter-spacing:-.03em}
+.lv .ar{color:var(--mu);font-size:44px;font-weight:900}
+.lv .r{font-size:46px;font-weight:900;letter-spacing:-.03em}
+.lv .r small{display:block;font-size:30px;color:var(--mu);font-weight:600;margin-top:6px}
+.lv.l1{border-color:rgba(255,212,59,.5)} .lv.l1 .r{color:#FFD43B}
+.lv.l2{border-color:rgba(255,140,90,.6);background:rgba(255,140,90,.08)} .lv.l2 .r{color:#FF9A6B}
+.lv.l3{border-color:rgba(255,80,80,.75);background:rgba(255,80,80,.12)} .lv.l3 .r{color:#FF6B6B}
+.mx .lv{animation:lit 6s ease-out infinite}
+.mx .lv.l2{animation-delay:.5s}.mx .lv.l3{animation-delay:1s}
+@keyframes lit{0%{opacity:.35;transform:translateX(-24px)}10%,100%{opacity:1;transform:none}}
+/* pic */
+.pic{position:absolute;left:64px;right:64px;top:440px;height:420px;border-radius:28px;overflow:hidden;border:2px solid var(--ln)}
+.pic img{width:100%;height:100%;object-fit:cover}
+.mx .pic img{animation:zoom 6s ease-in-out infinite}
+@keyframes zoom{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.flow{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.flow div{flex:1;text-align:center;font-size:40px;font-weight:900;letter-spacing:-.03em;line-height:1.3}
+.flow div small{display:block;font-size:28px;color:var(--mu);font-weight:600}
+.flow .ar{flex:none;color:#FFD43B;font-size:56px}
+/* ox */
+.ox{top:470px}.ox .c{min-height:600px;padding:44px 38px}.ox li{font-size:42px;margin-bottom:30px}
+.ox .hd{color:var(--grn);font-size:34px}
+.copy{border:2px dashed rgba(255,212,59,.5);border-radius:20px;padding:34px 36px;background:rgba(255,212,59,.06);font-size:46px;line-height:1.7;font-weight:700}
+.copy .f{background:rgba(125,177,255,.15);color:var(--vi);border:2px solid rgba(125,177,255,.5);border-radius:10px;padding:0 10px}
+.best{border-color:#FFD43B;color:#FFD43B}
+.ol{display:flex;flex-direction:column;gap:60px}
+.ol .it{display:flex;align-items:baseline;gap:30px;font-size:50px;font-weight:800;letter-spacing:-.03em}
+.ol .it .n{font-size:32px;color:var(--vi);font-weight:700;width:52px;flex:none}
+.ol .it small{display:block;font-size:33px;color:var(--mu);font-weight:500;margin-top:10px;line-height:1.4}
+#k8 .glow{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(125,177,255,.36) 0%,rgba(63,123,255,.13) 45%,transparent 70%)}
+#k8 .floor{position:absolute;left:50%;top:640px;transform:translateX(-50%);width:420px;height:70px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.55),transparent 70%)}
+#k8 .peng{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:300px;filter:drop-shadow(0 20px 40px rgba(125,177,255,.45))}
+#k8 .bubble{position:absolute;left:600px;top:190px;background:#fff;color:#14162A;font-weight:800;font-size:34px;padding:18px 28px;border-radius:26px 26px 26px 6px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+#k8 .c{position:absolute;left:0;right:0;top:720px;text-align:center}
+#k8 .h{font-size:88px}
+#k8 .key{display:inline-block;margin-top:40px;border:4px solid #FFD43B;color:#FFD43B;font-size:54px;font-weight:900;padding:14px 46px;border-radius:14px}
+#k8 .s{text-align:center}
+
+:root{--bg:#0B1A1C;--vi:#4FE3D2;--vi2:#1FB8A8;--am:#FF9A4D;--mu:#9FB3B5;--ln:rgba(255,255,255,.11)}
+.card{background:radial-gradient(900px 600px at 90% 0%,rgba(79,227,210,.18),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(255,154,77,.13),transparent 60%),var(--bg)}
+#k1{background:#0E2426}
+#k1 .img:after{background:linear-gradient(transparent,rgba(14,36,38,.85) 55%,#0E2426)}
+/* trio */
+.trio{display:flex;flex-direction:column;gap:28px}
+.tr{display:flex;align-items:center;gap:28px;border-radius:26px;padding:34px 36px;border:2px solid var(--ln);background:rgba(255,255,255,.04)}
+.tr .k{flex:none;width:300px;font-size:46px;font-weight:900;letter-spacing:-.03em}
+.tr .r{font-size:40px;font-weight:700;color:#D5DCDD;letter-spacing:-.03em}
+.tr.neo{border:3px solid #FFD43B;background:rgba(255,212,59,.10)} .tr.neo .k{color:#FFD43B}
+.tr.neo b{position:absolute}
+.mx .tr.neo{animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 rgba(255,212,59,0)}50%{box-shadow:0 0 50px rgba(255,212,59,.55)}}
+/* plan table */
+.plan{display:flex;flex-direction:column;gap:22px}
+.pl{display:flex;justify-content:space-between;align-items:center;border-radius:22px;padding:30px 40px;font-size:46px;font-weight:800;background:rgba(255,255,255,.04);border:2px solid var(--ln)}
+.pl .o{color:var(--grn);font-size:44px}.pl .x{color:var(--red);font-size:40px}
+.pl.on{border-color:rgba(91,224,160,.6);background:rgba(91,224,160,.08)}
+/* big number */
+.big{display:flex;align-items:flex-end;gap:18px}
+.big .num{font-size:220px;font-weight:900;color:#FFD43B;line-height:.9;letter-spacing:-.06em}
+.big .u{font-size:60px;font-weight:900;color:#FFD43B}
+.big .d{font-size:40px;font-weight:800;line-height:1.35;margin-left:14px;padding-bottom:16px}
+.bars{margin-top:46px;display:flex;flex-direction:column;gap:22px}
+.br{display:flex;align-items:center;gap:22px;font-size:34px;font-weight:800}
+.br .nm{width:170px;flex:none}
+.br .tk{height:58px;border-radius:14px}
+.br .c1{width:640px;background:#5A6B6D}
+.br .c2{width:435px;background:#FFD43B}
+.mx .br .c2{transform-origin:left;animation:shrink 6s ease-out infinite}
+@keyframes shrink{0%{width:640px}25%,100%{width:435px}}
+.mx .num{animation:cnt 6s ease-out infinite}
+@keyframes cnt{0%{opacity:.4;transform:scale(.85)}18%{opacity:1;transform:scale(1.06)}26%,100%{transform:scale(1)}}
+.mini{margin-top:40px;font-size:34px;color:#C9D3D4;font-weight:600;line-height:1.5}
+.mini b{color:#FFD43B}
+.chips2{display:flex;flex-wrap:wrap;gap:18px}
+.chips2 span{font-size:40px;font-weight:800;padding:16px 26px;border-radius:999px;background:rgba(79,227,210,.10);border:2px solid rgba(79,227,210,.4)}
+</style></head><body>
+<section class="card" id="k1">
+ <div class="img"><img src="cover.png"></div>
+ <div class="tg">AI 뉴스</div>
+ <div class="tt">제미나이 새 AI<br>'네온' 떴는데<br><em>무료는 아직</em></div>
+ <div class="hd2 mono"><span>@nexus_studio.kr</span><span>끝까지 보세요</span></div>
+</section>
+
+<section class="card" id="k2"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · 제미나이 4</div><div class="r">FILE 02/08</div></div>
+ <div class="wrap"><div class="lab mono">WHAT'S NEW · 11/18(미국)</div>
+  <div class="h">카본과 하이드로젠<br><span class="v">사이</span>에 네온</div></div>
+ <div class="box" style="top:540px;padding:60px 40px 46px"><div class="tag mono">GEMINI 4 · 구글 공식 블로그</div>
+  <div class="trio">
+   <div class="tr"><div class="k">카본</div><div class="r">어렵고 긴 일</div></div>
+   <div class="tr neo"><div class="k">네온 NEW</div><div class="r">깊이 + 속도 균형</div></div>
+   <div class="tr"><div class="k">하이드로젠</div><div class="r">빠른 일상 작업</div></div>
+  </div></div>
+</section>
+
+<section class="card" id="k3"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · 제미나이 4</div><div class="r">FILE 03/08</div></div>
+ <div class="wrap"><div class="lab mono">WHO CAN USE</div>
+  <div class="h">내 요금제로<br><span class="a">쓸 수 있나?</span></div></div>
+ <div class="box" style="top:520px;padding:60px 40px 46px"><div class="tag mono">제미나이 앱 · 구글 발표 기준</div>
+  <div class="plan">
+   <div class="pl on"><span>구글 AI 울트라</span><span class="o">⭕ 지금</span></div>
+   <div class="pl on"><span>구글 AI 프로</span><span class="o">⭕ 지금</span></div>
+   <div class="pl"><span>무료 · 플러스</span><span class="x">❌ 발표에 없음</span></div>
+  </div>
+  <div class="tip" style="margin-top:34px">고르는 곳: 앱 <b>모델 선택 메뉴</b> → 'Gemini 4 Neon'</div></div>
+</section>
+
+<section class="card" id="k4"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · 제미나이 4</div><div class="r">FILE 04/08</div></div>
+ <div class="wrap"><div class="lab mono">COST PER TASK</div>
+  <div class="h">카본보다<br><span class="v">싸게</span> 일해요</div></div>
+ <div class="box" style="top:540px;padding:64px 48px 50px"><div class="tag mono">작업 1건당 비용 · 기본(high) 설정</div>
+  <div class="big"><div class="num mono">32</div><div class="u">%↓</div><div class="d">카본보다<br>덜 들어요</div></div>
+  <div class="bars"><div class="br"><span class="nm">카본</span><span class="tk c1"></span></div><div class="br"><span class="nm" style="color:#FFD43B">네온</span><span class="tk c2"></span></div></div>
+  <div class="mini">AA 지능 지수 <b>61점 · 전체 3위</b><br><span style="font-size:28px;color:var(--mu)">생각 단계 맨 위(xhigh) 기준 · 구글 발표</span></div></div>
+</section>
+
+<section class="card" id="k5"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · 제미나이 4</div><div class="r">FILE 05/08</div></div>
+ <div class="wrap"><div class="lab mono">GOOD AT</div>
+  <div class="h">이런 일에<br><span class="a">맡겨 보세요</span></div></div>
+ <div class="pic" style="top:440px;height:400px"><img src="scene.png"></div>
+ <div class="box" style="top:900px;padding:56px 40px 44px"><div class="tag mono">구글이 꼽은 강점</div>
+  <div class="chips2"><span>📊 엑셀·PDF·차트</span><span>💻 여러 파일 코드 수정</span><span>🔬 과학 문제</span></div></div>
+</section>
+
+<section class="card" id="k6"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · 제미나이 4</div><div class="r">FILE 06/08</div></div>
+ <div class="wrap"><div class="lab mono">FOR DEVELOPERS</div>
+  <div class="h">개발자라면<br><span class="v">API 가격</span></div></div>
+ <div class="box" style="top:520px"><div class="tag mono">GEMINI API · 100만 토큰당</div>
+  <div class="ol">
+   <div class="it"><span class="n mono">IN</span><div>입력 3달러<small>캐시된 입력은 0.15달러(95%↓)</small></div></div>
+   <div class="it"><span class="n mono">OUT</span><div>출력 15달러<small>한 번에 100만 토큰까지 읽어요</small></div></div>
+  </div></div>
+ <div class="foot">출처: 구글 공식 블로그 'Introducing Gemini 4 Neon'(2026.11.18, 미국)</div>
+</section>
+
+<section class="card" id="k7"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · 제미나이 4</div><div class="r">FILE 07/08</div></div>
+ <div class="wrap"><div class="lab mono">TRY THIS</div>
+  <div class="h">네온 고르고<br><span class="v">이렇게</span> 시켜요</div></div>
+ <div class="box" style="top:520px"><div class="tag mono">COPY · PASTE</div><div class="best mono">PDF·엑셀</div>
+  <div class="copy">핵심 숫자 <span class="f">5개</span>만 표로 뽑고<br>쪽수·셀 위치도 적어 줘.<br>없는 건 <span class="f">빈칸</span>으로.</div>
+  <div class="tip" style="margin-top:30px">파일 올리고 붙여 넣으면 끝. <b>근거 위치</b>로 바로 확인해요.</div></div>
+</section>
+
+<section class="card" id="k8">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS BRIEF · 제미나이 4</div><div class="r">END OF FILE</div></div>
+ <div class="glow"></div><div class="floor"></div><img class="peng" src="../assets/heart.png"><div class="bubble">새 AI 나오면 또 알려 줄게요!</div>
+ <div class="c"><div class="h">저장해 두고<br>따라 해 보세요</div>
+  <div class="key">📌 저장 · 팔로우</div>
+  <div class="s" style="margin-top:36px">바로 써먹는 AI 소식, 넥서스가 쉽게 정리해요<br><span class="mono" style="color:var(--vi);font-size:28px">@nexus_studio.kr</span></div></div>
+</section>
+</body></html>

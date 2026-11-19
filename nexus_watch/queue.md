@@ -1,6 +1,6 @@
 # 넥서스 제작 후보 (최신이 위)
 
-## [제작 요청됨 2026-11-19 09:18] 2026-11-19 09:18 — 🔥바로제작 구글 새 AI '제미나이 4 네온' 출시 — 카본보다 싸고 살짝 더 똑똑, AI 프로·울트라면 지금 제미나이 앱에서 선택
+## [완료 카드뉴스] [제작 요청됨 2026-11-19 09:18] 2026-11-19 09:18 — 🔥바로제작 구글 새 AI '제미나이 4 네온' 출시 — 카본보다 싸고 살짝 더 똑똑, AI 프로·울트라면 지금 제미나이 앱에서 선택
 - 핵심: 구글 11/18(현지) 공식 블로그. 카본과 하이드로젠 사이 모델. AA 지능지수 61(전체 3위, 페이블 5.2 65·아스트라 62 다음). 작업당 비용 카본보다 32%↓. API 3/15달러. AI 프로·울트라 제미나이 앱에서 선택(무료 제외). 7주 새 4번째 새 모델
 - 출처: https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/ , https://www.aitimes.com/news/articleView.html?idxno=217546 , https://www.unite.ai/google-launches-gemini-4-neon-for-coding-knowledge-work-and-science/
 - 다룬 채널: 네온은 국내 유튜브 18곳 아직 없음(선점). 새 모델 비교 🔥3곳 — 스마트대디 'Astra 6.2 vs 페이블 vs 카본'(6시간 전)·AI하쥬 '아스트라 6.2 솔직 평가'(9시간 전)·이종범(1일, 1.9만)
