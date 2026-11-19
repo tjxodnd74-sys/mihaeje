@@ -410,3 +410,6 @@
 2026-11-19 14:24 | AI 쇼츠 만드는 법, 내 얼굴·내 목소리로 촬영 없이 (클로드 명령어 공개)(경쟁 주제·이종범, 3분 전 — AI아스트라·조팀장과 'AI 쇼츠 제작' 3곳🔥, 튜토리얼) | 유튜브 | https://www.youtube.com/@aiadjunct/videos
 2026-11-19 14:24 | 케임브리지 올해의 단어 '인간'(AI타임스 14:19)·데이터메이커 중기부 표창(14:03)(알림 제외) / 긱뉴스 Show GN Argus(알림 제외·소형) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-19 14:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts 확인(페이지 안 fetch로 ytInitialData·publishDate 파싱) — 13:23 이후 새 롱폼 1개(이종범 AI 쇼츠), 새 쇼츠 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음.
+2026-11-19 15:24 | GPT-6.2 아스트라·솔 일부 혹평·알트먼 사용성 개선 인정(AI타임스 14:52, 알림·참고)·클로드 코드 '코드 모드' 실험 기능(14:26, 알림·참고·개발자)·북한 AI 챗봇 '지혜의 샘'(15:14, 알림·참고) / 긱뉴스 Show GN Stitch.ai·CMU 강의 공개(알림 제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-19 15:24 | @snapdeck_intern 딸깍 AI PPT(24.5만·783배)·@ai___tori AI 안경 3D 애니(38만)·연합뉴스TV 앵커 AI 안경(170만)·@milly_note_ 수능날 인터넷 끄자(9.7만)(vidIQ, 알림·참고) | https://www.instagram.com/reel/Df1efu1p129
+- 2026-11-19 15:24: 내장 브라우저로 유튜브 18개 채널 /videos 확인(페이지 안 fetch로 ytInitialData lockupViewModel 파싱, 홀수 시라 쇼츠 생략) — 14:24 이후 새 롱폼 없음(최신: 이종범 'AI 쇼츠 만드는 법' 1시간 전). AI타임스(새 기사 3건)·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음) + vidIQ 아웃라이어 1회(5크레딧, 잔액 1534). 바로 제작 없음. 인스타 브라우저 안 엶.
