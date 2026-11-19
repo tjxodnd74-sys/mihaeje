@@ -401,3 +401,5 @@
 2026-11-19 10:23 | @geminies.zip AI 안경 예체능 입시 Top3(120만, 광고성)·다꾸뉴스 수능 AI 커닝 대책(13.9만)·YTN LEET 만점자(vidIQ, 알림·참고) | https://www.instagram.com/reel/Df1ONwZxjq4
 2026-11-19 10:23 | 긱뉴스 Reticle 코딩 에이전트 앱 검증·NoisyTCP CVE·Show GN 청약 체크·DubEval·Gemini 4 Carbon 느린 이유·하버드 코드 리뷰 병목(알림 제외·개발자) | 긱뉴스 | https://news.hada.io/
 - 2026-11-19 10:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 ytInitialData 파싱) — 09:24 이후 새 롱폼 없음(최신: 스마트대디 'Astra 6.2 vs 페이블 vs 카본' 7시간 전 7.6천), 새로 본 쇼츠 3개(AI리더스랩 A2O NEON 챌린지·스마트대디 2개). AI타임스(최신 09:00, 새 기사 없음)·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음) + vidIQ 아웃라이어 1회(5크레딧). 10:41 앞뒤 30분이라 긴급 요청 안 함, 바로 만들 주제도 없음. 인스타 브라우저 안 엶.
+2026-11-19 11:24 | AI리더의 서가 '강화학습 기본과 PyTorch 제2판'(알림 제외·도서) / 긱뉴스 Show GN Coda One AI 탐지기·대한민국 부정행위 열람·AirStats·KPMG 감사 실험 AI 에이전트·캠브리지 올해의 단어 'human'(알림 제외·개발자/소형) | AI타임스·긱뉴스 | https://news.hada.io/
+- 2026-11-19 11:24: 내장 브라우저로 유튜브 18개 채널 /videos 확인(페이지 안 fetch로 ytInitialData 파싱, 홀수 시라 쇼츠 생략) — 10:23 이후 새 롱폼 없음(최신: 스마트대디 'Astra 6.2 vs 페이블 vs 카본' 8시간 전 1만). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 새 소비자 기능 소식 없음 → 바로 제작 없음.
