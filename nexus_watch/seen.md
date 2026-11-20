@@ -436,3 +436,7 @@
 - 2026-11-20 13:23: 내장 브라우저로 유튜브 18개 채널 /videos 확인(페이지 안 fetch로 ytInitialData 파싱, 홀수 시라 쇼츠 생략) — 12:24 이후 새 롱폼 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음. 인스타 브라우저 안 엶.
 2026-11-20 14:24 | GPT-6.2 아스트라·제미나이 4 네온 수능 만점·K-엑사원 2.5 국산 1위(AI타임스 13:56, 알림·참고)·문샷 칩 임대 취소(14:07)·구글 우주 DC 블루 오리진(13:44)·AMD 급락(13:34)·알리바바 소송(13:26)(알림·참고/제외·기업) / 긱뉴스 새 소식 없음 | AI타임스 | https://www.aitimes.com/news/articleView.html?idxno=217604
 - 2026-11-20 14:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 ytInitialData 파싱) — 13:23 이후 새 롱폼·쇼츠 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음. 인스타 브라우저 안 엶.
+2026-11-20 15:24 | CONNECT AI LAB '바이브코딩으로 웹사이트 만든다고 돈 벌 수 있을까? THE FOUNDER EP.3'(4j2wF2goc0w, 14분 전) | 유튜브 | https://www.youtube.com/@connect-ai-lab/videos
+2026-11-20 15:24 | 엔비디아 인셉션 인수 협상(AI타임스 14:30)·AMD 리사 수 젠슨 황 발언(14:55)·KT·LG 양자직접통신(14:21)(알림·참고/제외·기업) / 긱뉴스 새 소식 없음 | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-20 15:24 | vidIQ: @ai_content_marketing_ AI 사이트 3개(56.7만)·@moeumi_log 힉스필드 2010 브이로그(29.5만, 광고성)·@chatelier.kr·@oiivviio11 수능 AI 안경(이미 다룸) | https://www.instagram.com/reel/Df4HHuaSz4y
+- 2026-11-20 15:24: 내장 브라우저로 유튜브 18개 채널 /videos 확인(페이지 안 fetch로 ytInitialData 파싱, 홀수 시라 쇼츠 생략) — 14:24 이후 새 롱폼 1개(CONNECT AI LAB). AI타임스(새 기사 3건, 기업)·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음) + vidIQ 아웃라이어 1회(5크레딧, 잔액 1479). 바로 제작 없음. 인스타 브라우저 안 엶.
