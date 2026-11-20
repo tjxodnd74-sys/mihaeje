@@ -420,3 +420,9 @@
 2026-11-19 18:24 | 조팀장 'AI 시대 4050이 20대보다 앞서는 이유'(4분 전)·AI아스트라 '아스트라 6.2 vs 페이블 5.2 AI영상 디렉팅'(39분 전)·AInspire '한지'(34분 전, AI 무관) | 유튜브 | https://www.youtube.com/@aiastra0/videos
 2026-11-19 18:24 | 챗GPT 라이브 받아쓰기·10분 제한 폐지(AI타임스 17:30·오픈AI 릴리스 노트 11/18, 알림·🔥바로제작 요청)·구글 AI 모드 임시 대화(17:40, 알림)·MS 바이트댄스 공급 확대(17:54, 알림·참고) / LG 임원인사·허깅페이스 큐원 어댑터(알림 제외) | AI타임스·오픈AI | https://help.openai.com/en/articles/6825453-chatgpt-release-notes
 - 2026-11-19 18:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts 확인(페이지 안 fetch로 ytInitialData 파싱) — 17:24 이후 새 롱폼 3개. AI타임스·긱뉴스·오픈AI 릴리스 노트 직접 확인 + 웹검색 4건(최근 24시간 결과 없음). 챗GPT 라이브 받아쓰기 → fire_trigger 긴급 제작 요청(오늘 2회차, 성공). vidIQ 생략. 인스타 브라우저 안 엶.
+2026-11-20 10:24 | 이종범 '챗GPT Astra 6.2 첫인상 결과물 10개 판정'(4시간 전)·찍봇 '요즘 난리난 숏드라마 클로드로 자동화'(14시간 전) | 유튜브 | https://www.youtube.com/@aiadjunct/videos
+2026-11-20 10:24 | 쇼츠: AI리더스랩 '영화 같은 숏드라마 3편'(okfgdpaIqZ4)·AInspire Ep09(kcOt3W3t2eo)·이너리드 'GIF 프롬프트'(HleZIh28JHo)·노마드 '검증된 광고'(KfuRo7gVljA)·신쌤 '유튜브 보는 동안 AI 브라우저'(TsZBk-VRq-I)·바이브랩스 Saturday Build(iMG7Yn8Rog4)·소소한 어도비 신기능(sbaho-au6Q0)·조팀장 '3일 AI 공부법'(p4irLWHiyjE)·데키랩 일본여행(DVhaWKbGPoI)·호랑웨이브 수능 화이팅(lK0sUx1KB5g) | 유튜브 쇼츠 | -
+2026-11-20 10:24 | 앤트로픽 상장 첫날 기업가치 2조달러(AI타임스 05:25, 알림·참고)·아모데이 속도 조절 발언(07:00, 알림·참고)·美 중국 반도체 수출 허가 강화(06:23, 알림 제외) / 긱뉴스 Show GN Radar·OpenDocKit·Kiri(알림 제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-20 10:24 | vidIQ: @milly_note_·@ai___tori·@yu_leeeun·@attorney_doni 수능 AI 안경(이미 다룸) | https://www.instagram.com/reel/Df3cFiyyYFp
+- 2026-11-20 10:24: 오늘 첫 감시. 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 ytInitialData 파싱) — 어제 18:24 이후 새 롱폼 2개. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 소비자 기능 소식 없음). vidIQ 1회. 바로 제작 요청 없음.
+
