@@ -443,3 +443,6 @@
 2026-11-20 16:24 | 쇼츠: 스마트대디 8gb0Ll844_o / 원카 FLXWLGC1znc / CONNECT UfDCT1Ywv8I · 롱폼 첫 확인: 이너리드 CWa580tsgXg·바이브랩스 LfzbzHrCb-c·AInspire HodidIfzD_g | 유튜브 | https://www.youtube.com/@innerlead/videos
 2026-11-20 16:24 | 애플 범용 AI 에이전트 개발(AI타임스 16:15, 알림·참고·보도)·모레 TIDE(16:03, 알림 제외·기업)·KISA 스팸 AI 차단 5억건(16:02, 알림·참고·정책) / 긱뉴스 새 소식 없음 | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-20 16:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 ytInitialData 파싱) — 15:24 이후 새 롱폼 없음, 새 쇼츠 3개. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음(16:41 창). 인스타 브라우저 안 엶.
+2026-11-20 17:24 | 조팀장 '떡상하는 AI 시니어 쇼츠 만드는 법 1시간 몰아보기'(lhtsaKEhzu4, 25분 전) | 유튜브 | https://www.youtube.com/@조팀장의ai공략집/videos
+2026-11-20 17:24 | 구글 맥용 제미나이 컴퓨터 유즈(구글 블로그 11/19·AI타임스 16:38, 알림·참고·미국 영어 한정)·GPT-6.2 API 지연 할인(17:17)·코덱스 퍼포먼스 팩토리(16:47)·엔비디아 소환장(17:07)·칩 수출 허가 논란(16:57)(알림 제외) / 긱뉴스 새 소식 없음 | AI타임스·구글 | https://blog.google/innovation-and-ai/products/gemini-app/computer-use-mac/
+- 2026-11-20 17:24: 내장 브라우저로 유튜브 18개 채널 /videos 확인(페이지 안 fetch로 ytInitialData 파싱 — 형식이 lockupViewModel로 바뀌어 파서 수정, 홀수 시라 쇼츠 생략) — 16:24 이후 새 롱폼 1개. AI타임스·긱뉴스·구글 블로그 직접 확인 + 웹검색 5건. vidIQ 생략(10·15시만). 바로 제작 없음(컴퓨터 유즈는 미국·영어 한정). 인스타 브라우저 안 엶.
