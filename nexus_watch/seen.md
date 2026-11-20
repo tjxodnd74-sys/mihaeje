@@ -429,3 +429,6 @@
 2026-11-20 11:23 | 이종범 'SUMBISORI AI Short Film (Higgsfield Talent Contest)'(dc4RjRrFn0E, 33분 전, 알림·참고) | 유튜브 | https://www.youtube.com/@aiadjunct/videos
 2026-11-20 11:23 | AI타임스 'AI리더의 서가' 북칼럼(09:00, 알림 제외) / 긱뉴스 Show GN Slop·Radar(알림 제외) | AI타임스·긱뉴스 | https://news.hada.io/
 - 2026-11-20 11:23: 내장 브라우저로 유튜브 18개 채널 /videos 확인(페이지 안 fetch로 ytInitialData JSON 파싱, 홀수 시라 쇼츠 생략) — 10:24 이후 새 롱폼 1개. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음. 인스타 브라우저 안 엶.
+2026-11-20 12:24 | 쇼츠: 에이커 uek1yx21COE·p2ZzisOnqqQ / AI아스트라 QWU1aVOGDSs / 소소한 owI9z5yhRPA / 원카 rKl38AtQ9as / 스마트대디 LKcuUBbK-3E / AI하쥬 VgUo-an7XPY·h1T35wT3Ofw / 찍봇 CVGR3kXvJ-c·JKyOeC0RvA0 / 이너리드 JnFrjgMg2q8·QWrDTJQpADI / 허성범 651mOD2p7KE | 유튜브 | https://www.youtube.com/@zzikbot/shorts
+2026-11-20 12:24 | 앤트로픽 직원 2800명 백만장자(AI타임스 11:56)·삼성전자 사장 인사(11:38)·XM 앤트로픽 거래지원(11:36)(알림·참고·기업) / 긱뉴스 Claude 블랙홀 문제 해결(11/9 재게시)·AI는 왜 로컬로·OpenDocKit(알림 제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-20 12:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 ytInitialData 파싱) — 11:23 이후 새 롱폼 없음, 새 쇼츠 13개. AI타임스·긱뉴스 직접 확인 + 웹검색 4건(최근 24시간 새 소비자 기능 없음). 바로 제작 없음.
