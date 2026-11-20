@@ -440,3 +440,6 @@
 2026-11-20 15:24 | 엔비디아 인셉션 인수 협상(AI타임스 14:30)·AMD 리사 수 젠슨 황 발언(14:55)·KT·LG 양자직접통신(14:21)(알림·참고/제외·기업) / 긱뉴스 새 소식 없음 | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-20 15:24 | vidIQ: @ai_content_marketing_ AI 사이트 3개(56.7만)·@moeumi_log 힉스필드 2010 브이로그(29.5만, 광고성)·@chatelier.kr·@oiivviio11 수능 AI 안경(이미 다룸) | https://www.instagram.com/reel/Df4HHuaSz4y
 - 2026-11-20 15:24: 내장 브라우저로 유튜브 18개 채널 /videos 확인(페이지 안 fetch로 ytInitialData 파싱, 홀수 시라 쇼츠 생략) — 14:24 이후 새 롱폼 1개(CONNECT AI LAB). AI타임스(새 기사 3건, 기업)·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음) + vidIQ 아웃라이어 1회(5크레딧, 잔액 1479). 바로 제작 없음. 인스타 브라우저 안 엶.
+2026-11-20 16:24 | 쇼츠: 스마트대디 8gb0Ll844_o / 원카 FLXWLGC1znc / CONNECT UfDCT1Ywv8I · 롱폼 첫 확인: 이너리드 CWa580tsgXg·바이브랩스 LfzbzHrCb-c·AInspire HodidIfzD_g | 유튜브 | https://www.youtube.com/@innerlead/videos
+2026-11-20 16:24 | 애플 범용 AI 에이전트 개발(AI타임스 16:15, 알림·참고·보도)·모레 TIDE(16:03, 알림 제외·기업)·KISA 스팸 AI 차단 5억건(16:02, 알림·참고·정책) / 긱뉴스 새 소식 없음 | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-20 16:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 ytInitialData 파싱) — 15:24 이후 새 롱폼 없음, 새 쇼츠 3개. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음(16:41 창). 인스타 브라우저 안 엶.
