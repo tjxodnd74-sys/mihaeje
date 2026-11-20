@@ -426,3 +426,6 @@
 2026-11-20 10:24 | vidIQ: @milly_note_·@ai___tori·@yu_leeeun·@attorney_doni 수능 AI 안경(이미 다룸) | https://www.instagram.com/reel/Df3cFiyyYFp
 - 2026-11-20 10:24: 오늘 첫 감시. 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch로 ytInitialData 파싱) — 어제 18:24 이후 새 롱폼 2개. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 소비자 기능 소식 없음). vidIQ 1회. 바로 제작 요청 없음.
 
+2026-11-20 11:23 | 이종범 'SUMBISORI AI Short Film (Higgsfield Talent Contest)'(dc4RjRrFn0E, 33분 전, 알림·참고) | 유튜브 | https://www.youtube.com/@aiadjunct/videos
+2026-11-20 11:23 | AI타임스 'AI리더의 서가' 북칼럼(09:00, 알림 제외) / 긱뉴스 Show GN Slop·Radar(알림 제외) | AI타임스·긱뉴스 | https://news.hada.io/
+- 2026-11-20 11:23: 내장 브라우저로 유튜브 18개 채널 /videos 확인(페이지 안 fetch로 ytInitialData JSON 파싱, 홀수 시라 쇼츠 생략) — 10:24 이후 새 롱폼 1개. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음. 인스타 브라우저 안 엶.
