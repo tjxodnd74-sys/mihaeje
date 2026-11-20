@@ -8,7 +8,7 @@ const { spawn } = require('child_process'); const fs = require('fs');
   const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
   p.on('console', m => { if (m.type() === 'error') console.log('ERR', m.text()); }); p.on('pageerror', e => console.log('PAGEERR', e.message));
   await p.addInitScript(s => { window.SPEC = s; }, spec);
-  await p.goto('http://127.0.0.1:8765/fault.html'); await p.waitForFunction(() => window.__ok === true, null, { timeout: 120000 }); await p.evaluate(() => window.ready());
+  await p.goto('http://127.0.0.1:8765/' + (spec.page || 'fault.html')); await p.waitForFunction(() => window.__ok === true, null, { timeout: 120000 }); await p.evaluate(() => window.ready());
   if (stills.length) { for (const t of stills) { await p.evaluate(t => window.seek(t), t); await p.screenshot({ path: `${out}_${t}.jpg`, type: 'jpeg', quality: 80 }); } }
   else {
     const N = Math.round(spec.total * 30);
