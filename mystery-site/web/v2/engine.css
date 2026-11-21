@@ -195,6 +195,11 @@ a{color:inherit}
 .v2-dialog-box{max-height:92vh;overflow:auto;border-radius:var(--radius);background:var(--night-2);color:var(--enamel)}
 .v2-dialog-bar{position:sticky;top:0;display:flex;justify-content:flex-end;padding:8px;background:rgb(var(--night2-rgb));box-shadow:0 1px 0 var(--line);z-index:2}
 .v2-close{background:rgba(var(--night-rgb),.8);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px}
+.v2-dialog-label{margin-right:auto;align-self:center;padding:0 8px;font-size:13px;color:var(--soft-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.v2-dialog-box:focus{outline:none}
+.v2-dhint-wrap{margin-top:16px;padding-top:12px;border-top:1px dashed var(--line)}
+.v2-dhint-label{margin:0 0 8px;font-size:12px;color:var(--soft-3);letter-spacing:.08em}
+.v2-dhint-wrap .v2-dhint{margin:0}
 .v2-dialog .v2-paper{box-shadow:none;border-radius:0;max-width:none;min-height:60vh}
 .v2-doc-title{margin:0 0 14px;font-size:24px;letter-spacing:-.01em}
 .v2-doc-body{font-size:16px;line-height:1.8}

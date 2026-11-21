@@ -68,7 +68,8 @@ async function main() {
     if (label) dialog.setAttribute('aria-label', label);
     const box = el('div', 'v2-dialog-box');
     const bar = el('div', 'v2-dialog-bar');
-    bar.append(btn('v2-close', '닫기', () => closeDialog(), '닫기'));
+    bar.append(el('span', 'v2-dialog-label', label || ''), btn('v2-close', '닫기', () => closeDialog(), '닫기'));
+    box.tabIndex = -1;
     box.append(bar, node);
     dialog.append(box);
     const me = dialog;
@@ -76,6 +77,7 @@ async function main() {
     me.addEventListener('click', (e) => { if (e.target === me) me.close(); });
     document.body.append(dialog);
     dialog.showModal();
+    box.focus({ preventScroll: true });
     box.scrollTop = 0;
   }
   function closeDialog() { if (dialog?.open) dialog.close(); }
@@ -345,6 +347,7 @@ async function main() {
     head.append(el('p', 'v2-eyebrow', (solved ? '해결한 장치 · ' : '') + (dev.hintCode || '')));
     head.append(el('h2', 'v2-doc-title', dev.title));
     head.append(el('p', 'v2-device-intro', dev.intro));
+    let hintBlock = null;
     // 장치 안 힌트: 창을 닫지 않고 그 자리에서 한 단계씩 받는다 (힌트 창과 같은 기록 S.hints)
     if (!solved) {
       const hs = (typeof dev.hints === 'function' ? dev.hints(S) : dev.hints) || [];
@@ -361,7 +364,7 @@ async function main() {
           } else if (hs.length < 3) hb.append(el('p', 'v2-dhint-note', '이 편은 정답 힌트가 없다 여기까지가 전부다'));
         };
         drawHint();
-        head.append(hb);
+        hintBlock = hb;
       }
     }
     node.append(head);
@@ -387,6 +390,7 @@ async function main() {
       gate(); const _draw = draw; draw = () => { _draw(); gate(); };
     }
     node.append(status, actions);
+    if (hintBlock) { const wrap = el('div', 'v2-dhint-wrap'); wrap.append(el('p', 'v2-dhint-label', '막혔다면'), hintBlock); node.append(wrap); }
     bench.append(node);
     // 오른쪽: 관련 자료를 옆에 펼쳐 둡니다. 창을 오갈 필요가 없습니다.
     const refs = (dev.docs || []).filter((r) => ep.docs[r]);
