@@ -475,7 +475,8 @@ async function petHome({ mobile = false } = {}) {
     await L.click(page, '3학년 2반 김유나 명찰 구멍에 대기', { exact: true }); await commit(page);
     L.check((await status(page)).includes('손이 멈췄다'), 'strap: wrong-year badge neutral');
     if (!mobile) {
-      // 끌어다 놓기로도 댈 수 있다
+      // 끌어다 놓기로도 댈 수 있다 (명찰을 댄 뒤 창이 확인 버튼 쪽으로 부드럽게 내려가니, 멈춘 다음 자리를 잰다)
+      await L.sleep(800);
       const h = await (await page.$('dialog[open] .strap-handle')).boundingBox();
       const t = await (await page.$$('dialog[open] .badge-cell'))[2].boundingBox();
       await page.mouse.move(h.x + h.width / 2, h.y + h.height / 2); await page.mouse.down();
