@@ -211,14 +211,27 @@ async function main() {
     });
     scroller.append(pan); stage.append(scroller);
     if (travelRow.children.length) stage.append(travelRow);
-    // 양옆 화살표: 열린 장소끼리 오간다
-    if (places.length > 1) {
-      const k = places.indexOf(scene);
-      const go = (d) => { const t = places[(k + d + places.length) % places.length]; S.scene = t.id; save(); play('door'); render(); };
-      const arrow = (cls, dir, d, label) => { const b = btn('v2-edge ' + cls, '', () => go(d), label); b.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${dir}"/></svg>`; return b; };
-      const nm = (d) => josa(places[(k + d + places.length) % places.length].name, '으로', '로') + ' 가기';
-      stage.append(arrow('left', 'M15 4 7 12l8 8', -1, nm(-1)), arrow('right', 'm9 4 8 8-8 8', 1, nm(1)));
-    }
+    // 양옆 화살표: 그림이 화면보다 넓으면(휴대폰) 그림을 옆으로 밀고, 아니면(PC) 열린 장소끼리 오간다
+    const k = places.indexOf(scene);
+    const goPlace = (d) => { const t = places[(k + d + places.length) % places.length]; S.scene = t.id; save(); play('door'); render(); };
+    const nm = (d) => josa(places[(k + d + places.length) % places.length].name, '으로', '로') + ' 가기';
+    const arrow = (cls, dir, d) => { const b = btn('v2-edge ' + cls, '', () => (stage.classList.contains('panable') ? scroller.scrollBy({ left: d * scroller.clientWidth * 0.7, behavior: 'smooth' }) : goPlace(d)), places.length > 1 ? nm(d) : ''); b.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${dir}"/></svg>`; return b; };
+    const aL = arrow('left', 'M15 4 7 12l8 8', -1), aR = arrow('right', 'm9 4 8 8-8 8', 1);
+    stage.append(aL, aR);
+    const syncEdges = () => {
+      const panable = scroller.scrollWidth > scroller.clientWidth + 4; stage.classList.toggle('panable', panable);
+      if (panable) { const x = scroller.scrollLeft, max = scroller.scrollWidth - scroller.clientWidth; aL.hidden = x < 6; aR.hidden = x > max - 6; aL.setAttribute('aria-label', '왼쪽 보기'); aR.setAttribute('aria-label', '오른쪽 보기'); }
+      else { aL.hidden = aR.hidden = places.length < 2; }
+    };
+    scroller.addEventListener('scroll', syncEdges, { passive: true });
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      syncEdges();
+      // 휴대폰에서 처음 한 번: 옆으로 밀 수 있다는 걸 보여 준다
+      if (stage.classList.contains('panable') && !sessionStorage.getItem('mihaeje-pan-tip')) {
+        try { sessionStorage.setItem('mihaeje-pan-tip', '1'); } catch {}
+        const tip = el('div', 'v2-pan-tip', '← 그림을 옆으로 밀어서 둘러보기 →'); tip.setAttribute('aria-hidden', 'true'); stage.append(tip); setTimeout(() => tip.remove(), 3200);
+      }
+    }));
     // 살펴볼 곳 잠깐 보기
     const peek = btn('v2-peek', '?', () => { stage.classList.add('peek'); clearTimeout(peek._t); peek._t = setTimeout(() => stage.classList.remove('peek'), 2600); }, '살펴볼 곳 잠깐 보기');
     stage.append(peek);
@@ -236,7 +249,7 @@ async function main() {
     talk.onclick = shut;
     const talkBtn = btn('v2-talk-open', '', () => { talk.classList.remove('gone'); talk.classList.add('typed'); talkBtn.hidden = true; }, '장면 설명 다시 보기');
     talkBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4V5Z"/></svg>';
-    if (sceneSeen.has(scene.id) && !firstVisit) { talk.classList.add('gone', 'typed'); } else { talkBtn.hidden = true; sceneSeen.add(scene.id); setTimeout(() => talk.classList.add('typed'), [...(line || '')].length * 28 + 300); }
+    if (sceneSeen.has(scene.id) && !firstVisit) { talk.classList.add('gone', 'typed'); } else { talkBtn.hidden = true; sceneSeen.add(scene.id); const tdone = [...(line || '')].length * 28 + 300; setTimeout(() => talk.classList.add('typed'), tdone); setTimeout(() => { if (talk.isConnected && !talk.classList.contains('gone')) { talk.classList.add('gone'); talkBtn.hidden = false; } }, tdone + 6500); }
     stage.append(talk, talkBtn);
     if (ep.mood) stage.dataset.mood = ep.mood;
     sec.append(stage);
