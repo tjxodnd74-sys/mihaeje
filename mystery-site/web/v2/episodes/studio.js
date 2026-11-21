@@ -1,8 +1,9 @@
 // 비가 그친 사진관 — ★3 이야기·자료·장치가 전부 이 파일에 있습니다
+// v126: 비 오는 저녁(창밖 그림과 맞춤) · 라벨은 카드가 다 꽂혀 있고 글씨 남은 게 셋 · 인화 실패는 진하기/얼룩으로 나눠 보여 줌
 // v125: 장부의 칸 번호도 번져서 봉투의 눌린 글씨가 꼭 필요 · 루페 후보 셋(간판 없는 컷 · 흔들린 컷 · 정답) · 노출은 셈해서(4×6 3초 → 8×10 12초) · 라벨 없는 트레이는 흰 불 아래서 봐 둬야 한다
 const P = 'assets/v2/studio/';
 // 보관함 4×4 할아버지식 라벨: 글자는 왼쪽부터 열(A~D), 숫자는 아래 줄부터 1~4
-// 라벨은 거의 떨어지고 A4(왼쪽 위) A1(왼쪽 아래) D1(오른쪽 아래)만 남았다 → C3 = 왼쪽에서 셋째 열, 위에서 둘째 줄
+// 라벨 카드는 다 꽂혀 있지만 글씨는 바래고 A4(왼쪽 위) A1(왼쪽 아래) D1(오른쪽 아래)만 읽힌다 → C3 = 왼쪽에서 셋째 열, 위에서 둘째 줄
 const CELLS = [0, 1, 2, 3].flatMap((r) => [0, 1, 2, 3].map((c) => ({ id: `r${r}c${c}`, r, c, label: 'ABCD'[c] + (4 - r) })));
 const LEFT_LABELS = { r0c0: 'A4', r3c0: 'A1', r3c3: 'D1' };
 const LOCKER_ANSWER = 'r1c2'; // C3
@@ -19,6 +20,12 @@ const FRAME_ANSWER = 23;
 const EXPOSURE = 12; // 시험 인화 4×6 3초 → 5×7 6초 → 8×10 12초
 const TRAY_ANSWER = [3, 1, 2]; // 현상(오른쪽 · 누런 물) → 정지(왼쪽 · 빙초산 병) → 정착(가운데 · 파란 테이프 집게)
 const TRAY_NAME = { 1: '왼쪽', 2: '가운데', 3: '오른쪽' };
+// 망친 인화지 모습 (노출이 길면 시커멓고 짧으면 허옇다 · 트레이 순서가 틀리면 얼룩)
+const failText = (f) => {
+  const t = f.tone === 'dark' ? '상이 시커멓게 묻혔' : f.tone === 'light' ? '상이 허옇게 날아갔' : '';
+  if (t && f.smear) return t + '고 얼룩까지 번졌다';
+  return t ? t + '다' : '상이 얼룩덜룩 번졌다';
+};
 const PRESSED_LIT = 'C3 · 8×10 · 4×6 3초<br>셋 다 · 간판 밑<br>안 흔들린 컷';
 const PRESSED_DIM = '▒▒ · ▒▒▒ · ▒▒▒ ▒▒<br>▒ ▒ · ▒▒ ▒<br>▒ ▒▒▒ ▒';
 
@@ -40,11 +47,11 @@ export default {
   tracesLabel: '할아버지가 맡겨 둔 것',
 
   opening: {
-    eyebrow: '2026/4/4 토요일 · 비 그친 오후',
+    eyebrow: '2026/4/4 토요일 · 비 오는 저녁',
     paragraphs: [
       '할아버지 사진관은 역 앞 골목에서 마흔 해째다. 요즘은 증명사진 손님이 하루 둘셋. 나는 주말마다 와서 접수대를 보는 손주다.',
       '오늘은 할아버지가 점심 먹고 나가면서 쪽지를 남겼다. 「윤서 씨 필름, 인화해 둬라. 저녁에 온다.」 윤서 씨가 누군지는 모른다. 접수대 위 봉투는 2006년 3월 것이었다.',
-      '밤새 창틀로 샌 빗물이 접수대까지 흘러와 있었다. 봉투 겉면 이름 칸도, 장부의 그 줄도 다 번졌다. 비가 그치고, 유리창에 물이 천천히 흘러내렸다.',
+      '아침부터 온 비가 창틀로 새어 접수대까지 흘러와 있었다. 봉투 겉면 이름 칸도, 장부의 그 줄도 다 번졌다. 증명사진 손님 둘을 받고 나니 벌써 해가 졌다. 비는 아직 그칠 기미 없이 유리창을 타고 흘러내렸다.',
     ],
     cta: '접수대의 봉투 보기',
   },
@@ -61,14 +68,14 @@ export default {
       id: 'front',
       name: '접수실',
       image: P + 'front.webp',
-      arrive: '처마에서 떨어지는 물소리 말고는 조용하다 접수대 초록 등 밑에 누런 봉투 왼쪽 벽은 필름 보관함 암실 문 위 붉은 등만 혼자 켜져 있다 문은 잠겨 있다',
+      arrive: '창을 두드리는 빗소리 말고는 조용하다 가로등 불빛이 젖은 길에 번진다 접수대 초록 등 밑에 누런 봉투 왼쪽 벽은 필름 보관함 암실 문 위 붉은 등만 혼자 켜져 있다 문은 잠겨 있다',
       hotspots: [
         { id: 'gnote', x: 52, y: 61, r: 9, label: '접수대의 할아버지 쪽지', kind: 'doc', doc: 'gnote' },
-        { id: 'ledger', x: 88, y: 68, r: 10, label: '접수 장부', kind: 'doc', doc: 'ledger' },
+        { id: 'ledger', x: 87, y: 64, r: 10, label: '접수 장부', kind: 'doc', doc: 'ledger' },
         { id: 'wall', x: 68, y: 32, r: 16, label: '벽의 사진들', kind: 'doc', doc: 'wall' },
-        { id: 'lamp', x: 68, y: 70, r: 10, label: '초록 등 밑의 봉투', kind: 'device', device: 'lamp', visible: (S) => !S.solved.includes('lamp') },
-        { id: 'pressed', x: 68, y: 70, r: 10, label: '봉투에 눌린 글씨', kind: 'doc', doc: 'pressed', visible: (S) => S.solved.includes('lamp') },
-        { id: 'lockers', x: 11, y: 70, r: 16, label: '필름 보관함', kind: 'device', device: 'lockers', visible: (S) => S.solved.includes('lamp') },
+        { id: 'lamp', x: 68, y: 66, r: 10, label: '초록 등 밑의 봉투', kind: 'device', device: 'lamp', visible: (S) => !S.solved.includes('lamp') },
+        { id: 'pressed', x: 68, y: 66, r: 10, label: '봉투에 눌린 글씨', kind: 'doc', doc: 'pressed', visible: (S) => S.solved.includes('lamp') },
+        { id: 'lockers', x: 12, y: 58, r: 16, label: '필름 보관함', kind: 'device', device: 'lockers', visible: (S) => S.solved.includes('lamp') },
         { id: 'sleeve', x: 11, y: 40, r: 12, label: '보관함에서 꺼낸 필름 봉투', kind: 'doc', doc: 'sleeve', visible: (S) => S.solved.includes('lockers') },
       ],
     },
@@ -89,12 +96,12 @@ export default {
       image: P + 'darkroom.webp',
       unlockedBy: 'lightbox',
       arrive: '작은 열쇠가 돌아갔다 약품 냄새 붉은 안전등만 켜져 있고 흰 불 스위치는 문 옆이다 확대기 옆에 타이머, 그 옆에 트레이 셋 라벨은 다 떨어졌다',
-      overlays: [{ x: 41.5, y: 17, w: 4.6, h: 9.5, cls: 'st-chart', html: '<i></i>' }],
+      overlays: [{ x: 41.5, y: 17, w: 4.6, h: 9.5, cls: 'st-chart', html: '<i></i>' }, { x: 4.2, y: 26.6, w: 4.4, h: 7.2, cls: 'st-memo', html: '<i></i>' }],
       hotspots: [
         { id: 'chart', x: 44, y: 22, r: 9, label: '벽의 순서표', kind: 'doc', doc: 'chart' },
-        { id: 'memo', x: 7, y: 17, r: 11, label: '선반의 약품 메모', kind: 'doc', doc: 'memo' },
+        { id: 'memo', x: 7, y: 30, r: 9, label: '선반의 약품 메모', kind: 'doc', doc: 'memo' },
         { id: 'print', x: 22, y: 42, r: 16, label: '확대기', kind: 'device', device: 'print' },
-        { id: 'print2', x: 70, y: 72, r: 16, label: '트레이 셋', kind: 'device', device: 'print' },
+        { id: 'print2', x: 70, y: 66, r: 16, label: '트레이 셋', kind: 'device', device: 'print' },
       ],
     },
   ],
@@ -103,7 +110,7 @@ export default {
     gnote: {
       title: '접수대의 할아버지 쪽지',
       kind: '할아버지 글씨',
-      html: `<blockquote class="hand">수호야<br>윤서 씨 필름 인화해 둬라 저녁에 온다<br>봉투는 접수대에 있다 겉면에 다 적어 뒀다 나는 봉투에 쓸 때 늘 다른 종이를 대고 쓴다<br>보관함 라벨은 거의 떨어졌는데, 남은 거 보면 내 셈법은 알 거다<br>암실 열쇠는 필름 봉투 안에 넣어 뒀다<br>요새 손이 떨려서 초점을 못 맞춘다 네가 해라<br>— 할아버지</blockquote>`,
+      html: `<blockquote class="hand">수호야<br>윤서 씨 필름 인화해 둬라 저녁에 온다<br>봉투는 접수대에 있다 겉면에 다 적어 뒀다 나는 봉투에 쓸 때 늘 다른 종이를 대고 쓴다<br>보관함 라벨은 글씨가 거의 바랬는데, 남은 거 보면 내 셈법은 알 거다<br>암실 열쇠는 필름 봉투 안에 넣어 뒀다<br>요새 손이 떨려서 초점을 못 맞춘다 네가 해라<br>— 할아버지</blockquote>`,
     },
     ledger: {
       title: '접수 장부',
@@ -164,7 +171,7 @@ export default {
       scene: 'front',
       intro: '겉면 글씨는 빗물에 번졌다 아래 막대를 밀면 봉투를 초록 등 쪽으로 기울인다',
       docs: ['gnote', 'ledger'],
-      hintCode: 'S-S01',
+      hintCode: '',
       hints: [
         '할아버지는 봉투에 쓸 때 다른 종이를 대고 쓴다 눌린 자국은 빛을 비스듬히 받아야 그림자가 생긴다',
         '평평하게 두면 안 보이고 너무 세우면 빛이 미끄러진다 그 사이 어딘가에서 천천히',
@@ -201,7 +208,7 @@ export default {
       reveal: {
         title: 'C3 · 셋 다 · 간판 밑 · 안 흔들린 컷',
         text: '봉투 위에 다른 종이를 대고 쓴 자국이 비스듬한 빛에 떠올랐다 0615 윤서, 보관 C3, 인화할 컷은 셋 다 나오고 간판 밑이고 안 흔들린 것, 8×10, 시험 인화는 4×6에 3초 할아버지 글씨다',
-        scene: ['장부에서 번진 칸 번호가 이거였다 C3 왼쪽 벽 보관함 맨 아래쪽 2000년대 서랍들은 라벨이 거의 다 떨어지고 세 개만 붙어 있다'],
+        scene: ['장부에서 번진 칸 번호가 이거였다 C3 왼쪽 벽 보관함 맨 아래쪽 2000년대 서랍들은 라벨 카드가 꽂혀는 있는데 글씨가 바래서 셋만 읽힌다'],
         unlockDoc: 'pressed',
         unlock: null,
       },
@@ -210,11 +217,11 @@ export default {
     lockers: {
       title: '필름 보관함',
       scene: 'front',
-      intro: '벽 보관함 아래쪽 2000년대 서랍 열여섯 칸 라벨은 세 개만 남았다 서랍을 눌러 고른 뒤 봉투를 꺼낸다',
+      intro: '벽 보관함 아래쪽 2000년대 서랍 열여섯 칸 라벨 카드는 다 꽂혀 있지만 글씨가 남은 건 셋뿐 나머지는 바래서 하얗다 서랍을 눌러 고른 뒤 봉투를 꺼낸다',
       docs: ['ledger', 'gnote', 'pressed'],
-      hintCode: 'S-S02',
+      hintCode: '',
       hints: [
-        '남은 라벨 셋이 붙은 자리를 본다 같은 글자가 둘이다',
+        '글씨가 남은 라벨 셋의 자리를 본다 같은 글자가 둘이다',
         'A가 붙은 두 칸으로 글자가 가로로 가는지 세로로 가는지, 남은 하나로 숫자가 어느 쪽부터 커지는지 정한다',
         '왼쪽에서 셋째 열, 위에서 둘째 줄',
       ],
@@ -222,7 +229,7 @@ export default {
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'lockers-wrap');
-        const cab = el('div', 'prop lockerwall st-drawers'); const im = el('img'); im.src = P + 'props/lockers.webp'; im.alt = '나무 서랍 열여섯 칸 라벨은 세 개만 남아 있다'; cab.append(im);
+        const cab = el('div', 'prop lockerwall st-drawers'); const im = el('img'); im.src = P + 'props/lockers.webp'; im.alt = '나무 서랍 열여섯 칸 라벨 카드 글씨는 세 개만 읽힌다'; cab.append(im);
         CELLS.forEach((k) => {
           const b = el('button', 'locker-cell' + (d.open === k.id ? ' picking' : '') + (LEFT_LABELS[k.id] ? '' : ' bare')); b.type = 'button';
           b.style.left = DRAWER_X[k.c] + '%'; b.style.top = DRAWER_Y[k.r] + '%';
@@ -253,9 +260,9 @@ export default {
     lightbox: {
       title: '라이트박스 위 필름',
       scene: 'table',
-      intro: '필름 네 줄 줄 옆 ⇄는 그 줄을 앞뒤로 뒤집어 놓는다 컷을 누르면 아래 루페로 크게 본다 고른 컷 그대로 인화한다',
+      intro: '필름 네 줄 줄마다 붙은 ⇄는 그 줄을 앞뒤로 뒤집어 놓는다 컷을 누르면 아래 루페로 크게 본다 고른 컷 그대로 인화한다',
       docs: ['pressed', 'edge', 'sleeve', 'wall'],
-      hintCode: 'S-S03',
+      hintCode: '',
       hints: [
         '컷을 하나씩 루페로 본다 봉투에 눌린 세 가지를 다 갖춘 컷은 하나뿐이다',
         '셋 다 나왔어도 간판이 안 보이는 컷, 간판이 있어도 흔들린 컷이 바로 옆에 붙어 있다 인화할 줄은 가장자리 글자가 바르게 읽히게',
@@ -314,7 +321,7 @@ export default {
       scene: 'darkroom',
       intro: '스위치 둘은 흰 불과 붉은 등을 켜고 끈다 인화지를 꺼내 이젤에 올리고, 초점 손잡이와 타이머를 맞춘 뒤 타이머를 누르면 노출된다 트레이는 누른 순서대로 인화지를 담근다',
       docs: ['chart', 'memo', 'pressed'],
-      hintCode: 'S-S04',
+      hintCode: '',
       hints: [
         '라벨 없는 트레이 셋 약품 메모를 먼저 읽고, 흰 불이 켜져 있을 때 트레이를 봐 둔다',
         '노출은 봉투의 시험 인화 초에서 순서표의 크기 단계만큼 두 배씩 트레이는 누런 물 · 빙초산 병 · 파란 테이프 집게가 각각 무엇인지 메모로 맞춘다',
@@ -363,7 +370,13 @@ export default {
           trays.append(b);
         });
         wrap.append(el('p', 'pick-label', d.exposed ? '노출한 인화지를 트레이에 차례로 담근다' : '트레이 셋'), trays);
-        const reset = el('button', 'chip', '인화지 버리고 처음부터'); reset.type = 'button'; reset.onclick = () => { Object.assign(d, { paper: false, exposed: false, expT: 0, baths: [], ruined: false }); save(); ctx.status('새 인화지는 붉은 등 아래서 다시 꺼내 올린다'); };
+        // 방금 꺼내 본 망친 인화지: 진하기(노출)와 얼룩(트레이 순서)을 따로 보여 준다 답은 말하지 않는다
+        if (d.fail) {
+          const f = el('figure', 'st-fail' + (d.fail.tone ? ' ' + d.fail.tone : '') + (d.fail.smear ? ' smear' : ''));
+          f.innerHTML = `<div class="st-fail-img"><img src="${P}props/print.webp" alt="" decoding="async"><i></i></div><figcaption>${failText(d.fail)}</figcaption>`;
+          wrap.append(f);
+        }
+        const reset = el('button', 'chip', '인화지 버리고 처음부터'); reset.type = 'button'; reset.onclick = () => { Object.assign(d, { paper: false, exposed: false, expT: 0, baths: [], ruined: false, fail: null }); save(); ctx.status('새 인화지는 붉은 등 아래서 다시 꺼내 올린다'); };
         wrap.append(reset);
         return wrap;
       },
@@ -372,7 +385,9 @@ export default {
         if (!d.exposed) return { ok: false, msg: '아직 노출 전이다' };
         if (d.baths.length < 3) return { ok: false, msg: `트레이 ${d.baths.length}개만 거쳤다` };
         if (d.ruined) return { ok: false, msg: '흰 불에 탄 인화지다 버리고 다시' };
-        if (d.expT !== EXPOSURE || d.baths.join('') !== TRAY_ANSWER.join('')) return { ok: false, msg: '꺼내 보니 사진이 망가졌다 인화지를 버리고 다시 한다' };
+        const tone = d.expT > EXPOSURE ? 'dark' : d.expT < EXPOSURE ? 'light' : '';
+        const smear = d.baths.join('') !== TRAY_ANSWER.join('');
+        if (tone || smear) { d.fail = { tone, smear }; return { ok: false, msg: `꺼내 보니 ${failText(d.fail)} 인화지를 버리고 다시 한다` }; }
         return { ok: true };
       },
       reveal: {
@@ -389,16 +404,16 @@ export default {
   ending: {
     image: P + 'ending.webp',
     imageAlt: '붉은 안전등 아래 트레이 속 사진을 들여다보는 할아버지, 윤서, 손주',
-    eyebrow: '같은 날 저녁',
+    eyebrow: '같은 날 밤',
     title: '비가 그친 사진관',
     paragraphs: [
       '윤서 씨는 마흔 넘은 사람이었다 암실 문을 열자 트레이를 먼저 보고, 그다음 나를 보고, 할아버지를 봤다 붉은 등 아래서 셋이 머리를 맞대고 물속 사진을 들여다봤다',
       '할아버지가 내 어깨를 툭 쳤다 "혼자 다 해 놨네 말리는 건 같이 하자"',
       '"그날 아침에 찍고 저는 그날 저녁 비행기였어요 아빠가 돌아오면 같이 찾자고 했는데, 이듬해 겨울에 아빠가 먼저 가셨어요" 윤서 씨는 거기서 말을 끊었다 할아버지가 집게로 사진을 들어 물을 뺐다',
       '"스무 해 동안 인화 안 한 봉투는 이거 하나다" 할아버지가 말했다 "손님이 찾으러 온다고 했으면 오는 거야"',
-      '흰 불은 할아버지가 켰다 사진은 벽 맨 아래 줄 빈 액자에 들어갔다 8×10 할아버지가 비워 두라던 자리였다 윤서 씨가 사진을 찍어도 되냐고 물었다 할아버지는 카메라를 내줬다 처음으로 할아버지가 사진 안에 섰다',
+      '흰 불은 할아버지가 켰다 젖은 사진은 줄에 걸었다 마르면 벽 맨 아래 줄 빈 액자에 들어갈 거다 8×10 할아버지가 비워 두라던 자리다 윤서 씨가 그 빈 액자 앞에서 사진을 찍어도 되냐고 물었다 할아버지는 카메라를 내줬다 처음으로 할아버지가 사진 안에 섰다',
     ],
-    afterword: '봉투는 비워진 채 C3에 그대로 있다 할아버지가 그건 버리지 말라고 했다',
+    afterword: '윤서 씨를 배웅하러 문을 여니 비가 그쳐 있었다 젖은 길에 가로등 불빛이 번져 있었다 봉투는 비워진 채 C3에 그대로 있다 할아버지가 그건 버리지 말라고 했다',
     unlockDoc: 'final',
     next: { href: 'play.html?case=station', title: '세 번째 승강장', line: '다음은 없는 승강장에서 온 사진 이야기입니다' },
   },
