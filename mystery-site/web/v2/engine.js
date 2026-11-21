@@ -386,7 +386,7 @@ async function main() {
       });
       actions.append(go);
       ctx.commit = () => go.click();
-      const gate = () => { if (dev.canCommit) go.hidden = !dev.canCommit(d); };
+      const gate = () => { if (dev.canCommit) { go.hidden = !dev.canCommit(d); actions.hidden = go.hidden; } };
       gate(); const _draw = draw; draw = () => { _draw(); gate(); };
     }
     node.append(status, actions);
