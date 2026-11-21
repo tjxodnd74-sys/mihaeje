@@ -816,6 +816,24 @@ html[data-case="station"] .mirror-glass .mirror-paper{left:20%;top:36%;width:60%
 html[data-case="station"] .mirror-glass.held .mirror-paper{transform:perspective(500px) rotateY(calc(var(--tilt,0) * 1.5deg)) rotate(calc(var(--tilt,0) * .12deg))}
 html[data-case="station"] .mirror-glass.held.aligned .mirror-paper{transform:none;filter:none}
 html[data-case="station"] .mirror-glass{overflow:hidden;border-radius:6px}
+/* v126: 기울기는 받침대 빨간 눈금에 맞춰야 바로 선다 (가운데가 정답이 아님) */
+html[data-case="station"] .mirror-glass .mirror-paper,html[data-case="station"] .mirror-glass.held .mirror-paper{transform:perspective(500px) rotateY(calc(var(--tilt,0) * 1.2deg)) rotate(calc(var(--tilt,0) * .15deg))}
+html[data-case="station"] .mirror-glass.held.aligned .mirror-paper{transform:none;filter:none}
+html[data-case="station"] .mirror-gauge-row{display:flex;align-items:center;gap:12px;max-width:420px;margin:10px auto 12px}
+html[data-case="station"] .mirror-gauge{flex:0 0 150px;display:grid;justify-items:center;gap:4px;padding:8px 8px 6px;border-radius:6px;background:linear-gradient(160deg,#7d858c,#565e66);box-shadow:inset 0 0 0 2px rgba(0,0,0,.25)}
+html[data-case="station"] .mirror-gauge svg{width:100%;height:auto;display:block}
+html[data-case="station"] .mirror-gauge span{font-family:var(--sans);font-size:12px;font-weight:700;color:#f3efe2}
+html[data-case="station"] .mirror-cap{margin:0;font-size:14px;line-height:1.5;color:var(--soft)}
+html[data-case="station"] .mirror-tilt input[type=range]{-webkit-appearance:none;appearance:none;height:36px;background:transparent;margin-top:4px}
+html[data-case="station"] .mirror-tilt input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:4px;background:linear-gradient(90deg,#5b6672,#a7b3bf)}
+html[data-case="station"] .mirror-tilt input[type=range]::-moz-range-track{height:8px;border-radius:4px;background:linear-gradient(90deg,#5b6672,#a7b3bf)}
+html[data-case="station"] .mirror-tilt input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;margin-top:-11px;border-radius:50%;background:var(--lamp);border:2px solid #1b1f24;box-shadow:0 2px 6px rgba(0,0,0,.45)}
+html[data-case="station"] .mirror-tilt input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:var(--lamp);border:2px solid #1b1f24}
+html[data-case="station"] .mirror-scale{display:flex;justify-content:space-between;padding:0 8px;font-family:var(--sans);font-size:12px;color:var(--soft)}
+html[data-case="station"] .mirror-scale i{font-style:normal;width:14px;text-align:center}
+/* 처음 열 때 넘어가는 글자판: 행선지 칸은 빈 판만 돈다 */
+html[data-case="station"] .grille-flash b.blank i{display:inline-block;width:1em;height:1.05em;margin-right:.15em;vertical-align:-.12em;background:repeating-linear-gradient(0deg,#2a313a 0 46%,#0c1015 46% 54%,#2a313a 54%);border-radius:2px;animation:st-blank .18s steps(2,end) infinite}
+@keyframes st-blank{50%{filter:brightness(1.6)}}
 /* 네컷 뒷면: 거울 없이 읽기 힘들게 번진 거울 글씨 */
 html[data-case="station"] .stripback .mirror-text.smudged{filter:blur(1.1px);opacity:.75;letter-spacing:-.04em;font-size:22px;line-height:1.5;word-break:break-all}
 /* 보관함: 사진 속 바퀴 위에 숫자, 아래에 큰 버튼 */
@@ -1233,11 +1251,15 @@ html[data-case="letter"] .lenv.back img{filter:sepia(.3) brightness(.62) contras
 html[data-case="letter"] .bl-glow{position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(255,226,160,.85),rgba(255,210,130,.35) 40%,transparent 75%);opacity:0;transition:opacity .15s ease;pointer-events:none}
 html[data-case="letter"] .bl-zip{position:absolute;right:11%;top:25%;font-family:var(--hand);font-size:3.4cqw;letter-spacing:.35em;color:rgba(43,53,112,0);transition:color .15s ease;filter:blur(.35px)}
 html[data-case="letter"] .bl-zip>span{display:inline-block;transform:scaleX(-1)}
-html[data-case="letter"] .bl-ink{position:absolute;right:13.5%;top:14%;width:15cqw;height:15cqw;border:.5cqw solid rgba(30,30,40,.12);border-radius:50%;transform:rotate(12deg);transition:border-color .15s ease}
 html[data-case="letter"] .backlight.lit .lenv.back img{filter:sepia(.25) brightness(1.08) contrast(.85)}
 html[data-case="letter"] .backlight.lit .bl-glow{opacity:1}
 html[data-case="letter"] .backlight.lit .bl-zip{color:rgba(43,53,112,.62)}
-html[data-case="letter"] .backlight.lit .bl-ink{border-color:rgba(30,30,40,.22)}
+/* v126: 번진·가린 글자는 DOM 글자가 아니라 얼룩 모양만 (전체 선택·찾기로 답이 안 보이게) */
+html[data-case="letter"] .lenv-from .smear::before{content:attr(data-g)}
+html[data-case="letter"] .lenv-from .zip .inked::before{content:"00";visibility:hidden}
+/* 전구에 비친 우편번호: 누르고 있을 때만 캔버스에 그림 · 휴대폰에서도 읽히게 크게 */
+html[data-case="letter"] canvas.bl-zip{right:4%;top:9%;width:48%;height:26%;font-family:var(--hand);color:inherit;filter:none;transition:none;pointer-events:none}
+@media (max-width:640px){html[data-case="letter"] canvas.bl-zip{right:2%;top:7%;width:60%;height:34%}}
 html[data-case="letter"] .bl-cap{margin:4px 0 0;font-size:13px;color:var(--fog);text-align:center}
 html[data-case="letter"] .bl-hold{touch-action:none;-webkit-touch-callout:none;user-select:none}
 /* 직접 적는 답장 봉투 */
