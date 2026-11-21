@@ -298,7 +298,8 @@ async function main() {
     openDocs().forEach((did) => {
       const d = ep.docs[did], read = S.read.includes(did);
       const where = ep.scenes.find((s) => s.hotspots.some((h) => h.doc === did));
-      const avail = read || (where && unlockedScenes().includes(where)) || d.locked || (S.found || []).includes(did);
+      // 소지품에는 직접 본 것(읽은 자료·손에 넣은 자료)만 — 아직 안 가 본 곳의 자료 이름이 답을 흘리지 않게
+      const avail = read || (S.found || []).includes(did) || (d.locked && (S.screen === 'ending' || S.ended));
       if (!avail) return;
       if (!read) unread.push(did);
       const b = btn('v2-index-item' + (read ? ' read' : ''), '', () => openDoc(did, { from: { label: '자료 목록', fn: openIndex } }));
@@ -306,7 +307,10 @@ async function main() {
       ul.append(b);
     });
     node.append(ul);
-    if (unread.length) node.append(el('p', 'v2-note', `아직 읽지 않은 자료 ${unread.length}장`));
+    if (unread.length) node.append(el('p', 'v2-note', `손에 넣고 아직 읽지 않은 자료 ${unread.length}장`));
+    const missing = openDocs().filter((x) => !S.read.includes(x) && !(S.found || []).includes(x)).length;
+    if (missing && S.screen === 'play') node.append(el('p', 'v2-note subtle', `아직 찾지 못한 자료 ${missing}장`));
+    if (!ul.children.length) ul.append(el('p', 'v2-bench-empty', '아직 손에 넣은 자료가 없다'));
     openDialog(node, { label: '자료 목록', onClose: () => render(), drawer: S.screen === 'play' });
   }
 
