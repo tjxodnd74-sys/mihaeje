@@ -9,7 +9,13 @@ async function status(page) { return page.evaluate(() => document.querySelector(
 async function hotspot(page, label) {
   const ok = await page.evaluate((label) => { const b = [...document.querySelectorAll('.v2-hotspot')].find((x) => x.getAttribute('aria-label') === label); if (!b) return false; b.click(); return true; }, label);
   if (!ok) throw new Error('hotspot not found ' + label);
-  await L.sleep(300);
+  await page.waitForSelector('dialog[open]', { timeout: 1500 }).catch(() => {}); // 물건 쪽으로 다가간 뒤 창이 열림
+  await L.sleep(120);
+}
+async function goPlace(page, label) {
+  await page.evaluate(() => document.querySelector('.v2-where')?.click());
+  await L.click(page, label, { within: '.v2-places', exact: true });
+  await L.sleep(250);
 }
 
 async function station({ mobile = false } = {}) {
@@ -23,7 +29,7 @@ async function station({ mobile = false } = {}) {
     await shot(page, 'opening');
     await L.click(page, '중앙역 대합실로');
     await L.sleep(400);
-    L.check((await L.mainText(page)).includes('자료 0 / 11'), 'doc counter starts at 0/11');
+    L.check(await page.evaluate(() => document.querySelector('.v2-hud-btn.bag')?.getAttribute('aria-label') === '자료 0 / 11'), 'doc counter starts at 0/11');
     // 아직 아무것도 안 읽었을 때: 장치 옆 자료는 잠겨 있어야 함
     await hotspot(page, '열차 안내판');
     L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].every((t) => t.disabled)), 'bench docs locked before reading');
@@ -272,9 +278,9 @@ async function ohang({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('장부를 쓰던 방'), 'auto-moved to back room');
     for (const [d, t] of [['가져온 접수표 묶음', '2007년 12월'], ['책상 위 메모', '낳는 순서로 다섯 개']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     // lanterns
-    await L.click(page, '1. 오행당 문 앞'); await L.sleep(300);
+    await goPlace(page, '1. 오행당 문 앞'); await L.sleep(300);
     await hotspot(page, '내가 쓴 접수표'); L.check(await dlgHas(page, '할머니가 세는 법대로'), 'myslip doc re-readable'); await L.closeDialog(page);
-    await L.click(page, '3. 뒷방'); await L.sleep(300);
+    await goPlace(page, '3. 뒷방'); await L.sleep(300);
     await hotspot(page, '장대에 걸린 등 다섯');
     L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].some((t) => t.textContent.includes('내가 쓴 접수표') && !t.disabled)), 'lanterns: my slip on bench');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .lanternpole .lantern').length === 5), 'lanterns: 5 on photo');
@@ -410,8 +416,8 @@ async function studio({ mobile = false } = {}) {
     await L.click(page, '위에서 2째 줄 왼쪽에서 3째 칸 서랍 열기', { exact: true }); await shot(page, 'st-lockers'); await commit(page); L.check(await dlgHas(page, '꼬리표 달린 작은 열쇠'), 'lockers solved');
     await L.closeDialog(page); await L.sleep(400);
     L.check((await L.mainText(page)).includes('라이트박스를 켜자'), 'moved to table');
-    await L.click(page, '1. 접수실'); await L.sleep(300); await hotspot(page, '보관함에서 꺼낸 필름 봉투'); L.check(await dlgHas(page, '접수 봉투 겉면에'), 'doc: sleeve'); await L.closeDialog(page);
-    await L.click(page, '2. 작업대'); await L.sleep(300);
+    await goPlace(page, '1. 접수실'); await L.sleep(300); await hotspot(page, '보관함에서 꺼낸 필름 봉투'); L.check(await dlgHas(page, '접수 봉투 겉면에'), 'doc: sleeve'); await L.closeDialog(page);
+    await goPlace(page, '2. 작업대'); await L.sleep(300);
     await hotspot(page, '루페로 본 필름 가장자리'); await L.closeDialog(page);
     // lightbox
     await hotspot(page, '라이트박스 위 필름');
@@ -669,9 +675,9 @@ async function laundry({ mobile = false } = {}) {
     await press(['고온 버튼 ☀', '저온 버튼 ☾', '20분 버튼 2', '40분 버튼 4']); L.check(!(await L.buttons(page)).includes('시작 버튼 꾹 누르기'), 'panel: main button never commits'); await shot(page, 'l-panel'); await hold(); L.check(await dlgHas(page, 'ADMIN'), 'panel solved');
     await L.click(page, '6번 운전 기록 보기'); L.check(await dlgHas(page, '실행 없음'), 'log via reveal'); await L.click(page, '← 돌아가기'); await L.closeDialog(page); await L.sleep(300);
     L.check((await L.mainText(page)).includes('근무표 화이트보드'), 'closing reveal moves to store');
-    await L.click(page, '1. 해달빨래방', { exact: true }); await L.sleep(300);
+    await goPlace(page, '1. 해달빨래방'); await L.sleep(300);
     await hotspot(page, '6번 동전함'); L.check(await dlgHas(page, '6번 500'), 'doc: coins'); await L.closeDialog(page);
-    await L.click(page, '2. 옆 편의점', { exact: true }); await L.sleep(400);
+    await goPlace(page, '2. 옆 편의점'); await L.sleep(400);
     await hotspot(page, '포스 옆 메모'); L.check(await dlgHas(page, '출근하는 사람'), 'doc: posnote'); await L.closeDialog(page);
     await hotspot(page, '근무표 화이트보드');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .sg-cell').length === 18), 'board: 18 cells');
@@ -741,7 +747,7 @@ async function radio({ mobile = false } = {}) {
     await L.closeDialog(page); await L.sleep(400);
     if (!(await L.mainText(page)).includes('콘솔 자리는 비어')) await hotspot(page, 'B실로 가기'); await L.sleep(400);
     for (const [d, t] of [['자동 송출 PC 화면', '파일 없음'], ['모니터에 붙은 쪽지', '녹음기는 돌았잖아'], ['벽의 편성 변경 알림', 'A실 진행']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
-    await L.click(page, '1. 로비', { exact: true }); await L.sleep(300);
+    await goPlace(page, '1. 로비'); await L.sleep(300);
     L.check(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].filter((b) => /가기$/.test(b.getAttribute('aria-label'))).length === 1), 'lobby: travel to archive left (B실 visited)');
     await hotspot(page, '보관실로 가기'); await L.sleep(400);
     await hotspot(page, '책상 위 보관 규칙'); L.check(await dlgHas(page, '새벽 5시'), 'doc: rules'); await L.closeDialog(page);
