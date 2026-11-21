@@ -31,6 +31,29 @@ function soon(name, scene, ms, run) {
   pending[name] = setTimeout(tick, ms);
 }
 
+// 기다리지 않고 장치를 먼저 풀어도 이 장면들은 꼭 한 번 보게 된다 (장치를 푸는 순간 일어난다) 엔딩이 이걸 다시 꺼낸다
+const CCTV_LINE = '모니터가 지지직 넘어갔다 CH2 둑길 가로등 아까 내가 서 있던 그 벤치에 누가 앉아 있다 이쪽 건물을 보고';
+const ANBANG_LINE = '딸깍 안방에서 소리가 났다 문 너머가 노랗게 밝아졌다 단전된 집이다 안에는 아무도 없다';
+const COMMENT_LINE = '주머니 속 휴대폰이 짧게 떨렸다 아까 그 커뮤니티 글에 새 댓글 산책러2 「지금 3층에 누가 서 있음 손전등 든 사람」';
+const fire = (S, k) => { S.ev = S.ev || {}; if (S.ev[k]) return false; S.ev[k] = true; S.ev[k + 'Late'] = true; return true; };
+
+// ---------- 마구 눌러 보기 막기: 두 번까지는 그냥, 그다음부터 틀릴 때마다 기다리는 시간이 늘어난다 ----------
+const WAIT = [0, 0, 0, 15, 25, 40]; // 틀린 횟수 → 기다리는 초
+const miss = (d) => { d.miss = (d.miss || 0) + 1; const s = WAIT[Math.min(d.miss, WAIT.length - 1)]; d.until = s ? Date.now() + s * 1000 : 0; };
+const waiting = (d) => Math.max(0, Math.ceil(((d.until || 0) - Date.now()) / 1000));
+// 기다리는 동안 장치 안에 남은 초를 보여 주고, 끝나면 다시 그린다 (확인 버튼은 canCommit 으로 숨김)
+function waitLine(ctx, text) {
+  if (!waiting(ctx.d)) return null;
+  const p = ctx.el('p', 'apt-wait', `${text} · ${waiting(ctx.d)}초`);
+  const t = setInterval(() => {
+    if (!p.isConnected) { clearInterval(t); return; }
+    const n = waiting(ctx.d);
+    if (n <= 0) { clearInterval(t); ctx.save(); return; }
+    p.textContent = `${text} · ${n}초`;
+  }, 400);
+  return p;
+}
+
 const dialRow = (el, save, d, n) => {
   const row = el('div', 'dials');
   for (let i = 0; i < n; i++) {
@@ -70,14 +93,18 @@ const MAIL_ANSWER = '301';
 const HOOKROWS = [['501', '502', '503', '504'], ['401', '402', '403', '404'], ['301', '302', '303', '304'], ['201', '202', '203', '204'], ['101', '102', '103', '104'], ['B01', 'B02', 'B03', 'B04']];
 const HOOK_X = [31.25, 43.75, 56.25, 68.75], HOOK_Y = [8.0, 23.0, 38.1, 52.8, 67.2, 81.8];
 const HOOK_ANSWER = 'B01'; // 2023년 물난리 뒤 3층 두 분 창고를 맞바꿈 → 김순자 할머니 창고는 B01
-const BOX_CODE = [3, 1, 2];
-// 엉킨 연장선: 타이머(왼·가운데·오른쪽) → 선 끝 테이프 번호 (스위치 테이프와 같은 번호 1 안방 · 2 거실 · 3 작은방)
-const WIRE_ANSWER = { L: '3', M: '1', R: '2' };
+// 관리인이 집 안 스위치 여섯에 다 번호 테이프를 붙였다 창이 북쪽(둑길 쪽)으로 난 방은 안방 · 작은방 · 거실 셋뿐
+const SWITCHES = [['1', '현관'], ['2', '안방'], ['3', '부엌'], ['4', '작은방'], ['5', '거실'], ['6', '욕실']];
+const BOX_CODE = [4, 2, 5]; // 작은방 → 안방 → 거실 (뒤집지 않고 읽으면 245)
+// 엉킨 연장선: 타이머(왼·가운데·오른쪽) → 선 끝 테이프 번호 (스위치 테이프와 같은 번호 2 안방 · 4 작은방 · 5 거실)
+// 자물쇠 번호(425)와 같은 줄이 되지 않게: 왼쪽 거실 · 가운데 안방 · 오른쪽 작은방 = 5 2 4
+const WIRE_ANSWER = { L: '5', M: '2', R: '4' };
+const WIRE_TAPES = ['2', '4', '5'];
 const TIMER_NAME = { L: '왼쪽 검은 타이머', M: '가운데 파란 타이머', R: '오른쪽 검은 타이머' };
 // 타이머 핀: 30분짜리 핀 일곱 개 (20:30 ~ 23:30에 시작하는 칸)
 const PINS = ['20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'];
-const PIN_START = { L: ['21:00', '21:30', '22:00', '22:30'], M: ['21:30', '22:00', '22:30'], R: ['22:00', '22:30'] }; // 지금 = 할머니가 틀렸다는 순서
-const PIN_ANSWER = { L: ['21:30', '22:00', '22:30'], M: ['22:30'], R: ['21:00', '21:30', '22:00', '22:30'] }; // 작은방 · 안방 · 거실
+const PIN_START = { L: ['22:00', '22:30'], M: ['21:30', '22:00', '22:30'], R: ['21:00', '21:30', '22:00', '22:30'] }; // 지금 = 할머니가 틀렸다는 순서 (작은방 → 안방 → 거실)
+const PIN_ANSWER = { L: ['21:00', '21:30', '22:00', '22:30'], M: ['22:30'], R: ['21:30', '22:00', '22:30'] }; // 거실 · 작은방 · 안방
 const PIN_2015 = { L: [], M: ['21:00', '21:30'], R: [] };
 const pinKey = (p) => ['L', 'M', 'R'].map((k) => [...(p[k] || [])].sort().join(',')).join('|');
 
@@ -120,7 +147,7 @@ const WIRES = [
 ];
 const wireSvg = () => `<svg viewBox="0 0 1000 600" class="wire-svg" role="img" aria-label="타이머 셋에서 나온 검은 연장선 세 가닥이 엉켜 아래로 내려간다 선 끝마다 테이프가 붙어 있다">
   ${WIRES.map((w) => `<path d="${w.d}" fill="none" stroke="#d9cfb9" stroke-width="22" stroke-linecap="round"/><path d="${w.d}" fill="none" stroke="#17181b" stroke-width="11" stroke-linecap="round"/>`).join('')}
-  ${[['1', 200], ['2', 500], ['3', 800]].map(([n, x]) => `<rect x="${x - 42}" y="538" width="84" height="58" rx="3" fill="#efe2b8" transform="rotate(-3 ${x} 567)"/><text x="${x}" y="584" font-size="46" text-anchor="middle" fill="#2b3570" font-family="MihaejeHand, sans-serif">${n}</text>`).join('')}
+  ${[['2', 200], ['4', 500], ['5', 800]].map(([n, x]) => `<rect x="${x - 42}" y="538" width="84" height="58" rx="3" fill="#efe2b8" transform="rotate(-3 ${x} 567)"/><text x="${x}" y="584" font-size="46" text-anchor="middle" fill="#2b3570" font-family="MihaejeHand, sans-serif">${n}</text>`).join('')}
 </svg>`;
 
 export default {
@@ -147,7 +174,7 @@ export default {
       '철거 전 마지막 전기 점검이 내 일이다. 미루연립 A동은 이달 1일에 전기가 끊겼고, 월요일 아침이면 포클레인이 들어온다.',
       '그런데 지난주부터 민원이 세 건이다. 밤 아홉 시가 넘으면 빈 건물 창이 하나씩 켜졌다 꺼진다고. 동네 커뮤니티에는 벌써 「404호 귀신」이라는 글이 올라와 있었다.',
       '팀장은 짧게 말했다. 「귀신이든 도둑이든 전선이든, 월요일 전에 원인 찾아서 끊어.」 나는 둑길 가로등 아래 서서 개울 건너 건물 뒤편을 봤다. 창은 전부 까맸다.',
-      '아홉 시 정각, 3층 끝 창 하나가 딸깍, 하고 노랗게 켜졌다. 건너편에는 아무도 없어야 했다.',
+      '아홉 시 정각, 3층 오른쪽 창 하나가 딸깍, 하고 노랗게 켜졌다. 건너편에는 아무도 없어야 했다.',
     ],
     cta: '둑길에서 건물 보기',
   },
@@ -168,11 +195,12 @@ export default {
       arrive: (S) => {
         if (S.solved.includes('wires')) return '3층 그 집 창 셋이 다 켜져 있다 열 시다 벤치 위 종이컵은 이제 식었다 휴대폰 속 커뮤니티 글에 댓글이 더 붙었을까';
         if (ev(S, 'anbang')) return '3층 그 집 창이 하나 더 켜져 있다 벤치는 비어 있는데 그 위에 종이컵 하나 김이 아직 오른다 아까는 없었다';
-        return '가로등 아래 벤치는 비어 있다 개울 건너 A동 뒤편 벽에 빨간 락카로 「철거」 창은 다 까만데 3층 끝 창 하나만 노랗다 발밑엔 철거 안내판';
+        return '가로등 아래 벤치는 비어 있다 개울 건너 A동 뒤편 벽에 빨간 락카로 커다란 X 표 창은 다 까만데 3층 오른쪽 창 하나만 노랗다 가로등 기둥엔 철거 안내판이 묶여 있다';
       },
       get overlays() {
         const S = cur();
         const o = [
+          { x: 7.6, y: 41.5, w: 3.8, h: 8.2, cls: 'apt-sign', html: '<i></i>' },
           { x: 53.91, y: 30.81, w: 5.18, h: 6.4, cls: 'apt-win' + (ev(S, 'anbang') ? ' on' : ''), html: `<img src="${P}props/bank-anbang.webp" alt="">` },
           { x: 59.47, y: 29.8, w: 5.57, h: 6.69, cls: 'apt-win' + ((S.solved || []).includes('wires') ? ' on' : ''), html: `<img src="${P}props/bank-living.webp" alt="">` },
         ];
@@ -180,9 +208,9 @@ export default {
         return o;
       },
       hotspots: [
-        { id: 'order', x: 9, y: 88, label: '오늘 작업 지시', kind: 'doc', doc: 'order' },
-        { id: 'post', x: 22, y: 83, label: '동네 커뮤니티 글', kind: 'doc', doc: 'post' },
-        { id: 'section', x: 86, y: 70, label: '둑길의 철거 안내판', kind: 'doc', doc: 'section' },
+        { id: 'order', x: 19, y: 74, label: '오늘 작업 지시', kind: 'doc', doc: 'order' },
+        { id: 'post', x: 37, y: 72, label: '동네 커뮤니티 글', kind: 'doc', doc: 'post' },
+        { id: 'section', x: 9.5, y: 45.5, label: '둑길의 철거 안내판', kind: 'doc', doc: 'section' },
         { id: 'go', x: 55, y: 38, r: 16, label: '건물 정문으로', kind: 'travel', to: 'entrance' },
       ],
     },
@@ -190,11 +218,18 @@ export default {
       id: 'entrance',
       name: 'A동 현관',
       image: P + 'entrance.webp',
-      arrive: '정문으로 돌아 들어왔다 형광등은 비상 배터리로 겨우 버틴다 왼쪽 벽에 우편함 서른 칸, 맞은편 관리실 유리창 안에 스탠드가 켜져 있다 전기가 없는 건물인데',
+      arrive: (S) => {
+        if (S.solved.includes('hooks')) return '현관 형광등이 깜빡인다 열쇠 두 개가 주머니에서 짤랑거린다 계단 위 3층이 그 집이다';
+        if (S.solved.includes('mailbox')) return '301 칸에서 꺼낸 고지서를 쥐고 섰다 관리실 유리창 안 스탠드는 아직 켜져 있다 문은 닫혀 있지만 잠기진 않았다';
+        return '정문으로 돌아 들어왔다 형광등은 비상 배터리로 겨우 버틴다 왼쪽 벽에 우편함 서른 칸, 맞은편 관리실 유리창 안에 스탠드가 켜져 있다 전기가 없는 건물인데';
+      },
+      overlays: [{ x: 9.6, y: 14.4, w: 11.2, h: 5.4, cls: 'apt-plate', html: '<i></i>' }],
       hotspots: [
-        { id: 'plate', x: 16, y: 19, label: '우편함 위 호수 안내', kind: 'doc', doc: 'plate' },
+        { id: 'plate', x: 15.2, y: 17, label: '우편함 위 호수 안내', kind: 'doc', doc: 'plate' },
         { id: 'board', x: 40, y: 40, r: 14, label: '게시판의 이주 현황', kind: 'doc', doc: 'board' },
         { id: 'mailbox', x: 16, y: 50, r: 18, label: '우편함', kind: 'device', device: 'mailbox' },
+        { id: 'toOffice', x: 71.5, y: 50, r: 12, label: '관리실 문', kind: 'travel', to: 'office', visible: (S) => S.solved.includes('mailbox') },
+        { id: 'stairs', x: 92, y: 66, r: 10, label: '3층으로 계단', kind: 'travel', to: 'unit', visible: (S) => S.solved.includes('hooks') },
         { id: 'back', x: 92, y: 40, r: 14, label: '둑길로', kind: 'travel', to: 'bank' },
       ],
     },
@@ -205,7 +240,7 @@ export default {
       unlockedBy: 'mailbox',
       arrive: (S) => {
         if (!ev(S, 'cctv')) {
-          soon('cctv', 'office', 9000, (stage) => { stage.querySelector('.apt-crt')?.classList.add('on'); click(); say('모니터가 지지직 넘어갔다 CH2 둑길 가로등 아까 내가 서 있던 그 벤치에 누가 앉아 있다 이쪽 건물을 보고'); });
+          soon('cctv', 'office', 7000, (stage) => { stage.querySelector('.apt-crt')?.classList.add('on'); click(); say(CCTV_LINE); });
           return '관리실 문은 잠겨 있지 않았다 스탠드는 건전지용 주인은 없고 보온병이 아직 따뜻하다 열쇠함 문이 열려 있고 구석 모니터엔 현관이 비친다';
         }
         return '모니터는 CH2에 멈춰 있다 둑길 가로등 밑 벤치 보온병은 아직 따뜻하다 열쇠함 문은 열린 그대로';
@@ -213,14 +248,14 @@ export default {
       get overlays() { const S = cur(); return [{ x: 87.2, y: 48.6, w: 10.9, h: 16.2, cls: 'apt-crt' + (ev(S, 'cctv') ? ' on' : ''), html: `<img src="${P}props/cctv-bench.webp" alt="">` }]; },
       hotspots: [
         { id: 'log', x: 53, y: 70, label: '책상 위 근무일지', kind: 'doc', doc: 'log' },
-        { id: 'roster', x: 95, y: 80, label: '입주자 명부', kind: 'doc', doc: 'roster' },
+        { id: 'roster', x: 92, y: 75, label: '입주자 명부', kind: 'doc', doc: 'roster' },
         { id: 'storage', x: 34.5, y: 21, label: '벽에 붙은 창고 배정표', kind: 'doc', doc: 'storage' },
         { id: 'calendar', x: 78, y: 22, label: '벽 달력', kind: 'doc', doc: 'calendar' },
         { id: 'phone', x: 71, y: 63, r: 9, label: '전화기 옆 통화 메모', kind: 'doc', doc: 'phone' },
-        { id: 'receipt', x: 65, y: 90, r: 9, label: '책상 서랍', kind: 'doc', doc: 'receipt' },
+        { id: 'receipt', x: 64, y: 79, r: 9, label: '책상 서랍', kind: 'doc', doc: 'receipt' },
         { id: 'cctv', x: 92.5, y: 56, r: 10, label: '구석 모니터', kind: 'doc', doc: 'cctv' },
         { id: 'hooks', x: 53, y: 22, r: 15, label: '열쇠함', kind: 'device', device: 'hooks' },
-        { id: 'back2', x: 6, y: 92, label: '현관으로', kind: 'travel', to: 'entrance' },
+        { id: 'back2', x: 12, y: 70, label: '현관으로', kind: 'travel', to: 'entrance' },
       ],
     },
     {
@@ -230,12 +265,12 @@ export default {
       unlockedBy: 'hooks',
       arrive: (S) => {
         if (!ev(S, 'anbang')) {
-          soon('anbang', 'unit', 12000, (stage) => {
-            stage.querySelector('.apt-anbang')?.classList.add('on'); click();
-            say('딸깍 안방에서 소리가 났다 문 너머가 노랗게 밝아졌다 단전된 집이다 안에는 아무도 없다');
-            setTimeout(() => { if (document.querySelector('.v2-stage')?.dataset.scene === 'unit') say('주머니 속 휴대폰이 짧게 떨렸다 아까 그 커뮤니티 글에 새 댓글 알림이다'); }, 7000);
+          soon('anbang', 'unit', 5000, (stage) => {
+            stage.querySelector('.apt-anbang')?.classList.add('on'); stage.querySelector('.apt-spill')?.classList.add('on'); click();
+            say(ANBANG_LINE);
+            setTimeout(() => { if (document.querySelector('.v2-stage')?.dataset.scene === 'unit') say(COMMENT_LINE); }, 6500);
           });
-          return '현관 앞 바닥에 작은 랜턴 하나 창에서 먼 자리다 짐은 거의 상자에 들어갔다 안방 문이 열려 있고 안은 깜깜하다 스위치마다 종이테이프';
+          return '현관 앞 바닥에 작은 랜턴 하나 창에서 먼 자리다 짐은 거의 상자에 들어갔다 안방 문이 열려 있고 안은 깜깜하다 작은방 쪽에서만 희미한 불빛이 샌다 스위치마다 종이테이프';
         }
         if (S.solved.includes('wires')) return '거실 창가 등까지 켜졌다 열 시다 밖에서 보면 지금 이 집 창이 셋 다 켜져 있을 거다 상자 안 타이머 셋이 째깍거린다';
         if (S.solved.includes('box')) return '싱크대 밑 상자가 열려 있다 타이머 셋과 엉킨 연장선, 상자 위엔 가계부 안방 문 너머는 여전히 노랗다';
@@ -336,8 +371,8 @@ export default {
     },
     switches: {
       title: '테이프 붙은 스위치',
-      kind: '방문 옆 스위치',
-      html: `<div class="switch-row">${[['1', '안방'], ['2', '거실'], ['3', '작은방']].map(([n, r]) => `<div class="switch-plate"><span class="tape">${n} ${r}</span><i></i></div>`).join('')}</div><p>스위치는 단전이라 눌러도 아무 일 없다 테이프 글씨는 관리실 근무일지와 같은 손이다</p>`,
+      kind: '301호 스위치 여섯',
+      html: `<div class="switch-row apt-switches">${SWITCHES.map(([n, r]) => `<div class="switch-plate"><span class="tape">${n} ${r}</span><i></i></div>`).join('')}</div><p>안방 문 옆에 둘, 나머지는 방마다 문 옆에 하나씩 집 안 스위치마다 번호 테이프가 붙어 있다 단전이라 눌러도 아무 일 없다 테이프 글씨는 관리실 근무일지와 같은 손이다</p>`,
     },
     mnote: {
       title: '상자 안 쪽지',
@@ -347,7 +382,7 @@ export default {
     book: {
       title: '상자 위 가계부',
       kind: '김순자 · 두 권',
-      html: `<figure class="prop bookphoto"><img src="${P}props/book.webp" alt="펼쳐 둔 낡은 가계부 두 권" decoding="async"></figure><div class="paper-table torn"><p class="pt-head">2009년 가계부 · 3월 둘째 장 여백 (바깥쪽 귀퉁이가 찢겨 나갔다)</p><p class="hand-cell big">그이 아홉 시 퇴근 들어오면 <span class="rip">▒▒</span> 불부터<br>아홉 시 반 <span class="rip">▒▒▒</span> 켜 주고 숙제 봐 줌<br>열 시 반 <span class="rip">▒▒</span> 이불 깔고<br>열한 시 다 끄고 잔다 우리 집은 이게 저녁</p></div><div class="paper-table old"><p class="pt-head">2015년 가계부 · 1월 첫 장 여백</p><p class="hand-cell big">그이 가고 나서는 안방만 아홉 시에 켰다가 열 시에 끈다<br>작은방은 애들 나가고 나서 안 켠다 숙제 봐 주던 방</p></div>`,
+      html: `<figure class="prop bookphoto"><img src="${P}props/book.webp" alt="펼쳐 둔 낡은 가계부 두 권" decoding="async"></figure><div class="paper-table torn"><p class="pt-head">2009년 가계부 · 3월 둘째 장 여백 (줄 가운데가 군데군데 찢겨 나갔다)</p><p class="hand-cell big">그이 아홉 시 퇴근 들어오면 <span class="rip">▒▒</span> 불부터<br>아홉 시 반 <span class="rip">▒▒▒</span> 켜 주고 숙제 봐 줌<br>열 시 반 <span class="rip">▒▒</span> 이불 깔고<br>열한 시 다 끄고 잔다 우리 집은 이게 저녁</p></div><div class="paper-table old"><p class="pt-head">2015년 가계부 · 1월 첫 장 여백</p><p class="hand-cell big">그이 가고 나서는 안방만 아홉 시에 켰다가 열 시에 끈다<br>작은방은 애들 나가고 나서 안 켠다 숙제 봐 주던 방</p></div>`,
     },
     final: {
       title: '할머니와의 통화',
@@ -363,7 +398,7 @@ export default {
       scene: 'entrance',
       intro: '서른 칸 철제 우편함 열쇠는 없지만 문이 다 헐겁다 칸을 누르면 그 칸에 손을 댄다 불이 켜진 그 집 우편함을 열어 본다',
       docs: ['post', 'section', 'plate', 'order'],
-      hintCode: 'A-S01',
+      hintCode: '',
       hints: [
         '글쓴이는 404라는데, 그 사진을 어디서 찍었는지부터 다시 본다',
         '둑길은 건물 뒤편이다 뒤에서 보면 좌우가 바뀌고, 안내판 단면도로 맨 아랫줄이 무엇인지 다시 센다',
@@ -381,19 +416,21 @@ export default {
           wrap.append(b);
         }));
         const box = el('div', 'mail-wrap'); box.append(wrap, el('p', 'pick-label', d.pick ? `손을 댄 칸 · ${d.pick}` : '우편함을 하나 고른다'));
+        const w = waitLine(ctx, '철문 소리가 계단을 타고 울렸다 위층이 조용해질 때까지 숨죽이고 기다린다'); if (w) box.append(w);
         return box;
       },
       commitLabel: '이 우편함 열어 보기',
-      canCommit: (d) => !!d.pick,
+      canCommit: (d) => !!d.pick && !waiting(d),
       check(d) {
         if (d.pick === MAIL_ANSWER) return { ok: true };
+        miss(d);
         if (d.pick === '404') return { ok: false, msg: '전단지만 꽉 찼다 작년에 이사 간 집이다' };
         return { ok: false, msg: '전단지와 고지서뿐이다 이 집이 아니다' };
       },
       reveal: {
         title: '301',
         text: '우편함 안에 고지서 한 장 「햇살요양병원 10월 입원비 · 301 김순자 님」 그 위에 메모지 「301 우편물 관리실에서 모아 둡니다」',
-        scene: ['고지서 봉투가 아직 빳빳하다 누가 매일 이 칸을 비우고 있다 관리실 스탠드는 아직 켜져 있다'],
+        scene: ['고지서 봉투가 아직 빳빳하다 다른 칸과 달리 전단지가 한 장도 없다 누가 이 칸만 챙기고 있다 관리실 스탠드는 아직 켜져 있다'],
         unlock: 'office',
       },
     },
@@ -401,9 +438,9 @@ export default {
     hooks: {
       title: '열쇠함',
       scene: 'office',
-      intro: '스물네 개 고리 꼬리표엔 호수만 적혀 있다 고리를 누르면 그 열쇠를 꺼내 손에 들고, 다시 누르면 도로 건다 301 고리는 비어 있다',
+      intro: '앞쪽에 빼곡한 색 꼬리표 열쇠는 공용 비품이다 그걸 젖히니 안쪽 판에 세대 열쇠 고리 스물네 개 꼬리표엔 호수만 적혀 있다 고리를 누르면 그 열쇠를 꺼내 손에 들고, 다시 누르면 도로 건다 301 고리는 비어 있다',
       docs: ['log', 'roster', 'storage', 'calendar', 'phone', 'receipt'],
-      hintCode: 'A-S02',
+      hintCode: '',
       hints: [
         '301 고리가 비었다 근무일지에 그 집 열쇠를 어디 뒀는지 적혀 있다',
         '할머니 창고가 몇 번인지는 배정표 인쇄 글씨만 믿으면 안 된다 아래 손글씨의 두 분이 누군지 명부에서 찾는다',
@@ -442,19 +479,24 @@ export default {
           hand.append(el('p', 'pick-label', `손에 든 것 · ${d.hand} 고리`), tag, ring, back);
         }
         box.append(hand);
+        const w = waitLine(ctx, '3층에서 다시 내려오는 중 숨이 차다'); if (w) box.append(w);
         return box;
       },
       commitLabel: '이 열쇠 들고 3층으로',
-      canCommit: (d) => !!d.hand,
-      check(d) {
-        if (d.hand === HOOK_ANSWER) return { ok: true };
-        d.hand = null;
+      canCommit: (d) => !!d.hand && !waiting(d),
+      check(d, S) {
+        if (d.hand === HOOK_ANSWER) { if (S) fire(S, 'cctv'); return { ok: true }; }
+        d.hand = null; miss(d);
         return { ok: false, msg: '3층까지 올라가 꽂아 봤지만 301 문이 안 열린다 열쇠를 도로 걸었다' };
       },
       reveal: {
         title: 'B01',
         text: 'B01 고리에는 열쇠가 둘 하나는 창고 열쇠, 하나는 꼬리표 없는 현관 열쇠 301 문에 꽂자 한 번에 돌아갔다',
-        scene: ['계단을 오르는 동안 관리실 쪽에서 누가 따라오는 소리는 없었다 문틈으로 희미한 빛이 새어 나왔다'],
+        // 모니터가 넘어가는 걸 못 보고 열쇠를 찾았으면, 관리실을 나서는 순간에 본다
+        get scene() {
+          const late = ev(cur(), 'cctvLate');
+          return [...(late ? ['열쇠를 쥐고 나서는데 구석 모니터가 지지직 넘어갔다 CH2 둑길 가로등 아까 내가 서 있던 그 벤치에 누가 앉아 이쪽 건물을 보고 있다'] : []), '계단을 오르는 동안 관리실 쪽에서 누가 따라오는 소리는 없었다 문틈으로 희미한 빛이 새어 나왔다'];
+        },
         unlock: 'unit',
       },
     },
@@ -462,30 +504,37 @@ export default {
     box: {
       title: '싱크대 밑',
       scene: 'unit',
-      intro: '회색 공구 상자 하나 선이 배터리 두 개로 이어져 있다 세 자리 번호 자물쇠 ▲▼로 숫자를 돌린다 뚜껑에 테이프 「번호: 밤에 켜지는 순서대로 스위치 번호」',
+      intro: '회색 공구 상자 하나 선이 배터리 세 개로 이어져 있다 세 자리 번호 자물쇠 ▲▼로 숫자를 돌린다 뚜껑에 테이프 「번호: 밤에 켜지는 순서대로 스위치 번호」',
       docs: ['switches', 'plan', 'post', 'log'],
-      hintCode: 'A-S03',
+      hintCode: '',
       hints: [
         '커뮤니티 사진은 30분마다 찍은 거다 301 창 셋 중 새로 켜진 게 어느 건지 시간 순서대로',
-        '사진은 밖에서 찍었다 안에서 북쪽 벽을 보고 그린 대피 안내도와는 좌우가 반대다',
-        '작은방 → 안방 → 거실 스위치 번호로 312',
+        '사진은 밖에서 찍었다 안에서 북쪽 벽을 보고 그린 대피 안내도와는 좌우가 반대다 스위치 여섯 중 둑길에서 보이는 창이 있는 방만 센다',
+        '작은방 → 안방 → 거실 스위치 번호로 425',
       ],
       initial: () => ({ dial: [0, 0, 0] }),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'prop boxphoto'); wrap.innerHTML = `<img src="${P}props/box.webp" alt="싱크대 밑 공구 상자와 세 자리 자물쇠" decoding="async">`;
         const box = el('div', 'letterlock-wrap apt-boxlock'); box.append(wrap, dialRow(el, save, d, 3));
+        const w = waitLine(ctx, '다이얼이 헛돈다 한참 흔들어야 다시 맞물린다'); if (w) box.append(w);
         return box;
       },
       commitLabel: '뚜껑 열기',
-      check(d) {
-        if (d.dial.join('') === BOX_CODE.join('')) return { ok: true };
+      canCommit: (d) => !waiting(d),
+      check(d, S) {
+        if (d.dial.join('') === BOX_CODE.join('')) { if (S) fire(S, 'anbang'); return { ok: true }; }
+        miss(d);
         return { ok: false, msg: '안 열린다' };
       },
       reveal: {
-        title: '312',
+        title: '425',
         text: '뚜껑 안에 타이머 셋과 배터리, 엉킨 연장선 세 가닥, 그리고 접힌 쪽지 쪽지는 관리실 근무일지와 같은 글씨였다',
-        scene: ['선은 셋 다 검은색이고 서로 감겨 있다 벽 속을 지나 방마다 하나씩 간다 끝마다 테이프 숫자가 붙어 있다'],
+        // 안방 불이 혼자 켜지는 걸 못 보고 상자를 열었으면, 뚜껑이 열리는 순간에 본다
+        get scene() {
+          const late = ev(cur(), 'anbangLate');
+          return [...(late ? ['뚜껑이 열리는 순간 ' + ANBANG_LINE, COMMENT_LINE] : []), '선은 셋 다 검은색이고 서로 감겨 있다 벽 속을 지나 방마다 하나씩 간다 끝마다 테이프 숫자가 붙어 있다'];
+        },
         unlockDoc: 'mnote',
         unlock: null,
       },
@@ -496,11 +545,11 @@ export default {
       scene: 'unit',
       intro: '타이머 셋 위에 빈 종이테이프 아래로는 검은 연장선 세 가닥이 엉켜 방마다 간다 테이프 숫자를 눌러 집은 뒤 타이머 위 빈 테이프를 누르면 거기 적어 붙인다 붙인 걸 다시 누르면 뗀다',
       docs: ['switches', 'receipt', 'mnote'],
-      hintCode: 'A-S04',
+      hintCode: '',
       hints: [
         '타이머 소켓에서 나간 선 하나를 골라 끝까지 손가락으로 따라가 본다',
         '선이 겹치는 자리에서는 위에 올라간 선이 밝은 테두리를 두르고 있다 그걸로 어느 선이 계속 가는지 가린다',
-        '왼쪽 타이머 3 · 가운데 1 · 오른쪽 2',
+        '왼쪽 타이머 5 · 가운데 2 · 오른쪽 4',
       ],
       initial: () => ({ hold: null, tape: { L: null, M: null, R: null } }),
       render(ctx) {
@@ -521,7 +570,7 @@ export default {
         });
         const svg = el('div', 'wirebox'); svg.innerHTML = wireSvg();
         const tray = el('div', 'wire-chips');
-        ['1', '2', '3'].forEach((n) => {
+        WIRE_TAPES.forEach((n) => {
           const used = Object.values(d.tape).includes(n);
           const c = el('button', 'wire-chip' + (d.hold === n ? ' holding' : '') + (used ? ' used' : ''), n); c.type = 'button';
           c.setAttribute('aria-label', `테이프 ${n} 집기`);
@@ -529,17 +578,20 @@ export default {
           tray.append(c);
         });
         wrap.append(top, svg, el('p', 'pick-label', d.hold ? `테이프 ${d.hold}를 집었다 붙일 타이머 위 테이프를 누른다` : '종이테이프 숫자'), tray);
+        const w = waitLine(ctx, '테이프를 다 떼고 선을 처음부터 다시 따라가는 중'); if (w) wrap.append(w);
         return wrap;
       },
       commitLabel: '이대로 붙여 두기',
-      canCommit: (d) => ['L', 'M', 'R'].every((k) => d.tape[k]),
+      canCommit: (d) => ['L', 'M', 'R'].every((k) => d.tape[k]) && !waiting(d),
       check(d) {
+        d.hold = null;
         if (['L', 'M', 'R'].every((k) => d.tape[k] === WIRE_ANSWER[k])) return { ok: true };
+        miss(d);
         return { ok: false, msg: '선 하나를 손으로 짚어 다시 따라가 보니 붙인 숫자와 끝이 맞지 않는다' };
       },
       reveal: {
-        title: '3 · 1 · 2',
-        text: '왼쪽 타이머는 3 작은방, 가운데 파란 타이머는 1 안방, 오른쪽 타이머는 2 거실 테이프를 다 붙였을 때 오른쪽 타이머가 딸깍 넘어갔다',
+        title: '5 · 2 · 4',
+        text: '왼쪽 타이머는 5 거실, 가운데 파란 타이머는 2 안방, 오른쪽 타이머는 4 작은방 테이프를 다 붙였을 때 왼쪽 타이머가 딸깍 넘어갔다',
         scene: ['거실 창가에서 건전지 스탠드가 켜졌다 열 시다 지금 둑에서 보면 이 집 창이 셋 다 노랗겠다', '타이머 둘레에 핀이 촘촘히 박혀 있다 내려간 핀만큼 불이 켜진다'],
         unlock: null,
       },
@@ -550,11 +602,11 @@ export default {
       scene: 'unit',
       intro: '기계식 타이머 둘레의 핀 하나가 30분이다 핀을 누르면 내려가고, 내려간 핀 동안 그 타이머 등이 켜진다 다시 누르면 올라온다 지금은 할머니가 틀렸다고 한 저녁 그대로다',
       docs: ['book', 'phone', 'switches', 'plan', 'mnote'],
-      hintCode: 'A-S05',
+      hintCode: '',
       hints: [
         '가계부가 두 권이다 할머니가 원하는 건 영감님 계실 때 저녁인데, 그해 장은 방 이름이 찢겨 나갔다',
-        '찢기지 않은 말로 방을 맞힌다 숙제 봐 주던 방은 다른 해 가계부에, 문 열자마자 켜던 데는 통화 메모와 대피 안내도에 있다 타이머가 어느 방인지는 붙인 테이프 숫자와 스위치',
-        '오른쪽(2 거실) 21:00~22:30 핀 넷 · 왼쪽(3 작은방) 21:30~22:30 핀 셋 · 가운데(1 안방) 22:30 핀 하나 · 23:00부터는 다 올림',
+        '찢기지 않은 말로 방을 맞힌다 숙제 봐 주던 방은 다른 해 가계부에, 문 열자마자 켜던 데는 통화 메모와 대피 안내도에 있다 타이머가 어느 방인지는 붙인 테이프 숫자를 스위치 테이프와 맞춰 본다',
+        '왼쪽(5 거실) 21:00~22:30 핀 넷 · 오른쪽(4 작은방) 21:30~22:30 핀 셋 · 가운데(2 안방) 22:30 핀 하나 · 23:00부터는 다 올림',
       ],
       initial: () => ({ pins: JSON.parse(JSON.stringify(PIN_START)) }),
       render(ctx) {
@@ -598,21 +650,26 @@ export default {
 
   ending: {
     image: P + 'ending.webp',
-    imageAlt: '둑길에서 본 A동 뒤편 3층 끝 창 셋이 노랗게 켜져 있다',
+    imageAlt: '둑길에서 본 A동 뒤편 3층 오른쪽 창 셋이 노랗게 켜져 있다',
     eyebrow: '2026/10/24 토요일 · 밤 9시',
     title: '404호에는 불이 켜지지 않았다',
-    paragraphs: [
-      '토요일 밤 둑길 벤치에 관리인 할아버지와 나란히 앉았다 할아버지 휴대폰에서 할머니 목소리가 나왔다',
-      '"아홉 시 됐나"',
-      '"됐어요 할머니"',
-      '건너편 3층 끝 창 셋 가운데 창이 먼저 켜졌다',
-      '"거실이네" 할머니 목소리가 달라졌다',
-      '아홉 시 반에 오른쪽 작은방이, 열 시 반에 왼쪽 안방이 켜졌다 셋 다 켜진 창을 할아버지는 아무 말 없이 한참 봤다',
-      '할아버지가 보온병 뚜껑에 커피를 따라 줬다 어젯밤 관리실 모니터 속 벤치에 앉아 있던 사람도, 3층에 손전등 든 사람이 있다고 댓글 단 산책러2도 할아버지였다',
-      '"아홉 시부터 열한 시까지 매일 여기 앉아서 봤어 불 잘 켜지나 어젯밤엔 3층에 웬 불빛이 왔다 갔다 하길래 도둑인 줄 알고 둑 아래로 내려가 숨었지 302 아들이 가입시켜 준 거 처음 써 봤네"',
-      '열한 시에 셋이 같이 꺼졌다 "잘 자요 할머니" "그래 자네도"',
-    ],
-    afterword: '월요일 아침 여덟 시, 할아버지와 등 세 개를 떼어 냈다 거실 등 하나는 할머니 병실 창가로 갔다 타이머는 아홉 시 철거가 끝난 날 밤 커뮤니티 글에 마지막 댓글이 달렸다 「연립 헐린 자리에서 둑 너머 보면 아홉 시에 언덕 위 불 하나 켜짐 귀신 이사 감?」 그 언덕 위가 햇살요양병원 3층이다',
+    // 두 장면(모니터 속 벤치 · 산책러2 댓글)은 장치를 풀 때 꼭 보게 되지만, 옛 저장으로 이어 하는 사람을 위해 본 것만 꺼낸다
+    paragraphs: (S) => {
+      const bench = ev(S, 'cctv'), note = ev(S, 'anbang');
+      const who = [bench ? '어젯밤 관리실 모니터 속 벤치에 앉아 있던 사람' : '', note ? '3층에 손전등 든 사람이 있다고 댓글 단 산책러2' : ''].filter(Boolean);
+      return [
+        '토요일 밤 둑길 벤치에 관리인 할아버지와 나란히 앉았다 할아버지 휴대폰에서 할머니 목소리가 나왔다',
+        '"아홉 시 됐나"',
+        '"됐어요 할머니"',
+        '건너편 3층 오른쪽 창 셋 가운데 창이 먼저 켜졌다',
+        '"거실이네" 할머니 목소리가 달라졌다',
+        '아홉 시 반에 오른쪽 작은방이, 열 시 반에 왼쪽 안방이 켜졌다 셋 다 켜진 창을 할아버지는 아무 말 없이 한참 봤다',
+        '할아버지가 보온병 뚜껑에 커피를 따라 줬다' + (who.length ? ' ' + who.join('도, ') + '도 할아버지였다' : ''),
+        '"아홉 시부터 열한 시까지 매일 여기 앉아서 봤어 불 잘 켜지나 어젯밤엔 3층에 웬 불빛이 왔다 갔다 하길래 도둑인 줄 알고 둑 아래로 내려가 숨었지' + (note ? ' 302 아들이 가입시켜 준 거 처음 써 봤네"' : '"'),
+        '열한 시에 셋이 같이 꺼졌다 "잘 자요 할머니" "그래 자네도"',
+      ];
+    },
+    afterword: '월요일 아침 여덟 시, 할아버지와 등 세 개를 떼어 냈다 거실 등 하나는 타이머째 할머니 병실 창가로 갔다 매일 밤 아홉 시에 켜지게 맞춰 두었다 철거가 끝난 날 밤 커뮤니티 글에 마지막 댓글이 달렸다 「연립 헐린 자리에서 둑 너머 보면 아홉 시에 언덕 위 불 하나 켜짐 귀신 이사 감?」 그 언덕 위가 햇살요양병원 3층이다',
     unlockDoc: 'final',
     next: { href: 'play.html?case=laundry', title: '자정의 무인 세탁소', line: '다음은 자정마다 빈 통으로 도는 건조기 이야기입니다' },
   },
