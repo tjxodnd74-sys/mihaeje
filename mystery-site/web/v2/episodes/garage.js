@@ -35,7 +35,7 @@ function syncSvg(off) {
   let s = '<svg viewBox="0 0 100 44" class="sync-svg pc-only" role="img" aria-label="위는 블랙박스 출입, 아래는 출입 서버 기록 같은 시간 축">';
   s += '<line x1="4" y1="22" x2="96" y2="22" stroke="#4a5560" stroke-width=".3"/>';
   for (let m = 30; m <= 80; m += 5) { const sec = toSec('21:00:00') + m * 60; const x = X(sec); const hh = 21 + Math.floor(m / 60), mm = m % 60; s += `<line x1="${x}" y1="21" x2="${x}" y2="23" stroke="#6b7782" stroke-width=".25"/><text x="${x}" y="26.4" font-size="2" text-anchor="middle" fill="#8d979f" font-family="ui-monospace,monospace">${hh}:${String(mm).padStart(2, '0')}</text>`; }
-  s += '<text x="4" y="5" font-size="2.4" fill="#f2b134" font-family="SUIT,sans-serif">블랙박스 (표시 시각을 옮겨 봄)</text><text x="4" y="42.5" font-size="2.4" fill="#9be8a5" font-family="SUIT,sans-serif">출입 서버</text>';
+  s += `<text x="4" y="5" font-size="2.4" fill="#f2b134" font-family="SUIT,sans-serif">블랙박스 (${off ? '시계를 맞춘 뒤' : '표시 시각 그대로'})</text>` + '<text x="4" y="42.5" font-size="2.4" fill="#9be8a5" font-family="SUIT,sans-serif">출입 서버</text>';
   FRAMES.forEach((f, i) => { if (!CAMDIR[f.id]) return; const x = X(toSec(f.t) + off * 60); if (x < 2 || x > 98) return; s += `<line x1="${x}" y1="9" x2="${x}" y2="20" stroke="#f2b134" stroke-width=".5"/><text x="${x}" y="8.2" font-size="2.3" text-anchor="middle" fill="#f2b134" font-family="SUIT,sans-serif">${i + 1}${CAMDIR[f.id] === '입' ? '↓' : '↑'}</text>`; });
   SRV.forEach(([t, dir, card]) => { const x = X(toSec(t)); s += `<line x1="${x}" y1="28" x2="${x}" y2="35" stroke="#9be8a5" stroke-width=".5"/><text x="${x}" y="38.2" font-size="2.1" text-anchor="middle" fill="#9be8a5" font-family="SUIT,sans-serif">${card}${dir === '입' ? '↓' : '↑'}</text>`; });
   return s + '</svg>';
@@ -55,7 +55,7 @@ function syncSvgV(off) {
 const SAFE_CODE = [0, 4, 0, 7]; // 처음 문 연 날 2009/4/7 (사업자등록 3/30 · 다시 연 날 10/3은 함정)
 
 // 휴지통의 찢긴 작업 지시서: 다섯 줄 열두 칸을 세 칸씩 넷으로 찢음 + 다른 지시서 조각 하나
-const WO_ROWS = ['작업지시서 · 9/12', '차량 서연 회색 세단', '앞 디스크·패드 교체', '고객 통화 하지 말 것', '지시 박정호 작업 지수'].map((r) => [...r.padEnd(12, ' ')]);
+const WO_ROWS = ['작업지시서 · 9/12', '차량 서연 검은 세단', '앞 디스크·패드 교체', '고객 통화 하지 말 것', '지시 박정호 작업 지수'].map((r) => [...r.padEnd(12, ' ')]);
 const STRIPS = [0, 1, 2, 3].map((k) => ({ id: 's' + k, rows: WO_ROWS.map((r) => r.slice(k * 3, k * 3 + 3)) }));
 STRIPS.push({ id: 'sx', rows: [['월', ' ', '3'], ['흰', '색', ' '], ['오', '일', ' '], ['전', '화', ' '], ['확', '인', ' ']] });
 const STRIP_ORDER = ['s0', 's1', 's2', 's3'];
@@ -107,7 +107,7 @@ const JACKETS = [
 ];
 const REPORT = [
   { id: 'card', label: '① 21:46 측문을 연 카드', opts: [['07b', '07-B'], ['07a', '07-A'], ['09', '09'], ['04', '04']], ans: '07a' },
-  { id: 'from', label: '② 그 카드가 21:46 직전까지 있던 곳', opts: [['floor', '작업장 바닥'], ['safe', '사무실 금고 봉투'], ['pocket', '지수 재킷 안주머니']], ans: 'safe' },
+  { id: 'from', label: '② 그 카드가 어젯밤 꺼내지기 전까지 보관돼 있던 곳', opts: [['floor', '작업장 바닥'], ['safe', '사무실 금고 봉투'], ['pocket', '지수 재킷 안주머니']], ans: 'safe' },
   { id: 'again', label: '③ 같은 재킷이 블랙박스에 찍힌 다른 출입 (서버 줄로 · 모두)', multi: true, opts: [['2135', '21:35:10 07-B 퇴장'], ['2140', '21:40:00 09 퇴장'], ['2200', '22:00:05 09 입장'], ['2212', '22:12:30 09 퇴장']], ans: ['2140', '2200'] },
   { id: 'who', label: '④ 카드를 꺼낸 사람', opts: [['jisu', '한지수'], ['minho', '강민호'], ['boss', '박정호']], ans: 'boss' },
   { id: 'why', label: '⑤ 사진이 넘어가면 곤란했던 이유', opts: [['jisu', '지수가 몰래 부품을 바꿔서'], ['boss', '교체를 사장이 지시해서'], ['minho', '인수 일정이 늦어져서']], ans: 'boss' },
@@ -135,14 +135,14 @@ export default {
   tracesLabel: '정비소에 남은 것',
 
   opening: {
-    eyebrow: '9월 19일, 폐업 당일 아침',
+    eyebrow: '9월 19일, 폐업 당일 새벽',
     image: P + 'yard.webp',
     paragraphs: [
-      '셔터가 반쯤 내려온 채 멈춰 있었다. 미루정비소는 오늘 오전 열 시에 문을 닫는다.',
+      '셔터가 반쯤 내려온 채 멈춰 있었다. 날이 밝기 전이라 가로등이 아직 켜져 있다. 미루정비소는 오늘 오전 열 시에 문을 닫는다.',
       '어젯밤 이 안에서 SD카드 한 장이 사라졌다. 고객 서연의 차에서 부품을 바꿀 때 찍은 교체 전후 사진이 든 카드다. 서연은 그 교체에 동의한 적이 없다.',
       '사장 박정호는 21:40에 카드를 봤고, 22:00에는 없었다고 했다. 그 사이 출입 서버에는 두 줄이 남았지만, 폐업 이관 작업 때문에 잠겨서 읽을 수 없다. CCTV는 전날 떼어 냈다.',
       '서연의 차는 어젯밤 이 앞마당에 서 있었고, 블랙박스는 밤새 켜져 있었다. 보험사 조사원인 나한테 서연이 부탁한 건 하나다. "경찰 부르기 전에, 누가 가져갔는지만 확실하게요."',
-      '정비사 한지수, 인수 담당 강민호, 사장 박정호. 세 사람은 휴게실에서 나를 기다리고 있다. 셔터가 내려가기까지 한 시간 남짓 남았다.',
+      '정비사 한지수, 인수 담당 강민호, 사장 박정호. 새벽같이 불려 나온 세 사람이 휴게실에서 나를 기다리고 있다. 셔터가 내려가기까지 네 시간 남짓 남았다.',
     ],
     cta: '앞마당으로',
   },
@@ -166,14 +166,14 @@ export default {
         pocket(S);
         if (PRE_REPORT.every((x) => S.solved.includes(x))) return '서연 차 트렁크에 수첩을 펴 놓았다 불 켜진 창 너머로 세 사람이 이쪽을 보고 있다 이제 보고만 남았다';
         if (S.solved.includes('terminal')) return '작업장 셔터가 덜컹 하고 한 번 울렸다 바람인지 사람인지 모르겠다 휴게실 불이 꺼졌다 켜졌다';
-        return '비는 그쳤고 바닥은 아직 젖어 있다 서연의 차는 어젯밤 그 자리 그대로 뒷유리 안쪽에서 블랙박스 불빛이 깜박인다';
+        return '가로등이 아직 켜져 있다 비는 그쳤고 바닥은 젖어 있다 서연의 차는 어젯밤 그 자리에 그대로 서 있고, 뒷유리 너머 앞유리에 붙은 블랙박스 불빛이 깜박인다';
       },
       hotspots: [
         { id: 'cam', x: 27, y: 57, r: 7, label: '서연 차의 블랙박스', kind: 'device', device: 'cam' },
-        { id: 'receipt', x: 42, y: 60, r: 7, label: '차 안의 점검 영수증', kind: 'doc', doc: 'receipt' },
+        { id: 'receipt', x: 41, y: 64, r: 6, label: '차 안의 점검 영수증', kind: 'doc', doc: 'receipt' },
         { id: 'go-shop', x: 63, y: 46, r: 10, label: '작업장으로', kind: 'travel', to: 'shop' },
-        { id: 'go-office', x: 96, y: 41, r: 7, label: '사무실로', kind: 'travel', to: 'office' },
-        { id: 'report', x: 22, y: 78, r: 10, label: '서연에게 보고', kind: 'device', device: 'report', visible: (S) => PRE_REPORT.every((x) => S.solved.includes(x)) },
+        { id: 'go-office', x: 93, y: 41, r: 7, label: '사무실로', kind: 'travel', to: 'office' },
+        { id: 'report', x: 22, y: 76, r: 10, label: '서연에게 보고', kind: 'device', device: 'report', visible: (S) => PRE_REPORT.every((x) => S.solved.includes(x)) },
       ],
     },
     {
@@ -182,9 +182,11 @@ export default {
       image: P + 'office.webp',
       arrive: (S) => {
         pocket(S);
-        if (S.solved.includes('terminal') && !S.solved.includes('jackets')) return '재킷 셋 가운데 하나가 아까와 다른 고리에 걸려 있다 그사이 누가 사무실에 다녀갔다 책상 위엔 민호가 맡긴 휴대폰';
-        return '모니터에 출입 서버 화면 벽에 재킷 세 벌과 기념패 책상 밑에 작은 금고 휴지통 맨 위엔 오늘 아침 찢은 듯한 종이';
+        if (S.solved.includes('terminal') && !S.solved.includes('jackets')) return '그사이 누가 사무실에 다녀갔다 재킷이 걸린 고리 하나가 아직 달랑거린다 책상 위엔 민호가 맡기고 간 휴대폰이 놓여 있다';
+        return '모니터에 출입 서버 화면이 떠 있고, 벽에는 재킷 세 벌과 기념패가 걸려 있다 책상 밑에 작은 금고, 휴지통 맨 위엔 오늘 새벽 찢은 듯한 종이';
       },
+      // 단말을 맞춘 뒤 민호가 책상 위에 휴대폰을 두고 간다 (그때부터 그림에도 보이게)
+      overlays: [{ cls: 'g-phone', x: 42.58, y: 52.33, w: 10.16, h: 5.81, html: `<img src="${P}props/office-phone.webp" alt="">` }],
       hotspots: [
         { id: 'server', x: 20, y: 42, r: 9, label: '출입 서버 화면', kind: 'doc', doc: 'server' },
         { id: 'handover', x: 38, y: 44, r: 6, label: '폐업 인계 문서', kind: 'doc', doc: 'handover' },
@@ -192,10 +194,10 @@ export default {
         { id: 'alibi', x: 93, y: 33, r: 6, label: '강민호의 면담 기록', kind: 'doc', doc: 'alibi' },
         { id: 'lost', x: 93, y: 62, r: 7, label: '서류함의 분실 신고서', kind: 'doc', doc: 'lost' },
         { id: 'jackets', x: 70, y: 28, r: 12, label: '걸려 있는 재킷 세 벌', kind: 'device', device: 'jackets', visible: (S) => S.solved.includes('terminal') },
-        { id: 'video', x: 4, y: 59, r: 5, label: '책상 위 민호의 휴대폰', kind: 'device', device: 'video', visible: (S) => S.solved.includes('terminal') },
-        { id: 'safe', x: 37, y: 77, r: 8, label: '책상 밑 금고', kind: 'device', device: 'safe', visible: (S) => !S.solved.includes('safe') },
-        { id: 'safeopen', x: 37, y: 77, r: 8, label: '열린 금고', kind: 'doc', doc: 'safedoc', visible: (S) => S.solved.includes('safe') },
-        { id: 'strips', x: 81, y: 88, r: 6, label: '휴지통의 찢긴 종이', kind: 'device', device: 'strips' },
+        { id: 'video', x: 48, y: 55, r: 5, label: '책상 위 민호의 휴대폰', kind: 'device', device: 'video', visible: (S) => S.solved.includes('terminal') },
+        { id: 'safe', x: 37, y: 74, r: 8, label: '책상 밑 금고', kind: 'device', device: 'safe', visible: (S) => !S.solved.includes('safe') },
+        { id: 'safeopen', x: 37, y: 74, r: 8, label: '다시 닫아 둔 금고', kind: 'doc', doc: 'safedoc', visible: (S) => S.solved.includes('safe') },
+        { id: 'strips', x: 81, y: 81, r: 7, label: '휴지통의 찢긴 종이', kind: 'device', device: 'strips' },
         { id: 'go-shop', x: 16, y: 16, r: 9, label: '작업장으로', kind: 'travel', to: 'shop' },
       ],
     },
@@ -210,7 +212,7 @@ export default {
       },
       hotspots: [
         { id: 'locker', x: 76, y: 65, r: 8, label: '직원 보관함과 SD 슬롯', kind: 'doc', doc: 'locker' },
-        { id: 'terminal', x: 93, y: 38, r: 7, label: '보관함 백업 단말', kind: 'device', device: 'terminal', visible: (S) => S.solved.includes('cam') },
+        { id: 'terminal', x: 93, y: 38, r: 7, label: '보관함 백업 단말', kind: 'device', device: 'terminal' },
         { id: 'go-yard', x: 9, y: 42, r: 9, label: '앞마당으로', kind: 'travel', to: 'yard' },
       ],
     },
@@ -219,24 +221,24 @@ export default {
   docs: {
     brief: {
       title: '서연과 주고받은 문자',
-      kind: '내 휴대폰 · 오늘 아침',
+      kind: '내 휴대폰 · 오늘 새벽',
       html: `<div class="chat"><div class="chat-head"><span class="chat-back">‹</span><b>서연</b><span class="chat-icons">☰</span></div><div class="chat-date">2026년 9월 19일 토요일</div>
-<div class="chat-row them"><span class="chat-avatar">서</span><div class="chat-col"><span class="chat-name">서연</span><div class="chat-bubble">조사원님 정비소 도착하셨어요?</div><div class="chat-bubble">사장님이 21:40에 카드 봤고 22:00에 없어졌대요</div><div class="chat-bubble">그 사이에 들어온 건 서버에 두 줄인데 잠겨서 못 읽는대요 폐업 처리 중이라고</div><div class="chat-bubble">제 차 어젯밤 거기 세워 뒀어요 블박 켜져 있을 거예요 문은 열어 뒀어요</div></div><span class="chat-time">오전 8:51</span></div>
-<div class="chat-row me"><span class="chat-meta">오전 8:53</span><div class="chat-bubble">네 지금 앞마당이에요 블박부터 볼게요</div></div>
-<div class="chat-row them"><span class="chat-avatar">서</span><div class="chat-col"><span class="chat-name">서연</span><div class="chat-bubble">그 카드에 제 차 부품 교체 전후 사진이 있어요 저는 교체 동의한 적 없고요</div><div class="chat-bubble">아 그리고 민호 씨요 어젯밤 본사 면담 영상이 중간에 끊겼대요</div><div class="chat-bubble">그럼 민호 씨도 의심해야 되는 거 아니에요?</div><div class="chat-bubble">경찰 부르기 전에 누가 가져갔는지만요 확실하게</div></div><span class="chat-time">오전 8:54</span></div>
+<div class="chat-row them"><span class="chat-avatar">서</span><div class="chat-col"><span class="chat-name">서연</span><div class="chat-bubble">조사원님 정비소 도착하셨어요?</div><div class="chat-bubble">사장님이 21:40에 카드 봤고 22:00에 없어졌대요</div><div class="chat-bubble">그 사이에 들어온 건 서버에 두 줄인데 잠겨서 못 읽는대요 폐업 처리 중이라고</div><div class="chat-bubble">제 차 어젯밤 거기 세워 뒀어요 블박 켜져 있을 거예요 문은 열어 뒀어요</div></div><span class="chat-time">오전 5:41</span></div>
+<div class="chat-row me"><span class="chat-meta">오전 5:43</span><div class="chat-bubble">네 지금 앞마당이에요 블박부터 볼게요</div></div>
+<div class="chat-row them"><span class="chat-avatar">서</span><div class="chat-col"><span class="chat-name">서연</span><div class="chat-bubble">그 카드에 제 차 부품 교체 전후 사진이 있어요 저는 교체 동의한 적 없고요</div><div class="chat-bubble">아 그리고 민호 씨요 어젯밤 본사 면담 영상이 중간에 끊겼대요</div><div class="chat-bubble">그럼 민호 씨도 의심해야 되는 거 아니에요?</div><div class="chat-bubble">경찰 부르기 전에 누가 가져갔는지만요 확실하게</div></div><span class="chat-time">오전 5:44</span></div>
 <div class="chat-input"><span class="chat-field">메시지 입력</span><span>➤</span></div></div>`,
     },
     people: {
       title: '조사 수첩 · 세 사람 진술',
-      kind: '오늘 아침 휴게실에서 받아 적음',
+      kind: '오늘 새벽 휴게실에서 받아 적음',
       html: `<div class="paper-table"><table><tr><th>한지수 · 07<br><small>정비사</small></th><td>“21:35에 측문으로 퇴근했어요 그 뒤엔 안 왔어요 카드요? 그제 잃어버려서 어제 아침에 새로 받았어요 07-B”<br><small>21:35 이후 함께 있던 사람 없음</small></td></tr>
 <tr><th>강민호 · 04<br><small>인수 담당</small></th><td>“21:30에 사무실 문으로 나가서 길가에 세운 제 차 안에서 본사 면담했습니다 21:44부터 21:50까지 기록 있어요”<br><small>면담 기록은 사무실 서류함에</small></td></tr>
-<tr><th>박정호 · 09<br><small>사장</small></th><td>“21:40에 재고 점검 끝내고 측문으로 나갔다가 22:00에 최종 점검하러 들어왔어요 그때 카드가 없더라고 지수가 그 사진 때문에 불안해했으니까”<br><small>나갔다 들어온 사이엔 자기 차에 있었다고 함</small></td></tr></table></div><p>셋 다 아침에 와서 겉옷 재킷은 사무실에 걸어 두고 작업복 차림이다</p>`,
+<tr><th>박정호 · 09<br><small>사장</small></th><td>“21:40에 재고 점검 끝내고 측문으로 나갔다가 22:00에 최종 점검하러 들어왔어요 그때 카드가 없더라고 지수가 그 사진 때문에 불안해했으니까”<br><small>나갔다 들어온 사이엔 자기 차에 있었다고 함</small></td></tr></table></div><p>셋 다 새벽에 불려 와서 겉옷 재킷은 사무실에 걸어 두고 작업복 차림이다</p>`,
     },
     receipt: {
       title: '차 안의 점검 영수증',
       kind: '미루정비소 장비 점검 · 2026/9/18',
-      html: `<div class="paper-table"><p class="pt-head">장비 점검 영수증 · 2026/9/18 20:00</p><table><tr><th>항목</th><td>주차 차량 블랙박스 시각 점검 (고객 차량)</td></tr><tr><th>점검 결과</th><td>블랙박스 시계가 서버 시각과 맞지 않음 (빠름)</td></tr><tr><th>조치</th><td>시계 수정 미실시 폐업 일정으로 보류</td></tr><tr><th>비고</th><td>오차는 자정까지 일정함 (수정 전 기록은 표시 시각 그대로 남음)</td></tr></table></div>`,
+      html: `<div class="paper-table"><p class="pt-head">장비 점검 영수증 · 2026/9/18 20:00</p><table><tr><th>항목</th><td>주차 차량 블랙박스 시각 점검 (고객 차량 · 앞유리 회전형)</td></tr><tr><th>점검 결과</th><td>블랙박스 시계가 서버 시각과 맞지 않음 (빠름)</td></tr><tr><th>조치</th><td>시계 수정 미실시 폐업 일정으로 보류</td></tr><tr><th>비고</th><td>오차는 자정까지 일정함 (수정 전 기록은 표시 시각 그대로 남음)</td></tr></table></div>`,
     },
     server: {
       title: '출입 서버 화면',
@@ -281,7 +283,7 @@ export default {
     },
     safedoc: {
       title: '금고 안의 봉투들',
-      kind: '금고 열림',
+      kind: '금고를 열었을 때',
       html: `<figure class="prop"><img src="${P}props/safe-open.webp" alt="열린 금고 안, 봉투 하나가 비어 있다" decoding="async"></figure><p>봉투 넷 「04 예비」 「09 예비」 「11 퇴직」 그리고 「07-A 분실 · 9/18 보관」 — 이 봉투만 비어 있다</p>`,
     },
     workorder: {
@@ -301,7 +303,8 @@ export default {
     cam: {
       title: '서연 차의 블랙박스',
       scene: 'yard',
-      intro: '어젯밤 측문이 찍힌 프레임 여섯 아래 작은 화면을 누르면 크게 보이고, 큰 화면을 누르면 그 자리를 확대한다 표시해 둘 장면 둘을 고른다',
+      intro: '앞유리에 붙은 회전형 블랙박스라 움직임이 있으면 렌즈가 그쪽으로 돌아가 당겨 찍는다 어젯밤 측문 쪽 프레임 여섯 아래 작은 화면을 누르면 크게 보이고, 큰 화면을 누르면 그 자리를 확대한다 표시해 둘 장면 둘을 고른다',
+      docs: ['receipt'],
       hintCode: 'G-S01',
       hints: [
         '차 안 영수증 다시 보세요 블박 시계 얘기가 있어요 그리고 같은 옷이 몇 번 나오는지도요',
@@ -312,7 +315,7 @@ export default {
         const { d, el, save } = ctx;
         const wrap = el('div', 'cam-wrap');
         const f = FRAMES[d.cur];
-        const view = el('div', 'prop camview' + (ctx.zoom ? ' zoomed' : '')); view.innerHTML = `<img src="${P}props/${f.img}.webp" alt="블랙박스 프레임 ${d.cur + 1}" decoding="async"><div class="cam-osd"><span>CAM 01 · FRONT</span><span class="cam-time">2026-09-18 ${f.t}</span></div>`;
+        const view = el('div', 'prop camview' + (ctx.zoom ? ' zoomed' : '')); view.innerHTML = `<img src="${P}props/${f.img}.webp" alt="블랙박스 프레임 ${d.cur + 1}" decoding="async"><div class="cam-osd"><span>CAM 01 · FRONT 360°</span><span class="cam-time">2026-09-18 ${f.t}</span></div>`;
         const im = view.querySelector('img');
         if (ctx.zoom) { im.style.transformOrigin = `${ctx.zoom[0]}% ${ctx.zoom[1]}%`; im.style.transform = 'scale(2.4)'; }
         view.setAttribute('role', 'button'); view.setAttribute('tabindex', '0'); view.setAttribute('aria-label', ctx.zoom ? '확대 풀기' : '이 화면 확대해 보기');
@@ -343,7 +346,7 @@ export default {
       },
       reveal: {
         title: '21:53:20 → 21:55:20',
-        text: '표시 시각 21:53:20에 측문으로 들어가 21:55:20에 나왔다 2분 남짓 회색 재킷 소매가 어둠 속에서 번쩍인다',
+        text: '표시 시각 21:53:20에 측문으로 들어가 21:55:20에 나왔다 안에 있던 건 2분 남짓',
         scene: ['화면 구석 시각은 블랙박스 시계다 이 두 장면이 출입 서버의 어느 줄인지는 아직 모른다 작업장 보관함 옆 백업 단말에 이 기록을 물려 볼 수 있을 것 같다'],
         unlock: null,
       },
@@ -352,27 +355,49 @@ export default {
     terminal: {
       title: '보관함 백업 단말',
       scene: 'shop',
-      intro: '단말에 서연 차 블랙박스 기록을 물렸다 화면에 시간 축 두 줄 블랙박스 쪽 시계를 −5분 −1분 +1분 +5분 버튼으로 옮긴다 두 시계가 맞으면 잠긴 구간이 열린다',
+      intro: '블랙박스 기록을 물리면 시간 축 두 줄이 뜬다 위는 블랙박스 표시 시각 그대로, 아래는 출입 서버 기록이다 블랙박스 시계를 몇 분 옮겨야 서버와 맞는지 정해서 맞추기를 누른다 세 번 틀리면 단말이 1분 동안 잠긴다',
       docs: ['receipt', 'server'],
       hintCode: 'G-S02',
       hints: [
         '블박 시각이 서버랑 다르다고 했죠 둘 다 찍힌 출입이 있을 거예요 화살표 방향도 같아야 같은 출입이에요',
         '시각이 남은 서버 줄 가운데 들어간 줄은 하나뿐이에요 그 줄에 맞는 블박 장면부터 겹쳐 봐요',
       ],
-      initial: () => ({ off: 0 }),
+      initial: () => ({ off: 0, fails: 0, until: 0 }),
       render(ctx) {
-        const { d, el, save } = ctx;
+        const { d, el, save, S } = ctx;
         if (typeof d.off !== 'number') d.off = 0;
+        d.ready = S.solved.includes('cam');
         const wrap = el('div', 'sync-wrap');
-        const screen = el('div', 'term-screen sync-screen'); screen.innerHTML = `<p class="term-line">BACKUP TERMINAL · CLOCK SYNC</p>${syncSvg(d.off)}${syncSvgV(d.off)}<p class="term-line">블랙박스 시계 ${d.off > 0 ? '+' : d.off < 0 ? '−' : '±'}${Math.abs(d.off)}분</p>`;
-        const row = el('div', 'sync-row');
-        [[-5, '−5분'], [-1, '−1분'], [1, '+1분'], [5, '+5분']].forEach(([v, lab]) => { const b = el('button', 'ctl', lab); b.type = 'button'; b.setAttribute('aria-label', `블랙박스 시계 ${lab}`); b.onclick = () => { d.off = Math.max(-15, Math.min(15, d.off + v)); save(); }; row.append(b); });
-        wrap.append(screen, row, el('p', 'pick-label', '숫자는 블랙박스 프레임 번호와 서버 카드 번호 ↓는 들어감, ↑는 나감'));
+        if (!d.ready) {
+          // 블랙박스에서 장면을 표시해 오기 전: 화면은 잠겨 있고 무엇이 필요한지만 보인다
+          const idle = el('div', 'term-screen sync-screen'); idle.innerHTML = '<p class="term-line">BACKUP TERMINAL · LOCKED</p><p class="term-line">NO VIDEO SOURCE</p>';
+          wrap.append(idle, el('p', 'pick-label', '물릴 영상이 아직 없다 블랙박스에서 측문 장면을 골라 표시해 와야 한다'));
+          return wrap;
+        }
+        const done = S.solved.includes('terminal');
+        const shown = done ? SYNC_ANSWER : 0; // 맞추기 전에는 두 줄을 있는 그대로만 보여 준다 (눌러 보며 겹치는 걸 볼 수 없게)
+        const sign = (v) => (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v);
+        const screen = el('div', 'term-screen sync-screen'); screen.innerHTML = `<p class="term-line">BACKUP TERMINAL · CLOCK SYNC</p>${syncSvg(shown)}${syncSvgV(shown)}<p class="term-line">${done ? 'SYNC OK · 블랙박스 시계 ' + sign(SYNC_ANSWER) + '분' : '옮길 차이 · 블랙박스 시계 ' + sign(d.off) + '분'}</p>`;
+        wrap.append(screen);
+        if (!done) {
+          const row = el('div', 'sync-row');
+          [[-5, '−5분'], [-1, '−1분'], [1, '+1분'], [5, '+5분']].forEach(([v, lab]) => { const b = el('button', 'ctl', lab); b.type = 'button'; b.setAttribute('aria-label', `블랙박스 시계 ${lab}`); b.onclick = () => { d.off = Math.max(-15, Math.min(15, d.off + v)); save(); }; row.append(b); });
+          wrap.append(row);
+          const left = Math.ceil(((d.until || 0) - Date.now()) / 1000);
+          if (left > 0) wrap.append(el('p', 'pick-label sync-lock', `SYNC LOCK · ${left}초 뒤에 다시 맞출 수 있다`));
+          else if (d.fails) wrap.append(el('p', 'pick-label', `남은 시도 ${3 - d.fails}번`));
+        }
+        wrap.append(el('p', 'pick-label', '숫자는 블랙박스 프레임 번호와 서버 카드 번호 ↓는 들어감, ↑는 나감'));
         return wrap;
       },
       commitLabel: '이 차이로 맞추기',
+      canCommit: (d) => d.ready !== false,
       check(d) {
-        if (d.off === SYNC_ANSWER) return { ok: true };
+        if (!d.ready) return { ok: false, msg: 'NO VIDEO SOURCE' };
+        if (Date.now() < (d.until || 0)) return { ok: false, msg: 'SYNC LOCK 잠시 뒤에 다시' };
+        if (d.off === SYNC_ANSWER) { d.fails = 0; return { ok: true }; }
+        d.fails = (d.fails || 0) + 1;
+        if (d.fails >= 3) { d.fails = 0; d.until = Date.now() + 60000; return { ok: false, msg: 'SYNC FAIL · 단말이 1분 동안 잠긴다' }; }
         return { ok: false, msg: 'SYNC FAIL' };
       },
       reveal: {
@@ -410,7 +435,7 @@ export default {
       reveal: {
         title: '0407',
         text: '손잡이가 내려갔다 봉투 넷 중 「07-A 분실 · 9/18 보관」 봉투만 비어 있다',
-        scene: ['번호 규칙은 인계 문서에 적혀 있다 그 문서를 쓴 사람도, 읽은 사람도 열 수 있다 금고만으로는 사람이 안 나온다'],
+        scene: ['봉투는 손대지 않고 금고 문을 다시 닫아 두었다', '번호 규칙은 인계 문서에 적혀 있다 그 문서를 쓴 사람도, 읽은 사람도 열 수 있다 금고만으로는 사람이 안 나온다'],
         unlock: null,
         unlockDoc: 'safedoc',
       },
@@ -460,8 +485,8 @@ export default {
       },
       reveal: {
         title: '작업 지시서 · 9/12',
-        text: '앞 디스크·패드 교체 고객 통화 하지 말 것 지시 박정호 작업 지수',
-        scene: ['종이 끝이 아직 빳빳하다 오늘 아침 누군가 이걸 찢어 사무실 휴지통 맨 위에 버렸다'],
+        text: '차량 서연 검은 세단 앞 디스크·패드 교체 고객 통화 하지 말 것 지시 박정호 작업 지수',
+        scene: ['종이 끝이 아직 빳빳하다 오늘 새벽 누군가 이걸 찢어 사무실 휴지통 맨 위에 버렸다'],
         unlock: null,
         unlockDoc: 'workorder',
       },
@@ -510,7 +535,7 @@ export default {
     jackets: {
       title: '걸려 있는 재킷 세 벌',
       scene: 'office',
-      intro: '아까와 다른 고리에 걸린 재킷이 하나 있다 재킷을 누르면 칼라 안쪽 이름표와 소매, 안주머니가 보인다 블랙박스에 찍힌 재킷을 고른다',
+      intro: '재킷을 누르면 칼라 안쪽 이름표와 소매, 안주머니가 보인다 블랙박스에 찍힌 재킷을 고른다',
       docs: ['people'],
       hintCode: 'G-S06',
       hints: [
@@ -604,7 +629,7 @@ export default {
     title: '마지막 정비소',
     paragraphs: [
       '사장은 21:40에 나가기 전 금고에서 07-A를 꺼내 주머니에 넣었다 이관 작업으로 기록이 잠기는 21:45를 넘겨 측문으로 들어가 슬롯에서 카드를 빼고 나왔다 혹시 잠긴 줄이 풀려도 거기 찍히는 건 지수가 잃어버린 카드였다 22:00에 09로 다시 들어가 "없어졌다"고 했다',
-      '"교체는 내가 시켰어요" 사장이 말했다 "인수 쪽에 그 사진이 지시서랑 같이 넘어가면 계약이 깨져요 지수한테 뒤집어씌울 생각까진 없었는데 말이 그렇게 나가더라고" 아침에 재킷을 다른 고리로 옮겨 건 것도 사장이었다 띠가 안 보이게 돌려 걸려다 그만뒀다고 했다',
+      '"교체는 내가 시켰어요" 사장이 말했다 "인수 쪽에 그 사진이 지시서랑 같이 넘어가면 계약이 깨져요 지수한테 뒤집어씌울 생각까진 없었는데 말이 그렇게 나가더라고" 내가 작업장 단말을 보는 사이 사무실에 들어가 재킷을 만진 것도 사장이었다 띠가 안 보이게 돌려 걸려다 단말 우는 소리에 그만뒀다고 했다',
       '지수가 사장 앞에 섰다 "그 사진 저도 찍기 싫었어요 근데 안 찍어 두면 나중에 제가 한 걸로 될 것 같았어요"',
       '민호는 인계 문서 메모 줄에 두 줄을 긋고 다시 썼다 「교체 지시 박정호 사진은 고객에게 반환」',
       '서연은 카드를 받아 들고 한참 보더니 주머니에 넣었다 "이 정비소, 내일부터는 없는 거죠"',

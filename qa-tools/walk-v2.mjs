@@ -198,7 +198,7 @@ async function catInvite({ mobile = false } = {}) {
     await shot(page, 'cat-seasons-solved');
     await L.click(page, '계속'); await L.sleep(300);
     await bagOpen('은호 씨 병원의 발도장 기록'); L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .paw-book .paw').length === 4), 'booklet in bag: 4 paw prints'); await L.closeDialog(page);
-    await hotspot(page, '벤치 위 쪽지'); L.check(await dlgHas(page, '가게 밖에 내건 색'), 'basket note'); await L.closeDialog(page);
+    await hotspot(page, '벤치 위 쪽지'); L.check(await dlgHas(page, '가게 밖에 내건 간판이나 차양 색'), 'basket note'); await L.closeDialog(page);
     // gifts: 바구니 이름표 (고르는 중 상태가 다음에 열 때 남지 않아야)
     await hotspot(page, '빵집 앞 바구니');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .basket .tag').length === 4), 'gifts: 4 tags on basket photo');
@@ -581,6 +581,10 @@ async function garage({ mobile = false } = {}) {
     await L.click(page, '서연과 주고받은 문자', { within: 'dialog[open]' }); L.check(await dlgHas(page, '면담 영상이 중간에 끊겼대요'), 'doc: brief'); await L.closeDialog(page);
     await page.evaluate(() => document.querySelector('.v2-hud-btn.bag').click()); await L.sleep(250); await L.click(page, '조사 수첩', { within: 'dialog[open]' }); L.check(await dlgHas(page, '작업복 차림'), 'doc: statements'); await L.closeDialog(page);
     await hotspot(page, '차 안의 점검 영수증'); L.check(await dlgHas(page, '빠름'), 'doc: receipt'); await L.closeDialog(page);
+    // 단말은 처음부터 눌린다 (블랙박스 장면이 없으면 잠긴 화면만)
+    await hotspot(page, '작업장으로'); await L.sleep(300); await hotspot(page, '보관함 백업 단말');
+    L.check(await dlgHas(page, 'NO VIDEO SOURCE') && !(await L.buttons(page)).includes('이 차이로 맞추기'), 'terminal: answers before cam but cannot sync yet');
+    await L.closeDialog(page); await L.sleep(250); await hotspot(page, '앞마당으로'); await L.sleep(300);
     // cam
     await hotspot(page, '서연 차의 블랙박스');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), '★5: no guide');
@@ -601,14 +605,25 @@ async function garage({ mobile = false } = {}) {
     await hotspot(page, '직원 보관함과 SD 슬롯'); await L.closeDialog(page);
     await hotspot(page, '보관함 백업 단말');
     L.check(await page.evaluate((m) => { const v = document.querySelector(m ? 'dialog[open] .sync-svg-v' : 'dialog[open] .sync-svg'); return !!v && v.getClientRects().length > 0 && v.getBoundingClientRect().right <= innerWidth + 1; }, mobile), 'terminal: timeline fits the screen (' + (mobile ? 'vertical' : 'horizontal') + ')');
-    await L.click(page, '블랙박스 시계 −5분', { exact: true }); await commit(page); L.check((await status(page)) === 'SYNC FAIL', 'terminal: neutral SYNC FAIL');
-    await L.click(page, '블랙박스 시계 −1분', { exact: true }); await L.click(page, '블랙박스 시계 −1분', { exact: true }); await shot(page, 'g-terminal'); await commit(page); L.check(await dlgHas(page, 'SYNC OK'), 'terminal solved');
+    const ticks = async () => page.evaluate((m) => [...document.querySelectorAll(m ? 'dialog[open] .sync-svg-v line[stroke="#f2b134"]' : 'dialog[open] .sync-svg line[stroke="#f2b134"]')].map((l) => l.getAttribute(m ? 'y1' : 'x1')).join(), mobile);
+    const t0 = await ticks();
+    await L.click(page, '블랙박스 시계 −5분', { exact: true });
+    L.check(t0 && t0 === await ticks(), 'terminal: pressing ±분 does not slide the track (no live overlap preview)');
+    await commit(page); L.check((await status(page)) === 'SYNC FAIL' && await dlgHas(page, '남은 시도 2번'), 'terminal: neutral SYNC FAIL + tries left');
+    await L.click(page, '블랙박스 시계 +1분', { exact: true }); await commit(page);
+    await L.click(page, '블랙박스 시계 +1분', { exact: true }); await commit(page);
+    L.check((await status(page)).includes('1분 동안 잠긴다') && await dlgHas(page, 'SYNC LOCK'), 'terminal: third miss locks the terminal');
+    for (let k = 0; k < 4; k++) await L.click(page, '블랙박스 시계 −1분', { exact: true });
+    await commit(page); L.check((await status(page)).includes('SYNC LOCK') && !(await dlgHas(page, '보관함 기록 보기')), 'terminal: right answer refused while locked');
+    await page.evaluate(() => { const o = Date.now; Date.now = () => o() + 61000; });
+    await shot(page, 'g-terminal'); await commit(page); L.check(await dlgHas(page, 'SYNC OK'), 'terminal solved after the lock');
     await L.click(page, '백업 단말의 보관함 기록 보기'); L.check(await dlgHas(page, '21:47:10'), 'lockerlog doc via reveal'); await L.closeDialog(page);
     await L.closeDialog(page).catch(() => {}); await L.sleep(300);
     L.check((await L.mainText(page)).includes('SYNC OK') && !(await L.mainText(page)).includes('LOCKED'), 'shop arrive updated after sync');
     // office
     await hotspot(page, '앞마당으로'); await L.sleep(300); await hotspot(page, '사무실로'); await L.sleep(300);
-    L.check((await L.mainText(page)).includes('다른 고리'), 'office: tension line after sync');
+    L.check((await L.mainText(page)).includes('달랑거린다'), 'office: tension line after sync');
+    L.check(await page.evaluate(() => getComputedStyle(document.querySelector('.v2-stage-ov.g-phone')).display === 'block'), 'office: Minho phone drawn on the desk after sync');
     for (const [d, t] of [['출입 서버 화면', '21:46:20'], ['폐업 인계 문서', '처음 문을 연 날'], ['서류함의 분실 신고서', '정지 처리 안 함'], ['강민호의 면담 기록', '영상 한 번 끊김'], ['벽의 기념패', '2018년 10월 3일']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     await hotspot(page, '책상 밑 금고');
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].some((t) => t.textContent.includes('기념패')))), 'safe: plaque not auto-attached');
@@ -616,8 +631,8 @@ async function garage({ mobile = false } = {}) {
     await setDial([1, 0, 0, 3]); await commit(page); L.check((await status(page)).includes('안 내려간다'), 'safe: reopen date trap');
     await setDial([0, 4, 0, 7]); await shot(page, 'g-safe'); await commit(page); L.check(await dlgHas(page, '봉투만 비어 있다'), 'safe solved');
     await L.click(page, '계속'); await L.sleep(300);
-    L.check(await has('열린 금고') && !(await has('책상 밑 금고')), 'open safe stays visible in scene');
-    await hotspot(page, '열린 금고'); L.check(await dlgHas(page, '07-A 분실'), 'safedoc from scene'); await L.closeDialog(page);
+    L.check(await has('다시 닫아 둔 금고') && !(await has('책상 밑 금고')), 'opened safe stays visible in scene (closed again, like the picture)');
+    await hotspot(page, '다시 닫아 둔 금고'); L.check(await dlgHas(page, '07-A 분실'), 'safedoc from scene'); await L.closeDialog(page);
     // strips
     await hotspot(page, '휴지통의 찢긴 종이');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .wo-pick').length === 5 && document.querySelectorAll('dialog[open] .wo-slot').length === 4), 'strips: 5 pieces, 4 places');
@@ -646,7 +661,7 @@ async function garage({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('보고만 남았다'), 'yard arrive before report');
     await hotspot(page, '서연에게 보고');
     const pick = async (q, v) => L.click(page, q + ': ' + v, { exact: true });
-    const Q = ['① 21:46 측문을 연 카드', '② 그 카드가 21:46 직전까지 있던 곳', '③ 같은 재킷이 블랙박스에 찍힌 다른 출입 (서버 줄로 · 모두)', '④ 카드를 꺼낸 사람', '⑤ 사진이 넘어가면 곤란했던 이유'];
+    const Q = ['① 21:46 측문을 연 카드', '② 그 카드가 어젯밤 꺼내지기 전까지 보관돼 있던 곳', '③ 같은 재킷이 블랙박스에 찍힌 다른 출입 (서버 줄로 · 모두)', '④ 카드를 꺼낸 사람', '⑤ 사진이 넘어가면 곤란했던 이유'];
     await pick(Q[0], '07-A'); await pick(Q[1], '작업장 바닥'); await pick(Q[2], '21:40:00 09 퇴장'); await pick(Q[3], '한지수'); await pick(Q[4], '교체를 사장이 지시해서'); await commit(page);
     L.check((await status(page)).includes('확실해요?'), 'report: neutral wrong message');
     await pick(Q[1], '사무실 금고 봉투'); await pick(Q[3], '박정호'); await commit(page); L.check((await status(page)).includes('확실해요?'), 'report: still neutral (one entry missing)');

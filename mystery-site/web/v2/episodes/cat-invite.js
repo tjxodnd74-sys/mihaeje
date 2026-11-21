@@ -141,7 +141,7 @@ export default {
       image: P + 'shop.webp',
       arrive: '아침 해가 창턱까지 들어와 있다 봄이는 그 안에 앉아 문 밑 봉투만 보고 있다 목덜미에서 못 듣던 딸랑 소리가 났다',
       hotspots: [
-        { id: 'envelope', x: 82, y: 83, r: 8, label: '문 밑으로 들어온 봉투', kind: 'doc', doc: 'invite' },
+        { id: 'envelope', x: 82, y: 80, r: 8, label: '문 밑으로 들어온 봉투', kind: 'doc', doc: 'invite' },
         { id: 'charm', x: 52, y: 25, r: 9, label: '봄이 목걸이의 참', kind: 'doc', doc: 'charm' },
         { id: 'go', x: 88, y: 45, r: 11, label: '골목으로 나가기', kind: 'travel', to: 'alley' },
       ],
@@ -152,12 +152,12 @@ export default {
       image: P + 'alley.webp',
       arrive: (S) => (S.solved.includes('seasons')
         ? '봄이가 이번엔 빵집 쪽으로 코를 킁킁댔다 벤치 옆 바구니에서 버터 냄새가 났다'
-        : '봄이가 품에서 몸을 비틀더니 병원 창턱 쪽으로 고개를 쭉 뺐다 병원은 오늘 휴진, 빵집은 준비 중 창턱에 상자 하나'),
+        : '봄이가 품에서 몸을 비틀더니 병원 창턱 쪽으로 고개를 쭉 뺐다 병원은 오늘 휴진이고 빵집은 아직 준비 중이다 병원 창턱에 상자가 하나 놓여 있다'),
       hotspots: [
-        { id: 'vetnote', x: 26, y: 42, r: 8, label: '병원 유리문의 쪽지', kind: 'doc', doc: 'vetnote' },
+        { id: 'vetnote', x: 26, y: 41, r: 7, label: '병원 유리문의 쪽지', kind: 'doc', doc: 'vetnote' },
         { id: 'box', x: 8, y: 60, r: 9, label: '창턱의 상자', kind: 'device', device: 'seasons' },
-        { id: 'basket', x: 90, y: 86, r: 9, label: '빵집 앞 바구니', kind: 'device', device: 'gifts', visible: (S) => S.solved.includes('seasons') },
-        { id: 'basketnote', x: 81, y: 72, r: 7, label: '벤치 위 쪽지', kind: 'doc', doc: 'basketnote', visible: (S) => S.solved.includes('seasons') },
+        { id: 'basket', x: 90, y: 80, r: 9, label: '빵집 앞 바구니', kind: 'device', device: 'gifts', visible: (S) => S.solved.includes('seasons') },
+        { id: 'basketnote', x: 81, y: 72, r: 6, label: '벤치 위 쪽지', kind: 'doc', doc: 'basketnote', visible: (S) => S.solved.includes('seasons') },
         { id: 'back', x: 50, y: 70, r: 10, label: '가게로 돌아가기', kind: 'travel', to: 'shop' },
       ],
     },
@@ -167,8 +167,8 @@ export default {
       image: P + 'end.webp',
       unlockedBy: 'gifts',
       arrive: (S) => (S.solved.includes('mailbox')
-        ? '우체통 문이 열려 있다 봄이는 평상 한가운데서 꼬리를 말고 앉아 나를 기다린다'
-        : '가게 일을 보다 골목 끝에 닿으니 해가 기울고 있었다 평상 위로 전구가 줄줄이 빨간 우체통엔 작은 자물쇠 봄이가 먼저 평상에 올라갔다'),
+        ? '우체통 문이 열려 있다 봄이가 내 품에서 평상 쪽으로 자꾸 몸을 내민다'
+        : '가게 일을 보다 골목 끝에 닿으니 해가 기울고 있었다 평상 위로 전구가 줄줄이 걸려 있고, 빨간 우체통엔 작은 자물쇠가 달려 있다 봄이가 품에서 평상 쪽으로 코를 킁킁댔다'),
       hotspots: [
         { id: 'mailbox', x: 90, y: 50, r: 9, label: '자물쇠 달린 우체통', kind: 'device', device: 'mailbox' },
         { id: 'chart', x: 60, y: 63, r: 12, label: '평상 차리기', kind: 'device', device: 'seats', visible: (S) => S.solved.includes('mailbox') },
@@ -195,7 +195,7 @@ export default {
     basketnote: {
       title: '벤치 위 쪽지',
       kind: '소연의 글씨',
-      html: `<blockquote class="hand">다은 씨!<br>선물은 넷, 누구 건지는 안 적었어요 맞혀 보세요<br>은호 씨랑 저는 리본을 각자 가게 밖에 내건 색으로 골랐고요<br>지후 씨는 남는 거 아무거나 하겠대요<br>미정 씨는 리본이 싫대요 꽃은 꽃으로 주면 된다고<br>다 맞혔으면 바구니를 들어 보세요</blockquote>`,
+      html: `<blockquote class="hand">다은 씨!<br>선물은 넷, 누구 건지는 안 적었어요 맞혀 보세요<br>은호 씨랑 저는 리본을 각자 가게 밖에 내건 간판이나 차양 색으로 골랐고요<br>지후 씨는 남는 거 아무거나 하겠대요<br>미정 씨는 리본이 싫대요 꽃은 꽃으로 주면 된다고<br>다 맞혔으면 바구니를 들어 보세요</blockquote>`,
     },
     booklet: {
       title: '은호 씨 병원의 발도장 기록',
@@ -263,10 +263,10 @@ export default {
       },
       reveal: {
         title: '두 번의 봄',
-        text: `햇빛에 비추자 뒷면 글자가 차례로 비쳤다 「${ORDER.map((p) => BACK[p]).join('')}」 사진을 다 꽂고 나니 상자 바닥에 종이 한 장이 깔려 있었다`,
+        text: `사진을 다 꽂고 햇빛에 비추자 뒷면 글자가 한 줄로 이어졌다 「${ORDER.map((p) => BACK[p]).join('')}」`,
         scene: [
           '「봄이가 골목에 온 게 재작년 봄이었어요 손바닥만 했는데 다은 씨가 데려가기 전까지 다섯 계절을 우리가 봤어요 — 은호」',
-          '바닥 종이엔 발도장이 넷 찍혀 있었다 봄이는 그 종이 냄새를 한참 맡더니 빵집 쪽으로 고개를 돌렸다',
+          '상자 바닥에는 종이 한 장이 깔려 있었다 발도장이 넷 찍힌 종이다 봄이는 그 냄새를 한참 맡더니 빵집 쪽으로 고개를 돌렸다',
         ],
         unlock: null,
         unlockDoc: 'booklet',
@@ -281,7 +281,7 @@ export default {
       hintCode: 'C-S02',
       hints: [
         '소연 씨 쪽지에 리본 고른 방법이 적혀 있어요',
-        '골목 그림에서 병원과 빵집이 가게 밖에 내건 색을 찾아보세요 남는 두 선물은 쪽지의 나머지 두 사람 얘기로 정해져요',
+        '골목 그림에서 병원과 빵집이 가게 밖에 내건 간판과 차양 색을 찾아보세요 남는 두 선물은 쪽지의 나머지 두 사람 얘기로 정해져요',
         '초록 리본 봉투 → 은호, 노란 리본 상자 → 소연, 파란 리본 상자 → 지후, 꽃다발 → 미정',
       ],
       initial: () => ({ who: {} }),
@@ -383,7 +383,7 @@ export default {
       reveal: {
         title: '봄이의 앞발',
         text: '셋째 발도장 위에서 트레이싱지 선이 발가락 끝까지 꼭 맞았다 2024년 4월 16일, 손바닥만 하던 봄이가 처음 병원에 온 날이다 자물쇠가 툭 풀렸다',
-        scene: ['초대장 도장은 정말 봄이 발로 찍은 거였다 봄이는 평상 위에서 그것도 몰랐냐는 듯 하품을 했다 우체통 안에 지후 씨 글씨로 「다은 씨」라고 적힌 봉투가 있었다'],
+        scene: ['초대장 도장은 정말 봄이 발로 찍은 거였다 봄이는 내 품에서 그것도 몰랐냐는 듯 하품을 했다 우체통 안에 지후 씨 글씨로 「다은 씨」라고 적힌 봉투가 있었다'],
         unlock: null,
         unlockDoc: 'mail',
       },
@@ -454,11 +454,11 @@ export default {
 
   ending: {
     image: P + 'ending.webp',
-    imageAlt: '전구 아래 평상 앞에 나란히 앉은 네 이웃과, 봄이를 안고 다가가는 다은',
+    imageAlt: '전구 아래 평상을 둘러싸고 앉은 네 이웃과, 봄이를 안고 다가가는 다은',
     eyebrow: '6월 12일, 저녁 일곱 시',
     title: '고양이가 데려온 사람들',
     paragraphs: [
-      '전구가 켜진 평상 앞 긴 의자에 네 사람이 나란히 앉아 있었다 선물은 상 밑에 모아 두었고, 상 위엔 딸기 케이크와 유리컵에 든 초 하나 은호 씨가 먼저 나를 보고 웃었다',
+      '전구가 켜진 평상을 네 사람이 둘러싸고 앉아 있었다 다들 아까 내가 자기 선물을 놓아 둔 방석 자리였다 평상 위엔 딸기 케이크와 유리컵에 든 초가 하나 있었다 은호 씨가 먼저 나를 보고 웃었다',
       '“봄이 생일은 아무도 모르잖아요 그래서 가족 된 날로 했어요” 소연 씨가 말했다 “작년 오늘, 다은 씨가 봄이 데려간 날”',
       '“근데 왜 저한테는 봄이 앞으로 보내요”',
       '“다은 씨 앞으로 보내면 바쁘다고 안 올 것 같아서” 지후 씨가 웃었다 “봉투는 제가 문 밑으로 넣었어요 우체부가 우편함 두고 문 밑으로 넣은 건 처음이에요 발도장은 은호 씨가 봄이 앞발로 찍었고요 봄이가 보내는 거니까”',

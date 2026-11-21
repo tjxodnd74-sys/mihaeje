@@ -1103,6 +1103,13 @@ html[data-case="garage"] .vid-sub{position:absolute;left:0;right:0;bottom:0;padd
 html[data-case="garage"] .vid-range{width:100%;margin:12px 0 0;accent-color:var(--lamp)}
 html[data-case="garage"] .vid-ends{display:flex;justify-content:space-between;font:12px ui-monospace,Menlo,monospace;color:var(--soft-3)}
 html[data-case="garage"] .vid-time{text-align:center;font-family:ui-monospace,Menlo,monospace}
+/* 사무실: 단말을 맞춘 뒤(민호 휴대폰 자리가 생긴 뒤)에만 책상 위 휴대폰이 그림에 보인다 */
+html[data-case="garage"] .v2-stage-ov.g-phone{display:none}
+html[data-case="garage"] .v2-pan:has(.v2-hotspot[aria-label="책상 위 민호의 휴대폰"]) .v2-stage-ov.g-phone{display:block}
+html[data-case="garage"] .v2-stage-ov.g-phone img{display:block;width:100%;height:100%}
+/* 블랙박스 썸네일: 옆 자료를 펼쳐도 시각(21:42:30)이 잘리지 않게 */
+html[data-case="garage"] .cam-thumb span{font-size:11px;letter-spacing:-.04em;white-space:nowrap;overflow:visible}
+html[data-case="garage"] .sync-lock{color:#ffb4a0}
 @media (max-width:640px){
   html[data-case="garage"] .sync-screen{overflow-x:visible;max-width:none}
   html[data-case="garage"] .wo-tray{grid-template-columns:repeat(5,1fr);gap:6px}
