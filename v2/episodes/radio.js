@@ -54,13 +54,15 @@ const morseRow = (n) => `<tr><td>${n}</td><td class="mc">${MORSE[n].replace(/\./
 const CUE = '하 람 아 보 관 실 뒷 문 은 클 로 징 곡 길 이 를 두 드 려 분 초 순 서 로'.split(' ').reverse();
 const TAP_OK = ['.....' + '.----' + '....-', '-----' + '.....' + '.----' + '....-']; // 5분 14초 → 5 1 4 (앞의 0은 있어도 된다)
 
-// 보관실 선반 3줄 × 4 (사진 좌표 %) 241031 상자는 다음 방송일 라벨만 미리 붙인 빈 상자
+// 보관실 선반 3줄 × 4 241031 상자는 다음 방송일 라벨만 미리 붙인 빈 상자
 const SHELF = [
   ['241027 B 01', '241028 A 00', '241031 A 00', '241029 B 02'],
   ['241028 B 02', '241029 A 01', '241030 A 01', '241031 A 01'],
   ['241027 B 00', '241030 A 00', '241029 A 00', '241030 A 02'],
 ];
-const SH_X = [22.0, 40.5, 58.6, 77.2], SH_Y = [15.5, 49.0, 82.0];
+// props/shelf.webp(1024×688)에서 잰 상자 앞면 테두리 (%) 흰 라벨 칸은 상자 가로 가운데, 세로 47.7% 자리
+const SH_COL = [[14.84, 14.36], [33.30, 14.45], [51.37, 14.45], [69.63, 14.75]];
+const SH_ROW = [[1.89, 28.49], [35.61, 28.78], [68.90, 28.20]];
 const REEL_OK = '1-2';
 
 // 녹화기 알림 (화면에 놓이는 순서 / 실제 순서는 CAM1 → 4) 녹화기 시계는 오전 오후가 없다
@@ -74,8 +76,10 @@ const CAM_SHOW = ['c2', 'c4', 'c1', 'c3'];
 const CAM_OK = ['c1', 'c2', 'c3', 'c4'];
 const camFig = (k, extra = '') => `<figure class="cctv-frame"><img src="${P}props/${CAMS[k].img}.webp" alt="${CAMS[k].cam} 흑백 화면" decoding="async"><figcaption><span>${CAMS[k].cam}</span><span>${extra || CAMS[k].t}</span></figcaption></figure>`;
 
-// 패치베이 (사진 좌표 %)
-const JX = [13.5, 23.8, 34.2, 44.6, 55.0, 65.4, 75.8, 86.2], JY_OUT = 33.5, JY_IN = 69.5;
+// 패치베이 (props/patch.webp 에서 잰 잭 구멍 가운데 · 라벨 띠 가운데 %)
+const JX = [13.2, 23.8, 34.3, 44.75, 55.2, 65.7, 76.15, 86.7], JY_OUT = 33.7, JY_IN = 69.7, LY_OUT = 19.6, LY_IN = 55.6;
+const cableCol = (out) => (out === 4 ? '#d2382c' : '#3d72b8'); // 장면 그림의 랙처럼 빨강·파랑 (데크 선만 빨강)
+const ARROW = '<svg class="pb-arrow" viewBox="0 0 16 10" aria-hidden="true"><path d="M1 5h12M9 1l4 4-4 4"/></svg>';
 const OUTS = ['MIC A', 'MIC B', 'TAPE A', 'TAPE B', 'PGM A', 'PGM B', 'AUTO PC', 'TONE'];
 const INS = ['TX MAIN', 'TX 예비', 'MON 로비', 'REC A', 'REC B', 'MON 대기실', 'CON A1', 'AUTO IN'];
 function patchOk(c) {
@@ -87,7 +91,9 @@ function patchOk(c) {
 // 데크는 한 번 재생하면 5초만 돌고 선다 끊긴 자리(58:22)가 그 5초 안에 들어오면 된다 58:12(프리롤 빼먹음)는 10초 앞이라 안 닿는다
 const DECK_CUT = 58 * 60 + 22, DECK_WINDOW = 5;
 
-const KEYS = [['1', 41.0, 23.5], ['2', 46.8, 23.5], ['3', 52.6, 23.5], ['4', 41.0, 31.7], ['5', 46.8, 31.7], ['6', 52.6, 31.7], ['7', 41.0, 40.0], ['8', 46.8, 40.0], ['9', 52.6, 40.0], ['*', 41.0, 48.3], ['0', 46.8, 48.3]];
+// 도어락 버튼 가운데 (props/keypad.webp 에서 잰 값 %) 맨 아래 줄 # 은 쓰지 않는다
+const KX = [41.16, 46.97, 52.49], KY = [24.1, 32.5, 41.0, 49.4];
+const KEYS = [['1', 0, 0], ['2', 1, 0], ['3', 2, 0], ['4', 0, 1], ['5', 1, 1], ['6', 2, 1], ['7', 0, 2], ['8', 1, 2], ['9', 2, 2], ['*', 0, 3], ['0', 1, 3]].map(([k, c, r]) => [k, KX[c], KY[r]]);
 
 export default {
   id: 'radio',
@@ -133,12 +139,13 @@ export default {
       name: '로비',
       image: P + 'lobby.webp',
       // 엔진의 overlays 는 S를 받지 않아서, 지금 상태를 읽어 도어락을 풀기 전까지만 깜빡이게 한다
-      get overlays() { return (stateNow().solved || []).includes('keypad') ? [] : [{ x: 32.6, y: 17.6, w: 8.4, h: 5.6, cls: 'onair-live', html: liveBlinkCss() }]; },
+      // 간판 글자판은 그림에서 x 34.5~39.7 · y 18.6~21.9 (가운데 37.1, 20.3) 그 둘레를 조금 넉넉하게
+      get overlays() { return (stateNow().solved || []).includes('keypad') ? [] : [{ x: 33.4, y: 17.8, w: 7.4, h: 5, cls: 'onair-live', html: liveBlinkCss() }]; },
       arrive: (S) => S.solved.includes('keypad')
         ? 'ON AIR 불은 켜진 채로 멎었다 그래도 자꾸 그쪽을 보게 된다 스피커의 지지직 소리도 아직 그대로다'
         : '불 꺼진 로비 B실 문 위 ON AIR 불만 길게, 짧게 깜빡인다 스피커에선 아직 지지직 소리 벽에는 옛 사보가 그대로 걸려 있고, 데스크엔 낮 근무 일지가 펼쳐져 있다',
       hotspots: [
-        { id: 'mchat', x: 13, y: 66, label: '내 휴대폰 · 만석 형 문자', kind: 'doc', doc: 'mchat' },
+        { id: 'mchat', x: 14.6, y: 70, label: '내 휴대폰 · 만석 형 문자', kind: 'doc', doc: 'mchat', r: 8 },
         { id: 'notes', x: 14, y: 10, label: '모니터 스피커 받아쓰기', kind: 'doc', doc: 'notes' },
         { id: 'blink', x: 37, y: 20, label: '깜빡이는 ON AIR', kind: 'doc', doc: 'blink', r: 8 },
         { id: 'zine', x: 16, y: 34, label: '벽에 걸린 옛 사보', kind: 'doc', doc: 'zine' },
@@ -156,8 +163,9 @@ export default {
         ? '뒷문이 열려 있다 계단 아래에서 테이프 냄새가 올라온다 헤드폰은 아직 같은 말을 되풀이한다'
         : '콘솔이 빠진 자리에 먼지 자국이 네모나다 그 먼지 위에 손바닥 자국 하나 아직 먼지가 앉지 않았다 켜진 모니터 하나, 책상 위 헤드폰에서 뭔가 새어 나온다',
       hotspots: [
-        { id: 'auto', x: 92, y: 42, label: '자동 송출 PC 화면', kind: 'doc', doc: 'auto' },
-        { id: 'enote', x: 93.5, y: 62, label: '모니터에 붙은 쪽지', kind: 'doc', doc: 'enote', r: 6 },
+        { id: 'auto', x: 92, y: 38, label: '자동 송출 PC 화면', kind: 'doc', doc: 'auto', r: 9 },
+        // 노란 쪽지는 모니터 왼쪽 아래 모서리 (그림에서 옮겨 붙임, 가운데 87.5 · 56.4)
+        { id: 'enote', x: 87.5, y: 56.5, label: '모니터에 붙은 쪽지', kind: 'doc', doc: 'enote', r: 6 },
         { id: 'sched', x: 8.5, y: 32, label: '벽의 편성 변경 알림', kind: 'doc', doc: 'sched' },
         { id: 'cue', x: 76, y: 66, label: '책상 위 헤드폰', kind: 'doc', doc: 'cue' },
         { id: 'tapdoor', x: 25, y: 35, label: '흡음판 옆 보관실 뒷문', kind: 'device', device: 'tapdoor' },
@@ -182,17 +190,20 @@ export default {
       name: 'A실',
       image: P + 'studioA.webp',
       unlockedBy: 'reel',
+      // 데크를 돌린 뒤 녹화기 알림이 오는 동안 의자 위 휴대폰 화면이 깜빡인다 (알림을 다 이어 보면 꺼짐)
+      get overlays() { const s = stateNow().solved || []; return s.includes('deck') && !s.includes('cctv') ? [{ x: 45.6, y: 68.4, w: 5.8, h: 5.6, cls: 'phone-buzz', html: '<style>@keyframes radioBuzz{0%,100%{opacity:.35}8%,22%{opacity:1}30%{opacity:.5}}.v2-stage-ov.phone-buzz{pointer-events:none;border-radius:50%;background:radial-gradient(closest-side,rgba(175,205,245,.95),rgba(120,160,225,.45) 45%,rgba(120,160,225,0));mix-blend-mode:screen;animation:radioBuzz 1.6s ease-in-out infinite}@media (prefers-reduced-motion:reduce){.v2-stage-ov.phone-buzz{animation:none;opacity:.8}}</style>' }] : []; },
       arrive: (S) => S.solved.includes('cctv')
         ? 'A실 앞문 너머가 대기실이다 문틈으로 아무 소리도 새지 않는다 랙 맨 위 패치베이에는 오늘 밤 케이블 둘이 그대로 꽂혀 있다'
         : S.solved.includes('deck')
-          ? '테이프는 끝까지 돌고 멈췄다 주머니에서 휴대폰이 아까부터 계속 떤다'
+          ? '테이프는 끝까지 돌고 멈췄다 의자 위에 올려 둔 휴대폰이 아까부터 계속 떤다'
           : '2년 전 선배가 마지막으로 앉았던 방 의자가 콘솔 쪽으로 반쯤 돌아가 있다 방금 누가 일어난 것처럼 데크도 콘솔도 그대로다',
       hotspots: [
         { id: 'deck', x: 14, y: 40, label: '릴 테이프 데크', kind: 'device', device: 'deck', r: 13 },
-        { id: 'txlog', x: 42, y: 54, label: '콘솔 위 송출 기록지', kind: 'doc', doc: 'txlog' },
-        { id: 'wiring', x: 91, y: 48, label: '랙 옆 배선표', kind: 'doc', doc: 'wiring' },
-        { id: 'cctv', x: 33, y: 70, label: '주머니 속 휴대폰', kind: 'device', device: 'cctv', visible: (S) => S.solved.includes('deck') },
-        { id: 'patch', x: 90, y: 15, label: '패치베이', kind: 'device', device: 'patch', visible: (S) => S.solved.includes('cctv') },
+        // 기록지는 스탠드 불빛 아래 콘솔 왼쪽에 놓인 종이 · 배선표는 랙 왼쪽 옆에 테이프로 붙인 종이 · 휴대폰은 의자 위 (그림에 그려 넣음)
+        { id: 'txlog', x: 34.7, y: 47.5, label: '콘솔 위 송출 기록지', kind: 'doc', doc: 'txlog', r: 9 },
+        { id: 'wiring', x: 79.5, y: 42, label: '랙 옆 배선표', kind: 'doc', doc: 'wiring', r: 7 },
+        { id: 'cctv', x: 48.5, y: 71, label: '의자 위 내 휴대폰', kind: 'device', device: 'cctv', r: 8, visible: (S) => S.solved.includes('deck') },
+        { id: 'patch', x: 90.5, y: 16, label: '패치베이', kind: 'device', device: 'patch', r: 10, visible: (S) => S.solved.includes('cctv') },
       ],
     },
   ],
@@ -308,17 +319,28 @@ export default {
         const { d, el, save, S } = ctx;
         const solved = S.solved.includes('keypad');
         const press = (k) => { if (solved) return; if (k === '*') d.code = ''; else if (d.code.length < 8) d.code += k; save(); };
+        // 휴대폰에선 사진을 도어락 판만 세로로 잘라 큰 숫자판 옆에 둔다 (겹친 버튼은 사진 틀 .pframe 기준 %)
         const wrap = el('div', 'prop keyphoto');
-        wrap.innerHTML = `<img src="${P}props/keypad.webp" alt="B실 문의 숫자 도어락" decoding="async"><i class="kp-led${d.code.length || solved ? ' on' : ''}"></i>`;
+        const frame = el('div', 'pframe'); wrap.append(frame);
+        frame.innerHTML = `<img src="${P}props/keypad.webp" alt="B실 문의 숫자 도어락" decoding="async"><i class="kp-led${d.code.length || solved ? ' on' : ''}"></i>`;
         KEYS.forEach(([k, x, y]) => {
           const b = el('button', 'kp-key'); b.type = 'button'; b.style.left = x + '%'; b.style.top = y + '%';
           b.setAttribute('aria-label', k === '*' ? '별표 지우기' : `${k} 누르기`);
           b.onclick = () => press(k);
-          wrap.append(b);
+          frame.append(b);
         });
+        // 사진 속 손잡이를 눌러도 '손잡이 돌리기'와 같다
+        const handle = el('button', 'kp-handle'); handle.type = 'button'; handle.setAttribute('aria-label', '도어락 손잡이');
+        handle.onclick = () => { if (solved) return; if (d.code) ctx.commit?.(); else ctx.status('번호부터 누른다'); };
+        frame.append(handle);
         const pad = el('div', 'mobile-only kp-pad');
-        ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0'].forEach((k) => { const b = el('button', 'ctl', k === '*' ? '지우기' : k); b.type = 'button'; b.setAttribute('aria-label', k === '*' ? '번호 지우기' : `${k} 버튼`); b.onclick = () => press(k); pad.append(b); });
-        const box = el('div', 'mail-wrap'); box.append(wrap, pad, el('p', 'pick-label', solved ? '4 7 1 9 문은 열린 채다' : d.code ? `누른 번호 ${d.code.split('').join(' ')}` : '아직 아무것도 안 눌렀다'));
+        ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0'].forEach((k) => { const b = el('button', 'ctl' + (k === '*' ? ' kp-clear' : ''), k === '*' ? '지우기' : k); b.type = 'button'; b.setAttribute('aria-label', k === '*' ? '번호 지우기' : `${k} 버튼`); b.onclick = () => press(k); pad.append(b); });
+        // 누른 번호: 도어락엔 화면이 없지만 내 손가락이 기억한다 (크게, 한 줄로)
+        const read = el('p', 'kp-readout' + (d.code ? '' : ' empty'));
+        read.append(el('span', 'kp-readout-lab', solved ? '문은 열린 채다' : '누른 번호'));
+        if (!solved) read.append(el('b', 'kp-readout-num', d.code ? d.code.split('').join(' ') : '아직 없음'));
+        const row = el('div', 'kp-row'); row.append(wrap, pad);
+        const box = el('div', 'mail-wrap kp-wrap'); box.append(row, read);
         return box;
       },
       commitLabel: '손잡이 돌리기',
@@ -401,9 +423,11 @@ export default {
         wrap.innerHTML = `<img src="${P}props/shelf.webp" alt="테이프 상자 열두 통이 꽂힌 선반" decoding="async">`;
         SHELF.forEach((row, r) => row.forEach((lab, c) => {
           const id = `${r}-${c}`;
-          if (solved && id === REEL_OK) return;
+          const pos = `left:${SH_COL[c][0]}%;top:${SH_ROW[r][0]}%;width:${SH_COL[c][1]}%;height:${SH_ROW[r][1]}%`;
+          // 꺼내 간 칸은 비어 보이게 (상자 앞면 자리를 어둡게 덮는다)
+          if (solved && id === REEL_OK) { const g = el('i', 'reel-gap'); g.style.cssText = pos; wrap.append(g); return; }
           const b = el('button', 'reel-box' + (d.pick === id && !solved ? ' picking' : '')); b.type = 'button';
-          b.style.left = SH_X[c] + '%'; b.style.top = SH_Y[r] + '%';
+          b.style.cssText = pos;
           b.setAttribute('aria-label', `${lab} 테이프`); b.innerHTML = `<span>${lab.slice(0, 6)}<br>${lab.slice(7)}</span>`;
           b.onclick = () => { if (solved) return; d.pick = d.pick === id ? null : id; d.miss = null; save(); };
           wrap.append(b);
@@ -447,8 +471,13 @@ export default {
         const solved = S.solved.includes('deck');
         const MAX = [5, 9, 5, 9]; // 분·초 십의 자리는 0~5
         d.v = d.v.map((n, i) => Math.min(n, MAX[i]));
-        const wrap = el('div', 'prop deckphoto');
-        wrap.innerHTML = `<img src="${P}props/deck.webp" alt="릴 테이프 데크 앞면 카운터 창과 재생 버튼" decoding="async"><div class="deck-counter">${d.v[0]}${d.v[1]}:${d.v[2]}${d.v[3]}</div>`;
+        // 사진 위아래 빈 곳을 잘라 창 안에서 확인 버튼까지 보이게 (겹친 글자·버튼은 사진 틀 .pframe 안에서 % 자리)
+        const wrap = el('div', 'prop deckphoto crop');
+        const frame = el('div', 'pframe');
+        frame.innerHTML = `<img src="${P}props/deck.webp" alt="릴 테이프 데크 앞면 카운터 창과 재생 버튼" decoding="async"><div class="deck-counter">${d.v[0]}${d.v[1]}:${d.v[2]}${d.v[3]}</div>`;
+        const playBtn = el('button', 'deck-play'); playBtn.type = 'button'; playBtn.setAttribute('aria-label', '데크 재생 단추');
+        playBtn.onclick = () => { if (!solved) ctx.commit?.(); };
+        frame.append(playBtn); wrap.append(frame);
         const wheels = el('div', 'counter-wheels');
         ['분 십의 자리', '분 일의 자리', '초 십의 자리', '초 일의 자리'].forEach((lab, i) => {
           const col = el('div', 'cw');
@@ -471,7 +500,7 @@ export default {
       reveal: {
         title: '58:22',
         text: '5초 안에 그 자리가 지나갔다 거기서부터 끝까지 다시 틀었다 「오늘이 마지막」 그리고 송신이 끊긴 자리에서 2초 동안 아무 소리도 나지 않았다 테이프 잡음조차 그 다음 숨소리 선배는 꺼진 마이크에 대고 계속 말했다 40초',
-        scene: ['선배 말이 끝나고도 테이프는 한참 조용히 돌았다 그때 주머니에서 휴대폰이 떨기 시작했다 건물 녹화기 알림이다'],
+        scene: ['선배 말이 끝나고도 테이프는 한참 조용히 돌았다 그때 의자 위에 올려 둔 휴대폰이 떨기 시작했다 건물 녹화기 알림이다'],
         unlockDoc: 'tape',
       },
     },
@@ -500,7 +529,11 @@ export default {
           b.onclick = () => { if (solved) return; if (n >= 0) d.order.splice(n, 1); else d.order.push(k); save(); };
           grid.append(b);
         });
-        const wrap = el('div', 'mail-wrap cctv-wrap'); wrap.append(el('p', 'cctv-head', 'MIRU 녹화기 · 움직임 감지 4건'), grid, el('p', 'pick-label', solved ? '01:59:30 이후 움직임 알림 없음' : d.order.length ? `${d.order.length}장에 번호를 붙였다` : '알림을 눌러 번호를 붙인다'));
+        const wrap = el('div', 'mail-wrap cctv-wrap'); wrap.append(el('p', 'cctv-head', 'MIRU 녹화기 · 움직임 감지 4건'), grid);
+        const foot = el('div', 'cctv-foot');
+        foot.append(el('p', 'pick-label', solved ? '01:59:30 이후 움직임 알림 없음' : d.order.length ? `${d.order.length}장에 번호를 붙였다` : '알림을 눌러 번호를 붙인다'));
+        if (!solved && d.order.length) { const clr = el('button', 'chip', '번호 다 떼기'); clr.type = 'button'; clr.onclick = () => { d.order = []; save(); }; foot.append(clr); }
+        wrap.append(foot);
         return wrap;
       },
       commitLabel: '이 순서로 이어 보기',
@@ -531,17 +564,21 @@ export default {
       render(ctx) {
         const { d, el, save, S } = ctx;
         const solved = S.solved.includes('patch');
-        const wrap = el('div', 'prop patchphoto');
+        // 사진 위아래 빈 패널을 잘라 낸다 겹친 라벨·잭·케이블은 사진 틀(.pframe) 기준 %라서 어느 폭에서도 사진과 같이 움직인다
+        const wrap = el('div', 'prop patchphoto crop');
+        const frame = el('div', 'pframe');
         const cy = (y) => (y * 688) / 1024;
         let svg = `<svg class="patch-cables" viewBox="0 0 100 ${cy(100)}" aria-hidden="true">`;
         Object.entries(d.cables).forEach(([inp, out]) => {
           const x1 = JX[out - 1], y1 = cy(JY_OUT), x2 = JX[inp - 1], y2 = cy(JY_IN);
-          const col = out === 4 ? '#c8372d' : out === 7 ? '#d9a531' : '#3c6fb4';
+          const col = cableCol(out);
           // 케이블이 라벨을 덮지 않게 잭 아래쪽으로 늘어뜨린다
           svg += `<path d="M${x1} ${y1} C${x1} ${y1 + 30}, ${x2} ${y2 + 14}, ${x2} ${y2}" fill="none" stroke="rgba(0,0,0,.55)" stroke-width="1.6" stroke-linecap="round"/><path d="M${x1} ${y1} C${x1} ${y1 + 30}, ${x2} ${y2 + 14}, ${x2} ${y2}" fill="none" stroke="${col}" stroke-width="1" stroke-linecap="round" opacity=".92"/><circle cx="${x1}" cy="${y1}" r="1.5" fill="${col}"/><circle cx="${x2}" cy="${y2}" r="1.5" fill="${col}"/>`;
         });
         svg += '</svg>';
-        wrap.innerHTML = `<img src="${P}props/patch.webp" alt="패치베이 윗줄 출력 여덟, 아랫줄 입력 여덟" decoding="async">${svg}${OUTS.map((o, i) => `<span class="pb-lab" style="left:${JX[i]}%;top:19.4%">${i + 1} ${o}</span>`).join('')}${INS.map((o, i) => `<span class="pb-lab" style="left:${JX[i]}%;top:55.4%">${i + 1} ${o}</span>`).join('')}`;
+        const lab = (n, name, y) => `<span class="pb-lab" style="left:${JX[n - 1]}%;top:${y}%"><b>${n}</b><span class="pb-name"> ${name}</span></span>`;
+        frame.innerHTML = `<img src="${P}props/patch.webp" alt="패치베이 윗줄 출력 여덟, 아랫줄 입력 여덟" decoding="async">${svg}${OUTS.map((o, i) => lab(i + 1, o, LY_OUT)).join('')}${INS.map((o, i) => lab(i + 1, o, LY_IN)).join('')}`;
+        wrap.append(frame);
         const pickOut = (n) => { if (solved) return; d.sel = d.sel === n ? null : n; save(); };
         const pressIn = (n) => {
           if (solved) return;
@@ -553,24 +590,31 @@ export default {
           const b = el('button', 'jack' + (d.sel === i + 1 ? ' picking' : '')); b.type = 'button'; b.style.left = JX[i] + '%'; b.style.top = JY_OUT + '%';
           b.setAttribute('aria-label', `출력 ${i + 1} ${o}`);
           b.onclick = () => pickOut(i + 1);
-          wrap.append(b);
+          frame.append(b);
         });
         INS.forEach((o, i) => {
           const n = i + 1;
-          const b = el('button', 'jack in' + (d.cables[n] ? ' plugged' : '')); b.type = 'button'; b.style.left = JX[i] + '%'; b.style.top = JY_IN + '%';
+          const b = el('button', 'jack in' + (d.cables[n] ? ' plugged' : '') + (d.sel && !d.cables[n] ? ' ready' : '')); b.type = 'button'; b.style.left = JX[i] + '%'; b.style.top = JY_IN + '%';
           b.setAttribute('aria-label', `입력 ${n} ${o}${d.cables[n] ? ` 출력 ${d.cables[n]}에서 꽂힘` : ''}`);
           b.onclick = () => pressIn(n);
-          wrap.append(b);
+          frame.append(b);
         });
-        const list = Object.entries(d.cables).sort((a, b) => a[0] - b[0]).map(([i, o]) => `${o} ${OUTS[o - 1]} → ${i} ${INS[i - 1]}`).join(' · ');
         // 모바일: 사진 라벨이 작아서 이름 붙은 큰 버튼을 따로 둔다
         const mob = el('div', 'mobile-only pb-rows');
         const rowO = el('div', 'pb-row'); rowO.append(el('span', 'pb-row-lab', '윗줄 출력 (나오는 곳)'));
         OUTS.forEach((o, i) => { const b = el('button', 'chip pb-chip' + (d.sel === i + 1 ? ' on' : '')); b.type = 'button'; b.innerHTML = `<b>${i + 1}</b><small>${o}</small>`; b.setAttribute('aria-label', `출력 ${i + 1} ${o} 고르기`); b.onclick = () => pickOut(i + 1); rowO.append(b); });
         const rowI = el('div', 'pb-row'); rowI.append(el('span', 'pb-row-lab', '아랫줄 입력 (들어갈 곳)'));
-        INS.forEach((o, i) => { const n = i + 1; const b = el('button', 'chip pb-chip' + (d.cables[n] ? ' on' : '')); b.type = 'button'; b.innerHTML = `<b>${n}</b><small>${o}</small>${d.cables[n] ? `<i>← ${d.cables[n]}</i>` : ''}`; b.setAttribute('aria-label', `입력 ${n} ${o} 누르기`); b.onclick = () => pressIn(n); rowI.append(b); });
+        INS.forEach((o, i) => { const n = i + 1; const b = el('button', 'chip pb-chip' + (d.cables[n] ? ' on' : '')); b.type = 'button'; b.innerHTML = `<b>${n}</b><small>${o}</small>${d.cables[n] ? `<i>출력 ${d.cables[n]}</i>` : ''}`; b.setAttribute('aria-label', `입력 ${n} ${o} 누르기`); b.onclick = () => pressIn(n); rowI.append(b); });
         mob.append(rowO, rowI);
-        const box = el('div', 'mail-wrap'); box.append(wrap, mob, el('p', 'pick-label', (d.sel ? `출력 ${d.sel} ${OUTS[d.sel - 1]}에 케이블을 꽂았다 이을 입력을 누른다 · ` : '') + (list ? `꽂힌 케이블 ${list}` : '꽂힌 케이블 없음')));
+        // 지금 꽂힌 케이블: 색 점 + 출력 → 입력 (화살표는 글꼴마다 모양이 달라 그림으로)
+        const now = el('div', 'pb-now');
+        if (d.sel) now.append(el('p', 'pb-sel', `출력 ${d.sel} ${OUTS[d.sel - 1]}에 케이블을 꽂았다 이을 입력을 누른다`));
+        const cl = Object.entries(d.cables).sort((a, b) => a[0] - b[0]);
+        const ul = el('p', 'pb-list');
+        ul.append(el('span', 'pb-list-lab', cl.length ? '꽂힌 케이블' : '꽂힌 케이블 없음'));
+        cl.forEach(([i, o]) => { const s = el('span', 'pb-cable'); s.innerHTML = `<i style="background:${cableCol(+o)}"></i>${o} ${OUTS[o - 1]} ${ARROW} ${i} ${INS[i - 1]}`; s.setAttribute('aria-label', `출력 ${o} ${OUTS[o - 1]}에서 입력 ${i} ${INS[i - 1]}`); ul.append(s); });
+        now.append(ul);
+        const box = el('div', 'mail-wrap'); box.append(wrap, now, mob);
         return box;
       },
       commitLabel: '송출 시작',

@@ -68,7 +68,8 @@ async function main() {
     if (label) dialog.setAttribute('aria-label', label);
     const box = el('div', 'v2-dialog-box');
     const bar = el('div', 'v2-dialog-bar');
-    bar.append(btn('v2-close', '닫기', () => closeDialog(), '닫기'));
+    bar.append(el('span', 'v2-dialog-label', label || ''), btn('v2-close', '닫기', () => closeDialog(), '닫기'));
+    box.tabIndex = -1;
     box.append(bar, node);
     dialog.append(box);
     const me = dialog;
@@ -76,6 +77,7 @@ async function main() {
     me.addEventListener('click', (e) => { if (e.target === me) me.close(); });
     document.body.append(dialog);
     dialog.showModal();
+    box.focus({ preventScroll: true });
     box.scrollTop = 0;
   }
   function closeDialog() { if (dialog?.open) dialog.close(); }
@@ -345,7 +347,26 @@ async function main() {
     head.append(el('p', 'v2-eyebrow', (solved ? '해결한 장치 · ' : '') + (dev.hintCode || '')));
     head.append(el('h2', 'v2-doc-title', dev.title));
     head.append(el('p', 'v2-device-intro', dev.intro));
-    // 장치 안에는 풀이 안내를 두지 않는다 (힌트는 힌트 창에서만, 첫 단계부터 직접 받는다)
+    let hintBlock = null;
+    // 장치 안 힌트: 창을 닫지 않고 그 자리에서 한 단계씩 받는다 (힌트 창과 같은 기록 S.hints)
+    if (!solved) {
+      const hs = (typeof dev.hints === 'function' ? dev.hints(S) : dev.hints) || [];
+      if (hs.length) {
+        const hb = el('div', 'v2-dhint');
+        const drawHint = () => {
+          hb.replaceChildren();
+          const tier = S.hints[did] || 0;
+          for (let i = 0; i < tier; i++) hb.append(html('p', 'v2-dhint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${hs[i]}`));
+          const maxTier = Math.min(3, hs.length);
+          if (tier < maxTier) {
+            const b = btn('v2-dhint-btn' + (tier === 2 ? ' last' : ''), ['힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { if (tier === 2 && !b.dataset.sure) { b.dataset.sure = '1'; b.textContent = '정말 정답을 볼까요? 한 번 더 누르기'; return; } S.hints[did] = tier + 1; save(); drawHint(); });
+            hb.append(b);
+          } else if (hs.length < 3) hb.append(el('p', 'v2-dhint-note', '이 편은 정답 힌트가 없다 여기까지가 전부다'));
+        };
+        drawHint();
+        hintBlock = hb;
+      }
+    }
     node.append(head);
     if (solved && dev.reveal?.ending && !S.ended) node.append(btn('v2-primary', (dev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; save(); closeDialog(); }));
     const body = el('div', 'v2-device-body');
@@ -365,10 +386,11 @@ async function main() {
       });
       actions.append(go);
       ctx.commit = () => go.click();
-      const gate = () => { if (dev.canCommit) go.hidden = !dev.canCommit(d); };
+      const gate = () => { if (dev.canCommit) { go.hidden = !dev.canCommit(d); actions.hidden = go.hidden; } };
       gate(); const _draw = draw; draw = () => { _draw(); gate(); };
     }
     node.append(status, actions);
+    if (hintBlock) { const wrap = el('div', 'v2-dhint-wrap'); wrap.append(el('p', 'v2-dhint-label', '막혔다면'), hintBlock); node.append(wrap); }
     bench.append(node);
     // 오른쪽: 관련 자료를 옆에 펼쳐 둡니다. 창을 오갈 필요가 없습니다.
     const refs = (dev.docs || []).filter((r) => ep.docs[r]);

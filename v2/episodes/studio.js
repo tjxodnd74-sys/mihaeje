@@ -9,7 +9,9 @@ const LEFT_LABELS = { r0c0: 'A4', r3c0: 'A1', r3c3: 'D1' };
 const LOCKER_ANSWER = 'r1c2'; // C3
 const cellName = (id) => { const x = CELLS.find((k) => k.id === id); return `위에서 ${x.r + 1}째 줄 왼쪽에서 ${x.c + 1}째 칸`; };
 // 서랍 사진(서랍 열여섯 칸만 잘라 낸 그림) 위 서랍 자리(왼쪽 위 모서리 %)
-const DRAWER_X = [4.0, 27.1, 50.5, 73.7], DRAWER_Y = [4.5, 27.8, 50.9, 73.8];
+// v127: 사진에서 다시 잰 서랍 앞판(왼쪽 위 · 폭 21.4% · 높이 21%)과 황동 라벨 꽂이 속 카드 가운데
+const DRAWER_X = [4.0, 27.2, 50.55, 73.35], DRAWER_Y = [4.4, 27.4, 50.5, 73.5];
+const CARD_X = [14.7, 37.9, 61.25, 84.05], CARD_Y = [12.2, 35.2, 58.3, 81.3];
 const STRIPS = [
   { id: 'a', start: 1, end: 6 },
   { id: 'b', start: 7, end: 12 },
@@ -70,11 +72,11 @@ export default {
       image: P + 'front.webp',
       arrive: '창을 두드리는 빗소리 말고는 조용하다 가로등 불빛이 젖은 길에 번진다 접수대 초록 등 밑에 누런 봉투 왼쪽 벽은 필름 보관함 암실 문 위 붉은 등만 혼자 켜져 있다 문은 잠겨 있다',
       hotspots: [
-        { id: 'gnote', x: 52, y: 61, r: 9, label: '접수대의 할아버지 쪽지', kind: 'doc', doc: 'gnote' },
-        { id: 'ledger', x: 87, y: 64, r: 10, label: '접수 장부', kind: 'doc', doc: 'ledger' },
+        { id: 'gnote', x: 53.5, y: 60.5, r: 9, label: '접수대의 할아버지 쪽지', kind: 'doc', doc: 'gnote' },
+        { id: 'ledger', x: 87.5, y: 67.3, r: 10, label: '접수 장부', kind: 'doc', doc: 'ledger' },
         { id: 'wall', x: 68, y: 32, r: 16, label: '벽의 사진들', kind: 'doc', doc: 'wall' },
-        { id: 'lamp', x: 68, y: 66, r: 10, label: '초록 등 밑의 봉투', kind: 'device', device: 'lamp', visible: (S) => !S.solved.includes('lamp') },
-        { id: 'pressed', x: 68, y: 66, r: 10, label: '봉투에 눌린 글씨', kind: 'doc', doc: 'pressed', visible: (S) => S.solved.includes('lamp') },
+        { id: 'lamp', x: 68.3, y: 69.8, r: 10, label: '초록 등 밑의 봉투', kind: 'device', device: 'lamp', visible: (S) => !S.solved.includes('lamp') },
+        { id: 'pressed', x: 68.3, y: 69.8, r: 10, label: '봉투에 눌린 글씨', kind: 'doc', doc: 'pressed', visible: (S) => S.solved.includes('lamp') },
         { id: 'lockers', x: 12, y: 58, r: 16, label: '필름 보관함', kind: 'device', device: 'lockers', visible: (S) => S.solved.includes('lamp') },
         { id: 'sleeve', x: 11, y: 40, r: 12, label: '보관함에서 꺼낸 필름 봉투', kind: 'doc', doc: 'sleeve', visible: (S) => S.solved.includes('lockers') },
       ],
@@ -86,7 +88,7 @@ export default {
       unlockedBy: 'lockers',
       arrive: '라이트박스를 켜자 작업대가 하얗게 떴다 필름 네 줄을 올려놓았다 몇 줄은 앞뒤가 뒤집혀 있다 장갑을 끼고 루페를 집었다',
       hotspots: [
-        { id: 'lightbox', x: 42, y: 62, r: 16, label: '라이트박스 위 필름', kind: 'device', device: 'lightbox' },
+        { id: 'lightbox', x: 43, y: 58, r: 16, label: '라이트박스 위 필름', kind: 'device', device: 'lightbox' },
         { id: 'loupe', x: 61, y: 52, r: 9, label: '루페로 본 필름 가장자리', kind: 'doc', doc: 'edge' },
       ],
     },
@@ -98,8 +100,8 @@ export default {
       arrive: '작은 열쇠가 돌아갔다 약품 냄새 붉은 안전등만 켜져 있고 흰 불 스위치는 문 옆이다 확대기 옆에 타이머, 그 옆에 트레이 셋 라벨은 다 떨어졌다',
       overlays: [{ x: 41.5, y: 17, w: 4.6, h: 9.5, cls: 'st-chart', html: '<i></i>' }, { x: 4.2, y: 26.6, w: 4.4, h: 7.2, cls: 'st-memo', html: '<i></i>' }],
       hotspots: [
-        { id: 'chart', x: 44, y: 22, r: 9, label: '벽의 순서표', kind: 'doc', doc: 'chart' },
-        { id: 'memo', x: 7, y: 30, r: 9, label: '선반의 약품 메모', kind: 'doc', doc: 'memo' },
+        { id: 'chart', x: 43.8, y: 21.8, r: 9, label: '벽의 순서표', kind: 'doc', doc: 'chart' },
+        { id: 'memo', x: 6.6, y: 30.2, r: 9, label: '선반의 약품 메모', kind: 'doc', doc: 'memo' },
         { id: 'print', x: 22, y: 42, r: 16, label: '확대기', kind: 'device', device: 'print' },
         { id: 'print2', x: 70, y: 66, r: 16, label: '트레이 셋', kind: 'device', device: 'print' },
       ],
@@ -234,9 +236,10 @@ export default {
           const b = el('button', 'locker-cell' + (d.open === k.id ? ' picking' : '') + (LEFT_LABELS[k.id] ? '' : ' bare')); b.type = 'button';
           b.style.left = DRAWER_X[k.c] + '%'; b.style.top = DRAWER_Y[k.r] + '%';
           b.setAttribute('aria-label', `${cellName(k.id)} 서랍${LEFT_LABELS[k.id] ? ' (라벨 ' + LEFT_LABELS[k.id] + ')' : ''}`);
-          b.innerHTML = LEFT_LABELS[k.id] ? `<span class="plate">${LEFT_LABELS[k.id]}</span>` : '<span class="plate gone"></span>';
           b.onclick = () => { d.open = k.id; save(); };
           cab.append(b);
+          // 글씨가 남은 라벨 카드는 사진 속 황동 꽂이 안 카드 자리에 그대로 겹친다 (나머지 카드는 사진 그대로 하얗게 바랜 채)
+          if (LEFT_LABELS[k.id]) { const t = el('span', 'st-card' + (d.open === k.id ? ' on' : ''), LEFT_LABELS[k.id]); t.setAttribute('aria-hidden', 'true'); t.style.left = CARD_X[k.c] + '%'; t.style.top = CARD_Y[k.r] + '%'; cab.append(t); }
         });
         wrap.append(cab);
         wrap.append(el('p', 'pick-label', d.open ? `고른 서랍 · ${cellName(d.open)}` : '서랍을 하나 고른다'));
@@ -364,7 +367,7 @@ export default {
         // 3 트레이 (흰 불일 때만 색이 보인다)
         const trays = el('div', 'prop trays'); trays.innerHTML = `<img src="${P}props/${d.white ? 'trays-white' : 'trays'}.webp" alt="${d.white ? '흰 불 아래 트레이 셋: 오른쪽 트레이 물이 누렇고, 가운데 집게 손잡이에 파란 테이프, 왼쪽 트레이 뒤 병에 빨간 글씨 빙초산' : '붉은 등 아래 트레이 셋 다 같은 빨강이다'}" decoding="async">`;
         [1, 2, 3].forEach((n, i) => {
-          const b = el('button', 'tray-btn' + (d.baths.includes(n) ? ' done' : '')); b.type = 'button'; b.style.left = [1.5, 34.5, 66][i] + '%';
+          const b = el('button', 'tray-btn' + (d.baths.includes(n) ? ' done' : '')); b.type = 'button'; b.style.left = [3, 35.2, 67][i] + '%';
           b.setAttribute('aria-label', `${TRAY_NAME[n]} 트레이에 담그기`); b.innerHTML = `<span>${d.baths.includes(n) ? d.baths.indexOf(n) + 1 : ''}</span>`;
           b.onclick = () => { if (!d.exposed) { ctx.status('아직 노출 전이다'); return; } if (d.baths.includes(n)) return; d.baths.push(n); save(); };
           trays.append(b);

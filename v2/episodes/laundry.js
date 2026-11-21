@@ -111,19 +111,19 @@ function ductSvg() {
   const tx = (x, y, s, t, a = 'middle', c = ink, w = 400) => `<text x="${x}" y="${y}" font-size="${s}" font-weight="${w}" text-anchor="${a}" fill="${c}" font-family="SUIT, Pretendard, sans-serif">${t}</text>`;
   const X = [15, 29, 43, 57, 71, 85];
   let s = '<svg viewBox="0 0 100 88" class="duct-svg" role="img" aria-label="설비 업체 배기 배관도 위 칸은 골목에서 본 뒷벽 배기구 여섯 자리와 글자, 아래 칸은 건조기 여섯 대에서 천장 끝 글자까지 엇갈려 올라가는 배관">';
-  s += `<rect x="31" y="5" width="38" height="25" rx="1" fill="#f1ede2" stroke="${ink}" stroke-width=".4"/>${tx(50, 3.4, 3.2, '뒷벽 배기구 · 골목에서 본 모습', 'middle', ink, 700)}`;
+  s += `<rect x="31" y="5" width="38" height="25" rx="1" fill="#f1ede2" stroke="${ink}" stroke-width=".4"/>${tx(50, 3.6, 3.9, '뒷벽 배기구 · 골목에서 본 모습', 'middle', ink, 700)}`;
   const gx = { L: 40, M: 50, R: 60 }, gy = { T: 12, B: 23 };
-  Object.entries(WALL).forEach(([k, l]) => { const x = gx[k[1]], y = gy[k[0]]; s += `<circle cx="${x}" cy="${y}" r="4" fill="#fff" stroke="${ink}" stroke-width=".5"/>${tx(x, y + 1.3, 3.6, l, 'middle', ink, 700)}`; });
-  s += `<line x1="4" y1="34" x2="96" y2="34" stroke="${ink}" stroke-width=".3" stroke-dasharray="1 1"/>${tx(50, 39, 3.3, '천장 속 배관 · 끝 글자는 위 칸 벽 자리', 'middle', '#3b4450', 700)}`;
-  X.forEach((x, i) => { s += `<circle cx="${x}" cy="45" r="2.8" fill="#fff" stroke="${ink}" stroke-width=".45"/>${tx(x, 46.2, 3.1, LETTERS[i], 'middle', ink, 700)}`; });
+  Object.entries(WALL).forEach(([k, l]) => { const x = gx[k[1]], y = gy[k[0]]; s += `<circle cx="${x}" cy="${y}" r="4.2" fill="#fff" stroke="${ink}" stroke-width=".5"/>${tx(x, y + 1.5, 4.3, l, 'middle', ink, 700)}`; });
+  s += `<line x1="4" y1="34" x2="96" y2="34" stroke="${ink}" stroke-width=".3" stroke-dasharray="1 1"/>${tx(50, 39.4, 3.8, '천장 속 배관 · 끝 글자는 위 칸 벽 자리', 'middle', '#3b4450', 700)}`;
+  X.forEach((x, i) => { s += `<circle cx="${x}" cy="45" r="3.3" fill="#fff" stroke="${ink}" stroke-width=".45"/>${tx(x, 46.35, 3.8, LETTERS[i], 'middle', ink, 700)}`; });
   for (let n = 1; n <= 6; n++) {
     const dx = X[n - 1], tx2 = X[PIPE[n]];
     const c1 = 61 - n * 1.6, c2 = 55 + n * 1.4;
-    const d = `M${dx} 73 C${dx} ${c1}, ${tx2} ${c2}, ${tx2} 47.8`;
+    const d = `M${dx} 73 C${dx} ${c1}, ${tx2} ${c2}, ${tx2} 48.3`;
     s += `<path d="${d}" fill="none" stroke="#fbfaf4" stroke-width="2.8"/><path d="${d}" fill="none" stroke="${pipe}" stroke-width="1.2" stroke-linecap="round"/>`;
   }
-  X.forEach((x, i) => { s += `<rect x="${x - 4.4}" y="73" width="8.8" height="8" rx="1" fill="#e4e7eb" stroke="${ink}" stroke-width=".45"/>${tx(x, 78.5, 3.6, i + 1, 'middle', ink, 700)}`; });
-  s += tx(50, 86, 3.2, '건조기 1 ~ 6 · 가게 안에서 붙인 번호', 'middle', '#3b4450', 700);
+  X.forEach((x, i) => { s += `<rect x="${x - 4.4}" y="73" width="8.8" height="8" rx="1" fill="#e4e7eb" stroke="${ink}" stroke-width=".45"/>${tx(x, 78.6, 4.3, i + 1, 'middle', ink, 700)}`; });
+  s += tx(50, 86.4, 3.8, '건조기 1 ~ 6 · 가게 안에서 붙인 번호', 'middle', '#3b4450', 700);
   return s + '</svg>';
 }
 
@@ -426,7 +426,7 @@ export default {
       hintCode: 'W-S03',
       hints: [
         '배관도는 위아래 두 칸이야 아래 칸 건조기 번호에서 출발해',
-        '줄을 따라 천장 끝 글자까지 간 다음, 그 글자를 위 칸 벽에서 찾아 김이 나는 데는 지금 누구 빨래가 도는지도 생각해 봐',
+        '줄을 따라 천장 끝 글자까지 간 다음 그 글자를 위 칸 벽에서 찾아봐, 김 나는 데는 지금 누구 빨래가 도는지도 생각하고',
         '윗줄 왼쪽부터 3 1 4 아랫줄 5 2 6',
       ],
       initial: () => ({ map: {}, hold: null }),
@@ -519,7 +519,9 @@ export default {
         const mark = el('button', 'chip cctv-mark' + (on ? ' on' : ''), on ? `${cur.t} 표시 지우기` : `${cur.t} 이 화면 표시`); mark.type = 'button';
         mark.setAttribute('aria-pressed', on ? 'true' : 'false');
         mark.onclick = () => { d.marks = on ? d.marks.filter((t) => t !== cur.t) : [...d.marks, cur.t]; save(); };
-        wrap.append(mon, range, strip, mark, el('p', 'pick-label', d.marks.length ? `표시한 화면 ${d.marks.slice().sort().join(' · ')}` : '아직 표시한 화면이 없다'));
+        // 표시 버튼과 '표시한 화면' 줄은 한 줄로 (확인 버튼이 화면 아래로 밀려나지 않게)
+        const foot = el('div', 'cctv-foot'); foot.append(mark, el('p', 'pick-label', d.marks.length ? `표시한 화면 ${d.marks.slice().sort().join(' · ')}` : '아직 표시한 화면이 없다'));
+        wrap.append(mon, range, strip, foot);
         return wrap;
       },
       commitLabel: '표시한 화면 저장',

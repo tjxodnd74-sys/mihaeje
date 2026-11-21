@@ -103,6 +103,9 @@ const NOTES = [
   { id: '다', text: '나는 거짓말이야' },
 ];
 
+// 민서의 편지 글 (사진 위 손글씨 + 휴대폰에서 크게 옮겨 적은 것)
+const LETTER_1 = `<p>왔네</p><p>여기까지 왔으면 반은 온 거야 열쇠는 우리 집 대문 열쇠고, 지도는 내가 그렸는데 좀 못 그렸어</p><p>역을 등지고 서 그 상태에서 <b>왼쪽</b>으로 가<br><b>두 번째 골목</b>에서 <b>오른쪽</b>으로 꺾어<br>다리를 건너 건너자마자 <b>왼쪽</b><br>그 길에 집이 <b>네 채</b> 우리 집 뒤엔 <b>감나무</b>가 있어 지도에도 그렸어</p><p>대문 색은 지도에 안 그렸어 쪽지 세 장 중에 <b>하나만 거짓말</b>이야 우리 통학열차에서 하던 거</p><p class="sign">— 민서</p>`;
+const LETTER_2 = `<p>할머니가 겨울에 넘어지셨어 아무한테도 말 안 하고 혼자 석 달을 누워 계셨대 그 얘기를 듣고 그날 사표 냈어</p><p>전화를 끈 건 도망친 거야 네 목소리 들으면 다 무너질 것 같았어 그건 내가 잘못한 거고 핑계 없어</p><p>이 길은 한참 뒤에, 좀 괜찮아지고 나서 만들었어 사과를 말로 하기엔 너무 늦은 것 같아서 통학열차에서 하던 쪽지 놀이로 한 번만 불러 보고 싶었어 안 왔어도 원망 안 했을 거야 진짜로</p><p>수박 잘라 놨어</p>`;
 const postcardImg = `<figure class="postcard-photo"><img src="assets/v2/station/postcard.webp" srcset="assets/v2/station/postcard-960.webp 960w, assets/v2/station/postcard.webp 1024w" sizes="(max-width: 640px) 100vw, 640px" alt="엽서 사진: 작은 역사, 벤치에 앉은 민서, 하늘의 새, 양쪽 가로등" decoding="async"><figcaption>수림역 네가 내릴 역 — 민서</figcaption></figure>`;
 
 const LANE_END = { L: { x: 0, y: 30 }, R: { x: 78, y: 30 }, GL: { x: 56, y: 58 }, X: { x: 2, y: 76 }, FL: { x: 88, y: 50 } };
@@ -147,11 +150,11 @@ function svgMap(path = [], picked = null, lane = null) {
   // 걸어온 길(형광펜)
   const walked = path.map(([a, b]) => `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#f2c14e" stroke-opacity=".75" stroke-width="3.2" stroke-linecap="round"/>`).join('');
   // 글씨 (모바일에서도 읽히게 큼직하게)
-  const label = (x, y, t, size = 4, anchor = 'start', rot = 0) => `<text x="${x}" y="${y}" font-size="${size * 1.3}" font-family="MihaejeHand, MihaejeSerif, serif" fill="${INK}" text-anchor="${anchor}" transform="rotate(${rot} ${x} ${y})">${t}</text>`;
+  const label = (x, y, t, size = 4, anchor = 'start', rot = 0) => `<text x="${x}" y="${y}" font-size="${size * 1.3}" style="font-size:calc(${(size * 1.3).toFixed(2)}px * var(--mapk, 1))" font-family="MihaejeHand, MihaejeSerif, serif" fill="${INK}" text-anchor="${anchor}" transform="rotate(${rot} ${x} ${y})">${t}</text>`;
   const notes = label(70, 98.5, '수림역', 5, 'middle') + label(2, 51, '개울', 4.4) + label(48, 48, '다리', 4.2, 'start', -4)
     + label(77, 93, '논', 4.6) + label(14, 93, '논', 4.6) + label(80, 9.5, '논', 4.4)
     + MAP.persimmon.map((hid) => { const h = MAP.houses.find((x) => x.id === hid); return label(h.x + 4, 12, '감', 4.4); }).join('')
-    + label(47, 36.5, '여기 개 있음 조심', 3.8) + label(97, 45, '언덕', 4.4, 'end');
+    + label(47, 35.6, '여기 개 있음 조심', 3.8) + label(97, 45, '언덕', 4.4, 'end');
   // 나침반 낙서
   const compass = pen('M93 3 v8 M93 3 l-2 3 M93 3 l2 3', 0.8) + label(95.5, 8, 'N', 3.8);
   return `<svg viewBox="0 0 100 100" class="village-map" role="img" aria-label="민서의 손지도">
@@ -237,7 +240,7 @@ export default {
       arrive: '수림역엔 역무원이 없었다 문 옆에 열두 칸짜리 보관함이 있고, 가운데 줄 한 칸에 노란 별 스티커가 붙어 있다 민서는 뭐든 별을 붙이는 애였다',
       hotspots: [
         { id: 'postcard', x: 87, y: 23, label: '게시판의 그림엽서', kind: 'doc', doc: 'postcard' },
-        { id: 'lockerrule', x: 42, y: 15, label: '보관함 이용 안내', kind: 'doc', doc: 'lockerrule' },
+        { id: 'lockerrule', x: 35.4, y: 23.7, label: '벽에 붙은 보관함 안내문', kind: 'doc', doc: 'lockerrule' },
         { id: 'locker', x: 55.2, y: 38, label: '별 스티커가 붙은 보관함', kind: 'device', device: 'locker' },
       ],
     },
@@ -246,11 +249,11 @@ export default {
       name: '수림 마을길',
       image: 'assets/v2/station/village.webp',
       unlockedBy: 'locker',
-      arrive: '보관함에서 꺼낸 것들은 가방에 넣고 역 앞으로 나왔다 편지와 손지도와 쪽지 세 장만 손에 들었다 매미 소리 사이로 어디선가 개가 짖었다 길 저 앞에도 파란 대문이 하나 보였다 이 동네엔 파란 대문이 흔한 모양이다',
+      arrive: '보관함에서 꺼낸 것들은 가방에 넣고 역 앞으로 나왔다 편지와 손지도와 쪽지 세 장은 길바닥에 펴 놓고 돌멩이로 눌렀다 매미 소리 사이로 어디선가 개가 짖었다 길 저 앞에도 파란 대문이 하나 보였다 이 동네엔 파란 대문이 흔한 모양이다',
       hotspots: [
-        { id: 'letter', x: 31, y: 66, label: '손에 든 민서의 편지', kind: 'doc', doc: 'letter' },
-        { id: 'handmap', x: 45, y: 60, label: '손지도를 길에 대 보기', kind: 'doc', doc: 'handmap' },
-        { id: 'notes', x: 18, y: 58, label: '손에 든 쪽지 세 장', kind: 'device', device: 'notes' },
+        { id: 'letter', x: 39.6, y: 73.4, r: 8.5, label: '민서의 편지', kind: 'doc', doc: 'letter' },
+        { id: 'handmap', x: 48.9, y: 71.2, r: 8.5, label: '손지도', kind: 'doc', doc: 'handmap' },
+        { id: 'notes', x: 57.9, y: 72.1, r: 8.5, label: '쪽지 세 장', kind: 'device', device: 'notes' },
         { id: 'walk', x: 55, y: 47, label: '마을로 걸어가기', kind: 'device', device: 'walk', visible: (S) => S.solved.includes('notes') },
       ],
     },
@@ -309,13 +312,13 @@ export default {
     },
     lockerrule: {
       title: '보관함 이용 안내',
-      kind: '수림역 · 무인',
-      html: `<div class="sticker"><b>보관함 이용 안내</b><ol><li>숫자 네 자리를 맞추고 손잡이를 당기세요</li><li>세 번 틀리면 30초 동안 잠깁니다</li><li>물건은 7일까지 보관됩니다</li></ol><small>수림역 · 무인역 관리 041-000-0000</small></div><p class="aside">보관함 옆면에 붙은 스티커 칸 번호는 왼쪽 위부터 가로로 매겼다 별 스티커가 붙은 칸은 5번 맡긴 날짜 칸에 볼펜으로 2026/8/14 05:50</p>`,
+      kind: '수림역 · 보관함 옆 벽',
+      html: `<div class="sticker"><b>보관함 이용 안내</b><ol><li>숫자 네 자리를 맞추고 손잡이를 당기세요</li><li>세 번 틀리면 30초 동안 잠깁니다</li><li>물건은 7일까지 보관됩니다</li></ol><small>칸 번호는 왼쪽 위 칸부터 가로로 셉니다 · 수림역 무인역 관리 041-000-0000</small></div><p class="aside">별 스티커가 붙은 칸은 5번 맡긴 날짜 칸에 볼펜으로 2026/8/14 05:50</p>`,
     },
     letter: {
       title: '민서의 편지',
       kind: '보관함 안 · 봉투 없이',
-      html: `<figure class="prop letterphoto"><img src="assets/v2/station/props/letter.webp" alt="보관함에서 나온 편지" decoding="async"><div class="letter-hand"><p>왔네</p><p>여기까지 왔으면 반은 온 거야 열쇠는 우리 집 대문 열쇠고, 지도는 내가 그렸는데 좀 못 그렸어</p><p>역을 등지고 서 그 상태에서 <b>왼쪽</b>으로 가<br><b>두 번째 골목</b>에서 <b>오른쪽</b>으로 꺾어<br>다리를 건너 건너자마자 <b>왼쪽</b><br>그 길에 집이 <b>네 채</b> 우리 집 뒤엔 <b>감나무</b>가 있어 지도에도 그렸어</p><p>대문 색은 지도에 안 그렸어 쪽지 세 장 중에 <b>하나만 거짓말</b>이야 우리 통학열차에서 하던 거</p><p class="sign">— 민서</p></div></figure>`,
+      html: `<figure class="prop letterphoto"><img src="assets/v2/station/props/letter.webp" alt="보관함에서 나온 편지" decoding="async"><div class="letter-hand">${LETTER_1}</div></figure><div class="letter-plain mobile-only" aria-hidden="true">${LETTER_1}</div>`,
     },
     handmap: {
       title: '접힌 손지도',
@@ -326,7 +329,7 @@ export default {
       title: '민서의 편지 · 마지막 장',
       kind: '편지의 접힌 뒷장 · 마당에서 읽음',
       locked: true,
-      html: `<figure class="prop letterphoto back"><img src="assets/v2/station/props/letter.webp" alt="편지의 접힌 뒷장" decoding="async"><div class="letter-hand"><p>할머니가 겨울에 넘어지셨어 아무한테도 말 안 하고 혼자 석 달을 누워 계셨대 그 얘기를 듣고 그날 사표 냈어</p><p>전화를 끈 건 도망친 거야 네 목소리 들으면 다 무너질 것 같았어 그건 내가 잘못한 거고 핑계 없어</p><p>이 길은 한참 뒤에, 좀 괜찮아지고 나서 만들었어 사과를 말로 하기엔 너무 늦은 것 같아서 통학열차에서 하던 쪽지 놀이로 한 번만 불러 보고 싶었어 안 왔어도 원망 안 했을 거야 진짜로</p><p>수박 잘라 놨어</p></div></figure>`,
+      html: `<figure class="prop letterphoto back"><img src="assets/v2/station/props/letter.webp" alt="편지의 접힌 뒷장" decoding="async"><div class="letter-hand">${LETTER_2}</div></figure><div class="letter-plain mobile-only" aria-hidden="true">${LETTER_2}</div>`,
     },
   },
 
@@ -496,7 +499,7 @@ export default {
         const wrap = el('div', 'locker2');
         const ph = el('div', 'locker2-photo'); const limg = el('img'); limg.src = 'assets/v2/station/props/locker.webp'; limg.alt = '5번 칸의 네 자리 다이얼과 노란 별 스티커'; ph.append(limg);
         // 사진 속 다이얼 바퀴 위에 지금 숫자
-        [47.2, 54.7, 62.0, 69.2].forEach((x, i) => { const w = el('span', 'wheel', String(d.dial[i])); w.style.left = x + '%'; ph.append(w); });
+        [47.0, 54.5, 61.85, 69.2].forEach((x, i) => { const w = el('span', 'wheel', String(d.dial[i])); w.style.left = x + '%'; ph.append(w); });
         wrap.append(ph);
         const row = el('div', 'dials');
         for (let i = 0; i < 4; i++) {
@@ -606,7 +609,7 @@ export default {
             const col = GATE[hid];
             const b = el('button', 'gate-chip' + (d.house === hid ? ' on' : '')); b.type = 'button';
             b.setAttribute('aria-label', `${['첫', '둘', '셋', '넷'][i]}째 집 ${col} 대문`);
-            b.innerHTML = `<i style="--gate:${GATE_CSS[col]}"></i><span>${['첫', '둘', '셋', '넷'][i]}째 집</span><small>${i + 1}번 · ${col} 대문</small>`;
+            b.innerHTML = `<i style="--gate:${GATE_CSS[col]}"></i><span>${['첫', '둘', '셋', '넷'][i]}째 집</span><small>${col} 대문</small>`;
             b.onclick = () => { d.house = hid; save(); };
             row.append(b);
           });
@@ -645,7 +648,7 @@ export default {
   ending: {
     image: 'assets/v2/station/ending.webp',
     imageAlt: '해 질 녘 마당의 평상, 덜 익은 감이 달린 나무 아래 할머니와 민서',
-    eyebrow: '수림, 2026/8/14 해 질 녘',
+    eyebrow: '수림, 2026/8/14 한낮부터 해 질 녘까지',
     title: '없는 승강장에서 온 초대',
     paragraphs: [
       '대문을 연 건 열한 시쯤이었다 평상 위에 수박이 잘려 있었고 할머니가 먼저 손을 흔들었다 민서는 일어나지 않고 웃기만 했다 일어나면 울어 버릴 것 같은 웃음이었다',

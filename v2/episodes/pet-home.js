@@ -37,14 +37,22 @@ const DRAWERS = [
   ['9-1', 'V-6800~6899'], ['9-2', 'V-6900~6999'], ['9-3', 'V-7000~7099'],
 ];
 const DRAWER_ANSWER = '7-3'; // 2017년 정리 때 V-6350 이후를 7-3으로 옮김 (게시판 손글씨)
+// 서랍장 사진(cabinet.webp 1024×688)에서 잰 자리 (사진 전체 기준 %) — 서랍 앞판 · 황동 이름표 틀
+// 장치에서는 서랍장만 보이게 잘라서(CAB) 크게 보여 주고, 번호표는 이름표 틀 위에 정확히 얹는다
+const CAB = { x0: 16.5, w: 67, y0: 9.5, h: 86 };
+const FRONT_X = [[20.0, 38.7], [40.1, 58.6], [60.3, 78.9]];
+const FRONT_Y = [[12.9, 31.1], [33.0, 50.9], [52.6, 70.6], [72.4, 90.6]];
+const PLATE_X = [29.6, 49.3, 69.8], PLATE_Y = [18.1, 38.1, 57.85, 77.4], PLATE_W = 8.4, PLATE_H = 4.8;
+const cabX = (x) => ((x - CAB.x0) / CAB.w) * 100, cabY = (y) => ((y - CAB.y0) / CAB.h) * 100;
 
-// 7-3 서랍 앞쪽에 올라온 카드 다섯 (사진 속 색 표 위치) V-6384가 셋, 계약서 등록번호까지 맞는 건 하나
+// 7-3 서랍 앞쪽에 올라온 카드 다섯 V-6384가 셋, 계약서 등록번호까지 맞는 건 하나
+// x·y·rot = drawer.webp 에서 잰 색 표 가운데와 기울기 (표를 감싸는 선택 테두리가 표 위에 딱 맞게)
 const CARDS = [
-  { id: 'blue', tab: '파란', x: 33, y: 34, v: 'V-6381', name: '보리', date: '2016/7/15', reg: '941372608154209' },
-  { id: 'green', tab: '초록', x: 39.5, y: 29, v: 'V-6384', name: '콩이', date: '2016/7/17', reg: '941372608145902' },
-  { id: 'yellow', tab: '노란', x: 47.5, y: 25, v: 'V-6384', name: '콩이', date: '2016/7/17', reg: '941372608154902' },
-  { id: 'orange', tab: '주황', x: 55.5, y: 22.5, v: 'V-6384', name: '콩', date: '2016/7/17', reg: '941372680154902' },
-  { id: 'red', tab: '빨간', x: 64, y: 22.5, v: 'V-6385', name: '코코', date: '2016/7/18', reg: '941327608154902' },
+  { id: 'blue', tab: '파란', x: 32.6, y: 35.6, rot: -17, v: 'V-6381', name: '보리', date: '2016/7/15', reg: '941372608154209' },
+  { id: 'green', tab: '초록', x: 39.4, y: 28.9, rot: -10, v: 'V-6384', name: '콩이', date: '2016/7/17', reg: '941372608145902' },
+  { id: 'yellow', tab: '노란', x: 47.8, y: 25.0, rot: -3, v: 'V-6384', name: '콩이', date: '2016/7/17', reg: '941372608154902' },
+  { id: 'orange', tab: '주황', x: 55.4, y: 23.3, rot: 4, v: 'V-6384', name: '콩', date: '2016/7/17', reg: '941372680154902' },
+  { id: 'red', tab: '빨간', x: 63.3, y: 23.1, rot: 6, v: 'V-6385', name: '코코', date: '2016/7/18', reg: '941327608154902' },
 ];
 const CARD_ANSWER = 'yellow';
 
@@ -56,6 +64,23 @@ const BADGES = [
   { id: 'y3', grade: '3학년 2반', name: '김유나', tilt: -2 },
 ];
 const BADGE_ANSWER = 'y2';
+
+// 장치 창 안에서 방금 열린 것(서랍·카드·확인 버튼)이 화면 밖이면 그만큼만 끌어올린다 (창을 다시 열 때는 그대로)
+const lastView = new WeakMap();
+function bringIntoView(d, key, node) {
+  const prev = lastView.get(d); lastView.set(d, key);
+  if (prev === undefined || prev === key) return;
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const box = node.closest('.v2-dialog-box'); if (!box) return;
+    const go = box.querySelector('.v2-actions .v2-primary:not([hidden])');
+    const b = box.getBoundingClientRect(), r = node.getBoundingClientRect();
+    const barB = box.querySelector('.v2-dialog-bar')?.getBoundingClientRect().bottom ?? b.top;
+    const top = Math.max(b.top, barB) + 8; // 창 머리 줄(겹쳐 붙는 줄) 아래부터
+    const bottom = Math.max(r.bottom, go ? go.getBoundingClientRect().bottom : 0) + 12;
+    const dy = r.top < top ? r.top - top : Math.min(bottom - b.bottom, r.top - top);
+    if (dy > 0 || r.top < top) box.scrollBy({ top: dy, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }));
+}
 
 const dialRow = (el, save, d, n) => {
   const row = el('div', 'dials');
@@ -110,9 +135,9 @@ export default {
       image: P + 'living.webp',
       arrive: '이삿짐 상자가 아직 반이나 남았다 탁자 위에 정우 씨 상자와 입양 계약서 봉투, 창가 방석에선 루미가 잔다 열 살이라더니 자는 모습이 꼭 노인 같다',
       hotspots: [
-        { id: 'note', x: 26, y: 64, r: 7, label: '뚜껑 안쪽 정우의 쪽지', kind: 'doc', doc: 'jnote' },
-        { id: 'center', x: 42, y: 69, r: 7, label: '상자 맨 밑의 기록 사본', kind: 'doc', doc: 'center' },
-        { id: 'box', x: 34, y: 77, r: 8, label: '기념품 상자', kind: 'device', device: 'box' },
+        { id: 'note', x: 24, y: 66, r: 7, label: '뚜껑 안쪽 정우의 쪽지', kind: 'doc', doc: 'jnote' },
+        { id: 'center', x: 45.5, y: 69.5, r: 7, label: '상자 맨 밑의 기록 사본', kind: 'doc', doc: 'center' },
+        { id: 'box', x: 33, y: 76, r: 8, label: '기념품 상자', kind: 'device', device: 'box' },
         { id: 'contract', x: 62, y: 77, r: 8, label: '입양 계약서 봉투', kind: 'doc', doc: 'contract' },
         { id: 'rumi', x: 72, y: 45, label: '방석의 루미', kind: 'doc', doc: 'rumi' },
       ],
@@ -124,7 +149,7 @@ export default {
       unlockedBy: 'box',
       arrive: '접수증의 병원은 아직 같은 자리에 있었다 "2016년이요? 그때 쓰던 접수 프로그램 회사가 문을 닫아서 옛날 건 카드로만 남았어요 저기 서랍장 오른쪽 위 열두 칸이요" 수의사가 접수대 너머 벽을 가리켰다',
       hotspots: [
-        { id: 'vet', x: 50, y: 50, label: '접수대에서 들은 말', kind: 'doc', doc: 'vet' },
+        { id: 'vet', x: 38, y: 53, label: '접수대에서 들은 말', kind: 'doc', doc: 'vet' },
         { id: 'rule', x: 86, y: 25, r: 10, label: '게시판의 카드 보관 안내', kind: 'doc', doc: 'rule' },
         { id: 'cabinet', x: 42, y: 24, r: 9, label: '카드 서랍장 오른쪽 위 열두 칸', kind: 'device', device: 'cards' },
       ],
@@ -138,9 +163,9 @@ export default {
         ? '엄마는 일기 한 장을 손바닥으로 펴 주고 보리차를 따랐다 사진 상자 뚜껑이 열린 채로 있다'
         : '다음 날 엄마 집 식탁에 앨범이 펼쳐져 있다 엄마는 보리차를 끓이며 "그해 여름이면 서진이가 우리 집에 있을 때다" 했다 식탁 끝엔 엄마가 못 버리는 사진 상자'),
       hotspots: [
-        { id: 'phone', x: 62, y: 76, r: 8, label: '엄마와 주고받은 문자', kind: 'doc', doc: 'momchat' },
+        { id: 'phone', x: 53.7, y: 78.5, r: 7, label: '엄마와 주고받은 문자', kind: 'doc', doc: 'momchat' },
         { id: 'album', x: 44, y: 58, r: 13, label: '펼쳐 둔 앨범', kind: 'doc', doc: 'album' },
-        { id: 'guide', x: 92, y: 27, r: 9, label: '장식장 위 서류철', kind: 'doc', doc: 'guide' },
+        { id: 'guide', x: 93.5, y: 19, r: 8, label: '장식장 위 서류철', kind: 'doc', doc: 'guide' },
         { id: 'strap', x: 89, y: 64, r: 10, label: '엄마의 사진 상자', kind: 'device', device: 'strap', visible: (S) => !S.solved.includes('strap') },
         { id: 'diary', x: 89, y: 64, r: 10, label: '사진 상자 밑의 일기 한 장', kind: 'doc', doc: 'diary', visible: (S) => S.solved.includes('strap') },
       ],
@@ -157,7 +182,7 @@ export default {
       title: '상자 맨 밑의 기록 사본',
       kind: '보호센터 접수 27번 · 2016년',
       html: `<div class="paper-table"><p class="pt-head">햇살구 동물보호센터 · 접수번호 27</p><table><tr><th>날짜</th><th>도장</th><th>처리</th><th>담당</th></tr>
-${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}">${s.shown}</td><td class="nw">${stampSvg(s.stamp, 'ink')} ${STAMP[s.stamp].name}</td><td>${s.name}</td><td>${s.who}</td></tr>`).join('')}
+${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}">${s.shown}</td><td class="nw">${stampSvg(s.stamp, 'ink')} <span class="stamp-name">${STAMP[s.stamp].name}</span></td><td>${s.name}</td><td>${s.who}</td></tr>`).join('')}
 </table><p class="pt-foot">※ 원본에는 신고자가 「보호자 동반 학생」으로만 적혀 있음 · 진료 연계는 담담동물병원 · 줄은 센터 서식 순서</p></div><p>네 줄 다 접수번호 27이다 줄은 센터 서식 순서대로라 일어난 차례와는 다르다 복사가 잘못돼서 날짜 끝자리가 세 줄이나 뭉개졌다 처음 발견한 사람 칸만 이름이 없다</p><p class="aside">사본 밑에 자물쇠 달린 양철통이 하나 더 있었다 정우 씨 글씨로 「통 번호는 네 날의 끝자리, 이 사본 줄 순서대로 위에서부터」</p>`,
     },
     contract: {
@@ -193,7 +218,7 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
     album: {
       title: '펼쳐 둔 앨범',
       kind: '엄마가 꺼내 둔 것',
-      html: `<figure class="prop album"><img src="${P}props/album.webp" alt="펼쳐 둔 앨범 사진 네 칸 가운데 오른쪽 아래 한 칸이 비어 모서리 붙임 종이만 남았다" decoding="async"></figure><p>앨범 뒤쪽 2016년 여름 장 네 칸 가운데 오른쪽 아래 한 칸이 비어 있다 네 모서리에 붙임 종이만 남았고 칸 밑에 엄마 글씨로 「정류장」</p><p>"그 사진은 서진이 물건 정리하다 상자에 같이 들어갔을 거다" 엄마가 식탁 끝 사진 상자를 턱으로 가리켰다</p>`,
+      html: `<figure class="prop album"><img src="${P}props/album.webp" alt="펼쳐 둔 앨범 사진 네 칸 가운데 오른쪽 아래 한 칸이 비어 모서리 붙임 종이만 남았다 빈칸 밑에 엄마 글씨로 정류장" decoding="async"><span class="album-cap" aria-hidden="true">정류장</span></figure><p>앨범 뒤쪽 2016년 여름 장 네 칸 가운데 오른쪽 아래 한 칸이 비어 있다 네 모서리에 붙임 종이만 남았고 칸 밑에 엄마 글씨로 「정류장」</p><p>"그 사진은 서진이 물건 정리하다 상자에 같이 들어갔을 거다" 엄마가 식탁 끝 사진 상자를 턱으로 가리켰다</p>`,
     },
     guide: {
       title: '햇살중 생활 안내',
@@ -231,11 +256,12 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
         const wrap = el('div', 'box-wrap');
         const left = el('div', 'box-left');
         const box = el('div', 'prop keepbox'); const im = el('img'); im.src = P + 'props/box.webp'; im.alt = '뚜껑 연 기념품 상자 담요, 파란 끈, 봉투, 확인서'; box.append(im);
-        const pos = { blanket: [22, 24], lanyard: [57, 22], envelope: [23, 56], cert: [56, 56] };
+        // box.webp(1024×688)에서 잰 물건 자리 [왼쪽, 위, 너비, 높이] % — 누름 자리·고른 테두리·놓은 뒤 빈 자리가 물건에 딱 맞게
+        const pos = { blanket: [10.7, 13.8, 43.9, 42.2], lanyard: [57.6, 16, 29.3, 32.7], envelope: [12.2, 57.1, 35.6, 29.4], cert: [50.8, 50.1, 37.6, 37.8] };
         ITEMS.forEach((it) => {
           const placed = Object.values(d.placed).includes(it.id);
           const b = el('button', 'keep-item' + (placed ? ' gone' : '') + (d.held === it.id ? ' picking' : '')); b.type = 'button';
-          b.style.left = pos[it.id][0] + '%'; b.style.top = pos[it.id][1] + '%';
+          const [l, t, w, h] = pos[it.id]; b.style.cssText = `left:${l}%;top:${t}%;width:${w}%;height:${h}%`;
           b.setAttribute('aria-label', it.name + (placed ? ' (기록에 놓음)' : ' 집어 뒷면 보기'));
           b.onclick = () => { if (placed) return; d.held = d.held === it.id ? null : it.id; d.flip = d.held; save(); };
           box.append(b);
@@ -259,9 +285,14 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
           sheet.append(row);
         });
         right.append(el('p', 'pick-label', d.held ? `${ITEMS.find((x) => x.id === d.held).name} 들고 있다 기록의 날을 누르면 거기 놓는다` : '물건을 누르면 집어 든다'), sheet);
-        const tin = el('div', 'prop tinlock'); const ti = el('img'); ti.src = P + 'props/tin.webp'; ti.alt = '네 자리 자물쇠가 달린 양철통'; tin.append(ti);
-        right.append(el('p', 'pick-label', '상자 밑의 양철통 — 자물쇠 네 자리'), tin, dialRow(el, save, d, 4));
-        wrap.append(left, right);
+        // 양철통은 사진과 다이얼을 한 줄로 (확인 버튼이 화면 아래로 밀려나지 않게)
+        const tinRow = el('div', 'tin-row');
+        const tin = el('div', 'prop tinlock'); const ti = el('img'); ti.src = P + 'props/tin.webp'; ti.alt = '네 자리 자물쇠가 달린 양철통'; ti.decoding = 'async'; tin.append(ti);
+        const tinCtl = el('div', 'tin-ctl'); tinCtl.append(el('p', 'pick-label', '상자 밑의 양철통 — 자물쇠 네 자리'), dialRow(el, save, d, 4));
+        tinRow.append(tin, tinCtl);
+        wrap.append(left, right, tinRow);
+        // 휴대폰: 물건을 집으면 놓을 기록 칸이 화면에 들어오게
+        if (small()) bringIntoView(d, d.held || '', d.held ? sheet : box);
         return wrap;
       },
       commitLabel: '자물쇠 당기기',
@@ -295,31 +326,41 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'cards-wrap');
-        const cab = el('div', 'prop cardcabinet'); const im = el('img'); im.src = P + 'props/cabinet.webp'; im.alt = '벽 서랍장 오른쪽 위 열두 칸 (가로 셋 세로 넷)'; cab.append(im);
-        const cols = [24.5, 41.5, 58.5], rows = [12.5, 32.5, 52.5, 72.5];
+        const cab = el('div', 'prop cardcabinet'); const im = el('img'); im.src = P + 'props/cabinet.webp'; im.alt = '벽 서랍장 오른쪽 위 열두 칸 (가로 셋 세로 넷)'; im.decoding = 'async';
+        im.style.cssText = `width:${(100 / CAB.w) * 100}%;left:${(-CAB.x0 / CAB.w) * 100}%;top:${(-CAB.y0 / CAB.h) * 100}%`;
+        cab.append(im);
         DRAWERS.forEach(([id], i) => {
+          const c = i % 3, r = Math.floor(i / 3);
+          const [x0, x1] = FRONT_X[c], [y0, y1] = FRONT_Y[r];
           const b = el('button', 'drawer-btn' + (d.drawer === id ? ' picking' : '')); b.type = 'button';
-          b.style.left = cols[i % 3] + '%'; b.style.top = rows[Math.floor(i / 3)] + '%';
-          b.setAttribute('aria-label', `${id} 서랍 열기`); b.innerHTML = `<span class="plate">${id}</span>`;
+          // 버튼 = 서랍 앞판 그대로, 번호표 = 앞판 안에서 황동 이름표 틀 자리
+          b.style.left = cabX(x0) + '%'; b.style.top = cabY(y0) + '%'; b.style.width = (cabX(x1) - cabX(x0)) + '%'; b.style.height = (cabY(y1) - cabY(y0)) + '%';
+          const pl = ((PLATE_X[c] - PLATE_W / 2 - x0) / (x1 - x0)) * 100, pt = ((PLATE_Y[r] - PLATE_H / 2 - y0) / (y1 - y0)) * 100;
+          const pw = (PLATE_W / (x1 - x0)) * 100, ph = (PLATE_H / (y1 - y0)) * 100;
+          b.setAttribute('aria-label', `${id} 서랍 열기`); b.setAttribute('aria-pressed', d.drawer === id ? 'true' : 'false');
+          b.innerHTML = `<span class="plate" style="left:${pl}%;top:${pt}%;width:${pw}%;height:${ph}%">${id}</span>`;
           b.onclick = () => { d.drawer = d.drawer === id ? null : id; d.open = null; save(); };
           cab.append(b);
         });
         wrap.append(cab);
-        if (!d.drawer) { wrap.append(el('p', 'pick-label', '번호판을 보고 서랍을 하나 연다')); return wrap; }
+        if (!d.drawer) { wrap.append(el('p', 'pick-label', '번호판을 보고 서랍을 하나 연다')); lastView.set(d, ''); return wrap; }
         if (d.drawer !== DRAWER_ANSWER) {
-          wrap.append(el('p', 'pick-label', `${d.drawer} 서랍 — 카드를 앞에서부터 넘겨 봤지만 봉투에 적힌 번호는 없다`));
+          const miss = el('p', 'pick-label drawer-miss', `${d.drawer} 서랍 — 카드를 앞에서부터 넘겨 봤지만 봉투에 적힌 번호는 없다`);
+          wrap.append(miss); bringIntoView(d, d.drawer, miss);
           return wrap;
         }
         const drawer = el('div', 'prop carddrawer'); const di = el('img'); di.src = P + 'props/drawer.webp'; di.alt = '열린 7-3 서랍, 앞쪽에 색 표가 달린 카드 다섯 장이 올라와 있다'; drawer.append(di);
+        drawer.append(el('span', 'drawer-front-plate', DRAWER_ANSWER)); // 열린 서랍 앞판 이름표 (사진 속 빈 이름표 틀 자리)
         const mob = small();
         CARDS.forEach((c) => {
-          const b = el(mob ? 'span' : 'button', 'card-tab ' + c.id + (d.open === c.id ? ' picking' : '')); b.style.left = c.x + '%'; b.style.top = c.y + '%';
+          const b = el(mob ? 'span' : 'button', 'card-tab ' + c.id + (d.open === c.id ? ' picking' : '')); b.style.left = c.x + '%'; b.style.top = c.y + '%'; b.style.setProperty('--rot', c.rot + 'deg');
           if (!mob) { b.type = 'button'; b.setAttribute('aria-label', `${c.tab} 표 카드 보기`); b.onclick = () => { d.open = d.open === c.id ? null : c.id; save(); }; } else b.setAttribute('aria-hidden', 'true');
           drawer.append(b);
         });
         wrap.append(el('p', 'pick-label', '7-3 서랍 — 앞쪽에 옮겨 꽂은 카드 다섯 장이 올라와 있다'), drawer);
+        let tail = drawer;
         if (mob) {
-          const row = el('div', 'card-pick-row');
+          const row = el('div', 'card-pick-row'); tail = row;
           CARDS.forEach((c) => { const b = el('button', 'card-pick ' + c.id + (d.open === c.id ? ' on' : ''), `${c.tab} 표`); b.type = 'button'; b.setAttribute('aria-label', `${c.tab} 표 카드 보기`); b.onclick = () => { d.open = d.open === c.id ? null : c.id; save(); }; row.append(b); });
           wrap.append(row);
         }
@@ -327,8 +368,8 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
           const c = CARDS.find((x) => x.id === d.open);
           const card = el('div', 'index-card');
           card.innerHTML = `<p class="ic-head">담담동물병원 진료 카드 · ${c.tab} 표</p><div class="ic-row"><span>번호</span><b class="mono">${c.v}</b></div><div class="ic-row"><span>이름</span><b>${c.name}</b></div><div class="ic-row"><span>첫 진료</span><b>${c.date}</b></div><div class="ic-row"><span>동물등록번호</span><b class="mono reg">${c.reg.replace(/(\d{3})(?=\d)/g, '$1 ')}</b></div>`;
-          wrap.append(card);
-        } else wrap.append(el('p', 'pick-label', '올라와 있는 카드를 누르면 앞면이 보인다'));
+          wrap.append(card); bringIntoView(d, d.drawer + d.open, card);
+        } else { wrap.append(el('p', 'pick-label', '올라와 있는 카드를 누르면 앞면이 보인다')); bringIntoView(d, d.drawer, tail); }
         return wrap;
       },
       commitLabel: '이 카드 꺼내기',
@@ -384,7 +425,9 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
         };
         handle.addEventListener('pointerup', drop); handle.addEventListener('pointercancel', drop);
         const picked = BADGES.find((x) => x.id === d.pick);
-        wrap.append(handle, grid, el('p', 'pick-label', picked ? `${picked.grade} ${picked.name} 명찰 구멍에 집게를 댔다` : '아직 아무 명찰에도 대지 않았다'));
+        const said = el('p', 'pick-label', picked ? `${picked.grade} ${picked.name} 명찰 구멍에 집게를 댔다` : '아직 아무 명찰에도 대지 않았다');
+        wrap.append(handle, grid, said);
+        if (picked) bringIntoView(d, d.pick, said); else lastView.set(d, ''); // 휴대폰: 댄 뒤 '집게 물리기'가 화면에 들어오게
         return wrap;
       },
       commitLabel: '집게 물리기',
