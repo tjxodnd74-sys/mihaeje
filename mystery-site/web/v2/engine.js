@@ -233,8 +233,10 @@ async function main() {
       }
     }));
     // 살펴볼 곳 잠깐 보기
-    const peek = btn('v2-peek', '?', () => { stage.classList.add('peek'); clearTimeout(peek._t); peek._t = setTimeout(() => stage.classList.remove('peek'), 2600); }, '살펴볼 곳 잠깐 보기');
-    stage.append(peek);
+    // '?'는 그림 위가 아니라 위 줄에 (그림 속 물건을 가리지 않게)
+    const peek = btn('v2-hud-btn v2-peek', '', () => { stage.classList.add('peek'); clearTimeout(peek._t); peek._t = setTimeout(() => stage.classList.remove('peek'), 2600); }, '살펴볼 곳 잠깐 보기');
+    peek.append(el('span', 'ico q', '?'), el('span', 'lab', '살펴보기'));
+    tools.prepend(peek);
     // 대사창: 처음 온 장면(또는 이번 접속에서 처음 보는 장면)에 한 번, 누르면 넘어간다
     const firstVisit = !S.visited.includes(scene.id);
     if (firstVisit) { S.visited.push(scene.id); save(); }

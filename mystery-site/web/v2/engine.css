@@ -117,7 +117,7 @@ a{color:inherit}
 .v2-pan{position:relative;container-type:inline-size;aspect-ratio:3/2;width:100%;transition:transform .32s cubic-bezier(.3,.1,.3,1);will-change:transform}
 .v2-stage-img{display:block;width:100%;height:100%;object-fit:cover;animation:v2-fadein .5s ease}
 @keyframes v2-fadein{from{opacity:0;filter:brightness(.3)}to{opacity:1;filter:none}}
-.v2-stage.zoomed .v2-hotspot,.v2-stage.zoomed .v2-talk,.v2-stage.zoomed .v2-edge,.v2-stage.zoomed .v2-peek{opacity:0;pointer-events:none}
+.v2-stage.zoomed .v2-hotspot,.v2-stage.zoomed .v2-talk,.v2-stage.zoomed .v2-edge{opacity:0;pointer-events:none}
 /* 누름 자리: 평소엔 보이지 않음 · 마우스를 올리면 고리와 이름 · '?'를 누르면 잠깐 전부 */
 .v2-hotspot{--hit:11%;position:absolute;width:var(--hit);aspect-ratio:1;transform:translate(-50%,-50%);background:transparent;border:0;padding:0;border-radius:50%;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .v2-hotspot i{position:absolute;inset:22%;border-radius:50%;border:1.5px solid rgba(243,220,170,.85);background:radial-gradient(rgba(243,210,150,.18),transparent 70%);opacity:0;transform:scale(.7);transition:opacity .2s,transform .2s}
@@ -143,7 +143,7 @@ a{color:inherit}
 @keyframes v2-tip{0%{opacity:0}12%,80%{opacity:1}100%{opacity:0}}
 .v2-edge:hover,.v2-edge:focus-visible{color:#f3c97a;outline:none}
 .v2-edge.left:hover svg{transform:translateX(-3px)}.v2-edge.right:hover svg{transform:translateX(3px)}
-.v2-peek{position:absolute;right:10px;top:10px;z-index:4;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:rgba(10,10,12,.55);color:rgba(240,232,218,.9);font-size:14px;font-weight:700;padding:0}
+.v2-hud-btn .ico.q{display:grid;place-items:center;width:18px;height:18px;border:1.6px solid currentColor;border-radius:50%;font-size:11px;font-weight:800;line-height:1}
 /* 대사창 */
 .v2-talk{position:absolute;left:3%;right:3%;bottom:3%;z-index:5;background:rgba(10,12,15,.86);border:1px solid rgba(226,205,160,.55);border-radius:4px;box-shadow:0 0 0 1px rgba(0,0,0,.6),0 10px 30px rgba(0,0,0,.5);padding:20px 18px 16px;cursor:pointer;transition:opacity .25s,transform .25s}
 .v2-talk.gone{opacity:0;transform:translateY(10px);pointer-events:none}
@@ -181,7 +181,7 @@ a{color:inherit}
   .v2-stage.zoomed .v2-scroll{overflow:hidden}
   .v2-hotspot{--hit:13%}
   .v2-travel-row{bottom:22%}
-  .v2-peek,.v2-talk-open{width:40px;height:40px}
+  .v2-talk-open{width:40px;height:40px}
   .v2-edge{width:32px;height:64px;margin-top:-32px;background:linear-gradient(90deg,rgba(0,0,0,.35),transparent)}
   .v2-edge svg{width:26px;height:26px}
   .v2-hud-btn,.v2-where{min-height:40px}
