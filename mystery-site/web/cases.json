@@ -5,17 +5,17 @@
     "title": "마지막 정비소",
     "subtitle": "사라진 SD카드",
     "genre": "추리 · 알리바이",
-    "minutes": 35,
+    "minutes": 50,
     "difficulty": "★★★★★",
     "image": "assets/covers/garage-v1.webp",
     "href": "play.html?case=garage",
     "storageKey": "mihaeje-v2-garage",
-    "description": "폐업 전날 밤 사라진 고객의 SD카드\n7분 틀린 블랙박스, 암호화된 두 줄, 세 사람의 진술을 대조합니다",
-    "docCount": 11,
+    "description": "폐업 전날 밤 사라진 고객의 SD카드\n7분 틀린 블랙박스, 잠긴 두 줄, 끊긴 면담 영상, 찢긴 지시서를 대조합니다",
+    "docCount": 12,
     "docNames": {
       "brief": "서연과 주고받은 문자",
-      "receipt": "앞유리에 끼워진 점검 영수증",
-      "people": "셔터 앞의 세 사람",
+      "people": "조사 수첩 · 세 사람 진술",
+      "receipt": "차 안의 점검 영수증",
       "server": "출입 서버 화면",
       "handover": "폐업 인계 문서",
       "lost": "서류함의 분실 신고서",
@@ -23,7 +23,8 @@
       "plaque": "벽의 기념패",
       "locker": "직원 보관함과 SD 슬롯",
       "lockerlog": "백업 단말의 보관함 기록",
-      "safedoc": "금고 안의 봉투들"
+      "safedoc": "금고 안의 봉투들",
+      "workorder": "붙여 놓은 작업 지시서"
     },
     "fragment": {
       "label": "분류 조각 M",
@@ -254,8 +255,8 @@
     "title": "고양이의 초대장",
     "subtitle": "봄이 앞으로 온 봉투",
     "genre": "반려동물 · 따뜻한 미스터리",
-    "minutes": 15,
-    "difficulty": "★",
+    "minutes": 20,
+    "difficulty": "★★",
     "image": "assets/covers/cat-invite-v1.webp",
     "description": "작년 여름, 골목 고양이 봄이를 집에 들인 다은\n어느 아침 가게 문 밑으로 봄이 앞으로 온 봉투가 들어왔습니다",
     "fragment": {
@@ -269,12 +270,12 @@
       "invite": "문 밑으로 들어온 봉투",
       "charm": "봄이 목걸이의 참",
       "vetnote": "병원 유리문의 쪽지",
-      "colors": "골목에서 본 것",
-      "basketnote": "바구니의 쪽지",
+      "basketnote": "벤치 위 쪽지",
+      "booklet": "은호 씨 병원의 발도장 기록",
       "mail": "우체통의 봉투"
     },
-    "imageAlt": "포장 가게 창턱에서 자는 고양이와 바닥의 봉투",
-    "difficultyLevel": 1
+    "imageAlt": "포장 가게 창턱에 앉은 고양이와 바닥의 봉투",
+    "difficultyLevel": 2
   },
   {
     "id": "ohang",
