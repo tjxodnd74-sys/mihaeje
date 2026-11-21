@@ -1164,15 +1164,62 @@ html[data-case="garage"] .v2-stage-ov.g-phone img{display:block;width:100%;heigh
 /* 블랙박스 썸네일: 옆 자료를 펼쳐도 시각(21:42:30)이 잘리지 않게 */
 html[data-case="garage"] .cam-thumb span{font-size:11px;letter-spacing:-.04em;white-space:nowrap;overflow:visible}
 html[data-case="garage"] .sync-lock{color:#ffb4a0}
+/* v126 디테일: 작업장 그림 속 단말 화면 글자 (맞추기 전 LOCKED · 뒤 SYNC OK) */
+html[data-case="garage"] .v2-stage-ov.g-term{display:grid;place-items:center;border-radius:.15cqw;background:linear-gradient(#24459c,#173276);box-shadow:inset 0 0 .4cqw rgba(0,0,0,.6)}
+html[data-case="garage"] .v2-stage-ov.g-term b{font:800 .62cqw/1.05 ui-monospace,Menlo,monospace;letter-spacing:.02em;text-align:center}
+html[data-case="garage"] .v2-stage-ov.g-term .lk{color:#ffb0a4}
+html[data-case="garage"] .v2-stage-ov.g-term .ok{display:none;color:#a8f0b0}
+html[data-case="garage"] .v2-pan:has(.v2-hotspot.done[aria-label="보관함 백업 단말"]) .v2-stage-ov.g-term{background:linear-gradient(#123a25,#0b2617)}
+html[data-case="garage"] .v2-pan:has(.v2-hotspot.done[aria-label="보관함 백업 단말"]) .v2-stage-ov.g-term .lk{display:none}
+html[data-case="garage"] .v2-pan:has(.v2-hotspot.done[aria-label="보관함 백업 단말"]) .v2-stage-ov.g-term .ok{display:block}
+/* 기념패: 글씨 덩어리를 황동판(550~868 × 168~463px) 한가운데로 */
+html[data-case="garage"] .on-plaque{left:55%;width:28.5%;top:26.5%;height:38.5%}
+/* 서버 기록: 시각·카드·문 칸은 줄바꿈 없이, 나머지는 낱말 단위로 */
+html[data-case="garage"] .term-table td{word-break:keep-all}
+html[data-case="garage"] .term-table.log-srv td:nth-child(-n+3){white-space:nowrap}
+/* 블랙박스: 큰 화면 · 설명+표시 버튼 · 썸네일 · 표시한 것 순서로, PC 한 화면에 맞추기 버튼까지 */
+html[data-case="garage"] .cam-wrap .camview{max-width:min(100%,56vh)}
+html[data-case="garage"] .cam-now{display:flex;align-items:center;gap:10px;margin:0 0 10px}
+html[data-case="garage"] .cam-desc{flex:1;min-width:0;margin:0;font-size:14px;line-height:1.5;color:var(--soft);word-break:keep-all}
+html[data-case="garage"] .cam-mark{flex:none;min-height:40px;white-space:nowrap}
+html[data-case="garage"] .cam-thumb{position:relative}
+html[data-case="garage"] .cam-thumb.picked{border-color:#e0703a}
+html[data-case="garage"] .cam-thumb.picked.cur{border-color:var(--lamp);box-shadow:0 0 0 2px #e0703a}
+html[data-case="garage"] .cam-badge{position:absolute;left:3px;top:3px;background:#e0703a;color:#1a0f05;font:800 11px/1 var(--sans);font-style:normal;padding:3px 5px;border-radius:2px}
+html[data-case="garage"] .cam-picked{margin:0}
+/* 단말: 읽는 법은 화면 안 · 옮긴 값 강조 */
+html[data-case="garage"] .sync-legend{font-size:12px;opacity:.75;letter-spacing:0;word-break:keep-all}
+html[data-case="garage"] .sync-off b{color:#ffe08a}
+html[data-case="garage"] .sync-row{margin-top:2px}
+/* 금고: 문을 가까이 잘라 보이고(290~770 × 130~450px), 번호 바퀴 위에 지금 숫자 */
+html[data-case="garage"] .safedoor{max-width:520px;margin:0 auto 4px;aspect-ratio:3/2}
+html[data-case="garage"] .safedoor>img{position:absolute;width:213.333%;max-width:none;height:auto;left:-60.417%;top:-40.625%}
+html[data-case="garage"] .safedoor .knob{position:absolute;top:52.4%;width:6.9%;aspect-ratio:1;transform:translate(-50%,-50%);display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 38% 32%,#f6e2a6,#c99a45 55%,#7a5520 100%);box-shadow:0 0 0 .3cqw #5a3c12,0 .4cqw .8cqw rgba(0,0,0,.55);font:800 3.6cqw/1 var(--sans);color:#24170a;text-shadow:0 .15cqw 0 rgba(255,240,200,.5)}
+html[data-case="garage"] .safe-wrap .dials{gap:10px;margin:10px 0 4px}
+html[data-case="garage"] .safe-wrap .dial{gap:6px}
+html[data-case="garage"] .safe-wrap .dial .num{width:56px;font-size:28px;padding:4px 0;background:linear-gradient(#e8d9a8,#b99a58);color:#2b1d0c;box-shadow:inset 0 0 0 1px #5a3e10;border-radius:6px;font-weight:800}
+html[data-case="garage"] .safe-wrap .dial .ctl{width:56px;min-height:40px;padding:6px 0;font-size:16px}
+/* 재킷: 고른 재킷 테두리가 재킷 실루엣에 맞게 */
+html[data-case="garage"] .jacket-btn{top:6%;height:87%}
+/* 보고서: 여럿 고르는 칸(③)은 고른 것에 체크 */
+html[data-case="garage"] .report-wrap .chip.multi.on::before{content:"✓ ";font-weight:800}
+html[data-case="garage"] .report-wrap .chip{min-height:40px}
 @media (max-width:640px){
   html[data-case="garage"] .sync-screen{overflow-x:visible;max-width:none}
+  html[data-case="garage"] .sync-svg-v{max-width:340px}
   html[data-case="garage"] .wo-tray{grid-template-columns:repeat(5,1fr);gap:6px}
-  html[data-case="garage"] .wo-pick .wo-cell{font-size:11px}
-  html[data-case="garage"] .wo-pick .wo-row{height:21px}
-  html[data-case="garage"] .wo-pick .wo-strip{background:radial-gradient(circle at var(--ring,-50% -50%),transparent 9px,rgba(140,92,38,.45) 10px,rgba(140,92,38,.3) 12px,transparent 13px) no-repeat,repeating-linear-gradient(180deg,#f3efe2 0 20px,#c9c4b3 20px 21px)}
+  html[data-case="garage"] .wo-pick .wo-cell{font-size:13px}
+  html[data-case="garage"] .wo-pick .wo-row{height:22px}
+  html[data-case="garage"] .wo-pick .wo-strip{background:radial-gradient(circle at var(--ring,-50% -50%),transparent 9px,rgba(140,92,38,.45) 10px,rgba(140,92,38,.3) 12px,transparent 13px) no-repeat,repeating-linear-gradient(180deg,#f3efe2 0 21px,#c9c4b3 21px 22px)}
+  html[data-case="garage"] .wo-pick small{font-size:13px}
   html[data-case="garage"] .wo-cell{font-size:14px}
-  html[data-case="garage"] .vid-sub{font-size:12px}
+  html[data-case="garage"] .vid-sub{font-size:13px}
+  html[data-case="garage"] .vid-osd{font-size:12px}
   html[data-case="garage"] .on-plaque span{font-size:1.75cqw}
+  html[data-case="garage"] .cam-thumb img{aspect-ratio:16/9}
+  html[data-case="garage"] .cam-thumb span{font-size:13px}
+  html[data-case="garage"] .cam-desc{font-size:13.5px}
+  html[data-case="garage"] .term-table.log-srv td,html[data-case="garage"] .term-table.log-srv th{padding:5px 4px}
 }
 
 /* 반송된 편지: 우체국 빨강 · 항공우편 띠 · 흰 봉투 */
