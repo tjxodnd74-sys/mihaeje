@@ -1,5 +1,10 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-21 18:24 — (참고) 새 소식·새 글 없음. 제미나이 GIF(17:23 제작 요청됨)는 카드뉴스 작업 내일 1순위 유지
+- 유튜브 18곳 /videos·/shorts 17:23 이후 새 롱폼·새 쇼츠 없음(마지막 새 글: 조팀장 'AI 툴에 500만원 넘게 쓰고 느낀 점' 1시간 전)
+- AI타임스·긱뉴스 17:23 이후 새 소비자 소식 없음(긱뉴스 Show GN AS 스크리너·CalcSpin — 개발자용 제외)
+- 48시간 🔥: AI 숏드라마·쇼츠 제작 6곳(이종범·찍봇·AI하쥬·AI아스트라·조팀장·AI리더스랩 — 일부 광고성), 최신 모델 비교 3곳(이종범·AI아스트라·AI하쥬)
+
 ## 2026-11-21 17:23 — [제작 요청됨 2026-11-21 17:23] 🔥바로제작(내일 1순위) 🔥릴스 우선 ① 제미나이 앱 GIF 만들기 출시(한국 포함) — 챗GPT GIF(11/5) 이후 2주 만
 - 출처: https://x.com/GeminiApp/status/2123813017855103449 · https://www.aitimes.com/news/articleList.html?view_type=sm (AI타임스 11-21 16:39) · https://www.androidauthority.com/gemini-gif-generation-rollout-3737901/ · https://wisevoter.com/world/2026/11/20/google-gemini-gif-generation-rollout
 - 내용: 11/20(현지) 구글 공식 X 발표. Gemini Omni 1.2 Flash 기반, 문장 입력 → 약 3초 반복 GIF. 미·영·캐·호·독·일·한 7개국(보도). 무료/유료·플랫폼 미명시
