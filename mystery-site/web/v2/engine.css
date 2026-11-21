@@ -971,6 +971,40 @@ html[data-case="ohang"] .on-notecard.star{left:16%;top:14%;width:66%;transform:r
 html[data-case="ohang"] .on-notecard.star svg{width:100%;height:auto;display:block}
 html[data-case="ohang"] .notecard.backlit figcaption{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;font-size:12.5px;color:#f3e6c9;background:linear-gradient(transparent,rgba(0,0,0,.65))}
 html[data-case="ohang"] .lantern.on.blue{background:radial-gradient(circle,rgba(200,255,240,.42),rgba(110,200,185,.22) 40%,rgba(0,0,0,0) 70%)}
+/* ohang 디테일 손질: 사진 위 누름 자리는 사진에서 잰 물건 자리 · 창 머리줄 위로 새지 않게 */
+html[data-case="ohang"] .prop{z-index:0}
+html[data-case="ohang"] .v2-device button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+html[data-case="ohang"] .pot{top:66%;height:58%;width:15%}
+html[data-case="ohang"] .lantern{top:50.6%;width:13.4%;height:35%}
+html[data-case="ohang"] .lantern-order{font-family:var(--sans);font-weight:800;font-size:max(13px,3cqw);opacity:1;color:#2a1d10;background:rgba(255,246,225,.92);min-width:1.7em;height:1.7em;display:grid;place-items:center;border-radius:50%;text-shadow:none;box-shadow:0 0 0 .2cqw rgba(0,0,0,.35)}
+html[data-case="ohang"] .lantern.on.blue{background:radial-gradient(circle,rgba(190,255,235,.85) 0%,rgba(190,255,235,.5) 38%,rgba(190,255,235,0) 70%)}
+html[data-case="ohang"] .lantern.on.red{background:radial-gradient(circle,rgba(255,175,150,.85) 0%,rgba(255,175,150,.5) 38%,rgba(255,175,150,0) 70%)}
+html[data-case="ohang"] .lantern.on.yellow{background:radial-gradient(circle,rgba(255,236,160,.85) 0%,rgba(255,236,160,.5) 38%,rgba(255,236,160,0) 70%)}
+html[data-case="ohang"] .lantern.on.white{background:radial-gradient(circle,rgba(255,252,240,.85) 0%,rgba(255,252,240,.5) 38%,rgba(255,252,240,0) 70%)}
+html[data-case="ohang"] .lantern.on.black{background:radial-gradient(circle,rgba(215,225,250,.85) 0%,rgba(215,225,250,.5) 38%,rgba(215,225,250,0) 70%)}
+html[data-case="ohang"] .tin.open .tin-lid{transform:translate(6%,-14px) rotate(9deg)}
+html[data-case="ohang"] .cabinet{max-width:440px}
+html[data-case="ohang"] .v2-dialog .pick-label{font-size:14px;color:var(--soft-2)}
+/* 접수표: 작은 글자 키우고 '시각은 모름'을 누르기 쉽게 */
+html[data-case="ohang"] .slip-note small,html[data-case="ohang"] .slip-row span small{font-size:13px;color:#6f6553}
+html[data-case="ohang"] .slip-check{min-height:44px;gap:10px;font-size:15px;cursor:pointer;margin:2px 0}
+html[data-case="ohang"] .slip-check input{width:22px;height:22px;margin:0;accent-color:#2b2620}
+html[data-case="ohang"] .slip-row input{min-height:44px}
+html[data-case="ohang"] .slip-err:empty{min-height:0;margin:0}
+html[data-case="ohang"] .pillar small{font-size:13px;color:#6f6553}
+html[data-case="ohang"] .pillars{grid-template-columns:repeat(4,minmax(0,1fr))}
+html[data-case="ohang"] .pillar b{font-size:clamp(17px,5.4vw,22px);white-space:nowrap;letter-spacing:-.02em}
+html[data-case="ohang"] .count{font-size:15px}
+html[data-case="ohang"] .count small{font-size:14px}
+html[data-case="ohang"] .slip-light small{font-size:13px;color:#6f6553}
+html[data-case="ohang"] .reading-item b{font-size:14px}
+html[data-case="ohang"] .notecard.backlit figcaption{font-size:13px}
+/* 휴대폰 문자: 날짜 띠·안 읽음 1·시각 글자 대비와 크기 */
+html[data-case="ohang"] .chat-head .chat-icons{opacity:.85}
+html[data-case="ohang"] .chat-date{background:rgba(0,0,0,.5);font-size:12.5px}
+html[data-case="ohang"] .chat-avatar{color:#5a3700}
+html[data-case="ohang"] .chat-time,html[data-case="ohang"] .chat-meta{font-size:12px}
+html[data-case="ohang"] .chat-meta i{color:#5a3400;text-shadow:none;font-size:12px}
 @media (max-width:640px){
   html[data-case="ohang"] .tin-shelf{gap:6px;padding:16px 6px 0}
   html[data-case="ohang"] .tin{height:120px}
@@ -1615,7 +1649,7 @@ html[data-case="radio"] .buzz-key:active{transform:translateY(3px);box-shadow:0 
 html[data-case="radio"] .buzz-key.long{border-radius:16px}
 html[data-case="radio"] .buzz-row2{justify-content:center;margin:0}
 html[data-case="radio"] .cctv-wrap{max-width:640px;margin:0 auto}
-html[data-case="radio"] .cctv-head{margin:0 0 8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;letter-spacing:.08em;color:#cfe8d2}
+html[data-case="radio"] .cctv-head{margin:0 0 8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;letter-spacing:.08em;color:#cfe8d2}
 html[data-case="radio"] .cctv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 html[data-case="radio"] .cctv-btn{position:relative;padding:0;border:2px solid #2c3530;border-radius:3px;background:#050605;cursor:pointer;min-width:0;min-height:0;overflow:hidden}
 html[data-case="radio"] .cctv-btn:hover,html[data-case="radio"] .cctv-btn:focus-visible{outline:none;border-color:#8fd19a}
@@ -1623,23 +1657,97 @@ html[data-case="radio"] .cctv-btn.on{border-color:var(--lamp)}
 html[data-case="radio"] .cctv-frame{position:relative;margin:0}
 html[data-case="radio"] .cctv-frame img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
 html[data-case="radio"] .cctv-frame::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px)}
-html[data-case="radio"] .cctv-frame figcaption{position:absolute;left:0;right:0;top:0;display:flex;justify-content:space-between;gap:6px;padding:4px 6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.2;color:#f2f6ee;text-shadow:0 0 2px #000,0 0 2px #000;background:linear-gradient(rgba(0,0,0,.55),transparent)}
+html[data-case="radio"] .cctv-frame figcaption{position:absolute;left:0;right:0;top:0;display:flex;justify-content:space-between;gap:6px;padding:4px 6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;line-height:1.2;color:#f2f6ee;text-shadow:0 0 2px #000,0 0 2px #000;background:linear-gradient(rgba(0,0,0,.55),transparent)}
 html[data-case="radio"] .cctv-no{position:absolute;right:8px;bottom:8px;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:var(--lamp);color:#1a0806;font-size:18px;font-weight:800;box-shadow:0 0 0 3px rgba(0,0,0,.55)}
 html[data-case="radio"] .cctv-log{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 8px}
 html[data-case="radio"] .cctv-log .cctv-frame{border:2px solid #2c3530}
+/* radio 디테일 손질: 사진 위 겹친 것은 사진 틀 안에서만 · 창 머리줄 위로 새지 않게 */
+html[data-case="radio"] .prop{z-index:0}
+html[data-case="radio"] .prop.crop>.pframe{position:absolute;left:0;width:100%}
+html[data-case="radio"] .prop .pframe>img{display:block;width:100%;height:auto}
+html[data-case="radio"] .keyphoto>.pframe{position:relative}
+html[data-case="radio"] .v2-device button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+/* 도어락: 버튼 자리는 사진에서 잰 가운데 · 손잡이도 누를 수 있다 */
+html[data-case="radio"] .kp-key{width:5.2%;height:7.6%;border-radius:.9cqw}
+html[data-case="radio"] .kp-key:active{background:rgba(0,0,0,.4);box-shadow:inset 0 .3cqw .6cqw rgba(0,0,0,.6)}
+html[data-case="radio"] .kp-handle{position:absolute;left:39%;top:63.5%;width:37%;height:23%;border:0;padding:0;min-width:0;min-height:0;background:transparent;border-radius:3cqw;cursor:pointer}
+html[data-case="radio"] .kp-handle:hover,html[data-case="radio"] .kp-handle:focus-visible{outline:none;box-shadow:inset 0 0 0 .4cqw rgba(255,180,160,.55)}
+html[data-case="radio"] .kp-readout{display:flex;align-items:baseline;justify-content:center;gap:12px;margin:10px auto 2px;padding:8px 14px;max-width:320px;border:1px solid var(--line);border-radius:8px;background:rgba(0,0,0,.25)}
+html[data-case="radio"] .kp-readout-lab{font-size:13px;color:var(--soft-2)}
+html[data-case="radio"] .kp-readout-num{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:24px;letter-spacing:.08em;color:#ffb3a6;min-width:5ch;text-align:left}
+html[data-case="radio"] .kp-readout.empty .kp-readout-num{font-family:var(--sans);font-size:15px;letter-spacing:0;color:var(--soft-3)}
+/* 선반: 누름 자리 = 사진 속 상자 앞면 그대로 · 라벨 글씨는 흰 라벨 칸 가운데에 */
+html[data-case="radio"] .reel-box{transform:none;width:auto;height:auto;display:block;border-radius:.3cqw;transition:box-shadow .15s,background .15s}
+html[data-case="radio"] .reel-box span{position:absolute;left:50%;top:47.7%;margin:0;transform:translate(-50%,-50%) rotate(-.6deg);width:76%;min-width:0;box-sizing:border-box;padding:.45cqw .3cqw;font-size:2.45cqw;line-height:1.12;background:#f4f1e8;box-shadow:0 .12cqw .35cqw rgba(0,0,0,.4)}
+html[data-case="radio"] .reel-box:hover,html[data-case="radio"] .reel-box:focus-visible{box-shadow:inset 0 0 0 .35cqw rgba(255,190,120,.7)}
+html[data-case="radio"] .reel-box.picking{transform:none;background:rgba(255,90,74,.1);box-shadow:inset 0 0 0 .55cqw var(--lamp),0 0 2cqw rgba(255,90,74,.35)}
+html[data-case="radio"] .reel-gap{position:absolute;border-radius:.3cqw;background:linear-gradient(180deg,#060404,#140e0b 70%,#20170f);box-shadow:inset 0 1.2cqw 2cqw rgba(0,0,0,.85)}
+/* 데크: 위 릴 일부와 아래 빈 나무판을 잘라 확인 버튼이 창 안에 들게 */
+html[data-case="radio"] .deckphoto.crop{aspect-ratio:1024/580;max-width:460px}
+html[data-case="radio"] .deckphoto.crop>.pframe{top:-10.345%}
+html[data-case="radio"] .deck-counter{left:44.5%;top:52.5%}
+html[data-case="radio"] .deck-play{position:absolute;left:38.8%;top:66.6%;width:10.2%;height:12.4%;border:0;padding:0;min-width:0;min-height:0;background:transparent;border-radius:.6cqw;cursor:pointer}
+html[data-case="radio"] .deck-play:hover,html[data-case="radio"] .deck-play:focus-visible{outline:none;box-shadow:0 0 0 .45cqw rgba(255,190,120,.75)}
+html[data-case="radio"] .counter-wheels{margin:8px 0 2px}
+/* 패치베이: 라벨은 사진의 흰 라벨 띠에 인쇄된 것처럼 (번호 굵게) · 잭 가운데는 사진에서 잰 값 */
+html[data-case="radio"] .patchphoto.crop{aspect-ratio:1024/505}
+html[data-case="radio"] .patchphoto.crop>.pframe{top:-13.861%}
+html[data-case="radio"] .patchphoto .pb-lab{z-index:1;background:none;padding:0;border-radius:0;font-size:1.62cqw;font-weight:700;letter-spacing:-.03em;color:#26231f;line-height:1}
+html[data-case="radio"] .patchphoto .pb-lab b{font-weight:900}
+html[data-case="radio"] .jack{width:6.4%}
+html[data-case="radio"] .jack.ready{box-shadow:0 0 0 .3cqw rgba(255,190,120,.45)}
+html[data-case="radio"] .jack.ready:hover{box-shadow:0 0 0 .45cqw rgba(255,190,120,.85)}
+html[data-case="radio"] .pb-now{margin:10px 0 2px}
+html[data-case="radio"] .pb-sel{margin:0 0 6px;font-size:14px;color:#ffb3a6}
+html[data-case="radio"] .pb-list{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:0;font-size:14px;color:var(--soft-2)}
+html[data-case="radio"] .pb-list-lab{color:var(--soft-3);font-size:13px}
+html[data-case="radio"] .pb-cable{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(0,0,0,.25);white-space:nowrap}
+html[data-case="radio"] .pb-cable>i{width:9px;height:9px;border-radius:50%;flex:none}
+html[data-case="radio"] .pb-arrow{width:16px;height:10px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+/* 녹화기: 아래 줄 (상태 + 번호 다 떼기) */
+@media (min-width:900px){html[data-case="radio"] .cctv-grid{max-width:460px}}
+html[data-case="radio"] .cctv-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-top:8px}
+html[data-case="radio"] .cctv-foot .pick-label{margin:0}
+html[data-case="radio"] .cctv-foot .chip{min-height:40px}
+/* 자료 속 작은 글자 */
+html[data-case="radio"] .term-screen.auto .term-sub{font-size:13px;opacity:.85}
+html[data-case="radio"] .zine-foot,html[data-case="radio"] .morse-table th,html[data-case="radio"] .torn-edge{font-size:13px}
+html[data-case="radio"] .v2-dialog .pick-label{font-size:14px;color:var(--soft-2)}
+html[data-case="radio"] .chat-head .chat-icons{opacity:.85}
+html[data-case="radio"] .chat-date{background:rgba(0,0,0,.5);font-size:12.5px}
+html[data-case="radio"] .chat-avatar{color:#5a3700}
+html[data-case="radio"] .chat-time,html[data-case="radio"] .chat-meta{font-size:12px}
+html[data-case="radio"] .chat-meta i{color:#5a3400;text-shadow:none;font-size:12px}
 @media (max-width:640px){
-  html[data-case="radio"] .blink-svg text{font-size:2.2px}
-  html[data-case="radio"] .cctv-frame figcaption{font-size:10.5px;flex-direction:column;align-items:flex-start;gap:0;text-align:left}
+  html[data-case="radio"] .patchphoto .pb-lab{font-size:max(13px,3.6cqw)}
+  html[data-case="radio"] .patchphoto .pb-name{display:none}
+  html[data-case="radio"] .jack{width:8%}
+  html[data-case="radio"] .reel-box span{font-size:3.3cqw;width:94%;padding:.3cqw 0;letter-spacing:-.03em}
+  html[data-case="radio"] .kp-pad{gap:6px;margin-top:8px}
+  html[data-case="radio"] .kp-pad .ctl{min-height:46px}
+  html[data-case="radio"] .pb-list{display:none}
+  html[data-case="radio"] .kp-wrap{display:flex;flex-direction:column}
+  html[data-case="radio"] .kp-wrap .kp-readout{order:-1;margin:0 0 10px;max-width:none}
+  html[data-case="radio"] .kp-row{display:grid;grid-template-columns:34% minmax(0,1fr);gap:12px;align-items:center}
+  html[data-case="radio"] .keyphoto{aspect-ratio:260/570;margin:0;width:100%}
+  html[data-case="radio"] .keyphoto>.pframe{position:absolute;width:393.85%;left:-135.38%;top:-11.58%}
+  html[data-case="radio"] .keyphoto>.pframe>img{display:block;width:100%;height:auto}
+  html[data-case="radio"] .kp-row .kp-pad{margin:0;max-width:none;width:100%}
+  html[data-case="radio"] .kp-pad .ctl.kp-clear{font-size:15px;padding:0;letter-spacing:-.02em}
+}
+@media (max-width:640px){
+  html[data-case="radio"] .blink-svg text{font-size:2.7px}
+  html[data-case="radio"] .cctv-frame figcaption{font-size:13px;flex-direction:column;align-items:flex-start;gap:0;text-align:left}
   html[data-case="radio"] .reel-chips{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:10px}
-  html[data-case="radio"] .reel-chip{min-width:0;padding:8px 2px;border-radius:6px;font-size:12px;letter-spacing:-.02em;white-space:nowrap;text-align:center}
+  html[data-case="radio"] .reel-chip{min-width:0;padding:8px 2px;border-radius:6px;font-size:13px;letter-spacing:-.05em;white-space:nowrap;text-align:center;min-height:42px}
   html[data-case="radio"] .reel-chip.empty{display:grid;place-items:center;border:1px dashed var(--line);color:var(--soft-3)}
   html[data-case="radio"] .cue-strip span{font-size:20px;padding:0 6px}
   html[data-case="radio"] .pb-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
   html[data-case="radio"] .pb-row-lab{grid-column:1/-1}
-  html[data-case="radio"] .pb-row .pb-chip{display:grid;justify-items:center;gap:0;min-width:0;min-height:52px;padding:5px 2px;border-radius:8px;line-height:1.15}
+  html[data-case="radio"] .pb-row .pb-chip{display:grid;justify-items:center;gap:0;min-width:0;min-height:46px;padding:5px 2px;border-radius:8px;line-height:1.15}
   html[data-case="radio"] .pb-chip b{font-size:15px}
-  html[data-case="radio"] .pb-chip small{font-size:10.5px;white-space:nowrap;letter-spacing:-.02em}
-  html[data-case="radio"] .pb-chip i{font-style:normal;font-size:10.5px;color:var(--lamp)}
+  html[data-case="radio"] .pb-chip small{font-size:13px;white-space:nowrap;letter-spacing:-.05em}
+  html[data-case="radio"] .pb-chip i{font-style:normal;font-size:12px;color:var(--lamp)}
   html[data-case="radio"] .pb-chip.on i{color:#8a1d14}
 }
 
