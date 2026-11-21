@@ -29,30 +29,38 @@ const CAM_ANSWER = ['f2', 'f3'];
 const SYNC_ANSWER = -7;
 const SRV = [['21:30:40', '퇴', '04'], ['21:35:10', '퇴', '07-B'], ['21:40:00', '퇴', '09'], ['22:00:05', '입', '09'], ['22:12:30', '퇴', '09']];
 const CAMDIR = { f0: '퇴', f1: '퇴', f2: '입', f3: '퇴', f4: '입', f5: '' };
+// 블랙박스 출입 표시 (가까이 붙은 두 장면은 글자가 겹치지 않게 서로 반대쪽으로 비켜 쓴다)
+const camMarks = (off, pos, near) => {
+  const ms = FRAMES.map((f, i) => ({ i, dir: CAMDIR[f.id], p: pos(toSec(f.t) + off * 60) })).filter((m) => m.dir);
+  ms.forEach((m, k) => { const prev = ms[k - 1], next = ms[k + 1]; m.shift = next && next.p - m.p < near ? -1 : prev && m.p - prev.p < near ? 1 : 0; });
+  return ms;
+};
 function syncSvg(off) {
   const t0 = toSec('21:26:00'), span = 56 * 60;
   const X = (sec) => 4 + ((sec - t0) / span) * 92;
   let s = '<svg viewBox="0 0 100 44" class="sync-svg pc-only" role="img" aria-label="위는 블랙박스 출입, 아래는 출입 서버 기록 같은 시간 축">';
   s += '<line x1="4" y1="22" x2="96" y2="22" stroke="#4a5560" stroke-width=".3"/>';
   for (let m = 30; m <= 80; m += 5) { const sec = toSec('21:00:00') + m * 60; const x = X(sec); const hh = 21 + Math.floor(m / 60), mm = m % 60; s += `<line x1="${x}" y1="21" x2="${x}" y2="23" stroke="#6b7782" stroke-width=".25"/><text x="${x}" y="26.4" font-size="2" text-anchor="middle" fill="#8d979f" font-family="ui-monospace,monospace">${hh}:${String(mm).padStart(2, '0')}</text>`; }
-  s += `<text x="4" y="5" font-size="2.4" fill="#f2b134" font-family="SUIT,sans-serif">블랙박스 (${off ? '시계를 맞춘 뒤' : '표시 시각 그대로'})</text>` + '<text x="4" y="42.5" font-size="2.4" fill="#9be8a5" font-family="SUIT,sans-serif">출입 서버</text>';
-  FRAMES.forEach((f, i) => { if (!CAMDIR[f.id]) return; const x = X(toSec(f.t) + off * 60); if (x < 2 || x > 98) return; s += `<line x1="${x}" y1="9" x2="${x}" y2="20" stroke="#f2b134" stroke-width=".5"/><text x="${x}" y="8.2" font-size="2.3" text-anchor="middle" fill="#f2b134" font-family="SUIT,sans-serif">${i + 1}${CAMDIR[f.id] === '입' ? '↓' : '↑'}</text>`; });
+  s += `<text x="4" y="4" font-size="2.4" fill="#f2b134" font-family="SUIT,sans-serif">블랙박스 (${off ? '시계를 맞춘 뒤' : '표시 시각 그대로'})</text>` + '<text x="4" y="42.5" font-size="2.4" fill="#9be8a5" font-family="SUIT,sans-serif">출입 서버</text>';
+  camMarks(off, X, 4.5).forEach(({ i, dir, p: x, shift }) => { if (x < 2 || x > 98) return; const tx = x + shift * 0.5, anchor = shift < 0 ? 'end' : shift > 0 ? 'start' : 'middle'; s += `<line x1="${x}" y1="9" x2="${x}" y2="20" stroke="#f2b134" stroke-width=".5"/><text x="${tx}" y="8.2" font-size="2.3" text-anchor="${anchor}" fill="#f2b134" font-family="SUIT,sans-serif">${i + 1}${dir === '입' ? '↓' : '↑'}</text>`; });
   SRV.forEach(([t, dir, card]) => { const x = X(toSec(t)); s += `<line x1="${x}" y1="28" x2="${x}" y2="35" stroke="#9be8a5" stroke-width=".5"/><text x="${x}" y="38.2" font-size="2.1" text-anchor="middle" fill="#9be8a5" font-family="SUIT,sans-serif">${card}${dir === '입' ? '↓' : '↑'}</text>`; });
   return s + '</svg>';
 }
-// 모바일: 같은 시간 축을 세로로 세운다 (옆으로 밀지 않아도 한눈에)
+// 모바일: 같은 시간 축을 세로로 세운다 (옆으로 밀지 않아도 한눈에, 맞추기 버튼까지 한 화면에 들어오게 낮게)
 function syncSvgV(off) {
   const t0 = toSec('21:26:00'), span = 56 * 60;
-  const Y = (sec) => 10 + ((sec - t0) / span) * 104;
-  let s = '<svg viewBox="0 0 80 118" class="sync-svg-v mobile-only" role="img" aria-label="왼쪽은 블랙박스 출입, 오른쪽은 출입 서버 기록 같은 시간 축">';
-  s += '<text x="33" y="5" font-size="3.3" text-anchor="end" fill="#f2b134" font-family="SUIT,sans-serif">블랙박스</text><text x="44" y="5" font-size="3.3" fill="#9be8a5" font-family="SUIT,sans-serif">출입 서버</text>';
-  s += '<line x1="39" y1="8" x2="39" y2="116" stroke="#4a5560" stroke-width=".4"/>';
+  const Y = (sec) => 9 + ((sec - t0) / span) * 80;
+  let s = '<svg viewBox="0 0 80 92" class="sync-svg-v mobile-only" role="img" aria-label="왼쪽은 블랙박스 출입, 오른쪽은 출입 서버 기록 같은 시간 축">';
+  s += '<text x="33" y="4.4" font-size="3.3" text-anchor="end" fill="#f2b134" font-family="SUIT,sans-serif">블랙박스</text><text x="44" y="4.4" font-size="3.3" fill="#9be8a5" font-family="SUIT,sans-serif">출입 서버</text>';
+  s += '<line x1="39" y1="7" x2="39" y2="91" stroke="#4a5560" stroke-width=".4"/>';
   for (let m = 30; m <= 80; m += 5) { const y = Y(toSec('21:00:00') + m * 60); const hh = 21 + Math.floor(m / 60), mm = m % 60; s += `<line x1="37.6" y1="${y}" x2="40.4" y2="${y}" stroke="#6b7782" stroke-width=".3"/><text x="1" y="${y + 1.1}" font-size="3" fill="#8d979f" font-family="ui-monospace,monospace">${hh}:${String(mm).padStart(2, '0')}</text>`; }
-  FRAMES.forEach((f, i) => { if (!CAMDIR[f.id]) return; const y = Y(toSec(f.t) + off * 60); if (y < 7 || y > 117) return; s += `<line x1="26" y1="${y}" x2="37" y2="${y}" stroke="#f2b134" stroke-width=".6"/><text x="25" y="${y + 1.2}" font-size="3.3" text-anchor="end" fill="#f2b134" font-family="SUIT,sans-serif">${i + 1}${CAMDIR[f.id] === '입' ? '↓' : '↑'}</text>`; });
+  camMarks(off, Y, 4).forEach(({ i, dir, p: y, shift }) => { if (y < 6 || y > 91) return; s += `<line x1="26" y1="${y}" x2="37" y2="${y}" stroke="#f2b134" stroke-width=".6"/><text x="25" y="${y + 1.2 + shift * 1.1}" font-size="3.3" text-anchor="end" fill="#f2b134" font-family="SUIT,sans-serif">${i + 1}${dir === '입' ? '↓' : '↑'}</text>`; });
   SRV.forEach(([t, dir, card]) => { const y = Y(toSec(t)); s += `<line x1="41" y1="${y}" x2="52" y2="${y}" stroke="#9be8a5" stroke-width=".6"/><text x="53" y="${y + 1.2}" font-size="3.3" fill="#9be8a5" font-family="SUIT,sans-serif">${card}${dir === '입' ? '↓' : '↑'}</text>`; });
   return s + '</svg>';
 }
 const SAFE_CODE = [0, 4, 0, 7]; // 처음 문 연 날 2009/4/7 (사업자등록 3/30 · 다시 연 날 10/3은 함정)
+// safe.webp 속 번호 바퀴 넷의 중심 x (1024px 원본 456·490·523·557px, 화면에는 290~770 × 130~450px만 잘라 보여 줌 → 잘린 칸 기준 %)
+const SAFE_KNOBS = [34.64, 41.67, 48.59, 55.63];
 
 // 휴지통의 찢긴 작업 지시서: 다섯 줄 열두 칸을 세 칸씩 넷으로 찢음 + 다른 지시서 조각 하나
 const WO_ROWS = ['작업지시서 · 9/12', '차량 서연 검은 세단', '앞 디스크·패드 교체', '고객 통화 하지 말 것', '지시 박정호 작업 지수'].map((r) => [...r.padEnd(12, ' ')]);
@@ -197,7 +205,7 @@ export default {
         { id: 'video', x: 48, y: 55, r: 5, label: '책상 위 민호의 휴대폰', kind: 'device', device: 'video', visible: (S) => S.solved.includes('terminal') },
         { id: 'safe', x: 37, y: 74, r: 8, label: '책상 밑 금고', kind: 'device', device: 'safe', visible: (S) => !S.solved.includes('safe') },
         { id: 'safeopen', x: 37, y: 74, r: 8, label: '다시 닫아 둔 금고', kind: 'doc', doc: 'safedoc', visible: (S) => S.solved.includes('safe') },
-        { id: 'strips', x: 81, y: 81, r: 7, label: '휴지통의 찢긴 종이', kind: 'device', device: 'strips' },
+        { id: 'strips', x: 81, y: 80, r: 7, label: '휴지통의 찢긴 종이', kind: 'device', device: 'strips' },
         { id: 'go-shop', x: 16, y: 16, r: 9, label: '작업장으로', kind: 'travel', to: 'shop' },
       ],
     },
@@ -210,6 +218,8 @@ export default {
         if (S.solved.includes('terminal')) return '단말 화면에 초록 글씨로 SYNC OK 보관함 서랍은 아까 그대로 열려 있다 휴게실 쪽 문이 조금 열려 있다';
         return '리프트 위에 손님 차 한 대 벽 쪽 철제 보관함 아래 서랍이 열려 있고, 옆 벽에 손바닥만 한 단말이 붙어 있다 화면에 「LOCKED」';
       },
+      // 그림 속 단말 화면(파란 액정 925~958 × 228~256px)에 지금 상태 글자를 얹는다 (맞추기 전 LOCKED, 뒤 SYNC OK)
+      overlays: [{ cls: 'g-term', x: 90.33, y: 33.0, w: 3.22, h: 4.1, html: '<b class="lk">LOCKED</b><b class="ok">SYNC<br>OK</b>' }],
       hotspots: [
         { id: 'locker', x: 76, y: 65, r: 8, label: '직원 보관함과 SD 슬롯', kind: 'doc', doc: 'locker' },
         { id: 'terminal', x: 93, y: 38, r: 7, label: '보관함 백업 단말', kind: 'device', device: 'terminal' },
@@ -248,7 +258,7 @@ export default {
         const locked = open
           ? '<tr class="restored"><td>21:46:20</td><td>07-A</td><td>측문</td><td>입장</td></tr><tr class="restored"><td>21:48:20</td><td>07-A</td><td>측문</td><td>퇴장 · 실내 0</td></tr>'
           : '<tr><td class="enc">██:██:██</td><td class="enc">██-█</td><td>측문</td><td>입장 <small>(잠김)</small></td></tr><tr><td class="enc">██:██:██</td><td class="enc">██-█</td><td>측문</td><td>퇴장 · 실내 0 <small>(잠김)</small></td></tr>';
-        return `<div class="term-screen"><p class="term-line">MIRU-GARAGE ACCESS LOG 2026-09-18</p><table class="term-table"><tr><th>시각</th><th>카드</th><th>문</th><th>이벤트</th></tr><tr><td>21:30:40</td><td>04</td><td>사무실 문</td><td>퇴장</td></tr><tr><td>21:35:10</td><td>07-B</td><td>측문</td><td>퇴장</td></tr><tr><td>21:40:00</td><td>09</td><td>측문</td><td>퇴장 · 실내 0</td></tr>${locked}<tr><td>22:00:05</td><td>09</td><td>측문</td><td>입장 · 최종 점검</td></tr><tr><td>22:12:30</td><td>09</td><td>사무실 문</td><td>퇴장 · 실내 0</td></tr></table><p class="term-line">※ 셔터 밑 감지선 21:00 이후 감지 없음</p><p class="term-line">${open ? '※ 백업 단말 동기화로 잠긴 두 줄 복원됨' : '※ 폐업 이관 작업 21:45~22:00 이 구간 기록 잠김 (작업 확인 박정호) 작업장 백업 단말에 영상 기록을 물려 두 시계를 맞추면 원본이 열림'}</p></div>`;
+        return `<div class="term-screen"><p class="term-line">MIRU-GARAGE ACCESS LOG 2026-09-18</p><table class="term-table log-srv"><tr><th>시각</th><th>카드</th><th>문</th><th>이벤트</th></tr><tr><td>21:30:40</td><td>04</td><td>사무실 문</td><td>퇴장</td></tr><tr><td>21:35:10</td><td>07-B</td><td>측문</td><td>퇴장</td></tr><tr><td>21:40:00</td><td>09</td><td>측문</td><td>퇴장 · 실내 0</td></tr>${locked}<tr><td>22:00:05</td><td>09</td><td>측문</td><td>입장 · 최종 점검</td></tr><tr><td>22:12:30</td><td>09</td><td>사무실 문</td><td>퇴장 · 실내 0</td></tr></table><p class="term-line">※ 셔터 밑 감지선 21:00 이후 감지 없음</p><p class="term-line">${open ? '※ 백업 단말 동기화로 잠긴 두 줄 복원됨' : '※ 폐업 이관 작업 21:45~22:00 이 구간 기록 잠김 (작업 확인 박정호) 작업장 백업 단말에 영상 기록을 물려 두 시계를 맞추면 원본이 열림'}</p></div>`;
       },
     },
     handover: {
@@ -274,7 +284,7 @@ export default {
     locker: {
       title: '직원 보관함과 SD 슬롯',
       kind: '작업장',
-      html: `<p>철제 보관함 맨 아래 칸이 손님 저장 매체를 꽂아 두는 SD 슬롯 서랍이다 서랍은 직원 카드를 대야 열리고, 열고 닫은 기록과 측문 출입이 옆의 백업 단말에 따로 남는다</p><p>서랍 칸마다 카드가 꽂혀 있는데 한 칸만 비었다 서연 카드 자리다 먼지 자국만 남았다</p><p>작업장 불은 폐업 정리 때문에 밤새 켜 두었다고 했다</p>`,
+      html: `<p>철제 보관함 문 아래쪽에 달린 작은 서랍이 손님 저장 매체를 꽂아 두는 SD 슬롯이다 서랍은 직원 카드를 대야 열리고, 열고 닫은 기록과 측문 출입이 옆의 백업 단말에 따로 남는다</p><p>서랍 칸마다 카드가 꽂혀 있는데 한 칸만 비었다 서연 카드 자리다 먼지 자국만 남았다</p><p>작업장 불은 폐업 정리 때문에 밤새 켜 두었다고 했다</p>`,
     },
     lockerlog: {
       title: '백업 단말의 보관함 기록',
@@ -322,19 +332,23 @@ export default {
         const zoom = (e) => { if (ctx.zoom) { ctx.zoom = null; } else { const r = view.getBoundingClientRect(); const x = e && e.clientX ? ((e.clientX - r.left) / r.width) * 100 : 50, y = e && e.clientY ? ((e.clientY - r.top) / r.height) * 100 : 50; ctx.zoom = [Math.round(x), Math.round(y)]; } save(); };
         view.onclick = zoom; view.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); zoom(null); } };
         wrap.append(view);
+        // 지금 보는 프레임 설명과 표시 버튼은 큰 화면 바로 아래 한 줄에 (썸네일을 눌러도 손이 멀리 가지 않게)
+        const marked = d.pick.includes(f.id);
+        const now = el('div', 'cam-now');
+        now.append(el('p', 'cam-desc', `프레임 ${d.cur + 1} · ${f.t} — ${f.what}`));
+        const mark = el('button', 'chip cam-mark' + (marked ? ' on' : ''), marked ? '✓ 표시 해제' : '이 프레임 표시'); mark.type = 'button'; mark.setAttribute('aria-label', `프레임 ${d.cur + 1} 표시`); mark.setAttribute('aria-pressed', String(marked));
+        mark.onclick = () => { if (d.pick.includes(f.id)) d.pick = d.pick.filter((x) => x !== f.id); else { d.pick.push(f.id); if (d.pick.length > 2) d.pick.shift(); } save(); };
+        now.append(mark); wrap.append(now);
         const strip = el('div', 'cam-strip');
         FRAMES.forEach((fr, i) => {
-          const b = el('button', 'cam-thumb' + (i === d.cur ? ' cur' : '') + (d.pick.includes(fr.id) ? ' picked' : '')); b.type = 'button';
-          b.setAttribute('aria-label', `프레임 ${i + 1} (${fr.t})`); b.innerHTML = `<img src="${P}props/${fr.img}.webp" alt="" decoding="async"><span>${fr.t}</span>`;
+          const pk = d.pick.includes(fr.id);
+          const b = el('button', 'cam-thumb' + (i === d.cur ? ' cur' : '') + (pk ? ' picked' : '')); b.type = 'button';
+          b.setAttribute('aria-label', `프레임 ${i + 1} (${fr.t})`); b.innerHTML = `<img src="${P}props/${fr.img}.webp" alt="" decoding="async"><span>${fr.t}</span>${pk ? '<em class="cam-badge" aria-hidden="true">✓ 표시</em>' : ''}`;
           b.onclick = () => { d.cur = i; ctx.zoom = null; save(); };
           strip.append(b);
         });
         wrap.append(strip);
-        wrap.append(el('p', 'pick-label', `프레임 ${d.cur + 1} · 표시 ${f.t} — ${f.what}`));
-        const row = el('div', 'pick-row');
-        const mark = el('button', 'chip' + (d.pick.includes(f.id) ? ' on' : ''), d.pick.includes(f.id) ? '이 프레임 표시 해제' : '이 프레임 표시'); mark.type = 'button'; mark.setAttribute('aria-label', `프레임 ${d.cur + 1} 표시`);
-        mark.onclick = () => { if (d.pick.includes(f.id)) d.pick = d.pick.filter((x) => x !== f.id); else { d.pick.push(f.id); if (d.pick.length > 2) d.pick.shift(); } save(); };
-        row.append(mark); wrap.append(row, el('p', 'pick-label', d.pick.length ? `표시한 프레임: ${d.pick.map((id) => FRAMES.find((x) => x.id === id).t).join(' / ')}` : '표시한 프레임 없음 (둘까지)'));
+        wrap.append(el('p', 'pick-label cam-picked', d.pick.length ? `표시한 프레임 ${d.pick.length}/2 · ${d.pick.map((id) => FRAMES.find((x) => x.id === id).t).join(' / ')}` : '표시한 프레임 없음 (둘까지)'));
         return wrap;
       },
       commitLabel: '이 두 장면을 표시해 둔다',
@@ -377,17 +391,20 @@ export default {
         const done = S.solved.includes('terminal');
         const shown = done ? SYNC_ANSWER : 0; // 맞추기 전에는 두 줄을 있는 그대로만 보여 준다 (눌러 보며 겹치는 걸 볼 수 없게)
         const sign = (v) => (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v);
-        const screen = el('div', 'term-screen sync-screen'); screen.innerHTML = `<p class="term-line">BACKUP TERMINAL · CLOCK SYNC</p>${syncSvg(shown)}${syncSvgV(shown)}<p class="term-line">${done ? 'SYNC OK · 블랙박스 시계 ' + sign(SYNC_ANSWER) + '분' : '옮길 차이 · 블랙박스 시계 ' + sign(d.off) + '분'}</p>`;
+        // 읽는 법은 화면 안 맨 위에 (버튼과 맞추기 사이에 글줄이 끼지 않게)
+        const screen = el('div', 'term-screen sync-screen'); screen.innerHTML = `<p class="term-line">BACKUP TERMINAL · CLOCK SYNC</p><p class="term-line sync-legend">숫자 = 블랙박스 프레임 번호 / 서버 카드 번호 · ↓ 들어감 ↑ 나감</p>${syncSvg(shown)}${syncSvgV(shown)}<p class="term-line sync-off">${done ? 'SYNC OK · 블랙박스 시계 ' + sign(SYNC_ANSWER) + '분' : '옮길 차이 · 블랙박스 시계 <b>' + sign(d.off) + '분</b>'}</p>`;
         wrap.append(screen);
         if (!done) {
           const row = el('div', 'sync-row');
           [[-5, '−5분'], [-1, '−1분'], [1, '+1분'], [5, '+5분']].forEach(([v, lab]) => { const b = el('button', 'ctl', lab); b.type = 'button'; b.setAttribute('aria-label', `블랙박스 시계 ${lab}`); b.onclick = () => { d.off = Math.max(-15, Math.min(15, d.off + v)); save(); }; row.append(b); });
           wrap.append(row);
           const left = Math.ceil(((d.until || 0) - Date.now()) / 1000);
-          if (left > 0) wrap.append(el('p', 'pick-label sync-lock', `SYNC LOCK · ${left}초 뒤에 다시 맞출 수 있다`));
-          else if (d.fails) wrap.append(el('p', 'pick-label', `남은 시도 ${3 - d.fails}번`));
+          if (left > 0) {
+            // 잠긴 동안 남은 초가 실제로 줄어들고, 풀리면 화면이 저절로 돌아온다
+            const lock = el('p', 'pick-label sync-lock', `SYNC LOCK · ${left}초 뒤에 다시 맞출 수 있다`); wrap.append(lock);
+            const tick = setInterval(() => { if (!lock.isConnected) { clearInterval(tick); return; } const l = Math.ceil(((d.until || 0) - Date.now()) / 1000); if (l > 0) lock.textContent = `SYNC LOCK · ${l}초 뒤에 다시 맞출 수 있다`; else { clearInterval(tick); save(); } }, 1000);
+          } else if (d.fails) wrap.append(el('p', 'pick-label sync-tries', `남은 시도 ${3 - d.fails}번`));
         }
-        wrap.append(el('p', 'pick-label', '숫자는 블랙박스 프레임 번호와 서버 카드 번호 ↓는 들어감, ↑는 나감'));
         return wrap;
       },
       commitLabel: '이 차이로 맞추기',
@@ -422,8 +439,11 @@ export default {
       initial: () => ({ dial: [0, 0, 0, 0] }),
       render(ctx) {
         const { d, el, save } = ctx;
-        const wrap = el('div', 'prop safelock'); wrap.innerHTML = `<img src="${P}props/safe.webp" alt="책상 밑 금고" decoding="async">`;
-        wrap.append(dialRow(el, save, d, 4));
+        // 금고 문을 가까이: 사진 속 번호 바퀴 넷 위에 지금 숫자를 새기고, 돌리는 손잡이(▲▼)는 사진 아래 크게
+        const wrap = el('div', 'safe-wrap');
+        const door = el('div', 'prop safedoor'); door.innerHTML = `<img src="${P}props/safe.webp" alt="책상 밑 금고 문, 손잡이 옆에 번호 바퀴 네 개" decoding="async">`;
+        SAFE_KNOBS.forEach((x, i) => { const k = el('span', 'knob', String(d.dial[i])); k.style.left = x + '%'; k.setAttribute('aria-hidden', 'true'); door.append(k); });
+        wrap.append(door, dialRow(el, save, d, 4));
         return wrap;
       },
       commitLabel: '손잡이 내리기',
@@ -547,9 +567,10 @@ export default {
         const { d, el, save } = ctx;
         const wrap = el('div', 'jackets-wrap');
         const img = el('div', 'prop jacketsimg'); img.innerHTML = `<img src="${P}props/jackets.webp" alt="재킷 세 벌" decoding="async">`;
-        const xs = [13, 40, 67];
+        // jackets.webp에서 잰 재킷 세 벌의 실제 가로 자리 (152~387 · 412~636 · 675~875px / 1024) 에 여유 1%씩
+        const xs = [[13.8, 25], [39.3, 23.8], [64.9, 21.6]];
         JACKETS.forEach((j, i) => {
-          const b = el('button', 'jacket-btn' + (d.open === j.id ? ' picking' : '')); b.type = 'button'; b.style.left = xs[i] + '%';
+          const b = el('button', 'jacket-btn' + (d.open === j.id ? ' picking' : '')); b.type = 'button'; b.style.left = xs[i][0] + '%'; b.style.width = xs[i][1] + '%';
           b.setAttribute('aria-label', `${j.name} 칼라 보기`); b.onclick = () => { d.open = d.open === j.id ? null : j.id; save(); };
           img.append(b);
         });
@@ -596,7 +617,7 @@ export default {
           const row = el('div', 'pick-row');
           q.opts.forEach(([id, label]) => {
             const on = q.multi ? (d.pick[q.id] || []).includes(id) : d.pick[q.id] === id;
-            const b = el('button', 'chip' + (on ? ' on' : ''), label); b.type = 'button'; b.setAttribute('aria-label', `${q.label}: ${label}`); b.setAttribute('aria-pressed', String(on));
+            const b = el('button', 'chip' + (q.multi ? ' multi' : '') + (on ? ' on' : ''), label); b.type = 'button'; b.setAttribute('aria-label', `${q.label}: ${label}`); b.setAttribute('aria-pressed', String(on));
             b.onclick = () => { if (q.multi) { const a = d.pick[q.id] || []; d.pick[q.id] = a.includes(id) ? a.filter((x) => x !== id) : [...a, id]; } else d.pick[q.id] = id; save(); };
             row.append(b);
           });
