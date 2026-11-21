@@ -43,8 +43,7 @@ async function station({ mobile = false } = {}) {
     await L.closeDialog(page);
     // hints: tier flow
     await L.click(page, '힌트');
-    L.check(await dlgHas(page, '서른여섯') && await dlgHas(page, '장치 안내'), 'hint tier 1 already shown (same as device guide)');
-    L.check(!(await L.buttons(page)).includes('첫 힌트 받기'), 'no redundant first-hint button');
+    L.check((await L.buttons(page)).includes('첫 힌트 받기'), 'hints start closed (no guide in device)');
     await L.closeDialog(page);
     // grille: wrong then right (읽은 자료는 옆에 펼쳐짐)
     await hotspot(page, '열차 안내판');

@@ -324,11 +324,7 @@ async function main() {
     head.append(el('p', 'v2-eyebrow', (solved ? '해결한 장치 · ' : '') + (dev.hintCode || '')));
     head.append(el('h2', 'v2-doc-title', dev.title));
     head.append(el('p', 'v2-device-intro', dev.intro));
-    // 쉬운 편(★3 이하)은 첫 안내를 장치 안에 바로 보여줍니다. 어려운 편은 무전기로만.
-    const hint0 = (typeof dev.hints === 'function' ? dev.hints(S) : dev.hints)?.[0];
-    if (!solved && ep.difficulty <= 3 && hint0) {
-      const g = el('details', 'v2-guide'); if (ep.difficulty <= 2) g.open = true; const sm = el('summary', '', '어떻게 하는 거지?'); g.append(sm, el('p', '', hint0)); head.append(g);
-    }
+    // 장치 안에는 풀이 안내를 두지 않는다 (힌트는 힌트 창에서만, 첫 단계부터 직접 받는다)
     node.append(head);
     if (solved && dev.reveal?.ending && !S.ended) node.append(btn('v2-primary', (dev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; save(); closeDialog(); }));
     const body = el('div', 'v2-device-body');
@@ -421,14 +417,13 @@ async function main() {
     node.append(tabs);
     if (cur) {
       const dev = ep.devices[cur];
-      // ★3 이하는 첫 힌트가 장치 안 '어떻게 하는 거지?'에 이미 있으니 무전기에서도 펼친 상태로 시작
-      const tier = Math.max(S.hints[cur] || 0, ep.difficulty <= 3 ? 1 : 0);
+      const tier = S.hints[cur] || 0;
       const box = el('div', 'v2-hint-box');
       if (S.solved.includes(cur)) {
         box.append(el('p', 'v2-note', '이미 해결한 장치입니다 풀이를 다시 볼 수 있습니다'));
         (typeof dev.hints === 'function' ? dev.hints(S) : dev.hints).forEach((h, i) => box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${h}`)));
       } else {
-        const hs = typeof dev.hints === 'function' ? dev.hints(S) : dev.hints; for (let i = 0; i < tier; i++) box.append(html('p', 'v2-hint-line', `<b>${i === 0 && ep.difficulty <= 3 ? '장치 안내' : ['첫 힌트', '풀이 방향', '정답'][i]}</b> ${hs[i]}`));
+        const hs = typeof dev.hints === 'function' ? dev.hints(S) : dev.hints; for (let i = 0; i < tier; i++) box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${hs[i]}`));
         const maxTier = Math.min(3, hs.length);
         if (tier < maxTier) box.append(btn('v2-secondary', ['첫 힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { S.hints[cur] = tier + 1; save(); openHints(cur); }));
         else if (hs.length < 3) box.append(el('p', 'v2-note', '이 편은 정답 힌트가 없습니다 여기까지가 전부입니다'));
