@@ -102,7 +102,7 @@ async function station({ mobile = false } = {}) {
     L.check(await dlgHas(page, '09:40 수림행 급행'), 'mirror solved');
     await L.click(page, '수림역 · 보관함으로');
     await L.sleep(400);
-    for (const d of ['게시판의 그림엽서', '보관함 이용 안내']) { await hotspot(page, d); await L.closeDialog(page); }
+    for (const d of ['게시판의 그림엽서', '벽에 붙은 보관함 안내문']) { await hotspot(page, d); await L.closeDialog(page); }
     await shot(page, 'surim');
     // locker
     await hotspot(page, '별 스티커가 붙은 보관함');
@@ -118,12 +118,12 @@ async function station({ mobile = false } = {}) {
     L.check(await dlgHas(page, '3 · 2 · 4 · 1') && await dlgHas(page, '사원증'), 'locker solved');
     await L.click(page, '수림 마을길로');
     await L.sleep(400);
-    L.check((await L.mainText(page)).includes('손에 들었다') && !(await L.mainText(page)).includes('벤치에 보관함에서 꺼낸'), 'village: text matches empty bench');
-    for (const d of ['손에 든 민서의 편지', '손지도를 길에 대 보기']) { await hotspot(page, d); await L.closeDialog(page); }
-    L.check(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot:not(.go)')].every((b) => { const x = parseFloat(b.style.left), y = parseFloat(b.style.top); return y <= 80 && x >= 6 && x <= 94 && !b.style.getPropertyValue('--hit'); })), 'village: hotspots full size and clear of dialogue');
+    L.check((await L.mainText(page)).includes('길바닥에 펴 놓고') && !(await L.mainText(page)).includes('벤치에 보관함에서 꺼낸'), 'village: text matches empty bench');
+    for (const d of ['민서의 편지', '손지도']) { await hotspot(page, d); await L.closeDialog(page); }
+    L.check(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot:not(.go)')].every((b) => { const x = parseFloat(b.style.left), y = parseFloat(b.style.top); const r = b.style.getPropertyValue('--hit'); return y <= 80 && x >= 6 && x <= 94 && (!r || parseFloat(r) >= 8); })), 'village: hotspots big enough and clear of dialogue');
     // notes: deduction (walk hidden until solved)
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '마을로 걸어가기'))), 'walk hidden before notes');
-    await hotspot(page, '손에 든 쪽지 세 장');
+    await hotspot(page, '쪽지 세 장');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .pick-row .chip'))), 'notes: no house pick here (only in walk)');
     await page.evaluate(() => [...document.querySelectorAll('dialog[open] .note-card')][0].click()); await commit(page);
     L.check((await status(page)).includes('앞뒤가 안 맞는다'), 'notes: neutral — ' + (await status(page)));
