@@ -166,8 +166,8 @@
     "title": "첫 번째 보호자",
     "subtitle": "파란 끈을 버리지 않은 이유",
     "genre": "반려동물 · 가족 미스터리",
-    "minutes": 17,
-    "difficulty": "★★",
+    "minutes": 22,
+    "difficulty": "★★★",
     "image": "assets/covers/pet-home-v1.webp",
     "href": "play.html?case=pet-home",
     "storageKey": "mihaeje-v2-pet-home",
@@ -175,22 +175,22 @@
     "docCount": 10,
     "docNames": {
       "jnote": "뚜껑 안쪽 정우의 쪽지",
-      "center": "상자 바닥의 기록 사본",
+      "center": "상자 맨 밑의 기록 사본",
       "contract": "입양 계약서 봉투",
       "rumi": "방석의 루미",
       "vet": "접수대의 수의사",
       "rule": "게시판의 카드 보관 안내",
       "momchat": "엄마와 주고받은 문자",
-      "diary": "앨범에 끼워진 일기 한 장",
-      "album": "앨범과 사진 세 장",
-      "badge": "책상 서랍 속 명찰"
+      "album": "펼쳐 둔 앨범",
+      "guide": "햇살중 생활 안내",
+      "diary": "사진 상자 밑의 일기 한 장"
     },
     "fragment": {
       "label": "포장 가게의 지난 모임",
       "text": "포장 가게에서 지난 6월의 모임 사진을 보내왔습니다. 봄이 이름이 적힌 선물과 접힌 초대장이 함께 보입니다."
     },
-    "imageAlt": "목에 파란 끈을 맨 노견 루미",
-    "difficultyLevel": 2
+    "imageAlt": "목줄에 파란 끈을 단 노견 루미",
+    "difficultyLevel": 3
   },
   {
     "id": "studio",
@@ -231,16 +231,17 @@
     "description": "손목 수술을 한 엄마 대신 24시 빨래방을 맡은 지 한 달\n밤 열두 시 정각, 아무도 없는 가게에서 6번 건조기가 빈 통으로 돕니다",
     "href": "play.html?case=laundry",
     "storageKey": "mihaeje-v2-laundry",
-    "docCount": 10,
+    "docCount": 11,
     "docNames": {
       "mchat": "엄마 문자",
       "note6": "6번 위 쪽지",
-      "sign": "문 위 간판",
+      "drum6": "6번 문 유리",
+      "sign": "앞 유리 네온 간판",
       "guide": "벽의 이용 안내",
       "log6": "6번 운전 기록",
       "coins": "6번 동전함",
       "posnote": "포스 옆 메모",
-      "talk": "야간 알바 김도현",
+      "talk": "창고에서 나온 알바",
       "duct": "설비 업체 배관도",
       "bus": "정류장 시간표"
     },
