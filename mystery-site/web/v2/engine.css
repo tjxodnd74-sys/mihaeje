@@ -1049,14 +1049,15 @@ html[data-case="studio"]{
 }
 html[data-case="studio"] .v2-paper::before{height:12px;opacity:1;border-radius:0;background:radial-gradient(circle,transparent 2.2px,#1b1313 2.6px) 0 0/12px 12px repeat-x,#1b1313;-webkit-mask:none}
 /* 사진관 v125: 서랍 열여섯 칸 사진 · 번진 장부 · 루페 · 암실 한 화면 · 흰 불 트레이 · 인화 사진 떠오르기 */
-html[data-case="studio"] .st-drawers{max-width:520px}
+html[data-case="studio"] .st-drawers{max-width:470px}
 html[data-case="studio"] .st-drawers .locker-cell{width:21.6%;height:21.3%;padding-top:6.4cqw;border-radius:.6cqw}
 html[data-case="studio"] .st-drawers .locker-cell .plate{font-size:3cqw}
 html[data-case="studio"] .st-drawers .locker-cell .plate.gone{width:7cqw;height:3.4cqw}
 html[data-case="studio"] .st-pressed-big{font-family:var(--hand);font-size:22px;line-height:1.35;color:#e9dcc0;text-align:center;margin:0 0 6px;min-height:0}
 html[data-case="studio"] .st-ledger .blot{filter:blur(2.2px);color:#3b4a78;opacity:.75}
 html[data-case="studio"] .st-ledger tr.wet td{background:radial-gradient(ellipse at 40% 50%,rgba(120,100,60,.14),transparent 70%)}
-html[data-case="studio"] .st-loupe{max-width:330px;margin-top:8px}
+html[data-case="studio"] .st-loupe{max-width:270px;margin-top:8px}
+html[data-case="studio"] .strip-tools .ctl{min-width:40px;min-height:40px;font-size:16px}
 html[data-case="studio"] .strip-edge{color:#fff0c8;text-shadow:0 0 .25cqw #000,0 0 .5cqw #000,0 0 .9cqw rgba(0,0,0,.8)}
 html[data-case="studio"] .st-loupe .film-loupe-glass{border-radius:12% / 16%}
 html[data-case="studio"] .st-loupe .film-loupe-img{background-size:674% auto}
@@ -1094,6 +1095,39 @@ html[data-case="studio"] .st-print.white .st-fail figcaption{color:#2a2422}
   html[data-case="studio"] .strip-tools .ctl::after{content:" 뒤집기";font-size:13px}
   html[data-case="studio"] .frame-btn{top:0;height:100%}
   html[data-case="studio"] .lightbox{padding:8px;gap:8px}
+}
+/* 사진관 v127 디테일: 글씨 남은 라벨 카드를 황동 꽂이 속 카드 자리에 · 트레이 누름 자리를 실제 트레이에 · 암실 한 화면에 더 · 휴대폰 스크롤 줄이기 */
+html[data-case="studio"] .strip-edge .fno,html[data-case="studio"] .strip-edge .brand{background:rgba(24,12,4,.74);padding:0 .45cqw;border-radius:.3cqw;line-height:1.15}
+html[data-case="studio"] .st-drawers .locker-cell{width:21.4%;height:21%;padding:0;border-radius:.8cqw}
+html[data-case="studio"] .st-drawers .locker-cell .plate{display:none}
+html[data-case="studio"] .st-drawers .locker-cell.picking{box-shadow:inset 0 0 0 .7cqw var(--lamp),0 0 0 .25cqw rgba(0,0,0,.55)}
+html[data-case="studio"] .st-card{position:absolute;transform:translate(-50%,-50%);width:9.2cqw;height:3.9cqw;display:grid;place-items:center;pointer-events:none;font-family:var(--sans);font-weight:800;font-size:2.7cqw;letter-spacing:.08em;color:#3a2a10;background:linear-gradient(#efe4c8,#dcc9a0);box-shadow:inset 0 0 0 .1cqw rgba(90,62,16,.45);border-radius:.15cqw}
+html[data-case="studio"] .st-card.on{color:#3a2a10}
+@media (max-width:640px){html[data-case="studio"] .st-card{font-size:13px;letter-spacing:.02em}}
+html[data-case="studio"] .st-print .trays{aspect-ratio:1024/510}
+html[data-case="studio"] .st-print .trays .tray-btn{top:43.5%;height:49%;width:31.5%}
+html[data-case="studio"] .st-print .trays .tray-btn span:empty{display:none}
+html[data-case="studio"] .st-print .trays .tray-btn span{width:6.4cqw;height:6.4cqw;min-width:28px;min-height:28px;border-radius:50%;display:grid;place-items:center;font-family:var(--sans);font-weight:800;font-size:max(15px,3.4cqw);color:#fff;text-shadow:none;background:rgba(20,10,10,.78);box-shadow:0 0 0 2px rgba(255,255,255,.75)}
+html[data-case="studio"] .st-print .trays .tray-btn.done{box-shadow:inset 0 0 0 .45cqw rgba(255,255,255,.7)}
+html[data-case="studio"] .st-print .light-row .switch{min-height:40px}
+@media (min-width:641px){
+  html[data-case="studio"] .st-print{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:16px;align-items:start}
+  html[data-case="studio"] .st-print>.light-row,html[data-case="studio"] .st-print>.st-print-grid,html[data-case="studio"] .st-print>.st-fail{grid-column:1/-1}
+  html[data-case="studio"] .st-print>.enl-controls{grid-column:1;grid-row:3/span 3;grid-template-columns:1fr;margin:0}
+  html[data-case="studio"] .st-print>.pick-label{grid-column:2;grid-row:3;margin:2px 0 4px}
+  html[data-case="studio"] .st-print>.trays{grid-column:2;grid-row:4;max-width:none;margin:0 0 8px}
+  html[data-case="studio"] .st-print>.chip{grid-column:2;grid-row:5;justify-self:start}
+  html[data-case="studio"] .st-print>.st-fail{grid-row:6}
+}
+@media (max-width:640px){
+  html[data-case="studio"] .st-print-grid{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:8px}
+  html[data-case="studio"] .st-print .focus-loupe figcaption{font-size:13px;line-height:1.3}
+  html[data-case="studio"] .st-print .enl-controls{grid-template-columns:1fr 1fr;gap:4px 8px}
+  html[data-case="studio"] .st-print .enl-controls>.tilt-label{grid-column:1/-1}
+  html[data-case="studio"] .st-print .enl-controls>.chip:first-child{grid-row:1;grid-column:1}
+  html[data-case="studio"] .st-print .enl-controls>.chip:last-child{grid-row:1;grid-column:2}
+  html[data-case="studio"] .st-print .enl-controls>.chip{min-height:44px;padding:6px 8px;font-size:14px;word-break:keep-all}
+  html[data-case="studio"] .st-loupe{max-width:270px;margin-left:auto;margin-right:auto}
 }
 
 /* 정비소: 철판 · 형광등 · 노랑 경고띠 · 보고서 */
@@ -1423,6 +1457,51 @@ html[data-case="apartment"] .apt-switches{flex-wrap:wrap;gap:10px}
 html[data-case="apartment"] .apt-switches .switch-plate{width:72px;height:96px}
 html[data-case="apartment"] .apt-switches .switch-plate .tape{font-size:15px;white-space:nowrap}
 @media (max-width:640px){html[data-case="apartment"] .apt-switches{gap:8px}html[data-case="apartment"] .apt-switches .switch-plate{width:88px;height:84px}html[data-case="apartment"] .apt-switches .switch-plate i{bottom:10px;height:36px}}
+/* 404호 v127 디테일: 사진 위 글자를 실제 이름표 받침에 · 열쇠판 크게 · 휴대폰 글자 크기 · 장면 소품(휴대폰 · 가계부 · 쪽지) */
+html[data-case="apartment"] .mailwall6 .mail-slot{padding:0;border-radius:.4cqw}
+html[data-case="apartment"] .mailwall6 .mail-tag{position:absolute;transform:translate(-50%,-50%);z-index:1;pointer-events:none;font-family:var(--sans);font-weight:800;font-size:2.15cqw;line-height:1.15;letter-spacing:-.02em;white-space:nowrap;color:#262a31;background:linear-gradient(#f6f4ee,#e4e0d4);padding:.3cqw .75cqw;min-width:5.4cqw;text-align:center;border-radius:.25cqw;box-shadow:0 0 0 .12cqw rgba(30,30,30,.55),0 .15cqw .4cqw rgba(0,0,0,.45)}
+html[data-case="apartment"] .mailwall6 .mail-tag.on{background:var(--lamp);color:#1d1606}
+html[data-case="apartment"] .mailwall6 .mail-slot.picking{box-shadow:inset 0 0 0 .6cqw var(--lamp),0 0 0 .2cqw rgba(0,0,0,.5)}
+@media (max-width:640px){html[data-case="apartment"] .mailwall6 .mail-tag{font-size:12.5px;padding:1px 3px;letter-spacing:-.05em;min-width:0}}
+html[data-case="apartment"] .keyclip{width:100%;max-width:460px;margin:0 auto 6px;aspect-ratio:686/688}
+html[data-case="apartment"] .keyclip .keywall{width:149.25%;margin-left:-24.63%}
+html[data-case="apartment"] .keyclip .keywall>img:not(.hook-gone){display:block;width:100%;height:auto}
+html[data-case="apartment"] .keyclip .hook-slot{display:block}
+html[data-case="apartment"] .keyclip .hook-tag{position:absolute;left:50%;top:19.9%;transform:translate(-50%,-50%);margin:0;width:4.3cqw;height:4.3cqw;border-radius:50%;font-size:1.95cqw;letter-spacing:-.05em;color:#202a5c;background:radial-gradient(circle at 45% 40%,#fbf8ef,#e2dccb);box-shadow:0 0 0 .12cqw rgba(60,50,30,.6)}
+html[data-case="apartment"] .keyclip .hook-slot.taken .hook-tag{background:var(--lamp);color:#1d1606}
+@media (max-width:640px){html[data-case="apartment"] .keyclip{max-width:none}html[data-case="apartment"] .keyclip .hook-tag{width:5.6cqw;height:5.6cqw;font-size:2.6cqw}}
+@media (min-width:641px){
+  html[data-case="apartment"] .apt-keys{display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:10px;align-items:center}
+  html[data-case="apartment"] .apt-keys .key-hand{margin:0;flex-direction:column;gap:8px}
+  html[data-case="apartment"] .apt-keys .key-hand .pick-label{word-break:keep-all}
+  html[data-case="apartment"] .apt-keys .apt-wait{grid-column:1/-1}
+}
+html[data-case="apartment"] .wire-wrap{max-width:480px}
+html[data-case="apartment"] .wiretop{margin:0}
+html[data-case="apartment"] .wire-wrap>.pick-label{text-align:center;word-break:keep-all}
+html[data-case="apartment"] .apt-switches .switch-plate .tape{font-size:17px}
+html[data-case="apartment"] .pin small{font-size:13px;letter-spacing:-.03em}
+@media (max-width:640px){html[data-case="apartment"] .pin small{font-size:12.5px;letter-spacing:-.06em}html[data-case="apartment"] .pin-ring{gap:1px;padding:5px 2px 3px}}
+html[data-case="apartment"] .rearphoto figcaption{font-size:13px}
+html[data-case="apartment"] .pt-foot{font-size:13px}
+html[data-case="apartment"] .paper-table td.hand-cell{font-size:19px}
+html[data-case="apartment"] .paper-table p.hand-cell{font-family:var(--hand);color:#2b3570;font-size:23px;line-height:1.45;word-break:keep-all}
+html[data-case="apartment"] .paper-table.old{opacity:1;background:#ebe2c6;border-color:#cfc19c}
+html[data-case="apartment"] .paper-table.old p.hand-cell{color:#353068}
+html[data-case="apartment"] .paper-table.old .pt-head{color:#4a4336}
+html[data-case="apartment"] .chat-avatar{color:#4f3100}
+@media (max-width:640px){
+  html[data-case="apartment"] .section-svg text{font-size:4.6px}
+  html[data-case="apartment"] .plan-svg text{font-size:4.3px}
+  html[data-case="apartment"] .sectionfig,html[data-case="apartment"] .planfig{padding:2px}
+  html[data-case="apartment"] .apt-switches .switch-plate .tape{font-size:19px;padding:1px 6px}
+}
+/* 장면 소품: 벤치 등받이 위 휴대폰 (화면이 켜져 있다) · 이삿짐 상자 위 가계부 두 권 · 싱크대 앞 쪽지 */
+html[data-case="apartment"] .apt-phone i{position:absolute;inset:0;border-radius:22%/40%;background:linear-gradient(100deg,#0b0c0f 0 7%,#4f6c8c 11%,#88a9c8 40%,#6d8fb1 72%,#0b0c0f 90%);border-bottom:.18cqw solid #050608;box-shadow:0 0 .7cqw .15cqw rgba(120,165,210,.28),0 .2cqw .2cqw rgba(0,0,0,.85);transform:rotate(9deg) skewX(-34deg);filter:brightness(.82) saturate(.8)}
+html[data-case="apartment"] .apt-book i,html[data-case="apartment"] .apt-book b{position:absolute;left:0;right:0;height:56%;border-radius:.2cqw .2cqw .1cqw .1cqw;background:linear-gradient(#6a3b27 0 50%,#3b2015 50% 58%,#b7a885 58% 86%,#2b170f 86%);box-shadow:0 .2cqw .3cqw rgba(0,0,0,.75);filter:brightness(.5) saturate(.85);transform:skewX(-22deg)}
+html[data-case="apartment"] .apt-book i{bottom:0}
+html[data-case="apartment"] .apt-book b{bottom:40%;left:10%;right:6%;background:linear-gradient(#34465a 0 50%,#1f2a36 50% 58%,#c0b28f 58% 86%,#1a222c 86%);transform:skewX(-22deg) rotate(-3deg)}
+html[data-case="apartment"] .apt-note i{position:absolute;inset:0;background:linear-gradient(90deg,#efe9da 0 48%,#d9d1bf 52%);clip-path:polygon(10% 0,100% 12%,90% 100%,0 86%);filter:brightness(.55);box-shadow:0 .1cqw .2cqw rgba(0,0,0,.6)}
 
 /* 자정의 무인 세탁소: 스테인리스 · 액정 청록 · 간판 분홍 · 비 오는 밤 */
 html[data-case="laundry"]{

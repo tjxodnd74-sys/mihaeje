@@ -70,7 +70,7 @@ const dialRow = (el, save, d, n) => {
 const REAR = {
   cols: [12.3, 17.7, 23.0, 34.1, 39.4, 44.7, 55.6, 60.8, 66.1, 77.2, 82.3, 87.7],
   rows: { B: 78.6, 1: 68.6, 2: 54.9, 3: 41.2, 4: 27.4, 5: 13.7 },
-  w: 3.5, h: 4.9,
+  w: 3.1, h: 4.5, // 유리 크기(창틀 안쪽)에 맞춤
 };
 // 301호는 뒤에서 보면 맨 오른쪽 묶음(9~11번째 열), 아래에서 넷째 줄(반지하 포함) = 3층
 // 뒤에서 본 301 창 순서(왼→오): 안방 · 거실 · 작은방
@@ -84,9 +84,13 @@ const FRAMES = [
 const rearPhoto = (lit, cap) => `<figure class="prop rearphoto"><img src="${P}props/rear.webp" alt="둑길에서 찍은 미루연립 A동 뒤편 사진 · 불 켜진 창 ${lit.length}개" decoding="async">${lit.map((col) => `<i class="litwin" style="left:${REAR.cols[col]}%;top:${REAR.rows[3]}%;width:${REAR.w}%;height:${REAR.h}%"></i>`).join('')}${cap ? `<figcaption>${cap}</figcaption>` : ''}</figure>`;
 
 // 우편함: 현관 사진 속 그 우편함을 반듯하게 편 것 6칸 × 5줄 (왼쪽 네 칸이 01~04호, 위 줄이 5층)
-const MAIL_X = [10.2, 27.9, 45.8, 63.0, 77.4, 91.8];
-const MAIL_W = [16.8, 16.3, 16.2, 15.6, 11.0, 15.2];
+// 문짝 테두리(그림에서 잰 값): 가운데 x · 폭 · 가운데 y (높이 17.8%)
+const MAIL_X = [10.0, 28.2, 45.9, 63.05, 78.15, 92.1];
+const MAIL_W = [16.0, 16.4, 16.2, 15.5, 11.7, 14.2];
 const MAIL_Y = [9.2, 28.9, 49.5, 69.7, 89.9];
+// 문짝마다 붙은 이름표 받침(금속 판)의 가운데 — 원근 때문에 줄마다 오른쪽이 조금 낮다
+const PLATE_X = [10.45, 28.43, 46.2, 63.3, 78.25, 92.0];
+const PLATE_Y = [[7.95, 8.6, 9.4, 10.0, 10.0, 10.9], [27.4, 27.7, 28.25, 28.65, 28.7, 29.0], [47.7, 48.0, 48.45, 48.6, 48.7, 48.5], [68.25, 68.25, 68.35, 68.55, 68.6, 68.65], [88.45, 88.65, 88.55, 88.55, 88.4, 88.6]];
 const MAILROWS = [5, 4, 3, 2, 1].map((f, r) => [1, 2, 3, 4].map((u) => `${f}0${u}`).concat([['관리실', '신문'], ['반송', '우유'], ['공용', '공사 안내'], ['전단지', '택배 메모'], ['경비', '—']][r]));
 const MAIL_ANSWER = '301';
 // 열쇠함 6줄 × 4칸
@@ -126,24 +130,23 @@ function sectionSvg() {
 function planSvg() {
   const ink = '#2b3340';
   const tx = (x, y, s, t) => `<text x="${x}" y="${y}" font-size="${s}" text-anchor="middle" fill="${ink}" font-family="SUIT, sans-serif">${t}</text>`;
-  return `<svg viewBox="0 0 100 70" class="plan-svg" role="img" aria-label="301호 대피 안내도: 현관에서 들어서 북쪽 벽을 보면 왼쪽부터 작은방, 거실, 안방 창">
+  return `<svg viewBox="0 0 100 74" class="plan-svg" role="img" aria-label="301호 대피 안내도: 현관에서 들어서 북쪽 벽을 보면 왼쪽부터 작은방, 거실, 안방 창">
   <rect x="8" y="10" width="84" height="48" fill="#fbfaf4" stroke="${ink}" stroke-width="1"/>
   <path d="M36 10 V40 M64 10 V40 M8 40 H92" stroke="${ink}" stroke-width=".6"/>
   ${tx(22, 27, 3.4, '작은방')}${tx(50, 27, 3.4, '거실')}${tx(78, 27, 3.4, '안방')}${tx(30, 51, 3, '욕실')}${tx(70, 51, 3, '부엌')}
   <path d="M16 10 h12 M44 10 h12 M72 10 h12" stroke="#5b86b0" stroke-width="2.2"/>
   ${tx(50, 6.5, 2.8, '창 (북쪽 · 미루천)')}
-  <path d="M48 58 h8" stroke="#c0362a" stroke-width="2"/>${tx(52, 64, 2.8, '현관 · 지금 여기')}
-  <circle cx="52" cy="61" r="1" fill="#c0362a"/>
-  ${tx(50, 69, 2.4, '301호 · 비상시 현관으로 대피')}
+  <path d="M48 58 h8" stroke="#c0362a" stroke-width="2"/><circle cx="52" cy="60.4" r=".9" fill="#c0362a"/>${tx(52, 66, 2.8, '현관 · 지금 여기')}
+  ${tx(50, 72, 2.4, '301호 · 비상시 현관으로 대피')}
   </svg>`;
 }
 // 열쇠 그림 (손에 든 것)
 const keySvg = (n) => `<svg viewBox="0 0 ${n * 46 + 10} 90" class="ring-svg" aria-hidden="true"><circle cx="${n * 23 + 5}" cy="14" r="10" fill="none" stroke="#8a8a8a" stroke-width="3"/>${Array.from({ length: n }, (_, i) => { const x = 10 + i * 46; const c = i ? '#b9bcc0' : '#c9a24e'; return `<g transform="translate(${x} 22) rotate(${i ? 8 : -8} 18 0)"><circle cx="18" cy="12" r="11" fill="${c}"/><circle cx="18" cy="12" r="4" fill="#20232a"/><rect x="15" y="20" width="7" height="40" fill="${c}"/><path d="M22 44 h7 v4 h-4 v4 h5 v5 h-8z" fill="${c}"/></g>`; }).join('')}</svg>`;
-// 엉킨 연장선 세 가닥 (위: 타이머 소켓 셋 · 아래: 선 끝 테이프)
+// 엉킨 연장선 세 가닥 (위: 타이머 소켓 셋 — 사진 속 소켓 가운데 21.8% · 50% · 78.6% 에서 나온다 · 아래: 선 끝 테이프)
 const WIRES = [
-  { from: 'L', d: 'M200 0 C200 110 690 70 640 190 S170 250 300 360 S880 400 800 560' },
+  { from: 'L', d: 'M218 0 C218 110 690 70 640 190 S170 250 300 360 S880 400 800 560' },
   { from: 'M', d: 'M500 0 C500 90 880 150 770 255 S280 290 430 420 S150 450 200 560' },
-  { from: 'R', d: 'M800 0 C800 130 300 110 250 225 S720 320 610 420 S440 500 500 560' },
+  { from: 'R', d: 'M786 0 C786 130 300 110 250 225 S720 320 610 420 S440 500 500 560' },
 ];
 const wireSvg = () => `<svg viewBox="0 0 1000 600" class="wire-svg" role="img" aria-label="타이머 셋에서 나온 검은 연장선 세 가닥이 엉켜 아래로 내려간다 선 끝마다 테이프가 붙어 있다">
   ${WIRES.map((w) => `<path d="${w.d}" fill="none" stroke="#d9cfb9" stroke-width="22" stroke-linecap="round"/><path d="${w.d}" fill="none" stroke="#17181b" stroke-width="11" stroke-linecap="round"/>`).join('')}
@@ -201,17 +204,21 @@ export default {
         const S = cur();
         const o = [
           { x: 7.6, y: 41.5, w: 3.8, h: 8.2, cls: 'apt-sign', html: '<i></i>' },
-          { x: 53.91, y: 30.81, w: 5.18, h: 6.4, cls: 'apt-win' + (ev(S, 'anbang') ? ' on' : ''), html: `<img src="${P}props/bank-anbang.webp" alt="">` },
-          { x: 59.47, y: 29.8, w: 5.57, h: 6.69, cls: 'apt-win' + ((S.solved || []).includes('wires') ? ' on' : ''), html: `<img src="${P}props/bank-living.webp" alt="">` },
+          // 창 패치는 유리만 불투명하고 둘레는 투명 (그림 픽셀 552,212 / 609,205 · 그림이 위아래로 0.39%씩 잘려 보이는 것까지 맞춤)
+          { x: 53.906, y: 30.66, w: 5.176, h: 6.445, cls: 'apt-win' + (ev(S, 'anbang') ? ' on' : ''), html: `<img src="${P}props/bank-anbang.webp" alt="">` },
+          { x: 59.473, y: 29.64, w: 5.566, h: 6.738, cls: 'apt-win' + ((S.solved || []).includes('wires') ? ' on' : ''), html: `<img src="${P}props/bank-living.webp" alt="">` },
+          // 벤치 등받이 위에 올려 둔 내 휴대폰 (작업 지시·커뮤니티 글을 보던 것)
+          { x: 19.4, y: 75.1, w: 3.0, h: 1.3, cls: 'apt-phone', html: '<i></i>' },
         ];
         if (ev(S, 'anbang')) o.push({ x: 27.2, y: 76.6, w: 2.2, h: 6, cls: 'apt-cup' + ((S.solved || []).includes('wires') ? ' cold' : ''), html: '<i></i><b></b>' });
         return o;
       },
       hotspots: [
-        { id: 'order', x: 19, y: 74, label: '오늘 작업 지시', kind: 'doc', doc: 'order' },
-        { id: 'post', x: 37, y: 72, label: '동네 커뮤니티 글', kind: 'doc', doc: 'post' },
+        // 휴대폰(벤치 위)에는 팀장 카톡, 불 켜진 3층 창에는 그 창을 찍은 커뮤니티 글 — 둘 다 그림에 있는 물건 위
+        { id: 'order', x: 20.7, y: 76.6, r: 9, label: '벤치 위 휴대폰 · 작업 지시', kind: 'doc', doc: 'order' },
+        { id: 'post', x: 67.2, y: 32.8, r: 10, label: '불 켜진 창 · 동네 커뮤니티 글', kind: 'doc', doc: 'post' },
         { id: 'section', x: 9.5, y: 45.5, label: '둑길의 철거 안내판', kind: 'doc', doc: 'section' },
-        { id: 'go', x: 55, y: 38, r: 16, label: '건물 정문으로', kind: 'travel', to: 'entrance' },
+        { id: 'go', x: 40, y: 52, r: 13, label: '건물 정문으로', kind: 'travel', to: 'entrance' },
       ],
     },
     {
@@ -245,7 +252,8 @@ export default {
         }
         return '모니터는 CH2에 멈춰 있다 둑길 가로등 밑 벤치 보온병은 아직 따뜻하다 열쇠함 문은 열린 그대로';
       },
-      get overlays() { const S = cur(); return [{ x: 87.2, y: 48.6, w: 10.9, h: 16.2, cls: 'apt-crt' + (ev(S, 'cctv') ? ' on' : ''), html: `<img src="${P}props/cctv-bench.webp" alt="">` }]; },
+      // 모니터 화면 안쪽(그림 픽셀 897~1002, 338~439)에 맞춘 정사각 화면 — 화면 글자가 잘리지 않게 따로 만든 cctv-crt
+      get overlays() { const S = cur(); return [{ x: 87.6, y: 49.1, w: 10.25, h: 14.75, cls: 'apt-crt' + (ev(S, 'cctv') ? ' on' : ''), html: `<img src="${P}props/cctv-crt.webp" alt="">` }]; },
       hotspots: [
         { id: 'log', x: 53, y: 70, label: '책상 위 근무일지', kind: 'doc', doc: 'log' },
         { id: 'roster', x: 92, y: 75, label: '입주자 명부', kind: 'doc', doc: 'roster' },
@@ -283,6 +291,11 @@ export default {
           { x: 51.6, y: 5.4, w: 16.4, h: 68.6, cls: 'apt-anbang' + (ev(S, 'anbang') ? ' on' : ''), html: '<i></i>' },
           { x: 47, y: 73.4, w: 32, h: 20, cls: 'apt-spill' + (ev(S, 'anbang') ? ' on' : ''), html: '<i></i>' },
           { x: 0, y: 8, w: 24, h: 70, cls: 'apt-living' + ((S.solved || []).includes('wires') ? ' on' : ''), html: '<i></i>' },
+          // 상자를 연 뒤: 이삿짐 상자 위에 가계부 두 권, 싱크대 앞 바닥에 꺼내 둔 쪽지 (그림에 없던 물건을 장면에 그려 둔다)
+          ...((S.solved || []).includes('box') ? [
+            { x: 16.9, y: 45.9, w: 5.2, h: 3.5, cls: 'apt-book', html: '<i></i><b></b>' },
+            { x: 78.4, y: 74.6, w: 3.2, h: 2.2, cls: 'apt-note', html: '<i></i>' },
+          ] : []),
         ];
       },
       hotspots: [
@@ -291,8 +304,8 @@ export default {
         { id: 'box', x: 89, y: 62, r: 15, label: '싱크대 밑', kind: 'device', device: 'box', visible: (S) => !S.solved.includes('box') },
         { id: 'wires', x: 89, y: 62, r: 15, label: '상자 속 엉킨 선', kind: 'device', device: 'wires', visible: (S) => S.solved.includes('box') && !S.solved.includes('wires') },
         { id: 'timers', x: 89, y: 62, r: 15, label: '상자 속 타이머 셋', kind: 'device', device: 'timers', visible: (S) => S.solved.includes('wires') },
-        { id: 'mnote', x: 80, y: 76, r: 8, label: '상자 안 쪽지', kind: 'doc', doc: 'mnote', visible: (S) => S.solved.includes('box') },
-        { id: 'book', x: 20, y: 46, r: 12, label: '상자 위 가계부', kind: 'doc', doc: 'book', visible: (S) => S.solved.includes('box') },
+        { id: 'mnote', x: 80, y: 75.7, r: 8, label: '상자 안 쪽지', kind: 'doc', doc: 'mnote', visible: (S) => S.solved.includes('box') },
+        { id: 'book', x: 19.6, y: 47.8, r: 10, label: '상자 위 가계부', kind: 'doc', doc: 'book', visible: (S) => S.solved.includes('box') },
       ],
     },
   ],
@@ -302,7 +315,7 @@ export default {
       title: '오늘 작업 지시',
       kind: '김 팀장 · 오후 5시 12분',
       html: `<div class="chat"><div class="chat-head"><span class="chat-back">‹</span><b>김 팀장</b><span class="chat-icons">☰</span></div><div class="chat-date">2026년 10월 23일 금요일</div>
-<div class="chat-row them"><span class="chat-avatar">팀</span><div class="chat-col"><span class="chat-name">김 팀장</span><div class="chat-bubble">미루연립 A동 최종 점검 오늘 밤에 가</div><div class="chat-bubble">10/1 단전 완료 확인서 있음 근데 밤마다 불 켜진다고 민원 3건</div><div class="chat-bubble">무단 전기 끌어다 쓰는 거면 위험하니까 월요일 철거 전에 원인 찾아서 끊고 보고</div></div><span class="chat-time">오후 5:12</span></div>
+<div class="chat-row them"><span class="chat-avatar">팀</span><div class="chat-col"><span class="chat-name">김 팀장</span><div class="chat-bubble">미루연립 A동 최종 점검 오늘 밤에&nbsp;가</div><div class="chat-bubble">10/1 단전 완료 확인서 있음 근데 밤마다 불 켜진다고 민원 3건</div><div class="chat-bubble">무단 전기 끌어다 쓰는 거면 위험하니까 월요일 철거 전에 원인 찾아서 끊고 보고</div></div><span class="chat-time">오후 5:12</span></div>
 <div class="chat-row me"><span class="chat-meta">오후 5:20</span><div class="chat-bubble">네 9시쯤 가 볼게요</div></div>
 <div class="chat-row them"><span class="chat-avatar">팀</span><div class="chat-col"><span class="chat-name">김 팀장</span><div class="chat-bubble">관리인 할아버지 아직 출근하신대 30년 계신 분 협조 받아</div></div><span class="chat-time">오후 5:21</span></div>
 <div class="chat-input"><span class="chat-field">메시지 입력</span><span>➤</span></div></div>`,
@@ -411,9 +424,12 @@ export default {
         MAILROWS.forEach((row, r) => row.forEach((lab, c) => {
           const b = el('button', 'mail-slot' + (d.pick === lab ? ' picking' : '')); b.type = 'button';
           b.style.left = MAIL_X[c] + '%'; b.style.top = MAIL_Y[r] + '%'; b.style.width = MAIL_W[c] + '%';
-          b.setAttribute('aria-label', `${lab === '—' ? '이름표 없는 칸 ' + (c + 1) : lab} 우편함`); b.innerHTML = `<span class="mail-label">${lab}</span>`;
+          b.setAttribute('aria-label', `${lab === '—' ? '이름표 없는 칸 ' + (c + 1) : lab} 우편함`);
           b.onclick = () => { d.pick = lab; save(); };
-          wrap.append(b);
+          // 호수 글자는 문짝의 이름표 받침 위에 (누르는 자리는 문짝 전체)
+          const t = el('span', 'mail-tag' + (d.pick === lab ? ' on' : ''), lab); t.setAttribute('aria-hidden', 'true');
+          t.style.left = PLATE_X[c] + '%'; t.style.top = PLATE_Y[r][c] + '%';
+          wrap.append(b, t);
         }));
         const box = el('div', 'mail-wrap'); box.append(wrap, el('p', 'pick-label', d.pick ? `손을 댄 칸 · ${d.pick}` : '우편함을 하나 고른다'));
         const w = waitLine(ctx, '철문 소리가 계단을 타고 울렸다 위층이 조용해질 때까지 숨죽이고 기다린다'); if (w) box.append(w);
@@ -449,7 +465,9 @@ export default {
       initial: () => ({ hand: null }),
       render(ctx) {
         const { d, el, save } = ctx;
-        const wrap = el('div', 'prop keywall'); wrap.innerHTML = `<img src="${P}props/keys.webp" alt="스물네 고리 열쇠함" decoding="async">`;
+        // 사진에서 열쇠판만 크게 잘라 보인다 (좌우의 스탠드·화분·문짝은 잘라 냄) 고리 좌표는 원본 사진 기준 그대로
+        const clip = el('div', 'prop keyclip');
+        const wrap = el('div', 'keywall'); wrap.innerHTML = `<img src="${P}props/keys.webp" alt="스물네 고리 열쇠함" decoding="async">`; clip.append(wrap);
         HOOKROWS.forEach((row, r) => row.forEach((lab, c) => {
           if (d.hand === lab) { const g = el('img', 'hook-gone'); g.src = P + 'props/hook-empty.webp'; g.alt = ''; g.style.left = (HOOK_X[c] - 1.95) + '%'; g.style.top = (HOOK_Y[r] + 2.91) + '%'; wrap.append(g); }
           const b = el('button', 'hook-slot' + (d.hand === lab ? ' taken' : '')); b.type = 'button';
@@ -461,22 +479,15 @@ export default {
           };
           wrap.append(b);
         }));
-        // 작은 화면: 사진 위 고리가 작아서 같은 고리를 큰 단추로 한 번 더
-        const mob = el('div', 'mobile-only hook-grid');
-        HOOKROWS.flat().forEach((lab) => {
-          const b = el('button', 'chip' + (d.hand === lab ? ' on' : ''), lab); b.type = 'button';
-          b.setAttribute('aria-label', d.hand === lab ? `${lab} 고리에 도로 걸기` : `${lab} 고리에서 꺼내기`);
-          b.onclick = () => { if (lab === '301') { ctx.status('빈 고리다 열쇠가 없다'); return; } d.hand = d.hand === lab ? null : lab; save(); };
-          mob.append(b);
-        });
-        const box = el('div', 'mail-wrap'); box.append(wrap, mob);
+        // 열쇠판을 크게 잘라 보여서 휴대폰에서도 고리 하나가 손가락 크기(50px 남짓)다 — 따로 단추 표를 두지 않는다
+        const box = el('div', 'mail-wrap apt-keys'); box.append(clip);
         const hand = el('div', 'key-hand');
         if (!d.hand) hand.append(el('p', 'pick-label', '손은 비어 있다'));
         else {
           const ring = el('div', 'ring-keys'); ring.innerHTML = keySvg(d.hand.startsWith('B') ? 2 : 1);
           const tag = el('div', 'tag-big', d.hand);
           const back = el('button', 'chip', '도로 걸기'); back.type = 'button'; back.onclick = () => { d.hand = null; save(); };
-          hand.append(el('p', 'pick-label', `손에 든 것 · ${d.hand} 고리`), tag, ring, back);
+          hand.append(el('p', 'pick-label', '손에 든 것'), tag, ring, back);
         }
         box.append(hand);
         const w = waitLine(ctx, '3층에서 다시 내려오는 중 숨이 차다'); if (w) box.append(w);
