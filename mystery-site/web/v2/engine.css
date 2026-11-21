@@ -844,6 +844,32 @@ html[data-case="studio"]{
   --box-tex:radial-gradient(90% 50% at 50% 0%,rgba(224,87,75,.10),transparent 65%);
 }
 html[data-case="studio"] .v2-paper::before{height:12px;opacity:1;border-radius:0;background:radial-gradient(circle,transparent 2.2px,#1b1313 2.6px) 0 0/12px 12px repeat-x,#1b1313;-webkit-mask:none}
+/* 사진관 v125: 서랍 열여섯 칸 사진 · 번진 장부 · 루페 · 암실 한 화면 · 흰 불 트레이 · 인화 사진 떠오르기 */
+html[data-case="studio"] .st-drawers{max-width:520px}
+html[data-case="studio"] .st-drawers .locker-cell{width:21.6%;height:21.3%;padding-top:6.4cqw;border-radius:.6cqw}
+html[data-case="studio"] .st-drawers .locker-cell .plate{font-size:3cqw}
+html[data-case="studio"] .st-drawers .locker-cell .plate.gone{width:7cqw;height:3.4cqw}
+html[data-case="studio"] .st-pressed-big{font-family:var(--hand);font-size:22px;line-height:1.35;color:#e9dcc0;text-align:center;margin:0 0 6px;min-height:0}
+html[data-case="studio"] .st-ledger .blot{filter:blur(2.2px);color:#3b4a78;opacity:.75}
+html[data-case="studio"] .st-ledger tr.wet td{background:radial-gradient(ellipse at 40% 50%,rgba(120,100,60,.14),transparent 70%)}
+html[data-case="studio"] .st-loupe{max-width:330px;margin-top:8px}
+html[data-case="studio"] .strip-edge{color:#fff0c8;text-shadow:0 0 .25cqw #000,0 0 .5cqw #000,0 0 .9cqw rgba(0,0,0,.8)}
+html[data-case="studio"] .st-loupe .film-loupe-glass{border-radius:12% / 16%}
+html[data-case="studio"] .st-loupe .film-loupe-img{background-size:674% auto}
+html[data-case="studio"] .st-print-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:10px;align-items:center;margin:0 0 6px}
+html[data-case="studio"] .st-print-grid .enlarger,html[data-case="studio"] .st-print-grid .focus-loupe{margin:0;max-width:none}
+html[data-case="studio"] .st-print .trays{max-width:420px}
+html[data-case="studio"] .st-print.white .trays>img{filter:none}
+html[data-case="studio"] .st-print.dark .trays>img{filter:brightness(.22)}
+html[data-case="studio"] .st-print .enl-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 14px;align-items:end}
+html[data-case="studio"] .st-print .enl-controls .tilt-label{margin:2px 0}
+@media (max-width:640px){html[data-case="studio"] .st-print-grid{grid-template-columns:1fr}html[data-case="studio"] .st-print .enl-controls{grid-template-columns:1fr}html[data-case="studio"] .strip-edge{font-size:2.8cqw}}
+html[data-case="studio"] .st-chart i{position:absolute;inset:0;background:linear-gradient(#e7a49a,#c97d72);box-shadow:inset 0 0 0 1px rgba(60,10,10,.5);opacity:.55;transform:rotate(-2deg)}
+html[data-case="studio"] .st-chart i::after{content:"";position:absolute;left:16%;right:16%;top:18%;bottom:18%;background:repeating-linear-gradient(transparent 0 14%,rgba(70,15,15,.55) 14% 19%)}
+html[data-case="studio"] .st-photo{max-width:560px;margin:0 auto 10px;background:#f4f1ea;padding:12px}
+html[data-case="studio"] .st-photo img{animation:st-develop 4.2s ease-out both}
+@keyframes st-develop{0%{opacity:.04;filter:grayscale(1) contrast(.4) brightness(1.6)}55%{opacity:.7;filter:grayscale(.6) contrast(.8) brightness(1.2)}100%{opacity:1;filter:none}}
+@media (prefers-reduced-motion:reduce){html[data-case="studio"] .st-photo img{animation:none}}
 
 /* 정비소: 철판 · 형광등 · 노랑 경고띠 · 보고서 */
 html[data-case="garage"]{
@@ -971,6 +997,69 @@ html[data-case="apartment"] .v2-paper::before{height:5px;opacity:.9}
 .tag-big.back{font-family:var(--hand);font-weight:400;font-size:24px;color:#2b3570;transform:rotateY(180deg) scaleX(-1)}
 .ring-keys{font-size:28px;letter-spacing:4px}
 .hook-slot.taken{box-shadow:inset 0 0 0 .5cqw var(--lamp);background:rgba(18,20,23,.55)}
+/* 404호 v125: 장면 위에서 혼자 켜지는 불 · 모니터 · 종이컵 · 새 장치(엉킨 선 · 타이머 핀) */
+html[data-case="apartment"] .apt-win{opacity:0;transition:opacity 1.4s}
+html[data-case="apartment"] .apt-win img{display:block;width:100%;height:100%}
+html[data-case="apartment"] .apt-win.on{opacity:1;animation:apt-flick 1.6s steps(1)}
+@keyframes apt-flick{0%{opacity:0}12%{opacity:1}20%{opacity:.2}34%{opacity:1}100%{opacity:1}}
+html[data-case="apartment"] .apt-crt{border-radius:14% / 18%;transform:rotate(1.2deg);opacity:0;transition:opacity .2s}
+html[data-case="apartment"] .apt-crt img{display:block;width:100%;height:100%;object-fit:cover;filter:brightness(.92) contrast(1.1)}
+html[data-case="apartment"] .apt-crt.on{opacity:.96;animation:apt-crt 1.1s steps(2)}
+@keyframes apt-crt{0%{opacity:0;filter:brightness(3)}30%{opacity:.4}45%{opacity:0}60%{opacity:.9;filter:brightness(1.6)}100%{opacity:.96;filter:none}}
+html[data-case="apartment"] .apt-cup i{position:absolute;left:18%;right:18%;bottom:0;height:42%;background:linear-gradient(90deg,#cfc8b8,#f2eee4 45%,#b7af9f);clip-path:polygon(0 0,100% 0,86% 100%,14% 100%);border-radius:0 0 2px 2px}
+html[data-case="apartment"] .apt-cup b{position:absolute;left:30%;bottom:40%;width:40%;height:56%;background:radial-gradient(ellipse at 50% 100%,rgba(230,230,230,.55),transparent 70%);filter:blur(2px);animation:apt-steam 3.2s ease-in-out infinite}
+html[data-case="apartment"] .apt-cup.cold b{display:none}
+@keyframes apt-steam{0%{transform:translateY(10%) scaleX(.8);opacity:.0}40%{opacity:.8}100%{transform:translateY(-35%) scaleX(1.2);opacity:0}}
+html[data-case="apartment"] .apt-anbang{mix-blend-mode:screen}
+html[data-case="apartment"] .apt-anbang i{position:absolute;inset:0;background:radial-gradient(ellipse 80% 45% at 78% 40%,rgba(255,200,120,.78),rgba(235,150,65,.42) 55%,rgba(170,100,40,.22) 100%);opacity:0;transition:opacity 1.2s}
+html[data-case="apartment"] .apt-anbang.on i{opacity:1;animation:apt-flick 1.6s steps(1)}
+html[data-case="apartment"] .apt-spill{mix-blend-mode:screen}
+html[data-case="apartment"] .apt-spill i{position:absolute;inset:0;clip-path:polygon(17% 0,66% 0,100% 100%,0 100%);background:linear-gradient(rgba(230,160,80,.42),rgba(200,130,60,0));filter:blur(8px);opacity:0;transition:opacity 1.2s}
+html[data-case="apartment"] .apt-spill.on i{opacity:1;animation:apt-flick 1.6s steps(1)}
+html[data-case="apartment"] .apt-living i{position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 30% 60%,rgba(255,190,110,.42),transparent 75%);mix-blend-mode:screen;opacity:0;transition:opacity 1.2s}
+html[data-case="apartment"] .apt-living.on i{opacity:1}
+html[data-case="apartment"] .apt-plan i{position:absolute;inset:0;background:linear-gradient(#f4f1e6,#ddd6c3);box-shadow:inset 0 0 0 1px rgba(60,50,30,.5);opacity:.42;mix-blend-mode:screen}
+html[data-case="apartment"] .apt-plan i::after{content:"";position:absolute;left:18%;right:18%;top:24%;height:36%;border:1px solid rgba(40,50,70,.8);border-top-width:2px}
+html[data-case="apartment"] .post-new{background:#fff3c9;margin-left:-6px;padding:2px 6px;border-radius:2px}
+html[data-case="apartment"] .post-new small{color:#8a5a1c;margin-left:4px}
+html[data-case="apartment"] .rip{display:inline-block;color:transparent;background:repeating-linear-gradient(100deg,#e8e0c9 0 3px,#d4c9a8 3px 5px);border-radius:2px;clip-path:polygon(0 12%,22% 0,47% 18%,74% 2%,100% 15%,96% 88%,70% 100%,40% 84%,12% 100%,2% 80%)}
+html[data-case="apartment"] .cctvfig{max-width:480px;margin:0 auto 10px;background:#0c0d10;padding:8px;border-radius:10px}
+html[data-case="apartment"] .cctvfig img{display:block;width:100%;border-radius:8px}
+html[data-case="apartment"] .receipt{max-width:360px;margin:0 auto;font-family:ui-monospace,Menlo,monospace;font-size:14px}
+html[data-case="apartment"] .mailwall6 .mail-slot{height:17.8%;align-items:start;padding-top:2.2%}
+html[data-case="apartment"] .mailwall6 .mail-label{font-size:2.1cqw;min-width:0;padding:0 .9cqw;background:rgba(244,242,236,.92)}
+@media (max-width:640px){html[data-case="apartment"] .hook-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0 0}html[data-case="apartment"] .hook-grid .chip{min-height:44px;padding:6px 4px;font-weight:700}}
+html[data-case="apartment"] .hook-gone{position:absolute;width:3.91%;height:auto;pointer-events:none}
+html[data-case="apartment"] .ring-svg{width:96px;height:auto}
+html[data-case="apartment"] .key-hand{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 16px;margin:10px 0 0}
+html[data-case="apartment"] .key-hand .pick-label{flex-basis:100%;text-align:center;margin:0}
+html[data-case="apartment"] .key-hand .tag-big{width:72px;height:72px;font-size:19px;padding:6px}
+html[data-case="apartment"] .ring-keys{line-height:0}
+html[data-case="apartment"] .apt-boxlock .boxphoto img{display:block;width:100%;max-height:38vh;object-fit:cover;object-position:50% 45%}
+html[data-case="apartment"] .wire-wrap{max-width:560px;margin:0 auto}
+html[data-case="apartment"] .wiretop{aspect-ratio:1024/352;overflow:hidden;border-radius:4px 4px 0 0}
+html[data-case="apartment"] .wiretop img{display:block;width:100%;height:auto}
+html[data-case="apartment"] .wire-tape{position:absolute;top:20.5%;width:17%;height:15%;min-height:40px;transform:translate(-50%,-50%) rotate(-1.5deg);border:0;background:transparent;font-family:var(--hand);font-size:6cqw;line-height:1;color:#2b3570;cursor:pointer;border-radius:2px}
+html[data-case="apartment"] .wire-tape:hover,html[data-case="apartment"] .wire-tape:focus-visible{outline:none;box-shadow:0 0 0 2px var(--lamp)}
+html[data-case="apartment"] .wirebox{background:linear-gradient(#c9a77a,#b48e60);border-radius:0 0 4px 4px;line-height:0}
+html[data-case="apartment"] .wire-svg{display:block;width:100%;height:auto}
+html[data-case="apartment"] .wire-chips{display:flex;gap:12px;justify-content:center;margin:4px 0 4px}
+html[data-case="apartment"] .wire-chip{width:52px;height:48px;background:#efe2b8;color:#2b3570;font-family:var(--hand);font-size:30px;border:0;border-radius:2px;box-shadow:0 2px 4px rgba(0,0,0,.35);transform:rotate(-3deg);cursor:pointer;padding:0}
+html[data-case="apartment"] .wire-chip:nth-child(2){transform:rotate(2deg)}
+html[data-case="apartment"] .wire-chip.holding{outline:3px solid var(--lamp);outline-offset:2px;transform:translateY(-4px) rotate(-3deg)}
+html[data-case="apartment"] .wire-chip.used{background:#5c584c;color:#e4ddca;box-shadow:none}
+html[data-case="apartment"] .chat-date{background:rgba(20,30,45,.55)}
+html[data-case="apartment"] .pin-wrap{display:grid;gap:10px;max-width:560px;margin:0 auto}
+html[data-case="apartment"] .pin-timer{background:radial-gradient(120% 90% at 50% 0%,#f4f2ec,#d8d4ca);border-radius:10px;padding:8px 10px 10px;box-shadow:inset 0 0 0 1px #b9b3a6,0 3px 8px rgba(0,0,0,.35)}
+html[data-case="apartment"] .pin-name{margin:0 0 6px;font-size:13px;font-weight:700;color:#2b2f36}
+html[data-case="apartment"] .pin-ring{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;background:#1c1d21;border-radius:8px;padding:6px 6px 4px}
+html[data-case="apartment"] .pin-timer.blue .pin-ring{background:#1f4f8f}
+html[data-case="apartment"] .pin{min-height:54px;border:0;background:transparent;padding:0;display:grid;justify-items:center;align-content:start;gap:3px;cursor:pointer;color:#e9e9e9}
+html[data-case="apartment"] .pin i{width:70%;height:22px;border-radius:3px 3px 1px 1px;background:linear-gradient(#f2f2f2,#bdbdbd);box-shadow:0 3px 0 #6d6d6d;transition:transform .12s,box-shadow .12s}
+html[data-case="apartment"] .pin.down i{transform:translateY(5px);box-shadow:0 0 0 #6d6d6d;background:linear-gradient(#ffd36a,#e0a43a)}
+html[data-case="apartment"] .pin small{font-size:11px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+html[data-case="apartment"] .pin:focus-visible{outline:2px solid var(--lamp);outline-offset:1px}
+@media (max-width:640px){html[data-case="apartment"] .pin small{font-size:10px}html[data-case="apartment"] .pin-ring{gap:2px;padding:5px 3px 3px}}
 
 /* 자정의 무인 세탁소: 스테인리스 · 액정 청록 · 간판 분홍 · 비 오는 밤 */
 html[data-case="laundry"]{
