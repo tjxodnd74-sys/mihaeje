@@ -68,24 +68,34 @@ const WALL = { TL: 'ㅂ', TM: 'ㄹ', TR: 'ㄴ', BL: 'ㅁ', BM: 'ㄱ', BR: 'ㄷ' 
 const ANSWER_VENTS = Object.fromEntries(Object.entries(WALL).map(([v, l]) => [v, String(Object.keys(PIPE).find((n) => LETTERS[PIPE[n]] === l))]));
 
 // 뒷골목 카메라 어젯밤(월요일 밤) 녹화 10분마다 한 장 — 벤치에 앉은 사람이 있는 건 00:10, 00:20
+// v126: 00:10 사람은 벤치 가운데에, 앉은 사람은 머리가 낮고 허벅지·무릎이 벤치 높이에서 앞으로 나오게 (서 있는 사람과 한눈에 구분)
 const FRAMES = [
   { t: '23:50', day: '2026/11/02 월', fig: ['walker'] },
   { t: '00:00', day: '2026/11/03 화', fig: ['cat'] },
   { t: '00:10', day: '2026/11/03 화', fig: ['p1'] },
-  { t: '00:20', day: '2026/11/03 화', fig: ['p1', 'p2', 'p3'] },
+  { t: '00:20', day: '2026/11/03 화', fig: ['p2', 'p3', 'p4'] },
   { t: '00:30', day: '2026/11/03 화', fig: ['s1', 's2', 'bus'] },
   { t: '00:40', day: '2026/11/03 화', fig: [] },
 ];
 const CCTV_ANSWER = ['00:10', '00:20'];
 function figSvg(list) {
   const ink = 'fill="#070b0a"';
-  // 앉은 사람: 밝게 뜬 얼굴(적외선) · 웅크린 어깨 · 벤치 높이의 무릎 · 벤치 앞으로 내려온 정강이
-  const sit = (x, pack) => `<g opacity=".9">${pack ? `<rect x="${x - 33}" y="286" width="19" height="42" rx="7" fill="#0a0f0d"/>` : ''}<path d="M${x - 19} 284 Q${x} 270 ${x + 19} 284 L${x + 18} 334 L${x - 18} 334Z" fill="#0a0f0d"/><ellipse cx="${x}" cy="338" rx="22" ry="9" fill="#141b18"/><rect x="${x - 17}" y="340" width="13" height="54" rx="4" fill="#0d1311"/><rect x="${x + 4}" y="340" width="13" height="54" rx="4" fill="#0d1311"/><ellipse cx="${x - 10}" cy="396" rx="9" ry="4" fill="#070b0a"/><ellipse cx="${x + 11}" cy="396" rx="9" ry="4" fill="#070b0a"/><circle cx="${x}" cy="266" r="11" fill="#8d9b94"/><path d="M${x - 11} 264 Q${x} 248 ${x + 11} 264 Q${x} 258 ${x - 11} 264Z" fill="#0a0f0d"/></g>`;
+  // 앉은 사람(비스듬히 앉음): 밝게 뜬 얼굴(적외선) · 굽은 등 · 벤치 높이에서 앞으로 나온 허벅지(무릎 위가 밝다) · 무릎에서 꺾여 내려온 정강이
+  const sit = (x, pack, k = -1) => {
+    const kx = x + k * 24;
+    return `<g opacity=".93">${pack ? `<rect x="${x - k * 20 - 9}" y="316" width="18" height="28" rx="6" fill="#0b100e"/>` : ''}`
+      + `<path d="M${x - 17} 300 Q${x} 288 ${x + 17} 300 L${x + 15} 344 L${x - 15} 344Z" fill="#0b100e"/>`
+      + `<path d="M${x - 14} 334 L${x + 14} 334 L${kx + 13} 342 L${kx + 13} 357 L${kx - 13} 357 L${x - 14} 348Z" fill="#1a2320"/>`
+      + `<ellipse cx="${kx}" cy="345" rx="14" ry="5" fill="#5d6b64"/>`
+      + `<rect x="${kx - 12}" y="353" width="11" height="50" rx="4" fill="#0d1311"/><rect x="${kx + 1}" y="353" width="11" height="50" rx="4" fill="#0d1311"/>`
+      + `<ellipse cx="${kx - 8}" cy="403" rx="9" ry="4" fill="#070b0a"/><ellipse cx="${kx + 8}" cy="403" rx="9" ry="4" fill="#070b0a"/>`
+      + `<circle cx="${x + 2}" cy="283" r="11" fill="#8d9b94"/><path d="M${x - 9} 281 Q${x + 2} 266 ${x + 13} 281 Q${x + 2} 275 ${x - 9} 281Z" fill="#0a0f0d"/></g>`;
+  };
   const stand = (x) => `<g ${ink} opacity=".86"><circle cx="${x}" cy="236" r="12" fill="#8d9b94"/><path d="M${x - 16} 252 Q${x} 242 ${x + 16} 252 L${x + 17} 332 L${x - 17} 332Z"/><rect x="${x - 15}" y="328" width="12" height="76" rx="4"/><rect x="${x + 3}" y="328" width="12" height="76" rx="4"/></g>`;
   const parts = {
     walker: `<g ${ink} opacity=".8"><path d="M520 222 Q560 186 600 222Z"/><rect x="558" y="222" width="3" height="30"/><circle cx="560" cy="252" r="12"/><path d="M544 268 Q560 258 576 268 L578 360 L542 360Z"/><rect x="545" y="356" width="13" height="80" rx="4" transform="rotate(6 551 356)"/><rect x="562" y="356" width="13" height="80" rx="4" transform="rotate(-8 568 356)"/></g>`,
     cat: `<g ${ink} opacity=".88"><ellipse cx="300" cy="331" rx="19" ry="9"/><circle cx="320" cy="322" r="8"/><path d="M314 316 L316 306 L321 314Z M321 314 L326 306 L327 317Z"/><path d="M282 332 Q268 330 270 316" fill="none" stroke="#070b0a" stroke-width="4" stroke-linecap="round"/></g><circle cx="318" cy="321" r="1.6" fill="#e8fff0"/><circle cx="324" cy="321" r="1.6" fill="#e8fff0"/>`,
-    p1: sit(212, true), p2: sit(268), p3: sit(318),
+    p1: sit(266, true), p2: sit(236, true), p3: sit(292), p4: sit(346, false, 1),
     s1: stand(395), s2: stand(432),
     bus: `<g><rect x="468" y="148" width="190" height="286" rx="14" fill="#a9bdb4" opacity=".92"/><rect x="480" y="196" width="170" height="92" rx="6" fill="#20302a"/><rect x="484" y="160" width="120" height="26" rx="3" fill="#0d1512"/><text x="498" y="181" font-size="21" font-weight="800" fill="#eafff3" font-family="ui-monospace,monospace">12 순환</text><rect x="476" y="300" width="32" height="128" fill="#2a3a34"/><circle cx="636" cy="400" r="13" fill="#f4fff8"/><circle cx="636" cy="400" r="30" fill="#f4fff8" opacity=".25"/></g>`,
   };
@@ -118,11 +128,12 @@ function ductSvg() {
 }
 
 // 길게 누르기(시작 버튼) — 짧은 탭이 click으로 새어 들어가 풀리지 않게 pointer/keydown만 쓴다
+// v126: 짧게 누르면 일반 운전 → 동전이 없으니 액정을 지우고 그렇다고 알려 준다 (지워지지 않은 입력 뒤에 정답이 붙어 ERR이 나던 문제)
 function holdable(ctx, b, d) {
-  const SHORT = '삑 짧게 누르면 일반 운전 대기다 관리자 확인은 시작을 꾹 누르고 있어야 한다';
+  const SHORT = '삑 짧게 누르면 일반 운전인데 동전이 없다 액정이 지워졌다 관리자 확인은 시작을 꾹 누르고 있어야 한다';
   let timer = null;
   const begin = () => { if (!d.seq.length) { ctx.status('아직 아무 버튼도 안 눌렀다'); return false; } b.classList.add('holding'); timer = setTimeout(() => { timer = null; b.classList.remove('holding'); ctx.commit?.(); }, 900); return true; };
-  const end = () => { if (!timer) return; clearTimeout(timer); timer = null; b.classList.remove('holding'); ctx.status(SHORT); };
+  const end = () => { if (!timer) return; clearTimeout(timer); timer = null; b.classList.remove('holding'); d.seq = []; d.err = false; ctx.save(); ctx.status(SHORT); };
   b.addEventListener('pointerdown', (e) => { e.preventDefault(); begin(); });
   b.addEventListener('pointerup', end); b.addEventListener('pointerleave', end); b.addEventListener('pointercancel', end);
   b.onclick = (e) => e.preventDefault();
@@ -154,7 +165,7 @@ export default {
     paragraphs: [
       '해달빨래방은 엄마가 열두 해 한 가게다. 엄마가 손목 수술을 받으면서 지난달부터 내가 맡았다. 무인이라 밤엔 아무도 없다. 원래는.',
       '맡은 첫날 엄마가 한 말은 하나였다. 「6번 자정에 도는 거 건드리지 마라. 이유는 묻지 말고.」',
-      '오늘 처음으로 자정까지 남았다. 열두 시 정각, 형광등이 한 번 꺼졌다 켜졌다. 그리고 맨 끝 6번이 삑, 하더니 혼자 돌기 시작했다.',
+      '오늘은 열한 시가 넘어서 마감 청소를 하러 나왔다가, 처음으로 자정까지 남았다. 열두 시 정각, 형광등이 한 번 꺼졌다 켜졌다. 그리고 맨 끝 6번이 삑, 하더니 혼자 돌기 시작했다.',
       '문 유리에 손을 대 봤다. 따뜻했다. 통 안에는 아무것도 없었다.',
     ],
     cta: '빈 통 앞에 서기',
@@ -177,18 +188,19 @@ export default {
         if (S.solved.includes('cctv')) return '단말기엔 어젯밤 벤치가 멈춰 있다 6번 패널 액정에 예약 화면이 켜져 있다';
         if (S.solved.includes('vents')) return '6번은 멈췄다 문 유리가 아직 따뜻하다 벽에 붙은 관리자 단말기 화면이 저 혼자 깜빡인다 뒷골목을 비추는 카메라다';
         if (S.solved.includes('panel')) return '6번은 아직 빈 통으로 돈다 패널 액정엔 ADMIN 그 아래 동전함 서랍이 반쯤 밀려 나와 있다';
-        return '밖엔 비가 온다 맨 끝 6번이 빈 통으로 돌고, 안쪽 4번에선 손님이 두고 간 이불이 웅웅 돈다 6번 위엔 엄마 쪽지 앞 유리 안쪽엔 엄마가 단 네온 간판';
+        return '밖엔 비가 온다 맨 끝 6번이 빈 통으로 돌고, 안쪽 4번에선 손님이 두고 간 이불이 웅웅 돈다 6번 앞판엔 엄마 쪽지가 테이프로 붙어 있고 앞 유리 안쪽엔 엄마가 단 네온 간판';
       },
       hotspots: [
-        { id: 'mchat', x: 64, y: 66, r: 8, label: '엄마 문자', kind: 'doc', doc: 'mchat' },
-        { id: 'note6', x: 92, y: 5, r: 8, label: '6번 위 쪽지', kind: 'doc', doc: 'note6' },
-        { id: 'drum6', x: 93, y: 24, r: 9, label: '6번 문 유리', kind: 'doc', doc: 'drum6' },
+        // 그림 속 물건 자리: 테이블 위 내 휴대폰 · 6번 앞판 왼쪽 위에 테이프로 붙은 엄마 쪽지
+        { id: 'mchat', x: 52.3, y: 66.5, r: 7, label: '테이블 위 휴대폰 · 엄마 문자', kind: 'doc', doc: 'mchat' },
+        { id: 'note6', x: 88.6, y: 5.4, r: 7, label: '6번에 붙은 엄마 쪽지', kind: 'doc', doc: 'note6' },
+        { id: 'drum6', x: 92, y: 24, r: 9, label: '6번 문 유리', kind: 'doc', doc: 'drum6' },
         { id: 'sign', x: 24, y: 26, r: 10, label: '앞 유리 네온 간판', kind: 'doc', doc: 'sign' },
-        { id: 'guide', x: 4, y: 14, r: 8, label: '벽의 이용 안내', kind: 'doc', doc: 'guide' },
-        { id: 'panel', x: 91, y: 45, r: 9, label: '6번 건조기 패널', kind: 'device', device: 'panel', visible: (S) => !S.solved.includes('cctv') },
-        { id: 'coins', x: 93, y: 57, r: 7, label: '6번 동전함', kind: 'doc', doc: 'coins', visible: (S) => S.solved.includes('panel') },
+        { id: 'guide', x: 6, y: 17, r: 7, label: '벽의 이용 안내', kind: 'doc', doc: 'guide' },
+        { id: 'panel', x: 91, y: 45, r: 8, label: '6번 건조기 패널', kind: 'device', device: 'panel', visible: (S) => !S.solved.includes('cctv') },
+        { id: 'coins', x: 91, y: 55, r: 6, label: '6번 동전함', kind: 'doc', doc: 'coins', visible: (S) => S.solved.includes('panel') },
         { id: 'cctv', x: 56, y: 28, r: 8, label: '관리자 단말기', kind: 'device', device: 'cctv', visible: (S) => S.solved.includes('vents') },
-        { id: 'sched', x: 91, y: 45, r: 9, label: '6번 예약 화면', kind: 'device', device: 'sched', visible: (S) => S.solved.includes('cctv') },
+        { id: 'sched', x: 91, y: 45, r: 8, label: '6번 예약 화면', kind: 'device', device: 'sched', visible: (S) => S.solved.includes('cctv') },
       ],
     },
     {
@@ -196,11 +208,13 @@ export default {
       name: '옆 편의점',
       image: P + 'store.webp',
       unlockedBy: 'panel',
-      arrive: '옆 늘봄편의점은 불이 환하다 계산대는 비어 있고 창고에서 박스 끄는 소리만 난다 냉장고 모터가 낮게 운다 계산대 너머 벽에 근무표 화이트보드',
+      arrive: (S) => (S.solved.includes('magnet')
+        ? '도현은 박스를 안고 다시 창고로 들어갔다 계산대는 또 비었다 포스 화면엔 아직 도현 이름이 로그인돼 있다'
+        : '옆 늘봄편의점은 불이 환하다 계산대는 비어 있고 창고에서 박스 끄는 소리만 난다 냉장고 모터가 낮게 운다 계산대 너머 벽에 근무표 화이트보드, 보드 아래 테두리엔 노란 쪽지'),
       hotspots: [
         { id: 'shift', x: 58, y: 31, label: '근무표 화이트보드', kind: 'device', device: 'magnet' },
-        { id: 'posnote', x: 38, y: 52, r: 9, label: '포스 옆 메모', kind: 'doc', doc: 'posnote' },
-        { id: 'talk', x: 66, y: 82, label: '창고에서 나온 알바', kind: 'doc', doc: 'talk', visible: (S) => S.solved.includes('magnet') },
+        { id: 'posnote', x: 49, y: 53, r: 6, label: '포스 옆 꽂이의 메모', kind: 'doc', doc: 'posnote' },
+        { id: 'talk', x: 29, y: 57, r: 8, label: '포스 앞에서 도현과 한 얘기', kind: 'doc', doc: 'talk', visible: (S) => S.solved.includes('magnet') },
       ],
     },
     {
@@ -209,10 +223,10 @@ export default {
       image: P + 'alley.webp',
       unlockedBy: 'magnet',
       arrive: (S) => (S.solved.includes('vents')
-        ? '벤치에 셋이 어깨를 붙이고 앉아 있다 아무도 말이 없다 머리 위 배기구 여섯은 조용하다'
-        : '열두 시 구 분, 빨래방 뒤로 돌아 나왔다 배기구 하나가 숨 쉬듯 김을 뱉고 나머지 다섯은 검은 입만 벌리고 있다 번호는 없다 그 아래 정류장 벤치는 비어 있다'),
+        ? '편의점 쪽에서 발소리가 다가온다 머리 위 배기구 여섯은 조용하다 6번 바로 밑 벤치엔 아직 내 배관도만 펼쳐져 있다'
+        : '열두 시 구 분, 빨래방 뒤로 돌아 나왔다 배기구 하나가 숨 쉬듯 김을 뱉고 나머지 다섯은 검은 입만 벌리고 있다 번호는 없다 그 아래 정류장 벤치는 비어 있어서, 도현이 준 배관도를 벤치 끝에 펼쳐 놓았다'),
       hotspots: [
-        { id: 'duct', x: 9, y: 84, label: '손에 든 배관도', kind: 'doc', doc: 'duct' },
+        { id: 'duct', x: 59, y: 70, r: 6, label: '벤치에 펼친 배관도', kind: 'doc', doc: 'duct' },
         { id: 'bus', x: 66, y: 58, label: '정류장 시간표', kind: 'doc', doc: 'bus' },
         { id: 'vents', x: 46, y: 27, r: 14, label: '뒷벽 배기구 여섯', kind: 'device', device: 'vents' },
       ],
@@ -259,18 +273,18 @@ export default {
       html: `<figure class="prop"><img src="${P}props/coins.webp" alt="500원 동전 사이에 가늘게 접힌 영수증 넉 장" decoding="async"></figure><p>이쪽 줄 건조기 셋이 같이 쓰는 동전함이라 낮 손님 동전까지 한 달 치가 수북하다 그 위에 가늘게 접힌 영수증 넉 장 서랍 윗단 틈으로 밀어 넣은 것 같다 펴 보니 뒷면마다 볼펜으로 「6번 500」</p><div class="receipt-row">${RECEIPTS.map(([d, t]) => `<div class="receipt"><b>늘봄편의점 윤슬점</b><span>2026/${d} ${t}</span><span>POS 2</span><span>캔커피 1,500</span><span>받은 돈 2,000</span><span>거스름 500</span></div>`).join('')}</div>`,
     },
     posnote: {
-      title: '포스 옆 메모',
+      title: '포스 옆 꽂이의 메모',
       kind: '편의점 계산대',
       html: `<blockquote class="hand">교대 07시 / 15시 / 22시<br>POS 2는 출근하는 사람이 켜고 로그인<br>자기 물건은 자기 POS로 계산!!</blockquote>`,
     },
     talk: {
-      title: '창고에서 나온 알바',
+      title: '포스 앞에서 도현과 한 얘기',
       kind: '편의점 계산대',
-      html: `<p>「6번?」 메모 옆에 초록 자석을 붙이는데 창고에서 박스를 안고 나오던 알바가 멈춰 섰다 명찰에 김도현</p><blockquote>"아 빨래방 사장님 따님이시죠 들켰네"</blockquote><blockquote>"사모님이 수술 들어가시면서 부탁하셨어요 출근할 때 6번에 오백 원 넣고 열두 시로 예약만 걸어 달라고 동전 값은 주신다고 했는데 그냥 제 돈으로 넣었어요 커피 사고 거스름돈 넣은 날은 영수증도 같이 끼워 뒀고요 사모님 나중에 계산하시라고"</blockquote><blockquote>"왜냐고 여쭤봤는데 열두 시쯤 뒷골목에 가 보면 안다고만 하셨어요 저도 아직 못 가 봤어요 사모님이 이것도 맡기셨는데 무슨 그림인지는 모르겠고"</blockquote><p>도현이 계산대 밑에서 접힌 종이를 꺼냈다 설비 업체 배관도였다</p><blockquote>"아 그리고 요즘 학원 끝난 애들이 여기서 컵라면 하나씩 먹고 정류장으로 나가요 막차가 늦어졌다고 투덜대면서"</blockquote>`,
+      html: `<p>「6번?」 메모 옆에 초록 자석을 붙이는데 창고에서 박스를 안고 나오던 알바가 멈춰 서더니, 박스를 내려놓고 포스 앞으로 왔다 명찰에 김도현</p><blockquote>"아 빨래방 사장님 따님이시죠 들켰네"</blockquote><blockquote>"사모님이 수술 들어가시면서 부탁하셨어요 출근할 때 6번에 오백 원 넣고 열두 시로 예약만 걸어 달라고 동전 값은 주신다고 했는데 그냥 제 돈으로 넣었어요 커피 사고 거스름돈 넣은 날은 영수증도 같이 끼워 뒀고요 사모님 나중에 계산하시라고"</blockquote><blockquote>"왜냐고 여쭤봤는데 열두 시 넘어서 뒷골목에 가 보면 안다고만 하셨어요 지금 가 보시면 되겠네요 저는 가게를 못 비워서 아직 못 가 봤어요 사모님이 이것도 맡기셨는데 무슨 그림인지는 모르겠고"</blockquote><p>도현이 계산대 밑에서 접힌 종이를 꺼냈다 설비 업체 배관도였다</p><blockquote>"아 그리고 요즘 학원 끝난 애들이 여기서 컵라면 하나씩 먹고 정류장으로 나가요 막차가 늦어졌다고 투덜대면서"</blockquote>`,
     },
     duct: {
       title: '설비 업체 배관도',
-      kind: '도현이 맡아 둔 종이',
+      kind: '도현이 맡아 둔 종이 · 벤치에 펼쳐 둠',
       html: `<figure class="prop ductfig">${ductSvg()}</figure>`,
     },
     bus: {
@@ -282,7 +296,7 @@ export default {
       title: '엄마와의 통화',
       kind: '11월 5일 목요일 0시 31분',
       locked: true,
-      html: `<blockquote>"봤냐"</blockquote><blockquote>"봤어 막차 바뀐 거 알았어?"</blockquote><blockquote>"몰랐지 병원 다니느라 정신없었는데 그럼 며칠을 애들이 떨었겠네"</blockquote><blockquote>"엄마 근데 6번 왜 시작한 거야"</blockquote><blockquote>"몇 년 전 겨울에 저 벤치에서 교복 입은 애 하나가 막차 기다리다 떨면서 잠들었어 버스 기사가 흔들어 깨워서 겨우 탔대 그 얘기 듣고 그다음 날부터 돌렸지"</blockquote><blockquote>"니 아빠도 공장 다닐 때 그 막차 탔거든 말하면 니가 전기세 얘기부터 할까 봐 안 했다"</blockquote><blockquote>"월요일 밤은 왜 비었어?"</blockquote><blockquote>"월요일은 하은이가 야간인데 걔는 학생이라 거기까진 부탁을 못 했어 화요일마다 마음에 걸렸다"</blockquote><blockquote>"이제 열두 시 십 분부터 이십 분 저온 관리자로 걸어 놨어 예약은 하루짜리니까 월요일 밤까지 밤마다 내가 걸게"</blockquote><blockquote>"그리고 열두 시 넘으면 뒤쪽에 사람 있다는 거, 정류장 얘기였어?"</blockquote><blockquote>"그럼 뭔 줄 알았냐"</blockquote><blockquote>"도현이한테 오백 원 돌려줘라 한 달 치"</blockquote><blockquote>"벌써 줬어 안 받더라"</blockquote><p>엄마가 웃었다 손목이 아프다면서 한참 웃었다</p>`,
+      html: `<blockquote>"봤냐"</blockquote><blockquote>"봤어 막차 바뀐 거 알았어?"</blockquote><blockquote>"몰랐지 병원 다니느라 정신없었는데 그럼 며칠을 애들이 떨었겠네"</blockquote><blockquote>"엄마 근데 6번 왜 시작한 거야"</blockquote><blockquote>"몇 년 전 겨울에 저 벤치에서 교복 입은 애 하나가 막차 기다리다 떨면서 잠들었어 버스 기사가 흔들어 깨워서 겨우 탔대 그 얘기 듣고 그다음 날부터 돌렸지"</blockquote><blockquote>"니 아빠도 공장 다닐 때 그 막차 탔거든 말하면 니가 전기세 얘기부터 할까 봐 안 했다"</blockquote><blockquote>"월요일 밤은 왜 비었어?"</blockquote><blockquote>"월요일은 하은이가 야간인데 걔는 학생이라 거기까진 부탁을 못 했어 화요일마다 마음에 걸렸다"</blockquote><blockquote>"이제 열두 시 십 분부터 이십 분 저온 관리자로 걸어 놨어 예약은 하루짜리니까 밤마다 내가 걸게 월요일 밤도 빼지 않고"</blockquote><blockquote>"그리고 열두 시 넘으면 뒤쪽에 사람 있다는 거, 정류장 얘기였어?"</blockquote><blockquote>"그럼 뭔 줄 알았냐"</blockquote><blockquote>"도현이한테 오백 원 돌려줘라 한 달 치"</blockquote><blockquote>"주려고 했는데 안 받더라"</blockquote><p>엄마가 웃었다 손목이 아프다면서 한참 웃었다</p>`,
     },
   },
 
@@ -290,9 +304,9 @@ export default {
     panel: {
       title: '6번 건조기 패널',
       scene: 'hall',
-      intro: '버튼 일곱 개와 시작 버튼 누른 버튼은 액정에 네 칸까지 찍힌다 시작을 짧게 누르면 일반 운전, 꾹 누르고 있으면 관리자 확인이다',
-      docs: ['note6', 'sign', 'guide'],
-      hintCode: '',
+      intro: '버튼 일곱 개와 시작 버튼 누른 버튼은 액정에 네 칸까지 찍힌다 시작을 짧게 누르면 일반 운전(동전이 없으면 액정만 지워진다), 꾹 누르고 있으면 관리자 확인이다',
+      docs: ['note6', 'sign', 'guide', 'log6'],
+      hintCode: 'W-S01',
       hints: [
         '관리자 모드는 쪽지에 적어 놨다 버튼 이름 말고 그림을 봐',
         '간판은 손님 보라고 단 거다 나는 그걸 늘 어디서 봤겠니',
@@ -302,7 +316,12 @@ export default {
       render(ctx) {
         const { d, el, save } = ctx;
         const mob = small();
-        const press = (b) => { if (d.err) { d.seq = []; d.err = false; } if (d.seq.length < 4) d.seq.push(b.id); save(); };
+        // 액정은 네 칸 다 차면 더 받지 않는다 — 조용히 버리지 않고 삑 소리와 함께 알려 준다
+        const press = (b) => {
+          if (d.err) { d.seq = []; d.err = false; }
+          if (d.seq.length >= 4) { ctx.status('삑 액정 네 칸이 다 찼다 더 누른 건 찍히지 않는다 지우려면 「입력 지우기」를 누른다'); const l = wrap.querySelector('.lcd'); if (l) { l.classList.remove('full'); void l.offsetWidth; l.classList.add('full'); } return; }
+          d.seq.push(b.id); save();
+        };
         const wrap = el('div', 'prop dpanel');
         wrap.innerHTML = `<img src="${P}props/panel.webp" alt="6번 건조기 조작 패널 버튼 일곱 개와 시작 버튼" decoding="async"><div class="lcd${d.err ? ' err' : ''}">${d.err ? 'ERR' : d.seq.length ? d.seq.map((k) => BTN.find((b) => b.id === k).label).join(' ') : 'DRYER 06'}</div>`;
         BTN.forEach((b) => {
@@ -346,7 +365,7 @@ export default {
       scene: 'store',
       intro: '보드 오른쪽에 이름 자석 넷 「6번?」이라고 쓴 메모를 빈 자석 자리에 붙였다 자석을 누르면 메모 옆으로 옮겨진다 다시 누르면 제자리',
       docs: ['log6', 'coins', 'posnote'],
-      hintCode: '',
+      hintCode: 'W-S02',
       hints: [
         '기록에서 동전이 들어간 시각하고 빠진 날을 같이 봐라',
         '빠진 날마다 그 전날 밤 야간 칸에 누가 있었는지 보드 구석 글씨까지 날짜로 하나씩 맞춰 봐',
@@ -393,7 +412,7 @@ export default {
       reveal: {
         title: '김도현',
         text: '초록 자석을 옮기는 순간 창고 문이 열렸다 「들켰네」',
-        scene: ['도현은 엄마 부탁이었다고 했다 이유는 자기도 모른다면서, 열두 시쯤 뒷골목에 가 보라며 접힌 종이 한 장을 건넸다'],
+        scene: ['도현은 엄마 부탁이었다고 했다 이유는 자기도 모른다면서, 열두 시 넘었으니 지금 뒷골목에 가 보라며 접힌 종이 한 장을 건넸다'],
         unlockDoc: 'talk',
         unlock: 'alley',
       },
@@ -404,7 +423,7 @@ export default {
       scene: 'alley',
       intro: '배기구 여섯에 번호가 없다 가게에서 들고 나온 번호 스티커 1부터 6까지 아래에서 하나 집어 배기구를 누르면 붙는다 붙인 걸 누르면 떼어 낸다',
       docs: ['duct', 'bus', 'talk'],
-      hintCode: '',
+      hintCode: 'W-S03',
       hints: [
         '배관도는 위아래 두 칸이야 아래 칸 건조기 번호에서 출발해',
         '줄을 따라 천장 끝 글자까지 간 다음, 그 글자를 위 칸 벽에서 찾아 김이 나는 데는 지금 누구 빨래가 도는지도 생각해 봐',
@@ -464,10 +483,10 @@ export default {
       scene: 'hall',
       intro: '어젯밤 녹화가 10분에 한 장씩 남아 있다 막대를 밀거나 아래 시각을 누르면 화면이 넘어간다 벤치에 사람이 앉아 있는 화면이면 「이 화면 표시」를 눌러 둔다',
       docs: ['bus', 'log6', 'talk'],
-      hintCode: '',
+      hintCode: 'W-S04',
       hints: [
         '앉아 있는 사람만이다 지나가는 사람이나 사람 아닌 건 빼라',
-        '한 장씩 넘기면서 벤치 왼쪽 끝까지 자세히 봐 버스가 온 화면에서 벤치에 남은 사람이 있는지도',
+        '한 장씩 넘기면서 머리 높이와 무릎을 봐 무릎이 벤치 높이에서 앞으로 나와 있으면 앉은 거다 버스가 온 화면에서 벤치에 남은 사람이 있는지도',
         '00:10 하고 00:20 두 장',
       ],
       initial: () => ({ f: 0, marks: [] }),
@@ -522,7 +541,7 @@ export default {
       scene: 'hall',
       intro: '관리자 모드라 동전 없이 예약을 걸 수 있다 시작 시각, 운전 시간, 온도를 줄마다 하나씩 고른다',
       docs: ['bus', 'note6', 'talk'],
-      hintCode: '',
+      hintCode: 'W-S05',
       hints: [
         '바람은 누가 벤치에 앉아 있을 때 나와야 쓸모가 있다',
         '시작은 카메라에서, 끝은 정류장 시간표에서 찾아라 온도하고 길이 욕심은 내 쪽지대로',
@@ -551,7 +570,7 @@ export default {
       },
       reveal: {
         title: '00:10, 20분, 저온',
-        text: '액정에 「예약 00:10 · 20분 · 저온」 동전 칸은 「관리자」 예약은 하루짜리라 내일부터는 내가 밤마다 건다 월요일 밤까지',
+        text: '액정에 「예약 00:10 · 20분 · 저온」 동전 칸은 「관리자」 예약은 하루짜리라 내일부터는 내가 밤마다 건다 월요일 밤도 빼지 않고',
         scene: ['도현한테 문자를 보냈다 「이제 오백 원 안 넣으셔도 돼요 한 달 치 돌려드릴게요」 답은 바로 왔다 「됐어요 대신 내일 열두 시 십 분에 같이 봐요」'],
         ending: true,
         endingLabel: '다음 날 밤 열두 시 십 분, 뒷골목',
