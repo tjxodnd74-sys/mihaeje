@@ -1463,7 +1463,12 @@ html[data-case="laundry"] .cctv-cell span{font-size:14px;line-height:1;color:var
 html[data-case="laundry"] .cctv-cell.on{border-color:var(--lamp);box-shadow:inset 0 0 0 1px var(--lamp)}
 html[data-case="laundry"] .cctv-cell.marked span{color:#ffd75a}
 html[data-case="laundry"] .cctv-mark{display:block;margin:0 auto;min-height:44px;padding:8px 18px}
+html[data-case="laundry"] .dpanel .lcd.full{animation:lcd-full .5s steps(2,end) 2}
+@keyframes lcd-full{50%{color:#ffcf7a;text-shadow:0 0 .8cqw rgba(255,190,90,.6)}}
+html[data-case="laundry"] .prop.cctv{overflow:hidden}
 @media (max-width:640px){
+  /* 휴대폰: 벤치 쪽을 크게 (앉았는지 서 있는지 보이게) */
+  html[data-case="laundry"] .prop.cctv img,html[data-case="laundry"] .cctv-fig{transform:scale(1.45);transform-origin:46% 72%}
   html[data-case="laundry"] .pkeys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:4px 0 12px}
   html[data-case="laundry"] .cctv-cell b{font-size:12px}
   html[data-case="laundry"] .cctv-strip{gap:4px}

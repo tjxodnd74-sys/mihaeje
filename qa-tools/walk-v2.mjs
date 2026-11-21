@@ -399,12 +399,13 @@ async function petHome({ mobile = false } = {}) {
     await hotspot(page, '기념품 상자');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .keepbox .keep-item').length === 4 && document.querySelectorAll('dialog[open] .record-row').length === 4 && document.querySelectorAll('dialog[open] .box-wrap .dial').length === 4), 'box: 4 items + 4 rows + 4 dials');
     L.check(!(await L.dialogText(page)).includes('끝자리') && !(await L.dialogText(page)).includes('8/2'), 'box: code rule and adopt date are not inside the device');
+    L.check((await L.dialogText(page)).includes('P-S01'), 'box: hint code shown in the device head');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .record-row .stamp'))), 'box: rows have no stamps');
     await L.closeDialog(page);
     for (const [d, t] of [['뚜껑 안쪽 정우의 쪽지', '그중 파란 끈만'], ['상자 맨 밑의 기록 사본', '네 날의 끝자리'], ['입양 계약서 봉투', '941372608154902'], ['방석의 루미', '새로 사 준']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     await hotspot(page, '기념품 상자');
     const setDial = async (digits) => { for (let i = 0; i < digits.length; i++) { const cur = await page.evaluate((i) => Number(document.querySelectorAll('dialog[open] .dial .num')[i].textContent), i); const up = (digits[i] - cur + 10) % 10; for (let k = 0; k < up; k++) await L.click(page, `${i + 1}번째 다이얼 올리기`); } };
-    await setDial([6, 7, 8, 2]); await commit(page); L.check((await status(page)).includes('물건부터'), 'box: code alone does not open before placement');
+    await setDial([7, 2, 6, 8]); await commit(page); L.check((await status(page)).includes('물건부터'), 'box: code alone does not open before placement');
     const put = async (item, stage) => { await L.click(page, item + ' 집어 뒷면 보기', { exact: true }); await L.click(page, stage + ' (비어 있음)', { exact: true }); };
     await L.click(page, '파란 명찰 끈 집어 뒷면 보기', { exact: true });
     L.check(await dlgHas(page, '글씨가 어리다') && await dlgHas(page, '2016/7/16') && await page.evaluate(() => !!document.querySelector('dialog[open] .keep-back img')), 'box: back side shown with photo + date');
@@ -414,20 +415,23 @@ async function petHome({ mobile = false } = {}) {
     L.check(swapMsg.includes('다시 대 본다'), 'box: swapped order neutral — ' + swapMsg);
     await L.click(page, '처음 발견한 날: 접힌 담요', { exact: true }); await L.click(page, '잠깐 머문 날: 파란 명찰 끈', { exact: true });
     await L.click(page, '처음 발견한 날 (비어 있음)', { exact: true }); await put('접힌 담요', '잠깐 머문 날');
-    await setDial([6, 7, 8, 1]); await commit(page);
+    await setDial([7, 2, 6, 1]); await commit(page);
     L.check((await status(page)) === swapMsg, 'box: wrong code gives the same message as wrong order');
-    await setDial([6, 7, 8, 2]); await shot(page, 'pet-box'); await commit(page);
+    // 날짜만 작은 순으로 줄 세운 번호는 틀린다 (사본 줄은 센터 서식 순서)
+    await setDial([6, 7, 8, 2]); await commit(page);
+    L.check((await status(page)) === swapMsg, 'box: date-sorted code 6782 fails (rows are form order, objects needed)');
+    await setDial([7, 2, 6, 8]); await shot(page, 'pet-box'); await commit(page);
     L.check(await dlgHas(page, '양철통이 열렸다'), 'box solved');
     await L.closeDialog(page); await L.sleep(400);
     L.check((await L.mainText(page)).includes('카드로만 남았어요'), 'moved to clinic');
-    await hotspot(page, '카드 서랍장');
+    await hotspot(page, '카드 서랍장 오른쪽 위 열두 칸');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .drawer-btn').length === 12), 'cards: 12 drawers');
     await L.click(page, '7-2 서랍 열기', { exact: true });
     L.check(await dlgHas(page, '번호는 없다') && !(await dlgHas(page, 'V-6349')), 'cards: wrong drawer says nothing about ranges');
     L.check(!(await L.buttons(page)).some((b) => b === '이 카드 꺼내기'), 'cards: no commit on wrong drawer');
     await L.closeDialog(page);
-    for (const [d, t] of [['접수대의 수의사', '등록번호까지 맞춰'], ['게시판의 카드 보관 안내', '7-3 앞쪽으로 옮겨']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
-    await hotspot(page, '카드 서랍장');
+    for (const [d, t] of [['접수대에서 들은 말', '등록번호까지 맞춰'], ['게시판의 카드 보관 안내', '7-3 앞쪽으로 옮겨']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    await hotspot(page, '카드 서랍장 오른쪽 위 열두 칸');
     await L.click(page, '7-3 서랍 열기', { exact: true });
     await L.click(page, '초록 표 카드 보기', { exact: true }); L.check(await dlgHas(page, 'V-6384') && !(await dlgHas(page, '계약서 번호')), 'cards: card shows V number but no contract number'); await commit(page);
     L.check((await status(page)).includes('이 카드가 아니다'), 'cards: twin neutral — ' + (await status(page)));
@@ -444,7 +448,7 @@ async function petHome({ mobile = false } = {}) {
     await L.click(page, '3학년 1반 이서진 명찰 구멍에 대기', { exact: true }); await commit(page);
     L.check((await status(page)).includes('손이 멈췄다'), 'strap: cousin decoy neutral');
     await L.closeDialog(page);
-    for (const [d, t] of [['엄마와 주고받은 문자', '둘다 울었지'], ['펼쳐 둔 앨범', '센터 앞'], ['장식장 위 서류철', '2학년 파랑']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    for (const [d, t] of [['엄마와 주고받은 문자', '정류장에서 전화와서'], ['펼쳐 둔 앨범', '「정류장」'], ['장식장 위 서류철', '2학년 파랑']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => /일기/.test(b.getAttribute('aria-label') || '')))), 'diary is a reward, not a hotspot');
     await hotspot(page, '엄마의 사진 상자');
     await L.click(page, '3학년 2반 김유나 명찰 구멍에 대기', { exact: true }); await commit(page);
@@ -461,12 +465,17 @@ async function petHome({ mobile = false } = {}) {
     L.check(await dlgHas(page, '딸깍 물렸다'), 'strap solved');
     await L.click(page, '사진 상자 밑의 일기 한 장 보기');
     L.check(await dlgHas(page, '2학년 3반 김유나') && await page.evaluate(() => !!document.querySelector('dialog[open] .oldphoto img')), 'diary (with photo) via reveal');
+    L.check(await dlgHas(page, '엄마가 사진 찍어 줌') && !(await dlgHas(page, '데려오래서')), 'diary: mom came to the bus stop (one story with the vet card)');
     await L.click(page, '← 돌아가기');
+    await L.closeDialog(page); await L.sleep(400);
+    // 보상 창을 닫아도 일기는 장면에서 다시 열 수 있다
+    L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '엄마의 사진 상자'))), 'strap hotspot gives way after solving');
+    await hotspot(page, '사진 상자 밑의 일기 한 장'); L.check(await dlgHas(page, '2학년 3반 김유나'), 'diary reopens from the scene after the reward is closed'); await L.closeDialog(page);
     await L.click(page, '집으로, 루미한테'); await L.sleep(500);
     L.check((await L.mainText(page)).includes('콩이라고 불러 봤다'), 'ending reached');
-    L.check((await L.mainText(page)).indexOf('처음 묶였던 자리로요') < (await L.mainText(page)).indexOf('같은 개 같은 끈'), 'ending: letter request comes before the answer');
+    L.check((await L.mainText(page)).indexOf('끈 끝을 쥐었던 손으로요') < (await L.mainText(page)).indexOf('목줄 손잡이에 리본으로'), 'ending: letter request (leash handle) comes before the answer');
     await L.click(page, '정우가 남긴 편지 읽기');
-    L.check(await dlgHas(page, '찾아봐 달라고 한 거예요'), 'final letter unlocked');
+    L.check(await dlgHas(page, '찾아봐 달라고 한 거예요') && await dlgHas(page, '목줄 손잡이에'), 'final letter unlocked (asks for the leash handle, like the ending picture)');
     await L.closeDialog(page);
     await L.click(page, '자료 다시 보기');
     L.check(!(await L.dialogText(page)).includes('아직 읽지 않은') && !(await L.dialogText(page)).includes('읽지 않은 자료'), 'all docs read');
@@ -867,20 +876,25 @@ async function laundry({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('이유는 묻지 말고'), 'opening shown');
     await L.click(page, '모두 보기'); await L.click(page, '빈 통 앞에 서기'); await L.sleep(400);
     L.check(await page.evaluate(() => document.querySelector('.v2-stage')?.dataset.mood === 'horror'), 'horror mood on stage');
-    for (const [d, t] of [['엄마 문자', '사연잇어'], ['6번 위 쪽지', '전기 아깝다'], ['앞 유리 네온 간판', '해 그림'], ['벽의 이용 안내', '니트'], ['6번 문 유리', '0.0kg']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    for (const [d, t] of [['테이블 위 휴대폰 · 엄마 문자', '사연잇어'], ['6번에 붙은 엄마 쪽지', '전기 아깝다'], ['앞 유리 네온 간판', '해 그림'], ['벽의 이용 안내', '니트'], ['6번 문 유리', '0.0kg']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     await hotspot(page, '앞 유리 네온 간판'); L.check(await page.evaluate(() => getComputedStyle(document.querySelector('dialog[open] .neon')).transform !== 'none'), 'sign is mirrored (seen from inside)'); await L.closeDialog(page);
     await hotspot(page, '6번 건조기 패널');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), '★4: no guide');
-    L.check(!(await L.dialogText(page)).includes('W-S0'), 'no internal device code shown');
+    L.check((await L.dialogText(page)).includes('W-S01'), 'panel: hint code shown (no dangling dot once solved)');
     L.check(!(await L.buttons(page)).includes('시작 버튼 꾹 누르기'), 'panel: no commit before input');
     if (mobile) L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .pkey')].every((b) => { const r = b.getBoundingClientRect(); return r.width >= 40 && r.height >= 40; })), 'panel: mobile keys at least 40px');
     await press(['고온 버튼 ☀']); await page.evaluate(() => [...document.querySelectorAll('dialog[open] button')].find((b) => b.getAttribute('aria-label') === '시작 버튼 (꾹 누르고 있기)' && b.getClientRects().length).dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }))); await L.sleep(120); await page.evaluate(() => [...document.querySelectorAll('dialog[open] button')].find((b) => b.getAttribute('aria-label') === '시작 버튼 (꾹 누르고 있기)' && b.getClientRects().length).dispatchEvent(new PointerEvent('pointerup', { bubbles: true }))); await L.sleep(150);
-    L.check((await status(page)).includes('꾹 누르고'), 'panel: short press explains long press'); await L.click(page, '입력 지우기');
+    L.check((await status(page)).includes('꾹 누르고') && (await status(page)).includes('지워졌다'), 'panel: short press explains long press'); L.check((await lcd()) === 'DRYER 06', 'panel: short press clears the LCD');
     // 안에서 보이는 대로(뒤집힌 순서) 누르면 안 열린다
     await press(['40분 버튼 4', '20분 버튼 2', '저온 버튼 ☾', '고온 버튼 ☀']); await hold(); L.check((await status(page)).includes('ERR'), 'panel: inside (mirrored) order fails — neutral'); L.check((await lcd()) === 'ERR', 'panel: LCD shows ERR');
     await press(['고온 버튼 ☀', '고온 버튼 ☀', '저온 버튼 ☾', '저온 버튼 ☾', '20분 버튼 2', '40분 버튼 4']); L.check((await lcd()) === '☀ ☀ ☾ ☾', 'panel: after ERR a press starts fresh and input stops at four');
+    L.check((await status(page)).includes('다 찼다'), 'panel: presses on a full LCD are not silently dropped');
     await L.click(page, '입력 지우기');
-    await press(['고온 버튼 ☀', '저온 버튼 ☾', '20분 버튼 2', '40분 버튼 4']); L.check(!(await L.buttons(page)).includes('시작 버튼 꾹 누르기'), 'panel: main button never commits'); await shot(page, 'l-panel'); await hold(); L.check(await dlgHas(page, 'ADMIN'), 'panel solved');
+    // 블라인드 테스트 재현: ☾ 3 → 시작 짧게 → 정답 → 꾹 (예전엔 남은 입력 때문에 ERR)
+    await press(['저온 버튼 ☾', '30분 버튼 3']);
+    await page.evaluate(() => { const b = [...document.querySelectorAll('dialog[open] button')].find((x) => x.getAttribute('aria-label') === '시작 버튼 (꾹 누르고 있기)' && x.getClientRects().length); b.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true })); }); await L.sleep(120);
+    await page.evaluate(() => { const b = [...document.querySelectorAll('dialog[open] button')].find((x) => x.getAttribute('aria-label') === '시작 버튼 (꾹 누르고 있기)' && x.getClientRects().length); b.dispatchEvent(new PointerEvent('pointerup', { bubbles: true })); }); await L.sleep(150);
+    await press(['고온 버튼 ☀', '저온 버튼 ☾', '20분 버튼 2', '40분 버튼 4']); L.check((await lcd()) === '☀ ☾ 2 4', 'panel: right code after a short press is not stuck behind old input'); L.check(!(await L.buttons(page)).includes('시작 버튼 꾹 누르기'), 'panel: main button never commits'); await shot(page, 'l-panel'); await hold(); L.check(await dlgHas(page, 'ADMIN'), 'panel solved');
     await L.click(page, '6번 운전 기록 보기'); L.check(await dlgHas(page, '실행 없음'), 'log via reveal');
     L.check(await page.evaluate(() => { const rows = [...document.querySelectorAll('dialog[open] .log6 tr')].map((r) => r.innerText); const get = (k) => rows.find((t) => t.startsWith(k)) || ''; return /22:0\d/.test(get('10/13 화')) && get('10/23 금').includes('실행 없음') && get('11/3 화').includes('실행 없음'); }), 'log: swap nights reflected (10/13 runs, 10/23 empty)');
     await L.click(page, '← 돌아가기'); await L.closeDialog(page); await L.sleep(300);
@@ -888,7 +902,7 @@ async function laundry({ mobile = false } = {}) {
     await goPlace(page, '1. 해달빨래방'); await L.sleep(300);
     await hotspot(page, '6번 동전함'); L.check(await dlgHas(page, '6번 500') && await dlgHas(page, '10/12 월'), 'doc: coins (with the Monday swap receipt)'); await L.closeDialog(page);
     await goPlace(page, '2. 옆 편의점'); await L.sleep(400);
-    await hotspot(page, '포스 옆 메모'); L.check(await dlgHas(page, '출근하는 사람'), 'doc: posnote'); await L.closeDialog(page);
+    await hotspot(page, '포스 옆 꽂이의 메모'); L.check(await dlgHas(page, '출근하는 사람'), 'doc: posnote'); await L.closeDialog(page);
     await L.click(page, '자료'); L.check(!(await L.dialogText(page)).includes('김도현'), 'inventory does not leak the answer'); await L.closeDialog(page);
     await hotspot(page, '근무표 화이트보드');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .sg-cell').length === 18), 'board: 18 cells');
@@ -897,11 +911,12 @@ async function laundry({ mobile = false } = {}) {
     await L.click(page, '최하은 자석'); await commit(page); const m1 = await status(page); L.check(m1.includes('설명되지 않는다'), 'magnet: haeun decoy neutral');
     await L.click(page, '이태오 자석'); await commit(page); L.check((await status(page)) === m1, 'magnet: same neutral message for every wrong pick');
     await L.click(page, '김도현 자석'); await shot(page, 'l-board'); await commit(page); L.check(await dlgHas(page, '들켰네'), 'magnet solved');
-    await L.click(page, '창고에서 나온 알바 보기'); L.check(await dlgHas(page, '컵라면') && !(await dlgHas(page, '열두 시 십 분')), 'talk via reveal (no start time given)'); await L.click(page, '← 돌아가기');
+    await L.click(page, '포스 앞에서 도현과 한 얘기 보기'); L.check(await dlgHas(page, '컵라면') && !(await dlgHas(page, '열두 시 십 분')) && !(await dlgHas(page, '열두 시쯤')), 'talk via reveal (no start time given, no stale \'around midnight\')'); await L.click(page, '← 돌아가기');
     await L.closeDialog(page); await L.sleep(400);
     if (!(await L.mainText(page)).includes('배기구 하나가')) await hotspot(page, '뒷골목으로 가기'); await L.sleep(400);
     L.check((await L.mainText(page)).includes('배기구 하나가'), 'moved to alley');
-    await hotspot(page, '손에 든 배관도'); L.check(await page.evaluate(() => !!document.querySelector('dialog[open] .duct-svg')), 'doc: duct'); await L.closeDialog(page);
+    L.check((await L.mainText(page)).includes('벤치 끝에 펼쳐'), 'alley: duct is laid on the bench (drawn there)');
+    await hotspot(page, '벤치에 펼친 배관도'); L.check(await page.evaluate(() => !!document.querySelector('dialog[open] .duct-svg')), 'doc: duct'); await L.closeDialog(page);
     await hotspot(page, '정류장 시간표'); L.check(await dlgHas(page, '00:30'), 'doc: bus'); await L.closeDialog(page);
     await hotspot(page, '뒷벽 배기구 여섯');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .vent-btn').length === 6), 'vents: 6 vents');
@@ -921,7 +936,7 @@ async function laundry({ mobile = false } = {}) {
     await L.closeDialog(page); await L.sleep(400);
     L.check((await L.mainText(page)).includes('관리자 단말기'), 'back in the hall, terminal pointed at');
     await goPlace(page, '3. 뒷골목'); await L.sleep(300);
-    L.check((await L.mainText(page)).includes('벤치에 셋이'), 'alley arrive reflects solved state');
+    L.check((await L.mainText(page)).includes('발소리가 다가온다'), 'alley arrive reflects solved state');
     await goPlace(page, '1. 해달빨래방'); await L.sleep(300);
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '6번 예약 화면'))), 'sched hidden before cctv');
     await hotspot(page, '관리자 단말기');
@@ -948,7 +963,7 @@ async function laundry({ mobile = false } = {}) {
     await L.click(page, '다음 날 밤 열두 시 십 분, 뒷골목'); await L.sleep(500);
     L.check((await L.mainText(page)).includes('여기 따뜻하네'), 'ending reached');
     await shot(page, 'l-ending');
-    await L.click(page, '엄마와의 통화 읽기'); L.check(await dlgHas(page, '한 달 치') && await dlgHas(page, '버스 기사가') && await dlgHas(page, '월요일'), 'final unlocked (story + Monday gap resolved)'); await L.closeDialog(page);
+    await L.click(page, '엄마와의 통화 읽기'); L.check(await dlgHas(page, '한 달 치') && await dlgHas(page, '버스 기사가') && await dlgHas(page, '월요일') && await dlgHas(page, '주려고 했는데'), 'final unlocked (story + Monday gap resolved)'); await L.closeDialog(page);
     await L.click(page, '자료 다시 보기'); L.check(!(await L.dialogText(page)).includes('읽지 않은 자료'), 'all docs read');
   } catch (e) {
     console.log('FAIL exception', e.message);
