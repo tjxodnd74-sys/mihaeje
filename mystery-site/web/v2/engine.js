@@ -203,7 +203,7 @@ async function main() {
       if (h.auto) h.label = josa(h.label.replace('(으)로 가기', ''), '으로', '로') + ' 가기';
       // 새로 열린 장소로 가는 길은 눈에 보이는 버튼으로, 나머지는 그림 속 물건 자리에 보이지 않는 누름 자리로
       if (h.auto) { const b = btn('v2-hotspot travel go', '', () => act(h), h.label); b.append(el('span', 'v2-hotspot-label', h.label + ' →')); travelRow.append(b); return; }
-      const b = btn('v2-hotspot' + (done ? ' done' : '') + (h.kind === 'device' ? ' device' : '') + (h.kind === 'travel' ? ' travel' : '') + (h.x > 62 ? ' flip' : '') + (h.y < 22 ? ' below' : ''), '', () => act(h, b), h.label);
+      const b = btn('v2-hotspot' + (done ? ' done' : '') + (h.kind === 'device' ? ' device' : '') + (h.kind === 'travel' ? ' travel' : '') + (h.y > 76 ? ' above' : ''), '', () => act(h, b), h.label);
       b.style.left = h.x + '%'; b.style.top = h.y + '%';
       if (h.r) b.style.setProperty('--hit', h.r + '%');
       b.append(el('i'), el('span', 'v2-hotspot-label', h.label));

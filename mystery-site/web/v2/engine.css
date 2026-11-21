@@ -83,7 +83,7 @@ a{color:inherit}
 .v2-cine-box .v2-eyebrow{color:#d9c79f;letter-spacing:.18em}
 .v2-cine-box .v2-line{color:#eee6d6;opacity:0;transform:translateY(8px);transition:opacity .7s,transform .7s,color .7s;max-height:0;overflow:hidden;margin:0}
 .v2-cine-box .v2-line.on{opacity:1;transform:none;max-height:40em;margin:0 0 1.1em}
-.v2-cine-box .v2-line.past{color:#a7a093}
+.v2-cine-box .v2-line.past{color:#c4bcae}
 .v2-cine-next{display:block;margin:8px 0 0 auto;background:none;border:0;color:#e8dcc2;font-size:15px;padding:8px 4px;animation:v2-bob 1.2s ease-in-out infinite}
 .v2-cine-next::after{content:" ▾"}
 .v2-cine-next[hidden]{display:none}
@@ -122,7 +122,7 @@ a{color:inherit}
 .v2-hotspot{--hit:11%;position:absolute;width:var(--hit);aspect-ratio:1;transform:translate(-50%,-50%);background:transparent;border:0;padding:0;border-radius:50%;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .v2-hotspot i{position:absolute;inset:22%;border-radius:50%;border:1.5px solid rgba(243,220,170,.85);background:radial-gradient(rgba(243,210,150,.18),transparent 70%);opacity:0;transform:scale(.7);transition:opacity .2s,transform .2s}
 .v2-hotspot-label{position:absolute;left:50%;top:calc(50% + 30%);transform:translateX(-50%);background:rgba(10,12,16,.82);color:#f3ead8;font-size:13px;padding:4px 9px;border-radius:3px;white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none}
-.v2-hotspot.below .v2-hotspot-label{top:auto;bottom:calc(50% + 30%)}
+.v2-hotspot.above .v2-hotspot-label{top:auto;bottom:calc(50% + 30%)}
 .v2-hotspot:hover i,.v2-hotspot:focus-visible i,.v2-stage.peek .v2-hotspot i{opacity:1;transform:none}
 .v2-hotspot:hover .v2-hotspot-label,.v2-hotspot:focus-visible .v2-hotspot-label,.v2-stage.peek .v2-hotspot-label{opacity:1}
 .v2-hotspot:focus-visible{outline:none}
@@ -166,6 +166,7 @@ a{color:inherit}
 @media (prefers-reduced-motion:reduce){.v2-stage[data-mood="horror"]::after{animation:none}.v2-pan{transition:none}.v2-talk-line span{animation:none;opacity:1}}
 /* 휴대폰: 세로 화면을 그림이 채우고 옆으로 밀어 둘러본다 */
 @media (max-width:640px){
+  .v2-device-head{padding-top:8px}
   .v2-play{padding:0 0 30px}
   .v2-hud{padding:4px 10px 8px;gap:8px}
   .v2-hud .v2-traces{order:3;width:100%;margin:0}
@@ -375,7 +376,7 @@ a{color:inherit}
 
 /* 남긴 것(이야기 진행) */
 .v2-traces{display:flex;gap:10px;flex-wrap:wrap;align-items:center;cursor:default}
-.v2-trace{font-size:12px;color:#5d6873;letter-spacing:.1em;padding:2px 0;border-bottom:1px dashed #3a434d}
+.v2-trace{font-size:12px;color:#9aa5b1;letter-spacing:.1em;padding:2px 0;border-bottom:1px dashed #3a434d}
 .v2-trace.got{color:var(--lamp);letter-spacing:0;border-bottom-color:transparent}
 .v2-trace.got::before{content:'✓ ';opacity:.8}
 .v2-bench-tab.locked{opacity:.5;cursor:not-allowed;border-style:dotted}
@@ -1540,7 +1541,7 @@ dialog input:not([type=range]), dialog textarea { -webkit-user-select: text; use
 .chat-input span{color:#6d737a}
 .v2-fine{color:var(--soft-3)}
 .v2-paper .v2-fine,.v2-ending-paper .v2-fine{color:#5f584b}
-.v2-trace{color:#8a96a2}
+.v2-trace{color:#9aa5b1}
 .v2-bench-tab.locked{opacity:.7}
 .train.dim{opacity:.72}
 .pick-label.dim{opacity:.8}
