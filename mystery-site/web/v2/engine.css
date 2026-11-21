@@ -640,7 +640,7 @@ a{color:inherit}
 .keep-back-note{position:absolute;display:grid;gap:.6cqw;justify-items:start;font-family:var(--hand);color:#2f3a7a;font-size:5cqw;line-height:1.1;transform:rotate(-2deg)}
 .keep-back-note.blanket{left:42%;top:40%;width:22%;color:#2e6b3a;font-size:3.4cqw;gap:.2cqw}
 .keep-back-note.lanyard{left:38%;top:42%;font-size:4.4cqw;color:#1d2a66}
-.keep-back-note.envelope{left:48%;top:44%}
+.keep-back-note.envelope{left:40%;top:40%;max-width:46%}
 .keep-back-note.envelope .stamp.big{position:absolute;left:28cqw;top:17.5cqw;color:#c23a2b}
 .keep-back-note.cert{left:22%;top:34%}
 .keep-back-note.cert .stamp.big{position:absolute;left:61.5cqw;top:21cqw;color:#4a3fa0;width:9cqw;height:9cqw}
@@ -658,7 +658,7 @@ a{color:inherit}
 .card-tab:hover,.card-tab:focus-visible{outline:none;box-shadow:0 0 0 .4cqw rgba(227,166,74,.75)}
 .card-tab.picking{box-shadow:0 0 0 .5cqw var(--lamp)}
 .index-card{background:#fbf7ea repeating-linear-gradient(transparent 0 27px,rgba(70,60,40,.16) 27px 28px);color:#2b2620;border:1px solid #d9d0bb;border-radius:3px;padding:12px 16px;max-width:420px;margin:0 auto 10px;box-shadow:0 2px 6px rgba(0,0,0,.25);font-family:var(--sans);transform:rotate(-.6deg)}
-.ic-head{margin:0 0 6px;font-size:12px;color:#8a8070;letter-spacing:.08em;border-bottom:2px solid #b23b2e;padding-bottom:4px}
+.ic-head{margin:0 0 6px;font-size:13px;color:#8a8070;letter-spacing:.08em;border-bottom:2px solid #b23b2e;padding-bottom:4px}
 .ic-row{display:flex;justify-content:space-between;gap:10px;font-size:15px;line-height:28px}
 .ic-row b{font-family:var(--hand);font-size:22px;font-weight:400;color:#2f3a7a}
 .ic-row b.mono{font-family:var(--hand);letter-spacing:.04em}
@@ -988,11 +988,18 @@ html[data-case="pet-home"]{
   --lamp:#9fd18a;--lamp-deep:#6ea85a;--enamel:#f2f7f3;--ink:#173027;
   --paper:#fbfbf6;--paper-ink:#24352e;--paper-line:#cfe0ea;--radius:10px;
   --paper-strip:linear-gradient(90deg,#e46a5a 0 3px,transparent 3px) 34px 0/100% 100% no-repeat,linear-gradient(#7fb0d6,#7fb0d6);
-  --paper-tex:linear-gradient(90deg,transparent 33px,rgba(228,106,90,.35) 33px 34px,transparent 34px),repeating-linear-gradient(180deg,transparent 0 27px,rgba(127,176,214,.28) 27px 28px);
+  /* v127: 가로 괘선(28px)이 본문 줄 간격(29~36px)과 어긋나 글자를 가로지르던 것 → 빨간 여백선만 (진료 카드 느낌은 위 띠와 카드 자료에) */
+  --paper-tex:linear-gradient(90deg,transparent 33px,rgba(228,106,90,.35) 33px 34px,transparent 34px);
 }
 /* v125 보호자: 표지 분류 글씨 · 엔딩 공책 줄 · 상자 좌우 배치 · 카드 표 · 명찰 넷 */
 html[data-case="pet-home"] .v2-intro-card .v2-eyebrow{color:#eef5f1;text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 12px rgba(0,0,0,.7)}
-html[data-case="pet-home"] .v2-ending-paper{--paper-tex:linear-gradient(90deg,transparent 33px,rgba(228,106,90,.35) 33px 34px,transparent 34px)}
+/* v127: 빨간 여백선(33px)이 글자를 가로지르지 않게 — 글은 선 오른쪽에서 시작, 좁은 종이(옆 자료·휴대폰)는 선을 왼쪽으로 */
+html[data-case="pet-home"] .v2-paper{padding-left:max(46px,clamp(22px,4vw,40px))}
+html[data-case="pet-home"] .v2-paper p,html[data-case="pet-home"] .v2-device-intro{text-wrap:pretty;word-break:keep-all}
+html[data-case="pet-home"] .v2-bench-paper,html[data-case="pet-home"] .v2-dialog.drawer .v2-paper{padding-left:30px;--paper-tex:linear-gradient(90deg,transparent 17px,rgba(228,106,90,.35) 17px 18px,transparent 18px)}
+@media (max-width:640px){
+  html[data-case="pet-home"] .v2-paper{padding-left:30px;--paper-tex:linear-gradient(90deg,transparent 17px,rgba(228,106,90,.35) 17px 18px,transparent 18px);--paper-strip:linear-gradient(90deg,#e46a5a 0 3px,transparent 3px) 16px 0/100% 100% no-repeat,linear-gradient(#7fb0d6,#7fb0d6)}
+}
 html[data-case="pet-home"] .box-wrap{display:grid;gap:10px}
 html[data-case="pet-home"] .box-wrap .keepbox{margin:0 auto 8px}
 html[data-case="pet-home"] .keep-backcard{display:grid;grid-template-columns:minmax(0,1fr);gap:4px}
@@ -1003,24 +1010,58 @@ html[data-case="pet-home"] .record-row .rr-n{font-weight:800;color:#5c5344}
 html[data-case="pet-home"] .paper-table td.torn{color:#62593f}
 html[data-case="pet-home"] .keep-back-note .keep-date,html[data-case="pet-home"] .keep-back-note .keep-sub{background:rgba(255,253,245,.78);padding:0 .8cqw;border-radius:.4cqw}
 html[data-case="pet-home"] .record-row .rr-name{font-weight:600}
-html[data-case="pet-home"] .box-right .tinlock{max-width:230px}
+html[data-case="pet-home"] .keep-back-note .keep-sub{font-size:3.6cqw}
+html[data-case="pet-home"] .keep-item.gone{opacity:1;background:rgba(16,12,6,.55);box-shadow:inset 0 0 0 .3cqw rgba(255,255,255,.12)} /* 기록 칸에 놓은 물건은 상자에서 빈 자리로 */
+html[data-case="pet-home"] .keep-back-note.blanket{color:#173f20}
+html[data-case="pet-home"] .keep-back-note.blanket .keep-date{background:rgba(255,253,245,.92)}
+html[data-case="pet-home"] .paper-table td,html[data-case="pet-home"] .paper-table th{word-break:keep-all}
+html[data-case="pet-home"] .paper-table .hand-note{font-size:19px;line-height:1.35}
+html[data-case="pet-home"] .prop.album .album-cap{position:absolute;left:71%;top:60%;transform:translate(-50%,-50%) rotate(-4deg);font-family:var(--hand);font-size:3.8cqw;color:#2f3a7a;opacity:.85;pointer-events:none}
+html[data-case="pet-home"] .tin-row{display:grid;grid-template-columns:minmax(0,190px) auto;gap:16px;align-items:center;justify-content:center;margin:2px 0 0}
+html[data-case="pet-home"] .tin-row .tinlock{margin:0;max-width:none}
+html[data-case="pet-home"] .tin-row .pick-label{margin:0 0 6px;text-align:center}
+html[data-case="pet-home"] .tin-row .dials{margin:0;gap:10px}
+html[data-case="pet-home"] .tin-row .dial .ctl{min-width:44px;min-height:40px}
+html[data-case="pet-home"] .tin-row .dial{gap:4px}
+html[data-case="pet-home"] .tin-row .dial .num{font-size:30px;width:54px;padding:3px 0}
+html[data-case="pet-home"] .record-row{padding:8px 4px}
 @media (min-width:900px){
-  html[data-case="pet-home"] .box-wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:16px}
+  html[data-case="pet-home"] .box-wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:12px 16px}
+  html[data-case="pet-home"] .tin-row{grid-column:1/-1}
 }
 @media (max-width:640px){
   html[data-case="pet-home"] .keep-backcard{grid-template-columns:128px minmax(0,1fr);align-items:center;gap:10px}
   html[data-case="pet-home"] .keep-backcard .keep-back{margin:0}
+  html[data-case="pet-home"] .keep-back .keep-sub{display:none}
+  html[data-case="pet-home"] .paper-table .stamp-name{display:none}
+  html[data-case="pet-home"] .tin-row{grid-template-columns:minmax(0,1fr) auto;gap:10px}
+  html[data-case="pet-home"] .tin-row .dials{gap:6px}
+  html[data-case="pet-home"] .tin-row .dial .num{width:46px;font-size:26px}
+  html[data-case="pet-home"] .tin-row .dial .ctl{min-width:46px}
 }
-html[data-case="pet-home"] .card-tab{width:7%;height:20%;transform:translate(-50%,-22%);border-radius:4px}
-html[data-case="pet-home"] .card-tab.picking{box-shadow:0 0 0 .6cqw var(--lamp),0 0 2cqw rgba(159,209,138,.6)}
+/* v127 서랍장: 서랍장만 잘라 크게 · 누름 자리 = 서랍 앞판 · 번호표 = 황동 이름표 틀 위 (사진 좌표를 재서 맞춤, pet-home.js CAB/FRONT/PLATE) */
+html[data-case="pet-home"] .cardcabinet{aspect-ratio:68608/59168}
+html[data-case="pet-home"] .cardcabinet>img{position:absolute;max-width:none;height:auto}
+html[data-case="pet-home"] .drawer-btn{position:absolute;display:block;padding:0;border-radius:.6cqw;transform:none;transition:box-shadow .15s,background .15s;-webkit-tap-highlight-color:transparent}
+html[data-case="pet-home"] .drawer-btn .plate{position:absolute;display:grid;place-items:center;box-sizing:border-box;padding:0;margin:0;font-family:var(--sans);font-weight:800;font-size:max(13px,2.9cqw);line-height:1;letter-spacing:.02em;color:#3b2a0e;background:linear-gradient(#f2e4bc,#dcc58c);border-radius:.3cqw;box-shadow:inset 0 0 0 .18cqw rgba(110,80,24,.55),0 .1cqw .3cqw rgba(0,0,0,.35);font-variant-numeric:tabular-nums}
+html[data-case="pet-home"] .drawer-btn:hover,html[data-case="pet-home"] .drawer-btn:focus-visible{outline:none;box-shadow:inset 0 0 0 .5cqw rgba(159,209,138,.7);background:rgba(255,255,255,.05)}
+html[data-case="pet-home"] .drawer-btn.picking{box-shadow:inset 0 0 0 .7cqw var(--lamp),0 0 0 .2cqw rgba(0,0,0,.5);background:rgba(159,209,138,.12)}
+html[data-case="pet-home"] .drawer-btn.picking .plate{background:linear-gradient(#fff8dc,#f0dc9c);color:#1f1606}
+html[data-case="pet-home"] .carddrawer .drawer-front-plate{position:absolute;left:38.6%;top:75.3%;width:23.1%;height:11.9%;display:grid;place-items:center;font-family:var(--sans);font-weight:800;font-size:6.2cqw;color:#3b2a0e;opacity:.88;pointer-events:none;letter-spacing:.04em}
+html[data-case="pet-home"] .cardcabinet,html[data-case="pet-home"] .carddrawer{max-width:500px}
+/* 색 표: 테두리는 사진 속 표를 딱 감싸고(기울기까지), 누름 자리는 ::after 로 조금 넓게 */
+html[data-case="pet-home"] .card-tab{position:absolute;width:8.6%;height:4.6%;padding:0;transform:translate(-50%,-50%) rotate(var(--rot,0deg));border-radius:.6cqw .6cqw .2cqw .2cqw;transition:box-shadow .15s,transform .15s}
+html[data-case="pet-home"] button.card-tab::after{content:"";position:absolute;left:-14%;right:-14%;top:-60%;bottom:-120%}
+html[data-case="pet-home"] .card-tab:hover,html[data-case="pet-home"] .card-tab:focus-visible{outline:none;box-shadow:0 0 0 .4cqw rgba(159,209,138,.85)}
+html[data-case="pet-home"] .card-tab.picking{box-shadow:0 0 0 .55cqw var(--lamp),0 0 2cqw rgba(159,209,138,.55);}
 html[data-case="pet-home"] .card-pick-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0 0 10px}
 html[data-case="pet-home"] .card-pick{min-height:46px;border-radius:6px;border:1px solid var(--line);border-top:6px solid var(--tabc);background:var(--chip);color:var(--enamel);font-size:14px;font-weight:700;padding:4px 0}
 html[data-case="pet-home"] .card-pick.on{box-shadow:0 0 0 2px var(--lamp)}
 html[data-case="pet-home"] .card-pick.blue{--tabc:#5b88b8}html[data-case="pet-home"] .card-pick.green{--tabc:#6f9a62}html[data-case="pet-home"] .card-pick.yellow{--tabc:#e0b43c}html[data-case="pet-home"] .card-pick.orange{--tabc:#e2852f}html[data-case="pet-home"] .card-pick.red{--tabc:#c9554c}
 html[data-case="pet-home"] .strap-wrap{max-width:640px;margin:0 auto}
-html[data-case="pet-home"] .strap-handle{position:relative;z-index:5;width:min(100%,360px);margin:0 auto 12px;border-radius:8px;overflow:hidden;cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;box-shadow:0 8px 20px rgba(0,0,0,.35);transition:box-shadow .15s}
+html[data-case="pet-home"] .strap-handle{position:relative;width:min(100%,360px);margin:0 auto 12px;border-radius:8px;overflow:hidden;cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;box-shadow:0 8px 20px rgba(0,0,0,.35);transition:box-shadow .15s}
 html[data-case="pet-home"] .strap-handle img{display:block;width:100%;aspect-ratio:7/2;object-fit:cover;object-position:50% 62%;pointer-events:none}
-html[data-case="pet-home"] .strap-handle.dragging{cursor:grabbing;opacity:.9;box-shadow:0 16px 34px rgba(0,0,0,.5);transition:none}
+html[data-case="pet-home"] .strap-handle.dragging{z-index:5;cursor:grabbing;opacity:.9;box-shadow:0 16px 34px rgba(0,0,0,.5);transition:none}
 html[data-case="pet-home"] .strap-handle.parked{opacity:.55}
 html[data-case="pet-home"] .strap-cap{position:absolute;left:8px;bottom:6px;background:rgba(19,32,28,.82);color:#f2f7f3;font-size:13px;padding:3px 8px;border-radius:3px}
 html[data-case="pet-home"] .badge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
@@ -1030,13 +1071,21 @@ html[data-case="pet-home"] .badge-cell.on{border-style:solid;border-color:var(--
 html[data-case="pet-home"] .badge-card{width:100%;max-width:210px;margin:0;transform:rotate(var(--tilt,0deg));box-shadow:0 6px 14px rgba(0,0,0,.35);pointer-events:none}
 html[data-case="pet-home"] .badge-card img{display:block;width:100%}
 html[data-case="pet-home"] .on-badge2{position:absolute;left:9%;right:9%;top:22%;bottom:14%;display:grid;align-content:center;justify-items:center;gap:1.2cqw;font-family:var(--sans);color:#1d3f8a;text-align:center;line-height:1.1}
-html[data-case="pet-home"] .on-badge2 b{font-size:6.4cqw;font-weight:700}
-html[data-case="pet-home"] .on-badge2 span{font-size:7.4cqw;font-weight:600}
-html[data-case="pet-home"] .on-badge2 strong{font-size:10.5cqw;font-weight:800;letter-spacing:.12em}
+html[data-case="pet-home"] .on-badge2 b{font-size:7.6cqw;font-weight:700}
+html[data-case="pet-home"] .on-badge2 span{font-size:9.6cqw;font-weight:700}
+html[data-case="pet-home"] .on-badge2 strong{font-size:11.5cqw;font-weight:800;letter-spacing:.1em}
 html[data-case="pet-home"] .clip-on{position:absolute;left:44.2%;top:0;width:8%;height:13%;transform:translateX(-50%);background:linear-gradient(90deg,#2a5aa6,#3b72c4 45%,#244f93);border-radius:0 0 3px 3px;box-shadow:0 2px 3px rgba(0,0,0,.4)}
 html[data-case="pet-home"] .clip-on::after{content:"";position:absolute;left:50%;bottom:-3cqw;width:5cqw;height:5cqw;transform:translateX(-50%);border-radius:50%;border:1.2cqw solid #b8bec4;box-shadow:0 1px 2px rgba(0,0,0,.5)}
 html[data-case="pet-home"] .badge-btn{min-height:42px;min-width:120px}
 html[data-case="pet-home"] .badge-btn.on{background:var(--enamel);color:var(--ink)}
+/* v127: PC 에선 명찰 넷을 한 줄로 — 끈·명찰·'집게 물리기'가 한 화면에 (끌어다 놓는 동안 창이 밀리지 않게) */
+@media (min-width:900px){
+  html[data-case="pet-home"] .badge-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+  html[data-case="pet-home"] .badge-cell{padding:8px 4px}
+  html[data-case="pet-home"] .badge-btn{min-width:0;width:100%;max-width:130px}
+  html[data-case="pet-home"] .on-badge2 span{font-size:10.2cqw}
+  html[data-case="pet-home"] .on-badge2 b{font-size:8.6cqw}
+}
 
 /* 사진관: 암실 · 안전등 빨강 · 필름 구멍 */
 html[data-case="studio"]{
@@ -1537,10 +1586,20 @@ html[data-case="laundry"] .cctv-cell b{font-size:13px}
 html[data-case="laundry"] .cctv-cell span{font-size:14px;line-height:1;color:var(--soft-3)}
 html[data-case="laundry"] .cctv-cell.on{border-color:var(--lamp);box-shadow:inset 0 0 0 1px var(--lamp)}
 html[data-case="laundry"] .cctv-cell.marked span{color:#ffd75a}
-html[data-case="laundry"] .cctv-mark{display:block;margin:0 auto;min-height:44px;padding:8px 18px}
+html[data-case="laundry"] .cctv-mark{display:block;margin:0;min-height:44px;padding:8px 18px}
+html[data-case="laundry"] .cctv-foot{display:flex;align-items:center;justify-content:center;gap:8px 14px;flex-wrap:wrap}
+html[data-case="laundry"] .cctv-foot .pick-label{margin:0}
+@media (min-width:900px){html[data-case="laundry"] .cctv-wrap{max-width:470px}}
 html[data-case="laundry"] .dpanel .lcd.full{animation:lcd-full .5s steps(2,end) 2}
 @keyframes lcd-full{50%{color:#ffcf7a;text-shadow:0 0 .8cqw rgba(255,190,90,.6)}}
-html[data-case="laundry"] .prop.cctv{overflow:hidden}
+html[data-case="laundry"] .prop.cctv{overflow:hidden;isolation:isolate} /* v127: 화면 글자(z-index)가 창 머리 줄 위로 올라오지 않게 */
+/* v127 예약: 줄마다 칸을 네 칸 격자로 맞춰 칩이 줄바꿈되지 않게 */
+html[data-case="laundry"] .sched-chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+html[data-case="laundry"] .sched-chips .chip{min-width:0;padding-left:4px;padding-right:4px;font-variant-numeric:tabular-nums}
+html[data-case="laundry"] .sg-row{font-size:2.3cqw}
+html[data-case="laundry"] .receipt{font-size:13px}
+html[data-case="laundry"] .receipt b{font-size:13px}
+html[data-case="laundry"] .v2-paper p,html[data-case="laundry"] .v2-device-intro{text-wrap:pretty;word-break:keep-all}
 @media (max-width:640px){
   /* 휴대폰: 벤치 쪽을 크게 (앉았는지 서 있는지 보이게) */
   html[data-case="laundry"] .prop.cctv img,html[data-case="laundry"] .cctv-fig{transform:scale(1.45);transform-origin:46% 72%}
@@ -1548,6 +1607,9 @@ html[data-case="laundry"] .prop.cctv{overflow:hidden}
   html[data-case="laundry"] .cctv-cell b{font-size:12px}
   html[data-case="laundry"] .cctv-strip{gap:4px}
   html[data-case="laundry"] .swap-note{font-size:17px;margin:-14px 0 8px auto}
+  html[data-case="laundry"] .sched-row{grid-template-columns:64px minmax(0,1fr);padding:6px 8px;gap:6px}
+  html[data-case="laundry"] .dpanel .lcd{font-size:4.6cqw;letter-spacing:.04em}
+  html[data-case="laundry"] .dpanel.small .lcd{font-size:4.2cqw;line-height:1.05}
 }
 
 /* 끝나지 않은 방송: 꺼진 방송국 · ON AIR 빨강 · VU 미터 호박색 */
