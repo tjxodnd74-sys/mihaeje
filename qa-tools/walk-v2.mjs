@@ -314,10 +314,14 @@ async function ohang({ mobile = false } = {}) {
     const cycle = [me]; while (cycle.length < 5) cycle.push(NEXT[cycle[cycle.length - 1]]);
     await L.click(page, '접수표 들고 문 앞으로'); await L.sleep(400);
     L.check(await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('mihaeje-v2-ohang') || '{}'); return ['myslip', 'chat'].every((k) => (s.found || []).includes(k)); }), 'my slip and phone are in the bag from the start');
-    for (const [d, t] of [['주머니 속 휴대폰', '네 빛 낳는놈 밑에'], ['문에 붙은 종이', '서로 낳는 순서']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    // 할머니 문자는 소지품에서 (주머니 속 휴대폰 누름 자리는 그림에 없어서 뺐다)
+    L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => /휴대폰/.test(b.getAttribute('aria-label'))))), 'front: no hotspot on an undrawn pocket phone');
+    await page.evaluate(() => document.querySelector('.v2-hud-btn.bag').click()); await L.sleep(300); await L.click(page, '할머니의 문자'); L.check(await dlgHas(page, '네 빛 낳는놈 밑에'), 'doc: grandma chat from the bag'); await L.closeDialog(page);
+    await hotspot(page, '문에 붙은 종이'); L.check(await dlgHas(page, '서로 낳는 순서'), 'doc: 문에 붙은 종이'); await L.closeDialog(page);
+    L.check(await page.evaluate(() => ['청자 빛 화분', '붉은 화분', '노란 화분', '흰 화분', '검은 화분'].every((l) => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === l))), 'front: one hotspot per pot');
     L.check(await page.evaluate(() => !!document.querySelector('.cycle-chart')) === false, 'chart only inside dialog');
     // pots: 내 빛을 낳는 빛의 화분 (사람마다 다름)
-    await hotspot(page, '섬돌 위 화분');
+    await hotspot(page, '흰 화분');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), 'no in-device guide');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .potstep .pot').length === 5), 'pots: 5 pots on photo');
     L.check(!(await L.buttons(page)).some((b) => b === '화분 들어 보기'), 'pots: no commit before pick');
@@ -364,9 +368,9 @@ async function ohang({ mobile = false } = {}) {
     await hotspot(page, '책상 위 메모'); L.check(await dlgHas(page, '누르는 순서로 다섯 개'), 'doc: desk memo'); await L.closeDialog(page);
     // lanterns: 내 빛부터 누르는 순서(상극)
     await goPlace(page, '1. 오행당 문 앞'); await L.sleep(300);
-    await hotspot(page, '내가 쓴 접수표'); L.check(await dlgHas(page, '할머니가 세는 법대로'), 'myslip doc re-readable'); await L.closeDialog(page);
+    await hotspot(page, '살창에 끼워 둔 내 접수표'); L.check(await dlgHas(page, '할머니가 세는 법대로'), 'myslip doc re-readable'); await L.closeDialog(page);
     await goPlace(page, '3. 뒷방'); await L.sleep(300);
-    await hotspot(page, '장대에 걸린 등 다섯');
+    await hotspot(page, '노란 등');
     L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].some((t) => t.textContent.includes('내가 쓴 접수표') && !t.disabled)), 'lanterns: my slip on bench');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .lanternpole .lantern').length === 5), 'lanterns: 5 on photo');
     for (const id of cycle) await L.click(page, LAN[id], { exact: true });
@@ -1099,7 +1103,8 @@ async function radio({ mobile = false } = {}) {
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), '★5: no guide');
     L.check(!(await L.buttons(page)).includes('손잡이 돌리기'), 'keypad: no commit before input');
     await key('1947'); await commit(page); L.check((await status(page)).includes('돌지 않는다'), 'keypad: 1947 decoy neutral');
-    await key('4719'); await shot(page, 'r-keypad'); await commit(page); L.check(await dlgHas(page, '사번'), 'keypad solved');
+    await key('4719'); await shot(page, 'r-keypad'); L.check((await L.dialogText(page)).includes('4 7 1 9'), 'keypad: pressed digits shown large');
+    await L.click(page, '도어락 손잡이', { exact: true }); await L.sleep(250); L.check(await dlgHas(page, '사번'), 'keypad solved by turning the handle in the photo');
     await L.closeDialog(page); await L.sleep(400);
     L.check(!(await travels()).some((t) => t.includes('보관실')), 'lobby: no way to archive from lobby — ' + JSON.stringify(await travels()));
     if (!(await L.mainText(page)).includes('먼지 자국이')) await hotspot(page, 'B실로 가기'); await L.sleep(400);
@@ -1129,17 +1134,19 @@ async function radio({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('마지막으로 앉았던'), 'studio A arrival');
     L.check(await page.evaluate(() => ![...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '패치베이')), 'patch hidden before deck');
     for (const [d, t] of [['콘솔 위 송출 기록지', '01:58:12'], ['랙 옆 배선표', '출력 4']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    L.check(!(await page.evaluate(() => !!document.querySelector('.v2-stage-ov.phone-buzz'))), 'studio A: phone not buzzing before the deck');
     await hotspot(page, '릴 테이프 데크');
     for (let k = 0; k < 7; k++) await L.click(page, '분 십의 자리 올리기', { exact: true });
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .cw-num')[0].textContent === '1'), 'deck: minute tens wraps at 5');
     const setC = async (digits) => { const labs = ['분 십의 자리', '분 일의 자리', '초 십의 자리', '초 일의 자리']; for (let i = 0; i < 4; i++) { for (let k = 0; k < 10; k++) { const cur = await page.evaluate((i) => document.querySelectorAll('dialog[open] .cw-num')[i].textContent, i); if (cur === String(digits[i])) break; await L.click(page, labs[i] + ' 올리기', { exact: true }); } } };
     await setC([5, 8, 1, 2]); await commit(page); L.check((await status(page)).includes('그 순간이 아니다'), 'deck: no preroll decoy neutral');
     await setC([5, 8, 2, 3]); await commit(page); L.check((await status(page)).includes('그 순간이 아니다'), 'deck: one second past the cut misses it');
-    await setC([5, 8, 1, 9]); await shot(page, 'r-deck'); await commit(page); L.check(await dlgHas(page, '꺼진 마이크에 대고'), 'deck solved a few seconds before the cut (5-second play window)');
+    await setC([5, 8, 1, 9]); await shot(page, 'r-deck'); await L.click(page, '데크 재생 단추', { exact: true }); await L.sleep(250); L.check(await dlgHas(page, '꺼진 마이크에 대고'), 'deck solved a few seconds before the cut (5-second play window)');
     await L.click(page, '테이프 58:22부터 보기'); L.check(await dlgHas(page, '손이 떨려서'), 'deck: what I heard kept as a doc');
     await L.closeDialog(page); await L.sleep(300);
     // 녹화기 알림: 숫자 크기 순은 함정, 실제 밤 순서
-    await hotspot(page, '주머니 속 휴대폰');
+    L.check(await page.evaluate(() => !!document.querySelector('.v2-stage-ov.phone-buzz')), 'studio A: phone on the chair lights up after the deck');
+    await hotspot(page, '의자 위 내 휴대폰');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .cctv-btn').length === 4), 'cctv: 4 frames');
     for (const t of ['01:10:05', '01:59:30', '11:40:12', '12:20:47']) await cam(t);
     await L.sleep(150); await commit(page); L.check((await status(page)).includes('앞뒤가 이어지지'), 'cctv: numeric-sort decoy neutral — ' + (await status(page)));
@@ -1152,7 +1159,8 @@ async function radio({ mobile = false } = {}) {
     L.check(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '패치베이')), 'patch shown after cctv');
     await hotspot(page, '패치베이');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .jack').length === 16), 'patch: 16 jacks');
-    L.check((await L.dialogText(page)).includes('7 AUTO PC → 1 TX MAIN'), 'patch: tonight cables shown');
+    L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .pb-cable')].some((c) => /7 AUTO PC/.test(c.textContent) && /1 TX MAIN/.test(c.textContent))), 'patch: tonight cables shown');
+    L.check(await page.evaluate(() => { const lab = document.querySelector('dialog[open] .pb-lab'); const bar = document.querySelector('dialog[open] .v2-dialog-bar'); return lab && bar && lab.closest('.prop') && getComputedStyle(lab.closest('.prop')).zIndex === '0'; }), 'patch: photo labels stay under the dialog bar');
     L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].some((t) => t.textContent.includes('녹화기 알림'))), 'patch: cctv log on bench');
     await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].find((t) => t.textContent.includes('녹화기 알림')).click()); await L.sleep(200);
     L.check((await L.dialogText(page)).includes('01:59:30 이후'), 'patch: cctv log readable on bench');

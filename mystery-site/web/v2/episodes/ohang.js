@@ -243,13 +243,13 @@ export default {
       arrive: (S) => S.solved.includes('pots')
         ? '문은 열려 있다 들었다 놓은 화분이 조금 비뚤게 앉아 있다 문에는 할머니가 붙여 둔 종이가 그대로'
         : '문은 잠겨 있고, 문에는 할머니가 오래전에 붙여 둔 종이가 그대로다 섬돌 위 화분 다섯 처마 끝에서 빗물이 한 방울씩 떨어진다',
+      // 할머니 문자는 처음부터 소지품에 있다 (주머니 속 휴대폰은 그림에 없으니 누름 자리를 두지 않는다)
+      // 화분 다섯은 그림에서 x 28.3·39.7·50·60.5·71.4 (몸통은 y 87 대사창 자리라 위로 솟은 잎 쪽을 누른다) 어느 화분을 눌러도 화분 장치가 열린다
+      // 접수표 묶음은 문 오른쪽 살창에 끼워 둔 종이 (그림에 그려 넣음, 가운데 77.3 · 46.5)
       hotspots: [
-        { id: 'phone', x: 11, y: 68, label: '주머니 속 휴대폰', kind: 'doc', doc: 'chat' },
-        { id: 'paper', x: 50, y: 38, label: '문에 붙은 종이', kind: 'doc', doc: 'doorpaper' },
-        { id: 'pots', x: 50, y: 74, label: '섬돌 위 화분', kind: 'device', device: 'pots', r: 12 },
-        { id: 'pots-l', x: 30, y: 74, label: '섬돌 위 화분', kind: 'device', device: 'pots', r: 12 },
-        { id: 'pots-r', x: 70, y: 74, label: '섬돌 위 화분', kind: 'device', device: 'pots', r: 12 },
-        { id: 'myslip', x: 89, y: 68, label: '내가 쓴 접수표', kind: 'doc', doc: 'myslip' },
+        { id: 'paper', x: 50, y: 38, label: '문에 붙은 종이', kind: 'doc', doc: 'doorpaper', r: 10 },
+        ...[28.3, 39.7, 50, 60.5, 71.4].map((x, i) => ({ id: 'pots-' + E[i].id, x, y: 77, label: E[i].pot, kind: 'device', device: 'pots', r: 9 })),
+        { id: 'myslip', x: 77.3, y: 46.5, label: '살창에 끼워 둔 내 접수표', kind: 'doc', doc: 'myslip', r: 7 },
       ],
     },
     {
@@ -263,10 +263,11 @@ export default {
           ? '맨 아래 서랍이 열려 있다 뒷방 문은 잠긴 그대로다 오른쪽 선반에는 할머니 차 통이 줄지어 있다'
           : '불을 켜자 약재 냄새가 먼저 왔다 탁자 위 찻잔 하나에 아직 물기가 있다 할머니가 넘어지던 날 끓이던 차 안쪽 벽 찬장엔 열십자로 칸 다섯이 나 있고, 칸마다 주전자며 항아리가 들어앉았다 그 아래 반닫이 안엔 그릇 다섯이 보자기에 싸여 있다',
       hotspots: [
-        { id: 'photo', x: 34, y: 34, label: '벽에 걸린 사진', kind: 'doc', doc: 'oldphoto' },
+        { id: 'photo', x: 34.4, y: 34.4, label: '벽에 걸린 사진', kind: 'doc', doc: 'oldphoto', r: 9 },
         { id: 'board', x: 91, y: 17, label: '메뉴판', kind: 'doc', doc: 'board' },
         { id: 'notebook', x: 89, y: 50, label: '접수대 서랍의 공책', kind: 'doc', doc: 'notebook' },
-        { id: 'memo', x: 60, y: 41, label: '찬장에 붙은 메모', kind: 'doc', doc: 'memo', r: 7 },
+        // 메모는 찬장 오른쪽 칸 바로 아래 벽에 테이프로 붙은 종이 (그림에 그려 넣음)
+        { id: 'memo', x: 59.2, y: 37.5, label: '찬장에 붙은 메모', kind: 'doc', doc: 'memo', r: 6 },
         { id: 'cabinet', x: 52, y: 25, label: '찬장과 다섯 그릇', kind: 'device', device: 'bowls' },
         { id: 'drawer', x: 54, y: 53, label: '열린 맨 아래 서랍', kind: 'doc', doc: 'slips', r: 8, visible: (S) => S.solved.includes('bowls') },
         { id: 'tins', x: 75, y: 30, label: '선반의 차 통', kind: 'device', device: 'tins', visible: (S) => S.solved.includes('bowls') },
@@ -277,15 +278,16 @@ export default {
       name: '뒷방',
       image: P + 'back.webp',
       unlockedBy: 'tins',
+      // 등을 다 켠 뒤엔 장면 그림의 등 다섯에도 불빛을 얹는다 (그림 속 등 가운데 x 24.6·37.8·50.8·63.7·75.8, y 25.3)
+      get overlays() { let s = []; try { s = (window.MihaejeV2?.state || JSON.parse(localStorage.getItem('mihaeje-v2-ohang') || '{}')).solved || []; } catch {} if (!s.includes('lanterns')) return []; const C = ['200,255,240', '255,190,170', '255,236,170', '255,255,245', '215,225,245']; return [24.6, 37.8, 50.8, 63.7, 75.8].map((x, i) => ({ x: x - 7, y: 25.3 - 11, w: 14, h: 22, cls: 'lantern-glow', style: `background:radial-gradient(closest-side,rgba(${C[i]},.55),rgba(${C[i]},.22) 55%,rgba(${C[i]},0));mix-blend-mode:screen;pointer-events:none;border-radius:50%`, html: '' })); },
       arrive: (S) => S.solved.includes('lanterns')
         ? '등 다섯 개가 켜져 있다 책상 위 접수함 뚜껑이 열려 있다 안에 있던 접수표는 언제든 다시 꺼내 볼 수 있다'
         : '뒷방은 할머니가 장부를 쓰던 방이다 대나무 장대에 등 다섯, 책상 위엔 작은 등잔과 잠긴 접수함, 그리고 메모 한 장 창밖에선 빗물 소리만 난다',
       hotspots: [
-        { id: 'deskmemo', x: 52, y: 74, label: '책상 위 메모', kind: 'doc', doc: 'deskmemo', r: 8 },
-        { id: 'lanterns', x: 51, y: 24, label: '장대에 걸린 등 다섯', kind: 'device', device: 'lanterns', r: 13 },
-        { id: 'lanterns-l', x: 28, y: 24, label: '장대에 걸린 등 다섯', kind: 'device', device: 'lanterns', r: 13 },
-        { id: 'lanterns-r', x: 74, y: 24, label: '장대에 걸린 등 다섯', kind: 'device', device: 'lanterns', r: 13 },
-        { id: 'box', x: 37, y: 67, label: '열린 접수함', kind: 'doc', doc: 'final', r: 8, visible: (S) => S.solved.includes('lanterns') },
+        // 메모는 책상 위에 누운 종이 (그림에 그려 넣음) · 등 누름 자리는 그림 속 등 다섯 가운데 (어느 등을 눌러도 등 장치) · 접수함은 책상 왼쪽 상자
+        { id: 'deskmemo', x: 51.6, y: 74, label: '책상 위 메모', kind: 'doc', doc: 'deskmemo', r: 8 },
+        ...[24.6, 37.8, 50.8, 63.7, 75.8].map((x, i) => ({ id: 'lantern-' + E[i].id, x, y: 25.3, label: E[i].lantern, kind: 'device', device: 'lanterns', r: 10 })),
+        { id: 'box', x: 36.8, y: 70.3, label: '열린 접수함', kind: 'doc', doc: 'final', r: 8, visible: (S) => S.solved.includes('lanterns') },
       ],
     },
   ],
@@ -371,7 +373,7 @@ export default {
         const solved = S.solved.includes('pots');
         const wrap = el('div', 'pots-wrap');
         const step = el('div', 'prop potstep'); const im = el('img'); im.src = P + 'front.webp'; im.alt = '섬돌 위 화분 다섯'; step.append(im);
-        const xs = { blue: 17.2, red: 34.4, yellow: 50, white: 65.6, black: 82.8 };
+        const xs = { blue: 16.2, red: 34.0, yellow: 50.1, white: 66.6, black: 83.5 }; // 잘라 낸 섬돌 사진(x 184~839) 안 화분 가운데
         E.forEach((e) => {
           const b = el('button', 'pot' + (d.pick === e.id ? ' picking' : '')); b.type = 'button'; b.style.left = xs[e.id] + '%';
           b.setAttribute('aria-label', e.pot); b.title = e.pot;
@@ -518,7 +520,7 @@ export default {
       hints: (S) => { const o = controlOrder(seedOf(S).id); return [
         '"네 빛부터"는 접수표에 있다 "누르는 순서"는 "낳는 순서"랑 다른 말이다',
         '메모 뒷면 연필 자국을 등잔에 대 봐라 문종이 화살표와 다른 길이 나온다',
-        o.map((id) => byId[id].lantern).join(' → '),
+        o.map((id, i) => `${i + 1} ${byId[id].lantern}`).join(' · '),
       ]; },
       initial: () => ({ lit: [], back: false }),
       render(ctx) {
@@ -526,7 +528,7 @@ export default {
         const solved = S.solved.includes('lanterns');
         const wrap = el('div', 'lanterns-wrap');
         const pole = el('div', 'prop lanternpole'); const im = el('img'); im.src = P + 'back.webp'; im.alt = '장대에 걸린 등 다섯'; pole.append(im);
-        const xs = { blue: 17.1, red: 34.2, yellow: 51.3, white: 68.4, black: 84.2 };
+        const xs = { blue: 16.6, red: 33.9, yellow: 51.0, white: 68.0, black: 83.9 }; // 잘라 낸 장대 사진(x 123~901) 안 등 가운데
         const lit = solved ? controlOrder(seedOf(S).id) : d.lit;
         E.forEach((e) => {
           const on = lit.includes(e.id);
@@ -541,7 +543,7 @@ export default {
         const reset = el('button', 'chip', '다 끄고 다시'); reset.type = 'button'; reset.onclick = () => { if (solved) return; d.lit = []; save(); };
         const flip = el('button', 'chip' + (d.back ? ' on' : ''), d.back ? '메모 내려놓기' : '메모를 등잔에 대 보기'); flip.type = 'button'; flip.onclick = () => { d.back = !d.back; save(); };
         row.append(reset, flip);
-        wrap.append(el('p', 'pick-label', lit.length ? `${lit.length}개 켜짐: ${lit.map((id) => byId[id].lantern).join(' → ')}` : '등을 누르면 켜진다 켠 순서가 남는다'), row);
+        wrap.append(el('p', 'pick-label', lit.length ? `${lit.length}개 켜짐 · ${lit.map((id, i) => `${i + 1} ${byId[id].lantern}`.replace(/ /g, '\u00a0')).join(' · ')}` : '등을 누르면 켜진다 켠 순서가 남는다'), row);
         if (d.back) {
           const fig = el('figure', 'prop notecard backlit');
           fig.innerHTML = `<img src="${P}props/notecard.webp" alt="등잔 불빛에 비친 메모 뒷면" decoding="async"><div class="on-notecard star">${starSvg()}</div><figcaption>메모 뒷면 등잔 불빛에 대야 연필 자국이 보인다</figcaption>`;
