@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(Pretendard-Black.woff2) format("woff2");font-weight:900}
+@font-face{font-family:P;src:url(Pretendard-ExtraBold.woff2) format("woff2");font-weight:800}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#8fb5d6;font-family:P,sans-serif;color:#fff;word-break:keep-all}
+canvas{position:absolute;inset:0}
+.ov{position:absolute;left:0;right:0;text-align:center;font-weight:900;letter-spacing:-.04em;-webkit-text-stroke:14px #000;paint-order:stroke fill;text-shadow:0 8px 24px rgba(0,0,0,.45)}
+.ov em{font-style:normal;color:#ffe14a}
+#top{top:250px;font-size:92px;line-height:1.15}
+#mid{top:700px;font-size:124px;line-height:1.08}
+#sub{top:1040px;font-size:46px;font-weight:800;-webkit-text-stroke:9px #000}
+#cap{top:1330px;font-size:60px;font-weight:800;-webkit-text-stroke:11px #000;white-space:nowrap}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#dim{position:absolute;inset:0;background:#000;opacity:0}
+#vig{position:absolute;inset:0;opacity:0;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 35%,rgba(0,0,0,.92) 80%)}
+.tag{position:absolute;font-weight:900;font-size:42px;padding:8px 20px;border-radius:14px;border:5px solid #000;color:#000;white-space:nowrap;transform:translate(-50%,-100%);display:none}
+#bar{position:absolute;left:0;right:0;top:250px;display:flex;justify-content:center;gap:22px;opacity:0}
+#bar div{width:150px;height:150px;border-radius:30px;border:6px solid #000;background:#2b2f36;color:#8a8f98;font-size:100px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+#bar div.on{background:#ffe14a;color:#000;transform:scale(1.12)}
+#bar div.done{background:#fff;color:#000}
+#lab{top:440px;font-size:88px}
+#grid{position:absolute;left:0;right:0;top:600px;display:grid;grid-template-columns:330px 330px;gap:30px;justify-content:center}
+#grid div{height:330px;border-radius:50px;border:8px solid #000;background:#ffe14a;color:#000;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 16px 40px rgba(0,0,0,.45);opacity:0}
+#grid div b{font-size:170px;line-height:1}
+#grid div small{font-size:52px;font-weight:900;margin-top:6px}
+#clock{position:absolute;left:50%;top:600px;width:380px;height:380px;margin-left:-190px;border-radius:50%;background:#fff;border:12px solid #000;box-shadow:0 16px 40px rgba(0,0,0,.45);opacity:0}
+#clock .h{position:absolute;left:50%;top:50%;width:12px;height:150px;margin-left:-6px;margin-top:-150px;background:#ff3b3b;border-radius:6px;transform-origin:50% 100%}
+#clock .c{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#000;font-size:84px;font-weight:900;letter-spacing:-.04em;padding-top:170px}
+#clock .c em{font-style:normal;color:#e02424}
+#src{position:absolute;left:0;right:0;top:1460px;text-align:center;font-size:32px;font-weight:800;color:#fff;-webkit-text-stroke:7px #000;paint-order:stroke fill;opacity:0}
+</style>
+<script type="importmap">{"imports":{"three":"./three/build/three.module.js","three/addons/":"./three/examples/jsm/"}}</script>
+</head><body>
+<div id="vig"></div><div id="dim"></div>
+<div id="tagZ" class="tag" style="background:#ff4d4d;color:#fff;border-color:#000"></div>
+<div id="tagS" class="tag" style="background:#22e06b">졸음쉼터</div>
+<div id="top" class="ov"></div><div id="mid" class="ov"></div><div id="sub" class="ov"></div>
+<div id="bar"><div>1</div><div>2</div><div>3</div><div>4</div></div>
+<div id="lab" class="ov"></div>
+<div id="grid"><div><b>1</b><small>2시간·15분</small></div><div><b>2</b><small>환기</small></div><div><b>3</b><small>졸음쉼터</small></div><div><b>4</b><small>10분 눈 붙이기</small></div></div>
+<div id="clock"><div class="h"></div><div class="c"></div></div>
+<div id="cap" class="ov"></div>
+<div id="src"></div><div id="flash"></div>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+const S = window.SPEC, NO = S.narrOffset;
+const W = 1080, H = 1920;
+await document.fonts.load('900 100px P');
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.insertBefore(renderer.domElement, document.body.firstChild);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x9cc3e6); scene.fog = new THREE.Fog(0x9cc3e6, 80, 190);
+const cam = new THREE.PerspectiveCamera(42, W / H, 0.1, 500);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x6b7a5a, 1.6));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(-25, 45, 10); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -45, right: 45, top: 45, bottom: -45 }); scene.add(sun); scene.add(sun.target);
+const mat = (c, o = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.95, ...o });
+const plane = (w, h, c, x, z, y = 0, o) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat(c, o)); m.rotation.x = -Math.PI / 2; m.position.set(x, y, z); m.receiveShadow = true; scene.add(m); return m; };
+// highway along z (cars drive toward -z). lanes x=-3.6,0,3.6 ; shoulder 5.4..8.6 ; guardrail 9.0
+const L = 900, Z0 = -300;
+const Z2 = -260;                      // how-to area; rest area (졸음쉼터) to the right
+const GAP0 = Z2 - 45, GAP1 = Z2 + 12; // guardrail opening (z range)
+plane(400, L, 0x7a9c5c, 0, Z0);
+plane(10.8, L, 0x3b3f45, 0, Z0, 0.01);
+plane(3.2, L, 0x4a4e55, 7.0, Z0, 0.011);
+plane(1.2, L, 0x4a4e55, -6.0, Z0, 0.011);
+const line = (w, h, c, x, z) => plane(w, h, c, x, z, 0.03);
+line(0.2, L, 0xffffff, 5.4, Z0); line(0.2, L, 0xf2c200, -5.4, Z0);
+for (let z = 60; z > -760; z -= 9) { line(0.16, 4, 0xffffff, -1.8, z); line(0.16, 4, 0xffffff, 1.8, z); }
+// guardrail right (two parts with opening for rest area) + median
+const railM = mat(0xd6dadf, { metalness: 0.4, roughness: 0.5 });
+const railSeg = (z1, z2) => { const len = z1 - z2; const r = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.35, len), railM); r.position.set(9.0, 0.75, (z1 + z2) / 2); r.castShadow = true; scene.add(r); };
+railSeg(150, GAP1); railSeg(GAP0, -750);
+const postG = new THREE.BoxGeometry(0.15, 0.8, 0.15), postM = mat(0x9aa1a8);
+for (let z = 60; z > -760; z -= 2.5) { if (z < GAP1 && z > GAP0) continue; const p = new THREE.Mesh(postG, postM); p.position.set(9.1, 0.4, z); scene.add(p); }
+const med = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.9, L), mat(0xc9c5bd)); med.position.set(-6.2, 0.45, Z0); med.castShadow = true; scene.add(med);
+// rest area lot
+plane(14, 70, 0x4a4e55, 16, Z2 - 17, 0.012);
+plane(5, 20, 0x4a4e55, 10.5, Z2 + 2, 0.012);
+for (let i = 0; i < 7; i++) { const lz = Z2 - 4 - i * 3.6; const m = plane(5.5, 0.15, 0xffffff, 19.5, lz, 0.03); }
+for (let i = 0; i < 7; i++) { const lz = Z2 - 4 - i * 3.6; plane(5.5, 0.15, 0xffffff, 12.5, lz, 0.03); }
+// shelter building
+const hut = new THREE.Mesh(new THREE.BoxGeometry(5, 3.2, 8), mat(0xe8dcc4)); hut.position.set(20, 1.6, Z2 - 42); hut.castShadow = true; scene.add(hut);
+const roof = new THREE.Mesh(new THREE.BoxGeometry(6, 0.4, 9), mat(0x2f6f9f)); roof.position.set(20, 3.4, Z2 - 42); roof.castShadow = true; scene.add(roof);
+// sign texture
+const signTex = (txt, bg, fg, w = 1024, h = 400, fs = 220) => { const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d'); g.fillStyle = bg; g.fillRect(0, 0, w, h); g.strokeStyle = '#fff'; g.lineWidth = 18; g.strokeRect(20, 20, w - 40, h - 40); g.fillStyle = fg; g.font = `900 ${fs}px P`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(txt, w / 2, h / 2 + 10); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
+const sign = new THREE.Group();
+const board = new THREE.Mesh(new THREE.PlaneGeometry(5.2, 2.0), new THREE.MeshBasicMaterial({ map: signTex('졸음쉼터', '#0f7a3d', '#fff') })); board.position.y = 4.2; sign.add(board);
+const back = new THREE.Mesh(new THREE.PlaneGeometry(5.2, 2.0), mat(0x6c7178)); back.rotation.y = Math.PI; back.position.y = 4.2; sign.add(back);
+for (const sx of [-1.8, 1.8]) { const p = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 3.3), mat(0x9aa1a8)); p.position.set(sx, 1.6, -0.05); sign.add(p); }
+sign.position.set(10.6, 0, Z2 + 40); sign.rotation.y = 0.35; scene.add(sign);
+// trees
+const trunkG = new THREE.CylinderGeometry(0.25, 0.3, 2), leafG = new THREE.ConeGeometry(1.8, 4.5, 7);
+for (let i = 0; i < 140; i++) { const z = 60 - i * 6.2 + (i % 3); let x = (i % 2 ? 1 : -1) * (14 + (i * 37 % 9)); if (x > 0 && z < GAP1 + 6 && z > GAP0 - 14) x = 26 + (i * 37 % 6); const tr = new THREE.Mesh(trunkG, mat(0x6b4a2e)); tr.position.set(x, 1, z); const lf = new THREE.Mesh(leafG, mat(0x3f7a3a)); lf.position.set(x, 4, z); lf.castShadow = true; scene.add(tr, lf); }
+// models
+const loader = new GLTFLoader();
+const load = f => new Promise(r => loader.load('glb/' + f, g => r(g.scene)));
+const names = ['sedan.glb', 'suv.glb', 'taxi.glb', 'sedan-sports.glb', 'van.glb', 'hatchback-sports.glb', 'suv.glb', 'taxi.glb'];
+const M = await Promise.all(names.map(load));
+const [A, T1c, T2c, A2, C1, C2, P1, P2] = M;
+for (const c of M) { c.scale.setScalar(1.9); c.traverse(o => { if (o.isMesh) o.castShadow = true; }); scene.add(c); }
+const box = new THREE.Box3().setFromObject(A); const AL = box.max.z - box.min.z, AW = box.max.x - box.min.x, AH = box.max.y - box.min.y;
+const b2 = new THREE.Box3().setFromObject(A2); const A2W = b2.max.x - b2.min.x, A2H = b2.max.y - b2.min.y, A2L = b2.max.z - b2.min.z;
+const debris = await Promise.all(['debris-bumper.glb', 'debris-plate-a.glb', 'debris-spoiler-a.glb', 'debris-plate-small-a.glb', 'debris-bolt.glb'].map(load));
+debris.forEach(d => { d.scale.setScalar(1.9); d.visible = false; scene.add(d); });
+const sparks = []; for (let i = 0; i < 18; i++) { const s = new THREE.Mesh(new THREE.SphereGeometry(0.07, 6, 5), new THREE.MeshBasicMaterial({ color: 0xffc03a })); s.visible = false; scene.add(s); sparks.push(s); }
+// side window pane on A2 (driver side = local +x)
+const pane = new THREE.Mesh(new THREE.BoxGeometry(0.03, 1, 1), new THREE.MeshStandardMaterial({ color: 0x1b2836, roughness: 0.15, metalness: 0.6 }));
+const sc = 1 / 1.9; const PW_H = A2H * sc * 0.2, PW_L = A2L * sc * 0.3, PW_Y0 = A2H * sc * 0.56;
+pane.scale.set(1, PW_H, PW_L); A2.add(pane);
+const wind = []; for (let i = 0; i < 16; i++) { const w = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.04, 1.5), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.85 })); w.visible = false; scene.add(w); wind.push(w); }
+// Zzz sprites
+const zTex = signTex('Z', 'rgba(0,0,0,0)', '#fff', 256, 256, 200);
+const zz = []; for (let i = 0; i < 3; i++) { const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: zTex, transparent: true, depthTest: false })); sp.visible = false; scene.add(sp); zz.push(sp); }
+// red trail of the drowsy drift
+const trailM = new THREE.MeshBasicMaterial({ color: 0xff2020, transparent: true, opacity: 0.5, depthWrite: false });
+const trail = [];
+
+const ease = p => p < 0 ? 0 : p > 1 ? 1 : 1 - Math.pow(1 - p, 3);
+const eio = p => { p = Math.max(0, Math.min(1, p)); return p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; };
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const lerp = (a, b, u) => a + (b - a) * u;
+const rnd = n => { const x = Math.sin(n * 12.9898) * 43758.5453; return x - Math.floor(x); };
+const $ = id => document.getElementById(id);
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+const proj = (x, y, z) => { const v = V(x, y, z).project(cam); return [(v.x + 1) / 2 * W, (1 - v.y) / 2 * H]; };
+const setText = (el, html, t0, t, pop = true) => { if (html == null) { el.style.opacity = 0; el.dataset.h = ''; return; } if (el.dataset.h !== html) { el.innerHTML = html; el.dataset.h = html; } const u = t - t0; el.style.opacity = clamp(u / 0.08); el.style.transform = pop ? `scale(${1 + 0.22 * (1 - ease(u / 0.18))})` : ''; };
+const tag = (id, on, x, y, z, txt) => { const el = $(id); el.style.display = on ? 'block' : 'none'; if (!on) return; if (txt != null) el.textContent = txt; const [px, py] = proj(x, y, z); el.style.left = px + 'px'; el.style.top = py + 'px'; };
+
+// ---- drowsy drift: 100 km/h = 27.8 m/s, 3 s eyes closed = 83 m, middle lane -> guardrail
+const VV = 27.78, ZC = 0, XC = 9.0 - AW / 2 - 0.08, X0 = 0;
+function drift(tau) {
+  if (tau <= 0) { const s = clamp((tau + 3) / 3); const x = X0 + (XC - X0) * s * s; const dx = (XC - X0) * 2 * s / 3; return { x, z: ZC - VV * tau, yaw: Math.atan2(dx, -VV) }; }
+  const e = 1 - Math.exp(-tau * 2.2), f = 1 - Math.exp(-tau * 3.2);
+  return { x: XC - 1.6 * f, z: ZC - 13 * e, yaw: Math.atan2(2 * 9.25 / 3, -VV) - 0.9 * f };
+}
+for (let i = 0; i < 60; i++) { const ta = -3 + i * 0.05, tb = ta + 0.05; const a = drift(ta), b = drift(tb); const len = Math.hypot(b.x - a.x, b.z - a.z); const m = new THREE.Mesh(new THREE.PlaneGeometry(2.0, len + 0.05), trailM); m.rotation.order = 'YXZ'; m.rotation.y = Math.atan2(b.x - a.x, b.z - a.z); m.rotation.x = -Math.PI / 2; m.position.set((a.x + b.x) / 2, 0.06, (a.z + b.z) / 2); m.userData.tau = tb; m.visible = false; scene.add(m); trail.push(m); }
+// A2 route in how-to: lane 3 cruise -> exit into rest area -> park
+const T = S.t, VA = 18, ZE = Z2 + 18, TX = T[7] + 0.4, TXD = 2.6;
+const ZS = ZE + VA * (TX - T[5]);
+const bez = (p0, p1, p2, p3, u) => { const v = 1 - u; return v * v * v * p0 + 3 * v * v * u * p1 + 3 * v * u * u * p2 + u * u * u * p3; };
+const P = [[3.6, ZE], [3.6, Z2 + 4], [15, Z2 - 2], [15, Z2 - 16]];
+function route(t) {
+  if (t < TX) return { x: 3.6, z: ZS - VA * (t - T[5]), yaw: Math.PI, v: VA };
+  const u = (t - TX) / TXD; if (u >= 1) return { x: 15, z: Z2 - 16, yaw: Math.PI, v: 0 };
+  const uu = 1 - Math.pow(1 - u, 2) * (1 - 0.0); const w = u * (2 - u); // decelerate
+  const x = bez(P[0][0], P[1][0], P[2][0], P[3][0], w), z = bez(P[0][1], P[1][1], P[2][1], P[3][1], w);
+  const w2 = Math.min(1, w + 0.01); const x2 = bez(P[0][0], P[1][0], P[2][0], P[3][0], w2), z2 = bez(P[0][1], P[1][1], P[2][1], P[3][1], w2);
+  return { x, z, yaw: Math.atan2(x2 - x, z2 - z), v: VA * (1 - u) };
+}
+const put = (o, s, y = 0) => { o.position.set(s.x, y, s.z); o.rotation.y = s.yaw; };
+function seg(t) { let k = 0; for (let i = 0; i < T.length; i++) if (t >= T[i]) k = i; return k; }
+
+window.seek = async t => {
+  const k = seg(t), u0 = t - T[k];
+  // ---- drift state
+  let tau = 2.5; const crashScene = k <= 3;
+  if (k === 0) tau = t - S.crashAt;
+  else if (k === 1) { const tc = S.replayCrash; tau = t < tc ? -3 + 3 * (t - T[1]) / (tc - T[1]) : (t - tc) * 0.6; }
+  else if (k === 2) { const tc = S.chaseCrash; tau = t < tc ? -3 + 3 * (t - T[2]) / (tc - T[2]) : (t - tc); }
+  const st = drift(tau); put(A, st); A.visible = crashScene;
+  // traffic ahead in left lane (same speed, never overlaps)
+  const tz = ZC - VV * Math.min(tau, 0) - VV * Math.max(tau, 0);
+  put(T1c, { x: -3.6, z: tz - 34, yaw: Math.PI }); put(T2c, { x: -3.6, z: tz + 26, yaw: Math.PI });
+  T1c.visible = T2c.visible = crashScene && k !== 3;
+  trail.forEach(m => m.visible = (k === 1 || k === 2) && m.userData.tau <= tau + 0.001);
+  debris.forEach((d, i) => { if (!crashScene || tau <= 0) { d.visible = false; return; } d.visible = true; const ang = -Math.PI / 2 + (rnd(i + 1) - .5) * 2.2, sp = 3 + rnd(i + 7) * 6; const e = 1 - Math.exp(-tau * 2.6);
+    d.position.set(XC + 0.2 - Math.abs(Math.cos(ang)) * sp * e * 0.5, Math.max(0, 2.2 * Math.sin(Math.min(tau, 0.7) / 0.7 * Math.PI) * (0.5 + rnd(i))), ZC - 2 + Math.sin(ang) * sp * e); d.rotation.set(tau * 6 * rnd(i + 3), tau * 5, tau * 4 * rnd(i + 5)); });
+  sparks.forEach((s, i) => { const on = crashScene && tau > 0 && tau < 0.6; s.visible = on; if (!on) return; const a = rnd(i + 31) * Math.PI, sp = 6 + rnd(i + 17) * 8; s.position.set(XC + 0.9 - Math.cos(a) * 0.3 * sp * tau, 0.6 + sp * tau * Math.sin(a) * 0.6 - 9 * tau * tau, ZC - 2.0 - sp * tau * 0.8); });
+  // ---- how-to
+  const how = k >= 4;
+  A2.visible = how; const r = route(t); put(A2, r);
+  for (const [c, x, v, ph] of [[C1, -3.6, 24, 0], [C2, -3.6, 24, 60], [P1, 0, 22, 25]]) { c.visible = how && !(k === 6 && x === 0); const z = Z2 + 90 - ((t * v + ph) % 160); put(c, { x, z, yaw: Math.PI }); }
+  P2.visible = how; put(P2, { x: 19.5 - 0.0, z: Z2 - 4 - 3 * 3.6 + 1.8, yaw: Math.PI / 2 });
+  // window
+  const wo = eio((t - T[6] - 0.55) / 0.8); const ph = PW_H * (1 - wo);
+  pane.scale.y = Math.max(0.001, ph); pane.position.set(A2W * sc / 2 + 0.005, PW_Y0 - PW_H / 2 + ph / 2 + 0.0, A2L * sc * 0.02); pane.visible = false;
+  wind.forEach((w, i) => { const on = k === 6 && t > T[6] + 0.6; w.visible = on; if (!on) return; const ph2 = ((t * 2.2 + rnd(i + 3)) % 1); const p = V(A2W / 2 + 0.25 + rnd(i + 9) * 0.3, A2H * 0.72 + (rnd(i + 5) - .5) * 0.5, -A2L * 0.6 + ph2 * A2L * 1.0); w.position.set(r.x - p.x, p.y, r.z + p.z - A2L * 0.0); w.material.opacity = 0.85 * Math.sin(ph2 * Math.PI); });
+  zz.forEach((s, i) => { const on = k >= 8; s.visible = on; if (!on) return; const ph3 = ((t - T[8]) * 0.55 + i / 3) % 1; s.position.set(r.x + 0.4 + ph3 * 0.8, A2H + 0.3 + ph3 * 2.2, r.z + 0.2); const sz = 0.5 + ph3 * 0.6; s.scale.set(sz, sz, 1); s.material.opacity = Math.sin(ph3 * Math.PI); });
+  // ---- camera
+  let cp, look, sh = 0; cam.up.set(0, 1, 0);
+  if (k === 0) { const z = ease((t) / 1.0); cp = V(-3 + 1.5 * z, 7.5 - 1 * z, 30 - 7 * z); look = V(5.8, 0.5, lerp(5, -1, z)); if (t > S.crashAt && t < S.crashAt + 0.5) sh = (1 - (t - S.crashAt) / 0.5) * 0.8; }
+  else if (k === 1) { const pz = Math.max(st.z, ZC - 6); cp = V(3, 44, pz + 20); look = V(4, 0, pz - 6); }
+  else if (k === 2) { const s0 = drift(Math.min(tau, 0)); cp = V(s0.x - 3.2, 6.0, s0.z + 15); look = V(s0.x + 0.4, 0.0, s0.z - 10); if (tau > 0 && tau < 0.5) sh = (1 - tau / 0.5) * 0.6; }
+  else if (k === 3) { const a = -1.0 + 0.6 * (u0 / (T[4] - T[3])); const cx = XC - 1.5, cz = ZC - 13; cp = V(cx + 15 * Math.sin(a), 8.5, cz + 15 * Math.cos(a)); look = V(cx, 0.2, cz - 1); }
+  else if (k === 4) { cp = V(-6, 22, Z2 + 40); look = V(6, 0, Z2 + 2); }
+  else if (k === 5) { cp = V(r.x - 8, 5.5, r.z + 12); look = V(r.x + 0.3, 2.6, r.z - 1); }
+  else if (k === 6) { const z = ease(u0 / 0.6); cp = V(r.x - lerp(12, 11, z), lerp(5, 3.4, z), r.z + lerp(8, 3, z)); look = V(r.x, lerp(1.8, 2.0, z), r.z - lerp(2, 0.5, z)); }
+  else if (k === 7) { const z = ease(u0 / 1.2); cp = V(lerp(-3, -5, z), lerp(16, 26, z), Z2 + lerp(55, 42, z)); look = V(lerp(5, 10, z), 0, Z2 + lerp(14, -6, z)); }
+  else if (k === 8) { const z = ease(u0 / 0.8); cp = V(lerp(-5, 8.5, z), lerp(26, 6.5, z), Z2 + lerp(42, 0, z)); look = V(lerp(10, 15, z), lerp(0, 0.4, z), Z2 + lerp(-6, -19, z)); }
+  else { const z = ease(u0 / 3); cp = V(lerp(8.5, -2, z), lerp(6.5, 30, z), Z2 + lerp(0, 30, z)); look = V(lerp(15, 9, z), 0, Z2 + lerp(-19, -14, z)); }
+  cam.position.copy(cp).add(V((rnd(Math.floor(t * 30)) - .5) * sh, (rnd(Math.floor(t * 30) + 9) - .5) * sh, 0)); cam.lookAt(look);
+  sun.position.set(look.x - 25, 45, look.z + 10); sun.target.position.set(look.x, 0, look.z);
+  renderer.render(scene, cam);
+  // ---- overlays
+  const fl = (tc) => (t > tc && t < tc + 0.12) ? 0.85 * (1 - (t - tc) / 0.12) : 0;
+  $('flash').style.opacity = Math.max(fl(S.crashAt), k === 1 ? fl(S.replayCrash) * 0.6 : 0, k === 2 ? fl(S.chaseCrash) : 0);
+  // eyes-closing vignette while drifting in the chase view
+  $('vig').style.opacity = k === 2 && tau < 0 ? 0.35 + 0.35 * Math.abs(Math.sin((tau + 3) * 1.6)) : 0;
+  const dim = k === 4 ? 0.5 * ease(u0 / 0.3) : k === 3 ? 0.35 * ease((t - S.numAt + 0.3) / 0.3) : (k === 9 && t >= S.endTilesAt) ? 0.45 * ease((t - S.endTilesAt) / 0.3) : 0;
+  $('dim').style.opacity = dim;
+  const X = S.text;
+  const topHtml = [X.hook, X.hook, X.chase, X.after, X.intro, null, null, null, null, X.end][k];
+  const topT0 = k === 1 ? T[0] + 0.15 : k === 0 ? 0.12 : T[k];
+  setText($('top'), t < 0.12 ? null : topHtml, topT0, t);
+  let mid = null, m0 = 0;
+  if (k === 2 && t >= T[2] + 0.2) { const d = Math.round(VV * (Math.min(tau, 0) + 3)); mid = `<em>${d}m</em>`; m0 = T[2] + 0.2; }
+  if (k === 3 && t >= S.numAt) { mid = X.num; m0 = S.numAt; }
+  setText($('mid'), mid, m0, t, k !== 2 || tau >= 0);
+  if (k === 2) $('mid').style.top = '420px'; else $('mid').style.top = '700px';
+  setText($('sub'), k === 3 && t >= S.numAt + 0.5 ? X.numSub : k === 2 && t >= T[2] + 0.2 ? X.chaseSub : null, k === 3 ? S.numAt + 0.5 : T[2] + 0.2, t, false);
+  $('sub').style.top = k === 2 ? '570px' : '1040px';
+  // grid (intro k=4 and end summary)
+  const gs = $('grid').children; for (let i = 0; i < 4; i++) { const g0 = k === 4 ? S.gridAt : S.endTilesAt; const a = t - (g0 + i * 0.18); const on = (k === 4 || (k === 9 && t >= S.endTilesAt)) && a > 0; gs[i].style.opacity = on ? clamp(a / 0.08) : 0; gs[i].style.transform = on ? `scale(${1 + 0.35 * (1 - ease(a / 0.2))})` : ''; }
+  $('grid').style.top = k === 9 ? '560px' : '600px';
+  const barOn = (k >= 5 && k <= 8);
+  $('bar').style.opacity = barOn ? 1 : 0;
+  const bs = $('bar').children; for (let i = 0; i < 4; i++) { const cur = k - 5; bs[i].className = i === cur ? 'on' : i < cur ? 'done' : ''; }
+  const labs = [X.l1, X.l2, X.l3, X.l4]; setText($('lab'), barOn ? labs[k - 5] : null, T[k], t);
+  // clock (k=5: 2 hours -> 15 min, k=8: 10 min nap)
+  { const on = k === 5 || k === 8; const a = t - T[k] - 0.25; const ck = $('clock'); ck.style.opacity = on && a > 0 ? clamp(a / 0.15) : 0; ck.style.transform = on && a > 0 ? `scale(${1 + 0.15 * (1 - ease(a / 0.25))})` : '';
+    const ang = k === 5 ? 720 * eio(a / 1.3) : 60 * clamp(a / 2.4); ck.firstElementChild.style.transform = `rotate(${ang}deg)`;
+    const txt = k === 5 ? (t < S.restAt ? '2시간' : '<em>15분</em> 쉼') : '<em>10분</em>'; if (ck.lastElementChild.dataset.h !== txt) { ck.lastElementChild.innerHTML = txt; ck.lastElementChild.dataset.h = txt; } }
+  // tags
+  tag('tagZ', (k === 1 && tau < 0) || (k === 0 && tau < 0), st.x, AH * 1.15, st.z, k === 1 ? `졸음 ${Math.max(0, tau + 3).toFixed(1)}초` : '깜빡 졸음');
+  tag('tagS', k === 7 && t >= T[7] + 0.5 && t < T[8], 15, 3.2, Z2 - 16);
+  // caption
+  let c = null, c0 = 0; for (const q of S.caps) { const a = q[0] + NO; if (t >= a) { c = q[1]; c0 = a; } }
+  const lastEnd = S.caps[S.caps.length - 1][2] + NO + 0.6;
+  setText($('cap'), (t >= NO && t < lastEnd) ? c : null, c0, t, false);
+  $('src').textContent = X.src; $('src').style.opacity = k >= 9 ? ease((t - T[9]) / 0.4) : 0;
+};
+window.ready = async () => { await document.fonts.ready; };
+window.__ok = true;
+</script></body></html>
