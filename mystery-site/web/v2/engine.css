@@ -218,7 +218,7 @@ a{color:inherit}
 .v2-index-list{display:grid;gap:6px}
 .v2-index-item{display:flex;justify-content:space-between;align-items:baseline;gap:12px;background:#fff8;border:1px solid var(--paper-line);border-radius:3px;padding:10px 12px;text-align:left}
 .v2-index-item.read{opacity:.7}
-.v2-index-item small{color:#7a7462}
+.v2-index-item small{color:#625c4d}
 .v2-note{font-size:14px;color:#8a6a2a;background:rgba(227,166,74,.14);padding:8px 12px;border-radius:3px}
 
 /* 휴대폰 대화 (메신저 느낌) */
@@ -232,7 +232,7 @@ a{color:inherit}
 .chat-row.them{justify-content:flex-start;align-items:flex-start}
 .chat-avatar{width:40px;height:40px;border-radius:16px;background:#f2c14e;color:#5a3700;display:grid;place-items:center;font-size:18px;flex:none}
 .chat-col{display:flex;flex-direction:column;align-items:flex-start;gap:4px;max-width:72%;min-width:0}
-.chat-name{font-size:12px;color:#333;margin-left:2px}
+.chat-name{font-size:13px;color:#333;margin-left:2px}
 .chat-bubble{background:#fff;border-radius:14px;padding:8px 11px;line-height:1.45;max-width:100%;box-sizing:border-box;word-break:keep-all;overflow-wrap:anywhere;white-space:normal}
 .chat-row.me .chat-bubble{background:#fef01b;max-width:72%}
 .chat-bubble.photo{padding:0;overflow:hidden;width:100%}
@@ -263,7 +263,7 @@ a{color:inherit}
 /* 장치 안 힌트 */
 .v2-dhint{display:grid;gap:8px;margin:0 0 12px}
 .v2-dhint-line{margin:0;padding:10px 12px;border-radius:6px;background:rgba(227,166,74,.1);border:1px solid rgba(227,166,74,.35);color:var(--enamel);font-size:15px;line-height:1.6}
-.v2-dhint-line b{display:block;font-size:12px;color:var(--lamp);margin-bottom:2px;letter-spacing:.02em}
+.v2-dhint-line b{display:block;font-size:13px;color:var(--lamp);margin-bottom:2px;letter-spacing:.02em}
 .v2-dhint-btn{justify-self:start;min-height:40px;padding:8px 14px;border-radius:999px;border:1px dashed rgba(227,166,74,.6);background:transparent;color:var(--lamp);font-size:14px;font-weight:600}
 .v2-dhint-btn.last{border-style:solid;border-color:rgba(232,96,74,.6);color:#f0a08f}
 .v2-dhint-note{margin:0;font-size:13px;color:var(--soft-3)}

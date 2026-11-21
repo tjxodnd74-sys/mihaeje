@@ -359,7 +359,7 @@ async function main() {
           for (let i = 0; i < tier; i++) hb.append(html('p', 'v2-dhint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${hs[i]}`));
           const maxTier = Math.min(3, hs.length);
           if (tier < maxTier) {
-            const b = btn('v2-dhint-btn' + (tier === 2 ? ' last' : ''), ['힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { if (tier === 2 && !confirm('정답을 볼까요?')) return; S.hints[did] = tier + 1; save(); drawHint(); });
+            const b = btn('v2-dhint-btn' + (tier === 2 ? ' last' : ''), ['힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { if (tier === 2 && !b.dataset.sure) { b.dataset.sure = '1'; b.textContent = '정말 정답을 볼까요? 한 번 더 누르기'; return; } S.hints[did] = tier + 1; save(); drawHint(); });
             hb.append(b);
           } else if (hs.length < 3) hb.append(el('p', 'v2-dhint-note', '이 편은 정답 힌트가 없다 여기까지가 전부다'));
         };
