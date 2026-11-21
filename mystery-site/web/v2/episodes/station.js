@@ -35,7 +35,7 @@ const TRAINS_2 = [
   { id: 'n0910', time: '09:10', to: '북문', stops: '북문 종착', kind: '완행', pf: 2 },
   { id: 'n0925', time: '09:25', to: '산장', stops: '북문 · 수림 · 산장', kind: '완행', pf: 2 },
   { id: 'n0940', time: '09:40', to: '수림', stops: '북문 통과 · 수림 종착', kind: '급행', pf: 2 },
-  { id: 'n0958', time: '09:58', to: '북문', stops: '북문 종착', kind: '완행', pf: 2 },
+  { id: 'n0958', time: '09:58', to: '수림', stops: '북문 · 수림 종착', kind: '완행', pf: 2 },
   { id: 'n1015', time: '10:15', to: '산장', stops: '북문 · 수림 · 산장', kind: '완행', pf: 2 },
 ];
 const TRAINS_1 = [
@@ -45,7 +45,11 @@ const TRAINS_1 = [
 ];
 // 출발 안내는 남북을 한 줄로 섞어 시각 순으로
 const TRAINS_ALL = [...TRAINS_2, ...TRAINS_1].sort((a, b) => a.time.localeCompare(b.time) || b.pf - a.pf);
-const STRIP_BACK = '우리 처음 만난 시간 그 열차 종점에서 내려 할머니 동네야';
+// 시각은 이 뒷면에만 있다 (「민서와 나」에는 시각이 없고, 수림 종점 열차는 둘)
+const STRIP_BACK = '우리 처음 만난 그 열차 9시 40분 종점에서 내려 할머니 동네야';
+// 볼록거울 받침대 눈금(0~10) 중 빨간 페인트가 칠해진 칸 사진을 거울과 같은 기울기로 들어야 비친 글씨가 바로 선다
+const MIRROR_MARK = 7;
+const tiltOk = (t) => Math.abs((t ?? 0) - MIRROR_MARK * 10) <= 4;
 
 // 마을 지도: 역에서 출발, 갈림길마다 왼쪽/오른쪽/직진 정답 경로 → 다리 건너 왼쪽 길 → 감나무 옆 파란 대문(H3)
 // 좌표는 SVG(0~100) 기준 역은 아래쪽, 북쪽이 위
@@ -70,7 +74,7 @@ const MAP = {
   persimmon: ['H1', 'H3'], // 손지도에 감나무가 그려진 집 (둘)
 };
 // 걸어가서 보이는 대문 색 (지도엔 없음) 파란 대문은 마을에 여럿
-const GATE = { H1: '초록', H2: '파랑', H3: '파랑', H4: '회색', H8: '파랑', H9: '흰색', H10: '파랑', H6: '파랑', H7: '갈색', H5: '파랑', H11: '초록', H12: '파랑' };
+const GATE = { H1: '초록', H2: '파랑', H3: '파랑', H4: '파랑', H8: '파랑', H9: '흰색', H10: '파랑', H6: '파랑', H7: '갈색', H5: '파랑', H11: '초록', H12: '파랑' };
 const GATE_CSS = { 초록: '#3f7a4a', 파랑: '#2f5fb0', 회색: '#8b8f94', 흰색: '#e9e6dc', 갈색: '#7a5233' };
 
 const PLACE_NAMES = { S: '수림역 앞', B: '첫째 골목 입구', C: '둘째 골목 입구', D: '둘째 골목, 다리 앞', E: '다리 건넌 뒤 갈림길', F: '동쪽 골목 입구' };
@@ -104,7 +108,7 @@ const postcardImg = `<figure class="postcard-photo"><img src="assets/v2/station/
 const LANE_END = { L: { x: 0, y: 30 }, R: { x: 78, y: 30 }, GL: { x: 56, y: 58 }, X: { x: 2, y: 76 }, FL: { x: 88, y: 50 } };
 // 볼펜으로 종이봉투 조각에 그린 손지도 길·집 좌표는 WALK/LANES 판정과 같아야 합니다
 const INK = '#2f3a7a';
-function svgMap(path = [], picked = null) {
+function svgMap(path = [], picked = null, lane = null) {
   const n = MAP.nodes;
   const pen = (d, w = 0.9, extra = '') => `<path d="${d}" fill="none" stroke="${INK}" stroke-width="${(w * 1.6).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round" ${extra}/>`;
   const road = (a, b) => {
@@ -126,7 +130,10 @@ function svgMap(path = [], picked = null) {
     const roof = i % 2 ? `M${x - 0.8} ${y} L${h.x} ${y - r} L${x + w + 0.8} ${y}` : `M${x - 0.8} ${y} L${x + w * 0.35} ${y - r} L${x + w + 0.8} ${y}`;
     const hatch = Array.from({ length: 3 }, (_, k) => `M${x + 1 + k * (w / 3)} ${y + 0.6} l${w / 4} ${hh - 1.2}`).join(' ');
     const sel = picked === h.id ? `<circle cx="${h.x}" cy="${h.y}" r="${w * 0.8}" fill="none" stroke="#d9872b" stroke-width="1.2" stroke-dasharray="2 1"/>` : '';
-    return `<g class="map-house${picked === h.id ? ' picked' : ''}">${sel}${pen(`M${x} ${y} h${w} v${hh} h${-w} z`, 0.7)}${pen(roof, 0.8)}${pen(hatch, 0.35)}${pen(`M${x + w - 2.2} ${y + 1} h1.4 v1.2 h-1.4 z`, 0.4)}</g>`;
+    // 집이 늘어선 길에 들어서면 들어선 쪽에서 가까운 집부터 연필로 번호를 적는다
+    const k = lane ? LANES[lane].houses.indexOf(h.id) : -1;
+    const num = k >= 0 ? `<g class="map-num"><circle cx="${h.x}" cy="${h.y + hh / 2 + 4.2}" r="3" fill="#fbf3dc" stroke="#d9872b" stroke-width=".7"/><text x="${h.x}" y="${h.y + hh / 2 + 5.6}" font-size="4.2" text-anchor="middle" fill="#a85a12" font-family="sans-serif" font-weight="700">${k + 1}</text></g>` : '';
+    return `<g class="map-house${picked === h.id ? ' picked' : ''}">${num}${sel}${pen(`M${x} ${y} h${w} v${hh} h${-w} z`, 0.7)}${pen(roof, 0.8)}${pen(hatch, 0.35)}${pen(`M${x + w - 2.2} ${y + 1} h1.4 v1.2 h-1.4 z`, 0.4)}</g>`;
   };
   const houses = MAP.houses.map(house).join('');
   // 논 빗금, 나무 낙서
@@ -182,7 +189,7 @@ export default {
       '바로 전화를 걸었지만 꺼져 있었다. 열한 번을 걸었고, 열한 번 다 같은 안내 음성이 나왔다.',
       '사진을 몇 번이고 다시 봤다. 벽시계, 젖은 바닥, 아무도 없는 벤치. 찍은 사람은 사진 어디에도 없었다.',
       '민서는 두 달 전에 회사를 그만뒀고, 방을 뺐다는 말은 지난주에야 들었다. 어디로 가는지는 묻지 못했다. 묻기 전에 먼저 말해 줄 거라고 생각했다.',
-      '중앙역에 3번 승강장은 없다. 1번과 2번뿐이라는 걸 알면서도, 나는 첫차 시간에 맞춰 중앙역으로 갔다.',
+      '중앙역에 3번 승강장은 없다. 1번과 2번뿐이라는 걸 알면서도, 나는 첫 버스를 타고 중앙역으로 갔다.',
     ],
     cta: '중앙역 대합실로',
   },
@@ -206,7 +213,7 @@ export default {
         { id: 'clerk', x: 67, y: 42, label: '매표창구의 역무원', kind: 'doc', doc: 'clerk' },
         { id: 'notice', x: 13, y: 34, label: '승강장 개편 안내', kind: 'doc', doc: 'notice' },
         { id: 'board', x: 42, y: 24, label: '열차 안내판', kind: 'device', device: 'grille' },
-        { id: 'tophone', x: 20, y: 84, label: '민서의 마지막 메시지', kind: 'doc', doc: 'message' },
+        { id: 'tophone', x: 61, y: 62, label: '의자에 앉아 다시 연 휴대폰', kind: 'doc', doc: 'message' },
       ],
     },
     {
@@ -239,12 +246,12 @@ export default {
       name: '수림 마을길',
       image: 'assets/v2/station/village.webp',
       unlockedBy: 'locker',
-      arrive: '역 앞 벤치에 보관함에서 꺼낸 것들을 펼쳤다 매미 소리 사이로 어디선가 개가 짖었다 길 저 앞에도 파란 대문이 하나 보였다 이 동네엔 파란 대문이 흔한 모양이다',
+      arrive: '보관함에서 꺼낸 것들은 가방에 넣고 역 앞으로 나왔다 편지와 손지도와 쪽지 세 장만 손에 들었다 매미 소리 사이로 어디선가 개가 짖었다 길 저 앞에도 파란 대문이 하나 보였다 이 동네엔 파란 대문이 흔한 모양이다',
       hotspots: [
-        { id: 'letter', x: 4, y: 84, r: 4, label: '민서의 편지', kind: 'doc', doc: 'letter' },
-        { id: 'handmap', x: 16, y: 66, r: 5, label: '울타리에 펼친 손지도', kind: 'doc', doc: 'handmap' },
-        { id: 'notes', x: 11, y: 90, r: 4, label: '쪽지 세 장', kind: 'device', device: 'notes' },
-        { id: 'walk', x: 54, y: 58, label: '마을로 걸어가기', kind: 'device', device: 'walk', visible: (S) => S.solved.includes('notes') },
+        { id: 'letter', x: 31, y: 66, label: '손에 든 민서의 편지', kind: 'doc', doc: 'letter' },
+        { id: 'handmap', x: 45, y: 60, label: '손지도를 길에 대 보기', kind: 'doc', doc: 'handmap' },
+        { id: 'notes', x: 18, y: 58, label: '손에 든 쪽지 세 장', kind: 'device', device: 'notes' },
+        { id: 'walk', x: 55, y: 47, label: '마을로 걸어가기', kind: 'device', device: 'walk', visible: (S) => S.solved.includes('notes') },
       ],
     },
   ],
@@ -262,7 +269,7 @@ export default {
 <div class="chat-row me"><span class="chat-meta"><i>1</i>오전 1:40</span><div class="chat-bubble">장난이면 지금 말해</div></div>
 <div class="chat-row me"><span class="chat-meta"><i>1</i>오전 3:02</span><div class="chat-bubble">제발</div></div>
 <div class="chat-sys">음성통화 연결 안 됨 · 전원이 꺼져 있습니다</div>
-<div class="chat-row me"><span class="chat-meta"><i>1</i>오전 6:02</span><div class="chat-bubble">첫차 탄다</div></div>
+<div class="chat-row me"><span class="chat-meta"><i>1</i>오전 6:02</span><div class="chat-bubble">첫 버스 탄다 역으로 갈게</div></div>
 <div class="chat-input"><span>+</span><span class="chat-field">메시지 입력</span><span>#</span></div></div>`,
     },
     sign: {
@@ -273,7 +280,7 @@ export default {
     clerk: {
       title: '매표창구의 역무원',
       kind: '박종길 · 야간 근무',
-      html: `<p>창구 안의 남자는 커피를 반쯤 남긴 채 신문을 접었다</p><blockquote>“저거요? 개편 때 떼어서 창고에 넣어 둔 거예요 근데 새벽 순찰 돌 때 보니 밖에, 승강장 벤치 옆에 나와 있더라고요 여자분 하나가 그 앞에 한참 서 있었고요”</blockquote><blockquote>“창고 열쇠는 나만 있는데 말이에요 무거워서 안으로 들여놨어요 뒤에 뭘 붙여 놨길래 떼려다가 뒀습니다 ‘사람이 올 거예요’ 하길래”</blockquote><blockquote>“그 여자분 첫차로 북쪽 갔어요 표는 편도로 끊었고요 승강장 기둥에도 뭘 붙이고 갔을 거예요 테이프 뜯는 소리가 났으니까 번호는 저기 안내문 보시고요”</blockquote>`,
+      html: `<p>창구 안의 남자는 커피를 반쯤 남긴 채 신문을 접었다</p><blockquote>“저거요? 개편 때 떼어서 창고에 넣어 둔 거예요 근데 새벽 순찰 돌 때 보니 밖에, 승강장 벤치 옆에 나와 있더라고요 여자분 하나가 그 앞에 한참 서 있었고요”</blockquote><blockquote>“창고 열쇠는 나만 있는데 말이에요 무거워서 안으로 들여놨어요 뒤에 뭘 붙여 놨길래 떼려다가 뒀습니다 ‘사람이 올 거예요’ 하길래”</blockquote><blockquote>“그 여자분 새벽 네 시 반 첫 열차로 북쪽 갔어요 표는 편도로 끊었고요 승강장 기둥에도 뭘 붙이고 갔을 거예요 테이프 뜯는 소리가 났으니까 번호는 저기 안내문 보시고요”</blockquote>`,
     },
     notice: {
       title: '승강장 개편 안내',
@@ -283,7 +290,7 @@ export default {
     brief: {
       title: '민서와 나',
       kind: '내 기억',
-      html: `<p>스무 살 때 매일 아침 09:40 통학열차 둘째 칸을 탔는데, 어느 날 내 자리에 모르는 애가 앉아 있었다 비켜 달라고 했더니 “자리에 이름 적혀 있어?” 하고 되물었고, 그게 민서였다</p><p>민서는 노트든 휴대폰이든 내 가방이든 뭐든 별 스티커를 붙였고, 중학교 때부터 쪽지를 거울 글씨로 쓰는 버릇이 있었다 선생님이 못 읽게 하려고 시작한 거라고 했다 통학열차에서는 쪽지 세 장 중 하나만 거짓말인 놀이를 자주 했다 늘 민서가 냈고 늘 민서가 먼저 웃었다</p><p>수림 산골에 혼자 사신다는 외할머니 얘기를 자주 했다 여름마다 갔는데 작년부터는 못 갔다고 했다</p><p>회사를 그만둔 뒤로 연락이 뜸해졌지만 괜찮냐고 묻지 않았다 묻지 않는 게 배려라고 생각했다</p>`,
+      html: `<p>스무 살 때 매일 아침 같은 통학열차 둘째 칸을 탔는데, 어느 날 내 자리에 모르는 애가 앉아 있었다 비켜 달라고 했더니 “자리에 이름 적혀 있어?” 하고 되물었고, 그게 민서였다</p><p>민서는 노트든 휴대폰이든 내 가방이든 뭐든 별 스티커를 붙였고, 중학교 때부터 쪽지를 거울 글씨로 쓰는 버릇이 있었다 선생님이 못 읽게 하려고 시작한 거라고 했다 통학열차에서는 쪽지 세 장 중 하나만 거짓말인 놀이를 자주 했다 늘 민서가 냈고 늘 민서가 먼저 웃었다</p><p>수림 산골에 혼자 사신다는 외할머니 얘기를 자주 했다 여름마다 갔는데 작년부터는 못 갔다고 했다</p><p>회사를 그만둔 뒤로 연락이 뜸해졌지만 괜찮냐고 묻지 않았다 묻지 않는 게 배려라고 생각했다</p>`,
     },
     strip: {
       title: '기둥에 붙은 네컷사진',
@@ -360,10 +367,11 @@ export default {
         // 구간권 인쇄 글씨가 함께 돌아서 지금 방향을 알 수 있게
         const tf = el('div', 'tframe'); tf.append(el('span', 'tprint', '미루선 구간권')); ticket.append(tf);
         board.append(ticket);
-        // 처음 열 때 한 번, 글자판이 저절로 넘어가며 「3번 승강장 수림행」을 띄웠다가 흩어진다
+        // 처음 열 때 한 번, 글자판이 저절로 넘어가며 「3번 승강장」을 띄웠다가 흩어진다 행선지 칸은 빈 판만 돈다
         if (!d.flashed) {
           const fl = el('div', 'grille-flash'); fl.setAttribute('aria-hidden', 'true');
-          fl.append(el('b', '', '3번 승강장'), el('b', '', '수림행'));
+          const dest = el('b', 'blank'); dest.innerHTML = '<i></i><i></i>행';
+          fl.append(el('b', '', '3번 승강장'), dest);
           board.append(fl);
           d.flashed = true;
         }
@@ -391,9 +399,8 @@ export default {
       commitLabel: '그 기둥으로 가기',
       check(d) {
         if (!d.platform || !d.pillar) return { ok: false, msg: '승강장과 기둥을 하나씩 골라야 한다' };
-        if (readHoles(d) !== GRILLE_READ) return { ok: false, msg: '구멍 사이로 보이는 글자가 아직 말이 되지 않는다 구간권을 옮기거나 돌려 본다' };
-        if (d.platform === 2 && d.pillar === 2) return { ok: true };
-        return { ok: false, msg: '그 기둥엔 아무것도 붙어 있지 않았다 개찰구로 다시 나왔다' };
+        if (readHoles(d) === GRILLE_READ && d.platform === 2 && d.pillar === 2) return { ok: true };
+        return { ok: false, msg: '그 기둥엔 아무것도 붙어 있지 않았다 개찰구로 다시 나와 구간권을 안내판에 대 본다' };
       },
       reveal: {
         title: '2번 승강장, 둘째 기둥',
@@ -409,33 +416,44 @@ export default {
     mirror: {
       title: '승강장 끝의 볼록거울',
       scene: 'platform',
-      intro: '기관사가 승강장 전체를 보라고 달아 둔 거울이다 버튼으로 네컷사진 뒷면을 거울 앞에 들고, 막대로 사진 기울기를 바꾼다 아래 출발 안내에서 탈 열차를 고른다',
+      intro: '기관사가 승강장 전체를 보라고 기둥에 비스듬히 달아 둔 거울이다 버튼으로 네컷사진 뒷면을 거울 앞에 들고, 막대로 사진 기울기를 바꾼다 아래 출발 안내에서 탈 열차를 고른다',
       docs: ['strip', 'brief', 'timetable'],
       hintCode: 'T-S02',
       hints: [
-        '네컷사진 뒷면은 거울 글씨라 그냥은 안 읽힙니다 거울 앞에 들고 기울기를 맞추면 비친 글씨가 바로 섭니다',
-        '읽은 문장에서 “시간”이 무엇인지는 「민서와 나」에 있습니다 같은 시각에 떠나는 열차가 여럿이면, 문장 끝에서 내리라는 곳이 어느 열차의 종점인지 따져 보세요',
-        '09:40 수림행 급행 (종점 수림 = 외할머니 동네)',
+        '네컷사진 뒷면은 거울 글씨라 그냥은 안 읽힙니다 거울 앞에 들고, 사진을 거울이 달린 기울기와 똑같이 맞추면 비친 글씨가 바로 섭니다 거울이 몇 칸 기울어 있는지는 거울 받침대에 남아 있습니다',
+        '비친 문장에서 시각을 읽고, 할머니 동네가 어디인지는 「민서와 나」에서 찾으세요 같은 시각에 떠나는 열차가 여럿이면 종점으로, 같은 종점 열차가 여럿이면 시각으로 좁혀집니다',
+        '받침대 빨간 눈금 7에 맞추면 「9시 40분 그 열차 종점에서 내려 할머니 동네야」 → 09:40 수림행 급행 (종점 수림 = 외할머니 동네)',
       ],
       initial: () => ({ held: false, tilt: 0, train: null }),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'mirror');
-        const aligned = d.held && Math.abs((d.tilt || 0) - 50) <= 8;
-        const glass = el('div', 'mirror-glass' + (d.held ? ' held' : '') + (aligned ? ' aligned' : '')); const mimg = el('img'); mimg.src = 'assets/v2/station/props/mirror.webp'; mimg.alt = ''; glass.append(mimg);
+        const aligned = d.held && tiltOk(d.tilt);
+        const glass = el('div', 'mirror-glass' + (d.held ? ' held' : '') + (aligned ? ' aligned' : '')); const mimg = el('img'); mimg.src = 'assets/v2/station/props/mirror.webp'; mimg.alt = '기둥에 비스듬히 달린 볼록거울과 눈금이 새겨진 받침대'; glass.append(mimg);
+        // 거울 받침대: 녹슨 반원 눈금 0~10, 한 칸에만 빨간 페인트 (거울이 달린 기울기)
+        const ticks = Array.from({ length: 11 }, (_, i) => { const a = -90 + i * 18; const big = i % 5 === 0; return `<g transform="rotate(${a} 50 50)"><line x1="50" y1="${big ? 12 : 15}" x2="50" y2="21" stroke="#e9e4d6" stroke-width="${big ? 2.2 : 1.4}"/></g>`; }).join('');
+        const nums = [0, 5, 10].map((i) => { const a = (-90 + i * 18) * Math.PI / 180; return `<text x="${(50 + Math.sin(a) * 20).toFixed(1)}" y="${(50 - Math.cos(a) * 20 + (i === 5 ? 3 : -2)).toFixed(1)}" font-size="9" text-anchor="middle" fill="#e9e4d6" font-family="sans-serif" font-weight="700">${i}</text>`; }).join('');
+        const ma = (-90 + MIRROR_MARK * 18) * Math.PI / 180;
+        const paint = `<circle cx="${(50 + Math.sin(ma) * 33).toFixed(1)}" cy="${(50 - Math.cos(ma) * 33).toFixed(1)}" r="5" fill="#c2382a" opacity=".9"/>`;
+        const gauge = el('div', 'mirror-gauge'); gauge.setAttribute('aria-hidden', 'true');
+        gauge.innerHTML = `<svg viewBox="0 0 100 56"><path d="M8 50 A42 42 0 0 1 92 50 Z" fill="#3b3f43" stroke="#1c1f22" stroke-width="2"/>${paint}${ticks}${nums}<line x1="50" y1="50" x2="${(50 + Math.sin(ma) * 25).toFixed(1)}" y2="${(50 - Math.cos(ma) * 25).toFixed(1)}" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="4" fill="#1a1a1a"/></svg><span>거울 받침대 눈금 · 가까이 본 것</span>`;
         const paper = el('p', 'mirror-paper', STRIP_BACK);
-        const setTilt = (t) => { const off = t - 50; paper.style.setProperty('--tilt', String(off)); paper.style.setProperty('--blur', (Math.min(Math.abs(off), 50) * 0.12).toFixed(2) + 'px'); };
+        const setTilt = (t) => { const off = t - MIRROR_MARK * 10; paper.style.setProperty('--tilt', String(Math.max(-60, Math.min(60, off)))); paper.style.setProperty('--blur', (Math.min(Math.abs(off), 40) * 0.22).toFixed(2) + 'px'); };
         setTilt(d.tilt || 0);
         if (d.held) glass.append(paper);
         wrap.append(glass);
+        const gw = el('div', 'mirror-gauge-row'); gw.append(gauge, el('p', 'mirror-cap', '거울 기둥 받침대에 눈금이 새겨져 있다 녹이 슬어 거울이 달린 그 기울기에서 꼼짝도 하지 않는다'));
+        wrap.append(gw);
         const b = el('button', 'ctl wide', d.held ? '사진 내리기' : '네컷사진 뒷면을 거울 앞에 들기'); b.type = 'button'; b.onclick = () => { d.held = !d.held; if (d.held && d.tilt == null) d.tilt = 0; save(); };
         wrap.append(b);
         if (d.held) {
-          const lab = el('label', 'mirror-tilt'); lab.append(el('span', '', aligned ? '거울과 나란하다' : '사진이 거울에 비스듬히 비친다'));
-          const r = el('input'); r.type = 'range'; r.min = '0'; r.max = '100'; r.value = String(d.tilt || 0); r.setAttribute('aria-label', '사진 기울이기');
-          r.oninput = () => { d.tilt = Number(r.value); setTilt(d.tilt); const ok = Math.abs(d.tilt - 50) <= 8; glass.classList.toggle('aligned', ok); lab.firstChild.textContent = ok ? '거울과 나란하다' : '사진이 거울에 비스듬히 비친다'; };
+          const tickNow = (t) => Math.round(t / 10);
+          const lab = el('label', 'mirror-tilt'); lab.append(el('span', '', `사진 기울기 ${tickNow(d.tilt || 0)} · ${aligned ? '거울과 나란하다' : '사진이 거울에 비스듬히 비친다'}`));
+          const r = el('input'); r.type = 'range'; r.min = '0'; r.max = '100'; r.step = '1'; r.value = String(d.tilt || 0); r.setAttribute('aria-label', '사진 기울이기');
+          r.oninput = () => { d.tilt = Number(r.value); setTilt(d.tilt); const ok = tiltOk(d.tilt); glass.classList.toggle('aligned', ok); lab.firstChild.textContent = `사진 기울기 ${tickNow(d.tilt)} · ${ok ? '거울과 나란하다' : '사진이 거울에 비스듬히 비친다'}`; };
           r.onchange = () => { save(); };
-          lab.append(r); wrap.append(lab);
+          const scale = el('span', 'mirror-scale'); scale.setAttribute('aria-hidden', 'true'); scale.innerHTML = Array.from({ length: 11 }, (_, i) => `<i>${i}</i>`).join('');
+          lab.append(r, scale); wrap.append(lab);
         }
         const list = el('div', 'train-list');
         list.append(el('p', 'pick-label', '출발 안내 · 09시 이후 · 탈 열차 고르기'));
@@ -446,7 +464,7 @@ export default {
       commitLabel: '이 열차 타기',
       check(d) {
         if (!d.train) return { ok: false, msg: '열차를 하나 골라야 한다' };
-        if (!d.held || Math.abs((d.tilt || 0) - 50) > 8) return { ok: false, msg: '뒷면 글씨를 아직 못 읽었다 거울에 비친 사진이 비뚤다' };
+        if (!d.held || !tiltOk(d.tilt)) return { ok: false, msg: '뒷면 글씨를 아직 못 읽었다 거울에 비친 사진이 비뚤다' };
         if (d.train === 'n0940') return { ok: true };
         return { ok: false, msg: '표를 끊으려다 멈췄다 이 열차는 아닌 것 같다' };
       },
@@ -575,20 +593,20 @@ export default {
         const wrap = el('div', 'walk');
         const segs = d.path.map(([a, b]) => [MAP.nodes[a] || LANE_END[a], MAP.nodes[b] || LANE_END[b]]);
         const mapBox = el('div', 'walk-map');
-        mapBox.innerHTML = `<img src="assets/v2/station/props/kraft.webp" alt="" decoding="async"><div class="kraft-map">${svgMap(segs, d.house)}</div>`; mapBox.classList.add('prop', 'kraft');
+        mapBox.innerHTML = `<img src="assets/v2/station/props/kraft.webp" alt="" decoding="async"><div class="kraft-map">${svgMap(segs, d.house, d.lane)}</div>`; mapBox.classList.add('prop', 'kraft');
         wrap.append(mapBox);
         const here = el('p', 'walk-here');
         const headingName = { N: '북쪽(역을 등진 방향)', S: '남쪽(역 쪽)', E: '동쪽', W: '서쪽' }[d.heading];
         if (d.lane) {
           const lane = LANES[d.lane];
-          here.innerHTML = `<b>${lane.name}</b>에 들어섰다 ${lane.sound} 집이 ${['', '한', '두', '세', '네'][lane.houses.length]} 채 늘어서 있다 보는 방향 ${headingName}`;
+          here.innerHTML = `<b>${lane.name}</b>에 들어섰다 ${lane.sound} 집이 ${['', '한', '두', '세', '네'][lane.houses.length]} 채 늘어서 있다 보는 방향 ${headingName}${lane.houses.length > 1 ? ' 들어선 쪽에서 가까운 집부터 첫째, 둘째로 세어 지도에 연필로 번호를 적었다' : ''}`;
           wrap.append(here);
           const row = el('div', 'gate-row');
           lane.houses.forEach((hid, i) => {
             const col = GATE[hid];
             const b = el('button', 'gate-chip' + (d.house === hid ? ' on' : '')); b.type = 'button';
             b.setAttribute('aria-label', `${['첫', '둘', '셋', '넷'][i]}째 집 ${col} 대문`);
-            b.innerHTML = `<i style="--gate:${GATE_CSS[col]}"></i><span>${['첫', '둘', '셋', '넷'][i]}째 집</span><small>${col} 대문</small>`;
+            b.innerHTML = `<i style="--gate:${GATE_CSS[col]}"></i><span>${['첫', '둘', '셋', '넷'][i]}째 집</span><small>${i + 1}번 · ${col} 대문</small>`;
             b.onclick = () => { d.house = hid; save(); };
             row.append(b);
           });
@@ -646,13 +664,16 @@ export default {
       '“근데 왜 3번이야 지금은 2번인데”',
       '“우리 처음 만났을 때 09:40 열차가 서던 데가 3번이었잖아 너는 그것도 기억 못 하지”',
       '기억하고 있었다 말은 안 했다',
+      '“표지판은 어떻게 꺼냈어 창고 열쇠는 역무원 아저씨만 있다던데”',
+      '“표지판? 나는 사진만 찍었어 내가 갔을 땐 벌써 벤치 옆에 나와 있던데 비에 젖어서”',
+      '민서도 나도 한동안 수박만 먹었다',
       '할머니가 수박을 하나 더 자르며 말했다 “얘가 요 며칠 그 얘기만 했어 걔는 길 잘 찾아, 걔는 길 잘 찾아”',
       '민서가 주머니에서 오려 낸 셋째 칸을 꺼내 내 손바닥에 올려놓았다 둘 다 눈을 감고 웃고 있었다 열쇠를 돌려주려다 말았다 민서가 그건 네 거라고 했다',
       '“다음엔 그냥 말로 해”',
       '민서가 한참 있다가 고개를 끄덕였다 “응 다음엔 전화 받을게 먼저 걸게”',
       '해가 산 너머로 넘어갈 때까지 우리는 평상에서 내려오지 않았다 머리 위에서 감이 아직 퍼렇게 달려 있었다',
     ],
-    afterword: '민서는 수림에 남았고 나는 토요일마다 09:40 열차를 탄다 옛 3번, 지금 2번 승강장 둘째 칸이고, 자리에 이름은 없다',
+    afterword: '민서는 수림에 남았고 나는 토요일마다 09:40 열차를 탄다 옛 3번, 지금 2번 승강장 둘째 칸이고, 자리에 이름은 없다 다만 열차가 들어오기 직전마다 머리 위 스피커가 한 번 지직거린다 「3번 승강장에 열차가…」 역무원 아저씨는 그런 방송을 넣은 적이 없다고 했다',
     unlockDoc: 'final',
     next: { href: 'play.html?case=letter', title: '반송된 편지', line: '다음은 다섯 번 돌아온 편지 이야기입니다' },
   },

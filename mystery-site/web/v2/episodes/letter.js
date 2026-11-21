@@ -30,13 +30,14 @@ const LOCK_CODE = [0, 3, 1, 9];
 
 // 다섯 통의 겉봉 — 보내는 사람 칸은 한 통도 온전하지 않다
 // 우편번호 끝 두 자리는 2023 봉투(도장 밑)를 뒤에서 비춰 봐야만 나온다 2025 봉투의 35271은 대장에 오기로 적혀 있다
-const SMEAR = (t) => `<span class="smear">${t}</span>`;
+// 번진 자리는 진짜 글자 대신 얼룩 모양만 그린다 (글자 수만 맞춤)
+const SMEAR = (t) => `<span class="smear" aria-hidden="true" data-g="${'▒'.repeat([...t].length)}"></span>`;
 const ENVS = [
-  { y: 2021, mark: '2021/3/15', zip: SMEAR('35217'), addr: `수림군 산장면 ${SMEAR('산장길 31-2')}`, name: '오정민', note: '빗물에 보내는 사람 칸이 번졌다 이름만 겨우 읽힌다' },
-  { y: 2022, mark: '2022/3/14', zip: '', addr: '수림군 산장면 산장길 31-2, 1층', name: '정민', note: '우편번호 칸이 비어 있다' },
-  { y: 2023, mark: '2023/3/14', zip: '352<span class="inked">17</span>', addr: '수림군 산장면 산장길 31-2, 1층', name: '오정민', note: '소인 도장이 우편번호 끝 두 자리 위에 시커멓게 겹쳐 찍혔다', atZip: true },
-  { y: 2024, mark: '2024/3/14', zip: '35<span class="torn"></span>', addr: `수림군 산장면 산장길 3${SMEAR('1-2')}, 2층`, name: '정민', note: '귀퉁이가 찢겨 우편번호 뒤 세 자리가 없다 보내는 사람 칸 옆에 작게 한 줄', extra: '2층으로 옮겼어요' },
-  { y: 2025, mark: '2025/3/14', zip: '35271', addr: '수림군 산장면 산장길 31-2, 2층', name: '오정민', note: '' },
+  { y: 2021, mark: '2021/3/15', day: '월', zip: SMEAR('35217'), addr: `수림군 산장면 ${SMEAR('산장길 31-2')}`, name: '오정민', note: '빗물에 보내는 사람 칸이 번졌다 이름만 겨우 읽힌다' },
+  { y: 2022, mark: '2022/3/14', day: '월', zip: '', addr: '수림군 산장면 산장길 31-2, 1층', name: '정민', note: '우편번호 칸이 비어 있다' },
+  { y: 2023, mark: '2023/3/14', day: '화', zip: '352<span class="inked" aria-hidden="true"></span>', addr: '수림군 산장면 산장길 31-2, 1층', name: '오정민', note: '소인 도장이 우편번호 끝 두 자리 위에 시커멓게 겹쳐 찍혔다', atZip: true },
+  { y: 2024, mark: '2024/3/14', day: '목', zip: '35<span class="torn"></span>', addr: `수림군 산장면 산장길 3${SMEAR('1-2')}, 2층`, name: '정민', note: '귀퉁이가 찢겨 우편번호 뒤 세 자리가 없다 보내는 사람 칸 옆에 작게 한 줄', extra: '2층으로 옮겼어요' },
+  { y: 2025, mark: '2025/3/14', day: '금', zip: '35271', addr: '수림군 산장면 산장길 31-2, 2층', name: '오정민', note: '' },
 ];
 
 // 구분함 4×4
@@ -76,10 +77,10 @@ function routeMap() {
 
 const envHtml = (e) => `<figure class="prop lenv y${e.y}"><img src="${P}props/envelope.webp" alt="${e.y}년 봉투 앞면" decoding="async">
 <span class="lenv-from"><i>보내는 사람</i>${e.zip ? `<b class="zip">${e.zip}</b>` : '<b class="zip empty">□□□□□</b>'}<span>${e.addr}</span><span>${e.name}</span>${e.extra ? `<em class="lenv-note">${e.extra}</em>` : ''}</span>
-<span class="lenv-mark${e.atZip ? ' at-zip' : ''}"><em>수림</em><em>${e.mark}</em></span>
+<span class="lenv-mark${e.atZip ? ' at-zip' : ''}"><em>수림</em><em>${e.mark}</em><em>${e.day}</em></span>
 <span class="lenv-to">미루동 17-4<br>정해린 님께</span>
 <span class="lenv-sticker"><b>반송</b><small>수취인 불명</small><small class="pen">보관 · 김</small></span>
-</figure>${e.note ? `<p class="aside">${e.y}년 · 소인 ${e.mark} · ${e.note}${e.extra ? ` 「${e.extra}」` : ''}</p>` : `<p class="aside">${e.y}년 · 소인 ${e.mark}</p>`}`;
+</figure>${e.note ? `<p class="aside">${e.y}년 · 소인 ${e.mark} ${e.day}요일 · ${e.note}${e.extra ? ` 「${e.extra}」` : ''}</p>` : `<p class="aside">${e.y}년 · 소인 ${e.mark} ${e.day}요일</p>`}`;
 
 // 옛 우편함 다이얼: 0~31, 오른쪽(↻)은 숫자가 커지고 왼쪽(↺)은 작아진다 방향이 바뀔 때 그 자리 숫자가 들어간다
 const OB_N = 32;
@@ -144,15 +145,15 @@ export default {
       image: P + 'sorting.webp',
       arrive: '형광등 하나가 자꾸 깜박거린다 벽 하나를 다 차지한 구분함, 왼쪽의 회색 반송 보관함, 책상 위에 펼쳐진 반송 대장 38년 동안 아저씨가 매일 아침 서 있던 자리다',
       hotspots: [
-        { id: 'phone', x: 61.5, y: 84, r: 5, label: '봉수 아저씨 문자', kind: 'doc', doc: 'chat' },
-        { id: 'bmemo', x: 16.4, y: 33.5, r: 5, label: '보관함 문에 붙은 쪽지', kind: 'doc', doc: 'bmemo' },
-        { id: 'locker', x: 14.2, y: 44.5, r: 5, label: '반송 보관함', kind: 'device', device: 'locker' },
-        { id: 'ledger', x: 33, y: 81, label: '반송 대장', kind: 'doc', doc: 'ledger' },
+        { id: 'phone', x: 62, y: 79, r: 9, label: '봉수 아저씨 문자', kind: 'doc', doc: 'chat' },
+        { id: 'bmemo', x: 16.4, y: 32, r: 9, label: '보관함 문에 붙은 쪽지', kind: 'doc', doc: 'bmemo' },
+        { id: 'locker', x: 14.5, y: 46, r: 9, label: '반송 보관함', kind: 'device', device: 'locker' },
+        { id: 'ledger', x: 33, y: 76, label: '반송 대장', kind: 'doc', doc: 'ledger' },
         { id: 'notice', x: 82, y: 33, label: '게시판의 주소 안내', kind: 'doc', doc: 'notice' },
-        { id: 'envs', x: 9.5, y: 72, r: 5, label: '다섯 통의 겉봉', kind: 'doc', doc: 'envs', visible: (S) => S.solved.includes('locker') },
-        { id: 'forward', x: 48, y: 82, r: 5, label: '묶음에 끼워진 신청서', kind: 'doc', doc: 'forward', visible: (S) => S.solved.includes('locker') },
+        { id: 'envs', x: 9, y: 70, r: 9, label: '다섯 통의 겉봉', kind: 'doc', doc: 'envs', visible: (S) => S.solved.includes('locker') },
+        { id: 'forward', x: 20, y: 77, r: 9, label: '묶음에 끼워진 신청서', kind: 'doc', doc: 'forward', visible: (S) => S.solved.includes('locker') },
         { id: 'rack', x: 50, y: 30, label: '구분함', kind: 'device', device: 'rack', visible: (S) => S.solved.includes('locker') },
-        { id: 'hcard', x: 64, y: 24, r: 5, label: '9-1 칸의 쪽지', kind: 'doc', doc: 'hcard', visible: (S) => S.solved.includes('rack') },
+        { id: 'hcard', x: 64, y: 24, r: 9, label: '9-1 칸의 쪽지', kind: 'doc', doc: 'hcard', visible: (S) => S.solved.includes('rack') },
       ],
     },
     {
@@ -178,10 +179,10 @@ export default {
         : '토요일 오후 미루새길 9는 3층짜리 빌라다 그 옆 틈 안쪽에 녹슨 초록 대문이 있고, 대문 기둥엔 페인트가 벗겨진 우편함이 하나 붙어 있다'),
       hotspots: [
         { id: 'mailboxes', x: 78, y: 62, label: '빌라 우편함', kind: 'doc', doc: 'mailboxes' },
-        { id: 'oldbox', x: 44, y: 62, r: 5, label: '대문 기둥의 옛 우편함', kind: 'device', device: 'oldbox', visible: (S) => !S.solved.includes('oldbox') },
-        { id: 'sixth', x: 44, y: 62, r: 5, label: '여섯 번째 봉투', kind: 'doc', doc: 'sixth', visible: (S) => S.solved.includes('oldbox') },
+        { id: 'oldbox', x: 44, y: 62, r: 9, label: '대문 기둥의 옛 우편함', kind: 'device', device: 'oldbox', visible: (S) => !S.solved.includes('oldbox') },
+        { id: 'sixth', x: 44, y: 62, r: 9, label: '여섯 번째 봉투', kind: 'doc', doc: 'sixth', visible: (S) => S.solved.includes('oldbox') },
         { id: 'gate', x: 55, y: 66, label: '초록 대문', kind: 'doc', doc: 'haerin', visible: (S) => S.solved.includes('oldbox') },
-        { id: 'reply', x: 55, y: 84, label: '할머니가 내민 빈 봉투', kind: 'device', device: 'reply', visible: (S) => S.read.includes('haerin') },
+        { id: 'reply', x: 63, y: 77, label: '할머니가 내민 빈 봉투', kind: 'device', device: 'reply', visible: (S) => S.read.includes('haerin') },
       ],
     },
   ],
@@ -230,7 +231,7 @@ export default {
     route: {
       title: '못에 걸린 순로표',
       kind: '7구 배달 순서 · 뒷면에 볼펜 약도',
-      html: `<p>종이를 뒤집으니 아저씨가 볼펜으로 그린 약도가 있었다 빨간 점선은 예전 길이다 아래에 작게 「할머니 집 가는 길 · 우체국 문 나서는 방향부터 · 길 하나에 한 번씩 · 위가 북쪽」</p><figure class="prop routemap">${routeMap()}</figure><p>앞면은 배달 순서다</p><div class="paper-table"><p class="pt-head">7구 순로표 (2026년 개정) · 미루새길 구간</p><table><tr><th>순번</th><th>주소</th><th>메모</th></tr>${ROUTE_NOW.map((r) => `<tr><td class="mono">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</table></div><figure class="prop clipphoto"><img src="${P}props/clipboard.webp" alt="못에 걸린 클립보드" decoding="async"></figure>`,
+      html: `<p>종이를 뒤집으니 아저씨가 볼펜으로 그린 약도가 있었다 빨간 점선은 예전 길이다 아래에 작게 「할머니 집 가는 길 · 우체국 문 나서는 방향부터 · 길 하나에 한 번씩 · 위가 북쪽」</p><figure class="prop routemap">${routeMap()}</figure><p>앞면은 배달 순서다</p><div class="paper-table"><p class="pt-head">7구 순로표 (2026년 개정) · 미루새길 구간</p><table><tr><th>순번</th><th>주소</th><th>메모</th></tr>${ROUTE_NOW.map((r) => `<tr><td class="mono">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</table><p class="pt-foot">우체통 수거 월~토 오후 3시 · 일요일·공휴일 수거 없음 그날 넣은 우편은 다음 수거 때 소인을 찍는다</p></div><figure class="prop clipphoto"><img src="${P}props/clipboard.webp" alt="못에 걸린 클립보드" decoding="async"></figure>`,
     },
     photo: {
       title: '벽의 단체 사진',
@@ -240,7 +241,7 @@ export default {
     notebook: {
       title: '봉수 아저씨의 수첩',
       kind: '맨 끝 사물함 · 업무 수첩 마지막 장들',
-      html: `<blockquote class="hand small">2018/4/2 정 할머니 대문 우편함 자물쇠 고장 둥근 다이얼짜리로 새로 달아 드림 번호는 할머니가 정하심 「내 생일로 해 오른쪽으로 달, 왼쪽으로 날 그래야 그 애도 안 잊지」<br><br>2020/6/20 정 할머니 앞집 헐고 빌라 들어섬 할머니는 뒤채로 전송 신청 받아 줌 대문 우편함은 뒤채 대문 기둥으로 옮겨 달아 드림 우편은 대문 틈으로 넣기로<br><br>2021/3/19 수림에서 정 할머니 앞 편지 보낸 사람 아드님 오정민 씨<br>할머니가 안 받으신다 함 「그 애 편지 받으면 내가 지는 거다」<br>거절 도장을 찍으면 언젠가 이게 돌아갔을 때 아드님이 볼 거다 17-4는 이제 빌라 번지라 불명이 틀린 말도 아니고<br>근데 보내는 사람 칸이 번져서 돌려보낼 데도 없다 그럼 그 도장은 누구 보라고 찍었나<br>솔직히는 내가 거절을 못 찍었다 찍으면 정말 끝나는 것 같아서 보관<br><br>2022/3/18 또 옴 할머니 겉봉만 한참 보시다 그래도 돌려보내라 하심<br><br>2023/3/17 해마다 같은 날 근처에 부친다 무슨 날인지는 안 여쭸다<br><br>2024/3/19 2층으로 옮겼다고 겉봉에 써 있다 다섯 통 겉봉 합치면 주소가 거의 다 나오는데<br>그건 내 일이 아니라고 생각했다<br><br>2025/3/18 다섯 통째 이번엔 우편번호를 잘못 썼다 아드님도 급했나 보다<br><br><b class="pressed">2026년 3월 올해는 안 옴</b><br><br>2026/10/30 퇴임 묶음은 못 버렸다<br><br>2026/11/14 국장님 전화 할머니가 쪽지 두고 가셨단다 나는 이제 우체국 사람이 아니다 재희한테</blockquote><p class="aside">「올해는 안 옴」 줄만 볼펜으로 몇 번이나 덧그어 종이가 패였다</p>`,
+      html: `<blockquote class="hand small">2018/4/2 정 할머니 대문 우편함 자물쇠 고장 둥근 다이얼짜리로 새로 달아 드림 번호는 할머니가 정하심 「내 생일로 해 오른쪽으로 달, 왼쪽으로 날 그래야 그 애도 안 잊지」<br><br>2020/6/20 정 할머니 앞집 헐고 빌라 들어섬 할머니는 뒤채로 전송 신청 받아 줌 대문 우편함은 뒤채 대문 기둥으로 옮겨 달아 드림 우편은 대문 틈으로 넣기로<br><br>2021/3/19 수림에서 정 할머니 앞 편지 보낸 사람 아드님 오정민 씨<br>할머니가 안 받으신다 함 「그 애 편지 받으면 내가 지는 거다」<br>거절 도장을 찍으면 언젠가 이게 돌아갔을 때 아드님이 볼 거다 17-4는 이제 빌라 번지라 불명이 틀린 말도 아니고<br>근데 보내는 사람 칸이 번져서 돌려보낼 데도 없다 그럼 그 도장은 누구 보라고 찍었나<br>솔직히는 내가 거절을 못 찍었다 찍으면 정말 끝나는 것 같아서 보관<br><br>2022/3/18 또 옴 할머니 겉봉만 한참 보시다 그래도 돌려보내라 하심<br><br>2023/3/17 또 옴 아드님은 해마다 3월 똑같은 날에 우체통에 넣는다 도착하는 날은 해마다 다르지만 부치는 날은 안 바뀐다 무슨 날인지는 안 여쭸다<br><br>2024/3/19 2층으로 옮겼다고 겉봉에 써 있다 다섯 통 겉봉 합치면 주소가 거의 다 나오는데<br>그건 내 일이 아니라고 생각했다<br><br>2025/3/18 다섯 통째 이번엔 우편번호를 잘못 썼다 아드님도 급했나 보다<br><br><b class="pressed">2026년 3월 올해는 안 옴</b><br><br>2026/10/30 퇴임 묶음은 못 버렸다<br><br>2026/11/14 국장님 전화 할머니가 쪽지 두고 가셨단다 나는 이제 우체국 사람이 아니다 재희한테</blockquote><p class="aside">「올해는 안 옴」 줄만 볼펜으로 몇 번이나 덧그어 종이가 패였다</p>`,
     },
     mailboxes: {
       title: '빌라 우편함',
@@ -255,7 +256,7 @@ export default {
     haerin: {
       title: '초록 대문',
       kind: '정해린 · 미루새길 9-1',
-      html: `<p>문을 두 번 두드리자 한참 뒤에 대문이 열렸다 작은 할머니가 내 우체국 점퍼부터 봤다</p><blockquote>“봉수 씨는?”</blockquote><blockquote>“지난달에 퇴임하셨어요 이거 전해 달라고 하셨어요”</blockquote><p>할머니는 묶음을 받기 전에 내 얼굴부터 살폈다</p><blockquote>“그 애한테 무슨 일 있는 거 아니지 올봄엔 안 왔어 다섯 해 동안 한 번도 안 거르던 애가”</blockquote><p>대답 대신 기둥 우편함에서 나온 봉투를 묶음 맨 위에 올려 드렸다 할머니가 뒷면 글씨를 손가락으로 한 자씩 짚었다 한참 아무 말이 없었다</p><blockquote>“여기까지 왔었네 문 앞까지 그 우편함은 앞집 헐고 나서 한 번도 안 열어 봤어 우편은 다 대문 틈으로 들어오니까 그 애는 번호를 아직 기억하고 있었네”</blockquote><blockquote>“앞집 땅을 그 애가 팔았어 내가 병원에 누워 있을 때 도장 찍고, 나 살 데는 뒤채면 된다고 그게 서운해서 받지 말라 했지 그 애는 아직도 17-4로 써 집이 쪼개진 걸 저도 못 받아들이는 거야”</blockquote><p>할머니는 봉투를 뜯지 않고 무릎에 내려놓았다 마루 소반 위에 빈 봉투 한 장과 볼펜이 있었다</p><blockquote>“답장을 쓸 거야 근데 눈이 침침해서 주소는 못 쓰겠어 그 애 주소는 겉봉에 있다는데 볼 때마다 다 번져 있더라 봉투는 자네가 써 줘 이번엔 돌아오지 않게”</blockquote>`,
+      html: `<p>문을 두 번 두드리자 한참 뒤에 대문이 열렸다 작은 할머니가 내 우체국 점퍼부터 봤다</p><blockquote>“봉수 씨는?”</blockquote><blockquote>“지난달에 퇴임하셨어요 이거 전해 달라고 하셨어요”</blockquote><p>할머니는 묶음을 받기 전에 내 얼굴부터 살폈다</p><blockquote>“그 애한테 무슨 일 있는 거 아니지 올봄엔 안 왔어 다섯 해 동안 한 번도 안 거르던 애가”</blockquote><p>대답 대신 기둥 우편함에서 나온 봉투를 묶음 맨 위에 올려 드렸다 할머니가 뒷면 글씨를 손가락으로 한 자씩 짚었다 한참 아무 말이 없었다</p><blockquote>“여기까지 왔었네 문 앞까지 그 우편함은 앞집 헐고 나서 한 번도 안 열어 봤어 우편은 다 대문 틈으로 들어오니까 그 애는 번호를 아직 기억하고 있었네”</blockquote><blockquote>“앞집 땅을 그 애가 팔았어 내가 병원에 누워 있을 때 도장 찍고, 나 살 데는 뒤채면 된다고 그게 서운해서 받지 말라 했지 그 애는 아직도 17-4로 써 집이 쪼개진 걸 저도 못 받아들이는 거야”</blockquote><p>할머니는 봉투를 뜯지 않고 무릎에 내려놓았다 마루 소반 위에 빈 봉투 한 장과 볼펜이 있었다</p><blockquote>“답장을 쓸 거야 근데 눈이 침침해서 주소는 못 쓰겠어 그 애 주소는 겉봉에 있다는데 볼 때마다 어디가 번지고 찢기고 비어 있더라 봉투는 자네가 써 줘 이번엔 돌아오지 않게”</blockquote>`,
     },
     final: {
       title: '열흘 뒤 온 봉투',
@@ -384,12 +385,12 @@ export default {
       title: '대문 기둥의 옛 우편함',
       scene: 'alley',
       intro: '녹슨 양철 우편함에 둥근 다이얼 자물쇠가 달려 있다 ↻는 오른쪽으로, ↺는 왼쪽으로 한 눈금씩 돌린다 돌리는 방향을 바꿀 때마다 그 자리 숫자가 걸린다 다 돌렸으면 뚜껑을 당긴다',
-      docs: ['notebook', 'envs', 'mailboxes'],
+      docs: ['notebook', 'envs', 'route', 'mailboxes'],
       hintCode: 'L-S04',
       hints: [
         '이 다이얼은 숫자 두 개를 받는다 어느 쪽으로 먼저 돌리고 무엇을 넣는지는 내 수첩 2018년 줄에 있다',
-        '할머니 생일은 어디에도 그냥 적혀 있지 않다 그 애가 해마다 부친 날짜를 다섯 통 겉봉 소인에서 모아 봐라 한 통만 하루 늦은 데엔 사정이 있다',
-        '오른쪽으로 3, 왼쪽으로 14 (3월 14일)',
+        '생일은 어디에도 그냥 적혀 있지 않다 수첩에서 그 애가 언제 부치는지 적은 줄을 찾고, 겉봉 소인과 순로표 아래 인쇄를 같이 봐라',
+        '소인은 3/14가 넷, 2021년만 3/15 월요일 2021/3/14는 일요일이라 수거가 없어 다음 날 소인 → 생일 3월 14일 → 오른쪽으로 3, 왼쪽으로 14',
       ],
       initial: () => ({ pos: 0, dir: null, marks: [], dirs: [] }),
       render(ctx) {
@@ -445,11 +446,36 @@ export default {
         const wrap = el('div', 'reply-wrap');
         // 1) 2023 봉투를 뒤집어 전구에 비춰 보기 (누르고 있는 동안만)
         const lb = el('div', 'backlight');
-        lb.innerHTML = `<figure class="prop lenv back"><img src="${P}props/envelope-back.webp" alt="2023년 봉투 뒷면" decoding="async"><span class="bl-glow"></span><span class="bl-zip" aria-hidden="true"><span>35217</span></span><span class="bl-ink" aria-hidden="true"></span></figure><p class="bl-cap">2023년 봉투 · 뒷면</p>`;
+        lb.innerHTML = `<figure class="prop lenv back"><img src="${P}props/envelope-back.webp" alt="2023년 봉투 뒷면" decoding="async"><span class="bl-glow"></span><canvas class="bl-zip" aria-hidden="true"></canvas></figure><p class="bl-cap">2023년 봉투 · 뒷면</p>`;
         const hold = el('button', 'ctl wide bl-hold', '전구에 대고 비춰 보기 (누르고 있기)'); hold.type = 'button';
         hold.setAttribute('aria-label', '2023년 봉투를 전구에 비춰 보기 (누르고 있기)');
-        const on = () => { lb.classList.add('lit'); lb.querySelector('.bl-cap').textContent = '2023년 봉투 · 뒷면 · 전구 빛에 비친 볼펜 자국'; };
-        const off = () => { lb.classList.remove('lit'); lb.querySelector('.bl-cap').textContent = '2023년 봉투 · 뒷면'; };
+        // 비친 숫자는 누르고 있는 동안만 캔버스에 그린다 뒤에서 본 글씨라 좌우가 뒤집혀 있다
+        // 앞면 소인 도장 자국(끝 두 자리 위)은 늘 흐리게, 불빛에선 조금 진하게 비친다
+        const cv = lb.querySelector('.bl-zip');
+        const draw = (show) => {
+          const r = cv.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 3);
+          if (!r.width) return;
+          cv.width = Math.max(1, Math.round(r.width * dpr)); cv.height = Math.max(1, Math.round(r.height * dpr));
+          const g = cv.getContext('2d'); if (!g) return; g.clearRect(0, 0, cv.width, cv.height);
+          const fam = getComputedStyle(cv).fontFamily || 'serif';
+          let px = cv.height * 0.36; g.font = `${px}px ${fam}`;
+          const chars = [...'35217'], gapOf = (p) => p * 0.32;
+          const total = (p) => chars.reduce((a, c) => a + g.measureText(c).width, 0) + gapOf(p) * (chars.length - 1);
+          if (total(px) > cv.width * 0.8) { px *= (cv.width * 0.8) / total(px); g.font = `${px}px ${fam}`; }
+          const ws = chars.map((c) => g.measureText(c).width), gap = gapOf(px), tw = total(px);
+          const xs = []; let x = (cv.width - tw) / 2; ws.forEach((w) => { xs.push(x); x += w + gap; });
+          g.save(); g.translate(cv.width, 0); g.scale(-1, 1);
+          const cx = (xs[3] + xs[4] + ws[4]) / 2, rad = Math.min(cv.height * 0.46, Math.max(px * 0.9, (xs[4] + ws[4] - xs[3]) * 0.7));
+          g.beginPath(); g.arc(cx, cv.height / 2, rad, 0, Math.PI * 2); g.lineWidth = Math.max(2, px * 0.09); g.strokeStyle = show ? 'rgba(30,30,40,.26)' : 'rgba(30,30,40,.1)'; g.stroke();
+          if (show) {
+            g.fillStyle = 'rgba(43,53,112,.72)'; g.textBaseline = 'middle'; g.filter = 'blur(' + (0.5 * dpr).toFixed(1) + 'px)';
+            chars.forEach((c, i) => g.fillText(c, xs[i], cv.height / 2));
+          }
+          g.restore();
+        };
+        requestAnimationFrame(() => draw(false));
+        const on = () => { lb.classList.add('lit'); draw(true); lb.querySelector('.bl-cap').textContent = '2023년 봉투 · 뒷면 · 전구 빛에 비친 볼펜 자국'; };
+        const off = () => { lb.classList.remove('lit'); draw(false); lb.querySelector('.bl-cap').textContent = '2023년 봉투 · 뒷면'; };
         hold.addEventListener('pointerdown', (e) => { e.preventDefault(); on(); });
         ['pointerup', 'pointerleave', 'pointercancel'].forEach((t) => hold.addEventListener(t, off));
         hold.addEventListener('keydown', (e) => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); on(); } });
@@ -499,7 +525,7 @@ export default {
         text: '우편번호 다섯 자리, 군과 면과 길과 번지, 2층, 이름 석 자 다섯 해 동안 어느 봉투에도 온전히 적힌 적 없던 주소였다',
         scene: ['할머니가 봉투를 들고 한 자씩 따라 읽었다 그러고는 우표 붙일 자리에 손가락을 대고 한참 있었다'],
         ending: true,
-        endingLabel: '할머니 답장을 받아 들고',
+        endingLabel: '봉투를 할머니께 건네고',
       },
     },
   },

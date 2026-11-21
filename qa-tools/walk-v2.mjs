@@ -33,9 +33,11 @@ async function station({ mobile = false } = {}) {
     // 아직 아무것도 안 읽었을 때: 장치 옆 자료는 잠겨 있어야 함
     await hotspot(page, '열차 안내판');
     L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].every((t) => t.disabled)), 'bench docs locked before reading');
+    L.check(await page.evaluate(() => { const f = document.querySelector('dialog[open] .grille-flash'); return !!f && f.textContent.includes('3번 승강장') && !f.textContent.includes('수림'); }), 'grille: board flash shows no destination');
     await L.closeDialog(page);
     // read docs in hall
-    for (const d of ['민서의 마지막 메시지', '벽에 기댄 옛 표지판', '매표창구의 역무원', '승강장 개편 안내']) { await hotspot(page, d); L.check(await dlgHas(page, d), 'doc opens: ' + d); await L.closeDialog(page); }
+    for (const [h, d] of [['의자에 앉아 다시 연 휴대폰', '민서의 마지막 메시지'], ['벽에 기댄 옛 표지판', '벽에 기댄 옛 표지판'], ['매표창구의 역무원', '네 시 반 첫 열차'], ['승강장 개편 안내', '승강장 개편 안내']]) { await hotspot(page, h); L.check(await dlgHas(page, d), 'doc opens: ' + h); await L.closeDialog(page); }
+    L.check(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot:not(.go)')].every((b) => { const x = parseFloat(b.style.left), y = parseFloat(b.style.top); return y <= 80 && x >= 6 && x <= 94; })), 'hall: hotspots clear of dialogue and edges');
     await shot(page, 'hall');
     // unread nudge in index
     await L.click(page, '자료 4 / 11');
@@ -51,7 +53,7 @@ async function station({ mobile = false } = {}) {
     await commit(page);
     L.check((await status(page)).includes('하나씩 골라야'), 'grille: empty choice explained');
     await L.click(page, '1번 승강장'); await L.click(page, '둘째 기둥'); await commit(page);
-    L.check((await status(page)).includes('말이 되지 않는다'), 'grille: unread holes explained — ' + (await status(page)));
+    L.check((await status(page)).includes('구간권을 안내판에'), 'grille: unread holes neutral — ' + (await status(page)));
     L.check(!(await L.dialogText(page)).includes('구멍으로 보이는 글자'), 'grille: no auto-read line');
     const holesNow = () => page.evaluate(() => [...document.querySelectorAll('dialog[open] .grille-board .cell.hole')].map((c) => c.textContent).join(''));
     await L.click(page, '구간권 오른쪽으로'); await L.click(page, '구간권 아래로');
@@ -81,6 +83,14 @@ async function station({ mobile = false } = {}) {
     await commit(page);
     L.check((await status(page)).includes('비뚤다'), 'mirror: not aligned explained — ' + (await status(page)));
     await L.setRange(page, '사진 기울이기', 50);
+    await commit(page);
+    L.check((await status(page)).includes('비뚤다'), 'mirror: slider middle is not the answer — ' + (await status(page)));
+    L.check(await dlgHas(page, '받침대 눈금'), 'mirror: bracket scale shown');
+    await L.setRange(page, '사진 기울이기', 70);
+    L.check(await page.evaluate(() => !!document.querySelector('dialog[open] .mirror-glass.aligned')), 'mirror: red mark tilt aligns');
+    await train('09:58', '수림행');
+    await commit(page);
+    L.check((await status(page)).includes('아닌 것 같다'), 'mirror: other Surim train neutral — ' + (await status(page)));
     await train('09:40', '강변행');
     await commit(page);
     L.check((await status(page)).includes('아닌 것 같다'), 'mirror: same time other line neutral — ' + (await status(page)));
@@ -108,10 +118,12 @@ async function station({ mobile = false } = {}) {
     L.check(await dlgHas(page, '3 · 2 · 4 · 1') && await dlgHas(page, '사원증'), 'locker solved');
     await L.click(page, '수림 마을길로');
     await L.sleep(400);
-    for (const d of ['민서의 편지', '울타리에 펼친 손지도']) { await hotspot(page, d); await L.closeDialog(page); }
+    L.check((await L.mainText(page)).includes('손에 들었다') && !(await L.mainText(page)).includes('벤치에 보관함에서 꺼낸'), 'village: text matches empty bench');
+    for (const d of ['손에 든 민서의 편지', '손지도를 길에 대 보기']) { await hotspot(page, d); await L.closeDialog(page); }
+    L.check(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot:not(.go)')].every((b) => { const x = parseFloat(b.style.left), y = parseFloat(b.style.top); return y <= 80 && x >= 6 && x <= 94 && !b.style.getPropertyValue('--hit'); })), 'village: hotspots full size and clear of dialogue');
     // notes: deduction (walk hidden until solved)
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '마을로 걸어가기'))), 'walk hidden before notes');
-    await hotspot(page, '쪽지 세 장');
+    await hotspot(page, '손에 든 쪽지 세 장');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .pick-row .chip'))), 'notes: no house pick here (only in walk)');
     await page.evaluate(() => [...document.querySelectorAll('dialog[open] .note-card')][0].click()); await commit(page);
     L.check((await status(page)).includes('앞뒤가 안 맞는다'), 'notes: neutral — ' + (await status(page)));
@@ -127,6 +139,9 @@ async function station({ mobile = false } = {}) {
     await L.click(page, '역 앞으로 되돌아가기');
     await L.click(page, '왼쪽'); await L.click(page, '직진'); await L.click(page, '오른쪽'); await L.click(page, '직진 (다리 건너기)'); await L.click(page, '왼쪽');
     L.check(await dlgHas(page, '둘째 집') && await dlgHas(page, '파랑 대문'), 'walk: gate colours shown on the lane');
+    L.check(await dlgHas(page, '들어선 쪽에서 가까운 집부터') && await page.evaluate(() => document.querySelectorAll('dialog[open] .map-num').length === 4), 'walk: counting start stated and houses numbered on map');
+    await L.click(page, '넷째 집'); await commit(page);
+    L.check((await status(page)).includes('열쇠가 안 들어간다'), 'walk: third blue gate (no persimmon) neutral — ' + (await status(page)));
     await L.click(page, '둘째 집'); await commit(page);
     L.check((await status(page)).includes('열쇠가 안 들어간다'), 'walk: other blue gate neutral — ' + (await status(page)));
     await L.click(page, '첫째 집'); await commit(page);
@@ -139,6 +154,7 @@ async function station({ mobile = false } = {}) {
     await L.sleep(500);
     const t = await L.mainText(page);
     L.check(t.includes('없는 승강장에서 온 초대'), 'ending reached');
+    L.check(t.includes('벌써 벤치 옆에 나와 있던데') && t.includes('방송을 넣은 적이 없다'), 'ending: eerie threads tied back');
     await shot(page, 'ending');
     await L.click(page, '마지막 장 읽기');
     L.check(await dlgHas(page, '수박 잘라 놨어'), 'final letter unlocked');
@@ -689,7 +705,10 @@ async function letter({ mobile = false } = {}) {
     await setDial([0, 3, 1, 8]); await commit(page); L.check((await status(page)).includes('그 집 줄을 다시'), 'locker: later return neutral');
     await setDial([0, 3, 1, 9]); await shot(page, 'l-locker'); await commit(page); L.check(await dlgHas(page, '맨 아래 칸에 고무줄로'), 'locker solved');
     await L.click(page, '계속'); await L.sleep(300);
-    await hotspot(page, '다섯 통의 겉봉'); L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .lenv').length === 5), 'five envelopes rendered'); L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .envpanel')].filter((x) => x.offsetParent).length === 1), 'one envelope shown at a time'); await page.evaluate(() => [...document.querySelectorAll('dialog[open] .envtabs label')].find((l) => l.textContent === '2024').click()); L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .envpanel')].find((x) => x.offsetParent)?.textContent.includes('2024')), 'year tab switches envelope'); await shot(page, 'l-envs'); await L.closeDialog(page);
+    L.check(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot:not(.go)')].every((b) => { const x = parseFloat(b.style.left), y = parseFloat(b.style.top), r = parseFloat(b.style.getPropertyValue('--hit') || '11'); return y <= 80 && x >= 6 && x <= 94 && r >= 8; })), 'sorting: hotspots clear of dialogue, edges, not tiny');
+    await hotspot(page, '다섯 통의 겉봉'); L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .lenv').length === 5), 'five envelopes rendered');
+    L.check(await page.evaluate(() => { const d = document.querySelector('dialog[open]'); return !d.innerHTML.includes('35217') && !d.innerHTML.includes('352<span class="inked" aria-hidden="true">17'); }), 'envs: hidden zip digits are not in the page text');
+    L.check(await dlgHas(page, '2021/3/15 월요일'), 'envs: postmark weekday shown'); L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .envpanel')].filter((x) => x.offsetParent).length === 1), 'one envelope shown at a time'); await page.evaluate(() => [...document.querySelectorAll('dialog[open] .envtabs label')].find((l) => l.textContent === '2024').click()); L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .envpanel')].find((x) => x.offsetParent)?.textContent.includes('2024')), 'year tab switches envelope'); await shot(page, 'l-envs'); await L.closeDialog(page);
     await hotspot(page, '묶음에 끼워진 신청서'); L.check(await dlgHas(page, '뒤채'), 'doc: forward'); await L.closeDialog(page);
     // rack
     await hotspot(page, '구분함');
@@ -700,14 +719,14 @@ async function letter({ mobile = false } = {}) {
     await L.click(page, '9-1 칸의 쪽지 보기'); L.check(await dlgHas(page, '이제는 받겠습니다'), 'hcard via reveal'); await L.click(page, '← 돌아가기');
     await L.click(page, '집배원 휴게실로'); await L.sleep(400);
     L.check((await L.mainText(page)).includes('아저씨 우비가'), 'moved to breakroom');
-    for (const [d, t] of [['못에 걸린 순로표', '초록 대문'], ['벽의 단체 사진', '38년']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    for (const [d, t] of [['못에 걸린 순로표', '일요일·공휴일 수거 없음'], ['벽의 단체 사진', '38년']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     await hotspot(page, '맨 끝 사물함');
     L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].some((t) => t.textContent.includes('순로표') && !t.disabled)), 'route doc on bench');
     const push = async (seq) => { for (const k of seq) await L.click(page, { U: '위로 밀기', D: '아래로 밀기', L: '왼쪽으로 밀기', R: '오른쪽으로 밀기' }[k], { exact: true }); };
     await push('URU'); await commit(page); L.check((await status(page)).includes('약도를 다시'), 'dirlock: old gate decoy neutral');
     await push('URUR'); await commit(page); L.check((await status(page)).includes('약도를 다시'), 'dirlock: wrong last turn neutral');
     await push('URUL'); await shot(page, 'l-staff'); await commit(page); L.check(await dlgHas(page, '업무 수첩'), 'staffbox solved');
-    await L.click(page, '봉수 아저씨의 수첩 보기'); L.check(await dlgHas(page, '거절을 못 찍었다'), 'notebook via reveal'); await L.click(page, '← 돌아가기');
+    await L.click(page, '봉수 아저씨의 수첩 보기'); L.check(await dlgHas(page, '거절을 못 찍었다'), 'notebook via reveal'); L.check(await dlgHas(page, '똑같은 날에 우체통에 넣는다') && !(await dlgHas(page, '같은 날 근처')), 'notebook: posting day stated plainly'); await L.click(page, '← 돌아가기');
     await L.click(page, '미루새길 골목으로'); await L.sleep(400);
     L.check((await L.mainText(page)).includes('초록 대문이 있고'), 'moved to alley');
     const spotThere = (l) => page.evaluate((l) => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === l), l);
@@ -732,12 +751,18 @@ async function letter({ mobile = false } = {}) {
     await hotspot(page, '초록 대문'); L.check(await dlgHas(page, '이번엔 돌아오지 않게') && await dlgHas(page, '여기까지 왔었네'), 'doc: gate'); await L.closeDialog(page);
     await hotspot(page, '할머니가 내민 빈 봉투');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .inhand-card'))), 'reply: no duplicated sender cards');
+    L.check(!(await page.evaluate(() => document.querySelector('dialog[open]').innerHTML.includes('35217'))), 'reply: backlit zip not in page text before lighting');
+    const inkPx = () => page.evaluate(() => { const c = document.querySelector('dialog[open] canvas.bl-zip'); if (!c || !c.width) return 0; const g = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < g.length; i += 4) if (g[i] > 40) n++; return n; });
     // 전구에 비춰 보기: 누르고 있는 동안만
     const hb = await (await page.$('dialog[open] .bl-hold')).boundingBox();
     await page.mouse.move(hb.x + hb.width / 2, hb.y + hb.height / 2); await page.mouse.down(); await L.sleep(250);
     L.check(await page.evaluate(() => !!document.querySelector('dialog[open] .backlight.lit')), 'reply: envelope lit while held');
+    L.check((await inkPx()) > 200, 'reply: mirrored zip drawn on canvas while held');
+    L.check(await page.evaluate(() => { const c = document.querySelector('dialog[open] canvas.bl-zip'); return c.getBoundingClientRect().height >= 26; }), 'reply: lit zip area big enough to read');
+    await shot(page, 'l-reply-lit');
     await page.mouse.up(); await L.sleep(150);
     L.check(await page.evaluate(() => !document.querySelector('dialog[open] .backlight.lit')), 'reply: light off on release');
+    L.check((await inkPx()) === 0, 'reply: zip gone on release');
     await page.click('dialog[open] .bl-hold'); await L.sleep(100);
     L.check(await page.evaluate(() => !document.querySelector('dialog[open] .backlight.lit')), 'reply: plain click does not stay lit');
     await commit(page); L.check((await status(page)).includes('우편번호 칸이 아직'), 'reply: empty field named');
@@ -747,7 +772,7 @@ async function letter({ mobile = false } = {}) {
     await L.typeInto(page, '우편번호', '35217'); await L.click(page, '층: 1층', { exact: true }); await commit(page); L.check((await status(page)).includes('겉봉을 다시'), 'reply: old floor neutral');
     await L.click(page, '층: 2층', { exact: true }); await L.typeInto(page, '번지', '31 - 2'); await shot(page, 'l-reply'); await commit(page);
     L.check(await dlgHas(page, '꽉 찬 봉투'), 'reply solved');
-    await L.click(page, '할머니 답장을 받아 들고'); await L.sleep(500);
+    await L.click(page, '봉투를 할머니께 건네고'); await L.sleep(500);
     L.check((await L.mainText(page)).includes('돌아오지 않을 봉투'), 'ending reached');
     await shot(page, 'l-ending');
     await L.click(page, '열흘 뒤 온 봉투 읽기'); L.check(await dlgHas(page, '문 두드릴게요'), 'final unlocked'); await L.closeDialog(page);
