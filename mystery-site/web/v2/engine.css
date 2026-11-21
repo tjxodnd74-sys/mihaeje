@@ -918,13 +918,36 @@ html[data-case="cat-invite"] .seat-notes-head{margin:0 0 6px;font-size:13px;colo
 html[data-case="cat-invite"] .seat-notes p{font-size:19px;margin:0 0 4px}
 html[data-case="cat-invite"] .seat-btns{display:none}
 @media (max-width:640px){html[data-case="cat-invite"] .seat-btns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 10px}html[data-case="cat-invite"] .seat-btns .chip{display:grid;gap:1px;text-align:center;padding:8px 6px}html[data-case="cat-invite"] .seat-btns small{font-size:12px;opacity:.85}}
+/* v126 디테일: 사진 다섯 장은 PC에서도 한 줄 · 자리표 종이는 PC에서 조금 작게(선물 줄·확인까지 가깝게) · 놓인 방석은 선물 색 */
+html[data-case="cat-invite"] .photo-tray{grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+html[data-case="cat-invite"] .paperchart{max-width:460px}
+html[data-case="cat-invite"] .seat-btns .chip.on{background:color-mix(in srgb,var(--gc) 14%,#fffaf2);border:2px solid var(--gc);color:#2b2620}
+html[data-case="cat-invite"] .seat-btns .chip.on b{color:var(--gc)}
+html[data-case="cat-invite"] .seat-btns .chip.on small{color:#5a4d40;opacity:1}
+html[data-case="cat-invite"] .gift-chip{min-height:48px}
 @media (max-width:640px){
+  /* 편지지 붉은 여백 선이 휴대폰에선 글줄을 가로질러서 안쪽 여백 바깥으로 */
+  html[data-case="cat-invite"]{--paper-tex:linear-gradient(90deg,transparent 9px,rgba(240,165,138,.32) 9px 10px,transparent 10px),radial-gradient(rgba(240,165,138,.10) 1px,transparent 1.3px) 0 0/9px 9px}
+  /* 우체통: 발도장 칸을 낮게 해서 다이얼·확인이 발도장 바로 아래 오게 */
+  html[data-case="cat-invite"] .mailbox-wrap .paw-book{gap:8px;padding:8px}
+  html[data-case="cat-invite"] .mailbox-wrap .paw-cell{grid-template-columns:auto 1fr;justify-items:start;align-items:center;column-gap:6px;padding:6px}
+  html[data-case="cat-invite"] .mailbox-wrap .paw-stack{grid-row:span 2;width:64px}
+  html[data-case="cat-invite"] .mailbox-wrap .paw-cell small{text-align:left}
+  html[data-case="cat-invite"] .mail-tag .hand{font-size:18px}
+  html[data-case="cat-invite"] .gift-tray{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  html[data-case="cat-invite"] .gift-chip{min-width:0;padding:8px 4px}
+  html[data-case="cat-invite"] .gift-chip b{font-size:14px;white-space:nowrap}
+  html[data-case="cat-invite"] .gift-chip small{font-size:13px}
   html[data-case="cat-invite"] .tag{font-size:5cqw;min-width:18%;padding:1.2cqw 2.4cqw}
   html[data-case="cat-invite"] .paw-book{grid-template-columns:repeat(2,1fr)}
   html[data-case="cat-invite"] .paw-cell .paw,html[data-case="cat-invite"] .paw-stack{max-width:120px}
   html[data-case="cat-invite"] .photo-tray{grid-template-columns:repeat(5,1fr);gap:6px}
   html[data-case="cat-invite"] .photo-pick{font-size:12px;padding:3px 3px 4px}
   html[data-case="cat-invite"] .seat-notes p{font-size:17px}
+  html[data-case="cat-invite"] .photo-pick{font-size:13px}
+  html[data-case="cat-invite"] .paw-cell small{font-size:13px}
+  html[data-case="cat-invite"] .paw-cell em{font-size:13px}
+  html[data-case="cat-invite"] .seat-btns small{font-size:13px}
 }
 
 /* 오행당: 한지 · 먹 · 다섯 빛 띠 */
@@ -1189,6 +1212,8 @@ html[data-case="garage"] .cam-badge{position:absolute;left:3px;top:3px;backgroun
 html[data-case="garage"] .cam-picked{margin:0}
 /* 단말: 읽는 법은 화면 안 · 옮긴 값 강조 */
 html[data-case="garage"] .sync-legend{font-size:12px;opacity:.75;letter-spacing:0;word-break:keep-all}
+/* 한글이 든 줄은 고정폭 글꼴에서 글자 사이가 벌어지므로 본문 글꼴 + 숫자 폭만 고정 */
+html[data-case="garage"] .sync-legend,html[data-case="garage"] .sync-off,html[data-case="garage"] .vid-time{font-family:var(--sans);font-variant-numeric:tabular-nums;letter-spacing:0}
 html[data-case="garage"] .sync-off b{color:#ffe08a}
 html[data-case="garage"] .sync-row{margin-top:2px}
 /* 금고: 문을 가까이 잘라 보이고(290~770 × 130~450px), 번호 바퀴 위에 지금 숫자 */
@@ -1220,6 +1245,12 @@ html[data-case="garage"] .report-wrap .chip{min-height:40px}
   html[data-case="garage"] .cam-thumb span{font-size:13px}
   html[data-case="garage"] .cam-desc{font-size:13.5px}
   html[data-case="garage"] .term-table.log-srv td,html[data-case="garage"] .term-table.log-srv th{padding:5px 4px}
+  /* 휴대폰 글자 13px 아래로 내려가지 않게 (블박 화면 글자 · 단말 읽는 법 · 녹화 시각) */
+  html[data-case="garage"] .cam-osd{font-size:13px;letter-spacing:0;padding:6px 8px;justify-content:flex-end}
+  html[data-case="garage"] .cam-osd>span:first-child{display:none}
+  html[data-case="garage"] .sync-legend{font-size:13px}
+  html[data-case="garage"] .vid-osd,html[data-case="garage"] .vid-ends{font-size:13px}
+  html[data-case="garage"] .safedoor .knob{font-size:4cqw}
 }
 
 /* 반송된 편지: 우체국 빨강 · 항공우편 띠 · 흰 봉투 */

@@ -156,7 +156,7 @@ export default {
       hotspots: [
         { id: 'vetnote', x: 26, y: 41, r: 7, label: '병원 유리문의 쪽지', kind: 'doc', doc: 'vetnote' },
         { id: 'box', x: 8, y: 60, r: 9, label: '창턱의 상자', kind: 'device', device: 'seasons' },
-        { id: 'basket', x: 90, y: 80, r: 9, label: '빵집 앞 바구니', kind: 'device', device: 'gifts', visible: (S) => S.solved.includes('seasons') },
+        { id: 'basket', x: 90, y: 77, r: 9, label: '빵집 앞 바구니', kind: 'device', device: 'gifts', visible: (S) => S.solved.includes('seasons') },
         { id: 'basketnote', x: 81, y: 72, r: 6, label: '벤치 위 쪽지', kind: 'doc', doc: 'basketnote', visible: (S) => S.solved.includes('seasons') },
         { id: 'back', x: 50, y: 70, r: 10, label: '가게로 돌아가기', kind: 'travel', to: 'shop' },
       ],
@@ -418,7 +418,7 @@ export default {
         wrap.append(chart);
         // 모바일: 종이 위 손글씨 칸이 작으니 같은 기능의 큰 방석 버튼을 아래에 한 번 더
         const sb = el('div', 'seat-btns mobile-only');
-        SEATS.forEach((s) => { const who = d.seat[s.id]; const b = el('button', 'chip' + (who ? ' on' : '')); b.type = 'button'; b.setAttribute('aria-label', `${s.label} 방석 누르기`); b.innerHTML = `<small>${s.label}</small><b>${who ? GIFT_OF[who][0] : '빈 방석'}</b>`; b.onclick = () => goSeat(s.id); sb.append(b); });
+        SEATS.forEach((s) => { const who = d.seat[s.id]; const b = el('button', 'chip' + (who ? ' on' : '')); b.type = 'button'; b.setAttribute('aria-label', `${s.label} 방석 누르기`); if (who) b.style.setProperty('--gc', GIFT_OF[who][1]); b.innerHTML = `<small>${s.label}</small><b>${who ? GIFT_OF[who][0] : '빈 방석'}</b>`; b.onclick = () => goSeat(s.id); sb.append(b); });
         wrap.append(sb);
         const notes = el('div', 'seat-notes-wrap'); notes.innerHTML = `<p class="seat-notes-head">자리표 종이 아래 적힌 부탁</p>${REQUESTS}`;
         const placed = Object.values(d.seat);
