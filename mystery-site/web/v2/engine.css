@@ -833,6 +833,53 @@ html[data-case="pet-home"]{
   --paper-strip:linear-gradient(90deg,#e46a5a 0 3px,transparent 3px) 34px 0/100% 100% no-repeat,linear-gradient(#7fb0d6,#7fb0d6);
   --paper-tex:linear-gradient(90deg,transparent 33px,rgba(228,106,90,.35) 33px 34px,transparent 34px),repeating-linear-gradient(180deg,transparent 0 27px,rgba(127,176,214,.28) 27px 28px);
 }
+/* v125 보호자: 표지 분류 글씨 · 엔딩 공책 줄 · 상자 좌우 배치 · 카드 표 · 명찰 넷 */
+html[data-case="pet-home"] .v2-intro-card .v2-eyebrow{color:#eef5f1;text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 12px rgba(0,0,0,.7)}
+html[data-case="pet-home"] .v2-ending-paper{--paper-tex:linear-gradient(90deg,transparent 33px,rgba(228,106,90,.35) 33px 34px,transparent 34px)}
+html[data-case="pet-home"] .box-wrap{display:grid;gap:10px}
+html[data-case="pet-home"] .box-wrap .keepbox{margin:0 auto 8px}
+html[data-case="pet-home"] .keep-backcard{display:grid;grid-template-columns:minmax(0,1fr);gap:4px}
+html[data-case="pet-home"] .keep-backcard .keep-back{margin:0 auto;max-width:360px;width:100%}
+html[data-case="pet-home"] .keep-backcard .pick-label{margin:2px 0 0}
+html[data-case="pet-home"] .record-row{grid-template-columns:22px minmax(0,1fr) auto;padding:10px 4px;min-height:44px}
+html[data-case="pet-home"] .record-row .rr-n{font-weight:800;color:#5c5344}
+html[data-case="pet-home"] .paper-table td.torn{color:#62593f}
+html[data-case="pet-home"] .keep-back-note .keep-date,html[data-case="pet-home"] .keep-back-note .keep-sub{background:rgba(255,253,245,.78);padding:0 .8cqw;border-radius:.4cqw}
+html[data-case="pet-home"] .record-row .rr-name{font-weight:600}
+html[data-case="pet-home"] .box-right .tinlock{max-width:230px}
+@media (min-width:900px){
+  html[data-case="pet-home"] .box-wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:16px}
+}
+@media (max-width:640px){
+  html[data-case="pet-home"] .keep-backcard{grid-template-columns:128px minmax(0,1fr);align-items:center;gap:10px}
+  html[data-case="pet-home"] .keep-backcard .keep-back{margin:0}
+}
+html[data-case="pet-home"] .card-tab{width:7%;height:20%;transform:translate(-50%,-22%);border-radius:4px}
+html[data-case="pet-home"] .card-tab.picking{box-shadow:0 0 0 .6cqw var(--lamp),0 0 2cqw rgba(159,209,138,.6)}
+html[data-case="pet-home"] .card-pick-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0 0 10px}
+html[data-case="pet-home"] .card-pick{min-height:46px;border-radius:6px;border:1px solid var(--line);border-top:6px solid var(--tabc);background:var(--chip);color:var(--enamel);font-size:14px;font-weight:700;padding:4px 0}
+html[data-case="pet-home"] .card-pick.on{box-shadow:0 0 0 2px var(--lamp)}
+html[data-case="pet-home"] .card-pick.blue{--tabc:#5b88b8}html[data-case="pet-home"] .card-pick.green{--tabc:#6f9a62}html[data-case="pet-home"] .card-pick.yellow{--tabc:#e0b43c}html[data-case="pet-home"] .card-pick.orange{--tabc:#e2852f}html[data-case="pet-home"] .card-pick.red{--tabc:#c9554c}
+html[data-case="pet-home"] .strap-wrap{max-width:640px;margin:0 auto}
+html[data-case="pet-home"] .strap-handle{position:relative;z-index:5;width:min(100%,360px);margin:0 auto 12px;border-radius:8px;overflow:hidden;cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;box-shadow:0 8px 20px rgba(0,0,0,.35);transition:box-shadow .15s}
+html[data-case="pet-home"] .strap-handle img{display:block;width:100%;aspect-ratio:7/2;object-fit:cover;object-position:50% 62%;pointer-events:none}
+html[data-case="pet-home"] .strap-handle.dragging{cursor:grabbing;opacity:.9;box-shadow:0 16px 34px rgba(0,0,0,.5);transition:none}
+html[data-case="pet-home"] .strap-handle.parked{opacity:.55}
+html[data-case="pet-home"] .strap-cap{position:absolute;left:8px;bottom:6px;background:rgba(19,32,28,.82);color:#f2f7f3;font-size:13px;padding:3px 8px;border-radius:3px}
+html[data-case="pet-home"] .badge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+html[data-case="pet-home"] .badge-cell{display:grid;gap:8px;justify-items:center;padding:8px;border-radius:10px;border:2px dashed transparent;transition:border-color .15s,background .15s}
+html[data-case="pet-home"] .badge-cell.hover{border-color:var(--lamp)}
+html[data-case="pet-home"] .badge-cell.on{border-style:solid;border-color:var(--lamp);background:rgba(159,209,138,.08)}
+html[data-case="pet-home"] .badge-card{width:100%;max-width:210px;margin:0;transform:rotate(var(--tilt,0deg));box-shadow:0 6px 14px rgba(0,0,0,.35);pointer-events:none}
+html[data-case="pet-home"] .badge-card img{display:block;width:100%}
+html[data-case="pet-home"] .on-badge2{position:absolute;left:9%;right:9%;top:22%;bottom:14%;display:grid;align-content:center;justify-items:center;gap:1.2cqw;font-family:var(--sans);color:#1d3f8a;text-align:center;line-height:1.1}
+html[data-case="pet-home"] .on-badge2 b{font-size:6.4cqw;font-weight:700}
+html[data-case="pet-home"] .on-badge2 span{font-size:7.4cqw;font-weight:600}
+html[data-case="pet-home"] .on-badge2 strong{font-size:10.5cqw;font-weight:800;letter-spacing:.12em}
+html[data-case="pet-home"] .clip-on{position:absolute;left:44.2%;top:0;width:8%;height:13%;transform:translateX(-50%);background:linear-gradient(90deg,#2a5aa6,#3b72c4 45%,#244f93);border-radius:0 0 3px 3px;box-shadow:0 2px 3px rgba(0,0,0,.4)}
+html[data-case="pet-home"] .clip-on::after{content:"";position:absolute;left:50%;bottom:-3cqw;width:5cqw;height:5cqw;transform:translateX(-50%);border-radius:50%;border:1.2cqw solid #b8bec4;box-shadow:0 1px 2px rgba(0,0,0,.5)}
+html[data-case="pet-home"] .badge-btn{min-height:42px;min-width:120px}
+html[data-case="pet-home"] .badge-btn.on{background:var(--enamel);color:var(--ink)}
 
 /* 사진관: 암실 · 안전등 빨강 · 필름 구멍 */
 html[data-case="studio"]{
@@ -1044,6 +1091,54 @@ html[data-case="laundry"] .v2-paper::before{height:4px;opacity:.75}
 .term-table.log6 td:first-child{white-space:nowrap}
 .term-table.log6 td,.term-table.log6 th{padding:4px 6px}
 @media (max-width:640px){.term-table.log6{font-size:11.5px}.term-table.log6 td,.term-table.log6 th{padding:4px 3px}}
+/* v125 세탁소: 거꾸로 보이는 네온 · 쪽지 손글씨 · 휴대폰 큰 버튼 · 대타 메모 · 배관도 펼침 · CCTV */
+html[data-case="laundry"] .neon.mirrored{transform:scaleX(-1)}
+html[data-case="laundry"] .v2-doc-body blockquote.hand.admin-note{font-size:25px;color:#1b2a8f;background:#fff6cf;border-left-color:#c23a2b}
+html[data-case="laundry"] .v2-doc-body blockquote.hand.admin-note small{font-size:17px;color:#4a4f7a}
+html[data-case="laundry"] .dpanel .lcd.err{color:#ff9a86;text-shadow:0 0 .6cqw rgba(255,110,90,.5);letter-spacing:.3em}
+html[data-case="laundry"] .pkeys{display:none}
+html[data-case="laundry"] .pkey{position:relative;min-height:52px;border-radius:12px;border:2px solid #0c0e10;background:radial-gradient(circle at 50% 38%,#3a4148,#22272c);color:#eef3f5;font-size:22px;font-weight:800;box-shadow:0 2px 0 #000;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+html[data-case="laundry"] .pkey:active{transform:translateY(1px);box-shadow:none}
+html[data-case="laundry"] .pkey.start{background:radial-gradient(circle at 50% 38%,#d5dade,#a9b0b6);color:#24292e;font-size:17px}
+html[data-case="laundry"] .pkey.start i.hold-ring{position:absolute;inset:-5px;border-radius:14px;border:3px solid var(--lamp);opacity:0;pointer-events:none}
+html[data-case="laundry"] .pkey.start.holding i.hold-ring{animation:holdfill .9s linear forwards}
+html[data-case="laundry"] .swap-note{position:relative;width:fit-content;max-width:92%;margin:-30px 0 8px auto;padding:10px 16px 10px 14px;background:#fff6b8;color:#8f241c;font-family:var(--hand);font-size:19px;line-height:1.35;transform:rotate(-1.5deg);box-shadow:0 4px 10px rgba(0,0,0,.35);z-index:1}
+html[data-case="laundry"] .swap-note i{position:absolute;left:50%;top:-9px;width:64px;height:18px;margin-left:-32px;background:rgba(230,226,210,.75);transform:rotate(3deg)}
+html[data-case="laundry"] .mag-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 4px}
+html[data-case="laundry"] .mag-big{display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--chip);color:var(--enamel);font-size:16px;font-weight:700;text-align:left}
+html[data-case="laundry"] .mag-big i{width:22px;height:22px;border-radius:50%;flex:0 0 22px}
+html[data-case="laundry"] .mag-big.red i{background:radial-gradient(circle at 35% 30%,#ff8a80,#d02a20)}
+html[data-case="laundry"] .mag-big.blue i{background:radial-gradient(circle at 35% 30%,#7fb2ff,#1f55c8)}
+html[data-case="laundry"] .mag-big.green i{background:radial-gradient(circle at 35% 30%,#86e08e,#1f8a35)}
+html[data-case="laundry"] .mag-big.yellow i{background:radial-gradient(circle at 35% 30%,#fff07a,#d7b10e)}
+html[data-case="laundry"] .mag-big.on{border-color:var(--lamp);box-shadow:0 0 0 2px var(--lamp) inset}
+html[data-case="laundry"] .duct-peek{margin:0 0 10px;background:var(--chip);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+html[data-case="laundry"] .duct-peek summary{cursor:pointer;font-size:14px;font-weight:700;min-height:32px;display:flex;align-items:center}
+html[data-case="laundry"] .duct-peek .ductfig{margin:6px 0 0}
+html[data-case="laundry"] .cctv-wrap{max-width:640px;margin:0 auto}
+html[data-case="laundry"] .prop.cctv{aspect-ratio:4/3;background:#020403;border:7px solid #15191c;border-radius:8px;box-shadow:0 0 0 1px #3a4148,0 10px 24px rgba(0,0,0,.4);margin:0 0 8px}
+html[data-case="laundry"] .prop.cctv img,html[data-case="laundry"] .cctv-fig{position:absolute;inset:0;width:100%;height:100%;display:block}
+html[data-case="laundry"] .prop.cctv::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.12) 2px 3px);animation:cctv-roll 7s steps(1) infinite}
+@keyframes cctv-roll{0%,96%,100%{opacity:1}97%{opacity:.4}}
+html[data-case="laundry"] .osd{position:absolute;z-index:2;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:3.3cqw;font-weight:700;color:#eafff3;text-shadow:0 0 2px #000,0 0 5px #000;letter-spacing:.04em;white-space:nowrap}
+html[data-case="laundry"] .osd.tl{left:3%;top:3%}
+html[data-case="laundry"] .osd.tr{right:3%;top:3%;color:#ff7a6b}
+html[data-case="laundry"] .osd.bl{left:3%;bottom:3%}
+html[data-case="laundry"] .osd.mark{right:3%;bottom:3%;color:#ffd75a}
+html[data-case="laundry"] .cctv-range{width:100%;margin:6px 0 6px;accent-color:var(--lamp);min-height:32px}
+html[data-case="laundry"] .cctv-strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:2px 0 10px}
+html[data-case="laundry"] .cctv-cell{min-height:46px;display:grid;justify-items:center;align-content:center;gap:1px;background:var(--chip);border:1px solid var(--line);border-radius:6px;color:var(--enamel);font-variant-numeric:tabular-nums;padding:4px 0;min-width:0}
+html[data-case="laundry"] .cctv-cell b{font-size:13px}
+html[data-case="laundry"] .cctv-cell span{font-size:14px;line-height:1;color:var(--soft-3)}
+html[data-case="laundry"] .cctv-cell.on{border-color:var(--lamp);box-shadow:inset 0 0 0 1px var(--lamp)}
+html[data-case="laundry"] .cctv-cell.marked span{color:#ffd75a}
+html[data-case="laundry"] .cctv-mark{display:block;margin:0 auto;min-height:44px;padding:8px 18px}
+@media (max-width:640px){
+  html[data-case="laundry"] .pkeys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:4px 0 12px}
+  html[data-case="laundry"] .cctv-cell b{font-size:12px}
+  html[data-case="laundry"] .cctv-strip{gap:4px}
+  html[data-case="laundry"] .swap-note{font-size:17px;margin:-14px 0 8px auto}
+}
 
 /* 끝나지 않은 방송: 꺼진 방송국 · ON AIR 빨강 · VU 미터 호박색 */
 html[data-case="radio"]{
