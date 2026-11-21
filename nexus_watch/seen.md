@@ -456,3 +456,6 @@
 2026-11-21 15:24 | 트럼프 젠슨 황 복귀 촉구(AI타임스 11:37)·민주당 메가스피드 조사(11:25)(알림 제외·기업/정책) / 긱뉴스 코덱스 작업 방식 영상·클로드 상시 에이전트·아키텍트 승진 글·타오 블로그 GRH(알림 제외) | AI타임스·긱뉴스 | https://news.hada.io/
 2026-11-21 15:24 | vidIQ: @bixx_ai 클로드 설정 3가지(11.2만)·@dailyprompt_ 이미지 100번 수정 일관성(9.3만)·@busan_mbcnews 수술 휴머노이드(16.6만)·리트 만점자/수능 AI 안경 뉴스(비주제) | https://www.instagram.com/reel/Df62VlOEg8s
 - 2026-11-21 15:24: 내장 브라우저로 유튜브 18개 채널 /videos(페이지 안 fetch + JSON 파싱, 홀수 시라 쇼츠 생략) — 13:04 이후 새 롱폼 1개(CONNECT). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음) + vidIQ 아웃라이어 1회(5크레딧, 잔액 1409). 바로 제작 없음. 인스타 브라우저 안 엶.
+2026-11-21 16:24 | 데키랩 '4K AI 영상, 제작 비용부터 1/9로'(oQLMpIEIeyc, 3시간 전)·CONNECT '더 파운더 AI 직원 7명'(Zx1jn6kCBoo 제목 변경)·'Genie 4·Gemini 4 Neon 편집본'(IyJqarQolyg) / 쇼츠: 유튜브신쌤 bjmbrMWyxko·CONNECT SGzQDFr8_tQ | 유튜브 | https://www.youtube.com/@dekilab/videos
+2026-11-21 16:24 | 긱뉴스 Cloudflare QuePaxa·SignuDoc(제외·개발자용) / AI타임스 새 기사 없음 | 긱뉴스 | https://news.hada.io/
+- 2026-11-21 16:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + JSON 파싱) — 15:24 이후 새 롱폼 2개·새 쇼츠 2개. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 미사용(10·15시만). 바로 제작 없음(16:41 창·새 기능 없음). 인스타 브라우저 안 엶.
