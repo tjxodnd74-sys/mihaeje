@@ -99,12 +99,12 @@
     "title": "세 번째 승강장",
     "subtitle": "없는 승강장에서 온 사진",
     "genre": "실종 미스터리 · 길 찾기",
-    "minutes": 30,
+    "minutes": 35,
     "difficulty": "★★★",
     "image": "assets/covers/station-v1.webp",
     "href": "play.html?case=station",
     "storageKey": "mihaeje-v2-station",
-    "description": "회사를 그만두고 방을 뺀 친구가 보낸 마지막 사진은\n지금은 없는 승강장이었습니다. 친구가 남긴 길을 따라가세요",
+    "description": "회사를 그만두고 방을 뺀 친구가 보낸 마지막 사진은\n지금은 없는 승강장이었습니다. 전화는 그 뒤로 꺼져 있습니다",
     "docCount": 11,
     "docNames": {
       "message": "민서의 마지막 메시지",
@@ -123,7 +123,7 @@
       "label": "분류 조각 04",
       "text": "도착 확인 종이 사본의 분류 조각 04"
     },
-    "imageAlt": "새벽 대합실 벽에 기대 둔 낡은 3번 승강장 표지",
+    "imageAlt": "비에 젖은 새벽 승강장 벤치 옆에 기대 둔 낡은 3번 승강장 표지",
     "difficultyLevel": 3
   },
   {
@@ -132,13 +132,13 @@
     "title": "반송된 편지",
     "subtitle": "다섯 번 돌아온 봉투",
     "genre": "우체국 · 주소 추적",
-    "minutes": 25,
+    "minutes": 30,
     "difficulty": "★★★",
     "image": "assets/covers/letter-v1.webp",
     "href": "play.html?case=letter",
     "storageKey": "mihaeje-v2-letter",
     "description": "미루우체국이 다음 달 문을 닫습니다\n퇴임한 집배원이 반송 보관함 맨 아래 칸의 편지 다섯 통만은 주인을 찾아 달라고 부탁했습니다",
-    "docCount": 12,
+    "docCount": 13,
     "docNames": {
       "chat": "봉수 아저씨 문자",
       "bmemo": "보관함 문에 붙은 쪽지",
@@ -151,7 +151,8 @@
       "photo": "벽의 단체 사진",
       "notebook": "봉수 아저씨의 수첩",
       "mailboxes": "빌라 우편함",
-      "haerin": "파란 대문"
+      "sixth": "여섯 번째 봉투",
+      "haerin": "초록 대문"
     },
     "imageAlt": "우체국 보관함 맨 아래 칸에 고무줄로 묶인 반송 편지 다섯 통",
     "difficultyLevel": 3

@@ -717,6 +717,42 @@ a{color:inherit}
 
 /* 승강장: 밤 대합실 · 법랑 · 나트륨등 · 점자블록 줄 (기본값 그대로, 띠만 노란 점자블록) */
 html[data-case="station"]{--paper-strip:repeating-linear-gradient(90deg,#e8c34a 0 10px,#c9a535 10px 12px)}
+/* 승강장 v125: 안내판 구간권 방향 글씨 · 처음 열 때 저절로 넘어가는 글자판 */
+html[data-case="station"] .grille-ticket .tframe{position:absolute;inset:0;transform:rotate(calc(var(--turn,0) * 90deg));transition:transform .25s ease}
+html[data-case="station"] .grille-ticket .tprint{position:absolute;top:1%;left:50%;transform:translateX(-50%);font-family:var(--sans);font-size:2.4cqw;font-weight:700;color:#5c3b1f;background:#f9f1d6;padding:0 1.2cqw;border-radius:2px;white-space:nowrap;letter-spacing:.04em}
+html[data-case="station"] .grille-flash{position:absolute;inset:0;z-index:3;display:grid;place-content:center;gap:2cqw;text-align:center;background:#0c1015;pointer-events:none;animation:st-flash 1.9s steps(1,end) forwards}
+html[data-case="station"] .grille-flash b{font-family:var(--sans);font-size:9cqw;letter-spacing:.2em;color:#f2f0e4;background:repeating-linear-gradient(0deg,#1d232b 0 48%,#0c1015 48% 52%,#1d232b 52%);padding:1cqw 3cqw;border-radius:3px}
+@keyframes st-flash{0%{opacity:1}12%{opacity:.2}18%{opacity:1}70%{opacity:1}78%{opacity:.4}84%{opacity:.9}100%{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){html[data-case="station"] .grille-flash{animation-duration:.01s}}
+/* 볼록거울: 사진을 들면 거울에 비친 모습이 기울기만큼 돌아가 좁아진다 맞추면 반듯하게 */
+html[data-case="station"] .mirror-glass .mirror-paper{left:20%;top:36%;width:60%;font-size:5.2cqw;line-height:1.45;text-align:center;transform:perspective(500px) rotateY(calc(var(--tilt,0) * 1.5deg)) rotate(calc(var(--tilt,0) * .12deg));filter:blur(var(--blur,0px));transition:transform .12s linear,filter .12s linear}
+html[data-case="station"] .mirror-glass.held .mirror-paper{transform:perspective(500px) rotateY(calc(var(--tilt,0) * 1.5deg)) rotate(calc(var(--tilt,0) * .12deg))}
+html[data-case="station"] .mirror-glass.held.aligned .mirror-paper{transform:none;filter:none}
+html[data-case="station"] .mirror-glass{overflow:hidden;border-radius:6px}
+/* 네컷 뒷면: 거울 없이 읽기 힘들게 번진 거울 글씨 */
+html[data-case="station"] .stripback .mirror-text.smudged{filter:blur(1.1px);opacity:.75;letter-spacing:-.04em;font-size:22px;line-height:1.5;word-break:break-all}
+/* 보관함: 사진 속 바퀴 위에 숫자, 아래에 큰 버튼 */
+html[data-case="station"] .locker2{max-width:520px;margin:0 auto}
+html[data-case="station"] .locker2-photo{position:relative;container-type:inline-size;border-radius:4px;overflow:hidden}
+html[data-case="station"] .locker2-photo>img{display:block;width:100%;height:auto}
+html[data-case="station"] .locker2-photo .wheel{position:absolute;top:52%;transform:translate(-50%,-50%);width:3.8cqw;height:13cqw;display:grid;place-items:center;font-family:var(--sans);font-weight:800;font-size:4.4cqw;color:#1c1c1c;background:linear-gradient(90deg,#8d8d8d,#e6e6e6 45%,#bdbdbd 60%,#7a7a7a);border-radius:.8cqw;box-shadow:inset 0 .4cqw .8cqw rgba(0,0,0,.45),inset 0 -.4cqw .8cqw rgba(0,0,0,.45)}
+html[data-case="station"] .locker2 .dials{gap:14px;margin:12px 0 6px}
+html[data-case="station"] .locker2 .dial .ctl{min-width:56px;min-height:48px;font-size:18px}
+html[data-case="station"] .locker2 .dial .num{width:56px}
+/* 마을 대문 고르기 */
+html[data-case="station"] .gate-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:8px 0 4px}
+html[data-case="station"] .gate-chip{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;background:var(--chip);border:1px solid var(--line);border-radius:6px;padding:10px 12px;min-height:56px}
+html[data-case="station"] .gate-chip i{grid-row:1/3;width:22px;height:30px;border-radius:2px;background:var(--gate);box-shadow:inset 0 0 0 2px rgba(0,0,0,.35),inset 0 -6px 0 rgba(0,0,0,.18)}
+html[data-case="station"] .gate-chip span{font-weight:700;font-size:15px}
+html[data-case="station"] .gate-chip small{color:var(--fog);font-size:13px}
+html[data-case="station"] .gate-chip.on{background:var(--enamel);color:var(--ink);border-color:var(--enamel)}
+html[data-case="station"] .gate-chip.on small{color:#555}
+html[data-case="station"] .walk-here{line-height:1.55}
+html[data-case="station"] .note-card .note-id{color:#4f4a3e;border-color:#b9b2a0}
+html[data-case="station"] .sticker small{color:#4a4a4a}
+html[data-case="station"] .ticket .ticket-holes{left:26%;top:25%;height:40%}
+html[data-case="station"] .ticket .ticket-print{left:57%;top:30%}
+html[data-case="station"] .ticket .ticket-hand{left:57%;top:52%;width:18%}
 
 /* 고양이: 오후 햇살 포장 가게 · 리본 · 편지지 */
 html[data-case="cat-invite"]{
@@ -840,6 +876,65 @@ html[data-case="letter"] .v2-paper::before{height:8px;opacity:1}
 .inhand-card s{text-decoration:none;color:rgba(43,53,112,.3);filter:blur(1.5px)}
 .inhand-card small{font-size:12px;color:#b33a28}
 @media (max-width:640px){.inhand{grid-template-columns:repeat(2,minmax(0,1fr))}.inhand-card:last-child{grid-column:1/-1}}
+/* 반송된 편지 v125: 해마다 다르게 낡은 겉봉 · 번진 잉크 · 찢긴 귀퉁이 · 옛 우편함 다이얼 · 전구에 비춰 보기 · 직접 적는 봉투 */
+html[data-case="letter"] .lenv.y2021 img{filter:sepia(.85) saturate(1.3) brightness(.86) contrast(.92)}
+html[data-case="letter"] .lenv.y2022 img{filter:sepia(.65) saturate(1.2) brightness(.9)}
+html[data-case="letter"] .lenv.y2023 img{filter:sepia(.45) saturate(1.1) brightness(.93)}
+html[data-case="letter"] .lenv.y2024 img{filter:sepia(.28) brightness(.96)}
+html[data-case="letter"] .lenv.y2025 img{filter:sepia(.1)}
+html[data-case="letter"] .lenv.y2023 .lenv-mark.at-zip{left:10.5%;top:15%;border-width:.5cqw;border-color:rgba(28,28,40,.7)}
+html[data-case="letter"] .lenv.y2021::after{content:"";position:absolute;left:4%;top:12%;width:46%;height:46%;background:radial-gradient(ellipse at 40% 45%,rgba(120,110,80,.22),rgba(120,110,80,.08) 55%,transparent 70%);pointer-events:none}
+html[data-case="letter"] .lenv-from i{color:#57524a;font-weight:700}
+html[data-case="letter"] .lenv-sticker b{color:#9e2418}
+html[data-case="letter"] .lenv-from .smear{color:transparent;text-shadow:0 0 .7cqw rgba(43,53,112,.6),.4cqw .2cqw 1cqw rgba(43,53,112,.35)}
+html[data-case="letter"] .lenv-from .zip .inked{display:inline-block;color:transparent;background:radial-gradient(ellipse at 50% 50%,rgba(28,28,40,.94) 0 50%,rgba(28,28,40,.65) 62%,transparent 72%);border-radius:40%;padding:.3cqw 1.2cqw .3cqw .6cqw;margin-left:-.4cqw;letter-spacing:.35em}
+html[data-case="letter"] .lenv-from .zip .torn{display:inline-block;width:9cqw;height:3.6cqw;vertical-align:middle;background:#2b2019;clip-path:polygon(0 18%,14% 0,30% 22%,46% 4%,62% 26%,78% 6%,100% 14%,100% 100%,0 100%)}
+html[data-case="letter"] .lenv-note{font-style:normal;font-size:2.4cqw;color:#2b3570;transform:rotate(-3deg);margin-top:.4cqw;opacity:.9}
+html[data-case="letter"] .lenv.sixth img{filter:sepia(.12) brightness(.97)}
+html[data-case="letter"] .lenv.sixth.back img{filter:sepia(.12) brightness(.93)}
+html[data-case="letter"] .lenv.sixth .lenv-to{left:38%;top:44%;font-size:5cqw}
+html[data-case="letter"] .lenv-back{position:absolute;left:30%;top:42%;font-family:var(--hand);font-size:4.4cqw;line-height:1.35;color:#2b3570;transform:rotate(-2deg)}
+html[data-case="letter"] .photoframe{max-width:360px;margin:0 auto 10px}
+html[data-case="letter"] .v2-doc-body b.pressed{font-weight:400;text-decoration:underline;text-decoration-thickness:3px;text-decoration-color:rgba(43,53,112,.55);text-shadow:.04em 0 0 #2b3570,-.03em .02em 0 #2b3570}
+/* 옛 우편함 둥근 다이얼 */
+html[data-case="letter"] .oldbox{display:grid;justify-items:center;gap:6px;padding:14px;border-radius:8px;background:linear-gradient(160deg,#55604f,#3b4337 60%,#2c3229);box-shadow:inset 0 0 0 2px rgba(0,0,0,.3),inset 0 0 40px rgba(120,70,30,.35)}
+html[data-case="letter"] .ob-face{width:min(240px,64vw);aspect-ratio:1}
+html[data-case="letter"] .ob-face svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+html[data-case="letter"] .ob-ring{transition:transform .2s ease}
+html[data-case="letter"] .ob-now{margin:2px 0 0;font-family:var(--sans);font-weight:800;font-size:20px;color:#f1ead6;font-variant-numeric:tabular-nums}
+html[data-case="letter"] .ob-trail{margin:0;font-size:14px;color:#dcd6c4;min-height:1.4em;text-align:center}
+html[data-case="letter"] .ob-ctl{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+html[data-case="letter"] .ob-ctl .ctl{min-width:58px;min-height:48px;font-size:17px;background:#2a2f28;color:#f1ead6;border-color:#5d6656}
+html[data-case="letter"] .oldbox>.chip{color:#f1ead6;border-color:#7c8572}
+/* 전구에 비춰 보기 */
+html[data-case="letter"] .backlight{margin:0 0 14px}
+html[data-case="letter"] .lenv.back img{filter:sepia(.3) brightness(.62) contrast(.9);transition:filter .15s ease}
+html[data-case="letter"] .bl-glow{position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(255,226,160,.85),rgba(255,210,130,.35) 40%,transparent 75%);opacity:0;transition:opacity .15s ease;pointer-events:none}
+html[data-case="letter"] .bl-zip{position:absolute;right:11%;top:25%;font-family:var(--hand);font-size:3.4cqw;letter-spacing:.35em;color:rgba(43,53,112,0);transition:color .15s ease;filter:blur(.35px)}
+html[data-case="letter"] .bl-zip>span{display:inline-block;transform:scaleX(-1)}
+html[data-case="letter"] .bl-ink{position:absolute;right:13.5%;top:14%;width:15cqw;height:15cqw;border:.5cqw solid rgba(30,30,40,.12);border-radius:50%;transform:rotate(12deg);transition:border-color .15s ease}
+html[data-case="letter"] .backlight.lit .lenv.back img{filter:sepia(.25) brightness(1.08) contrast(.85)}
+html[data-case="letter"] .backlight.lit .bl-glow{opacity:1}
+html[data-case="letter"] .backlight.lit .bl-zip{color:rgba(43,53,112,.62)}
+html[data-case="letter"] .backlight.lit .bl-ink{border-color:rgba(30,30,40,.22)}
+html[data-case="letter"] .bl-cap{margin:4px 0 0;font-size:13px;color:var(--fog);text-align:center}
+html[data-case="letter"] .bl-hold{touch-action:none;-webkit-touch-callout:none;user-select:none}
+/* 직접 적는 답장 봉투 */
+html[data-case="letter"] .lenv.reply .lenv-to.written{left:20%;top:34%;display:grid;gap:.6cqw;font-size:3.8cqw}
+html[data-case="letter"] .lenv.reply .lenv-to b{font-weight:400;min-height:4.4cqw}
+html[data-case="letter"] .lenv.reply .lenv-to b.blank{display:block;width:40cqw;border-bottom:.2cqw dashed rgba(31,42,102,.35)}
+html[data-case="letter"] .reply-form{display:grid;gap:10px;margin-top:10px}
+html[data-case="letter"] .rf-row{display:grid;grid-template-columns:5.5em 1fr;align-items:center;gap:10px}
+html[data-case="letter"] .rf-name{font-size:14px;color:var(--soft);font-weight:700}
+html[data-case="letter"] .rf-box{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+html[data-case="letter"] .rf-pre{font-size:14px;color:var(--fog)}
+html[data-case="letter"] .rf-in{flex:1 1 7em;min-width:0;max-width:12em;font-size:18px;padding:9px 10px;user-select:text}
+html[data-case="letter"] .rf-row .pick-row{margin:0}
+@media (max-width:640px){html[data-case="letter"] .rf-row{grid-template-columns:1fr;gap:4px}}
+/* 구분실 형광등 하나가 깜박인다 */
+@keyframes le-flicker{0%,100%{filter:brightness(1)}41%{filter:brightness(1)}42%{filter:brightness(.78)}43%{filter:brightness(1)}44%{filter:brightness(.82)}46%{filter:brightness(1)}88%{filter:brightness(1)}89%{filter:brightness(.86)}90%{filter:brightness(1)}}
+html[data-case="letter"] .v2-stage img[src*="sorting"]{animation:le-flicker 7s infinite}
+@media (prefers-reduced-motion:reduce){html[data-case="letter"] .v2-stage img[src*="sorting"]{animation:none}}
 
 /* 404호의 불빛: 철거 현장 · 락카 빨강 · 비상등 */
 html[data-case="apartment"]{
