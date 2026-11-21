@@ -865,11 +865,91 @@ html[data-case="station"] .gate-chip small{color:var(--fog);font-size:13px}
 html[data-case="station"] .gate-chip.on{background:var(--enamel);color:var(--ink);border-color:var(--enamel)}
 html[data-case="station"] .gate-chip.on small{color:#555}
 html[data-case="station"] .walk-here{line-height:1.55}
+html[data-case="station"] .walk-map.prop{margin:0 auto 10px}
 html[data-case="station"] .note-card .note-id{color:#4f4a3e;border-color:#b9b2a0}
 html[data-case="station"] .sticker small{color:#4a4a4a}
 html[data-case="station"] .ticket .ticket-holes{left:26%;top:25%;height:40%}
 html[data-case="station"] .ticket .ticket-print{left:57%;top:30%}
 html[data-case="station"] .ticket .ticket-hand{left:57%;top:52%;width:18%}
+/* v127: 안내판 사진을 7×7 글자판으로 다시 그렸다(PIL) 글자 칸이 사진 속 판 하나하나에 정확히 얹힌다 (단위는 사진 1024px 기준 cqw) */
+html[data-case="station"] .grille-frame .grille-board{left:10.254cqw;top:7.422cqw;width:79.102cqw;height:51.758cqw;padding:0;gap:1.367cqw;grid-template-columns:repeat(7,minmax(0,1fr));grid-template-rows:repeat(7,minmax(0,1fr))}
+html[data-case="station"] .grille-frame .grille-board .cell{background:transparent;box-shadow:none;border-radius:0;font-size:4.3cqw;line-height:1;min-height:0;overflow:hidden;color:#15171a;text-shadow:0 1px 0 rgba(255,255,255,.35)}
+html[data-case="station"] .grille-frame .grille-board .cell.covered{background:transparent;color:transparent;text-shadow:none;box-shadow:none}
+html[data-case="station"] .grille-frame .grille-board .cell.hole{position:relative;z-index:2;background:linear-gradient(180deg,#d2cdc3 0 45.5%,#7a746b 45.5% 47.5%,#cec8be 47.5%);outline:.5cqw solid var(--lamp);outline-offset:.15cqw;box-shadow:inset 0 0 0 .2cqw rgba(0,0,0,.35)}
+html[data-case="station"] .grille-frame .grille-ticket{left:calc(-.75cqw + var(--dx) * 11.4955cqw);top:calc(-.75cqw + var(--dy) * 7.5893cqw);width:57.61cqw;height:38.08cqw;border:.35cqw dashed #8a6d45;border-radius:.6cqw;background:linear-gradient(160deg,#dccaa2,#cbb68c);box-shadow:0 .6cqw 1.4cqw rgba(0,0,0,.55);transition:left .18s ease,top .18s ease}
+html[data-case="station"] .grille-ticket .tprint{z-index:3}
+html[data-case="station"] .grille-frame{isolation:isolate} /* 칸 z-index 가 창 머리줄(닫기) 위로 올라오지 않게 */
+/* v127: 갈 곳 고르기 — PC는 승강장·기둥을 한 줄에, 휴대폰은 기둥 넷을 한 줄 4칸으로 */
+html[data-case="station"] .pick-grid{display:flex;flex-wrap:wrap;column-gap:18px;align-items:center}
+html[data-case="station"] .pick-grid>.pick-label{flex-basis:100%;margin:6px 0 0}
+html[data-case="station"] .grille-controls{margin:8px 0 4px}
+html[data-case="station"] .grille-flash{inset:-1.4cqw}
+html[data-case="station"] .pick-grid>.pick-row{margin:6px 0 2px}
+html[data-case="station"] .pick-grid .chip{min-height:42px}
+@media (max-width:640px){
+  html[data-case="station"] .pick-grid>.pick-row{flex-basis:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  html[data-case="station"] .pick-grid>.pick-row:last-child{grid-template-columns:repeat(4,minmax(0,1fr))}
+  html[data-case="station"] .pick-grid .chip{padding:8px 2px;font-size:14px;white-space:nowrap}
+}
+/* v127: 보관함 사진 속 다이얼 창 네 개에 숫자 바퀴를 정확히 (창 가운데 47.0/54.5/61.85/69.2%, 폭 4.8%) */
+html[data-case="station"] .locker2-photo .wheel{width:4.4cqw;height:13.8cqw}
+/* v127: 편지 글씨는 종이 안쪽 여백에 (종이 7.5~74.5% · 14~89%) */
+html[data-case="station"] .letter-hand{left:12%;top:16.5%;width:58.5%;height:70%;font-size:3.95cqw}
+html[data-case="station"] .letterphoto.back .letter-hand{left:29.5%;width:58.5%}
+/* v127: 손지도 — 종이봉투 조각이 틀을 꽉 채우게 사진을 1.35배로 (지도 글씨가 35% 커짐) */
+html[data-case="station"] .prop.kraft{aspect-ratio:1/1.1}
+html[data-case="station"] .prop.kraft>img{position:absolute;width:135cqw;max-width:none;height:auto;left:-16.2cqw;top:-9.5cqw}
+html[data-case="station"] .prop.kraft .kraft-map{left:4.05cqw;top:8.05cqw;width:93.15cqw}
+/* 거울에 비친 뒷면 글씨를 크게 */
+html[data-case="station"] .mirror-glass .mirror-paper{left:16%;top:33%;width:68%;font-size:7cqw;line-height:1.3}
+@media (max-width:640px){html[data-case="station"] .mirror-glass{max-width:290px}}
+/* 휴대폰: 사진 위 손글씨가 작으니 같은 편지를 아래에 크게 */
+html[data-case="station"] .letter-plain{margin:0 0 12px;padding:14px 16px;background:#fbf6e7;border:1px solid var(--paper-line);border-radius:3px;font-family:var(--hand);font-size:22px;line-height:1.5;color:#2f3a7a;word-break:keep-all}
+html[data-case="station"] .letter-plain p{margin:0 0 .6em}
+html[data-case="station"] .letter-plain b{font-weight:400;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+html[data-case="station"] .letter-plain .sign{text-align:right;margin:0}
+/* v127: 휴대폰 글자 13px 아래로 내려가지 않게 · 손지도 글씨 1.2배 · 구간권 여백 글씨 */
+@media (max-width:640px){
+  html[data-case="station"] .village-map{--mapk:1.2}
+  html[data-case="station"] .paper-table .pt-foot{font-size:13px}
+  html[data-case="station"] .sticker small{font-size:13px}
+}
+html[data-case="station"] .chat-date,html[data-case="station"] .chat-name{font-size:13px}
+html[data-case="station"] .chat-date,html[data-case="station"] .chat-sys{background:rgba(20,28,40,.5)}
+html[data-case="station"] .chat-avatar{color:#5a3800}
+html[data-case="station"] .ticket .ticket-print{left:56.5%;top:29%;font-size:3cqw}
+html[data-case="station"] .ticket .ticket-hand{left:56.5%;top:50%;width:24%;font-size:4.4cqw}
+/* 휴대폰 메시지: 시각·읽음 표시·안내 글자를 읽을 만하게 */
+html[data-case="station"] .chat-meta,html[data-case="station"] .chat-time{font-size:13px;color:#3d4650}
+html[data-case="station"] .chat-meta i{font-size:13px;color:#5c4300}
+html[data-case="station"] .chat-sys{font-size:13px}
+/* v127: 대문 고르기 칸 글자 줄바꿈 */
+html[data-case="station"] .gate-chip small{white-space:nowrap}
+/* v127: PC에서는 확인 버튼이 첫 화면 안에 들어오게 — 사진을 줄이고 조작을 옆으로 */
+@media (min-width:900px){
+  html[data-case="station"] .grille-frame{width:min(100%,430px)}
+  html[data-case="station"] .grille-controls{margin:10px 0 6px}
+  html[data-case="station"] .walk{display:grid;grid-template-columns:300px minmax(0,1fr);column-gap:20px;align-items:start}
+  html[data-case="station"] .walk>.walk-map{grid-column:1;grid-row:1/span 4;max-width:none;margin:0}
+  html[data-case="station"] .walk>:not(.walk-map){grid-column:2}
+  html[data-case="station"] .walk>.walk-here{margin-top:0}
+  html[data-case="station"] .walk .gate-row{grid-template-columns:1fr 1fr}
+  html[data-case="station"] .walk>.ctl.wide{margin:8px 0 0}
+  html[data-case="station"] .locker2{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;max-width:none}
+  html[data-case="station"] .locker2 .dials{margin:0}
+  html[data-case="station"] .locker2 .locker-note{grid-column:1/-1;margin:4px 0 0}
+  html[data-case="station"] .mirror{display:grid;grid-template-columns:240px minmax(0,1fr);column-gap:20px;align-items:start}
+  html[data-case="station"] .mirror>.mirror-glass{grid-column:1;grid-row:1/span 3;width:100%;max-width:none;margin:0}
+  html[data-case="station"] .mirror>.mirror-gauge-row{grid-column:2;align-items:center;gap:10px;margin:0;max-width:none}
+  html[data-case="station"] .mirror>.mirror-gauge-row .mirror-gauge{flex:0 0 132px}
+  html[data-case="station"] .mirror>.mirror-gauge-row .mirror-cap{font-size:13.5px;line-height:1.45}
+  html[data-case="station"] .mirror>.ctl.wide{grid-column:2;margin:10px 0 0}
+  html[data-case="station"] .mirror>.mirror-tilt{grid-column:2}
+  html[data-case="station"] .mirror>.train-list{grid-column:1/-1;grid-template-columns:1fr 1fr;grid-template-rows:auto repeat(4,auto);grid-auto-flow:column;column-gap:8px;margin-top:4px}
+  html[data-case="station"] .train-list>.pick-label{grid-column:1/-1;grid-row:1}
+  html[data-case="station"] .train{display:block;padding:6px 10px;line-height:1.35}
+  html[data-case="station"] .train small{display:block;font-size:13px}
+}
 
 /* 고양이: 오후 햇살 포장 가게 · 리본 · 편지지 */
 html[data-case="cat-invite"]{
@@ -1256,7 +1336,7 @@ html[data-case="letter"] .photoframe{max-width:360px;margin:0 auto 10px}
 html[data-case="letter"] .v2-doc-body b.pressed{font-weight:400;text-decoration:underline;text-decoration-thickness:3px;text-decoration-color:rgba(43,53,112,.55);text-shadow:.04em 0 0 #2b3570,-.03em .02em 0 #2b3570}
 /* 옛 우편함 둥근 다이얼 */
 html[data-case="letter"] .oldbox{display:grid;justify-items:center;gap:6px;padding:14px;border-radius:8px;background:linear-gradient(160deg,#55604f,#3b4337 60%,#2c3229);box-shadow:inset 0 0 0 2px rgba(0,0,0,.3),inset 0 0 40px rgba(120,70,30,.35)}
-html[data-case="letter"] .ob-face{width:min(240px,64vw);aspect-ratio:1}
+html[data-case="letter"] .ob-face{width:min(240px,54vw);aspect-ratio:1}
 html[data-case="letter"] .ob-face svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
 html[data-case="letter"] .ob-ring{transition:transform .2s ease}
 html[data-case="letter"] .ob-now{margin:2px 0 0;font-family:var(--sans);font-weight:800;font-size:20px;color:#f1ead6;font-variant-numeric:tabular-nums}
@@ -1296,6 +1376,59 @@ html[data-case="letter"] .rf-row .pick-row{margin:0}
 /* 구분실 형광등 하나가 깜박인다 */
 @keyframes le-flicker{0%,100%{filter:brightness(1)}41%{filter:brightness(1)}42%{filter:brightness(.78)}43%{filter:brightness(1)}44%{filter:brightness(.82)}46%{filter:brightness(1)}88%{filter:brightness(1)}89%{filter:brightness(.86)}90%{filter:brightness(1)}}
 html[data-case="letter"] .v2-stage img[src*="sorting"]{animation:le-flicker 7s infinite}
+/* v127: 손글씨 글꼴은 같은 px에서도 작아 보인다 — 수첩 글씨를 키움, 답장 입력칸은 밝은 종이색(회색이면 막힌 칸처럼 보임) */
+html[data-case="letter"] .v2-doc-body blockquote.hand.small{font-size:20px;line-height:1.55}
+html[data-case="letter"] .rf-in{margin:0;background:#fbfaf6;border-color:#bdb8aa;color:#22252b}
+html[data-case="letter"] .rf-in:focus{outline:2px solid var(--lamp);outline-offset:1px}
+html[data-case="letter"] .rf-in::placeholder{color:#8c887c}
+/* v127: 순로표 뒤 약도 글씨 — 휴대폰에서 1.4배 */
+@media (max-width:640px){html[data-case="letter"] .route-map{--mapk:1.35;--mapmin:4.4px}html[data-case="letter"] .routemap{padding:2px}}
+/* v127: PC에서 자물쇠 사진 옆에 조작을 두어 확인 버튼이 첫 화면에 들어오게 */
+@media (min-width:900px){
+  html[data-case="letter"] .letterlock-wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:20px;align-items:center;max-width:none}
+  html[data-case="letter"] .letterlock-wrap>.prop{grid-column:1;grid-row:1/span 3;margin:0}
+  html[data-case="letter"] .letterlock-wrap>:not(.prop){grid-column:2}
+  html[data-case="letter"] .letterlock-wrap .dials{margin:0}
+  html[data-case="letter"] .letterlock-wrap>.dir-seq{margin:0 0 4px}
+  html[data-case="letter"] .letterlock-wrap>.chip{margin:4px auto 0}
+  html[data-case="letter"] .reply-wrap{display:grid;grid-template-columns:1fr 1fr;column-gap:14px;align-items:start}
+  html[data-case="letter"] .reply-wrap>.backlight{margin:0}
+  html[data-case="letter"] .reply-wrap>.backlight .ctl.wide{margin:8px 0 0;font-size:14px;padding:9px 8px}
+  html[data-case="letter"] .reply-wrap>.lenv.reply{margin:0}
+  html[data-case="letter"] .reply-wrap>.reply-form{grid-column:1/-1}
+}
+/* v127: 휴대폰 글자 13px 아래로 내려가지 않게 (대장 작은 글씨·표 꼬리말·메시지 시각·구분함 이름표 버튼) */
+@media (max-width:640px){
+  html[data-case="letter"] .ledger-compact td small{font-size:13px}
+  html[data-case="letter"] .paper-table .pt-foot{font-size:13px}
+  html[data-case="letter"] .rack-chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+  html[data-case="letter"] .rack-chips .chip{min-height:44px;padding:3px 2px;border-radius:6px;font-size:13px;line-height:1.15;white-space:normal;word-break:keep-all}
+}
+html[data-case="letter"] .chat-meta,html[data-case="letter"] .chat-time{font-size:13px;color:#3d4650}
+html[data-case="letter"] .chat-date,html[data-case="letter"] .chat-name{font-size:13px}
+html[data-case="letter"] .chat-date{background:rgba(20,28,40,.5)}
+html[data-case="letter"] .chat-avatar{color:#5a3800}
+/* v127: 휴대폰 — 겉봉 손글씨를 아래에 크게 옮겨 적은 것 (번진·가린 자리는 얼룩 그대로) */
+html[data-case="letter"] .lenv-plain{margin:6px 0 8px;padding:10px 12px;background:#f6f1e3;border:1px solid var(--paper-line);border-radius:3px;font-family:var(--hand);font-size:22px;line-height:1.4;color:#2b3570}
+html[data-case="letter"] .lenv-plain p{margin:0 0 6px;word-break:keep-all;display:grid;grid-template-columns:5.4em minmax(0,1fr);align-items:baseline}
+html[data-case="letter"] .lenv-plain p:last-child{margin:0}
+html[data-case="letter"] .lenv-plain i{display:block;font-family:var(--sans);font-style:normal;font-size:13px;font-weight:700;color:#6a6556}
+html[data-case="letter"] .lenv-plain .zip{font-weight:400;letter-spacing:.18em}
+html[data-case="letter"] .lenv-plain .zip.empty{color:#a9a496}
+html[data-case="letter"] .lenv-plain em{font-style:normal}
+html[data-case="letter"] .lenv-plain .smear{color:transparent;text-shadow:0 0 5px rgba(43,53,112,.65),2px 1px 8px rgba(43,53,112,.35)}
+html[data-case="letter"] .lenv-plain .smear::before{content:attr(data-g)}
+html[data-case="letter"] .lenv-plain .inked{display:inline-block;width:1.7em;height:1.05em;vertical-align:-.15em;border-radius:40%;background:radial-gradient(ellipse at 50% 50%,rgba(28,28,40,.94) 0 50%,rgba(28,28,40,.6) 64%,transparent 72%)}
+html[data-case="letter"] .lenv-plain .torn{display:inline-block;width:2.6em;height:.95em;vertical-align:-.1em;background:#2b2019;clip-path:polygon(0 18%,14% 0,30% 22%,46% 4%,62% 26%,78% 6%,100% 14%,100% 100%,0 100%)}
+/* 여섯 번째 봉투: 앞뒤 손글씨를 크게, 뒷면 마지막 줄이 봉투 밖으로 나가지 않게 */
+html[data-case="letter"] .lenv.sixth .lenv-to{left:36%;top:42%;font-size:7cqw}
+html[data-case="letter"] .lenv-back{left:21%;top:37%;font-size:4.7cqw;line-height:1.3}
+/* v127: 구분함 — 사진 속 황동 이름표(PIL로 길게 다시 그림) 카드 안에 이름, 고른 칸은 칸 안쪽 그대로 테두리 */
+html[data-case="letter"] .rack-slot{transform:none;padding:0;display:block;border-radius:2px}
+html[data-case="letter"] .rack-slot .rack-label{position:absolute;left:var(--cx);top:var(--cy);width:var(--cw);height:var(--ch);display:grid;place-items:center;padding:0;background:none;box-shadow:none;border-radius:0;font-size:1.9cqw;line-height:1;letter-spacing:-.02em;color:#3b2a0e;white-space:nowrap}
+html[data-case="letter"] .rack-slot:hover,html[data-case="letter"] .rack-slot:focus-visible{box-shadow:inset 0 0 0 .3cqw rgba(226,85,63,.55)}
+html[data-case="letter"] .rack-slot.picking{box-shadow:inset 0 0 0 .5cqw var(--lamp),0 0 0 .2cqw rgba(0,0,0,.4)}
+html[data-case="letter"] .rack-slot.picking .rack-label{color:#9e2418}
 @media (prefers-reduced-motion:reduce){html[data-case="letter"] .v2-stage img[src*="sorting"]{animation:none}}
 
 /* 404호의 불빛: 철거 현장 · 락카 빨강 · 비상등 */

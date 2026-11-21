@@ -48,6 +48,11 @@ const RACK = [
   '사서함', '반송', '등기', '기타',
 ];
 const RACK_ANSWER = '미루새길 9-1';
+// 구분함 사진(rack.webp 1024×688)에서 잰 자리 (%) — 칸 안쪽과 황동 이름표 카드
+const SLOT_X = [3.52, 27.44, 50.88, 74.22], SLOT_W = [22.17, 21.58, 20.02, 22.27];
+const SLOT_Y = [0.58, 24.64, 48.4, 72.09], SLOT_H = [23.91, 23.62, 23.55, 23.26];
+const CARD_X = [5.86, 29.79, 53.22, 76.56], CARD_W = [17.48, 16.9, 15.33, 17.58];
+const CARD_Y = [1.31, 25.44, 49.13, 72.82], CARD_H = 3.49;
 
 const ROUTE_NOW = [
   ['124', '미루새길 3', ''], ['125', '미루새길 5', ''], ['126', '미루새길 7', '세탁소'],
@@ -59,28 +64,31 @@ const ARROW = { U: '↑', D: '↓', L: '←', R: '→' };
 function routeMap() {
   const ink = '#2f3a7a';
   const pen = (d, w = 0.8, extra = '', col = ink) => `<path d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" ${extra}/>`;
-  const t = (x, y, s, txt, a = 'middle', c = ink) => `<text x="${x}" y="${y}" font-size="${s}" text-anchor="${a}" fill="${c}" font-family="MihaejeHand, serif">${txt}</text>`;
+  // 글씨 크기는 휴대폰에서 --mapk 배로 키운다 (engine.css 편지 블록)
+  const t = (x, y, s, txt, a = 'middle', c = ink) => `<text x="${x}" y="${y}" font-size="${s}" style="font-size:max(calc(${s}px * var(--mapk, 1)), var(--mapmin, 0px))" text-anchor="${a}" fill="${c}" font-family="MihaejeHand, serif">${txt}</text>`;
   const road = (x1, y1, x2, y2) => pen(`M${x1} ${y1} L${x2} ${y2}`, 0.5);
   return `<svg viewBox="0 0 100 80" class="route-map" role="img" aria-label="봉수 아저씨가 순로표 뒤에 볼펜으로 그린 미루새길 약도">
   ${road(4, 37, 96, 37)}${road(4, 43, 96, 43)}${t(90, 41.6, 3.4, '미루새길')}
-  ${road(15, 43, 15, 62)}${road(21, 43, 21, 62)}${t(29, 55, 3.4, '우체국길')}
+  ${road(15, 43, 15, 62)}${road(21, 43, 21, 62)}${t(31, 55, 3.4, '우체국길')}
   ${pen('M8 62 h20 v12 h-20 z', 0.9)}${t(18, 70, 4, '우체국')}${pen('M16 62 h4', 1.6)}${t(18, 60.5, 2.8, '문')}
   ${pen('M26 20 h14 v15 h-14 z', 0.7)}${t(33, 29, 3.4, '7 세탁소')}
   ${pen('M44 20 h20 v15 h-20 z', 0.7)}${t(54, 27, 3.4, '9 빌라')}${t(54, 32.5, 2.8, '현관')}${pen('M51 35 h6', 1.4)}
   ${pen('M71 20 h16 v15 h-16 z', 0.7)}${t(79, 29, 3.4, '11')}
   ${road(65, 35, 65, 15)}${road(69, 35, 69, 11)}${road(44, 15, 65, 15)}${road(44, 11, 69, 11)}${t(67, 26, 2.8, '골목', 'middle')}
   ${pen('M29 4 h14 v15 h-14 z', 0.7)}${t(36, 12.5, 3, '9-1 뒤채')}${pen('M43 11.4 v3.2', 2, '', '#2f7a4e')}${t(45, 9, 2.8, '초록 대문', 'start', '#2f7a4e')}
-  ${pen('M18 61 V40 H54 V36', 0.7, 'stroke-dasharray="1.6 1.2"', '#b33a28')}${t(52.6, 49, 2.8, '↑ 2019 정 할머니 대문', 'start', '#b33a28')}${t(56, 52.6, 2.8, '(지금 빌라 현관)', 'start', '#b33a28')}
+  ${pen('M18 61 V40 H54 V36', 0.7, 'stroke-dasharray="1.6 1.2"', '#b33a28')}${t(52.6, 49, 2.8, '↑ 2019 정 할머니 대문', 'start', '#b33a28')}${t(56, 53.8, 2.8, '(지금 빌라 현관)', 'start', '#b33a28')}
   ${pen('M93 4 v7 M93 4 l-1.6 2.4 M93 4 l1.6 2.4', 0.6)}${t(95.5, 8, 3.4, 'N', 'start')}
   </svg>`;
 }
 
+// 휴대폰: 겉봉 손글씨가 작으니 같은 내용을 아래에 크게 옮겨 적는다 (번진·가린 자리는 그대로 얼룩)
+const envPlain = (e) => `<div class="lenv-plain mobile-only" aria-hidden="true"><p><i>보내는 사람</i><span>${e.zip ? `<b class="zip">${e.zip}</b>` : '<b class="zip empty">□□□□□</b>'}<br>${e.addr}<br>${e.name}${e.extra ? ` <em>「${e.extra}」</em>` : ''}</span></p><p><i>소인</i><span>수림 ${e.mark}</span></p><p><i>받는 곳</i><span>미루동 17-4 정해린 님께</span></p></div>`;
 const envHtml = (e) => `<figure class="prop lenv y${e.y}"><img src="${P}props/envelope.webp" alt="${e.y}년 봉투 앞면" decoding="async">
 <span class="lenv-from"><i>보내는 사람</i>${e.zip ? `<b class="zip">${e.zip}</b>` : '<b class="zip empty">□□□□□</b>'}<span>${e.addr}</span><span>${e.name}</span>${e.extra ? `<em class="lenv-note">${e.extra}</em>` : ''}</span>
 <span class="lenv-mark${e.atZip ? ' at-zip' : ''}"><em>수림</em><em>${e.mark}</em><em>${e.day}</em></span>
 <span class="lenv-to">미루동 17-4<br>정해린 님께</span>
 <span class="lenv-sticker"><b>반송</b><small>수취인 불명</small><small class="pen">보관 · 김</small></span>
-</figure>${e.note ? `<p class="aside">${e.y}년 · 소인 ${e.mark} ${e.day}요일 · ${e.note}${e.extra ? ` 「${e.extra}」` : ''}</p>` : `<p class="aside">${e.y}년 · 소인 ${e.mark} ${e.day}요일</p>`}`;
+</figure>${envPlain(e)}${e.note ? `<p class="aside">${e.y}년 · 소인 ${e.mark} ${e.day}요일 · ${e.note}${e.extra ? ` 「${e.extra}」` : ''}</p>` : `<p class="aside">${e.y}년 · 소인 ${e.mark} ${e.day}요일</p>`}`;
 
 // 옛 우편함 다이얼: 0~31, 오른쪽(↻)은 숫자가 커지고 왼쪽(↺)은 작아진다 방향이 바뀔 때 그 자리 숫자가 들어간다
 const OB_N = 32;
@@ -181,8 +189,9 @@ export default {
         { id: 'mailboxes', x: 78, y: 62, label: '빌라 우편함', kind: 'doc', doc: 'mailboxes' },
         { id: 'oldbox', x: 44, y: 62, r: 9, label: '대문 기둥의 옛 우편함', kind: 'device', device: 'oldbox', visible: (S) => !S.solved.includes('oldbox') },
         { id: 'sixth', x: 44, y: 62, r: 9, label: '여섯 번째 봉투', kind: 'doc', doc: 'sixth', visible: (S) => S.solved.includes('oldbox') },
-        { id: 'gate', x: 55, y: 66, label: '초록 대문', kind: 'doc', doc: 'haerin', visible: (S) => S.solved.includes('oldbox') },
-        { id: 'reply', x: 63, y: 77, label: '할머니가 내민 빈 봉투', kind: 'device', device: 'reply', visible: (S) => S.read.includes('haerin') },
+        { id: 'gate', x: 55, y: 66, label: '초록 대문', kind: 'doc', doc: 'haerin', visible: (S) => S.solved.includes('oldbox') && !S.read.includes('haerin') },
+        // 대문을 두드려 할머니를 만난 뒤엔 같은 자리(열린 대문)에서 할머니가 빈 봉투를 내민다
+        { id: 'reply', x: 55, y: 66, label: '할머니가 내민 빈 봉투', kind: 'device', device: 'reply', visible: (S) => S.read.includes('haerin') },
       ],
     },
   ],
@@ -314,10 +323,15 @@ export default {
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'prop rackphoto'); const im = el('img'); im.src = P + 'props/rack.webp'; im.alt = '4칸 4줄 구분함, 몇몇 칸에 우편 묶음'; wrap.append(im);
-        const cols = [14.5, 38.3, 61.7, 85.2], rows = [3.2, 27.2, 50.8, 74.6];
         RACK.forEach((lab, i) => {
+          const c = i % 4, r = Math.floor(i / 4);
           const b = el('button', 'rack-slot' + (d.pick === lab ? ' picking' : '')); b.type = 'button';
-          b.style.left = cols[i % 4] + '%'; b.style.top = rows[Math.floor(i / 4)] + '%';
+          // 칸 하나(이름표 판 위끝 ~ 다음 가로대)를 그대로 덮고, 이름은 사진 속 황동 이름표 카드 안에
+          Object.assign(b.style, { left: SLOT_X[c] + '%', top: SLOT_Y[r] + '%', width: SLOT_W[c] + '%', height: SLOT_H[r] + '%' });
+          b.style.setProperty('--cx', ((CARD_X[c] - SLOT_X[c]) / SLOT_W[c] * 100).toFixed(2) + '%');
+          b.style.setProperty('--cw', (CARD_W[c] / SLOT_W[c] * 100).toFixed(2) + '%');
+          b.style.setProperty('--cy', ((CARD_Y[r] - SLOT_Y[r]) / SLOT_H[r] * 100).toFixed(2) + '%');
+          b.style.setProperty('--ch', (CARD_H / SLOT_H[r] * 100).toFixed(2) + '%');
           b.setAttribute('aria-label', `${lab} 칸`); b.innerHTML = `<span class="rack-label">${lab}</span>`;
           b.onclick = () => { d.pick = lab; save(); };
           wrap.append(b);
@@ -499,7 +513,7 @@ export default {
           const box = el('span', 'rf-box'); if (pre) box.append(el('span', 'rf-pre', pre));
           const inp = el('input', 'v2-input rf-in'); inp.type = 'text'; inp.value = d.f[id] || ''; inp.setAttribute('aria-label', label); inp.autocomplete = 'off'; inp.spellcheck = false;
           Object.entries(attrs).forEach(([k, v]) => inp.setAttribute(k, v));
-          inp.oninput = () => { d.f[id] = inp.value.trim(); paint(); };
+          inp.oninput = () => { d.f[id] = inp.value.trim(); paint(); ctx.status?.(''); }; // 다시 고치기 시작하면 지난 오답 문구는 지운다
           inp.onchange = () => { d.f[id] = inp.value.trim(); };
           box.append(inp); if (post) box.append(el('span', 'rf-pre', post));
           row.append(box); form.append(row);
