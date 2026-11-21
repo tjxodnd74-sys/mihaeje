@@ -182,7 +182,9 @@ a{color:inherit}
   .v2-hotspot{--hit:13%}
   .v2-travel-row{bottom:22%}
   .v2-peek,.v2-talk-open{width:40px;height:40px}
-  .v2-edge{width:44px;height:80px;margin-top:-40px;background:linear-gradient(90deg,rgba(0,0,0,.35),transparent)}
+  .v2-edge{width:32px;height:64px;margin-top:-32px;background:linear-gradient(90deg,rgba(0,0,0,.35),transparent)}
+  .v2-edge svg{width:26px;height:26px}
+  .v2-hud-btn,.v2-where{min-height:40px}
   .v2-edge.right{background:linear-gradient(270deg,rgba(0,0,0,.35),transparent)}
   .v2-talk-line{font-size:15px}
 }
