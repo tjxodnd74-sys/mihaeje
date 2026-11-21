@@ -345,7 +345,25 @@ async function main() {
     head.append(el('p', 'v2-eyebrow', (solved ? '해결한 장치 · ' : '') + (dev.hintCode || '')));
     head.append(el('h2', 'v2-doc-title', dev.title));
     head.append(el('p', 'v2-device-intro', dev.intro));
-    // 장치 안에는 풀이 안내를 두지 않는다 (힌트는 힌트 창에서만, 첫 단계부터 직접 받는다)
+    // 장치 안 힌트: 창을 닫지 않고 그 자리에서 한 단계씩 받는다 (힌트 창과 같은 기록 S.hints)
+    if (!solved) {
+      const hs = (typeof dev.hints === 'function' ? dev.hints(S) : dev.hints) || [];
+      if (hs.length) {
+        const hb = el('div', 'v2-dhint');
+        const drawHint = () => {
+          hb.replaceChildren();
+          const tier = S.hints[did] || 0;
+          for (let i = 0; i < tier; i++) hb.append(html('p', 'v2-dhint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${hs[i]}`));
+          const maxTier = Math.min(3, hs.length);
+          if (tier < maxTier) {
+            const b = btn('v2-dhint-btn' + (tier === 2 ? ' last' : ''), ['힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { if (tier === 2 && !confirm('정답을 볼까요?')) return; S.hints[did] = tier + 1; save(); drawHint(); });
+            hb.append(b);
+          } else if (hs.length < 3) hb.append(el('p', 'v2-dhint-note', '이 편은 정답 힌트가 없다 여기까지가 전부다'));
+        };
+        drawHint();
+        head.append(hb);
+      }
+    }
     node.append(head);
     if (solved && dev.reveal?.ending && !S.ended) node.append(btn('v2-primary', (dev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; save(); closeDialog(); }));
     const body = el('div', 'v2-device-body');
