@@ -105,11 +105,11 @@ a{color:inherit}
 .v2-place:hover{background:rgba(255,255,255,.06)}
 .v2-place.on{color:var(--lamp);font-weight:700}
 .v2-where b{font-size:17px;letter-spacing:-.01em;color:var(--enamel)}
-.v2-where small{font-size:12px;color:var(--soft-3)}
+.v2-where small{font-size:13px;color:var(--soft-3)}
 .v2-hud-tools{margin-left:auto;display:flex;gap:8px}
-.v2-hud-btn{position:relative;display:flex;align-items:center;gap:6px;background:rgba(var(--night-rgb),.6);border:1px solid var(--line);border-radius:6px;padding:7px 12px;font-size:14px;font-weight:600;color:var(--enamel)}
+.v2-hud-btn{position:relative;display:flex;align-items:center;gap:6px;min-height:40px;background:rgba(var(--night-rgb),.6);border:1px solid var(--line);border-radius:6px;padding:7px 12px;font-size:14px;font-weight:600;color:var(--enamel)}
 .v2-hud-btn .ico svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round;display:block}
-.v2-hud-btn .num{font-size:12px;color:var(--lamp);font-weight:700}
+.v2-hud-btn .num{font-size:13px;color:var(--lamp);font-weight:700}
 .v2-hud-btn.new::after{content:"";position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:#d9543f;box-shadow:0 0 0 2px var(--night)}
 /* 무대: 그림이 화면을 채우고, 물건을 직접 누른다 */
 .v2-stage{position:relative;border-radius:6px;overflow:hidden;background:#07080a;box-shadow:0 20px 50px rgba(0,0,0,.5)}
@@ -161,7 +161,7 @@ a{color:inherit}
 .v2-talk-open[hidden]{display:none}
 /* 아래: 의견 · 처음 화면 */
 .v2-foot{display:flex;justify-content:center;gap:18px;margin:18px 0 0}
-.v2-foot-btn{background:none;border:0;color:var(--soft-3);font-size:13px;text-decoration:underline;text-underline-offset:3px;padding:6px}
+.v2-foot-btn{background:none;border:0;color:var(--soft-3);font-size:14px;min-height:40px;text-decoration:underline;text-underline-offset:3px;padding:6px}
 /* 무서운 편: 가장자리가 어둡고 아주 가끔 깜빡 */
 .v2-stage[data-mood="horror"]::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(0,0,0,.55) 100%);animation:v2-flicker 11s steps(1) infinite}
 @keyframes v2-flicker{0%,93%,95.5%,100%{opacity:1}94%{opacity:.35}95%{opacity:.85}}
@@ -399,7 +399,7 @@ a{color:inherit}
 
 /* 남긴 것(이야기 진행) */
 .v2-traces{display:flex;gap:10px;flex-wrap:wrap;align-items:center;cursor:default}
-.v2-trace{font-size:12px;color:#9aa5b1;letter-spacing:.1em;padding:2px 0;border-bottom:1px dashed #3a434d}
+.v2-trace{font-size:13px;color:#9aa5b1;letter-spacing:.1em;padding:2px 0;border-bottom:1px dashed #3a434d}
 .v2-trace.got{color:var(--lamp);letter-spacing:0;border-bottom-color:transparent}
 .v2-trace.got::before{content:'✓ ';opacity:.8}
 .v2-bench-tab.locked{opacity:.5;cursor:not-allowed;border-style:dotted}
