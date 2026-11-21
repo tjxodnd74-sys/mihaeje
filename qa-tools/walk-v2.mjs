@@ -540,7 +540,7 @@ async function studio({ mobile = false } = {}) {
     // lockers
     await hotspot(page, '필름 보관함');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .locker-cell').length === 16), 'lockers: 16 cells');
-    L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .locker-cell .plate')].filter((p) => p.textContent).map((p) => p.textContent).sort().join() === 'A1,A4,D1'), 'lockers: only 3 labels left');
+    L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .st-card')].map((p) => p.textContent).sort().join() === 'A1,A4,D1'), 'lockers: only 3 labels left');
     await L.click(page, '위에서 3째 줄 왼쪽에서 3째 칸 서랍', { exact: true }); await commit(page); L.check((await status(page)).includes('0615는 없다'), 'lockers: naive decoy neutral');
     await L.click(page, '위에서 1째 줄 왼쪽에서 2째 칸 서랍', { exact: true }); await commit(page); L.check((await status(page)).includes('0615는 없다'), 'lockers: wrong cell neutral');
     await L.click(page, '위에서 2째 줄 왼쪽에서 3째 칸 서랍', { exact: true }); await shot(page, 'st-lockers'); await commit(page); L.check(await dlgHas(page, '꼬리표 달린 작은 열쇠'), 'lockers solved');
@@ -852,7 +852,7 @@ async function apartment({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('404호 귀신'), 'opening shown');
     await L.click(page, '둑길에서 건물 보기'); await L.sleep(400);
     L.check(await page.evaluate(() => document.querySelector('.v2-stage')?.dataset.mood === 'horror'), 'horror mood on stage');
-    for (const [d, t] of [['오늘 작업 지시', '민원 3건'], ['동네 커뮤니티 글', '404호'], ['둑길의 철거 안내판', '반지하']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    for (const [d, t] of [['벤치 위 휴대폰 · 작업 지시', '민원 3건'], ['불 켜진 창 · 동네 커뮤니티 글', '404호'], ['둑길의 철거 안내판', '반지하']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     L.check(!(await page.evaluate(() => /손전등/.test(document.body.innerText))), 'no flashlight comment yet');
     await hotspot(page, '건물 정문으로'); await L.sleep(400);
     for (const [d, t] of [['우편함 위 호수 안내', '왼쪽 집부터'], ['게시판의 이주 현황', '1세대']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
