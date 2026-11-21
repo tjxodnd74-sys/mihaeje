@@ -215,7 +215,9 @@ async function main() {
     const k = places.indexOf(scene);
     const goPlace = (d) => { const t = places[(k + d + places.length) % places.length]; S.scene = t.id; save(); play('door'); render(); };
     const nm = (d) => josa(places[(k + d + places.length) % places.length].name, '으로', '로') + ' 가기';
-    const arrow = (cls, dir, d) => { const b = btn('v2-edge ' + cls, '', () => (stage.classList.contains('panable') ? scroller.scrollBy({ left: d * scroller.clientWidth * 0.7, behavior: 'smooth' }) : goPlace(d)), places.length > 1 ? nm(d) : ''); b.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${dir}"/></svg>`; return b; };
+    const arrow = (cls, dir, d) => { const b = btn('v2-edge ' + cls, '', () => (stage.classList.contains('panable') ? panBy(d * scroller.clientWidth * 0.7) : goPlace(d)), places.length > 1 ? nm(d) : ''); b.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${dir}"/></svg>`; return b; };
+    // 그림 밀기: 기기마다 scrollBy(smooth)가 안 먹는 경우가 있어 직접 움직인다
+    const panBy = (dx) => { const from = scroller.scrollLeft, to = Math.max(0, Math.min(scroller.scrollWidth - scroller.clientWidth, from + dx)), t0 = performance.now(); const stepF = (t) => { const k = Math.min(1, (t - t0) / 320); scroller.scrollLeft = from + (to - from) * (1 - Math.pow(1 - k, 3)); syncEdges(); if (k < 1) requestAnimationFrame(stepF); }; requestAnimationFrame(stepF); };
     const aL = arrow('left', 'M15 4 7 12l8 8', -1), aR = arrow('right', 'm9 4 8 8-8 8', 1);
     stage.append(aL, aR);
     const syncEdges = () => {
