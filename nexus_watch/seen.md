@@ -459,3 +459,6 @@
 2026-11-21 16:24 | 데키랩 '4K AI 영상, 제작 비용부터 1/9로'(oQLMpIEIeyc, 3시간 전)·CONNECT '더 파운더 AI 직원 7명'(Zx1jn6kCBoo 제목 변경)·'Genie 4·Gemini 4 Neon 편집본'(IyJqarQolyg) / 쇼츠: 유튜브신쌤 bjmbrMWyxko·CONNECT SGzQDFr8_tQ | 유튜브 | https://www.youtube.com/@dekilab/videos
 2026-11-21 16:24 | 긱뉴스 Cloudflare QuePaxa·SignuDoc(제외·개발자용) / AI타임스 새 기사 없음 | 긱뉴스 | https://news.hada.io/
 - 2026-11-21 16:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + JSON 파싱) — 15:24 이후 새 롱폼 2개·새 쇼츠 2개. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 미사용(10·15시만). 바로 제작 없음(16:41 창·새 기능 없음). 인스타 브라우저 안 엶.
+2026-11-21 17:23 | 조팀장 'AI 툴에 500만원 넘게 쓰고 느낀 점. 처음부터 유료 결제하지 마세요'(IDn1SZnKbJo, 24분 전) | 유튜브 | https://www.youtube.com/@조팀장의ai공략집/videos
+2026-11-21 17:23 | 제미나이 | 제미나이 앱 GIF 생성 출시(Omni 1.2 Flash, 한국 포함, AI타임스 16:39·구글 X 11/20, 알림·긴급 제작 요청) | https://x.com/GeminiApp/status/2123813017855103449
+- 2026-11-21 17:23: 내장 브라우저로 유튜브 18개 채널 /videos(페이지 안 fetch + JSON 파싱, 홀수 시라 쇼츠 생략) — 16:24 이후 새 롱폼 1개(조팀장). AI타임스·긱뉴스 직접 확인(AI타임스 새 기사: 제미나이 GIF) + 웹검색 3건(최근 24시간 결과 없음) + 확인 검색 1건. vidIQ 미사용. 바로 제작 요청 1건(제미나이 GIF).
