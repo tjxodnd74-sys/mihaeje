@@ -199,25 +199,24 @@ function pick(v, cx, cy) {
   return null;
 }
 
+// 조작: 끌어서 돌리기 없음 (세이브어스식) — 정해진 시점에서 물건을 누르면 가까이 다가가 살펴본다
 function bindControls(v) {
   const cv = v.renderer.domElement;
   let down = null;
-  cv.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY, yaw: v.yaw, pitch: v.pitch, moved: false, id: e.pointerId }; cv.setPointerCapture(e.pointerId); v.anim = null; });
+  cv.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY, id: e.pointerId }; });
   cv.addEventListener('pointermove', (e) => {
-    if (down && down.id === e.pointerId) {
-      const dx = e.clientX - down.x, dy = e.clientY - down.y;
-      if (Math.abs(dx) + Math.abs(dy) > 5) down.moved = true;
-      const s = (e.pointerType === 'touch' ? 0.0055 : 0.0042) * (v.camera.fov / 62);
-      v.yaw = down.yaw + dx * s; v.pitch = Math.max(-1.2, Math.min(1.0, down.pitch + dy * s));
-    } else if (e.pointerType === 'mouse') {
-      const id = pick(v, e.clientX, e.clientY);
-      cv.style.cursor = id ? 'pointer' : 'grab';
-      setHover(v, id);
-    }
+    if (e.pointerType !== 'mouse' || v.anim) return;
+    const id = pick(v, e.clientX, e.clientY);
+    cv.style.cursor = id ? 'pointer' : 'default';
+    setHover(v, id);
   });
-  const up = (e) => { if (!down || down.id !== e.pointerId) return; const was = down; down = null; if (!was.moved) { const id = pick(v, e.clientX, e.clientY); if (id) open(v, id); } };
-  cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', () => { down = null; });
-  cv.addEventListener('wheel', (e) => { e.preventDefault(); v.fov = Math.max(34, Math.min(72, v.fov + Math.sign(e.deltaY) * 4)); }, { passive: false });
+  cv.addEventListener('pointerleave', () => setHover(v, null));
+  cv.addEventListener('pointerup', (e) => {
+    if (!down || down.id !== e.pointerId) return; const d = down; down = null;
+    if (Math.abs(e.clientX - d.x) + Math.abs(e.clientY - d.y) > 12) return; // 스크롤하려고 민 손가락은 누름이 아님
+    const id = pick(v, e.clientX, e.clientY); if (id) open(v, id);
+  });
+  cv.addEventListener('pointercancel', () => { down = null; });
 }
 
 function setHover(v, id) {
@@ -228,10 +227,37 @@ function setHover(v, id) {
   v.labels.forEach((t, k) => t.classList.toggle('hover', k === id));
 }
 
+// 물건 쪽으로 다가가서(지금 시점 → 물건 사이 직선 위, 가려지지 않은 길) 살펴본 뒤 엔진의 자료·장치 창을 연다
+function closeUpOf(v, obj) {
+  const b = new THREE.Box3().setFromObject(obj); const c = b.getCenter(new THREE.Vector3()); const sz = b.getSize(new THREE.Vector3());
+  const big = Math.max(sz.x, sz.y, sz.z);
+  const dir = new THREE.Vector3().subVectors(c, v.pos); dir.y = 0; const flat = dir.length(); dir.normalize();
+  // 작은 물건은 손 닿을 거리까지, 큰 물건(보관함·사진 벽)은 한눈에 들어올 거리까지 · 지금 자리보다 뒤로 물러나지는 않는다
+  const dist = Math.min(flat, Math.max(0.5, big * 0.95 + 0.2));
+  const pos = new THREE.Vector3(c.x - dir.x * dist, Math.max(0.9, Math.min(1.7, c.y + 0.25 + big * 0.25)), c.z - dir.z * dist);
+  return { pos: pos.toArray(), look: c.toArray() };
+}
 function open(v, id) {
   const h = v.hotList.find((x) => x.id === id); if (!h) return;
   const obj = v.kit.hots.get(id);
-  if (obj) turnTo(v, anchorOf(obj), 360, () => v.act(h)); else v.act(h);
+  setHover(v, null);
+  if (!obj || h.kind === 'travel') { v.act(h); return; }
+  const cu = closeUpOf(v, obj);
+  v.close = { id }; syncNav(v);
+  goView(v, cu, 650); v.anim.then = () => v.act(h);
+}
+function back(v) {
+  v.close = null; syncNav(v);
+  goView(v, v.views[v.viewIdx], 650);
+}
+function syncNav(v) {
+  if (!v.host) return; const close = !!v.close; const many = (v.views?.length || 0) > 1;
+  v.host.classList.toggle('v3-close', close);
+  v.host.querySelectorAll('.v3-turn').forEach((b) => { b.hidden = close || !many; });
+  const bk = v.host.querySelector('.v3-back'); if (bk) bk.hidden = !close;
+}
+function turnView(v, step) {
+  const n = v.views.length; v.viewIdx = (v.viewIdx + step + n) % n; goView(v, v.views[v.viewIdx], 800);
 }
 
 function updateHots(v, hotList, sceneId) {
@@ -267,11 +293,18 @@ export async function mount(host, { ep, scene, S, hotspots, act, VER }) {
   }
   const v = V; v.S = S; v.act = act; v.host = host; window.__v3 = v;
   host.classList.add('v3-host');
-  host.innerHTML = '<div class="v3-tags"></div><div class="v3-views"></div><div class="v3-strip"></div><p class="v3-help">끌어서 둘러보기 · 물건을 누르면 살펴본다</p>';
+  host.innerHTML = '<div class="v3-tags"></div><div class="v3-strip"></div>'
+    + '<button type="button" class="v3-nav v3-turn v3-left" aria-label="왼쪽 보기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4 7 12l8 8"/></svg></button>'
+    + '<button type="button" class="v3-nav v3-turn v3-right" aria-label="오른쪽 보기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 4 8 8-8 8"/></svg></button>'
+    + '<button type="button" class="v3-nav v3-back" aria-label="뒤로" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 8 8 7 8-7"/></svg></button>'
+    + '<button type="button" class="v3-peek" aria-label="살펴볼 곳 잠깐 보기">?</button>';
   host.prepend(v.renderer.domElement);
-  const views = v.def.scenes[scene.id]?.views || [{ pos: [0, 1.6, 2], look: [0, 1.2, 0], name: scene.name }];
-  if (v.sceneId !== scene.id) { const first = v.sceneId == null; v.sceneId = scene.id; v.viewIdx = 0; goView(v, views[0], first ? 0 : 1200); }
-  const vb = host.querySelector('.v3-views');
-  if (views.length > 1) views.forEach((vw, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'v3-view' + (i === v.viewIdx ? ' on' : ''); b.textContent = vw.name; b.onclick = () => { v.viewIdx = i; goView(v, vw, 900); vb.querySelectorAll('.v3-view').forEach((x, k) => x.classList.toggle('on', k === i)); }; vb.append(b); });
+  v.views = v.def.scenes[scene.id]?.views || [{ pos: [0, 1.6, 2], look: [0, 1.2, 0], name: scene.name }];
+  if (v.sceneId !== scene.id) { const first = v.sceneId == null; v.sceneId = scene.id; v.viewIdx = 0; v.close = null; goView(v, v.views[0], first ? 0 : 1000); }
+  host.querySelector('.v3-left').onclick = () => turnView(v, -1);
+  host.querySelector('.v3-right').onclick = () => turnView(v, 1);
+  host.querySelector('.v3-back').onclick = () => back(v);
+  let peekT = 0; host.querySelector('.v3-peek').onclick = () => { host.classList.add('peek'); clearTimeout(peekT); peekT = setTimeout(() => host.classList.remove('peek'), 2600); };
+  syncNav(v);
   updateHots(v, hotspots, scene.id);
 }
