@@ -27,7 +27,7 @@ git fetch -q origin main && (git merge-base --is-ancestor FETCH_HEAD HEAD || git
 
 # 2) 사이트
 cd "$PAGES"
-find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+find . -mindepth 1 -maxdepth 1 ! -name .git ! -name rec -exec rm -rf {} +   # rec/ = 즉흥연기 촬영기(다른 작업), 지우지 않는다
 cp -r "$SRC/mystery-site/dist/client/." . && touch .nojekyll
 git add -A
 git diff --cached --quiet || git commit -qm "사이트: $MSG

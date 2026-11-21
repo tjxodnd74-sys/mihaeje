@@ -171,3 +171,4 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
   - 끌어서 둘러보기·휠 확대 삭제 · 이름표는 평소 숨김(오른쪽 위 '?'로 2.6초 보기, 키보드로 옮기면 보임) · 시점은 화면 양옆 ‹ › 로 돌림
   - 물건을 누르면 그 물건 앞까지 다가간 뒤(closeUpOf) 자료·장치 창 · 닫으면 가까이 본 채로 남고 아래 ⌄ 로 원래 시점 · 모바일은 화면을 밀어 페이지 스크롤 가능(touch-action manipulation, 12px 넘게 민 건 누름 아님)
   - 테스트로 물건을 누를 땐 상자 가운데가 빈 공간일 수 있으니(초록 등) 광선이 실제로 맞는 점을 찾아서 누른다 (scratchpad/click3d.mjs 방식)
+- gh-pages 에는 미해제 말고 rec/(즉흥연기 촬영기)도 있다 — 배포할 때 rec/ 를 지우지 않는다 (publish.sh 가 남겨 둠)
