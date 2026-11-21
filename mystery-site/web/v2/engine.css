@@ -1151,19 +1151,30 @@ body:has(.v2-bar){padding-bottom:calc(84px + env(safe-area-inset-bottom))}
 .v2-ending .v2-secondary.subtle{opacity:.9}
 
 /* ---------- 3D 무대 (시범 · play3d.html) ---------- */
-.v2-stage.is-3d{aspect-ratio:auto;height:min(72vh,680px);background:#0b0c0e;overflow:hidden;position:relative;touch-action:none}
-.v2-stage.is-3d .v3-canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
+.v2-stage.is-3d{aspect-ratio:auto;height:min(72vh,680px);background:#0b0c0e;overflow:hidden;position:relative;touch-action:manipulation}
+.v2-stage.is-3d .v3-canvas{display:block;width:100%;height:100%;cursor:default;touch-action:manipulation}
+/* 세이브어스식: 그림만 보이고 물건을 직접 누른다 · 이름표는 '?'로 잠깐 보거나 키보드로 옮겨 갈 때만 */
 .v3-tags{position:absolute;inset:0;pointer-events:none}
-.v3-tag{position:absolute;left:0;top:0;pointer-events:auto;display:flex;align-items:center;gap:6px;border:0;background:rgba(12,12,14,.72);color:#f3ead8;font-size:13px;font-weight:600;padding:5px 10px 5px 8px;border-radius:999px;white-space:nowrap;margin:-30px 0 0 -12px;box-shadow:0 2px 8px rgba(0,0,0,.4);cursor:pointer}
+.v3-tag{position:absolute;left:0;top:0;pointer-events:none;opacity:0;transition:opacity .25s;display:flex;align-items:center;gap:6px;border:0;background:rgba(12,12,14,.72);color:#f3ead8;font-size:13px;font-weight:600;padding:5px 10px 5px 8px;border-radius:999px;white-space:nowrap;margin:-30px 0 0 -12px;box-shadow:0 2px 8px rgba(0,0,0,.4);cursor:pointer}
+.v3-host.peek .v3-tag,.v3-tag:focus-visible{opacity:1;pointer-events:auto}
 .v3-tag i{width:9px;height:9px;border-radius:50%;background:var(--lamp,#e3a64a);box-shadow:0 0 0 3px rgba(227,166,74,.25)}
 .v3-tag.device i{background:#f0c25a}
-.v3-tag.done{opacity:.6}
+.v3-tag.done{opacity:0}
+.v3-host.peek .v3-tag.done{opacity:.6}
 .v3-tag.done i{background:#8a8f95;box-shadow:none}
-.v3-tag.hover,.v3-tag:focus-visible{outline:none;background:rgba(60,42,14,.92)}
-.v3-views{position:absolute;left:10px;top:10px;display:flex;flex-wrap:wrap;gap:6px;max-width:calc(100% - 20px)}
-.v3-view{border:1px solid rgba(255,255,255,.22);background:rgba(10,10,12,.62);color:#e9e4da;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
-.v3-view.on{background:rgba(227,166,74,.9);color:#1b1206;border-color:transparent}
-.v3-strip{position:absolute;left:0;right:0;bottom:34px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;pointer-events:none}
-.v3-strip .v3-tag{position:static;margin:0;pointer-events:auto;font-size:15px;padding:9px 16px}
-.v3-help{position:absolute;left:0;right:0;bottom:8px;margin:0;text-align:center;font-size:12px;color:rgba(235,230,220,.6);pointer-events:none}
-@media (max-width:640px){.v2-stage.is-3d{height:64vh}.v3-tag{font-size:12px}.v3-view{font-size:12px;padding:5px 10px}}
+.v3-tag:focus-visible{outline:none;background:rgba(60,42,14,.92)}
+.v3-strip{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;pointer-events:none}
+.v3-strip .v3-tag{position:static;margin:0;opacity:1;pointer-events:auto;font-size:15px;padding:9px 16px;border:1px solid rgba(227,190,120,.55)}
+.v3-nav{position:absolute;border:0;background:none;color:rgba(240,228,205,.82);cursor:pointer;padding:0;display:grid;place-items:center;filter:drop-shadow(0 1px 3px rgba(0,0,0,.8));-webkit-tap-highlight-color:transparent}
+.v3-nav svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .15s,color .15s}
+.v3-nav:hover,.v3-nav:focus-visible{color:#f3c97a;outline:none}
+.v3-left,.v3-right{top:50%;width:52px;height:96px;margin-top:-48px}
+.v3-left{left:4px}.v3-right{right:4px}
+.v3-left:hover svg{transform:translateX(-3px)}.v3-right:hover svg{transform:translateX(3px)}
+.v3-back{left:50%;bottom:6px;width:96px;height:52px;margin-left:-48px;color:#e8604a}
+.v3-back svg{width:40px;height:40px}
+.v3-back:hover svg{transform:translateY(3px)}
+.v3-nav[hidden]{display:none}
+.v3-peek{position:absolute;right:10px;top:10px;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(10,10,12,.5);color:rgba(240,232,218,.85);font-size:14px;font-weight:700;cursor:pointer}
+.v3-host.v3-close .v3-peek{display:none}
+@media (max-width:640px){.v2-stage.is-3d{height:64vh}.v3-tag{font-size:12px}.v3-left,.v3-right{width:44px}.v3-nav svg{width:30px;height:30px}}
