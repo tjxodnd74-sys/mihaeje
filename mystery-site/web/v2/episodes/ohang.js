@@ -40,10 +40,9 @@ function ledger(S) {
   ].filter((x) => SEASON_OF[x.m] !== bs);
   // 마지막 방문은 여섯 해 전 (오프닝) 취직 소식, 달은 태어난 철을 피한다
   const lastM = [10, 4, 1, 6].find((m) => SEASON_OF[m] !== bs);
-  const last = Math.max(A - 6, 6);
-  const top = Math.max(5, last - 1);
-  const scale = top < 16 ? top / 16 : 1;
-  const rows = pool.map((x) => ({ ...x, a: Math.max(5, Math.min(top, Math.round(x.a * scale))) }));
+  // 접수표는 스무 살부터 받으므로(intake) 마지막 방문은 열네 살 이후 그보다 어린 줄만 남긴다 (나이를 줄여 끼워 맞추지 않는다)
+  const last = Math.max(A - 6, 14);
+  const rows = pool.filter((x) => x.a < last);
   const why = last < 19 ? '혼자 버스 타고 옴' : last < 35 ? '취직했다고 옴' : last < 55 ? '이사했다고 옴' : '일 그만뒀다고 옴';
   rows.push({ a: last, m: lastM, t: `${why} 처음으로 찻값 내려고 함 안 받음` });
   rows.sort((p, q) => p.a - q.a || ((p.m + 9) % 12) - ((q.m + 9) % 12));
@@ -112,8 +111,12 @@ function reading(profile) {
   profile = profile || { seed: 0, companion: 0, counts: [1, 1, 1, 1, 1] };
   const seed = E[profile.seed], comp = E[profile.companion];
   const missing = E.filter((e, i) => profile.counts[i] === 0);
-  let other = comp;
-  if (comp.id === seed.id) { let best = -1; E.forEach((e, i) => { if (i !== profile.seed && profile.counts[i] > best) { best = profile.counts[i]; other = e; } }); }
+  let other = comp, others = [comp];
+  if (comp.id === seed.id) {
+    const best = Math.max(...E.map((e, i) => (i === profile.seed ? -1 : profile.counts[i])));
+    others = E.filter((e, i) => i !== profile.seed && profile.counts[i] === best);
+    other = others[0];
+  }
   const max = Math.max(...profile.counts);
   const tops = E.filter((e, i) => profile.counts[i] === max);
   const strong = max >= 3;
@@ -123,7 +126,7 @@ function reading(profile) {
     me: READ[seed.id].me,
     many: `${topLine} ${strong ? READ[comp.id].many : '셋도 안 되니 센 건 아니다 고르게 있는 쪽이다'}`,
     none: missing.length ? missing.map((e) => READ[e.id].none).join(' ') : '다섯 빛이 다 있다 뭐 하나 빠졌다는 핑계는 못 댄다',
-    relation: (comp.id === seed.id ? `그다음이 ${other.han}인데, ` : '') + relationLine(seed.id, other.id),
+    relation: (comp.id === seed.id ? (others.length > 1 ? `그다음은 ${others.map((o) => o.han).join('·')} 같이 많은데, ${other.han}부터 보면 ` : `그다음이 ${other.han}인데, `) : '') + relationLine(seed.id, other.id),
     tea: READ[seed.id].tea,
   };
 }
@@ -164,7 +167,7 @@ export default {
     eyebrow: '3월 2일, 저녁',
     paragraphs: [
       '할머니가 넘어졌다는 연락은 이모한테서 왔고, 할머니한테서는 문자가 왔다. 가게 좀 봐 달라는 거였다. 찬장 맨 아래 서랍에 둔 걸 꼭 가져오라고.',
-      '오행당. 외할머니가 마흔두 해 동안 약차를 끓인 가게다. 손님이 오면 생일하고 난 시부터 묻고, 다섯 빛을 세어서 차를 골라 줬다. 어릴 때는 방학마다 거기서 살았는데, 대학에 들어간 뒤로는 뜸해졌고, 마지막으로 간 게 여섯 해 전이다.',
+      '오행당. 외할머니가 마흔두 해 동안 약차를 끓인 가게다. 손님이 오면 생일하고 난 시부터 묻고, 다섯 빛을 세어서 차를 골라 줬다. 어릴 때는 방학마다 거기서 살았는데, 크고 나서는 뜸해졌고, 마지막으로 간 게 여섯 해 전이다.',
       '열쇠는 늘 두던 데 있다고 했다. 어디였더라, 되물으려는데 할머니 휴대폰이 꺼졌다.',
       '이모는 전화 끝에 한마디를 덧붙였다. 가게, 이번 달 안에 정리할 거라고. 할머니도 이제 못 한다고.',
       '골목에 비가 조금 왔다. 문 앞 섬돌에 화분 다섯 개가 그대로 있고, 문 옆 작은 선반에 접수표 묶음이 놓여 있었다. 손님은 먼저 접수표부터 쓴다. 할머니 가게의 규칙이다.',
@@ -178,7 +181,8 @@ export default {
       const showResult = (profile) => {
         const card = el('div', 'slip-result');
         card.innerHTML = slipHtml(profile);
-        card.append(btn('v2-primary', '접수표 들고 문 앞으로 →', () => done(profile)));
+        // 내 접수표와 휴대폰은 처음부터 손에 있다 → 소지품에 바로 넣어 둔다
+        card.append(btn('v2-primary', '접수표 들고 문 앞으로 →', () => { S.found = S.found || []; ['myslip', 'chat'].forEach((k) => { if (!S.found.includes(k)) S.found.push(k); }); done(profile); }));
         const again = btn('v2-secondary', '접수표 다시 쓰기', () => { delete S.profile; save(); wrap.replaceChildren(...form()); });
         wrap.replaceChildren(card, again);
         window.scrollTo({ top: 0 });
@@ -187,7 +191,7 @@ export default {
         const sheet = el('div', 'slip-form');
         sheet.innerHTML = `<p class="slip-head">오행당 접수표</p>
 <p class="slip-note">손님 생일과 난 시를 적는다 할머니는 이걸로 다섯 빛을 센다<br><small>적은 날짜는 그대로 남기지 않는다 센 결과와 나이, 태어난 달만 이 브라우저에 남는다</small></p>
-<label class="slip-row"><span>생일 (양력)<small>예 1998/3/15</small></span><input type="date" name="date" min="1901-01-02" max="2026-03-02" required aria-label="생일 (양력) 연 월 일"></label>
+<label class="slip-row"><span>생일 (양력)<small>예 1998/3/15</small></span><input type="date" name="date" min="1901-01-02" max="2006-03-02" required aria-label="생일 (양력) 연 월 일"></label>
 <label class="slip-row"><span>난 시각<small>예 오후 2:30</small></span><input type="time" name="time" aria-label="난 시각"></label>
 <label class="slip-check"><input type="checkbox" name="unknown"> 시각은 모름</label>
 <p class="slip-err" aria-live="polite"></p>`;
@@ -199,6 +203,8 @@ export default {
             if (!window.Solar) await new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'vendor/lunar-1.7.7.js'; sc.onload = res; sc.onerror = () => rej(Error('달력 자료를 불러오지 못했다 잠시 뒤 다시')); document.head.append(sc); });
             const dv = sheet.querySelector('[name=date]').value; if (!dv) throw Error('생일을 적어야 한다');
             const [y, m, d] = dv.split('-').map(Number);
+            // 이 이야기의 지원은 어른이다 (장부·도입부가 여섯 해 전 마지막 방문을 전제로 한다)
+            if (y > 2006 || (y === 2006 && (m > 3 || (m === 3 && d > 2)))) throw Error('지원은 이제 스무 살이 넘었다 2006/3/2까지 태어난 날로 적거나, 아래 예시 손님으로 해 보자');
             let input = { year: y, month: m, day: d, hour: null, minute: 0 };
             if (!unk.checked) {
               if (!time.value) throw Error('난 시각을 적거나, 모름에 표시한다');
@@ -236,14 +242,14 @@ export default {
       image: P + 'front.webp',
       arrive: (S) => S.solved.includes('pots')
         ? '문은 열려 있다 들었다 놓은 화분이 조금 비뚤게 앉아 있다 문에는 할머니가 붙여 둔 종이가 그대로'
-        : '문은 잠겨 있고, 문에는 할머니가 오래전에 붙여 둔 종이가 그대로다 섬돌 위 화분 다섯 처마 끝에서 빗물이 한 방울씩 떨어지는데, 화분 하나 밑에서만 소리가 다르다',
+        : '문은 잠겨 있고, 문에는 할머니가 오래전에 붙여 둔 종이가 그대로다 섬돌 위 화분 다섯 처마 끝에서 빗물이 한 방울씩 떨어진다',
       hotspots: [
-        { id: 'phone', x: 9, y: 90, label: '주머니 속 휴대폰', kind: 'doc', doc: 'chat' },
+        { id: 'phone', x: 11, y: 68, label: '주머니 속 휴대폰', kind: 'doc', doc: 'chat' },
         { id: 'paper', x: 50, y: 38, label: '문에 붙은 종이', kind: 'doc', doc: 'doorpaper' },
-        { id: 'pots', x: 50, y: 84, label: '섬돌 위 화분', kind: 'device', device: 'pots', r: 12 },
-        { id: 'pots-l', x: 30, y: 84, label: '섬돌 위 화분', kind: 'device', device: 'pots', r: 12 },
-        { id: 'pots-r', x: 70, y: 84, label: '섬돌 위 화분', kind: 'device', device: 'pots', r: 12 },
-        { id: 'myslip', x: 90, y: 88, label: '내가 쓴 접수표', kind: 'doc', doc: 'myslip' },
+        { id: 'pots', x: 50, y: 74, label: '섬돌 위 화분', kind: 'device', device: 'pots', r: 12 },
+        { id: 'pots-l', x: 30, y: 74, label: '섬돌 위 화분', kind: 'device', device: 'pots', r: 12 },
+        { id: 'pots-r', x: 70, y: 74, label: '섬돌 위 화분', kind: 'device', device: 'pots', r: 12 },
+        { id: 'myslip', x: 89, y: 68, label: '내가 쓴 접수표', kind: 'doc', doc: 'myslip' },
       ],
     },
     {
@@ -252,10 +258,10 @@ export default {
       image: P + 'inside.webp',
       unlockedBy: 'pots',
       arrive: (S) => S.solved.includes('tins')
-        ? `${birthSeason(S).tea} 통 뚜껑이 열려 있다 뒷방 열쇠는 내 손에 있다 찬장 칸마다 그릇 다섯이 제자리에 앉아 있다`
+        ? `${birthSeason(S).tea} 통 뚜껑이 열려 있다 뒷방 열쇠는 내 손에 있다 찬장 칸엔 그릇을 넣고, 그 앞에 주전자와 항아리를 도로 앉혀 뒀다`
         : S.solved.includes('bowls')
           ? '맨 아래 서랍이 열려 있다 뒷방 문은 잠긴 그대로다 오른쪽 선반에는 할머니 차 통이 줄지어 있다'
-          : '불을 켜자 약재 냄새가 먼저 왔다 탁자 위 찻잔 하나에 아직 물기가 있다 할머니가 넘어지던 날 끓이던 차 안쪽 찬장 아래엔 그릇 다섯이 보자기 위에 따로 놓여 있다',
+          : '불을 켜자 약재 냄새가 먼저 왔다 탁자 위 찻잔 하나에 아직 물기가 있다 할머니가 넘어지던 날 끓이던 차 안쪽 벽 찬장엔 열십자로 칸 다섯이 나 있고, 칸마다 주전자며 항아리가 들어앉았다 그 아래 반닫이 안엔 그릇 다섯이 보자기에 싸여 있다',
       hotspots: [
         { id: 'photo', x: 34, y: 34, label: '벽에 걸린 사진', kind: 'doc', doc: 'oldphoto' },
         { id: 'board', x: 91, y: 17, label: '메뉴판', kind: 'doc', doc: 'board' },
@@ -310,7 +316,7 @@ export default {
     oldphoto: {
       title: '벽에 걸린 사진',
       kind: '어릴 때 · 찻집에서',
-      html: (S) => { const p = photoRow(S); return `<figure class="prop oldphoto"><img src="${P}props/oldphoto.webp" alt="찻집에서 할머니와 찻잔을 든 어린 지원, 탁자에 수박" decoding="async"></figure><p>액자를 뒤집으니 뒷면에 할머니 글씨</p><blockquote class="hand">${p.a}살 ${p.m}월, 지원이<br>제 빛 차 세 잔째 수박은 안 먹고 차만 마심</blockquote><p class="aside">그 철에 할머니는 내 빛을 세어 주고 그 차만 내줬다 돈은 한 번도 받지 않았고, 대신 장부에 적었다</p>`; },
+      html: (S) => { const p = photoRow(S), t = seedOf(S); return `<figure class="prop oldphoto"><img src="${P}props/oldphoto${t.id === 'red' ? '' : '-' + t.id}.webp" alt="찻집에서 할머니와 찻잔을 든 어린 지원, 탁자에 ${t.tea} 유리 주전자와 수박" decoding="async"></figure><p>액자를 뒤집으니 뒷면에 할머니 글씨</p><blockquote class="hand">${p.a}살 ${p.m}월, 지원이<br>제 빛 차 세 잔째 수박은 안 먹고 차만 마심</blockquote><p class="aside">그 철에 할머니는 내 빛을 세어 주고 그 차만 내줬다 돈은 한 번도 받지 않았고, 대신 장부에 적었다</p>`; },
     },
     board: {
       title: '메뉴판',
@@ -320,7 +326,7 @@ export default {
     notebook: {
       title: '할머니의 풀이 공책',
       kind: '손님 빛 읽는 법',
-      html: (S) => { const r = reading(S.profile || { seed: 0, companion: 0, counts: [1, 1, 1, 1, 1] }); return `<figure class="prop slips"><img src="${P}props/slips.webp" alt="접수표 묶음 옆 공책" decoding="async"></figure><p>접수대 서랍에 있던 공책 할머니가 손님 빛을 읽을 때 보던 것이다 다섯 빛마다 한 장씩, 내 빛 장에는 귀퉁이가 접혀 있다</p><div class="notes-list reading-list">${E.map((e) => `<div class="reading-item${e.id === r.seed.id ? ' mine' : ''}"><b>${e.han} ${e.el} · ${e.color} · ${e.dir} · ${e.season}</b><p>${e.id === r.seed.id ? READ[e.id].me : READ[e.id].gen}</p><p>많으면 — ${READ[e.id].many}</p><p>없으면 — ${READ[e.id].none}</p><p>차 — ${e.tea} ${READ[e.id].tea}</p></div>`).join('')}</div><p class="aside">내 빛 장 귀퉁이에 할머니 글씨로 「지원」이라고 적혀 있다 언제 적은 건지 모르겠다</p>`; },
+      html: (S) => { const r = reading(S.profile || { seed: 0, companion: 0, counts: [1, 1, 1, 1, 1] }); return `<p>접수대 서랍에 있던 공책 할머니가 손님 빛을 읽을 때 보던 것이다 다섯 빛마다 한 장씩, 내 빛 장에는 귀퉁이가 접혀 있다</p><div class="notes-list reading-list">${E.map((e) => `<div class="reading-item${e.id === r.seed.id ? ' mine' : ''}"><b>${e.han} ${e.el} · ${e.color} · ${e.dir} · ${e.season}</b><p>${e.id === r.seed.id ? READ[e.id].me : READ[e.id].gen}</p><p>많으면 — ${READ[e.id].many}</p><p>없으면 — ${READ[e.id].none}</p><p>차 — ${e.tea} ${READ[e.id].tea}</p></div>`).join('')}</div><p class="aside">내 빛 장 귀퉁이에 할머니 글씨로 「지원」이라고 적혀 있다 언제 적은 건지 모르겠다</p>`; },
     },
     memo: {
       title: '찬장에 붙은 메모',
@@ -333,7 +339,7 @@ export default {
       html: (S) => `<figure class="prop slips"><img src="${P}props/slips.webp" alt="집게로 묶은 접수표 묶음" decoding="async"></figure><p>장부라기보다 쪽지 묶음이다 손님 이름 대신 내 이름이 제일 많다 맨 앞에 쪽지 한 장과 할머니 달력 한 장이 같이 물려 있다</p>
 <blockquote class="hand">뒷방 열쇠는 차 통에 넣어 뒀다<br>네가 한 번도 안 온 철의 차다</blockquote>
 <div class="season-cal"><p class="season-head">오행당 철 나누기</p>${[['봄', '3 · 4월'], ['여름', '5 · 6월'], ['늦여름', '7 · 8월'], ['가을', '9 · 10월'], ['겨울', '11 · 12 · 1 · 2월']].map(([n, m]) => `<p><b>${n}</b><span>${m}</span></p>`).join('')}</div>
-<div class="slip-list">${ledger(S).map((x) => `<p><b>${x.a}살 ${x.m}월</b> 지원 ${x.t}</p>`).join('')}<p><b>올해 3월</b> 지원 (비어 있음)</p></div><p class="aside">올해 칸은 비어 있다 오늘 내가 쓴 접수표가 들어갈 자리다</p>`,
+<div class="slip-list">${ledger(S).map((x) => `<p><b>${x.a}살 ${x.m}월</b> 지원 ${x.t}</p>`).join('')}</div><p class="aside">묶음 맨 끝엔 아무것도 안 적힌 빈 접수표가 한 장 끼워져 있다 오늘 내가 쓴 접수표가 들어갈 자리다</p>`,
     },
     deskmemo: {
       title: '책상 위 메모',
@@ -385,7 +391,7 @@ export default {
       },
       reveal: {
         title: '내 빛을 낳는 빛',
-        get text() { return `${js(last.pot, '을', '를')} 들자 밑에 비닐에 싼 열쇠가 있었다 처마 물이 떨어지던 그 화분이다 할머니는 내 빛을 알고 열쇠 자리를 골랐다`; },
+        get text() { return `${js(last.pot, '을', '를')} 들자 밑에 비닐에 싼 열쇠가 있었다 할머니는 내 빛을 알고 열쇠 자리를 골랐다`; },
         scene: ['자물쇠가 뻑뻑했다 두 번 돌려서 문을 열었다 안은 캄캄하고, 약재 냄새가 났다'],
         unlock: 'inside',
       },
@@ -394,7 +400,7 @@ export default {
     bowls: {
       title: '찬장과 다섯 그릇',
       scene: 'inside',
-      intro: '칸의 주전자와 항아리를 다 내려놓으니 십자 모양으로 다섯 칸이 비었다 칸 바닥마다 홈이 파여 있다 보자기 위 그릇을 누르면 집고, 빈 칸을 누르면 거기 놓는다 놓은 그릇을 누르면 도로 집는다',
+      intro: '벽 찬장 칸의 주전자와 항아리를 다 내려놓으니 열십자로 다섯 칸이 비었다 칸 바닥마다 홈이 파여 있다 아래 반닫이에서 보자기에 싼 그릇 다섯을 꺼냈다 보자기 위 그릇을 누르면 집고, 빈 칸을 누르면 거기 놓는다 놓은 그릇을 누르면 도로 집는다',
       docs: ['memo', 'doorpaper'],
       hintCode: 'O-S02',
       hints: [
@@ -407,14 +413,15 @@ export default {
         const { d, el, save, S } = ctx;
         const solved = S.solved.includes('bowls');
         const NICHES = [
-          { id: 'top', label: '위 칸', x: 42.5, y: 6.5 },
-          { id: 'left', label: '왼쪽 칸', x: 27.8, y: 28.3 },
-          { id: 'center', label: '가운데 칸', x: 42.5, y: 28.3 },
-          { id: 'right', label: '오른쪽 칸', x: 57.4, y: 28.3 },
-          { id: 'bottom', label: '아래 칸', x: 42.5, y: 51 },
+          // 장면 그림의 벽 찬장(열십자 칸 다섯)을 잘라 칸을 비운 사진 (props/cabinet.webp)
+          { id: 'top', label: '위 칸', x: 43.7, y: 5.9 },
+          { id: 'left', label: '왼쪽 칸', x: 29.6, y: 26.5 },
+          { id: 'center', label: '가운데 칸', x: 43.7, y: 26.5 },
+          { id: 'right', label: '오른쪽 칸', x: 57.5, y: 26.5 },
+          { id: 'bottom', label: '아래 칸', x: 43.7, y: 47.1 },
         ];
         const wrap = el('div', 'bowls-wrap');
-        const cab = el('div', 'prop cabinet'); const im = el('img'); im.src = P + 'props/cabinet.webp'; im.alt = '십자 모양으로 칸이 난 찬장 왼쪽에 한지 창'; cab.append(im);
+        const cab = el('div', 'prop cabinet'); const im = el('img'); im.src = P + 'props/cabinet.webp'; im.alt = '벽에 열십자로 판 찬장 칸 다섯, 그 아래 반닫이'; cab.append(im);
         NICHES.forEach((n) => {
           const bid = d.placed[n.id];
           const b = el('button', 'niche' + (bid ? ' filled' : '') + (d.held && !bid ? ' open' : '')); b.type = 'button'; b.style.left = n.x + '%'; b.style.top = n.y + '%';
