@@ -126,12 +126,23 @@ async function main() {
 
   // ---------- 2. 오프닝 ----------
   function opening() {
-    const sec = el('section', 'v2-opening');
-    const paper = el('article', 'v2-paper v2-opening-paper');
-    paper.append(el('p', 'v2-eyebrow', ep.opening.eyebrow));
-    ep.opening.paragraphs.forEach((p) => paper.append(el('p', 'v2-line', p)));
-    paper.append(btn('v2-primary', ep.opening.cta + ' →', () => { S.screen = ep.intake && !S.profile ? 'intake' : 'play'; save(); render(); }));
-    sec.append(paper);
+    // 컷신처럼: 첫 장면 그림 위에서 한 문단씩, 누를 때마다 다음 문단
+    const sec = el('section', 'v2-opening cine');
+    const bg = pic(el('img', 'v2-cine-bg'), ep.opening.image || ep.scenes[0].image); bg.alt = ''; bg.setAttribute('aria-hidden', 'true'); sec.append(bg);
+    const box = el('article', 'v2-cine-box');
+    box.append(el('p', 'v2-eyebrow', ep.opening.eyebrow));
+    const paras = ep.opening.paragraphs.map((p) => el('p', 'v2-line', p));
+    paras.forEach((p) => box.append(p));
+    const go = btn('v2-primary v2-cine-go', ep.opening.cta + ' →', () => { S.screen = ep.intake && !S.profile ? 'intake' : 'play'; save(); render(); window.scrollTo({ top: 0 }); });
+    const next = btn('v2-cine-next', '다음', () => step(), '다음 문단');
+    box.append(next, go);
+    let k = 0;
+    const show = () => { paras.forEach((p, i) => { p.classList.toggle('on', i <= k); p.classList.toggle('past', i < k); }); const end = k >= paras.length - 1; next.hidden = end; go.classList.toggle('on', end); if (end) go.focus({ preventScroll: true }); paras[k]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); };
+    const step = () => { if (k < paras.length - 1) { k++; show(); play('paper'); } };
+    sec.addEventListener('click', (e) => { if (e.target.closest('button')) return; step(); });
+    const skip = btn('v2-cine-skip', '모두 보기', () => { k = paras.length - 1; show(); });
+    sec.append(box, skip);
+    show();
     return sec;
   }
 
