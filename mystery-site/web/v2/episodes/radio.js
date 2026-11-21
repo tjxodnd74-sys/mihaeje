@@ -79,9 +79,13 @@ const JX = [13.5, 23.8, 34.2, 44.6, 55.0, 65.4, 75.8, 86.2], JY_OUT = 33.5, JY_I
 const OUTS = ['MIC A', 'MIC B', 'TAPE A', 'TAPE B', 'PGM A', 'PGM B', 'AUTO PC', 'TONE'];
 const INS = ['TX MAIN', 'TX 예비', 'MON 로비', 'REC A', 'REC B', 'MON 대기실', 'CON A1', 'AUTO IN'];
 function patchOk(c) {
-  // 데크(출력 4) → 실제 예비 송신기(입력 1) · 녹음 REC B(5) · 선배가 있는 대기실(6) 로비 모니터(3)는 그대로 둬도, 같이 보내도 된다
-  return c[1] === 4 && c[5] === 4 && c[6] === 4 && [undefined, 4, 7].includes(c[3]) && Object.keys(c).every((k) => ['1', '3', '5', '6'].includes(k));
+  // 데크(출력 4) → 실제 예비 송신기(입력 1) · 녹음 REC B(5) · 선배가 있는 대기실(6)
+  // 남는 잭에 더 꽂힌 선은 소리를 나눠 보낼 뿐이라 판정에 넣지 않는다 (장치 안내에 적어 둠) 송신기 줄은 데크만 받을 수 있다
+  return c[1] === 4 && c[5] === 4 && c[6] === 4;
 }
+
+// 데크는 한 번 재생하면 5초만 돌고 선다 끊긴 자리(58:22)가 그 5초 안에 들어오면 된다 58:12(프리롤 빼먹음)는 10초 앞이라 안 닿는다
+const DECK_CUT = 58 * 60 + 22, DECK_WINDOW = 5;
 
 const KEYS = [['1', 41.0, 23.5], ['2', 46.8, 23.5], ['3', 52.6, 23.5], ['4', 41.0, 31.7], ['5', 46.8, 31.7], ['6', 52.6, 31.7], ['7', 41.0, 40.0], ['8', 46.8, 40.0], ['9', 52.6, 40.0], ['*', 41.0, 48.3], ['0', 46.8, 48.3]];
 
@@ -132,9 +136,9 @@ export default {
       get overlays() { return (stateNow().solved || []).includes('keypad') ? [] : [{ x: 32.6, y: 17.6, w: 8.4, h: 5.6, cls: 'onair-live', html: liveBlinkCss() }]; },
       arrive: (S) => S.solved.includes('keypad')
         ? 'ON AIR 불은 켜진 채로 멎었다 그래도 자꾸 그쪽을 보게 된다 스피커의 지지직 소리도 아직 그대로다'
-        : '불 꺼진 로비 B실 문 위 ON AIR 불만 깜빡인다 길게, 짧게 스피커에선 아직 지지직 소리 벽에는 옛 사보가 그대로 걸려 있고, 데스크엔 낮 근무 일지가 펼쳐져 있다',
+        : '불 꺼진 로비 B실 문 위 ON AIR 불만 길게, 짧게 깜빡인다 스피커에선 아직 지지직 소리 벽에는 옛 사보가 그대로 걸려 있고, 데스크엔 낮 근무 일지가 펼쳐져 있다',
       hotspots: [
-        { id: 'mchat', x: 7, y: 88, label: '만석 형 문자', kind: 'doc', doc: 'mchat' },
+        { id: 'mchat', x: 13, y: 66, label: '내 휴대폰 · 만석 형 문자', kind: 'doc', doc: 'mchat' },
         { id: 'notes', x: 14, y: 10, label: '모니터 스피커 받아쓰기', kind: 'doc', doc: 'notes' },
         { id: 'blink', x: 37, y: 20, label: '깜빡이는 ON AIR', kind: 'doc', doc: 'blink', r: 8 },
         { id: 'zine', x: 16, y: 34, label: '벽에 걸린 옛 사보', kind: 'doc', doc: 'zine' },
@@ -153,10 +157,10 @@ export default {
         : '콘솔이 빠진 자리에 먼지 자국이 네모나다 그 먼지 위에 손바닥 자국 하나 아직 먼지가 앉지 않았다 켜진 모니터 하나, 책상 위 헤드폰에서 뭔가 새어 나온다',
       hotspots: [
         { id: 'auto', x: 92, y: 42, label: '자동 송출 PC 화면', kind: 'doc', doc: 'auto' },
-        { id: 'enote', x: 96, y: 63, label: '모니터에 붙은 쪽지', kind: 'doc', doc: 'enote', r: 6 },
-        { id: 'sched', x: 8, y: 33, label: '벽의 편성 변경 알림', kind: 'doc', doc: 'sched' },
+        { id: 'enote', x: 93.5, y: 62, label: '모니터에 붙은 쪽지', kind: 'doc', doc: 'enote', r: 6 },
+        { id: 'sched', x: 8.5, y: 32, label: '벽의 편성 변경 알림', kind: 'doc', doc: 'sched' },
         { id: 'cue', x: 76, y: 66, label: '책상 위 헤드폰', kind: 'doc', doc: 'cue' },
-        { id: 'tapdoor', x: 22, y: 30, label: '흡음판 옆 보관실 뒷문', kind: 'device', device: 'tapdoor' },
+        { id: 'tapdoor', x: 25, y: 35, label: '흡음판 옆 보관실 뒷문', kind: 'device', device: 'tapdoor' },
       ],
     },
     {
@@ -187,7 +191,7 @@ export default {
         { id: 'deck', x: 14, y: 40, label: '릴 테이프 데크', kind: 'device', device: 'deck', r: 13 },
         { id: 'txlog', x: 42, y: 54, label: '콘솔 위 송출 기록지', kind: 'doc', doc: 'txlog' },
         { id: 'wiring', x: 91, y: 48, label: '랙 옆 배선표', kind: 'doc', doc: 'wiring' },
-        { id: 'cctv', x: 6, y: 90, label: '주머니 속 휴대폰', kind: 'device', device: 'cctv', visible: (S) => S.solved.includes('deck') },
+        { id: 'cctv', x: 33, y: 70, label: '주머니 속 휴대폰', kind: 'device', device: 'cctv', visible: (S) => S.solved.includes('deck') },
         { id: 'patch', x: 90, y: 15, label: '패치베이', kind: 'device', device: 'patch', visible: (S) => S.solved.includes('cctv') },
       ],
     },
@@ -218,7 +222,7 @@ export default {
     zine: {
       title: '벽에 걸린 옛 사보',
       kind: '미루FM 사보 2015년 봄호',
-      html: `<div class="zine"><p class="zine-head">유리창 너머의 모스 부호</p><p>새벽 두 시 진행자 백은수 씨와 막내 기술 정하람 씨는 방송 중에 말을 주고받을 수 없다 둘은 부조정실 ON AIR 스위치로 모스 부호를 보낸다 「곡 2분 남음」 「커피」 같은 것들</p><p>은수 씨는 신호 하나를 다 보내면 꼭 한참 쉬었다가 처음부터 다시 보낸다 정하람 씨는 "선배는 쉼표가 길다"고 했다</p><p>숫자는 다섯 칸짜리라 반만 외우면 된다고 한다 나머지 반은 거꾸로 가니까</p><div class="morse-torn"><table class="morse-table"><tr><th colspan="2">숫자 모스 부호 · 중계소 식별용</th></tr>${[0, 1, 2, 3, 4].map(morseRow).join('')}</table><p class="torn-edge">아래는 찢겨 나갔다</p></div><p class="zine-foot">● 짧게 · ━ 길게 (짧은 것의 세 배)</p></div>`,
+      html: `<div class="zine"><p class="zine-head">유리창 너머의 모스 부호</p><p>새벽 두 시 진행자 백은수 씨와 막내 기술 정하람 씨는 방송 중에 말을 주고받을 수 없다 둘은 부조정실 ON AIR 스위치로 모스 부호를 보낸다 「곡 2분 남음」 「커피」 같은 것들</p><p>은수 씨는 신호 하나를 다 보내면 꼭 한참 쉬었다가 처음부터 다시 보낸다 정하람 씨는 “선배는 쉼표가 길다”고 했다</p><p>숫자는 다섯 칸짜리라 반만 외우면 된다고 한다 나머지 반은 거꾸로 가니까</p><div class="morse-torn"><table class="morse-table"><tr><th colspan="2">숫자 모스 부호 · 중계소 식별용</th></tr>${[0, 1, 2, 3, 4].map(morseRow).join('')}</table><p class="torn-edge">아래는 찢겨 나갔다</p></div><p class="zine-foot">● 짧게 · ━ 길게 (짧은 것의 세 배)</p></div>`,
     },
     guardlog: {
       title: '안내 데스크 관리 일지',
@@ -373,7 +377,7 @@ export default {
       },
       reveal: {
         title: '5분 14초',
-        text: '마지막 점을 찍자 상자 속에서 계전기가 붙는 소리가 났다 뒷문이 안쪽으로 밀려 열렸다',
+        text: '마지막 칸을 길게 누르자 상자 속에서 계전기가 붙는 소리가 났다 뒷문이 안쪽으로 밀려 열렸다',
         scene: ['종이띠 끝에 연필로 작게 「잘했어」 내가 두드리기 전부터 적혀 있던 글씨다'],
         unlock: 'archive',
       },
@@ -430,7 +434,7 @@ export default {
     deck: {
       title: '릴 테이프 데크',
       scene: 'studioA',
-      intro: '테이프를 걸었다 처음부터 틀면 한 시간 그 끝의 몇십 초만 들으면 된다 ▲ ▼로 카운터를 한 자리씩 맞추고 재생한다',
+      intro: '테이프를 걸었다 처음부터 틀면 한 시간이다 삭은 테이프라 오래 돌리기가 겁나서, 한 번 재생하면 5초만 돌고 서게 해 뒀다 송신이 끊긴 순간이 그 5초 안에 들어오게 ▲ ▼로 카운터를 한 자리씩 맞추고 재생한다',
       docs: ['txlog', 'rules', 'enote'],
       hintCode: 'R-S04',
       hints: [
@@ -460,12 +464,13 @@ export default {
       },
       commitLabel: '거기까지 감고 재생',
       check(d) {
-        const ok = d.v.join('') === '5822';
+        const t = (d.v[0] * 10 + d.v[1]) * 60 + d.v[2] * 10 + d.v[3];
+        const ok = t <= DECK_CUT && t >= DECK_CUT - DECK_WINDOW;
         return ok ? { ok: true } : { ok: false, msg: '감고 재생했다 그 순간이 아니다 다시 감는다' };
       },
       reveal: {
         title: '58:22',
-        text: '「오늘이 마지막」 그리고 송신이 끊긴 자리에서 2초 동안 아무 소리도 나지 않았다 테이프 잡음조차 그 다음 숨소리 선배는 꺼진 마이크에 대고 계속 말했다 40초',
+        text: '5초 안에 그 자리가 지나갔다 거기서부터 끝까지 다시 틀었다 「오늘이 마지막」 그리고 송신이 끊긴 자리에서 2초 동안 아무 소리도 나지 않았다 테이프 잡음조차 그 다음 숨소리 선배는 꺼진 마이크에 대고 계속 말했다 40초',
         scene: ['선배 말이 끝나고도 테이프는 한참 조용히 돌았다 그때 주머니에서 휴대폰이 떨기 시작했다 건물 녹화기 알림이다'],
         unlockDoc: 'tape',
       },
@@ -515,7 +520,7 @@ export default {
     patch: {
       title: '패치베이',
       scene: 'studioA',
-      intro: '윗줄은 소리가 나오는 곳, 아랫줄은 소리가 들어갈 곳 출력을 누르고 입력을 누르면 케이블이 이어진다 꽂힌 입력을 다시 누르면 뽑힌다 케이블 둘은 내가 오기 전부터 꽂혀 있었다',
+      intro: '윗줄은 소리가 나오는 곳, 아랫줄은 소리가 들어갈 곳 출력을 누르고 입력을 누르면 케이블이 이어진다 꽂힌 입력을 다시 누르면 뽑힌다 케이블 둘은 내가 오기 전부터 꽂혀 있었다 남는 잭에 선이 더 꽂혀 있어도 송출은 된다 소리가 거기로도 갈 뿐이다',
       docs: ['wiring', 'enote', 'cctvlog'],
       hintCode: 'R-S06',
       hints: [
@@ -588,9 +593,9 @@ export default {
     eyebrow: '2026년 10월 31일 토요일, 새벽 2시 41분',
     title: '1시 58분 그 뒤',
     paragraphs: [
-      'A실 앞문을 열었다 대기실 스피커에서 선배 목소리가 나오고 있었다 2년 전 그 방의 공기째로 "오늘이 마지막 방송입니다 열다섯 해 동안 새벽 두 시까지 깨어 있어 준 여러분, 반죽 치대던 분, 병동 불 끄고 돌던 분, 빈 차로 한 바퀴 더 돌던 분 다 고마웠어요"',
-      '"마이크가 꺼진 것 같네요 괜찮아요 하람 씨 손 떨지 마요 다음에 또 만나요는 못 하겠고, 잘 자요 새벽 두 시, 미루였습니다"',
-      '벤치에 선배가 앉아 있었다 녹화기 마지막 알림 그 자리 그대로 눈을 감고 스피커 쪽으로 고개를 기울이고 있었다 내가 로비에서 깜빡이는 불을 보던 그때부터 선배는 문 하나 너머에 있었던 거다',
+      'A실 앞문을 열었다 대기실 스피커에서 선배 목소리가 나오고 있었다 2년 전 그 방의 공기째로 “오늘이 마지막 방송입니다 열다섯 해 동안 새벽 두 시까지 깨어 있어 준 여러분, 반죽 치대던 분, 병동 불 끄고 돌던 분, 빈 차로 한 바퀴 더 돌던 분 다 고마웠어요”',
+      '“마이크가 꺼진 것 같네요 괜찮아요 하람 씨 손 떨지 마요 다음에 또 만나요는 못 하겠고, 잘 자요 새벽 두 시, 미루였습니다”',
+      'A실 앞 대기실은 로비를 줄여 놓은 것 같은 좁은 방이다 나무 벽에 벽 스피커 하나, 긴 벤치, 철거 때 내놓은 상자들 그 벤치에 선배가 앉아 있었다 녹화기 마지막 알림 그 자리 그대로 눈을 감고 스피커 쪽으로 고개를 기울이고 있었다 내가 로비에서 깜빡이는 불을 올려다볼 때부터 선배는 여기 있었다 A실에서 테이프를 감는 내내 문 하나 너머에서',
       'B실 번호가 바뀐 10월 3일부터 선배는 밤마다 옛 카드로 이 건물에 들어와 옛 방송을 오려 붙였다 깜빡이도, 버저 상자도, 큐 채널의 거꾸로 붙인 말도 다 나만 풀 수 있게 만든 것이었다 마지막 인사만은 2년 전 송신기를 내린 그 손으로 내보내게',
       '만석이 형 문자가 왔다 「들었다」 「끝까지」',
       '선배가 휴대폰에 뭔가 써서 내밀었다 「손 안 떨었네」',

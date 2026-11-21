@@ -275,6 +275,9 @@ async function ohang({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('오행당 접수표') && (await L.mainText(page)).includes('예 1998/3/15'), 'intake form shown with date example');
     await L.click(page, '접수표 내기');
     L.check((await L.mainText(page)).includes('생일을 적어야'), 'intake: empty date explained');
+    // 지원은 어른이다: 스무 살이 안 되는 생일은 부드럽게 돌려보낸다 (장부·도입부가 깨지지 않게)
+    await page.fill('input[name=date]', '2016-07-01'); await page.fill('input[name=time]', '12:00'); await L.click(page, '접수표 내기'); await L.sleep(1200);
+    L.check((await L.mainText(page)).includes('스무 살이 넘었다') && (await L.mainText(page)).includes('2006/3/2') && !(await L.mainText(page)).includes('할머니가 세는 법대로'), 'intake: under-20 birth gently refused');
     // PC는 11월생(겨울 → 쌍화차), 모바일은 예시 손님 5월생(여름 → 오미자차) — 생일 철에 따라 차 통 답이 바뀐다
     if (mobile) { await L.click(page, '생일 대신 예시 손님으로 해 보기'); await L.sleep(1500); }
     else { await page.fill('input[name=date]', '1987-11-20'); await page.fill('input[name=time]', '22:40'); await L.click(page, '접수표 내기'); await L.sleep(1500); }
@@ -294,6 +297,7 @@ async function ohang({ mobile = false } = {}) {
     const order = [me]; while (order.length < 5) order.push(CONTROL[order[order.length - 1]]);
     const cycle = [me]; while (cycle.length < 5) cycle.push(NEXT[cycle[cycle.length - 1]]);
     await L.click(page, '접수표 들고 문 앞으로'); await L.sleep(400);
+    L.check(await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('mihaeje-v2-ohang') || '{}'); return ['myslip', 'chat'].every((k) => (s.found || []).includes(k)); }), 'my slip and phone are in the bag from the start');
     for (const [d, t] of [['주머니 속 휴대폰', '네 빛 낳는놈 밑에'], ['문에 붙은 종이', '서로 낳는 순서']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     L.check(await page.evaluate(() => !!document.querySelector('.cycle-chart')) === false, 'chart only inside dialog');
     // pots: 내 빛을 낳는 빛의 화분 (사람마다 다름)
@@ -308,7 +312,7 @@ async function ohang({ mobile = false } = {}) {
     await shot(page, 'ohang-pots');
     await L.closeDialog(page); await L.sleep(400);
     L.check((await L.mainText(page)).includes('약재 냄새'), 'auto-moved inside after closing reveal');
-    for (const d of ['벽에 걸린 사진', '메뉴판', '찬장에 붙은 메모']) { await hotspot(page, d); L.check(await dlgHas(page, d), 'doc: ' + d); if (d === '벽에 걸린 사진') L.check(!/20\d\d년/.test(await L.dialogText(page)), 'photo: no fixed year'); await L.closeDialog(page); }
+    for (const d of ['벽에 걸린 사진', '메뉴판', '찬장에 붙은 메모']) { await hotspot(page, d); L.check(await dlgHas(page, d), 'doc: ' + d); if (d === '벽에 걸린 사진') { L.check(!/20\d\d년/.test(await L.dialogText(page)), 'photo: no fixed year'); const src = await page.evaluate(() => document.querySelector('dialog[open] .oldphoto img')?.getAttribute('src') || ''); L.check(me === 'red' ? /oldphoto\.webp/.test(src) : src.includes('oldphoto-' + me), 'photo: teapot shows my light\'s tea — ' + src); } await L.closeDialog(page); }
     await hotspot(page, '접수대 서랍의 공책'); L.check(await dlgHas(page, '손님 빛 읽는 법') && await page.evaluate(() => !!document.querySelector('dialog[open] .reading-item.mine')), 'notebook doc highlights my light'); await L.closeDialog(page);
     // bowls
     await hotspot(page, '찬장과 다섯 그릇');
@@ -327,6 +331,7 @@ async function ohang({ mobile = false } = {}) {
     L.check(await dlgHas(page, '할머니 달력'), 'bowls reveal: drawer with ledger + calendar');
     await L.click(page, '서랍 속 접수표 묶음 보기');
     L.check(await dlgHas(page, '오행당 철 나누기') && await dlgHas(page, '한 번도 안 온 철') && !/20\d\d년/.test(await L.dialogText(page)), 'ledger readable, age-based, with calendar');
+    L.check(!(await L.dialogText(page)).includes('올해 3월') && (await L.dialogText(page)).includes('빈 접수표'), 'ledger: today\'s blank slip is not a dated spring row');
     await L.closeDialog(page); await L.sleep(400);
     L.check(!(await L.mainText(page)).includes('장부를 쓰던 방'), 'back room still locked after bowls');
     // tins: 태어난 철 = 한 번도 안 온 철의 차
@@ -976,7 +981,7 @@ async function radio({ mobile = false } = {}) {
     await L.click(page, 'ON AIR 불빛 쪽으로'); await L.sleep(400);
     L.check(await page.evaluate(() => document.querySelector('.v2-stage')?.dataset.mood === 'horror'), 'horror mood on stage');
     L.check(!(await L.mainText(page)).includes('한참 쉬었다가'), 'lobby arrival no longer gives the pause away');
-    for (const [d, t] of [['만석 형 문자', '98점4'], ['모니터 스피커 받아쓰기', 'ON AIR 불이 혼자 들어옴'], ['깜빡이는 ON AIR', '되풀이'], ['벽에 걸린 옛 사보', '쉼표가 길다'], ['안내 데스크 관리 일지', '옛 직원 카드'], ['유리문의 철거 공지', '11월 15일']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    for (const [d, t] of [['내 휴대폰 · 만석 형 문자', '98점4'], ['모니터 스피커 받아쓰기', 'ON AIR 불이 혼자 들어옴'], ['깜빡이는 ON AIR', '되풀이'], ['벽에 걸린 옛 사보', '쉼표가 길다'], ['안내 데스크 관리 일지', '옛 직원 카드'], ['유리문의 철거 공지', '11월 15일']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     await hotspot(page, '벽에 걸린 옛 사보'); L.check(!(await L.dialogText(page)).includes('━━━━●') && (await L.dialogText(page)).includes('찢겨'), 'zine: table torn after 4 (7·9 not printed)'); await L.closeDialog(page);
     await hotspot(page, 'B실 도어락');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), '★5: no guide');
@@ -1017,7 +1022,8 @@ async function radio({ mobile = false } = {}) {
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .cw-num')[0].textContent === '1'), 'deck: minute tens wraps at 5');
     const setC = async (digits) => { const labs = ['분 십의 자리', '분 일의 자리', '초 십의 자리', '초 일의 자리']; for (let i = 0; i < 4; i++) { for (let k = 0; k < 10; k++) { const cur = await page.evaluate((i) => document.querySelectorAll('dialog[open] .cw-num')[i].textContent, i); if (cur === String(digits[i])) break; await L.click(page, labs[i] + ' 올리기', { exact: true }); } } };
     await setC([5, 8, 1, 2]); await commit(page); L.check((await status(page)).includes('그 순간이 아니다'), 'deck: no preroll decoy neutral');
-    await setC([5, 8, 2, 2]); await shot(page, 'r-deck'); await commit(page); L.check(await dlgHas(page, '꺼진 마이크에 대고'), 'deck solved');
+    await setC([5, 8, 2, 3]); await commit(page); L.check((await status(page)).includes('그 순간이 아니다'), 'deck: one second past the cut misses it');
+    await setC([5, 8, 1, 9]); await shot(page, 'r-deck'); await commit(page); L.check(await dlgHas(page, '꺼진 마이크에 대고'), 'deck solved a few seconds before the cut (5-second play window)');
     await L.click(page, '테이프 58:22부터 보기'); L.check(await dlgHas(page, '손이 떨려서'), 'deck: what I heard kept as a doc');
     await L.closeDialog(page); await L.sleep(300);
     // 녹화기 알림: 숫자 크기 순은 함정, 실제 밤 순서
@@ -1043,7 +1049,7 @@ async function radio({ mobile = false } = {}) {
     await plug(3, 2); await plug(3, 3); await plug(3, 4); await commit(page); L.check((await status(page)).includes('이대로는 아니다'), 'patch: printed-label decoy neutral');
     await pull(2); await pull(4);
     await plug(4, 1); await plug(4, 3); await plug(4, 5); await commit(page); L.check((await status(page)).includes('이대로는 아니다'), 'patch: lobby-only decoy neutral');
-    await plug(4, 6); await shot(page, 'r-patch'); await commit(page); L.check(await dlgHas(page, '처음으로 나간다'), 'patch solved');
+    await plug(4, 6); await plug(4, 2); await shot(page, 'r-patch'); await commit(page); L.check(await dlgHas(page, '처음으로 나간다'), 'patch solved (a harmless extra cable 4→2 does not matter)');
     await L.click(page, 'A실 앞문 열기'); await L.sleep(500);
     L.check((await L.mainText(page)).includes('손 안 떨었네') && (await L.mainText(page)).includes('녹화기 마지막 알림'), 'ending reached');
     L.check(!(await L.mainText(page)).includes('그날'), 'ending: no 그날');
