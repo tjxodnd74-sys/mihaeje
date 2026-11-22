@@ -216,3 +216,7 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
 - DNS: A @ 185.199.108~111.153 4줄 + CNAME www → tjxodnd74-sys.github.io, 전부 DNS 전용(회색 구름). 주황 구름(프록시)으로 바꾸면 GitHub 인증서 발급이 꼬인다
 - mystery-site/web/CNAME (내용 mihaeje.com) 이 빌드 때 dist 로 복사돼 gh-pages 에 올라간다. 지우면 사용자 지정 도메인이 풀린다
 - 옛 주소 tjxodnd74-sys.github.io/mihaeje/ 는 GitHub 가 새 주소로 넘겨준다. 다만 브라우저 저장(진행 상황)은 주소별이라 옛 주소 기록은 따라오지 않는다
+
+## v135 — 문의 메일 support@mihaeje.com
+- Cloudflare 이메일 라우팅으로 support@mihaeje.com → tjxodnd74@gmail.com 전달 (받기 전용)
+- 사용자 요청: 미해제 사이트에는 '넥서스'를 밝히지 않는다. 운영자·개인정보 보호책임자는 '미해제 운영팀'
