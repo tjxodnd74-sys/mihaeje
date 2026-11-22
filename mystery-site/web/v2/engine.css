@@ -65,6 +65,24 @@ a{color:inherit}
 .v2-tagline{font-family:var(--serif);font-size:clamp(18px,2.2vw,22px);line-height:1.7;margin:0 0 14px}
 .v2-blurb{color:var(--soft);max-width:52ch;margin:0 0 18px}
 .v2-meta{font-size:14px;color:var(--fog);margin:0}
+/* 표지: 다른 기기에서 이어하기 (진행 코드) · 저장 안내 한 줄 */
+.v2-transfer{margin-top:10px;max-width:520px;font-size:14px;color:var(--soft-3)}
+.v2-transfer summary{cursor:pointer;min-height:40px;display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--soft-3);list-style:none}
+.v2-transfer summary::-webkit-details-marker{display:none}
+.v2-transfer summary::before{content:"›";display:inline-block;transition:transform .2s;font-size:18px;line-height:1}
+.v2-transfer[open] summary::before{transform:rotate(90deg)}
+.v2-transfer summary:hover{color:var(--soft)}
+.v2-transfer-body{padding:4px 0 2px;display:grid;gap:10px}
+.v2-transfer-help{margin:0;font-size:13px;line-height:1.6}
+.v2-transfer-line{display:flex;flex-wrap:wrap;gap:8px}
+.v2-transfer-code{flex:1 1 200px;min-width:0;min-height:48px;padding:0 12px;font:16px/1.2 ui-monospace,Menlo,Consolas,monospace;color:var(--soft);background:rgba(var(--night-rgb),.72);border:1px solid var(--line);border-radius:var(--radius);-webkit-user-select:text;user-select:text}
+.v2-transfer-code::placeholder{font-family:var(--sans);color:var(--soft-3);opacity:.8}
+.v2-transfer .v2-secondary{min-height:48px;padding:0 16px;font-size:15px}
+.v2-transfer .v2-secondary:disabled{opacity:.45}
+.v2-transfer-status{margin:0;font-size:13px;min-height:1.4em}
+.v2-transfer-status.wrong{color:var(--wrong)}
+.v2-save-note{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translate(-50%,8px);z-index:60;margin:0;max-width:calc(100vw - 32px);width:max-content;padding:9px 14px;font-size:13px;line-height:1.5;color:var(--soft);background:rgba(var(--night-rgb),.94);border:1px solid var(--line);border-radius:10px;opacity:0;pointer-events:none;transition:opacity .4s,transform .4s}
+.v2-save-note.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
 
 /* 2. 오프닝 */
 .v2-opening{display:grid;place-items:start center;padding:24px 16px 80px}
