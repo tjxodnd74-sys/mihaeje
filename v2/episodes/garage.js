@@ -16,13 +16,14 @@ const toSec = (t) => { const [h, m, x] = t.split(':').map(Number); return h * 36
 const fmt = (sec) => [Math.floor(sec / 3600), Math.floor(sec / 60) % 60, sec % 60].map((n) => String(n).padStart(2, '0')).join(':');
 
 // 블랙박스 프레임 (표시 시각은 서버보다 7분 빠르다) 그림에 보이는 것만 적는다
+// 그림 cam-f0~f5: 같은 차 앞유리에서 렌즈만 돌린 것 (길 쪽 f0·f1·f3 / 측문 쪽 f2·f4 / 정면 f5) 시각 표시는 그림에 구워 넣음
 const FRAMES = [
-  { id: 'f0', t: '21:42:30', img: 'cam3', what: '남색 재킷에 배낭 측문 쪽에서 나와 길로 걸어간다' },
-  { id: 'f1', t: '21:47:05', img: 'cam2', what: '회색 재킷 측문 앞을 지나 길 쪽으로 걸어간다' },
-  { id: 'f2', t: '21:53:20', img: 'cam1', what: '회색 재킷 측문을 당겨 열고 들어간다' },
-  { id: 'f3', t: '21:55:20', img: 'cam2', what: '회색 재킷 측문 앞을 지나 길 쪽으로 걸어간다' },
-  { id: 'f4', t: '22:07:00', img: 'cam1', what: '회색 재킷 측문을 당겨 열고 들어간다' },
-  { id: 'f5', t: '22:21:40', img: 'cam0', what: '아무도 없다 앞유리에 빗방울 셔터는 반쯤 열린 채 안에 불이 켜져 있다' },
+  { id: 'f0', t: '21:42:30', img: 'cam-f0', what: '남색 재킷에 배낭 측문 쪽에서 나와 길로 걸어간다' },
+  { id: 'f1', t: '21:47:05', img: 'cam-f1', what: '회색 재킷 측문 앞을 지나 길 쪽으로 걸어간다' },
+  { id: 'f2', t: '21:53:20', img: 'cam-f2', what: '회색 재킷 측문 옆 단말에 카드를 댄다' },
+  { id: 'f3', t: '21:55:20', img: 'cam-f3', what: '회색 재킷 측문 앞을 지나 길 쪽으로 걸어간다' },
+  { id: 'f4', t: '22:07:00', img: 'cam-f4', what: '회색 재킷 측문을 당겨 열고 들어간다' },
+  { id: 'f5', t: '22:21:40', img: 'cam-f5', what: '아무도 없다 앞유리에 빗방울 셔터는 반쯤 열린 채 안에 불이 켜져 있다' },
 ];
 const CAM_ANSWER = ['f2', 'f3'];
 // 백업 단말: 블랙박스 시계를 서버 시계에 맞춰 겹쳐 본다 (블박이 7분 빠름 → −7분에서 출입이 다 겹친다)
@@ -325,7 +326,7 @@ export default {
         const { d, el, save } = ctx;
         const wrap = el('div', 'cam-wrap');
         const f = FRAMES[d.cur];
-        const view = el('div', 'prop camview' + (ctx.zoom ? ' zoomed' : '')); view.innerHTML = `<img src="${P}props/${f.img}.webp" alt="블랙박스 프레임 ${d.cur + 1}" decoding="async"><div class="cam-osd"><span>CAM 01 · FRONT 360°</span><span class="cam-time">2026-09-18 ${f.t}</span></div>`;
+        const view = el('div', 'prop camview' + (ctx.zoom ? ' zoomed' : '')); view.innerHTML = `<img src="${P}props/${f.img}.webp" alt="블랙박스 프레임 ${d.cur + 1} · 화면 시각 ${f.t}" decoding="async">`;
         const im = view.querySelector('img');
         if (ctx.zoom) { im.style.transformOrigin = `${ctx.zoom[0]}% ${ctx.zoom[1]}%`; im.style.transform = 'scale(2.4)'; }
         view.setAttribute('role', 'button'); view.setAttribute('tabindex', '0'); view.setAttribute('aria-label', ctx.zoom ? '확대 풀기' : '이 화면 확대해 보기');

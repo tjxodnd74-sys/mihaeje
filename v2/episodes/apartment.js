@@ -374,7 +374,7 @@ export default {
       title: '구석 모니터',
       kind: '관리실 CCTV · 채널 넷',
       html: (S) => ev(S, 'cctv')
-        ? `<figure class="prop cctvfig"><img src="${P}props/cctv-bench.webp" alt="흑백 CCTV 화면: 둑길 가로등 밑 벤치에 누군가 앉아 개울 건너 건물 쪽을 보고 있다" decoding="async"></figure><p>CH2 둑길 가로등 쓰레기 무단투기 때문에 몇 년 전 연립에서 달아 둔 카메라다 얼굴은 안 보인다 머리와 어깨만 까맣다</p><p>채널 버튼을 눌러도 화면이 CH2에서 넘어가지 않는다</p>`
+        ? `<figure class="prop cctvfig"><img src="${P}props/cctv-bench.webp" alt="흑백 CCTV 화면: 둑길 가로등 밑 벤치에 모자 쓴 사람이 혼자 앉아 개울 건너 건물 쪽을 보고 있다" decoding="async"></figure><p>CH2 둑길 가로등 쓰레기 무단투기 때문에 몇 년 전 연립에서 달아 둔 카메라다 얼굴은 안 보인다 납작한 모자와 굽은 등만 보인다</p><p>채널 버튼을 눌러도 화면이 CH2에서 넘어가지 않는다</p>`
         : '<p>작은 흑백 모니터 CH1 현관 앞이 비친다 눈 내리듯 잡음이 계속 흐른다</p><p>아래에 채널 버튼 넷 CH2에는 「둑길」이라고 네임펜으로 적혀 있다</p>',
     },
     plan: {
@@ -401,7 +401,7 @@ export default {
       title: '할머니와의 통화',
       kind: '토요일 밤 9시 · 관리인 휴대폰 스피커',
       locked: true,
-      html: `<blockquote>"거실 켜졌다"</blockquote><blockquote>"애들 방도"</blockquote><blockquote>"그래 그렇지 그 양반은 거실부터였어 문 열면 바로 거실 불 켰어 어둡게 들어오는 거 싫다고"</blockquote><blockquote>"안방은 좀 있다 켜져요 할머니"</blockquote><blockquote>"알아 열 시 반 이불 깔 때"</blockquote><p>안방 창이 켜지자 전화기 너머가 한참 조용했다 관리인 할아버지가 휴대폰을 둑길 난간에 올려놓고 먼 데를 봤다</p>`,
+      html: `<blockquote>"거실 켜졌다"</blockquote><blockquote>"애들 방도"</blockquote><blockquote>"그래 그렇지 그 양반은 거실부터였어 문 열면 바로 거실 불 켰어 어둡게 들어오는 거 싫다고"</blockquote><blockquote>"안방은 좀 있다 켜져요 할머니"</blockquote><blockquote>"알아 열 시 반 이불 깔 때"</blockquote><p>안방 창이 켜지자 전화기 너머가 한참 조용했다 관리인 할아버지가 휴대폰을 무릎에 내려놓고 먼 데를 봤다</p>`,
     },
   },
 
@@ -661,7 +661,7 @@ export default {
 
   ending: {
     image: P + 'ending.webp',
-    imageAlt: '둑길에서 본 A동 뒤편 3층 오른쪽 창 셋이 노랗게 켜져 있다',
+    imageAlt: '둑길 벤치에 나란히 앉은 두 사람의 뒷모습 개울 건너 A동 뒤편 3층 오른쪽 창 셋만 노랗게 켜져 있다',
     eyebrow: '2026/10/24 토요일 · 밤 9시',
     title: '404호에는 불이 켜지지 않았다',
     // 두 장면(모니터 속 벤치 · 산책러2 댓글)은 장치를 풀 때 꼭 보게 되지만, 옛 저장으로 이어 하는 사람을 위해 본 것만 꺼낸다
