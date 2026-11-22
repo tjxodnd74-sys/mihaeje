@@ -1,0 +1,9 @@
+# 설치·복사로 다시 생기는 것
+node_modules/
+www/
+
+# 서명 키는 절대 저장소에 올리지 않는다 (GitHub Secrets 에만)
+*.jks
+*.keystore
+*.p12
+keystore.properties

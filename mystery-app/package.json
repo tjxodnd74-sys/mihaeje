@@ -1,0 +1,19 @@
+{
+  "name": "mihaeje-app",
+  "private": true,
+  "version": "1.0.0",
+  "description": "미해제 안드로이드 앱 (Capacitor 로 mystery-site 빌드 결과를 앱 안에 넣음)",
+  "scripts": {
+    "web": "node scripts/copy-web.mjs",
+    "sync": "node scripts/copy-web.mjs && cap sync android",
+    "apk": "npm run sync && cd android && ./gradlew assembleDebug",
+    "aab": "npm run sync && cd android && ./gradlew bundleRelease"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/core": "^8.6.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.6.2"
+  }
+}
