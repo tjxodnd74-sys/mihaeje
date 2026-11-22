@@ -313,7 +313,7 @@ export default {
     doorpaper: {
       title: '문에 붙은 종이',
       kind: '할머니 글씨 · 누렇게 바랜',
-      html: `<figure class="prop doorpaper"><img src="${P}props/doorpaper.webp" alt="문에 테이프로 붙인 누런 종이" decoding="async"><div class="on-doorpaper">${cycleSvg()}</div></figure><p>어릴 때 이게 뭐냐고 물었을 때 할머니는 "차 끓이는 순서"라고만 했다 그게 아니라는 건 나중에 알았다 다섯 색, 다섯 방향, 다섯 계절 가게 이름이 오행당인 이유</p>`,
+      html: `<figure class="prop doorpaper"><img src="${P}props/doorpaper.webp" alt="문에 테이프로 붙인 누런 종이" decoding="async"><div class="on-doorpaper">${cycleSvg()}</div></figure><table class="mobile-only door-legend"><caption>종이 아래칸 글씨</caption>${E.map((e) => `<tr><th><i style="background:${{ blue: '#5f9e9a', red: '#b8433a', yellow: '#d2a84a', white: '#eee8dc', black: '#2e2e2e' }[e.id]}"></i>${e.han} ${e.el}</th><td>${e.dir}쪽</td><td>${e.color}색</td><td>${e.season}</td></tr>`).join('')}</table><p>어릴 때 이게 뭐냐고 물었을 때 할머니는 "차 끓이는 순서"라고만 했다 그게 아니라는 건 나중에 알았다 다섯 색, 다섯 방향, 다섯 계절 가게 이름이 오행당인 이유</p>`,
     },
     oldphoto: {
       title: '벽에 걸린 사진',
