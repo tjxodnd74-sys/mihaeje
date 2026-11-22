@@ -114,6 +114,8 @@ export default {
       unlockedBy: 'lightbox',
       arrive: (S) => {
         if (S.solved.includes('print')) return '정착 트레이 안에 사진이 잠겨 있다 붉은 등 아래 세 사람 얼굴이 또렷하다 접수실 쪽에서 목소리가 들린다';
+        // 이젤을 조인 뒤에는 '날이 풀려 있고'가 남지 않게
+        if (S.solved.includes('easel')) return '붉은 안전등 아래 약품 냄새 흰 불 스위치는 문 옆이다 확대기 밑 이젤은 날을 조여 두었다 옆에 타이머, 그 옆에 트레이 셋 라벨은 다 떨어졌다';
         return '작은 열쇠가 돌아갔다 약품 냄새 붉은 안전등만 켜져 있고 흰 불 스위치는 문 옆이다 확대기 밑 이젤은 날이 풀려 있고, 옆에 타이머, 그 옆에 트레이 셋 라벨은 다 떨어졌다';
       },
       // v136: 순서표·약품 메모는 그림 안 종이로 (CSS 종이 상자 overlays 삭제)
@@ -148,7 +150,7 @@ export default {
     wall: {
       title: '벽의 사진들',
       kind: '손님들과 동네',
-      html: `<p>벽에는 사십 년 치 손님 사진이 걸려 있다 결혼, 돌, 졸업, 여권 사진까지 할아버지는 늘 카메라 뒤에 있어서 한 장도 없다</p><p>문 옆에는 간판 사진 둘 1986년 개업 날의 나무 간판, 그리고 2005년 봄에 새로 단 흰 바탕 빨간 글씨 「미루사진관」</p><p>맨 아래 줄에 세로로 긴 빈 액자가 하나 걸려 있다 8×10 크기 할아버지가 "거긴 비워 둬라" 했던 자리다</p>`,
+      html: `<p>벽에는 사십 년 치 손님 사진이 걸려 있다 결혼, 돌, 졸업, 여권 사진까지 할아버지는 늘 카메라 뒤에 있어서 한 장도 없다</p><p>암실 문 오른쪽 작은 액자 둘은 간판 사진이다 1986년 개업 날의 나무 간판, 그리고 2005년 봄에 새로 단 흰 바탕 빨간 글씨 「미루사진관」</p><p>맨 아래 줄에 세로로 긴 빈 액자가 하나 걸려 있다 8×10 크기 할아버지가 "거긴 비워 둬라" 했던 자리다</p>`,
     },
     pressed: {
       title: '봉투에 눌린 글씨',
@@ -163,7 +165,7 @@ export default {
     edge: {
       title: '루페로 본 필름 가장자리',
       kind: '작업대',
-      html: `<p>필름 가장자리에는 제조사 이름과 컷 번호가 찍혀 있다 글자가 바르게 읽히는 쪽이 앞면이다 뒤집혀 있으면 글자가 거울처럼 뒤집혀 보인다</p><p>뒤집힌 채로 인화하면 사진도 좌우가 바뀐다</p><p>네거티브는 밝고 어두운 게 뒤바뀌어 있다 루페 속 유리에는 할아버지가 붙여 둔 반전 필터가 있어서 대충 사진처럼 보인다</p>`,
+      html: `<p>필름 가장자리에는 컷 번호가 찍혀 있다 숫자가 바르게 읽히는 쪽이 앞면이다 뒤집혀 있으면 숫자가 거울처럼 뒤집혀 보인다</p><p>뒤집힌 채로 인화하면 사진도 좌우가 바뀐다</p><p>네거티브는 밝고 어두운 게 뒤바뀌어 있다 루페 속 유리에는 할아버지가 붙여 둔 반전 필터가 있어서 대충 사진처럼 보인다</p>`,
     },
     chart: {
       title: '벽의 순서표',
@@ -207,8 +209,8 @@ export default {
         const env = el('div', 'prop envtilt'); const lit = d.angle >= 30 && d.angle <= 45; env.innerHTML = `<div class="tiltbox"><img src="${P}props/envelope.webp" alt="초록 등 밑의 누런 봉투 겉면 글씨가 번져 있다" decoding="async"><div class="pressed${lit ? ' lit' : ''}" style="opacity:${lit ? 1 : Math.max(0, 1 - Math.abs(d.angle - 37) / 12)}">${lit ? PRESSED_LIT : PRESSED_DIM}</div><div class="glare" style="transform:translateX(${(d.angle - 35) * 2}%)"></div></div>`;
         env.style.setProperty('--tilt', d.angle + 'deg');
         wrap.append(env);
+        // 휴대폰 큰 글씨는 막대 아래 (자리를 미리 잡아 둬서 글자가 떠올라도 막대가 손가락 밑에서 움직이지 않게)
         const big = el('p', 'mobile-only st-pressed-big'); big.innerHTML = lit ? PRESSED_LIT : '';
-        wrap.append(big);
         const lab = el('label', 'tilt-label'); lab.append(el('span', '', `기울기 ${d.angle}°`));
         const r = el('input'); r.type = 'range'; r.min = 0; r.max = 70; r.step = 1; r.value = d.angle; r.setAttribute('aria-label', '봉투 기울기');
         // 끄는 동안은 화면만 바꾸고(요소를 새로 만들면 끌기가 끊긴다) 손을 떼면 저장
@@ -220,7 +222,7 @@ export default {
           lab.firstChild.textContent = `기울기 ${d.angle}°`;
         };
         r.onchange = () => save();
-        lab.append(r); wrap.append(lab);
+        lab.append(r); wrap.append(lab, big);
         return wrap;
       },
       commitLabel: '글자 읽기',

@@ -710,6 +710,7 @@ async function studio({ mobile = false } = {}) {
     if (mobile) { const sz = await page.evaluate(() => [...document.querySelectorAll('dialog[open] .st-easel-ctl button')].map((b) => Math.round(b.getBoundingClientRect().height))); L.check(sz.every((h) => h >= 40), 'easel: mobile buttons at least 40px ' + JSON.stringify(sz)); }
     await L.click(page, '틀을 오른쪽으로 ▶'); await shot(page, 'st-easel'); await commit(page); L.check(await dlgHas(page, '세로 8×10 틀'), 'easel solved');
     await L.closeDialog(page); await L.sleep(300);
+    L.check(!(await L.mainText(page)).includes('날이 풀려') && (await L.mainText(page)).includes('날을 조여 두었다'), 'darkroom line follows the set easel');
     // print
     await hotspot(page, '확대기');
     L.check(await page.evaluate(() => document.querySelector('dialog[open] .print-wrap')?.classList.contains('red')), 'print: starts under the red safelight like the picture');
