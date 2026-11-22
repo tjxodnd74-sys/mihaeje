@@ -67,13 +67,15 @@ async function station({ mobile = false } = {}) {
     await L.click(page, '구간권 90도 돌리기');
     L.check((await holesNow()) === '3번둘째기둥', 'grille: turned once, right 1, down 1 reads 3번둘째기둥 — ' + (await holesNow()));
     await commit(page);
-    L.check((await status(page)).includes('아무것도'), 'grille: old number taken literally is neutral — ' + (await status(page)));
+    L.check((await status(page)).includes('아무것도') && (await status(page)).includes('번호'), 'grille: old number taken literally points at the platform number — ' + (await status(page)));
     await L.click(page, '2번 승강장'); await commit(page);
     L.check(await dlgHas(page, '2번 승강장, 둘째 기둥'), 'grille solved reveal');
     await shot(page, 'reveal1');
-    await L.click(page, '2번 승강장 · 둘째 기둥으로');
-    await L.sleep(400);
+    await L.click(page, '2번 승강장으로');
+    await L.sleep(600);
     L.check((await L.mainText(page)).includes('스피커가 지직거리더니'), 'platform scene reached');
+    // 휴대폰 첫 화면에 네컷사진 기둥이 보여야 한다 (focusX)
+    L.check(await page.evaluate(() => { const sc = document.querySelector('.v2-scroll'), b = [...document.querySelectorAll('.v2-hotspot')].find((x) => x.getAttribute('aria-label') === '기둥에 붙은 네컷사진'); if (!sc || !b) return false; const r = b.getBoundingClientRect(), v = sc.getBoundingClientRect(); return r.left + r.width / 2 >= v.left && r.left + r.width / 2 <= v.right; }), 'platform: strip pillar visible on arrival');
     await shot(page, 'platform');
     for (const d of ['기둥에 붙은 네컷사진', '기둥의 출발 시각표', '벤치 — 민서와 나']) { await hotspot(page, d); await L.closeDialog(page); }
     // mirror
@@ -127,6 +129,7 @@ async function station({ mobile = false } = {}) {
     // 새 장치 v136: 민서의 휴대폰 잠금 패턴 (보관함을 열면 그 자리에 휴대폰, 마을길은 휴대폰을 연 뒤)
     L.check(!(await dlgHas(page, '수림 마을길로')), 'locker: village not opened yet (phone first)');
     await L.closeDialog(page); await L.sleep(400);
+    L.check(await page.evaluate(() => /surim-open/.test(document.querySelector('.v2-stage-img')?.getAttribute('src') || '')), 'surim: opened locker picture after solving');
     L.check(await page.evaluate(() => { const hs = [...document.querySelectorAll('.v2-hotspot')].map((b) => b.getAttribute('aria-label')); return hs.includes('5번 칸 속 민서의 휴대폰') && !hs.includes('별 스티커가 붙은 보관함'); }), 'surim: phone hotspot replaces the opened locker');
     await hotspot(page, '5번 칸 속 민서의 휴대폰');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .pat-smudge'))), 'phone: no smudge before tilting');
