@@ -39,13 +39,13 @@
     "title": "404호의 불빛",
     "subtitle": "사흘 뒤 헐리는 집",
     "genre": "도시괴담 · 공간 추리",
-    "minutes": 45,
+    "minutes": 50,
     "difficulty": "★★★★",
     "image": "assets/covers/apartment-v1.webp",
     "href": "play.html?case=apartment",
     "storageKey": "mihaeje-v2-apartment",
     "description": "단전된 지 3주 된 연립 A동\n밤 아홉 시면 창이 하나씩 켜진다는 민원이 들어왔습니다 동네에선 404호 귀신이라고 부릅니다",
-    "docCount": 16,
+    "docCount": 17,
     "docNames": {
       "order": "오늘 작업 지시",
       "post": "동네 커뮤니티 글",
@@ -62,7 +62,8 @@
       "plan": "방문 옆 대피 안내도",
       "switches": "테이프 붙은 스위치",
       "mnote": "상자 안 쪽지",
-      "book": "상자 위 가계부"
+      "book": "상자 위 가계부",
+      "book09": "창고의 2009년 가계부"
     },
     "imageAlt": "둑길 건너 불 꺼진 연립 뒤편, 창 하나만 노랗게 켜져 있다",
     "difficultyLevel": 4
