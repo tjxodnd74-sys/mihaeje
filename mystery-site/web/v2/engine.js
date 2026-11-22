@@ -20,21 +20,33 @@ const sounds = {
 let audioOn = true; // 기본 켜짐. 끄면 기억합니다.
 try { audioOn = localStorage.getItem('mihaeje-v2-sound') !== '0'; } catch {}
 // 브라우저는 사용자가 한 번 누르기 전에는 소리를 못 내므로, 첫 터치/클릭 때 배경음을 시작합니다.
-let armed = false;
+// 휴대폰은 손가락을 뗄 때(pointerup·touchend·click)에야 소리를 허락하므로 그때도 다시 시도합니다.
+// 첫 터치/키 전에는 배경음 파일을 만들지도 받지도 않는다 (느린 망에서 첫 화면 글꼴·그림과 대역폭을 나누지 않게)
+let armed = false, gestured = false;
 function armMusic(ep) {
   if (armed) return; armed = true;
-  const go = () => { syncMusic(ep); };
-  document.addEventListener('pointerdown', go, { capture: true });
-  document.addEventListener('keydown', go, { capture: true });
+  const go = (e) => { if (e?.type && e.type !== 'visibilitychange') gestured = true; syncMusic(ep); };
+  ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'].forEach((t) => document.addEventListener(t, go, { capture: true, passive: true }));
+  // 화면을 떠나면(다른 앱·탭·화면 꺼짐) 배경음을 멈추고, 돌아오면 이어서
+  document.addEventListener('visibilitychange', go);
+  addEventListener('pagehide', () => music?.pause());
 }
-function play(name) { if (!audioOn || !sounds[name]) return; try { const a = new Audio(sounds[name]); a.volume = 0.5; a.play().catch(() => {}); } catch {} }
+function play(name) { if (!audioOn || !sounds[name] || document.hidden) return; try { const a = new Audio(sounds[name]); a.volume = 0.5; a.play().catch(() => {}); } catch {} }
 let music = null;
 function syncMusic(ep) {
   if (!ep.music) return;
-  if (!audioOn) { if (music) { music.pause(); } return; }
+  if (!audioOn || document.hidden) { if (music) { music.pause(); } return; }
+  if (!gestured) return;
   if (!music) { music = new Audio(ep.music); music.loop = true; music.volume = 0.22; music.preload = 'auto'; }
   if (music.paused) music.play().catch(() => {});
 }
+// 누름 피드백: 손가락으로 눌렀을 때만 아주 짧게 떨림 (지원하는 기기만 · 소리를 끄면 같이 꺼짐)
+let lastPointer = '';
+addEventListener('pointerdown', (e) => { lastPointer = e.pointerType; }, { capture: true, passive: true });
+function buzz(p = 8) { if (!audioOn || lastPointer !== 'touch' || typeof navigator.vibrate !== 'function') return; try { navigator.vibrate(p); } catch {} }
+document.addEventListener('click', (e) => { if (e.target.closest?.('button:not(:disabled), a.v2-primary, a.v2-secondary, [role=button]')) buzz(8); }, { capture: true });
+// 휴대폰에서 길게 누르면 뜨는 메뉴(그림 저장·링크 등)를 막는다 (입력칸은 그대로)
+document.addEventListener('contextmenu', (e) => { if (lastPointer === 'touch' && !e.target.closest?.('input, textarea, [contenteditable]')) e.preventDefault(); });
 
 async function main() {
   if (!id) { location.replace('index.html#cases'); return; }
@@ -77,17 +89,34 @@ async function main() {
     me.addEventListener('click', (e) => { if (e.target === me) me.close(); });
     document.body.append(dialog);
     dialog.showModal();
+    pushGuard();
     box.focus({ preventScroll: true });
     box.scrollTop = 0;
   }
   function closeDialog() { if (dialog?.open) dialog.close(); }
+
+  // ---------- 뒤로가기 (안드로이드 뒤로 버튼 · 브라우저 뒤로 · 앱 웹뷰의 goBack) ----------
+  // 창을 열거나 그림에 다가갈 때 기록을 한 칸(guard) 쌓아 둔다 창을 닫기 버튼으로 닫아도 그 칸은 그대로 두고(코드로 history.back() 을 부르면 다음 창 열기와 엇갈린다),
+  // 뒤로가기가 그 칸을 쓰면: 창이 열려 있으면 닫기 · 다가가 있으면 물러나기 · 아무것도 없으면 한 번 더 뒤로(= 브라우저 기본 동작, 이전 페이지)
+  let guard = history.state?.mhjLayer === 1; // 창을 연 채 새로고침해도 칸이 남아 있다
+  function pushGuard() { if (guard) return; try { history.pushState({ mhjLayer: 1 }, ''); guard = true; } catch {} }
+  function unzoom(stage) { const pan = stage.querySelector('.v2-pan'); zoomBack = null; if (pan) { pan.style.transition = ''; pan.style.transform = ''; } stage.classList.remove('zoomed'); }
+  addEventListener('popstate', (e) => {
+    if (e.state?.mhjLayer === 1) { guard = true; return; } // 앞으로 가기로 칸에 다시 올라옴
+    if (!guard) return;
+    guard = false;
+    const st = document.querySelector('.v2-stage.zoomed');
+    if (dialog?.open) closeDialog();
+    else if (st) unzoom(st);
+    else history.back();
+  });
 
   function header() {
     const h = el('header', 'v2-header');
     const logo = html('a', 'v2-logo', '<img src="assets/mihaeje-logo-v2.webp" alt="미해제" width="1983" height="793" decoding="async">'); logo.href = 'index.html';
     const right = el('div', 'v2-header-right');
     const back = el('a', 'v2-back', '← 테마 로비'); back.href = 'index.html';
-    const snd = btn('v2-sound' + (audioOn ? ' on' : ''), audioOn ? '배경음 켜짐' : '배경음 꺼짐', () => { audioOn = !audioOn; try { localStorage.setItem('mihaeje-v2-sound', audioOn ? '1' : '0'); } catch {} snd.textContent = audioOn ? '배경음 켜짐' : '배경음 꺼짐'; snd.classList.toggle('on', audioOn); syncMusic(ep); if (audioOn) play('on'); }, '배경음과 효과음 켜고 끄기');
+    const snd = btn('v2-sound' + (audioOn ? ' on' : ''), audioOn ? '배경음 켜짐' : '배경음 꺼짐', () => { audioOn = !audioOn; try { localStorage.setItem('mihaeje-v2-sound', audioOn ? '1' : '0'); } catch {} snd.textContent = audioOn ? '배경음 켜짐' : '배경음 꺼짐'; snd.classList.toggle('on', audioOn); syncMusic(ep); if (audioOn) play('on'); }, '배경음·효과음·누름 진동 켜고 끄기');
     right.append(back, snd);
     h.append(logo, right);
     return h;
@@ -212,7 +241,9 @@ async function main() {
       pan.append(b);
     });
     scroller.append(pan); stage.append(scroller);
-    if (travelRow.children.length) stage.append(travelRow);
+    // 새 길 버튼 줄은 무대 밖 상자에 둔다: PC는 그림 위 아래쪽에 띄우고, 휴대폰(그림을 밀어 보는 화면)은 무대 바로 아래로 빼서 누름 자리를 가리지 않게
+    const stageBox = el('div', 'v2-stage-box'); stageBox.append(stage);
+    if (travelRow.children.length) { stageBox.append(travelRow); stageBox.classList.add('has-travel'); sec.classList.add('has-travel'); }
     // 양옆 화살표: 그림이 화면보다 넓으면(휴대폰) 그림을 옆으로 밀고, 아니면(PC) 열린 장소끼리 오간다
     const k = places.indexOf(scene);
     const goPlace = (d) => { const t = places[(k + d + places.length) % places.length]; S.scene = t.id; save(); play('door'); render(); };
@@ -258,10 +289,16 @@ async function main() {
     if (sceneSeen.has(scene.id) && !firstVisit) { talk.classList.add('gone', 'typed'); } else { talkBtn.hidden = true; sceneSeen.add(scene.id); const tdone = [...(line || '')].length * 28 + 300; setTimeout(() => talk.classList.add('typed'), tdone); setTimeout(() => { if (talk.isConnected && !talk.classList.contains('gone')) { talk.classList.add('gone'); talkBtn.hidden = false; } }, tdone + 6500); }
     stage.append(talk, talkBtn);
     if (ep.mood) stage.dataset.mood = ep.mood;
-    sec.append(stage);
+    sec.append(stageBox);
     // 가까이 봤던 자리에서 물러나기
     if (zoomBack && zoomBack.scene === scene.id) { const zb = zoomBack; zoomBack = null; requestAnimationFrame(() => { if (zb.sl != null) scroller.scrollLeft = zb.sl; zoomTo(stage, pan, zb.x, zb.y, false); requestAnimationFrame(() => requestAnimationFrame(() => { pan.style.transition = ''; pan.style.transform = ''; stage.classList.remove('zoomed'); })); }); }
-    else requestAnimationFrame(() => { const x = S.pan?.[scene.id]; if (scroller.scrollWidth > scroller.clientWidth + 4) scroller.scrollLeft = x ?? (scroller.scrollWidth - scroller.clientWidth) / 2; });
+    // 처음 보이는 위치: 이 장면에서 밀어 둔 자리가 있으면 그대로, 없으면 scene.focusX(그림 가로 0~100%, 숫자 또는 (S) => 숫자)를 가운데로, 그것도 없으면 한가운데
+    else requestAnimationFrame(() => {
+      const max = scroller.scrollWidth - scroller.clientWidth; if (max <= 4) return;
+      const fx = typeof scene.focusX === 'function' ? scene.focusX(S) : scene.focusX;
+      const x = S.pan?.[scene.id] ?? (Number.isFinite(fx) ? pan.offsetWidth * fx / 100 - scroller.clientWidth / 2 : max / 2);
+      scroller.scrollLeft = Math.max(0, Math.min(max, x));
+    });
     scroller.addEventListener('scroll', () => { S.pan = S.pan || {}; S.pan[scene.id] = Math.round(scroller.scrollLeft); }, { passive: true });
     // 마지막 장치를 풀었는데 아직 엔딩에 안 갔으면, 어떤 경로로 돌아왔든 엔딩 버튼을 계속 보여 준다
     const endDev = Object.values(ep.devices).find((dv, i) => dv.reveal?.ending && S.solved.includes(Object.keys(ep.devices)[i]));
@@ -288,8 +325,8 @@ async function main() {
     // 그림 속 물건을 누르면 그쪽으로 다가간 뒤 창이 열린다
     const stage = node?.closest?.('.v2-stage'), pan = stage?.querySelector('.v2-pan');
     if (stage && pan && h.kind !== 'travel' && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      zoomBack = { scene: S.scene, x: h.x, y: h.y, sl: pan.parentElement.scrollLeft }; zoomTo(stage, pan, h.x, h.y);
-      setTimeout(() => act(h), 320); return;
+      zoomBack = { scene: S.scene, x: h.x, y: h.y, sl: pan.parentElement.scrollLeft }; zoomTo(stage, pan, h.x, h.y); pushGuard();
+      setTimeout(() => { if (stage.classList.contains('zoomed')) act(h); }, 320); return; // 그사이 뒤로가기로 물러났으면 창을 열지 않는다
     }
     if (h.kind === 'doc') openDoc(h.doc);
     else if (h.kind === 'device') openDevice(h.device);
@@ -382,7 +419,7 @@ async function main() {
       const go = btn('v2-primary', dev.commitLabel || '확인', () => {
         const r = dev.check(d, S); save();
         if (r.ok) { solve(did); return; }
-        status.textContent = r.msg; status.classList.add('wrong'); play('lock'); draw();
+        status.textContent = r.msg; status.classList.add('wrong'); play('lock'); buzz([10, 60, 10]); draw();
       });
       actions.append(go);
       ctx.commit = () => go.click();
@@ -429,7 +466,7 @@ async function main() {
     const dev = deviceOf(did);
     if (!S.solved.includes(did)) S.solved.push(did);
     save();
-    play(dev.reveal?.ending ? 'door' : 'keys');
+    play(dev.reveal?.ending ? 'door' : 'keys'); buzz(18);
     const node = el('article', 'v2-paper v2-reveal');
     node.append(el('p', 'v2-eyebrow', '풀렸다'));
     node.append(el('h2', 'v2-doc-title', dev.reveal.title));
