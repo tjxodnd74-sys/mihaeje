@@ -581,18 +581,19 @@ async function petHome({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('연필꽂이를 내 쪽으로'), 'rub: clinic line changes after the card');
     await hotspot(page, '접수대 연필꽂이와 노란 표 카드');
     L.check(!(await dlgHas(page, '031-047-2816')), 'rub: number not shown before rubbing');
-    L.check(!(await L.buttons(page)).some((x) => x === '통화'), 'rub: no call button before a full number');
+    L.check(await page.evaluate(() => document.querySelector('dialog[open] .rub-phone .rub-call')?.classList.contains('off')), 'rub: call button inside the phone, dim before a full number');
+    const call = async () => { await L.click(page, '통화 걸기', { exact: true }); await L.sleep(250); };
     {
       const cv = await (await page.$('dialog[open] .rub-canvas')).boundingBox();
       for (let r = 0; r < 5; r++) { const y = cv.y + cv.height * (0.1 + r * 0.2); await page.mouse.move(cv.x + 4, y); await page.mouse.down(); await page.mouse.move(cv.x + cv.width - 4, y, { steps: 14 }); await page.mouse.up(); await L.sleep(120); }
     }
     L.check(await dlgHas(page, '하얗게 떠오른 번호 셋') && await dlgHas(page, '031-047-2816') && await dlgHas(page, '010-0861-4430'), 'rub: pencil drag lifts three numbers');
     const dial = async (num) => { await L.click(page, '번호 다 지우기', { exact: true }); for (const ch of num.replace(/-/g, '')) await L.click(page, ch, { exact: true }); };
-    await dial('010-0861-4430'); await commit(page);
+    await dial('010-0861-4430'); await call();
     L.check((await status(page)).includes('끊겼다') && !(await status(page)).includes('031'), 'rub: clearest line (red card) neutral');
-    await dial('010-0395-1127'); await commit(page);
+    await dial('010-0395-1127'); await call();
     L.check((await status(page)).includes('끊겼다'), 'rub: green card number neutral');
-    await dial('031-047-2816'); await shot(page, 'pet-rub'); await commit(page);
+    await dial('031-047-2816'); await shot(page, 'pet-rub'); await call();
     L.check(await dlgHas(page, '「엄마 집」'), 'rub solved (home phone)');
     await L.closeDialog(page); await L.sleep(400);
     L.check((await L.mainText(page)).includes('보리차를 끓이며'), 'moved to mom');
@@ -603,7 +604,7 @@ async function petHome({ mobile = false } = {}) {
     await L.click(page, '3학년 1반 이서진 명찰 구멍에 대기', { exact: true }); await commit(page);
     L.check((await status(page)).includes('손이 멈췄다'), 'strap: cousin decoy neutral');
     await L.closeDialog(page);
-    for (const [d, t] of [['엄마와 주고받은 문자', '정류장에서 전화와서'], ['펼쳐 둔 앨범', '「정류장」'], ['장식장 위 서류철', '2학년 파랑']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    for (const [d, t] of [['엄마와 주고받은 문자', '정류장에서 전화와서'], ['펼쳐 둔 앨범', '「정류장」'], ['장식장 위 납작한 상자', '2학년 파랑']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => /일기/.test(b.getAttribute('aria-label') || '')))), 'diary is a reward, not a hotspot');
     await hotspot(page, '엄마의 사진 상자');
     await L.click(page, '3학년 2반 김유나 명찰 구멍에 대기', { exact: true }); await commit(page);
