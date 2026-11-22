@@ -15,7 +15,7 @@
       "source": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Comfortable%20Mystery%202.mp3",
       "file": "assets/music/hub-v33.mp3",
       "duration": 44,
-      "bytes": 441245
+      "bytes": 308791
     },
     {
       "case": "garage",
@@ -27,7 +27,7 @@
       "source": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Night%20on%20the%20Docks.mp3",
       "file": "assets/music/garage-v33.mp3",
       "duration": 140,
-      "bytes": 1401263
+      "bytes": 980759
     },
     {
       "case": "apartment",
@@ -39,7 +39,7 @@
       "source": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Lightless%20Dawn.mp3",
       "file": "assets/music/apartment-v33.mp3",
       "duration": 140,
-      "bytes": 1401233
+      "bytes": 980779
     },
     {
       "case": "radio",
@@ -51,7 +51,7 @@
       "source": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Blue%20Sizzle.mp3",
       "file": "assets/music/radio-v33.mp3",
       "duration": 116,
-      "bytes": 1161179
+      "bytes": 812700
     },
     {
       "case": "station",
@@ -63,7 +63,7 @@
       "source": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Lost%20Frontier.mp3",
       "file": "assets/music/station-v33.mp3",
       "duration": 140,
-      "bytes": 1401249
+      "bytes": 980750
     },
     {
       "case": "laundry",
@@ -75,7 +75,7 @@
       "source": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Comfortable%20Mystery.mp3",
       "file": "assets/music/laundry-v33.mp3",
       "duration": 140,
-      "bytes": 1401258
+      "bytes": 980754
     },
     {
       "case": "pet-home",
@@ -87,7 +87,7 @@
       "source": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Wholesome.mp3",
       "file": "assets/music/pet-home-v33.mp3",
       "duration": 140,
-      "bytes": 1401233
+      "bytes": 980779
     },
     {
       "case": "cat-invite",
@@ -99,7 +99,7 @@
       "source": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Light%20Thought%20var%201.mp3",
       "file": "assets/music/cat-invite-v33.mp3",
       "duration": 124,
-      "bytes": 1241121
+      "bytes": 868659
     },
     {
       "case": "letter",
@@ -111,7 +111,7 @@
       "source": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/On%20the%20Shore.mp3",
       "file": "assets/music/letter-v33.mp3",
       "duration": 92,
-      "bytes": 921115
+      "bytes": 644653
     },
     {
       "case": "studio",
@@ -123,7 +123,7 @@
       "source": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Luminous%20Rain.mp3",
       "file": "assets/music/studio-v33.mp3",
       "duration": 92,
-      "bytes": 920834
+      "bytes": 644667
     },
     {
       "case": "ohang",
@@ -135,7 +135,7 @@
       "source": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/White%20Lotus.mp3",
       "file": "assets/music/ohang-v33.mp3",
       "duration": 140,
-      "bytes": 1401246
+      "bytes": 980745
     }
   ]
 }

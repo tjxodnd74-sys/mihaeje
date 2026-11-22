@@ -8,6 +8,10 @@ const btn = (cls, text, fn, aria) => { const b = el('button', cls, text); b.type
 const VER = new URL(import.meta.url).searchParams.get('v') || String(Date.now());
 const bustUrl = (u) => (/^assets\/v2\//.test(u) && !/\?/.test(u) ? u + '?v=' + VER : u);
 const pic = (img, src) => { img.src = bustUrl(src); const base = src.replace(/\.webp$/, ''); if (/assets\/v2\//.test(src)) { img.srcset = `${bustUrl(base + '-960.webp')} 960w, ${bustUrl(src)} 1024w`; img.sizes = '(max-width: 640px) 100vw, 1180px'; } return img; };
+// 한가할 때 다음 장소 그림·장치 소품 그림을 하나씩 미리 받아 둡니다 (데이터 절약 모드·2G 에서는 받지 않음)
+const warmed = new Set();
+const warm = (srcs) => { const c = navigator.connection; if (c && (c.saveData || /2g/.test(c.effectiveType || ''))) return; const dup = new Set(srcs.filter((s) => /-960\.webp$/.test(s || '')).map((s) => s.replace('-960', ''))); const list = [...new Set(srcs)].filter((s) => s && !warmed.has(s) && !dup.has(s) && !/-960\.webp$/.test(s)).slice(0, 8); const idle = window.requestIdleCallback || ((f) => setTimeout(f, 1200)); const next = () => { const s = list.shift(); if (!s) return; warmed.add(s); const im = /\/props\//.test(s) ? new Image() : pic(new Image(), s); if (!im.src) im.src = bustUrl(s); im.onload = im.onerror = () => idle(next, { timeout: 4000 }); }; (document.fonts?.ready || Promise.resolve()).then(() => idle(next, { timeout: 4000 })); };
+const propsIn = (epId, objs) => objs.filter(Boolean).flatMap((o) => [o.html, o.render].map(String).join(' ').match(/(?:assets\/v2\/[a-z-]+\/)?props\/[\w-]+\.webp/g) || []).map((s) => (s.startsWith('assets/') ? s : `assets/v2/${epId}/${s}`));
 // 사진이 바뀌어도 브라우저가 옛 파일을 쓰지 않도록 버전을 붙입니다.
 const bust = (node) => { node.querySelectorAll?.('img').forEach((i) => { const src = i.getAttribute('src') || ''; if (/^assets\/v2\//.test(src)) { i.src = bustUrl(src); const ss = i.getAttribute('srcset'); if (ss) i.srcset = ss.split(',').map((part) => { const [u, w] = part.trim().split(/\s+/); return bustUrl(u) + (w ? ' ' + w : ''); }).join(', '); } }); return node; };
 const josa = (w, a, b) => { const c = w.charCodeAt(w.length - 1); if (c < 0xac00 || c > 0xd7a3) return w + b; const t = (c - 0xac00) % 28; return w + (t === 0 || t === 8 ? b : a); }; // 받침 없음·ㄹ받침 → '로'
@@ -18,23 +22,36 @@ const sounds = {
   door: 'assets/sounds/door-open-v23.wav', drawer: 'assets/sounds/drawer-open-v23.wav', on: 'assets/sounds/switch-on-v24.wav',
 };
 let audioOn = true; // 기본 켜짐. 끄면 기억합니다.
-try { audioOn = localStorage.getItem('mihaeje-v2-sound') !== '0'; } catch {}
+try { const v = localStorage.getItem('mihaeje-v2-sound'); if (v != null) audioOn = v !== '0'; else { const b = JSON.parse(localStorage.getItem('mihaeje-bgm-v1') || 'null'); if (b && typeof b.enabled === 'boolean') audioOn = b.enabled; } } catch {}
+function syncLobbySound(on) { try { const b = JSON.parse(localStorage.getItem('mihaeje-bgm-v1') || 'null') || { volume: 45 }; b.enabled = on; localStorage.setItem('mihaeje-bgm-v1', JSON.stringify(b)); localStorage.setItem('mihaeje-effects-v1', on ? 'on' : 'off'); } catch {} }
 // 브라우저는 사용자가 한 번 누르기 전에는 소리를 못 내므로, 첫 터치/클릭 때 배경음을 시작합니다.
-let armed = false;
+// 휴대폰은 손가락을 뗄 때(pointerup·touchend·click)에야 소리를 허락하므로 그때도 다시 시도합니다.
+// 첫 터치/키 전에는 배경음 파일을 만들지도 받지도 않는다 (느린 망에서 첫 화면 글꼴·그림과 대역폭을 나누지 않게)
+let armed = false, gestured = false;
 function armMusic(ep) {
   if (armed) return; armed = true;
-  const go = () => { syncMusic(ep); };
-  document.addEventListener('pointerdown', go, { capture: true });
-  document.addEventListener('keydown', go, { capture: true });
+  const go = (e) => { if (e?.type && e.type !== 'visibilitychange') gestured = true; syncMusic(ep); };
+  ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'].forEach((t) => document.addEventListener(t, go, { capture: true, passive: true }));
+  // 화면을 떠나면(다른 앱·탭·화면 꺼짐) 배경음을 멈추고, 돌아오면 이어서
+  document.addEventListener('visibilitychange', go);
+  addEventListener('pagehide', () => music?.pause());
 }
-function play(name) { if (!audioOn || !sounds[name]) return; try { const a = new Audio(sounds[name]); a.volume = 0.5; a.play().catch(() => {}); } catch {} }
+function play(name) { if (!audioOn || !sounds[name] || document.hidden) return; try { const a = new Audio(sounds[name]); a.volume = 0.5; a.play().catch(() => {}); } catch {} }
 let music = null;
 function syncMusic(ep) {
   if (!ep.music) return;
-  if (!audioOn) { if (music) { music.pause(); } return; }
+  if (!audioOn || document.hidden) { if (music) { music.pause(); } return; }
+  if (!gestured) return;
   if (!music) { music = new Audio(ep.music); music.loop = true; music.volume = 0.22; music.preload = 'auto'; }
   if (music.paused) music.play().catch(() => {});
 }
+// 누름 피드백: 손가락으로 눌렀을 때만 아주 짧게 떨림 (지원하는 기기만 · 소리를 끄면 같이 꺼짐)
+let lastPointer = '';
+addEventListener('pointerdown', (e) => { lastPointer = e.pointerType; }, { capture: true, passive: true });
+function buzz(p = 8) { if (!audioOn || lastPointer !== 'touch' || typeof navigator.vibrate !== 'function') return; try { navigator.vibrate(p); } catch {} }
+document.addEventListener('click', (e) => { if (e.target.closest?.('button:not(:disabled), a.v2-primary, a.v2-secondary, [role=button]')) buzz(8); }, { capture: true });
+// 휴대폰에서 길게 누르면 뜨는 메뉴(그림 저장·링크 등)를 막는다 (입력칸은 그대로)
+document.addEventListener('contextmenu', (e) => { if (lastPointer === 'touch' && !e.target.closest?.('input, textarea, [contenteditable]')) e.preventDefault(); });
 
 async function main() {
   if (!id) { location.replace('index.html#cases'); return; }
@@ -45,11 +62,25 @@ async function main() {
 
   const KEY = ep.storageKey || 'mihaeje-v2-' + ep.id;
   const fresh = () => ({ v: 2, screen: 'intro', scene: ep.scenes[0].id, read: [], visited: [], solved: [], drafts: {}, hints: {}, seen: [] });
+  // 저장: 본 키는 예전 모양 그대로, 백업·막힘·깨짐 처리는 store.js (막혀도 메모리로 계속)
+  const { openStore, askPersist, encodeCode, decodeCode, copyText, note } = await import(`./store.js?v=${VER}`);
+  const isSave = (o) => !!o && typeof o === 'object' && !Array.isArray(o) && o.v === 2;
+  const tidy = (raw) => {
+    const s = { ...fresh(), ...raw };
+    ['read', 'visited', 'seen'].forEach((k) => { if (!Array.isArray(s[k])) s[k] = []; });
+    ['drafts', 'hints'].forEach((k) => { if (!s[k] || typeof s[k] !== 'object' || Array.isArray(s[k])) s[k] = {}; });
+    if (s.found !== undefined && !Array.isArray(s.found)) delete s.found;
+    if (s.solved !== true && !Array.isArray(s.solved)) s.solved = [];
+    if (!ep.scenes.some((x) => x.id === s.scene)) s.scene = ep.scenes[0].id;
+    // 예전 저장본은 엔딩에서 solved를 true로 덮어썼다 — 배열로 되돌린다
+    if (!Array.isArray(s.solved)) { s.ended = true; s.solved = Object.keys(ep.devices); }
+    return s;
+  };
   let S = fresh();
-  try { const raw = JSON.parse(localStorage.getItem(KEY) || 'null'); if (raw && raw.v === 2) S = { ...fresh(), ...raw }; } catch {}
-  // 예전 저장본은 엔딩에서 solved를 true로 덮어썼다 — 배열로 되돌린다
-  if (!Array.isArray(S.solved)) { S.ended = true; S.solved = Object.keys(ep.devices); }
-  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
+  // 처음 열 때 저장이 막혀 있으면 표지의 안내 줄이 대신 말한다 (같은 말 두 번 띄우지 않기)
+  const store = openStore(KEY, { valid: isSave, onTrouble: (kind, text) => { if (kind === 'blocked' && S.screen === 'intro') return; note(text); } });
+  { const raw = store.load(); if (raw) S = tidy(raw); }
+  const save = () => { store.save(S); if (S.visited.length || S.solved.length) askPersist(); };
 
   const docIds = Object.keys(ep.docs);
   const openDocs = () => docIds.filter((d) => !ep.docs[d].locked || S.screen === 'ending' || S.ended);
@@ -77,17 +108,34 @@ async function main() {
     me.addEventListener('click', (e) => { if (e.target === me) me.close(); });
     document.body.append(dialog);
     dialog.showModal();
+    pushGuard();
     box.focus({ preventScroll: true });
     box.scrollTop = 0;
   }
   function closeDialog() { if (dialog?.open) dialog.close(); }
+
+  // ---------- 뒤로가기 (안드로이드 뒤로 버튼 · 브라우저 뒤로 · 앱 웹뷰의 goBack) ----------
+  // 창을 열거나 그림에 다가갈 때 기록을 한 칸(guard) 쌓아 둔다 창을 닫기 버튼으로 닫아도 그 칸은 그대로 두고(코드로 history.back() 을 부르면 다음 창 열기와 엇갈린다),
+  // 뒤로가기가 그 칸을 쓰면: 창이 열려 있으면 닫기 · 다가가 있으면 물러나기 · 아무것도 없으면 한 번 더 뒤로(= 브라우저 기본 동작, 이전 페이지)
+  let guard = history.state?.mhjLayer === 1; // 창을 연 채 새로고침해도 칸이 남아 있다
+  function pushGuard() { if (guard) return; try { history.pushState({ mhjLayer: 1 }, ''); guard = true; } catch {} }
+  function unzoom(stage) { const pan = stage.querySelector('.v2-pan'); zoomBack = null; if (pan) { pan.style.transition = ''; pan.style.transform = ''; } stage.classList.remove('zoomed'); }
+  addEventListener('popstate', (e) => {
+    if (e.state?.mhjLayer === 1) { guard = true; return; } // 앞으로 가기로 칸에 다시 올라옴
+    if (!guard) return;
+    guard = false;
+    const st = document.querySelector('.v2-stage.zoomed');
+    if (dialog?.open) closeDialog();
+    else if (st) unzoom(st);
+    else history.back();
+  });
 
   function header() {
     const h = el('header', 'v2-header');
     const logo = html('a', 'v2-logo', '<img src="assets/mihaeje-logo-v2.webp" alt="미해제" width="1983" height="793" decoding="async">'); logo.href = 'index.html';
     const right = el('div', 'v2-header-right');
     const back = el('a', 'v2-back', '← 테마 로비'); back.href = 'index.html';
-    const snd = btn('v2-sound' + (audioOn ? ' on' : ''), audioOn ? '배경음 켜짐' : '배경음 꺼짐', () => { audioOn = !audioOn; try { localStorage.setItem('mihaeje-v2-sound', audioOn ? '1' : '0'); } catch {} snd.textContent = audioOn ? '배경음 켜짐' : '배경음 꺼짐'; snd.classList.toggle('on', audioOn); syncMusic(ep); if (audioOn) play('on'); }, '배경음과 효과음 켜고 끄기');
+    const snd = btn('v2-sound' + (audioOn ? ' on' : ''), audioOn ? '배경음 켜짐' : '배경음 꺼짐', () => { audioOn = !audioOn; try { localStorage.setItem('mihaeje-v2-sound', audioOn ? '1' : '0'); } catch {} syncLobbySound(audioOn); snd.textContent = audioOn ? '배경음 켜짐' : '배경음 꺼짐'; snd.classList.toggle('on', audioOn); syncMusic(ep); if (audioOn) play('on'); }, '배경음·효과음·누름 진동 켜고 끄기');
     right.append(back, snd);
     h.append(logo, right);
     return h;
@@ -108,6 +156,7 @@ async function main() {
   function intro() {
     const sec = el('section', 'v2-intro');
     const cover = pic(el('img', 'v2-cover'), ep.cover); cover.alt = ep.coverAlt || ''; cover.decoding = 'async'; sec.append(cover);
+    cover.addEventListener('load', () => warm([ep.opening?.image, (sceneById(S.scene) || ep.scenes[0]).image]), { once: true });
     const card = el('div', 'v2-intro-card');
     card.append(el('p', 'v2-eyebrow', `${ep.number} · ${ep.genre}`));
     card.append(el('h1', 'v2-title', ep.title));
@@ -121,9 +170,41 @@ async function main() {
     if (started) row.append(btn('v2-primary', '이어서 하기', () => { S.screen = 'play'; save(); render(); }));
     row.append(btn(started ? 'v2-secondary' : 'v2-primary', '처음부터 하기', () => { if (started && !confirm('지금까지의 진행을 지우고 처음부터 할까요?')) return; S = fresh(); S.screen = 'opening'; S.started = true; save(); render(); }));
     card.append(row);
-    card.append(el('p', 'v2-fine', '가상의 이야기 · 진행은 이 브라우저에 저장됩니다'));
+    card.append(el('p', 'v2-fine', store.mode === 'memory' ? '가상의 이야기 · 이 브라우저는 저장이 막혀 있어 창을 닫으면 진행이 사라져요 아래 진행 코드로 옮겨 둘 수 있어요' : '가상의 이야기 · 진행은 이 브라우저에 저장됩니다'));
+    card.append(transfer(started));
     sec.append(card);
     return sec;
+  }
+
+  // 다른 기기·앱으로 진행 옮기기 (접힌 칸)
+  function transfer(started) {
+    const box = el('details', 'v2-transfer');
+    box.append(el('summary', '', '다른 기기에서 이어하기'));
+    const body = el('div', 'v2-transfer-body');
+    const status = el('p', 'v2-transfer-status'); status.setAttribute('role', 'status');
+    const say = (m, bad) => { status.textContent = m; status.classList.toggle('wrong', !!bad); };
+    if (started) {
+      body.append(el('p', 'v2-transfer-help', '지금 진행을 코드로 옮겨 다른 기기나 앱의 이 편 처음 화면에 붙여 넣으면 이어서 할 수 있어요'));
+      const out = el('input', 'v2-transfer-code'); out.type = 'text'; out.readOnly = true; out.setAttribute('aria-label', '내 진행 코드'); out.spellcheck = false;
+      const copy = btn('v2-secondary', '코드 복사', async () => { if (!out.value) return; say(await copyText(out.value, out) ? '복사했어요 다른 기기에서 붙여 넣어 주세요' : '코드 칸을 길게 눌러 직접 복사해 주세요'); });
+      copy.disabled = true;
+      const line = el('div', 'v2-transfer-line'); line.append(out, copy);
+      body.append(line);
+      box.addEventListener('toggle', async () => { if (!box.open || out.value) return; try { out.value = await encodeCode(ep.id, S); copy.disabled = false; } catch { say('코드를 만들지 못했어요 잠시 뒤 다시 열어 주세요', true); } });
+    }
+    const inp = el('input', 'v2-transfer-code'); inp.type = 'text'; inp.placeholder = '받은 코드 붙여 넣기'; inp.setAttribute('aria-label', '받은 진행 코드'); inp.spellcheck = false; inp.autocomplete = 'off'; inp.autocapitalize = 'off';
+    const load = btn('v2-secondary', '이 코드로 이어하기', async () => {
+      const r = await decodeCode(inp.value, ep.id, isSave);
+      if (r.error) { say(r.error, true); return; }
+      if (started && !confirm('이 기기의 지금 진행을 코드의 진행으로 바꿀까요?')) return;
+      S = tidy(r.state); S.screen = 'intro'; save(); render();
+      note('진행을 불러왔어요 이어서 하기를 눌러 주세요', 5000);
+    });
+    inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') load.click(); });
+    const line2 = el('div', 'v2-transfer-line'); line2.append(inp, load);
+    body.append(line2, status);
+    box.append(body);
+    return box;
   }
 
   // ---------- 2. 오프닝 ----------
@@ -196,6 +277,7 @@ async function main() {
     const scroller = el('div', 'v2-scroll');
     const pan = el('div', 'v2-pan');
     const img = pic(el('img', 'v2-stage-img'), scene.image); img.alt = scene.name; img.decoding = 'async'; pan.append(img);
+    img.addEventListener('load', () => warm([...propsIn(ep.id, [...Object.values(ep.devices).filter((d) => d.scene === scene.id), ...scene.hotspots.map((h) => ep.docs[h.doc])]), ...[...ep.scenes.filter((sc) => ep.devices[sc.unlockedBy]?.scene === scene.id), ep.scenes[ep.scenes.indexOf(scene) + 1]].map((sc) => sc?.image)]), { once: true });
     (scene.overlays || []).forEach((o) => { const nn = html('div', 'v2-stage-ov ' + (o.cls || ''), o.html); nn.style.cssText = `left:${o.x}%;top:${o.y}%;width:${o.w}%;height:${o.h}%;${o.style || ''}`; nn.setAttribute('aria-hidden', 'true'); pan.append(nn); });
     const autoTravel = ep.scenes.filter((sc) => sc.unlockedBy && S.solved.includes(sc.unlockedBy) && ep.devices[sc.unlockedBy]?.scene === scene.id && !S.visited.includes(sc.id)).map((sc, i, arr) => ({ id: 'go-' + sc.id, x: arr.length > 1 ? 30 + i * (40 / (arr.length - 1)) : 50, y: 92, label: sc.name + '(으)로 가기', kind: 'travel', to: sc.id, auto: true }));
     const travelRow = el('div', 'v2-travel-row');
@@ -212,7 +294,9 @@ async function main() {
       pan.append(b);
     });
     scroller.append(pan); stage.append(scroller);
-    if (travelRow.children.length) stage.append(travelRow);
+    // 새 길 버튼 줄은 무대 밖 상자에 둔다: PC는 그림 위 아래쪽에 띄우고, 휴대폰(그림을 밀어 보는 화면)은 무대 바로 아래로 빼서 누름 자리를 가리지 않게
+    const stageBox = el('div', 'v2-stage-box'); stageBox.append(stage);
+    if (travelRow.children.length) { stageBox.append(travelRow); stageBox.classList.add('has-travel'); sec.classList.add('has-travel'); }
     // 양옆 화살표: 그림이 화면보다 넓으면(휴대폰) 그림을 옆으로 밀고, 아니면(PC) 열린 장소끼리 오간다
     const k = places.indexOf(scene);
     const goPlace = (d) => { const t = places[(k + d + places.length) % places.length]; S.scene = t.id; save(); play('door'); render(); };
@@ -238,7 +322,7 @@ async function main() {
     }));
     // 살펴볼 곳 잠깐 보기
     // '?'는 그림 위가 아니라 위 줄에 (그림 속 물건을 가리지 않게)
-    const peek = btn('v2-hud-btn v2-peek', '', () => { stage.classList.add('peek'); clearTimeout(peek._t); peek._t = setTimeout(() => stage.classList.remove('peek'), 2600); }, '살펴볼 곳 잠깐 보기');
+    const peek = btn('v2-hud-btn v2-peek', '', () => { stage.querySelector('.v2-pan-tip')?.remove(); stage.classList.add('peek'); clearTimeout(peek._t); peek._t = setTimeout(() => stage.classList.remove('peek'), 2600); }, '살펴볼 곳 잠깐 보기');
     peek.append(el('span', 'ico q', '?'), el('span', 'lab', '살펴보기'));
     tools.prepend(peek);
     // 대사창: 처음 온 장면(또는 이번 접속에서 처음 보는 장면)에 한 번, 누르면 넘어간다
@@ -258,10 +342,16 @@ async function main() {
     if (sceneSeen.has(scene.id) && !firstVisit) { talk.classList.add('gone', 'typed'); } else { talkBtn.hidden = true; sceneSeen.add(scene.id); const tdone = [...(line || '')].length * 28 + 300; setTimeout(() => talk.classList.add('typed'), tdone); setTimeout(() => { if (talk.isConnected && !talk.classList.contains('gone')) { talk.classList.add('gone'); talkBtn.hidden = false; } }, tdone + 6500); }
     stage.append(talk, talkBtn);
     if (ep.mood) stage.dataset.mood = ep.mood;
-    sec.append(stage);
+    sec.append(stageBox);
     // 가까이 봤던 자리에서 물러나기
     if (zoomBack && zoomBack.scene === scene.id) { const zb = zoomBack; zoomBack = null; requestAnimationFrame(() => { if (zb.sl != null) scroller.scrollLeft = zb.sl; zoomTo(stage, pan, zb.x, zb.y, false); requestAnimationFrame(() => requestAnimationFrame(() => { pan.style.transition = ''; pan.style.transform = ''; stage.classList.remove('zoomed'); })); }); }
-    else requestAnimationFrame(() => { const x = S.pan?.[scene.id]; if (scroller.scrollWidth > scroller.clientWidth + 4) scroller.scrollLeft = x ?? (scroller.scrollWidth - scroller.clientWidth) / 2; });
+    // 처음 보이는 위치: 이 장면에서 밀어 둔 자리가 있으면 그대로, 없으면 scene.focusX(그림 가로 0~100%, 숫자 또는 (S) => 숫자)를 가운데로, 그것도 없으면 한가운데
+    else requestAnimationFrame(() => {
+      const max = scroller.scrollWidth - scroller.clientWidth; if (max <= 4) return;
+      const fx = typeof scene.focusX === 'function' ? scene.focusX(S) : scene.focusX;
+      const x = S.pan?.[scene.id] ?? (Number.isFinite(fx) ? pan.offsetWidth * fx / 100 - scroller.clientWidth / 2 : max / 2);
+      scroller.scrollLeft = Math.max(0, Math.min(max, x));
+    });
     scroller.addEventListener('scroll', () => { S.pan = S.pan || {}; S.pan[scene.id] = Math.round(scroller.scrollLeft); }, { passive: true });
     // 마지막 장치를 풀었는데 아직 엔딩에 안 갔으면, 어떤 경로로 돌아왔든 엔딩 버튼을 계속 보여 준다
     const endDev = Object.values(ep.devices).find((dv, i) => dv.reveal?.ending && S.solved.includes(Object.keys(ep.devices)[i]));
@@ -288,8 +378,8 @@ async function main() {
     // 그림 속 물건을 누르면 그쪽으로 다가간 뒤 창이 열린다
     const stage = node?.closest?.('.v2-stage'), pan = stage?.querySelector('.v2-pan');
     if (stage && pan && h.kind !== 'travel' && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      zoomBack = { scene: S.scene, x: h.x, y: h.y, sl: pan.parentElement.scrollLeft }; zoomTo(stage, pan, h.x, h.y);
-      setTimeout(() => act(h), 320); return;
+      zoomBack = { scene: S.scene, x: h.x, y: h.y, sl: pan.parentElement.scrollLeft }; zoomTo(stage, pan, h.x, h.y); pushGuard();
+      setTimeout(() => { if (stage.classList.contains('zoomed')) act(h); }, 320); return; // 그사이 뒤로가기로 물러났으면 창을 열지 않는다
     }
     if (h.kind === 'doc') openDoc(h.doc);
     else if (h.kind === 'device') openDevice(h.device);
@@ -344,7 +434,7 @@ async function main() {
     // 왼쪽: 장치
     const node = el('section', 'v2-device');
     const head = el('div', 'v2-device-head');
-    head.append(el('p', 'v2-eyebrow', [solved ? '해결한 장치' : '', dev.hintCode || ''].filter(Boolean).join(' · ')));
+    head.append(el('p', 'v2-eyebrow', solved ? '해결한 장치' : ''));
     head.append(el('h2', 'v2-doc-title', dev.title));
     head.append(el('p', 'v2-device-intro', dev.intro));
     let hintBlock = null;
@@ -382,7 +472,7 @@ async function main() {
       const go = btn('v2-primary', dev.commitLabel || '확인', () => {
         const r = dev.check(d, S); save();
         if (r.ok) { solve(did); return; }
-        status.textContent = r.msg; status.classList.add('wrong'); play('lock'); draw();
+        status.textContent = r.msg; status.classList.add('wrong'); play('lock'); buzz([10, 60, 10]); draw();
       });
       actions.append(go);
       ctx.commit = () => go.click();
@@ -429,7 +519,7 @@ async function main() {
     const dev = deviceOf(did);
     if (!S.solved.includes(did)) S.solved.push(did);
     save();
-    play(dev.reveal?.ending ? 'door' : 'keys');
+    play(dev.reveal?.ending ? 'door' : 'keys'); buzz(18);
     const node = el('article', 'v2-paper v2-reveal');
     node.append(el('p', 'v2-eyebrow', '풀렸다'));
     node.append(el('h2', 'v2-doc-title', dev.reveal.title));
@@ -456,14 +546,14 @@ async function main() {
     const open = ids.filter((d) => S.solved.includes(d) || deviceShown(d));
     const cur = pick || activeDevices()[0] || open[open.length - 1];
     const tabs = el('div', 'v2-hint-tabs');
-    open.forEach((d) => { const dev = ep.devices[d]; tabs.append(btn('v2-chip' + (d === cur ? ' on' : '') + (S.solved.includes(d) ? ' done' : ''), `${dev.hintCode} ${dev.title}`, () => openHints(d))); });
+    open.forEach((d) => { const dev = ep.devices[d]; tabs.append(btn('v2-chip' + (d === cur ? ' on' : '') + (S.solved.includes(d) ? ' done' : ''), dev.title, () => openHints(d))); });
     node.append(tabs);
     if (cur) {
       const dev = ep.devices[cur];
       const tier = S.hints[cur] || 0;
       const box = el('div', 'v2-hint-box');
       if (S.solved.includes(cur)) {
-        box.append(el('p', 'v2-note', '이미 해결한 장치입니다 풀이를 다시 볼 수 있습니다'));
+        box.append(el('p', 'v2-note', '이미 푼 장치 풀이를 다시 볼 수 있다'));
         (typeof dev.hints === 'function' ? dev.hints(S) : dev.hints).forEach((h, i) => box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${h}`)));
       } else {
         const hs = typeof dev.hints === 'function' ? dev.hints(S) : dev.hints; for (let i = 0; i < tier; i++) box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${hs[i]}`));
@@ -485,7 +575,7 @@ async function main() {
     node.append(el('h2', 'v2-doc-title', '의견 남기기'));
     node.append(el('p', 'v2-feedback-lead', '막힌 곳, 이상한 문장, 재미없던 장치, 뭐든 좋습니다 만든 사람이 직접 읽습니다'));
     const ta = el('textarea', 'v2-textarea'); ta.rows = 6; ta.maxLength = 2000; ta.placeholder = '예: 보관함 숫자를 어디서 세는지 한참 헤맸어요'; ta.setAttribute('aria-label', '의견');
-    const contact = el('input', 'v2-input'); contact.type = 'text'; contact.maxLength = 120; contact.placeholder = '답장 받을 이메일이나 연락처 (선택)'; contact.setAttribute('aria-label', '연락처(선택)');
+    const contact = el('input', 'v2-input'); contact.type = 'text'; contact.maxLength = 120; contact.placeholder = '답장 받을 이메일 (선택)'; contact.setAttribute('aria-label', '이메일(선택)');
     const status = el('p', 'v2-status'); status.setAttribute('role', 'status');
     const send = btn('v2-primary', '보내기', async () => {
       const text = ta.value.trim();

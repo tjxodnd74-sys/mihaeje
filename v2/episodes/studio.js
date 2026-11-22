@@ -30,15 +30,6 @@ const failText = (f) => {
 };
 const PRESSED_LIT = 'C3 · 8×10 · 4×6 3초<br>셋 다 · 간판 밑<br>안 흔들린 컷';
 const PRESSED_DIM = '▒▒ · ▒▒▒ · ▒▒▒ ▒▒<br>▒ ▒ · ▒▒ ▒<br>▒ ▒▒▒ ▒';
-// 휴대폰에서 이 장면에 처음 왔을 때 그림의 어느 가로 위치(fx, 0~1)를 화면 가운데에 둘지 (엔진은 저장된 S.pan 이 없으면 그림 한가운데를 보여 준다)
-// 접수실은 한가운데로 열면 초록 등 밑 봉투(68%)가 오른쪽 화살표 밑에 걸린다
-function firstLook(S, id, fx) {
-  try {
-    if (window.innerWidth > 640 || S.pan?.[id] != null) return;
-    const h = Math.min(window.innerHeight * 0.74, 640), w = h * 1024 / 688;
-    S.pan = S.pan || {}; S.pan[id] = Math.max(0, Math.round(w * fx - window.innerWidth / 2));
-  } catch {}
-}
 
 export default {
   id: 'studio',
@@ -77,10 +68,10 @@ export default {
   scenes: [
     {
       id: 'front',
+      focusX: 56,
       name: '접수실',
       image: P + 'front.webp',
       arrive: (S) => {
-        firstLook(S, 'front', 0.56);
         // 암실 열쇠로 문을 연 뒤에는 '잠겨 있다'가 남지 않게
         if (S.solved.includes('lightbox')) return '창을 두드리는 빗소리 말고는 조용하다 암실 문 위 붉은 등 아래, 작은 열쇠로 연 문이 열려 있다 고른 컷은 슬리브에 넣어 들고 있다';
         return '창을 두드리는 빗소리 말고는 조용하다 가로등 불빛이 젖은 길에 번진다 접수대 초록 등 밑에 누런 봉투 왼쪽 벽은 필름 보관함 암실 문 위 붉은 등만 혼자 켜져 있다 문은 잠겨 있다';
@@ -100,7 +91,8 @@ export default {
       name: '작업대',
       image: P + 'table.webp',
       unlockedBy: 'lockers',
-      arrive: '라이트박스를 켜자 작업대가 하얗게 떴다 필름 네 줄을 올려놓았다 몇 줄은 앞뒤가 뒤집혀 있다 장갑을 끼고 루페를 집었다',
+      // 컷을 고른 뒤에는 '뒤집혀 있다'가 남지 않게
+      arrive: (S) => S.solved.includes('lightbox') ? '라이트박스는 아직 하얗게 켜져 있다 고른 컷은 슬리브에 넣었고 나머지 필름 줄은 앞뒤를 바로 놓아 두었다 암실 문은 접수실 뒤 붉은 등 밑이다' : '라이트박스를 켜자 작업대가 하얗게 떴다 필름 네 줄을 올려놓았다 몇 줄은 앞뒤가 뒤집혀 있다 장갑을 끼고 루페를 집었다',
       hotspots: [
         { id: 'lightbox', x: 43, y: 58, r: 16, label: '라이트박스 위 필름', kind: 'device', device: 'lightbox' },
         { id: 'loupe', x: 61, y: 52, r: 9, label: '루페로 본 필름 가장자리', kind: 'doc', doc: 'edge' },
