@@ -1531,6 +1531,33 @@ html[data-case="studio"] .oldphoto{max-width:360px}
 html[data-case="studio"] .oldphoto img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:27.4% 50%;filter:grayscale(1)}
 html[data-case="studio"] .st-fail-img img{aspect-ratio:4/5;object-fit:cover;object-position:27.4% 50%;filter:grayscale(1)}
 html[data-case="studio"] .st-fail.smear .st-fail-img i{filter:blur(2px) contrast(1.4) saturate(1.3)}
+/* 사진관 휴대폰 기록 반영: 막대 손잡이 40px · 봉투 큰 글씨 자리 미리 잡기 · 가로 휴대폰에선 그림과 조작을 옆으로 (봉투 · 라이트박스 · 이젤) · 필름 상표 글자는 휴대폰에선 뺌(번호만 단서) */
+html[data-case="studio"] .tilt-label input[type=range]{height:40px;margin:0}
+html[data-case="studio"] .lamp-wrap .st-pressed-big{min-height:calc(22px * 1.35 * 3);margin:0}
+@media (max-width:640px),(orientation:landscape) and (max-height:500px){html[data-case="studio"] .strip-edge .brand{display:none}}
+@media (orientation:landscape) and (max-height:500px){
+  html[data-case="studio"] .lamp-wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:4px 16px;align-items:center}
+  html[data-case="studio"] .lamp-wrap .envtilt{grid-column:1;grid-row:1/span 2;margin:0;width:100%;max-width:calc((100svh - 130px) * 1024 / 688);justify-self:center}
+  html[data-case="studio"] .lamp-wrap .tilt-label{grid-column:2;grid-row:1;align-self:end}
+  html[data-case="studio"] .lamp-wrap .st-pressed-big{grid-column:2;grid-row:2;align-self:start;font-size:20px}
+  html[data-case="studio"] .lightbox-wrap{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:12px;align-items:start}
+  html[data-case="studio"] .lightbox-wrap>.st-loupe,html[data-case="studio"] .lightbox-wrap>.pick-label{position:sticky;top:0;margin:0;max-width:none}
+  html[data-case="studio"] .lightbox-wrap .lightbox{gap:6px;padding:6px}
+  html[data-case="studio"] .lightbox-wrap .strip-row{grid-template-columns:minmax(0,1fr) auto;gap:6px}
+  html[data-case="studio"] .lightbox-wrap .strip-tools{order:0}
+  html[data-case="studio"] .lightbox-wrap .strip-tools .ctl{min-width:44px;min-height:44px;padding:4px 6px}
+  html[data-case="studio"] .lightbox-wrap .strip-tools .ctl::after{content:none}
+  html[data-case="studio"] .easel-wrap{display:grid;grid-template-columns:minmax(0,auto) minmax(150px,1fr);gap:8px 14px;align-items:center}
+  html[data-case="studio"] .easel-wrap .st-easel{grid-row:1/span 2;width:calc((100svh - 120px) * 1024 / 688);max-width:100%;margin:0}
+  html[data-case="studio"] .easel-wrap .st-easel-ctl{flex-direction:column;align-items:stretch;margin:0}
+  html[data-case="studio"] .easel-wrap .pick-label{margin:0;font-size:13px}
+}
+/* 가로 휴대폰은 PC 두 칸 배치를 쓰는데, 흰 불 병 라벨 글(.mobile-only)이 '트레이 셋' 글과 같은 칸에 겹치던 것 */
+@media (min-width:641px) and (orientation:landscape) and (max-height:500px){
+  html[data-case="studio"] .st-print>.pick-label.mobile-only{grid-column:2;grid-row:5;margin:0 0 6px;font-weight:700}
+  html[data-case="studio"] .st-print>.chip{grid-row:6}
+  html[data-case="studio"] .st-print>.st-fail{grid-row:7}
+}
 
 /* 정비소: 철판 · 형광등 · 노랑 경고띠 · 보고서 */
 html[data-case="garage"]{
