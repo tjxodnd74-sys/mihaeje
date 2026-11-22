@@ -286,7 +286,7 @@
     "title": "돌아오는 계절",
     "subtitle": "오행당에 맡겨둔 것",
     "genre": "오행 · 사주 미스터리",
-    "minutes": 30,
+    "minutes": 35,
     "difficulty": "★★★",
     "difficultyLevel": 3,
     "image": "assets/covers/ohang-v1.webp",
@@ -309,7 +309,7 @@
     "imageAlt": "비 오는 저녁, 불 켜진 오행당 문 앞에 선 사람",
     "fragment": {
       "label": "오행당 · 다시 연 날",
-      "text": "일주일 뒤 오행당은 다시 문을 열었습니다. 지원이 할머니 자리에 앉아 남쪽을 보고 차를 끓입니다"
+      "text": "접수표 묶음 마지막 장에 지원의 글씨가 한 줄 늘었습니다 할머니 자리에서 남쪽을 보고 끓인 첫 차였습니다"
     }
   }
 ]
