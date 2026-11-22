@@ -2197,6 +2197,29 @@ html[data-case="laundry"] .prop.cctv{overflow:hidden;isolation:isolate} /* v127:
 html[data-case="laundry"] .sched-chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
 html[data-case="laundry"] .sched-chips .chip{min-width:0;padding-left:4px;padding-right:4px;font-variant-numeric:tabular-nums}
 html[data-case="laundry"] .sg-row{font-size:2.3cqw}
+/* v136 세탁소 최종 점검: 13px 이하 글자 올림 · 패널 버튼 누름 자리 40px 넘게 · 동전 봉투 */
+html[data-case="laundry"] .receipt{font-size:13px}
+html[data-case="laundry"] .receipt b{font-size:13px}
+@media (max-width:640px){html[data-case="laundry"] .term-table.log6{font-size:13px}html[data-case="laundry"] .term-table.log6 td,html[data-case="laundry"] .term-table.log6 th{padding:4px 2px}}
+html[data-case="laundry"] .dpanel button.pbtn::after{content:"";position:absolute;inset:-5px;border-radius:50%}
+html[data-case="laundry"] .dpanel.small .pbtn{cursor:default;font-size:3.2cqw}
+html[data-case="laundry"] .coin-wrap{max-width:520px;margin:0 auto;display:grid;gap:10px;justify-items:center}
+html[data-case="laundry"] .coin-env{position:relative;width:100%;min-height:150px;background:linear-gradient(#efe4c8,#e2d3ae);border-radius:6px;box-shadow:0 6px 16px rgba(0,0,0,.35);padding:34px 14px 14px;overflow:hidden}
+html[data-case="laundry"] .coin-flap{position:absolute;left:0;right:0;top:0;height:30px;background:linear-gradient(#d9c79c,#cdb98a);clip-path:polygon(0 0,100% 0,50% 100%)}
+html[data-case="laundry"] .coin-in{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;min-height:90px}
+html[data-case="laundry"] .coin-in em{font-style:normal;font-size:14px;color:#6b5d3e}
+html[data-case="laundry"] .coin{display:inline-block;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f4f4ee,#b9bcb8 55%,#8d918e);box-shadow:inset 0 0 0 2px rgba(0,0,0,.18),0 1px 2px rgba(0,0,0,.35)}
+html[data-case="laundry"] .coin-roll{display:inline-grid;place-items:center;width:34px;height:84px;border-radius:5px;background:repeating-linear-gradient(180deg,#c9b17a 0 6px,#bfa56a 6px 7px);box-shadow:inset 0 0 0 2px rgba(0,0,0,.12),0 2px 3px rgba(0,0,0,.3)}
+html[data-case="laundry"] .coin-roll b{font-size:13px;color:#3d3120;writing-mode:vertical-rl}
+html[data-case="laundry"] .coin-count{margin:0;font-variant-numeric:tabular-nums}
+html[data-case="laundry"] .coin-pile{display:flex;align-items:center;gap:10px;min-height:52px;padding:6px 18px;border-radius:10px;border:1px solid var(--line);background:var(--chip);color:var(--enamel);font-size:16px;font-weight:700;touch-action:manipulation}
+html[data-case="laundry"] .coin-pile span{display:flex}
+html[data-case="laundry"] .coin-pile .coin{margin-left:-12px}
+html[data-case="laundry"] .coin-pile .coin:first-child{margin-left:0}
+html[data-case="laundry"] .coin-pile:active{transform:translateY(1px)}
+html[data-case="laundry"] .coin-keys{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+html[data-case="laundry"] .coin-keys .chip{min-height:44px}
+html[data-case="laundry"] .chat-date{background:rgba(0,0,0,.55);font-size:13px}
 html[data-case="laundry"] .receipt{font-size:13px}
 html[data-case="laundry"] .receipt b{font-size:13px}
 html[data-case="laundry"] .v2-paper p,html[data-case="laundry"] .v2-device-intro{text-wrap:pretty;word-break:keep-all}
