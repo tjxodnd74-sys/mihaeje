@@ -199,6 +199,7 @@ async function catInvite({ mobile = false } = {}) {
     await hotspot(page, '창턱의 상자');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), 'no in-device guide');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .boxlid img').length === 1 && document.querySelectorAll('dialog[open] .pocket').length === 5), 'seasons: box lid photo + 5 pockets');
+    if (mobile) L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .photo-pick')].every((b) => b.getBoundingClientRect().width >= 90)), 'seasons: mobile photos big enough to see kitten vs grown cat (3 + 2)');
     await commit(page);
     L.check((await status(page)).includes('다섯을 다 채워야'), 'seasons: empty explained');
     const trayH = await page.evaluate(() => document.querySelector('dialog[open] .photo-tray').getBoundingClientRect().height);
@@ -243,6 +244,7 @@ async function catInvite({ mobile = false } = {}) {
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .paw-book.live .paw-cell').length === 4), 'mailbox: 4 paw prints');
     await L.click(page, '3번째 발도장에 트레이싱지 얹기', { exact: true });
     L.check(await page.evaluate(() => !!document.querySelectorAll('dialog[open] .paw-book.live .paw-cell')[2].querySelector('.tracing')), 'mailbox: tracing laid on print 3');
+    if (mobile) L.check(await page.evaluate(() => { const z = document.querySelector('dialog[open] .trace-zoom'); return !!z && z.getBoundingClientRect().width > 140 && !!z.querySelector('.tracing') && z.querySelectorAll('.paw').length === 2; }), 'mailbox: mobile big view shows the print under the tracing');
     const setMail = async (digits) => { for (let i = 0; i < 4; i++) { const cur = await page.evaluate((i) => Number(document.querySelectorAll('dialog[open] .mail-dials .num')[i].textContent), i); for (let k = 0; k < (digits[i] - cur + 10) % 10; k++) await L.click(page, `${i + 1}번째 자리 올리기`, { exact: true }); } };
     await setMail([0, 6, 1, 2]); await commit(page); L.check((await status(page)).includes('오늘이다'), 'mailbox: invite-date trap message');
     await setMail([0, 3, 2, 8]); await commit(page); L.check((await status(page)).includes('꿈쩍'), 'mailbox: neutral wrong');
@@ -697,6 +699,7 @@ async function garage({ mobile = false } = {}) {
     L.check(await dlgHas(page, '차 안의 강민호'), 'video solved');
     await L.click(page, '계속'); await L.sleep(300);
     await hotspot(page, '걸려 있는 재킷 세 벌');
+    if (mobile) L.check(await page.evaluate(() => { const c = [...document.querySelectorAll('dialog[open] .jackets-wrap .pick-row .chip')].map((b) => b.getBoundingClientRect()); return c.length === 3 && c[1].left - c[0].right >= 4; }), 'jackets: mobile chips have a gap');
     await L.click(page, '진회색 재킷 칼라 보기', { exact: true }); L.check(await dlgHas(page, '강민호'), 'jackets: collar tag shown'); L.check(!(await dlgHas(page, 'SD카드')), 'jackets: no SD-case giveaway'); await commit(page);
     L.check((await status(page)).includes('재킷과 다르다'), 'jackets: neutral wrong message');
     await L.click(page, '회색 재킷 칼라 보기', { exact: true }); await shot(page, 'g-jackets'); await commit(page); L.check(await dlgHas(page, '소매의 반사띠'), 'jackets solved');

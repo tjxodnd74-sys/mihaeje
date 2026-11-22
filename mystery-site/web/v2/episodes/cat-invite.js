@@ -84,15 +84,16 @@ function seatChart(d = {}) {
   const seat = (id, x, y, label) => {
     const who = d[id];
     // 선물을 놓아도 자리 이름은 작게 남는다
-    return `<g class="seat-box${who ? ' named' : ''}" data-seat="${id}" role="button" tabindex="0" aria-label="${label} 방석${who ? ': ' + names[who] : ' (비어 있음)'}"><rect x="${x - 15}" y="${y - 8}" width="30" height="16" rx="5" fill="${who ? 'rgba(255,255,255,.55)' : 'rgba(255,255,255,.01)'}"/>${pen(`M${x - 13} ${y - 6} h26 v12 h-26 z`, 1.1)}${who ? txt(x, y - 1.6, 3.4, label, '#6b6157') + txt(x, y + 4.2, 5, names[who], GIFT_OF[who][1]) : txt(x, y + 2, 5.2, label)}</g>`;
+    // 빈 방석도 종이색으로 채워 평상 테두리 선이 이름 밑으로 지나가지 않게, 긴 이름(골목 입구 쪽)은 칸 안에 들어가게 조금 작게
+    return `<g class="seat-box${who ? ' named' : ''}" data-seat="${id}" role="button" tabindex="0" aria-label="${label} 방석${who ? ': ' + names[who] : ' (비어 있음)'}"><rect x="${x - 15}" y="${y - 8}" width="30" height="16" rx="5" fill="rgba(255,255,255,.01)"/><rect x="${x - 13}" y="${y - 6}" width="26" height="12" fill="${who ? 'rgba(255,255,255,.7)' : 'rgba(253,252,248,.94)'}"/>${pen(`M${x - 13} ${y - 6} h26 v12 h-26 z`, 1.1)}${who ? txt(x, y - 1.6, 3.4, label, '#6b6157') + txt(x, y + 4.2, 5, names[who], GIFT_OF[who][1]) : txt(x, y + 1.8, label.length > 5 ? 4.3 : 5, label)}</g>`;
   };
   return `<svg viewBox="0 0 120 100" class="seat-chart" role="img" aria-label="평상 자리표">
    ${pen('M32 34 h56 v32 h-56 z', 1.7)}${pen('M35 40 h50 M35 46 h50 M35 52 h50 M35 58 h50', 0.45)}
    ${txt(60, 52, 6, '평상')}
-   ${pen('M60 3 v6 M53 7 c2 -6 12 -6 14 0 c3 -3 5 2 1 4 c-5 2 -11 2 -16 0 c-4 -2 -2 -7 1 -4 z', 0.8)}${txt(60, 15.5, 5, '감나무')}
+   ${pen('M60 3 v6 M53 7 c2 -6 12 -6 14 0 c3 -3 5 2 1 4 c-5 2 -11 2 -16 0 c-4 -2 -2 -7 1 -4 z', 0.8)}${txt(77, 9.5, 5, '감나무')}
    ${pen('M111 42 h8 v12 h-8 z M115 54 v8 M112 46 h6', 0.8)}${txt(114, 68, 5, '우체통')}
-   ${pen('M46 93 h28 v6 h-28 z M60 93 v6 M46 93 l14 -5 l14 5', 0.8)}${txt(60, 90, 5, '꽃집 문')}
-   ${pen('M3 40 l6 10 l-6 10 M12 40 l6 10 l-6 10', 0.7)}${txt(10, 67, 5, '골목 입구')}
+   ${pen('M46 93 h28 v6 h-28 z M60 93 v6 M46 93 l14 -5 l14 5', 0.8)}${txt(35, 97.5, 5, '꽃집 문')}
+   ${pen('M4 63 l5 6 l-5 6 M11 63 l5 6 l-5 6', 0.7)}${txt(11, 82, 5, '골목 입구')}
    ${seat('tree', 60, 25, '감나무 쪽')}${seat('post', 95, 50, '우체통 쪽')}${seat('shop', 60, 76, '꽃집 쪽')}${seat('lane', 22, 50, '골목 입구 쪽')}
   </svg>`;
 }
@@ -150,7 +151,9 @@ export default {
       id: 'alley',
       name: '골목 · 동물병원과 빵집',
       image: P + 'alley.webp',
-      arrive: (S) => (S.solved.includes('seasons')
+      arrive: (S) => (S.solved.includes('gifts')
+        ? '선물 넷은 종이 가방에 챙겨 들었다 봄이가 이번엔 골목 끝 쪽으로 자꾸 고개를 돌린다'
+        : S.solved.includes('seasons')
         ? '봄이가 이번엔 빵집 쪽으로 코를 킁킁댔다 벤치 옆 바구니에서 버터 냄새가 났다'
         : '봄이가 품에서 몸을 비틀더니 병원 창턱 쪽으로 고개를 쭉 뺐다 병원은 오늘 휴진이고 빵집은 아직 준비 중이다 병원 창턱에 상자가 하나 놓여 있다'),
       hotspots: [
@@ -362,6 +365,10 @@ export default {
         });
         wrap.append(book);
         wrap.append(el('p', 'pick-label', d.over === null ? '트레이싱지는 지금 손에 들고 있다' : `트레이싱지를 ${d.over + 1}번째 발도장 위에 얹었다`));
+        // 휴대폰: 발도장 칸이 작아서 겹친 모습을 크게 한 번 더 (얹기 전엔 손에 든 트레이싱지만, 자리 크기는 같게)
+        const zoom = el('div', 'trace-zoom mobile-only'); zoom.setAttribute('aria-hidden', 'true');
+        zoom.innerHTML = `<span class="paw-stack">${d.over === null ? '' : pawSvg(BOOK[d.over].paw)}${tracingSvg()}</span><small>${d.over === null ? '손에 든 트레이싱지' : `${d.over + 1}번째 발도장 위 · 크게`}</small>`;
+        wrap.append(zoom);
         const row = el('div', 'dials mail-dials');
         for (let i = 0; i < 4; i++) {
           const col = el('div', 'dial');

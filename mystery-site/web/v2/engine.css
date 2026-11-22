@@ -1033,6 +1033,15 @@ html[data-case="cat-invite"] .gift-chip{min-height:48px}
   html[data-case="cat-invite"] .paw-cell small{font-size:13px}
   html[data-case="cat-invite"] .paw-cell em{font-size:13px}
   html[data-case="cat-invite"] .seat-btns small{font-size:13px}
+  /* 휴대폰 점검: 사진 다섯 장이 한 줄이면 60px라 봄이 크기가 안 보임 → 세 장 + 두 장 */
+  html[data-case="cat-invite"] .photo-tray{grid-template-columns:repeat(6,minmax(0,1fr));gap:12px 10px}
+  html[data-case="cat-invite"] .photo-pick{grid-column:span 2;font-size:15px;padding:4px 4px 6px}
+  html[data-case="cat-invite"] .photo-pick:nth-child(4){grid-column:2/span 2}
+  /* 우체통: 트레이싱지를 얹은 발도장을 크게 (작은 칸에선 굽은 발가락·패인 자리가 안 보임) */
+  html[data-case="cat-invite"] .trace-zoom{display:grid;justify-items:center;gap:4px;margin:2px auto 10px;padding:10px;background:#fbf6ea;border-radius:4px;box-shadow:inset 0 0 0 1px #e3d3b6;max-width:240px}
+  html[data-case="cat-invite"] .trace-zoom .paw-stack{width:150px;max-width:150px;aspect-ratio:1}
+  html[data-case="cat-invite"] .trace-zoom .paw:not(.tracing){width:100%;height:100%;display:block}
+  html[data-case="cat-invite"] .trace-zoom small{font:13px var(--sans);color:#6b5a3e}
 }
 
 /* 오행당: 한지 · 먹 · 다섯 빛 띠 */
@@ -1453,6 +1462,9 @@ html[data-case="garage"] .report-wrap .chip{min-height:40px}
   html[data-case="garage"] .sync-legend{font-size:13px}
   html[data-case="garage"] .vid-osd,html[data-case="garage"] .vid-ends{font-size:13px}
   html[data-case="garage"] .safedoor .knob{font-size:4cqw}
+  /* 휴대폰 점검: 재킷 칩 줄이 .mobile-only(block)에 덮여 칩끼리 붙던 것 · 면담 기록 항목 칸이 두 줄로 깨지던 것 */
+  html[data-case="garage"] .jackets-wrap .pick-row.mobile-only{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 8px}
+  html[data-case="garage"] .term-table td:first-child{white-space:nowrap}
 }
 
 /* 반송된 편지: 우체국 빨강 · 항공우편 띠 · 흰 봉투 */
