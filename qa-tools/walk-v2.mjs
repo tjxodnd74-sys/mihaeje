@@ -962,7 +962,7 @@ async function apartment({ mobile = false } = {}) {
     { const p = await doorBtn(1); if (mobile) { await page.touchscreen.tap(p.x, p.y); } else { await page.mouse.move(p.x, p.y); } await L.sleep(200); }
     L.check((await cap()).includes('물 자국'), 'cellar: flashlight shows the water line on the 2nd door');
     { const p = await doorBtn(0); if (mobile) await page.touchscreen.tap(p.x, p.y); else await page.mouse.click(p.x, p.y); await L.sleep(250); }
-    L.check((await cap()).includes('관리실'), 'cellar: 1st door shows the office padlock');
+    L.check((await cap()).includes('자물쇠'), 'cellar: 1st door shows the padlock');
     await commit(page); L.check((await status(page)) === '열쇠가 반쯤 들어가다 턱 걸린다 이 문이 아니다', 'cellar: spray-paint 1 decoy neutral');
     { const p = await doorBtn(3); if (mobile) await page.touchscreen.tap(p.x, p.y); else await page.mouse.click(p.x, p.y); await L.sleep(250); }
     await shot(page, 'a-cellar'); await commit(page); L.check(await dlgHas(page, '과자 상자'), 'cellar solved');

@@ -140,11 +140,11 @@ function planSvg() {
 }
 // 열쇠 그림 (손에 든 것)
 const keySvg = (n) => `<svg viewBox="0 0 ${n * 46 + 10} 90" class="ring-svg" aria-hidden="true"><circle cx="${n * 23 + 5}" cy="14" r="10" fill="none" stroke="#8a8a8a" stroke-width="3"/>${Array.from({ length: n }, (_, i) => { const x = 10 + i * 46; const c = i ? '#b9bcc0' : '#c9a24e'; return `<g transform="translate(${x} 22) rotate(${i ? 8 : -8} 18 0)"><circle cx="18" cy="12" r="11" fill="${c}"/><circle cx="18" cy="12" r="4" fill="#20232a"/><rect x="15" y="20" width="7" height="40" fill="${c}"/><path d="M22 44 h7 v4 h-4 v4 h5 v5 h-8z" fill="${c}"/></g>`; }).join('')}</svg>`;
-// 엉킨 연장선 세 가닥 (위: 타이머 소켓 셋 — 사진 속 소켓 가운데 21.8% · 50% · 78.6% 에서 나온다 · 아래: 선 끝 테이프)
+// 엉킨 연장선 세 가닥 (위: timers.webp 를 y 165~476 만 잘라 보인다 — 사진 아래 끝에서 플러그 선이 나오는 자리 24.3% · 52% · 78.3% 에서 이어진다 · 아래: 선 끝 테이프)
 const WIRES = [
-  { from: 'L', d: 'M218 0 C218 110 690 70 640 190 S170 250 300 360 S880 400 800 560' },
-  { from: 'M', d: 'M500 0 C500 90 880 150 770 255 S280 290 430 420 S150 450 200 560' },
-  { from: 'R', d: 'M786 0 C786 130 300 110 250 225 S720 320 610 420 S440 500 500 560' },
+  { from: 'L', d: 'M243 0 C243 110 690 70 640 190 S170 250 300 360 S880 400 800 560' },
+  { from: 'M', d: 'M520 0 C520 90 880 150 770 255 S280 290 430 420 S150 450 200 560' },
+  { from: 'R', d: 'M783 0 C783 130 300 110 250 225 S720 320 610 420 S440 500 500 560' },
 ];
 const wireSvg = () => `<svg viewBox="0 0 1000 600" class="wire-svg" role="img" aria-label="타이머 셋에서 나온 검은 연장선 세 가닥이 엉켜 아래로 내려간다 선 끝마다 테이프가 붙어 있다">
   ${WIRES.map((w) => `<path d="${w.d}" fill="none" stroke="#d9cfb9" stroke-width="22" stroke-linecap="round"/><path d="${w.d}" fill="none" stroke="#17181b" stroke-width="11" stroke-linecap="round"/>`).join('')}
@@ -152,37 +152,16 @@ const wireSvg = () => `<svg viewBox="0 0 1000 600" class="wire-svg" role="img" a
 </svg>`;
 
 // 뒤편 반지하 철문 넷 (뒤에서 본 왼→오 = B04 · B03 · B02 · B01) 철거 업체 락카 번호는 뒤에서 왼쪽부터 1 2 3 4 (함정)
-// 흔적: B04 관리실 공구 창고 = 새 자물쇠에 「관리실」 꼬리표 · B03 = 23년 장마 물 자국
-const CELLAR_X = [15, 38.5, 62, 85.5], CELLAR_W = 17;
+// 흔적: B04 관리실 공구 창고 = 이 문만 새 황동 자물쇠 · B03 = 23년 장마 물 자국 (cellar.webp 1024×461 에서 잰 문 가운데·폭)
+const CELLAR_X = [18.55, 40.04, 61.33, 83.1], CELLAR_W = 15.5;
 const CELLAR_ANSWER = 3;
 const CELLAR_NAME = ['왼쪽 첫째 철문', '왼쪽 둘째 철문', '왼쪽 셋째 철문', '맨 오른쪽 철문'];
 const CELLAR_SEEN = [
-  '왼쪽 첫째 철문 · 빨간 락카 1 · 고리에 새 자물쇠, 판지 꼬리표 「관리실」',
+  '왼쪽 첫째 철문 · 빨간 락카 1 · 이 문만 고리에 새 황동 자물쇠, 빈 판지 꼬리표',
   '왼쪽 둘째 철문 · 빨간 락카 2 · 아래쪽 무릎 높이까지 누런 물 자국',
-  '왼쪽 셋째 철문 · 빨간 락카 3 · 녹 말고는 아무 표시 없다',
+  '왼쪽 셋째 철문 · 빨간 락카 3 · 온통 녹 말고는 아무 표시 없다',
   '맨 오른쪽 철문 · 빨간 락카 4 · 녹 말고는 아무 표시 없다',
 ];
-function cellarSvg() {
-  const door = (cx, i) => {
-    const x = cx * 4 - 34;
-    const stain = i === 1 ? `<path d="M${x + 1} 166 V138 q8 -3 17 1 t17 -1 t17 2 t15 -2 V166z" fill="#7a5a2e" opacity=".55"/><path d="M${x + 1} 138 q8 -3 17 1 t17 -1 t17 2 t15 -2" fill="none" stroke="#5a3f1c" stroke-width="1.6" opacity=".85"/>` : '';
-    const lock = i === 0 ? `<rect x="${x + 50}" y="98" width="12" height="4" fill="#8d8f8f"/><path d="M${x + 52} 104 v-6 a4 4 0 0 1 8 0 v6" fill="none" stroke="#b9bcbc" stroke-width="1.6"/><rect x="${x + 50}" y="103" width="12" height="11" rx="1.5" fill="#c9a24e"/><path d="M${x + 56} 114 l-4 12" stroke="#6b5a3a" stroke-width=".8"/><rect x="${x + 36}" y="124" width="24" height="13" rx="1" fill="#c8b48a" transform="rotate(-8 ${x + 48} 130)"/><text x="${x + 48}" y="133.5" font-size="7.4" text-anchor="middle" fill="#2b2b2b" font-family="MihaejeHand, sans-serif" transform="rotate(-8 ${x + 48} 130)">관리실</text>` : `<circle cx="${x + 56}" cy="104" r="2.6" fill="#2a2c2e"/><rect x="${x + 53}" y="108" width="6" height="2.2" fill="#3a3c3e"/>`;
-    return `<g><rect x="${x}" y="46" width="68" height="120" fill="url(#cd-steel)" stroke="#2a2c2f" stroke-width="2"/><rect x="${x + 6}" y="54" width="56" height="44" fill="none" stroke="#45494d" stroke-width="1.2"/><rect x="${x + 6}" y="108" width="56" height="50" fill="none" stroke="#45494d" stroke-width="1.2"/>
-      <path d="M${x + 10} 60 l9 3 -4 6z M${x + 44} 150 l12 4 -5 5z" fill="#6b3f22" opacity=".5"/>${stain}${lock}
-      <text x="${x + 34}" y="88" font-size="38" font-weight="800" text-anchor="middle" fill="#c4302a" opacity=".88" font-family="SUIT, sans-serif" filter="url(#cd-spray)">${i + 1}</text></g>`;
-  };
-  return `<svg viewBox="0 0 400 180" class="cellar-svg" role="img" aria-label="건물 뒤편 반지하 철문 넷 문마다 빨간 락카 번호">
-    <defs><linearGradient id="cd-steel" x1="0" x2="1"><stop offset="0" stop-color="#5c6164"/><stop offset=".5" stop-color="#6d7275"/><stop offset="1" stop-color="#555a5d"/></linearGradient>
-    <linearGradient id="cd-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a4a42"/><stop offset=".7" stop-color="#6b6a66"/><stop offset="1" stop-color="#4b4d4c"/></linearGradient>
-    <filter id="cd-spray"><feGaussianBlur stdDeviation=".7"/></filter></defs>
-    <rect width="400" height="180" fill="url(#cd-wall)"/>
-    ${Array.from({ length: 9 }, (_, r) => `<path d="M0 ${r * 5 + 2} H400" stroke="#3e322d" stroke-width=".6" opacity=".7"/>`).join('')}
-    <rect y="40" width="400" height="6" fill="#77756f"/>
-    ${CELLAR_X.map(door).join('')}
-    <rect y="166" width="400" height="14" fill="#2f3428"/><path d="M0 168 q20 -4 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" fill="none" stroke="#45503a" stroke-width="2"/>
-  </svg>`;
-}
-
 export default {
   id: 'apartment',
   number: '002',
@@ -611,8 +590,8 @@ export default {
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'wire-wrap');
-        const top = el('div', 'prop timerphoto wiretop'); top.innerHTML = `<img src="${P}props/timers.webp" alt="상자 속 기계식 타이머 셋 위에 빈 종이테이프가 붙어 있다" decoding="async">`;
-        [['L', 22], ['M', 50], ['R', 78.5]].forEach(([k, x]) => {
+        const top = el('div', 'prop timerphoto wiretop'); top.innerHTML = `<img src="${P}props/timers.webp" alt="회색 공구 상자 속 기계식 타이머 셋 위에 빈 종이테이프가 붙어 있다" decoding="async">`;
+        [['L', 27.6], ['M', 50.2], ['R', 72.7]].forEach(([k, x]) => {
           const b = el('button', 'wire-tape' + (d.tape[k] ? ' set' : '')); b.type = 'button'; b.style.left = x + '%';
           b.setAttribute('aria-label', `${TIMER_NAME[k]} 위 테이프${d.tape[k] ? ' ' + d.tape[k] : ' (비어 있음)'}`);
           b.textContent = d.tape[k] || '';
@@ -661,15 +640,15 @@ export default {
       hintCode: '',
       hints: [
         '손전등으로 철문 넷을 하나씩 다 비춰 본다 락카 숫자 말고 문에 남은 흔적도 본다',
-        '락카 숫자는 철거 업체가 뒤에서 보고 쓴 거다 창고 배정표에서 물이 샌 창고와 관리실 창고를 찾아, 그 흔적이 어느 문에 남았는지 맞춰 본다',
-        '맨 오른쪽 철문 (왼쪽부터 B04 관리실 자물쇠 · B03 물 자국 · B02 · B01)',
+        '락카 숫자는 철거 업체가 뒤에서 보고 쓴 거다 창고 배정표에서 물이 샌 창고를 찾아 그 자국이 어느 문에 남았는지 본다 자물쇠를 따로 채운 문이 누구 창고일지도',
+        '맨 오른쪽 철문 (왼쪽부터 B04 관리실 공구 자물쇠 · B03 물 자국 · B02 · B01)',
       ],
       initial: () => ({ pick: null, fx: 12 }),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'cellar-wrap');
         const wall = el('div', 'cellar-wall');
-        wall.innerHTML = cellarSvg();
+        wall.innerHTML = `<img src="${P}props/cellar.webp" alt="건물 뒤편 반지하 철문 넷 문마다 빨간 락카 번호" class="cellar-img" draggable="false" decoding="async">`;
         const dark = el('div', 'cellar-dark'); wall.append(dark);
         const cap = el('p', 'cellar-cap');
         const aim = (fx, fy = 52) => {
