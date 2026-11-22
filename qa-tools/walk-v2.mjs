@@ -191,8 +191,22 @@ async function catInvite({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('봉투만 보고 있다'), 'shop arrive matches picture (cat awake)');
     await hotspot(page, '문 밑으로 들어온 봉투'); L.check(await dlgHas(page, '줄마다 글씨가 다르다') && await page.evaluate(() => !!document.querySelector('dialog[open] .stamp-zoom svg')), 'doc: invite with stamp close-up'); await L.closeDialog(page);
     await hotspot(page, '봄이 목걸이의 참'); L.check(!(await dlgHas(page, '동물병원, 빵집')), 'charm: no shop names spelled out'); await L.closeDialog(page);
-    await hotspot(page, '골목으로 나가기');
-    L.check((await L.mainText(page)).includes('오늘 휴진'), 'alley reached');
+    // fold: 포장지 띠 접기 (칸을 접어 넣어 반쪽 글자 맞붙이기) — 풀기 전엔 골목으로 못 나감
+    L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '골목으로 나가기'))), 'alley exit hidden before fold');
+    await hotspot(page, '작업대 위 포장지 띠');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .fold-panel').length === 7), 'fold: 7 panels');
+    L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .fold-panel, dialog[open] .fold-undo .chip')].every((b) => { const r = b.getBoundingClientRect(); return r.width >= 40 && r.height >= 40; })), 'fold: panels big enough to tap');
+    await commit(page);
+    L.check((await status(page)).includes('엇갈려'), 'fold: unfolded explained — ' + (await status(page)));
+    await L.click(page, '3번째 칸 접어 넣기', { exact: true }); await L.click(page, '4번째 칸 접어 넣기', { exact: true }); await commit(page);
+    L.check((await status(page)).includes('맞물리지 않는다') && !(await dlgHas(page, '병원 창턱')), 'fold: wrong neutral — ' + (await status(page)));
+    await L.click(page, '4번째 칸 펴기', { exact: true });
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .fold-panel').length === 6), 'fold: unfold one panel');
+    await L.click(page, '6번째 칸 접어 넣기', { exact: true }); await commit(page);
+    L.check(await dlgHas(page, '미정 씨의 포장지') && await dlgHas(page, '병원 창턱'), 'fold solved');
+    await shot(page, 'cat-fold-solved');
+    await L.closeDialog(page); await L.sleep(400);
+    L.check((await L.mainText(page)).includes('오늘 휴진'), 'alley reached (closing fold reveal moves on)');
     await hotspot(page, '병원 유리문의 쪽지'); await L.closeDialog(page);
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '빵집 앞 바구니'))), 'basket hidden before box');
     // seasons: 뚜껑 안쪽 주머니 다섯
