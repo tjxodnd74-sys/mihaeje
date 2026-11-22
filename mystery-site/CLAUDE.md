@@ -197,3 +197,16 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
 - v129 (2026-11-22) 루미 그림 통일(표지 기준: 거실·엔딩·2016 강아지 사진) · 404호 둑길을 엔딩과 같은 건물로(창 패치 다시) · 직원 5명 휴대폰 눈 점검(390/360/430) 손질 · 승강장 대합실 안내문
   - 사진 속 글자 있는 물건은 **부분 다시 그리기**로: 장면을 잘라(3:2) 올리고 같은 크기 흰 사각 마스크 + nano_banana_2 is_inpaint=true, 프롬프트에 정확한 한글(짧게, 큰 글씨, 잔글씨·도장 글자 금지) → 결과를 원래 자리에 깃털 마스크로 붙임. PIL로 평면 글자를 원근 변환해 얹은 건 "더 이상하다"는 평 (너무 깨끗하고 붙여 놓은 티)
   - 사용자 평: 그림 속 같은 대상(개·건물)은 모든 장면에서 생김새가 같아야 한다 — 새 그림을 넣을 땐 그 대상이 나오는 다른 그림을 전부 찾아 비교
+
+## v131 (2026-11-22) 휴대폰판 확립 + 앱 출시 준비 (직원 10명)
+- 엔진: 휴대폰 이동 버튼 줄은 무대 아래 · scene.focusX(0~100) 첫 위치 · safe-area(--sa-*) · 가로(높이 500 이하) 배치 · 뒤로가기 = 창 닫기 → 물러나기 → 이전 페이지(pushState) · 소리는 첫 터치 뒤, 화면 떠나면 멈춤 · 손가락 누름 짧은 진동(배경음 버튼으로 같이 끔) · 두 번 눌러 확대·당겨서 새로고침 막기
+- engine.css 의 :hover 규칙은 전부 @media (hover:hover) 안 (휴대폰에서 눌린 테두리가 남아 '골라 놓은 것'처럼 보이던 문제) — 새 :hover 를 쓸 때도 이렇게
+- 편별 @media (max-width:640px) 블록은 가로 휴대폰((orientation:landscape) and (max-height:500px))에도 적용 — .mobile-only 큰 버튼이 가로에서 사라지던 문제
+- 장치 머리글·힌트 목록에 내부 힌트코드(P-S01 등) 안 보임
+- 소리 설정: 게임이 처음엔 로비 설정(mihaeje-bgm-v1)을 따르고, 게임에서 바꾸면 로비 키도 같이 바꿈
+- 저장: v2/store.js (백업 키 ~bak, 깨지면 복구, 막히면 메모리) · 처음 화면 '다른 기기에서 이어하기' 진행 코드 MHJ2.<id>.<data>.<check>
+- PWA: manifest.webmanifest, sw.js (버전 = play.html ?v=, 빌드가 맞춤 — **배포 때마다 ?v= 올릴 것**, 안 올리면 한 번 연 사람은 옛 파일을 봄), offline-files.json, rec/·api/ 는 손대지 않음
+- 로비: 휴대폰 줄형 카드, 이어하기 맨 위, '처음이라면 여기부터' 사진관, 개인정보처리방침 링크(privacy.html), 죽은 '베타 · 의견 남기기'(beta-ui.js) 뺌
+- 빌드 버그 고침: 로비에 인라인한 CSS 의 url(../assets/…) 가 /mihaeje/ 밖을 가리켜 글꼴 404 → 인라인 때 url(assets/…)로
+- 앱: mystery-app/ (Capacitor 8, app-info.json 한 곳에서 id·이름·버전, MainActivity 뒤로 버튼·화면 켜둠·상태바) · .github/workflows/android.yml 이 APK·AAB 를 만듦 (이 컨테이너는 dl.google.com 등 막혀 로컬 빌드 불가) · mystery-app/store/ 스토어 자료
+- 출시 전략은 Claude Docs 문서 '미해제 앱 출시 전략' (조직 계정+D-U-N-S, 2편 무료+8편 해제, 안드로이드 12월 넷째 주 목표)

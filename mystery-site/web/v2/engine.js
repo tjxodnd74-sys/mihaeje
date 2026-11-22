@@ -22,7 +22,8 @@ const sounds = {
   door: 'assets/sounds/door-open-v23.wav', drawer: 'assets/sounds/drawer-open-v23.wav', on: 'assets/sounds/switch-on-v24.wav',
 };
 let audioOn = true; // 기본 켜짐. 끄면 기억합니다.
-try { audioOn = localStorage.getItem('mihaeje-v2-sound') !== '0'; } catch {}
+try { const v = localStorage.getItem('mihaeje-v2-sound'); if (v != null) audioOn = v !== '0'; else { const b = JSON.parse(localStorage.getItem('mihaeje-bgm-v1') || 'null'); if (b && typeof b.enabled === 'boolean') audioOn = b.enabled; } } catch {}
+function syncLobbySound(on) { try { const b = JSON.parse(localStorage.getItem('mihaeje-bgm-v1') || 'null') || { volume: 45 }; b.enabled = on; localStorage.setItem('mihaeje-bgm-v1', JSON.stringify(b)); localStorage.setItem('mihaeje-effects-v1', on ? 'on' : 'off'); } catch {} }
 // 브라우저는 사용자가 한 번 누르기 전에는 소리를 못 내므로, 첫 터치/클릭 때 배경음을 시작합니다.
 // 휴대폰은 손가락을 뗄 때(pointerup·touchend·click)에야 소리를 허락하므로 그때도 다시 시도합니다.
 // 첫 터치/키 전에는 배경음 파일을 만들지도 받지도 않는다 (느린 망에서 첫 화면 글꼴·그림과 대역폭을 나누지 않게)
@@ -134,7 +135,7 @@ async function main() {
     const logo = html('a', 'v2-logo', '<img src="assets/mihaeje-logo-v2.webp" alt="미해제" width="1983" height="793" decoding="async">'); logo.href = 'index.html';
     const right = el('div', 'v2-header-right');
     const back = el('a', 'v2-back', '← 테마 로비'); back.href = 'index.html';
-    const snd = btn('v2-sound' + (audioOn ? ' on' : ''), audioOn ? '배경음 켜짐' : '배경음 꺼짐', () => { audioOn = !audioOn; try { localStorage.setItem('mihaeje-v2-sound', audioOn ? '1' : '0'); } catch {} snd.textContent = audioOn ? '배경음 켜짐' : '배경음 꺼짐'; snd.classList.toggle('on', audioOn); syncMusic(ep); if (audioOn) play('on'); }, '배경음·효과음·누름 진동 켜고 끄기');
+    const snd = btn('v2-sound' + (audioOn ? ' on' : ''), audioOn ? '배경음 켜짐' : '배경음 꺼짐', () => { audioOn = !audioOn; try { localStorage.setItem('mihaeje-v2-sound', audioOn ? '1' : '0'); } catch {} syncLobbySound(audioOn); snd.textContent = audioOn ? '배경음 켜짐' : '배경음 꺼짐'; snd.classList.toggle('on', audioOn); syncMusic(ep); if (audioOn) play('on'); }, '배경음·효과음·누름 진동 켜고 끄기');
     right.append(back, snd);
     h.append(logo, right);
     return h;
@@ -321,7 +322,7 @@ async function main() {
     }));
     // 살펴볼 곳 잠깐 보기
     // '?'는 그림 위가 아니라 위 줄에 (그림 속 물건을 가리지 않게)
-    const peek = btn('v2-hud-btn v2-peek', '', () => { stage.classList.add('peek'); clearTimeout(peek._t); peek._t = setTimeout(() => stage.classList.remove('peek'), 2600); }, '살펴볼 곳 잠깐 보기');
+    const peek = btn('v2-hud-btn v2-peek', '', () => { stage.querySelector('.v2-pan-tip')?.remove(); stage.classList.add('peek'); clearTimeout(peek._t); peek._t = setTimeout(() => stage.classList.remove('peek'), 2600); }, '살펴볼 곳 잠깐 보기');
     peek.append(el('span', 'ico q', '?'), el('span', 'lab', '살펴보기'));
     tools.prepend(peek);
     // 대사창: 처음 온 장면(또는 이번 접속에서 처음 보는 장면)에 한 번, 누르면 넘어간다
@@ -433,7 +434,7 @@ async function main() {
     // 왼쪽: 장치
     const node = el('section', 'v2-device');
     const head = el('div', 'v2-device-head');
-    head.append(el('p', 'v2-eyebrow', [solved ? '해결한 장치' : '', dev.hintCode || ''].filter(Boolean).join(' · ')));
+    head.append(el('p', 'v2-eyebrow', solved ? '해결한 장치' : ''));
     head.append(el('h2', 'v2-doc-title', dev.title));
     head.append(el('p', 'v2-device-intro', dev.intro));
     let hintBlock = null;
@@ -545,14 +546,14 @@ async function main() {
     const open = ids.filter((d) => S.solved.includes(d) || deviceShown(d));
     const cur = pick || activeDevices()[0] || open[open.length - 1];
     const tabs = el('div', 'v2-hint-tabs');
-    open.forEach((d) => { const dev = ep.devices[d]; tabs.append(btn('v2-chip' + (d === cur ? ' on' : '') + (S.solved.includes(d) ? ' done' : ''), `${dev.hintCode} ${dev.title}`, () => openHints(d))); });
+    open.forEach((d) => { const dev = ep.devices[d]; tabs.append(btn('v2-chip' + (d === cur ? ' on' : '') + (S.solved.includes(d) ? ' done' : ''), dev.title, () => openHints(d))); });
     node.append(tabs);
     if (cur) {
       const dev = ep.devices[cur];
       const tier = S.hints[cur] || 0;
       const box = el('div', 'v2-hint-box');
       if (S.solved.includes(cur)) {
-        box.append(el('p', 'v2-note', '이미 해결한 장치입니다 풀이를 다시 볼 수 있습니다'));
+        box.append(el('p', 'v2-note', '이미 푼 장치 풀이를 다시 볼 수 있다'));
         (typeof dev.hints === 'function' ? dev.hints(S) : dev.hints).forEach((h, i) => box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${h}`)));
       } else {
         const hs = typeof dev.hints === 'function' ? dev.hints(S) : dev.hints; for (let i = 0; i < tier; i++) box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${hs[i]}`));

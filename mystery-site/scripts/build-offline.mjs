@@ -20,7 +20,7 @@ const media = /\.(webp|jpe?g|png|svg|gif|mp3|wav|ogg|m4a|mp4|webm|woff2?)$/i;
 const walk = (dir) => (fs.existsSync(dir) ? fs.readdirSync(dir, { recursive: true }) : []).map((f) => f.replaceAll('\\', '/')).filter((f) => media.test(f));
 
 // 2) 공통: 로비·플레이 화면이 바로 쓰는 것
-const core = new Set(['index.html', 'play.html', 'manifest.webmanifest', 'favicon.svg', 'cases.json',
+const core = new Set(['index.html', 'play.html', 'privacy.html', 'manifest.webmanifest', 'favicon.svg', 'cases.json',
   `v2/engine.js?v=${V}`, `v2/engine.css?v=${V}`, `v2/feedback-config.js?v=${V}`]);
 for (const f of walk(path.join(out, 'assets/app-icons'))) core.add('assets/app-icons/' + f);
 for (const f of walk(path.join(out, 'assets/covers'))) if (/-(480|960)-v2\.webp$/.test(f)) core.add('assets/covers/' + f);

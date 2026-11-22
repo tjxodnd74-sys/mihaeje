@@ -426,7 +426,7 @@ async function petHome({ mobile = false } = {}) {
     await hotspot(page, '기념품 상자');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .keepbox .keep-item').length === 4 && document.querySelectorAll('dialog[open] .record-row').length === 4 && document.querySelectorAll('dialog[open] .box-wrap .dial').length === 4), 'box: 4 items + 4 rows + 4 dials');
     L.check(!(await L.dialogText(page)).includes('끝자리') && !(await L.dialogText(page)).includes('8/2'), 'box: code rule and adopt date are not inside the device');
-    L.check((await L.dialogText(page)).includes('P-S01'), 'box: hint code shown in the device head');
+    L.check(!(await L.dialogText(page)).includes('P-S01'), 'box: internal hint code hidden from players');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .record-row .stamp'))), 'box: rows have no stamps');
     await L.closeDialog(page);
     for (const [d, t] of [['뚜껑 안쪽 정우의 쪽지', '그중 파란 끈만'], ['상자 맨 밑의 기록 사본', '네 날의 끝자리'], ['입양 계약서 봉투', '941372608154902'], ['방석의 루미', '새로 사 준']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
@@ -989,7 +989,7 @@ async function laundry({ mobile = false } = {}) {
     await hotspot(page, '앞 유리 네온 간판'); L.check(await page.evaluate(() => getComputedStyle(document.querySelector('dialog[open] .neon')).transform !== 'none'), 'sign is mirrored (seen from inside)'); await L.closeDialog(page);
     await hotspot(page, '6번 건조기 패널');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), '★4: no guide');
-    L.check((await L.dialogText(page)).includes('W-S01'), 'panel: hint code shown (no dangling dot once solved)');
+    L.check(!(await L.dialogText(page)).includes('W-S01'), 'panel: internal hint code hidden (no dangling dot once solved)');
     L.check(!(await L.buttons(page)).includes('시작 버튼 꾹 누르기'), 'panel: no commit before input');
     if (mobile) L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .pkey')].every((b) => { const r = b.getBoundingClientRect(); return r.width >= 40 && r.height >= 40; })), 'panel: mobile keys at least 40px');
     await press(['고온 버튼 ☀']); await page.evaluate(() => [...document.querySelectorAll('dialog[open] button')].find((b) => b.getAttribute('aria-label') === '시작 버튼 (꾹 누르고 있기)' && b.getClientRects().length).dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }))); await L.sleep(120); await page.evaluate(() => [...document.querySelectorAll('dialog[open] button')].find((b) => b.getAttribute('aria-label') === '시작 버튼 (꾹 누르고 있기)' && b.getClientRects().length).dispatchEvent(new PointerEvent('pointerup', { bubbles: true }))); await L.sleep(150);
