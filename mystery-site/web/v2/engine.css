@@ -1423,6 +1423,24 @@ html[data-case="studio"] .st-print .light-row .switch{min-height:40px}
   html[data-case="studio"] .st-print .enl-controls>.chip{min-height:44px;padding:6px 8px;font-size:14px;word-break:keep-all}
   html[data-case="studio"] .st-loupe{max-width:270px;margin-left:auto;margin-right:auto}
 }
+/* 사진관 v136 최종 점검: 확대기 밑 이젤(틀 끌어 맞추기) · 붉은 등 암실이라 인화는 흑백, 세로 8×10으로 잘린 모양 · 망친 인화지 얼룩 진하게 */
+html[data-case="studio"] .st-easel{position:relative;aspect-ratio:1024/688;overflow:hidden;border-radius:3px;background:#0c0808;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;max-width:560px;margin:0 auto}
+html[data-case="studio"] .st-easel.dragging{cursor:grabbing}
+html[data-case="studio"] .st-easel img{display:block;width:100%;height:100%;object-fit:cover;filter:invert(1) grayscale(1) contrast(1.05);pointer-events:none;-webkit-user-drag:none}
+html[data-case="studio"] .st-easel::after{content:"";position:absolute;inset:0;background:rgba(210,40,30,.22);mix-blend-mode:multiply;pointer-events:none}
+html[data-case="studio"] .st-easel-win{position:absolute;top:0;bottom:0;box-shadow:0 0 0 2000px rgba(8,5,5,.8);outline:4px solid #c9b48a;outline-offset:-4px;transition:left .18s ease,width .18s ease;pointer-events:none}
+html[data-case="studio"] .st-easel.dragging .st-easel-win{transition:none}
+html[data-case="studio"] .st-easel-ctl{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0 2px}
+html[data-case="studio"] .st-easel-ctl .chip{min-height:40px;font-size:14px}
+html[data-case="studio"] .st-easel-ctl .chip:disabled{opacity:.4}
+html[data-case="studio"] .st-photo{max-width:400px}
+html[data-case="studio"] .st-photo img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:27.4% 50%;animation-name:st-develop-bw}
+@keyframes st-develop-bw{0%{opacity:.04;filter:grayscale(1) contrast(.4) brightness(1.6)}55%{opacity:.7;filter:grayscale(1) contrast(.8) brightness(1.2)}100%{opacity:1;filter:grayscale(1)}}
+@media (prefers-reduced-motion:reduce){html[data-case="studio"] .st-photo img{filter:grayscale(1)}}
+html[data-case="studio"] .oldphoto{max-width:360px}
+html[data-case="studio"] .oldphoto img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:27.4% 50%;filter:grayscale(1)}
+html[data-case="studio"] .st-fail-img img{aspect-ratio:4/5;object-fit:cover;object-position:27.4% 50%;filter:grayscale(1)}
+html[data-case="studio"] .st-fail.smear .st-fail-img i{filter:blur(2px) contrast(1.4) saturate(1.3)}
 
 /* 정비소: 철판 · 형광등 · 노랑 경고띠 · 보고서 */
 html[data-case="garage"]{

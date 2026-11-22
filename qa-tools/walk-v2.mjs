@@ -537,15 +537,17 @@ async function studio({ mobile = false } = {}) {
     await commit(page); L.check((await status(page)).includes('떠오르지 않는다'), 'lamp: flat neutral');
     await setRange('봉투 기울기', 60); await commit(page); L.check((await status(page)).includes('떠오르지 않는다'), 'lamp: too steep neutral');
     await setRange('봉투 기울기', 36); await shot(page, 'st-lamp'); await commit(page); L.check(await dlgHas(page, '안 흔들린 컷'), 'lamp solved');
-    await L.click(page, '봉투에 눌린 글씨 보기'); L.check(await dlgHas(page, '보관 C3') && await dlgHas(page, '4×6에 3초'), 'pressed doc via reveal'); await L.click(page, '← 돌아가기');
+    await L.click(page, '봉투에 눌린 글씨 보기'); L.check(await dlgHas(page, '보관 C3') && await dlgHas(page, '4×6이면 3초'), 'pressed doc via reveal'); await L.click(page, '← 돌아가기');
     await L.click(page, '계속'); await L.sleep(300);
     // lockers
     await hotspot(page, '필름 보관함');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .locker-cell').length === 16), 'lockers: 16 cells');
     L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .st-card')].map((p) => p.textContent).sort().join() === 'A1,A4,D1'), 'lockers: only 3 labels left');
-    await L.click(page, '위에서 3째 줄 왼쪽에서 3째 칸 서랍', { exact: true }); await commit(page); L.check((await status(page)).includes('0615는 없다'), 'lockers: naive decoy neutral');
-    await L.click(page, '위에서 1째 줄 왼쪽에서 2째 칸 서랍', { exact: true }); await commit(page); L.check((await status(page)).includes('0615는 없다'), 'lockers: wrong cell neutral');
-    await L.click(page, '위에서 2째 줄 왼쪽에서 3째 칸 서랍', { exact: true }); await shot(page, 'st-lockers'); await commit(page); L.check(await dlgHas(page, '꼬리표 달린 작은 열쇠'), 'lockers solved');
+    L.check(await page.evaluate(() => document.querySelector('dialog[open] .v2-actions')?.hidden === true), 'lockers: no separate confirm button (tap pulls the drawer)');
+    await shot(page, 'st-lockers');
+    await L.click(page, '위에서 셋째 줄 왼쪽에서 셋째 칸 서랍', { exact: true }); await L.sleep(250); L.check((await status(page)).includes('0615는 없다'), 'lockers: naive decoy neutral');
+    await L.click(page, '위에서 첫째 줄 왼쪽에서 둘째 칸 서랍', { exact: true }); await L.sleep(250); L.check((await status(page)).includes('0615는 없다'), 'lockers: wrong cell neutral');
+    await L.click(page, '위에서 둘째 줄 왼쪽에서 셋째 칸 서랍', { exact: true }); await L.sleep(250); L.check(await dlgHas(page, '꼬리표 달린 작은 열쇠'), 'lockers solved');
     await L.closeDialog(page); await L.sleep(400);
     L.check((await L.mainText(page)).includes('라이트박스를 켜자'), 'moved to table');
     await goPlace(page, '1. 접수실'); await L.sleep(300); await hotspot(page, '보관함에서 꺼낸 필름 봉투'); L.check(await dlgHas(page, '부고'), 'doc: sleeve'); await L.closeDialog(page);
@@ -565,6 +567,24 @@ async function studio({ mobile = false } = {}) {
     await L.closeDialog(page); await L.sleep(400);
     L.check((await L.mainText(page)).includes('붉은 안전등만'), 'moved to darkroom');
     for (const [d, t] of [['벽의 순서표', '두 배'], ['선반의 약품 메모', '빙초산']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    // easel (새 장치): 세로 8×10 틀을 끌어 아버지 가방부터 어머니까지
+    L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => ['확대기', '트레이 셋'].includes(b.getAttribute('aria-label'))))), 'easel: enlarger and trays hidden until the easel is set');
+    await hotspot(page, '확대기 밑 이젤');
+    const easelX = () => page.evaluate(() => parseFloat(document.querySelector('dialog[open] .st-easel-win').style.left));
+    await commit(page); L.check((await status(page)) === '날을 조이려다 손을 멈췄다 이 틀로 뽑으면 부탁받은 사진이 아니다', 'easel: landscape (everything fits) neutral');
+    await L.click(page, '이젤 돌리기'); L.check((await L.dialogText(page)).includes('지금 세로 틀'), 'easel: rotated to portrait');
+    { // 손가락으로 틀 끌기: 오른쪽 끝까지 끌었다가 놓으면 마지막 눈금에 걸린다
+      const bb = await (await page.$('dialog[open] .st-easel')).boundingBox();
+      await page.mouse.move(bb.x + bb.width * 0.5, bb.y + bb.height * 0.5); await page.mouse.down(); await page.mouse.move(bb.x + bb.width * 0.98, bb.y + bb.height * 0.5, { steps: 8 }); await page.mouse.up(); await L.sleep(300);
+      L.check(Math.abs((await easelX()) - 474 / 1024 * 100) < 0.5, 'easel: drag snaps to the last stop ' + (await easelX()));
+      await page.mouse.move(bb.x + bb.width * 0.8, bb.y + bb.height * 0.5); await page.mouse.down(); await page.mouse.move(bb.x + bb.width * 0.8 - bb.width * (220 / 1024), bb.y + bb.height * 0.5, { steps: 8 }); await page.mouse.up(); await L.sleep(300);
+      L.check(Math.abs((await easelX()) - 250 / 1024 * 100) < 0.5, 'easel: drag back snaps to the whole-sign stop ' + (await easelX()));
+    }
+    await commit(page); L.check((await status(page)).includes('부탁받은 사진이 아니다'), 'easel: whole sign but bag cut neutral');
+    await L.click(page, '◀ 틀을 왼쪽으로'); await L.click(page, '◀ 틀을 왼쪽으로'); await commit(page); L.check((await status(page)).includes('부탁받은 사진이 아니다'), 'easel: mother cut neutral');
+    if (mobile) { const sz = await page.evaluate(() => [...document.querySelectorAll('dialog[open] .st-easel-ctl button')].map((b) => Math.round(b.getBoundingClientRect().height))); L.check(sz.every((h) => h >= 40), 'easel: mobile buttons at least 40px ' + JSON.stringify(sz)); }
+    await L.click(page, '틀을 오른쪽으로 ▶'); await shot(page, 'st-easel'); await commit(page); L.check(await dlgHas(page, '세로 8×10 틀'), 'easel solved');
+    await L.closeDialog(page); await L.sleep(300);
     // print
     await hotspot(page, '확대기');
     L.check(await page.evaluate(() => document.querySelector('dialog[open] .print-wrap')?.classList.contains('red')), 'print: starts under the red safelight like the picture');
