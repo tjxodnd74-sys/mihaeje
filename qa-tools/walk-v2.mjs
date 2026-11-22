@@ -1229,7 +1229,7 @@ async function laundry({ mobile = false } = {}) {
     // v136 새 장치: 도현에게 돌려줄 동전 봉투 (기록에서 도현이 넣은 밤만 = 29개)
     L.check((await L.mainText(page)).includes('딱 자기가 넣은 만큼'), 'store arrive: dohyun waits for the envelope');
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => /뒷골목/.test(b.getAttribute('aria-label') || '')))), 'alley still closed before the envelope');
-    await hotspot(page, '계산대 위 동전 봉투');
+    await hotspot(page, '포스 아래 돈통 · 동전 봉투');
     L.check(!(await L.buttons(page)).includes('봉투 붙여 건네기'), 'coinroll: no commit while empty');
     if (mobile) L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .coin-pile, dialog[open] .coin-keys .chip')].every((b) => b.getBoundingClientRect().height >= 40)), 'coinroll: mobile buttons at least 40px');
     for (let i = 0; i < 3; i++) await L.click(page, '열 개 한 줄 넣기', { exact: true });
@@ -1238,7 +1238,14 @@ async function laundry({ mobile = false } = {}) {
     await commit(page); const c1 = await status(page); L.check(c1.includes('넣은 만큼이 아니') && !/많|적|모자|더 넣|빼/.test(c1), 'coinroll: 36 wrong, neutral');
     for (let i = 0; i < 8; i++) await L.click(page, '한 개 꺼내기', { exact: true });
     await commit(page); L.check((await status(page)) === c1, 'coinroll: 28 (tonight\'s coin left out) same neutral message');
-    await L.click(page, '동전 더미 · 한 개 넣기', { exact: true }); await shot(page, 'l-coins'); await commit(page);
+    L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .ld-wait'))), 'coinroll: two misses, no wait yet');
+    await L.click(page, '한 개 꺼내기', { exact: true }); await commit(page); L.check((await status(page)) === c1, 'coinroll: 27 same neutral message');
+    // 세 번째 오답부터 기다림 (한 개씩 넣어 보며 엄지 연타로 푸는 것 막기)
+    L.check(await page.evaluate(() => !!document.querySelector('dialog[open] .ld-wait')) && !(await L.buttons(page)).includes('봉투 붙여 건네기'), 'coinroll: third miss makes you wait (no commit)');
+    const waitCommit = async (label, ms = 30000) => page.waitForFunction((label) => [...document.querySelectorAll('dialog[open] .v2-actions button')].some((b) => !b.hidden && b.textContent.includes(label)), label, { timeout: ms }).then(() => true).catch(() => false);
+    await L.click(page, '동전 더미 · 한 개 넣기', { exact: true }); await L.click(page, '동전 더미 · 한 개 넣기', { exact: true });
+    L.check(await waitCommit('봉투 붙여 건네기'), 'coinroll: commit comes back after the wait');
+    await shot(page, 'l-coins'); await commit(page);
     L.check(await dlgHas(page, '딱 넣은 만큼') && await dlgHas(page, '배관도'), 'coinroll solved, diagram handed over');
     await L.closeDialog(page); await L.sleep(400);
     if (!(await L.mainText(page)).includes('배기구 하나가')) await hotspot(page, '뒷골목으로 가기'); await L.sleep(400);

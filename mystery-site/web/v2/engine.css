@@ -2256,14 +2256,14 @@ html[data-case="laundry"] .mag-big.green i{background:radial-gradient(circle at 
 html[data-case="laundry"] .mag-big.yellow i{background:radial-gradient(circle at 35% 30%,#fff07a,#d7b10e)}
 html[data-case="laundry"] .mag-big.on{border-color:var(--lamp);box-shadow:0 0 0 2px var(--lamp) inset}
 html[data-case="laundry"] .duct-peek{margin:0 0 10px;background:var(--chip);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
-html[data-case="laundry"] .duct-peek summary{cursor:pointer;font-size:14px;font-weight:700;min-height:32px;display:flex;align-items:center}
+html[data-case="laundry"] .duct-peek summary{cursor:pointer;font-size:14px;font-weight:700;min-height:44px;display:flex;align-items:center}
 html[data-case="laundry"] .duct-peek .ductfig{margin:6px 0 0}
 html[data-case="laundry"] .cctv-wrap{max-width:640px;margin:0 auto}
 html[data-case="laundry"] .prop.cctv{aspect-ratio:4/3;background:#020403;border:7px solid #15191c;border-radius:8px;box-shadow:0 0 0 1px #3a4148,0 10px 24px rgba(0,0,0,.4);margin:0 0 8px}
 html[data-case="laundry"] .prop.cctv img,html[data-case="laundry"] .cctv-fig{position:absolute;inset:0;width:100%;height:100%;display:block}
 html[data-case="laundry"] .prop.cctv::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.12) 2px 3px);animation:cctv-roll 7s steps(1) infinite}
 @keyframes cctv-roll{0%,96%,100%{opacity:1}97%{opacity:.4}}
-html[data-case="laundry"] .osd{position:absolute;z-index:2;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:3.3cqw;font-weight:700;color:#eafff3;text-shadow:0 0 2px #000,0 0 5px #000;letter-spacing:.04em;white-space:nowrap}
+html[data-case="laundry"] .osd{position:absolute;z-index:2;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:max(13px,3.3cqw);font-weight:700;color:#eafff3;text-shadow:0 0 2px #000,0 0 5px #000;letter-spacing:.04em;white-space:nowrap}
 html[data-case="laundry"] .osd.tl{left:3%;top:3%}
 html[data-case="laundry"] .osd.tr{right:3%;top:3%;color:#ff7a6b}
 html[data-case="laundry"] .osd.bl{left:3%;bottom:3%}
@@ -2289,7 +2289,7 @@ html[data-case="laundry"] .sg-row{font-size:2.3cqw}
 /* v136 세탁소 최종 점검: 13px 이하 글자 올림 · 패널 버튼 누름 자리 40px 넘게 · 동전 봉투 */
 html[data-case="laundry"] .receipt{font-size:13px}
 html[data-case="laundry"] .receipt b{font-size:13px}
-@media (max-width:640px){html[data-case="laundry"] .term-table.log6{font-size:13px}html[data-case="laundry"] .term-table.log6 td,html[data-case="laundry"] .term-table.log6 th{padding:4px 2px}}
+@media (max-width:640px),(orientation:landscape) and (max-height:500px){html[data-case="laundry"] .term-table.log6{font-size:13px}html[data-case="laundry"] .term-table.log6 td,html[data-case="laundry"] .term-table.log6 th{padding:4px 2px}}
 html[data-case="laundry"] .dpanel button.pbtn::after{content:"";position:absolute;inset:-5px;border-radius:50%}
 html[data-case="laundry"] .dpanel.small .pbtn{cursor:default;font-size:3.2cqw}
 html[data-case="laundry"] .coin-wrap{max-width:520px;margin:0 auto;display:grid;gap:10px;justify-items:center}
@@ -2313,11 +2313,17 @@ html[data-case="laundry"] .receipt{font-size:13px}
 html[data-case="laundry"] .receipt b{font-size:13px}
 html[data-case="laundry"] .v2-paper p,html[data-case="laundry"] .v2-device-intro{text-wrap:pretty;word-break:keep-all}
 html[data-case="laundry"] .v2-intro-card .v2-blurb{text-wrap:pretty;word-break:keep-all} /* 휴대폰 표지 소개 줄 끝에 한 글자만 남지 않게 */
-@media (max-width:640px){
+/* 휴대폰 기록 반영: 운전 기록은 주마다(월요일) 줄을 그어 세기 쉽게 · 영수증 날짜는 한 줄 · 동전 봉투 기다림 · 배기구 뒤 6번 꺼진 유리 */
+html[data-case="laundry"] .term-table.log6 tr.wk td{border-top:2px solid rgba(155,232,165,.55)}
+html[data-case="laundry"] .term-table.log6 td:first-child{white-space:nowrap}
+html[data-case="laundry"] .receipt .nw{white-space:nowrap}
+html[data-case="laundry"] .ld-wait{margin:2px auto 0;max-width:520px;text-align:center;font-size:14px;color:var(--soft);background:rgba(240,194,90,.12);border:1px dashed rgba(240,194,90,.45);border-radius:4px;padding:8px 10px;font-variant-numeric:tabular-nums}
+html[data-case="laundry"] .v2-stage-ov.drum-off img{display:block;width:100%;height:100%}
+@media (max-width:640px),(orientation:landscape) and (max-height:500px){
   /* 휴대폰: 벤치 쪽을 크게 (앉았는지 서 있는지 보이게) */
   html[data-case="laundry"] .prop.cctv img,html[data-case="laundry"] .cctv-fig{transform:scale(1.45);transform-origin:46% 72%}
   html[data-case="laundry"] .pkeys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:4px 0 12px}
-  html[data-case="laundry"] .cctv-cell b{font-size:12px}
+  html[data-case="laundry"] .cctv-cell b{font-size:13px;letter-spacing:-.02em}
   html[data-case="laundry"] .cctv-strip{gap:4px}
   html[data-case="laundry"] .swap-note{font-size:17px;margin:-14px 0 8px auto}
   html[data-case="laundry"] .sched-row{grid-template-columns:64px minmax(0,1fr);padding:6px 8px;gap:6px}
