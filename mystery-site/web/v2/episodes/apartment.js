@@ -35,6 +35,15 @@ function soon(name, scene, ms, run) {
 const CCTV_LINE = '모니터가 지지직 넘어갔다 CH2 둑길 가로등 아까 내가 서 있던 그 벤치에 누가 앉아 있다 이쪽 건물을 보고';
 const ANBANG_LINE = '딸깍 안방에서 소리가 났다 문 너머가 노랗게 밝아졌다 단전된 집이다 안에는 아무도 없다';
 const COMMENT_LINE = '주머니 속 휴대폰이 짧게 떨렸다 아까 그 커뮤니티 글에 새 댓글 산책러2 「지금 3층에 누가 서 있음 손전등 든 사람」';
+// 휴대폰에서 이 장면에 처음 왔을 때 그림의 어느 가로 위치(fx, 0~1)를 화면 가운데에 둘지 (엔진은 저장된 S.pan 이 없으면 그림 한가운데를 보여 준다)
+// 둑길은 켜진 3층 창이 그림 오른쪽 끝(88%)이라 한가운데로 열면 안 보인다
+function firstLook(S, id, fx) {
+  try {
+    if (window.innerWidth > 640 || S.pan?.[id] != null) return;
+    const h = Math.min(window.innerHeight * 0.74, 640), w = h * 1024 / 688;
+    S.pan = S.pan || {}; S.pan[id] = Math.max(0, Math.round(w * fx - window.innerWidth / 2));
+  } catch {}
+}
 const fire = (S, k) => { S.ev = S.ev || {}; if (S.ev[k]) return false; S.ev[k] = true; S.ev[k + 'Late'] = true; return true; };
 
 // ---------- 마구 눌러 보기 막기: 두 번까지는 그냥, 그다음부터 틀릴 때마다 기다리는 시간이 늘어난다 ----------
@@ -196,6 +205,7 @@ export default {
       name: '미루천 둑길',
       image: P + 'bank.webp',
       arrive: (S) => {
+        firstLook(S, 'bank', 0.76);
         if (S.solved.includes('wires')) return '3층 그 집 창 셋이 다 켜져 있다 열 시다 벤치 위 종이컵은 이제 식었다 휴대폰 속 커뮤니티 글에 댓글이 더 붙었을까';
         if (ev(S, 'anbang')) return '3층 그 집 창이 하나 더 켜져 있다 벤치는 비어 있는데 그 위에 종이컵 하나 김이 아직 오른다 아까는 없었다';
         return '가로등 아래 벤치는 비어 있다 개울 건너 A동 뒤편 벽에 빨간 락카로 커다란 X 표 창은 다 까만데 3층 오른쪽 창 하나만 노랗다 가로등 기둥엔 철거 안내판이 묶여 있다';
@@ -203,21 +213,23 @@ export default {
       get overlays() {
         const S = cur();
         const o = [
-          { x: 7.6, y: 41.5, w: 3.8, h: 8.2, cls: 'apt-sign', html: '<i></i>' },
-          // 창 패치는 유리만 불투명하고 둘레는 투명 (그림 픽셀 552,212 / 609,205 · 그림이 위아래로 0.39%씩 잘려 보이는 것까지 맞춤)
-          { x: 53.906, y: 30.66, w: 5.176, h: 6.445, cls: 'apt-win' + (ev(S, 'anbang') ? ' on' : ''), html: `<img src="${P}props/bank-anbang.webp" alt="">` },
-          { x: 59.473, y: 29.64, w: 5.566, h: 6.738, cls: 'apt-win' + ((S.solved || []).includes('wires') ? ' on' : ''), html: `<img src="${P}props/bank-living.webp" alt="">` },
-          // 벤치 등받이 위에 올려 둔 내 휴대폰 (작업 지시·커뮤니티 글을 보던 것)
-          { x: 19.4, y: 75.1, w: 3.0, h: 1.3, cls: 'apt-phone', html: '<i></i>' },
+          // 가로등 기둥(그림 x 10.1~10.8%)에 묶인 안내판 (기둥의 원래 전기함 y 53~58% 위)
+          { x: 8.55, y: 41.5, w: 3.8, h: 8.2, cls: 'apt-sign', html: '<i></i>' },
+          // 3층(가운데 줄) 맨 오른쪽 창 셋 = 301 (밖에서 왼→오: 안방 · 거실 · 작은방) 작은방(맨 오른쪽)은 그림에 처음부터 켜져 있다
+          // 패치는 켜진 유리(그림 픽셀 안방 757~798×225~251 · 거실 824~869×222~249) + 그 아래 개울의 노란 반사 줄기, 나머지는 투명 (1024×688 그림 픽셀 744,220 / 812,218 에서 자름)
+          { x: 72.656, y: 31.977, w: 6.641, h: 63.953, cls: 'apt-win' + (ev(S, 'anbang') ? ' on' : ''), html: `<img src="${P}props/bank-anbang.webp" alt="">` },
+          { x: 79.297, y: 31.686, w: 6.836, h: 64.244, cls: 'apt-win' + ((S.solved || []).includes('wires') ? ' on' : ''), html: `<img src="${P}props/bank-living.webp" alt="">` },
+          // 벤치 등받이 윗단(x 15.5% y 75.7% → x 37.5% y 81.3%로 기울어짐) 위에 올려 둔 내 휴대폰 (작업 지시·커뮤니티 글을 보던 것)
+          { x: 19.6, y: 75.8, w: 3.0, h: 1.3, cls: 'apt-phone', html: '<i></i>' },
         ];
-        if (ev(S, 'anbang')) o.push({ x: 27.2, y: 76.6, w: 2.2, h: 6, cls: 'apt-cup' + ((S.solved || []).includes('wires') ? ' cold' : ''), html: '<i></i><b></b>' });
+        if (ev(S, 'anbang')) o.push({ x: 29.0, y: 73.0, w: 2.2, h: 6, cls: 'apt-cup' + ((S.solved || []).includes('wires') ? ' cold' : ''), html: '<i></i><b></b>' });
         return o;
       },
       hotspots: [
         // 휴대폰(벤치 위)에는 팀장 카톡, 불 켜진 3층 창에는 그 창을 찍은 커뮤니티 글 — 둘 다 그림에 있는 물건 위
-        { id: 'order', x: 20.7, y: 76.6, r: 9, label: '벤치 위 휴대폰 · 작업 지시', kind: 'doc', doc: 'order' },
-        { id: 'post', x: 67.2, y: 32.8, r: 10, label: '불 켜진 창 · 동네 커뮤니티 글', kind: 'doc', doc: 'post' },
-        { id: 'section', x: 9.5, y: 45.5, label: '둑길의 철거 안내판', kind: 'doc', doc: 'section' },
+        { id: 'order', x: 21.1, y: 76.6, r: 9, label: '벤치 위 휴대폰 · 작업 지시', kind: 'doc', doc: 'order' },
+        { id: 'post', x: 85.5, y: 34.4, r: 10, label: '불 켜진 창 · 동네 커뮤니티 글', kind: 'doc', doc: 'post' },
+        { id: 'section', x: 10.45, y: 45.6, label: '둑길의 철거 안내판', kind: 'doc', doc: 'section' },
         { id: 'go', x: 40, y: 52, r: 13, label: '건물 정문으로', kind: 'travel', to: 'entrance' },
       ],
     },
@@ -288,8 +300,9 @@ export default {
         const S = cur();
         return [
           { x: 46, y: 40, w: 3.4, h: 7, cls: 'apt-plan', html: '<i></i>' },
-          { x: 51.6, y: 5.4, w: 16.4, h: 68.6, cls: 'apt-anbang' + (ev(S, 'anbang') ? ' on' : ''), html: '<i></i>' },
-          { x: 47, y: 73.4, w: 32, h: 20, cls: 'apt-spill' + (ev(S, 'anbang') ? ' on' : ''), html: '<i></i>' },
+          // 안방 문 안쪽 빛: 문틀 안쪽(그림에서 잰 값 · 윗틀 밑변 51.85,8.9 → 68.3,4.6 · 문턱 51.85,71.6 → 68.3,74.8)만 밝히고, 바닥 빛은 문턱에서 시작
+          { x: 51.6, y: 4.4, w: 16.8, h: 70.6, cls: 'apt-anbang' + (ev(S, 'anbang') ? ' on' : ''), html: '<i></i>', style: 'clip-path:polygon(1.5% 6.4%,99.4% .3%,100% 99.7%,1.5% 95.2%)' },
+          { x: 47, y: 71.6, w: 32, h: 22, cls: 'apt-spill' + (ev(S, 'anbang') ? ' on' : ''), html: '<i></i>' },
           { x: 0, y: 8, w: 24, h: 70, cls: 'apt-living' + ((S.solved || []).includes('wires') ? ' on' : ''), html: '<i></i>' },
           // 상자를 연 뒤: 이삿짐 상자 위에 가계부 두 권, 싱크대 앞 바닥에 꺼내 둔 쪽지 (그림에 없던 물건을 장면에 그려 둔다)
           ...((S.solved || []).includes('box') ? [
@@ -515,7 +528,7 @@ export default {
     box: {
       title: '싱크대 밑',
       scene: 'unit',
-      intro: '회색 공구 상자 하나 선이 배터리 세 개로 이어져 있다 세 자리 번호 자물쇠 ▲▼로 숫자를 돌린다 뚜껑에 테이프 「번호: 밤에 켜지는 순서대로 스위치 번호」',
+      intro: '회색 공구 상자 하나 상자에서 나온 선이 보조배터리로 이어져 있다 세 자리 번호 자물쇠 ▲▼로 숫자를 돌린다 뚜껑에 테이프 「번호: 밤에 켜지는 순서대로 스위치 번호」',
       docs: ['switches', 'plan', 'post', 'log'],
       hintCode: '',
       hints: [
