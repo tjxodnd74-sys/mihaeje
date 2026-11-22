@@ -1232,7 +1232,7 @@ async function radio({ mobile = false } = {}) {
     L.check(await page.evaluate(() => document.querySelector('.v2-stage')?.dataset.mood === 'horror'), 'horror mood on stage');
     L.check(!(await L.mainText(page)).includes('한참 쉬었다가'), 'lobby arrival no longer gives the pause away');
     for (const [d, t] of [['내 휴대폰 · 만석 형 문자', '98점4'], ['모니터 스피커 받아쓰기', 'ON AIR 불이 혼자 들어옴'], ['깜빡이는 ON AIR', '되풀이'], ['벽에 걸린 옛 사보', '쉼표가 길다'], ['안내 데스크 관리 일지', '옛 직원 카드'], ['유리문의 철거 공지', '11월 15일']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
-    await hotspot(page, '벽에 걸린 옛 사보'); L.check(!(await L.dialogText(page)).includes('━━━━●') && (await L.dialogText(page)).includes('찢겨'), 'zine: table torn after 4 (7·9 not printed)'); await L.closeDialog(page);
+    await hotspot(page, '벽에 걸린 옛 사보'); L.check(!(await L.dialogText(page)).includes('━━━━●') && (await L.dialogText(page)).includes('찢겨') && (await L.dialogText(page)).includes('●●●●●'), 'zine: 0~5 printed, torn after 5 (7·9 not printed)'); await L.closeDialog(page);
     await hotspot(page, 'B실 도어락');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), '★5: no guide');
     L.check(!(await L.buttons(page)).includes('손잡이 돌리기'), 'keypad: no commit before input');
@@ -1242,7 +1242,22 @@ async function radio({ mobile = false } = {}) {
     await L.closeDialog(page); await L.sleep(400);
     L.check(!(await travels()).some((t) => t.includes('보관실')), 'lobby: no way to archive from lobby — ' + JSON.stringify(await travels()));
     if (!(await L.mainText(page)).includes('먼지 자국이')) await hotspot(page, 'B실로 가기'); await L.sleep(400);
-    L.check((await L.mainText(page)).includes('손바닥 자국'), 'studio B arrival');
+    L.check((await L.mainText(page)).includes('턴테이블과 LP 재킷'), 'studio B arrival');
+    L.check(await page.evaluate(() => !['흡음판 옆 보관실 뒷문', '책상 위 헤드폰'].some((l) => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === l))), 'studio B: back door and headphones wait for the turntable');
+    // 새 장치: 턴테이블 (B면이 위 · 같은 제목 「먼 불빛」 노래 서윤이 함정 → A면 둘째 띠)
+    await hotspot(page, 'LP 재킷'); L.check(await dlgHas(page, '노래 서윤'), 'doc: LP sleeve'); await L.closeDialog(page);
+    await hotspot(page, '턴테이블');
+    L.check(!(await L.buttons(page)).includes('바늘 내리기'), 'lp: no commit while the arm rests');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .lp-band').length === 4), 'lp: B side up first (4 bands)');
+    await L.click(page, '톤암 안쪽으로 한 띠', { exact: true }); await L.click(page, '톤암 안쪽으로 한 띠', { exact: true });
+    L.check((await L.dialogText(page)).includes('둘째 띠'), 'lp: arm on 2nd band');
+    await commit(page); L.check((await status(page)).includes('헤드폰은 조용하다'), 'lp: sung version decoy neutral — ' + (await status(page)));
+    await L.click(page, '판 뒤집기'); L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .lp-band').length === 5), 'lp: flipped to A side (5 bands)');
+    await page.evaluate(() => document.querySelectorAll('dialog[open] .lp-band')[1].dispatchEvent(new MouseEvent('click', { bubbles: true }))); await L.sleep(200);
+    L.check((await L.dialogText(page)).includes('A면이 위 · 바늘은 바깥에서 둘째 띠'), 'lp: tapping a band moves the arm there');
+    await shot(page, 'r-lp'); await commit(page); L.check(await dlgHas(page, '1시 52분'), 'lp solved (A side, 2nd band)');
+    await L.click(page, '책상 위 헤드폰 보기'); L.check(await dlgHas(page, '숨 들이쉬는'), 'lp: cue doc opened from the reward');
+    await L.closeDialog(page); await L.sleep(400);
     for (const [d, t] of [['자동 송출 PC 화면', '파일 없음'], ['모니터에 붙은 쪽지', '끝까지 들을게'], ['벽의 편성 변경 알림', '콘솔 남은 방'], ['책상 위 헤드폰', '숨 들이쉬는']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); if (d === '모니터에 붙은 쪽지') L.check(!(await L.dialogText(page)).includes('로비 스피커로'), 'note no longer names the lobby'); await L.closeDialog(page); }
     await hotspot(page, '흡음판 옆 보관실 뒷문');
     L.check(!(await L.buttons(page)).includes('손잡이 당기기'), 'tapdoor: no commit before tapping');
@@ -1288,7 +1303,7 @@ async function radio({ mobile = false } = {}) {
     await L.sleep(150);
     L.check(await page.evaluate(() => !document.querySelector('dialog[open] .cctv-no')), 'cctv: tapping again removes numbers');
     for (const t of ['11:40:12', '12:20:47', '01:10:05', '01:59:30']) await cam(t);
-    await L.sleep(150); await shot(page, 'r-cctv'); await commit(page); L.check(await dlgHas(page, '01:59 이후 움직임 없음'), 'cctv solved');
+    await L.sleep(150); await shot(page, 'r-cctv'); await commit(page); L.check(await dlgHas(page, '대기실 01:59 뒤로 움직임 없음'), 'cctv solved');
     await L.closeDialog(page); await L.sleep(300);
     L.check(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '패치베이')), 'patch shown after cctv');
     await hotspot(page, '패치베이');
@@ -1297,13 +1312,16 @@ async function radio({ mobile = false } = {}) {
     L.check(await page.evaluate(() => { const lab = document.querySelector('dialog[open] .pb-lab'); const bar = document.querySelector('dialog[open] .v2-dialog-bar'); return lab && bar && lab.closest('.prop') && getComputedStyle(lab.closest('.prop')).zIndex === '0'; }), 'patch: photo labels stay under the dialog bar');
     L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].some((t) => t.textContent.includes('녹화기 알림'))), 'patch: cctv log on bench');
     await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].find((t) => t.textContent.includes('녹화기 알림')).click()); await L.sleep(200);
-    L.check((await L.dialogText(page)).includes('01:59:30 이후'), 'patch: cctv log readable on bench');
+    L.check((await L.dialogText(page)).includes('01:59:30 뒤로'), 'patch: cctv log readable on bench');
     const plug = async (o, i) => { await L.click(page, `출력 ${o} ${['MIC A', 'MIC B', 'TAPE A', 'TAPE B', 'PGM A', 'PGM B', 'AUTO PC', 'TONE'][o - 1]}`, { exact: true }); await page.evaluate((i) => [...document.querySelectorAll('dialog[open] .jack.in')][i - 1].click(), i); await L.sleep(150); };
     const pull = async (i) => { await page.evaluate((i) => [...document.querySelectorAll('dialog[open] .jack.in')][i - 1].click(), i); await L.sleep(150); };
     await plug(3, 2); await plug(3, 3); await plug(3, 4); await commit(page); L.check((await status(page)).includes('이대로는 아니다'), 'patch: printed-label decoy neutral');
     await pull(2); await pull(4);
     await plug(4, 1); await plug(4, 3); await plug(4, 5); await commit(page); L.check((await status(page)).includes('이대로는 아니다'), 'patch: lobby-only decoy neutral');
-    await plug(4, 6); await plug(4, 2); await shot(page, 'r-patch'); await commit(page); L.check(await dlgHas(page, '처음으로 나간다'), 'patch solved (a harmless extra cable 4→2 does not matter)');
+    await plug(4, 6); L.check((await status(page)).includes('세 가닥'), 'patch: one output feeds at most three inputs (no plugging the deck everywhere)');
+    L.check(await page.evaluate(() => ![...document.querySelectorAll('dialog[open] .pb-cable')].some((c) => /6 MON 대기실/.test(c.textContent))), 'patch: fourth deck cable refused');
+    await L.click(page, '출력 4 TAPE B', { exact: true }); await L.sleep(100); // 다시 눌러 고른 출력 내려놓기
+    await pull(3); await plug(4, 6); await shot(page, 'r-patch'); await commit(page); L.check(await dlgHas(page, '처음으로 나간다'), 'patch solved (deck → 1 · 5 · 6, AUTO PC cable on the lobby left alone)');
     await L.click(page, 'A실 앞문 열기'); await L.sleep(500);
     L.check((await L.mainText(page)).includes('손 안 떨었네') && (await L.mainText(page)).includes('녹화기 마지막 알림'), 'ending reached');
     L.check(!(await L.mainText(page)).includes('그날'), 'ending: no 그날');

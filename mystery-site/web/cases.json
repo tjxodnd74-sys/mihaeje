@@ -74,13 +74,13 @@
     "title": "끝나지 않은 방송",
     "subtitle": "「새벽 두 시, 미루」는 꺼진 적이 없다",
     "genre": "방송 미스터리 · 송출 추적",
-    "minutes": 55,
+    "minutes": 60,
     "difficulty": "★★★★★",
     "image": "assets/covers/radio-v1.webp",
     "href": "play.html?case=radio",
     "storageKey": "mihaeje-v2-radio",
     "description": "2년 전 문을 닫은 방송국, 꺼 둔 로비 스피커에서 자정에 그 목소리가 흘러나왔습니다\n1시 58분, 방송은 2년 전 그 자리에서 또 끊겼고, 건물 안에는 나 말고 누군가 있습니다",
-    "docCount": 15,
+    "docCount": 16,
     "docNames": {
       "mchat": "만석 형 문자",
       "notes": "모니터 스피커 받아쓰기",
@@ -94,6 +94,7 @@
       "sched": "벽의 편성 변경 알림",
       "rules": "책상 위 보관 규칙",
       "txlog": "콘솔 위 송출 기록지",
+      "sleeve": "LP 재킷 뒷면",
       "wiring": "랙 옆 배선표",
       "tape": "테이프 58:22부터",
       "cctvlog": "녹화기 알림 네 장"
