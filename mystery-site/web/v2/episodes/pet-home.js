@@ -135,7 +135,7 @@ export default {
       image: P + 'living.webp',
       arrive: '이삿짐 상자가 아직 반이나 남았다 탁자 위에 정우 씨 상자와 입양 계약서 봉투, 창가 방석에선 루미가 잔다 열 살이라더니 자는 모습이 꼭 노인 같다',
       hotspots: [
-        { id: 'note', x: 24, y: 66, r: 7, label: '뚜껑 안쪽 정우의 쪽지', kind: 'doc', doc: 'jnote' },
+        { id: 'note', x: 26, y: 68.5, r: 7, label: '뚜껑 안쪽 정우의 쪽지', kind: 'doc', doc: 'jnote' },
         { id: 'center', x: 45.5, y: 69.5, r: 7, label: '상자 맨 밑의 기록 사본', kind: 'doc', doc: 'center' },
         { id: 'box', x: 33, y: 76, r: 8, label: '기념품 상자', kind: 'device', device: 'box' },
         { id: 'contract', x: 62, y: 77, r: 8, label: '입양 계약서 봉투', kind: 'doc', doc: 'contract' },
@@ -182,7 +182,7 @@ export default {
       title: '상자 맨 밑의 기록 사본',
       kind: '보호센터 접수 27번 · 2016년',
       html: `<div class="paper-table"><p class="pt-head">햇살구 동물보호센터 · 접수번호 27</p><table><tr><th>날짜</th><th>도장</th><th>처리</th><th>담당</th></tr>
-${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}">${s.shown}</td><td class="nw">${stampSvg(s.stamp, 'ink')} <span class="stamp-name">${STAMP[s.stamp].name}</span></td><td>${s.name}</td><td>${s.who}</td></tr>`).join('')}
+${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}">${s.shown}</td><td class="nw">${stampSvg(s.stamp, 'ink')} <span class="stamp-name">${STAMP[s.stamp].name}</span></td><td>${s.name.replace(/ 날$/, '\u00a0날')}</td><td>${s.who}</td></tr>`).join('')}
 </table><p class="pt-foot">※ 원본에는 신고자가 「보호자 동반 학생」으로만 적혀 있음 · 진료 연계는 담담동물병원 · 줄은 센터 서식 순서</p></div><p>네 줄 다 접수번호 27이다 줄은 센터 서식 순서대로라 일어난 차례와는 다르다 복사가 잘못돼서 날짜 끝자리가 세 줄이나 뭉개졌다 처음 발견한 사람 칸만 이름이 없다</p><p class="aside">사본 밑에 자물쇠 달린 양철통이 하나 더 있었다 정우 씨 글씨로 「통 번호는 네 날의 끝자리, 이 사본 줄 순서대로 위에서부터」</p>`,
     },
     contract: {
