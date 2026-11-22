@@ -1052,6 +1052,44 @@ html[data-case="station"] .pat-cap{margin:8px 0 0;text-align:center;font-size:14
 html[data-case="station"] .laminated-sheet{left:8.6%;top:24.4%;width:60%;height:62.4%;padding:1.6% 2.2%;font-size:2.25cqw;transform:none}
 html[data-case="station"] .laminated-sheet .sheet-title{font-size:2.6cqw}
 html[data-case="station"] .laminated-sheet .sheet-foot{font-size:2.1cqw}
+/* 휴대폰 기록 반영 (v137) */
+html[data-case="station"] .mirror-tilt input[type=range]{height:44px}
+html[data-case="station"] .train small{font-size:13px}
+html[data-case="station"] .ticket-plain{margin:0 0 10px;padding:8px 12px;border-left:3px solid var(--lamp);background:rgba(255,255,255,.05);font-size:15px;line-height:1.5}
+html[data-case="station"] .postcard-photo figcaption .pc-zoom{font-family:var(--sans);font-size:13px;color:#6b5a40;margin-top:4px}
+@media (max-width:640px),(orientation:landscape) and (max-height:500px){
+  html[data-case="station"] .postcard-photo{cursor:zoom-in}
+  html[data-case="station"] .postcard-photo.big{cursor:zoom-out;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+  html[data-case="station"] .postcard-photo.big img{width:240%;max-width:none}
+}
+/* 잠금 패턴: 잡힌 점 고리, 손가락까지 늘어나는 선, 틀리면 안내 자리에 빨간 글씨 */
+html[data-case="station"] .pat-ring{fill:rgba(240,190,90,.18);stroke:var(--lamp);stroke-width:2;stroke-opacity:.7}
+html[data-case="station"] .pat-line.tail{stroke-opacity:.55}
+html[data-case="station"] .pat-say.wrong{color:#ff8a80;font-weight:700}
+/* 대문 카드 번호 = 지도에 연필로 적은 번호 */
+html[data-case="station"] .gate-chip .gate-num{display:inline-grid;place-items:center;width:20px;height:20px;margin-right:6px;border-radius:50%;background:#fbf3dc;border:1.5px solid #d9872b;color:#a85a12;font:700 12.5px/1 var(--sans);font-style:normal;vertical-align:1px}
+html[data-case="station"] .walk-map{scroll-margin-top:64px}
+@media (max-width:640px),(orientation:landscape) and (max-height:500px){
+  /* 길 끝: 지도(감나무)와 대문 카드가 한 화면에 들어오게 지도를 줄이고 글을 좁게 */
+  html[data-case="station"] .walk.at-lane .walk-map.prop{width:min(100%,calc(100svh - 430px));min-width:220px}
+  html[data-case="station"] .walk.at-lane .walk-here{font-size:14.5px;line-height:1.5;margin:6px 0}
+  html[data-case="station"] .walk.at-lane .gate-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:6px 0 2px}
+  html[data-case="station"] .walk.at-lane .gate-chip{min-height:50px;padding:7px 10px}
+}
+/* 가로 휴대폰: 잠금 화면은 왼쪽, 기울이기·지우기·설명은 오른쪽 (휴대폰 화면 전체가 창 높이에 들어오게) */
+@media (orientation:landscape) and (max-height:500px){
+  html[data-case="station"] .pat{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:18px;align-items:center;max-width:none}
+  html[data-case="station"] .pat>.pat-phone{grid-column:1;grid-row:1/span 2;width:min(300px,calc(100svh - 200px));margin:0;padding:8px 12px 12px;scroll-margin-top:64px}
+  html[data-case="station"] .pat-top{padding:2px 8px 0;font-size:13px}
+  html[data-case="station"] .pat-noti{margin:6px 4px 2px;padding:5px 10px;font-size:13px}
+  html[data-case="station"] .pat-say{margin:4px 0 0;font-size:13px}
+  html[data-case="station"] .pat>.pat-row{grid-column:2;grid-row:1;align-self:end;flex-direction:column;align-items:stretch}
+  html[data-case="station"] .pat>.pat-row .ctl.wide{margin:0}
+  html[data-case="station"] .pat>.pat-cap{grid-column:2;grid-row:2;align-self:start;text-align:left}
+  html[data-case="station"] .walk.at-lane{display:grid;grid-template-columns:minmax(200px,40%) minmax(0,1fr);column-gap:14px;align-items:start}
+  html[data-case="station"] .walk.at-lane>.walk-map.prop{grid-column:1;grid-row:1/span 3;width:100%;margin:0}
+  html[data-case="station"] .walk.at-lane>:not(.walk-map){grid-column:2}
+}
 
 /* 고양이: 오후 햇살 포장 가게 · 리본 · 편지지 */
 html[data-case="cat-invite"]{
