@@ -204,7 +204,7 @@ export default {
         // 노란 쪽지는 모니터 왼쪽 아래 모서리 (그림에서 옮겨 붙임, 가운데 87.5 · 56.4)
         { id: 'enote', x: 87.5, y: 56.5, label: '모니터에 붙은 쪽지', kind: 'doc', doc: 'enote', r: 6 },
         { id: 'sched', x: 8.5, y: 32, label: '벽의 편성 변경 알림', kind: 'doc', doc: 'sched' },
-        // 턴테이블·재킷은 콘솔 빠진 먼지 자리 위 (PIL로 그려 넣음, 가운데 48.1·62.4 / 36.2·59.7)
+        // 턴테이블·재킷은 콘솔 빠진 먼지 자리 위 (부분 다시 그리기, 가운데 약 47.9·62.2 / 36.1·59.6)
         { id: 'sleeve', x: 36.2, y: 59.5, label: 'LP 재킷', kind: 'doc', doc: 'sleeve', r: 6 },
         { id: 'lp', x: 48.5, y: 62, label: '턴테이블', kind: 'device', device: 'lp', r: 8 },
         { id: 'cue', x: 76, y: 66, label: '책상 위 헤드폰', kind: 'doc', doc: 'cue', visible: (S) => S.solved.includes('lp') },
