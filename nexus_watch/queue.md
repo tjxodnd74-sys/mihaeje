@@ -1,5 +1,19 @@
 # 넥서스 제작 후보 (최신이 위)
 
+## 2026-11-22 10:58 — 🔥바로제작(10:41 창이라 표시만, 다음 감시에서 요청) ① 챗GPT·클로드 모바일 앱 나란히 개편 — 하단 탭으로 에이전트·코드·프로젝트 전면 배치
+- 출처: https://www.aitimes.com/news/articleList.html?view_type=sm (AI타임스 11-22 09:09) · https://runtimewire.com/article/claude-mobile-redesign-code-projects-artifacts-tab-bar · https://dev.ua/en/news/anthropic-onovyla-dyzain-mobilnoho-zastosunku-claude-1795249677 · https://www.archynewsy.com/openai-rolls-out-redesigned-chatgpt-mobile-app-with-sidebar-navigation-project-support/
+- 내용: 오픈AI 11/19 릴리스 노트로 새 모바일 디자인 일부 이용자 제공 시작, 앤트로픽 11/20 클로드 앱 새 디자인 순차 배포(하단 탭: 채팅·프로젝트·코드·아티팩트, 안드로이드는 뒤이어). 국내 적용 여부·전 이용자 여부는 미확인
+- 제목안: "챗GPT·클로드 앱 화면 바뀌었어요, 어디 뭐 있는지 3초 정리" / "업데이트 후 메뉴 못 찾겠다면 이것만 보세요" (🔥릴스 우선 — 화면 전후 비교)
+
+## 2026-11-22 10:58 — (참고·🔥만화형 후보) 리만 가설 '클로드 보조 증명' Lean·Mathlib 커뮤니티 형식 검증 인증(11/21) — 11/21 13:04 '검증 대기' 항목 후속
+- 출처: https://news.hada.io/ (긱뉴스 9시간 전, leanprover-community 공동 성명) · https://www.unite.ai/lean-and-mathlib-communities-certify-claude-assisted-riemann-proof/ · https://startupfortune.com/lean-groups-certify-claude-assisted-riemann-hypothesis-proof-from-anthropic/
+- 내용: 약 1,700만 줄·17.5만 모듈 Lean 증명이 리만 가설 서술과 일치·오류 없음 인증(Lean FRO·Mathlib Initiative 지지). 단서: 사람이 읽을 수 있는 설명 아직 없음(비공식 25만 쪽+), 클레이 상 조건(출판+2년 검증) 미충족, 일부 커널 검사 진행 중이었음. 주요 언론 확인은 아직 부족 → 소비자 기능 아님이라 바로 제작 대상 아님, 만화형 소재로 보관
+- 제목안: "167년 난제, AI가 풀었다? 지금까지 확인된 것만"
+- (제외) AI타임스: METR 'AI 작업 능력 16→40시간'(11-21 18:20, 연구)·손정의 SK하이닉스 인수 검토(05:59)·머스크 우주 DC 채권단(18:55)·LGU+ 조직개편 — 기업·연구. 긱뉴스: 딥마인드 'AGI 다음'·Vercel UI SDK·DreamCoder(개발자용)
+- 유튜브 18곳 11/21 18:24 이후 새 롱폼 2개: AI아스트라 'AI 숏 드라마 제작하기, 역대급 AI 툴 등장'(3시간 전)·원카 'AI 채널 처음 키울 때 착각하면 안 되는 것들 [초대석 EP.2]'(15시간 전). 짝수 시 쇼츠: 첫 확인 이너리드 '커피 사진 김만 움직이게 GIF 프롬프트'·'AI 보고서 틀리면 내 책임?'·에이커 '클로드 이 기능 늦게 쓸수록 손해'(2.2만)·AI하쥬 '한글 안 깨지는 AI 이미지 1위'·데키랩 'AI 동물 인터뷰'·유튜브신쌤 '맥미니 최저가 AI 6개 사이트'
+- 48시간 🔥: AI 숏드라마·쇼츠 제작 5곳(AI아스트라·이종범·찍봇·AI하쥬·조팀장 — 일부 광고성), 최신 모델 비교 3곳(스마트대디 3.9만·AI아스트라·이종범)
+- vidIQ 인스타(10시): @korean_founders_pov '클로드 한도 끝나서 GPT로 갈아탄 개발자'(22만·평소 17배, AI 간 기억 옮기기)·@jb.ai.daily '페이블 5.2+힉스필드 상세페이지 9개'(9.8만·31배, 광고성 가능)·@wintergrowthdiary AI 강아지 '공무원 직급별 겨울 출근룩'(37.4만·130배, AI 이미지 엔터)·수능 AI 부정행위 뉴스(KBS 98명 적발 등)
+
 ## 2026-11-21 18:24 — (참고) 새 소식·새 글 없음. 제미나이 GIF(17:23 제작 요청됨)는 카드뉴스 작업 내일 1순위 유지
 - 유튜브 18곳 /videos·/shorts 17:23 이후 새 롱폼·새 쇼츠 없음(마지막 새 글: 조팀장 'AI 툴에 500만원 넘게 쓰고 느낀 점' 1시간 전)
 - AI타임스·긱뉴스 17:23 이후 새 소비자 소식 없음(긱뉴스 Show GN AS 스크리너·CalcSpin — 개발자용 제외)
@@ -555,3 +569,4 @@ vidIQ 사용: 2026-11-20 10:24 5크레딧(잔액 1519→1514 예상, 아웃라�
 vidIQ 사용: 2026-11-20 15:24 5크레딧(잔액 1479, 아웃라이어 검색 1회, 오늘 누적 10)
 vidIQ 사용: 2026-11-21 15:24 5크레딧(잔액 1409→1404 예상, 아웃라이어 검색 1회)
 긴급 제작 요청: 2026-11-21 17:23 제미나이 앱 GIF 생성
+vidIQ 사용: 2026-11-22 10:58 5크레딧(잔액 1369→1364 예상, 아웃라이어 검색 1회)

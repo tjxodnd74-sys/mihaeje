@@ -463,3 +463,8 @@
 2026-11-21 17:23 | 제미나이 | 제미나이 앱 GIF 생성 출시(Omni 1.2 Flash, 한국 포함, AI타임스 16:39·구글 X 11/20, 알림·긴급 제작 요청) | https://x.com/GeminiApp/status/2123813017855103449
 - 2026-11-21 17:23: 내장 브라우저로 유튜브 18개 채널 /videos(페이지 안 fetch + JSON 파싱, 홀수 시라 쇼츠 생략) — 16:24 이후 새 롱폼 1개(조팀장). AI타임스·긱뉴스 직접 확인(AI타임스 새 기사: 제미나이 GIF) + 웹검색 3건(최근 24시간 결과 없음) + 확인 검색 1건. vidIQ 미사용. 바로 제작 요청 1건(제미나이 GIF).
 - 2026-11-21 18:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + JSON 파싱) — 17:23 이후 새 롱폼·새 쇼츠 없음. AI타임스·긱뉴스 직접 확인(새 소비자 소식 없음) + 웹검색 3건(최근 24시간 결과 없음). vidIQ 미사용. 바로 제작 없음(17:23 요청 후 2시간 이내·새 소식 없음). 인스타 브라우저 안 엶.
+2026-11-22 10:58 | AI아스트라 'AI 숏 드라마 제작하기 역대급 AI 툴'(3시간 전)·원카 '초대석 EP.2 AI 채널 착각'(15시간 전) / 쇼츠 첫 확인: 이너리드 GIF 프롬프트·보고서 책임·40대 AI, 에이커 클로드 이 기능·홍보쇼츠, AI하쥬 AI 커닝·한글 이미지, 데키랩 동물 인터뷰, 유튜브신쌤 맥미니, CONNECT 1인 기업·비즈니스, 노마드 치아미백 | 유튜브 | https://www.youtube.com/@aiastra0/videos
+2026-11-22 10:58 | 챗GPT·클로드 | 모바일 앱 나란히 개편(AI타임스 11-22 09:09·RuntimeWire, 알림·🔥바로제작 표시) | https://runtimewire.com/article/claude-mobile-redesign-code-projects-artifacts-tab-bar
+2026-11-22 10:58 | 클로드 | 리만 가설 증명 Lean·Mathlib 인증(긱뉴스·Unite.AI·Startup Fortune, 알림·만화형 후보) / METR 40시간·손정의 SK하이닉스·머스크 우주 DC·LGU+(제외) | https://www.unite.ai/lean-and-mathlib-communities-certify-claude-assisted-riemann-proof/
+2026-11-22 10:58 | vidIQ: @korean_founders_pov 클로드→GPT 갈아타기(22만)·@jb.ai.daily 상세페이지(9.8만)·@wintergrowthdiary 공무원 출근룩(37.4만) | https://www.instagram.com/reel/Df6rOttPDEo
+- 2026-11-22 10:58: 오늘 첫 감시. 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + JSON 파싱) — 어제 18:24 이후 새 롱폼 2개. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음) + 확인 검색 2건 + vidIQ 아웃라이어 1회(5크레딧, 잔액 1369). 바로 제작 요청 없음(10:41 창 — 앱 개편 🔥바로제작 표시만). 인스타 브라우저 안 엶.
