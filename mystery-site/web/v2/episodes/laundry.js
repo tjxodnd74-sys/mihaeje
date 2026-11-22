@@ -1,6 +1,7 @@
 // 자정의 무인 세탁소 — ★4 안내 없음, 힌트 3단계 이야기·자료·장치가 전부 이 파일에 있습니다
 // 6번 건조기는 매일 밤 빈 통으로 돈다 배기구가 뒷골목 막차 정류장 지붕 위로 나 있어서
-// 손동작: 버튼 순서 누르기 → 자석 하나 옮기기 → 번호 스티커 여섯 장 붙이기 → 녹화 막대 밀며 화면 표시 → 예약 칩 셋
+// 손동작: 버튼 순서 누르기 → 자석 하나 옮기기 → 동전 세어 봉투에 넣기 → 번호 스티커 여섯 장 붙이기 → 녹화 막대 밀며 화면 표시 → 예약 칩 셋
+// v136: 도현에게 돌려줄 동전 봉투(coinroll) 추가 — 기록에서 도현이 넣은 밤만 센다 (관리자 카드 7줄은 엄마 것, 답 29개)
 // v125: 간판은 가게 안에서 보면 좌우가 뒤집힌다(엄마는 늘 밖에서 봤다) · 근무표 대타 메모 함정 · 뒷골목 CCTV(새 장치) · 엄마의 사연과 월요일 밤 빈칸
 const P = 'assets/v2/laundry/';
 const small = () => typeof matchMedia === 'function' && matchMedia('(max-width:640px)').matches;
@@ -111,10 +112,10 @@ function ductSvg() {
   const tx = (x, y, s, t, a = 'middle', c = ink, w = 400) => `<text x="${x}" y="${y}" font-size="${s}" font-weight="${w}" text-anchor="${a}" fill="${c}" font-family="SUIT, Pretendard, sans-serif">${t}</text>`;
   const X = [15, 29, 43, 57, 71, 85];
   let s = '<svg viewBox="0 0 100 88" class="duct-svg" role="img" aria-label="설비 업체 배기 배관도 위 칸은 골목에서 본 뒷벽 배기구 여섯 자리와 글자, 아래 칸은 건조기 여섯 대에서 천장 끝 글자까지 엇갈려 올라가는 배관">';
-  s += `<rect x="31" y="5" width="38" height="25" rx="1" fill="#f1ede2" stroke="${ink}" stroke-width=".4"/>${tx(50, 3.6, 3.9, '뒷벽 배기구 · 골목에서 본 모습', 'middle', ink, 700)}`;
+  s += `<rect x="31" y="5.6" width="38" height="24.4" rx="1" fill="#f1ede2" stroke="${ink}" stroke-width=".4"/>${tx(50, 4.2, 4.3, '뒷벽 배기구 · 골목에서 본 모습', 'middle', ink, 700)}`;
   const gx = { L: 40, M: 50, R: 60 }, gy = { T: 12, B: 23 };
   Object.entries(WALL).forEach(([k, l]) => { const x = gx[k[1]], y = gy[k[0]]; s += `<circle cx="${x}" cy="${y}" r="4.2" fill="#fff" stroke="${ink}" stroke-width=".5"/>${tx(x, y + 1.5, 4.3, l, 'middle', ink, 700)}`; });
-  s += `<line x1="4" y1="34" x2="96" y2="34" stroke="${ink}" stroke-width=".3" stroke-dasharray="1 1"/>${tx(50, 39.4, 3.8, '천장 속 배관 · 끝 글자는 위 칸 벽 자리', 'middle', '#3b4450', 700)}`;
+  s += `<line x1="4" y1="34" x2="96" y2="34" stroke="${ink}" stroke-width=".3" stroke-dasharray="1 1"/>${tx(50, 39.4, 4.3, '천장 속 배관 · 끝 글자는 위 칸 벽 자리', 'middle', '#3b4450', 700)}`;
   X.forEach((x, i) => { s += `<circle cx="${x}" cy="45" r="3.3" fill="#fff" stroke="${ink}" stroke-width=".45"/>${tx(x, 46.35, 3.8, LETTERS[i], 'middle', ink, 700)}`; });
   for (let n = 1; n <= 6; n++) {
     const dx = X[n - 1], tx2 = X[PIPE[n]];
@@ -123,7 +124,7 @@ function ductSvg() {
     s += `<path d="${d}" fill="none" stroke="#fbfaf4" stroke-width="2.8"/><path d="${d}" fill="none" stroke="${pipe}" stroke-width="1.2" stroke-linecap="round"/>`;
   }
   X.forEach((x, i) => { s += `<rect x="${x - 4.4}" y="73" width="8.8" height="8" rx="1" fill="#e4e7eb" stroke="${ink}" stroke-width=".45"/>${tx(x, 78.6, 4.3, i + 1, 'middle', ink, 700)}`; });
-  s += tx(50, 86.4, 3.8, '건조기 1 ~ 6 · 가게 안에서 붙인 번호', 'middle', '#3b4450', 700);
+  s += tx(50, 86.6, 4.3, '건조기 1 ~ 6 · 가게 안에서 붙인 번호', 'middle', '#3b4450', 700);
   return s + '</svg>';
 }
 
@@ -148,7 +149,7 @@ export default {
   title: '자정의 무인 세탁소',
   subtitle: '빈 통으로 도는 6번 건조기',
   genre: '생활 미스터리 · 동네 추리',
-  minutes: 30,
+  minutes: 35,
   difficulty: 4,
   mood: 'horror',
   cover: P + 'hall.webp',
@@ -161,7 +162,7 @@ export default {
   tracesLabel: '6번이 데려간 곳',
 
   opening: {
-    eyebrow: '11월 4일 수요일, 밤 12시',
+    eyebrow: '11월 4일 수요일 0시',
     paragraphs: [
       '해달빨래방은 엄마가 열두 해 한 가게다. 엄마가 손목 수술을 받으면서 지난달부터 내가 맡았다. 무인이라 밤엔 아무도 없다. 원래는.',
       '맡은 첫날 엄마가 한 말은 하나였다. 「6번 자정에 도는 거 건드리지 마라. 이유는 묻지 말고.」',
@@ -174,6 +175,7 @@ export default {
   traces: [
     { device: 'panel', label: '6번의 기록' },
     { device: 'magnet', label: '동전 넣는 사람' },
+    { device: 'coinroll', label: '도현에게 건넨 봉투' },
     { device: 'vents', label: '6번의 배기구' },
     { device: 'cctv', label: '어젯밤 벤치' },
     { device: 'sched', label: '새 예약' },
@@ -187,7 +189,7 @@ export default {
       arrive: (S) => {
         if (S.solved.includes('cctv')) return '단말기엔 어젯밤 벤치가 멈춰 있다 6번 패널 액정에 예약 화면이 켜져 있다';
         if (S.solved.includes('vents')) return '6번은 멈췄다 문 유리가 아직 따뜻하다 벽에 붙은 관리자 단말기 화면이 저 혼자 깜빡인다 뒷골목을 비추는 카메라다';
-        if (S.solved.includes('panel')) return '6번은 아직 빈 통으로 돈다 패널 액정엔 ADMIN 그 아래 동전함 서랍이 반쯤 밀려 나와 있다';
+        if (S.solved.includes('panel')) return '6번은 아직 빈 통으로 돈다 패널 액정엔 ADMIN 그 아래 동전함 잠금이 풀려 있다';
         return '밖엔 비가 온다 맨 끝 6번이 빈 통으로 돌고, 안쪽 4번에선 손님이 두고 간 이불이 웅웅 돈다 6번 앞판엔 엄마 쪽지가 테이프로 붙어 있고 앞 유리 안쪽엔 엄마가 단 네온 간판';
       },
       hotspots: [
@@ -208,20 +210,24 @@ export default {
       name: '옆 편의점',
       image: P + 'store.webp',
       unlockedBy: 'panel',
-      arrive: (S) => (S.solved.includes('magnet')
+      arrive: (S) => (S.solved.includes('coinroll')
         ? '도현은 박스를 안고 다시 창고로 들어갔다 계산대는 또 비었다 포스 화면엔 아직 도현 이름이 로그인돼 있다'
-        : '옆 늘봄편의점은 불이 환하다 계산대는 비어 있고 창고에서 박스 끄는 소리만 난다 냉장고 모터가 낮게 운다 계산대 너머 벽에 근무표 화이트보드, 보드 아래 테두리엔 노란 쪽지'),
+        : S.solved.includes('magnet')
+          ? '도현은 계산대에 팔꿈치를 괴고 서 있다 지폐는 오백 원짜리로 바꿔 줬다 딱 자기가 넣은 만큼이 아니면 안 받겠다고 한다'
+          : '옆 늘봄편의점은 불이 환하다 계산대는 비어 있고 창고에서 박스 끄는 소리만 난다 냉장고 모터가 낮게 운다 계산대 너머 벽에 근무표 화이트보드, 보드 아래 테두리엔 노란 쪽지'),
       hotspots: [
         { id: 'shift', x: 58, y: 31, label: '근무표 화이트보드', kind: 'device', device: 'magnet' },
         { id: 'posnote', x: 49, y: 53, r: 6, label: '포스 옆 꽂이의 메모', kind: 'doc', doc: 'posnote' },
         { id: 'talk', x: 29, y: 57, r: 8, label: '포스 앞에서 도현과 한 얘기', kind: 'doc', doc: 'talk', visible: (S) => S.solved.includes('magnet') },
+        // 포스 아래 검은 돈통 자리
+        { id: 'envelope', x: 29, y: 74, r: 7, label: '계산대 위 동전 봉투', kind: 'device', device: 'coinroll', visible: (S) => S.solved.includes('magnet') },
       ],
     },
     {
       id: 'alley',
       name: '뒷골목',
       image: P + 'alley.webp',
-      unlockedBy: 'magnet',
+      unlockedBy: 'coinroll',
       arrive: (S) => (S.solved.includes('vents')
         ? '편의점 쪽에서 발소리가 다가온다 머리 위 배기구는 손님 이불 도는 4번 하나만 아직 김을 뱉는다 6번 바로 밑 벤치엔 아직 내 배관도만 펼쳐져 있다'
         : '열두 시 구 분, 빨래방 뒤로 돌아 나왔다 배기구 하나가 숨 쉬듯 김을 뱉고 나머지 다섯은 검은 입만 벌리고 있다 번호는 없다 그 아래 정류장 벤치는 비어 있어서, 도현이 준 배관도를 벤치 끝에 펼쳐 놓았다'),
@@ -239,7 +245,7 @@ export default {
       kind: '방금',
       html: `<div class="chat"><div class="chat-head"><span class="chat-back">‹</span><b>엄마</b><span class="chat-icons">☰</span></div><div class="chat-date">2026년 11월 4일 수요일</div>
 <div class="chat-row me"><span class="chat-meta">오전 12:01</span><div class="chat-bubble">엄마 6번 지금 혼자 돌아<br>통 비었는데</div></div>
-<div class="chat-row them"><span class="chat-avatar">엄</span><div class="chat-col"><span class="chat-name">엄마</span><div class="chat-bubble">건들지 말랫지</div><div class="chat-bubble">사연잇어 낼 낮에 얘기해줄게</div><div class="chat-bubble">글구 열두시 넘으면 뒤쪽 내다보지마 그시간엔 사람잇어</div><div class="chat-bubble">손목아파 자야돼</div></div><span class="chat-time">오전 12:03</span></div>
+<div class="chat-row them"><span class="chat-avatar">엄</span><div class="chat-col"><span class="chat-name">엄마</span><div class="chat-bubble">건들지 말랫지</div><div class="chat-bubble">사연잇어 나중에 얘기해줄게</div><div class="chat-bubble">글구 열두시 넘으면 뒤쪽 내다보지마 그시간엔 사람잇어</div><div class="chat-bubble">손목아파 자야돼</div></div><span class="chat-time">오전 12:03</span></div>
 <div class="chat-input"><span class="chat-field">메시지 입력</span><span>➤</span></div></div>`,
     },
     note6: {
@@ -250,12 +256,12 @@ export default {
     drum6: {
       title: '6번 문 유리',
       kind: '손을 대 본 것',
-      html: '<p>빈 통인데 유리가 손바닥만큼 따뜻하다 안쪽 벽에 김이 손자국처럼 서렸다가 천천히 지워진다 통이 한 바퀴 돌 때마다 텅 빈 소리가 난다 무게 표시는 0.0kg</p><p class="aside">유리에 비친 내 얼굴 뒤로 가게가 텅 비어 있다</p>',
+      html: '<p>빈 통인데 유리가 손바닥만큼 따뜻하다 젖은 빨래가 없으니 유리엔 김 한 점 안 서린다 통이 한 바퀴 돌 때마다 텅 빈 소리가 난다 무게 표시는 0.0kg</p><p class="aside">유리에 비친 내 얼굴 뒤로 가게가 텅 비어 있다</p>',
     },
     sign: {
       title: '앞 유리 네온 간판',
       kind: '가게 안에서 올려다본 것',
-      html: `<div class="neon mirrored" role="img" aria-label="앞 유리 안쪽 네온 안에서 보면 왼쪽부터 뒤집힌 24, 뒤집힌 빨래방, 달 그림, 해 그림"><span class="neon-sun">☀</span><span class="neon-moon">☾</span><em>빨래방</em><strong>24</strong></div><p>가게 이름 해달을 엄마는 글자 대신 해 그림, 달 그림으로 넣었다 간판집 사장님이 이러면 아무도 못 읽는다고 했는데 엄마는 그게 좋다고 했다</p><p>엄마는 문을 닫고 나면 꼭 길 건너에서 이 불이 잘 켜졌나 한 번 보고 갔다</p>`,
+      html: `<div class="neon mirrored" role="img" aria-label="앞 유리 안쪽 네온 안에서 보면 왼쪽부터 뒤집힌 24, 뒤집힌 빨래방, 달 그림, 해 그림"><span class="neon-sun">☀</span><span class="neon-moon">☾</span><em>빨래방</em><strong>24</strong></div><p>가게 이름 해달을 엄마는 글자 대신 해 그림, 달 그림으로 넣었다 간판집 사장님이 이러면 아무도 못 읽는다고 했는데 엄마는 그게 좋다고 했다</p><p>엄마는 퇴근할 때면 꼭 길 건너에서 이 불이 잘 켜졌나 한 번 보고 갔다</p>`,
     },
     guide: {
       title: '벽의 이용 안내',
@@ -280,7 +286,7 @@ export default {
     talk: {
       title: '포스 앞에서 도현과 한 얘기',
       kind: '편의점 계산대',
-      html: `<p>「6번?」 메모 옆에 초록 자석을 붙이는데 창고에서 박스를 안고 나오던 알바가 멈춰 서더니, 박스를 내려놓고 포스 앞으로 왔다 명찰에 김도현</p><blockquote>"아 빨래방 사장님 따님이시죠 들켰네"</blockquote><blockquote>"사모님이 수술 들어가시면서 부탁하셨어요 출근할 때 6번에 오백 원 넣고 열두 시로 예약만 걸어 달라고 동전 값은 주신다고 했는데 그냥 제 돈으로 넣었어요 커피 사고 거스름돈 넣은 날은 영수증도 같이 끼워 뒀고요 사모님 나중에 계산하시라고"</blockquote><blockquote>"왜냐고 여쭤봤는데 열두 시 넘어서 뒷골목에 가 보면 안다고만 하셨어요 지금 가 보시면 되겠네요 저는 가게를 못 비워서 아직 못 가 봤어요 사모님이 이것도 맡기셨는데 무슨 그림인지는 모르겠고"</blockquote><p>도현이 계산대 밑에서 접힌 종이를 꺼냈다 설비 업체 배관도였다</p><blockquote>"아 그리고 요즘 학원 끝난 애들이 여기서 컵라면 하나씩 먹고 정류장으로 나가요 막차가 늦어졌다고 투덜대면서"</blockquote>`,
+      html: `<p>「6번?」 메모 옆에 초록 자석을 붙이는데 창고에서 박스를 안고 나오던 알바가 멈춰 서더니, 박스를 내려놓고 포스 앞으로 왔다 명찰에 김도현</p><blockquote>"아 빨래방 사장님 따님이시죠 들켰네"</blockquote><blockquote>"사모님이 수술 들어가시면서 부탁하셨어요 출근할 때 6번에 오백 원 넣고 열두 시로 예약만 걸어 달라고 동전 값은 주신다고 했는데 그냥 제 돈으로 넣었어요 커피 사고 거스름돈 넣은 날은 영수증도 같이 끼워 뒀고요 사모님 나중에 계산하시라고"</blockquote><blockquote>"왜냐고 여쭤봤는데 열두 시 넘어서 뒷골목에 가 보면 안다고만 하셨어요 저는 가게를 못 비워서 아직 못 가 봤어요"</blockquote><p>그동안 넣은 동전 값은 내가 돌려주겠다고 했다 도현이 손을 내저었다</p><blockquote>"꼭 주시겠다면 딱 제가 넣은 만큼만요 한 개라도 더 얹으시면 안 받아요"</blockquote><blockquote>"아 그리고 요즘 학원 끝난 애들이 여기서 컵라면 하나씩 먹고 정류장으로 나가요 막차가 늦어졌다고 투덜대면서"</blockquote>`,
     },
     duct: {
       title: '설비 업체 배관도',
@@ -296,7 +302,7 @@ export default {
       title: '엄마와의 통화',
       kind: '11월 5일 목요일 0시 31분',
       locked: true,
-      html: `<blockquote>"봤냐"</blockquote><blockquote>"봤어 막차 바뀐 거 알았어?"</blockquote><blockquote>"몰랐지 병원 다니느라 정신없었는데 그럼 며칠을 애들이 떨었겠네"</blockquote><blockquote>"엄마 근데 6번 왜 시작한 거야"</blockquote><blockquote>"몇 년 전 겨울에 저 벤치에서 교복 입은 애 하나가 막차 기다리다 떨면서 잠들었어 버스 기사가 흔들어 깨워서 겨우 탔대 그 얘기 듣고 그다음 날부터 돌렸지"</blockquote><blockquote>"니 아빠도 공장 다닐 때 그 막차 탔거든 말하면 니가 전기세 얘기부터 할까 봐 안 했다"</blockquote><blockquote>"월요일 밤은 왜 비었어?"</blockquote><blockquote>"월요일은 하은이가 야간인데 걔는 학생이라 거기까진 부탁을 못 했어 화요일마다 마음에 걸렸다"</blockquote><blockquote>"이제 열두 시 십 분부터 이십 분 저온 관리자로 걸어 놨어 예약은 하루짜리니까 밤마다 내가 걸게 월요일 밤도 빼지 않고"</blockquote><blockquote>"그리고 열두 시 넘으면 뒤쪽에 사람 있다는 거, 정류장 얘기였어?"</blockquote><blockquote>"그럼 뭔 줄 알았냐"</blockquote><blockquote>"도현이한테 오백 원 돌려줘라 한 달 치"</blockquote><blockquote>"주려고 했는데 안 받더라"</blockquote><p>엄마가 웃었다 손목이 아프다면서 한참 웃었다</p>`,
+      html: `<blockquote>"봤냐"</blockquote><blockquote>"봤어 막차 바뀐 거 알았어?"</blockquote><blockquote>"몰랐지 병원 다니느라 정신없었는데 그럼 며칠을 애들이 떨었겠네"</blockquote><blockquote>"엄마 근데 6번 왜 시작한 거야"</blockquote><blockquote>"몇 년 전 겨울에 저 벤치에서 교복 입은 애 하나가 막차 기다리다 떨면서 잠들었어 버스 기사가 흔들어 깨워서 겨우 탔대 그 얘기 듣고 그다음 날부터 돌렸지"</blockquote><blockquote>"니 아빠도 공장 다닐 때 그 막차 탔거든 말하면 니가 전기세 얘기부터 할까 봐 안 했다"</blockquote><blockquote>"월요일 밤은 왜 비었어?"</blockquote><blockquote>"월요일은 하은이가 야간인데 걔는 학생이라 거기까진 부탁을 못 했어 화요일마다 마음에 걸렸다"</blockquote><blockquote>"이제 열두 시 십 분부터 이십 분 저온 관리자로 걸어 놨어 예약은 하루짜리니까 밤마다 내가 걸게 월요일 밤도 빼지 않고"</blockquote><blockquote>"그리고 열두 시 넘으면 뒤쪽에 사람 있다는 거, 정류장 얘기였어?"</blockquote><blockquote>"그럼 뭔 줄 알았냐"</blockquote><blockquote>"도현이한테 오백 원 돌려줘라 한 달 치"</blockquote><blockquote>"벌써 줬어 딱 넣은 만큼만 받겠대서 기록 보고 하나씩 셌어"</blockquote><blockquote>"걔도 참"</blockquote><p>엄마가 웃었다 손목이 아프다면서 한참 웃었다</p>`,
     },
   },
 
@@ -412,8 +418,52 @@ export default {
       reveal: {
         title: '김도현',
         text: '초록 자석을 옮기는 순간 창고 문이 열렸다 「들켰네」',
-        scene: ['도현은 엄마 부탁이었다고 했다 이유는 자기도 모른다면서, 열두 시 넘었으니 지금 뒷골목에 가 보라며 접힌 종이 한 장을 건넸다'],
+        scene: ['도현은 엄마 부탁이었다고 했다 이유는 자기도 모른다고 했다 동전 값을 돌려주겠다니까, 딱 자기가 넣은 만큼만 받겠단다'],
         unlockDoc: 'talk',
+      },
+    },
+
+    coinroll: {
+      title: '도현에게 건넬 동전 봉투',
+      scene: 'store',
+      intro: '계산대에서 지폐를 오백 원짜리로 바꿔 받았다 동전 더미를 누르면 봉투에 한 개씩 들어가고, 열 개가 모이면 종이로 한 줄 말린다 다 넣었으면 봉투를 붙여 건넨다',
+      docs: ['log6', 'talk', 'coins'],
+      hintCode: 'W-S06',
+      hints: [
+        '도현이 6번에 넣은 오백 원 개수만큼 넣어라 기록에 다 남아 있다',
+        '기록에서 무엇으로 돌렸는지 칸을 봐라 오늘 밤 돌고 있는 것도 누가 넣었는지 따져 보고',
+        '오백 원 29개 14,500원',
+      ],
+      initial: () => ({ n: 0 }),
+      render(ctx) {
+        const { d, el, save } = ctx;
+        const MAX = 60;
+        const add = (k) => { if (k === -10 && d.n < 10) { ctx.status('아직 말린 줄이 없다'); return; } const v = Math.max(0, Math.min(MAX, d.n + k)); if (v === d.n) { ctx.status(k > 0 ? '바꿔 받은 동전이 바닥났다' : '봉투가 비어 있다'); return; } d.n = v; save(); };
+        const wrap = el('div', 'coin-wrap');
+        const env = el('div', 'coin-env');
+        const rolls = Math.floor(d.n / 10), loose = d.n % 10;
+        env.setAttribute('role', 'img');
+        env.setAttribute('aria-label', `봉투 속 동전 ${d.n}개`);
+        env.innerHTML = `<span class="coin-flap" aria-hidden="true"></span><div class="coin-in" aria-hidden="true">${'<i class="coin-roll"><b>10</b></i>'.repeat(rolls)}${'<i class="coin"></i>'.repeat(loose)}${d.n ? '' : '<em>빈 봉투</em>'}</div>`;
+        const pile = el('button', 'coin-pile'); pile.type = 'button'; pile.setAttribute('aria-label', '동전 더미 · 한 개 넣기');
+        pile.innerHTML = '<span aria-hidden="true"><i class="coin"></i><i class="coin"></i><i class="coin"></i></span>한 개 넣기';
+        pile.onclick = () => add(1);
+        const row = el('div', 'coin-keys');
+        [['열 개 한 줄 넣기', 10], ['한 개 꺼내기', -1], ['한 줄 꺼내기', -10]].forEach(([t, k]) => { const b = el('button', 'chip', t); b.type = 'button'; b.onclick = () => add(k); row.append(b); });
+        const empty = el('button', 'chip', '봉투 비우기'); empty.type = 'button'; empty.onclick = () => { d.n = 0; save(); }; row.append(empty);
+        wrap.append(env, el('p', 'pick-label coin-count', d.n ? `봉투에 ${rolls ? `${rolls}줄 ` : ''}${loose ? `${loose}개` : ''} · ${(d.n * 500).toLocaleString('ko-KR')}원` : '아직 봉투가 비었다'), pile, row);
+        return wrap;
+      },
+      commitLabel: '봉투 붙여 건네기',
+      canCommit: (d) => d.n > 0,
+      check(d) {
+        if (d.n === 29) return { ok: true };
+        return { ok: false, msg: '도현이 봉투를 열어 한 줄씩 세어 보더니 도로 내민다 「이건 제가 넣은 만큼이 아니에요」' };
+      },
+      reveal: {
+        title: '딱 넣은 만큼',
+        text: '도현이 동전을 한 줄씩 세더니 웃었다 「맞네요 저도 이렇게까진 안 세 봤는데」 그러고는 계산대 밑에서 접힌 종이를 꺼냈다 「사모님이 이것도 맡기셨어요 무슨 그림인지는 모르겠고」 설비 업체 배관도였다',
+        scene: ['「열두 시 넘었으니까 지금 뒷골목에 가 보시면 되겠네요 저는 가게를 못 비워서요」'],
         unlock: 'alley',
       },
     },
@@ -447,7 +497,7 @@ export default {
           if (d.map[v]) b.innerHTML = `<span class="vent-tape">${d.map[v]}</span>`;
           b.onclick = () => {
             const had = d.map[v];
-            if (had) { delete d.map[v]; if (d.hold) d.map[v] = d.hold; d.hold = d.hold ? null : had; save(); return; }
+            if (had) { delete d.map[v]; if (d.hold) d.map[v] = d.hold; d.hold = had; save(); return; } // 든 스티커가 있으면 바꿔 붙이고, 떼어 낸 건 손에 든다
             if (!d.hold) { ctx.status('먼저 아래에서 번호 스티커를 하나 집는다'); return; }
             d.map[v] = d.hold; d.hold = null; save();
           };
@@ -559,7 +609,7 @@ export default {
           list.forEach((v) => { const b = el('button', 'chip' + (d[k] === v ? ' on' : ''), v + (k === 'min' ? '분' : '')); b.type = 'button'; b.setAttribute('aria-pressed', d[k] === v ? 'true' : 'false'); b.setAttribute('aria-label', `${lab} ${v}${k === 'min' ? '분' : ''}`); b.onclick = () => { d[k] = v; save(); }; g.append(b); });
           row.append(el('span', 'gift-name', lab), g); return row;
         };
-        const ph = el('div', 'prop dpanel small'); ph.innerHTML = `<img src="${P}props/panel.webp" alt="6번 건조기 패널" decoding="async"><div class="lcd">예약 ${d.start}<br>${d.min}분 ${d.temp}</div>`;
+        const ph = el('div', 'prop dpanel small'); ph.innerHTML = `<img src="${P}props/panel.webp" alt="6번 건조기 패널" decoding="async"><div class="lcd">예약 ${d.start}<br>${d.min}분 ${d.temp}</div>${BTN.map((b) => `<span class="pbtn" aria-hidden="true" style="left:${b.x}%"><span>${b.label}</span></span>`).join('')}<span class="pbtn start" aria-hidden="true"><span>시작</span></span>`;
         const dials = el('div', 'timer-dials'); dials.append(step('start', STARTS, '예약 시작'), step('min', MINS, '운전 시간'), step('temp', TEMPS, '온도'));
         wrap.append(ph, dials);
         return wrap;
@@ -573,7 +623,7 @@ export default {
       reveal: {
         title: '00:10, 20분, 저온',
         text: '액정에 「예약 00:10 · 20분 · 저온」 동전 칸은 「관리자」 예약은 하루짜리라 내일부터는 내가 밤마다 건다 월요일 밤도 빼지 않고',
-        scene: ['도현한테 문자를 보냈다 「이제 오백 원 안 넣으셔도 돼요 한 달 치 돌려드릴게요」 답은 바로 왔다 「됐어요 대신 내일 열두 시 십 분에 같이 봐요」'],
+        scene: ['편의점에 들러 도현한테 말했다 「이제 오백 원 안 넣으셔도 돼요 밤마다 제가 걸게요」 도현이 고개를 끄덕였다 「그럼 내일 열두 시 십 분에 같이 봐요」'],
         ending: true,
         endingLabel: '다음 날 밤 열두 시 십 분, 뒷골목',
       },
@@ -586,7 +636,7 @@ export default {
     eyebrow: '11월 5일 목요일, 막차 오기 전',
     title: '빈 통으로 도는 이유',
     paragraphs: [
-      '비가 밤사이 진눈깨비로 바뀌었다 열두 시 십 분, 편의점 문이 열리고 교복 입은 애가 가방을 메고 정류장으로 갔다 뒤로 작업복 차림의 아주머니 한 분, 점퍼 입은 아저씨 한 분',
+      '하루 종일 오던 비가 밤이 되자 진눈깨비로 바뀌었다 열두 시 십 분, 편의점 문이 열리고 교복 입은 애가 가방을 메고 정류장으로 갔다 뒤로 작업복 차림의 아주머니 한 분, 점퍼 입은 아저씨 한 분',
       '정류장 지붕 위 배기구에서 더운 바람이 내려왔다 빨래 하나 없는 빈 통 바람인데, 진눈깨비 속이라 하얗게 피어올랐다 셋이 벤치에 붙어 앉았다 아주머니가 손을 위로 뻗어 보더니 웃었다 "여기 따뜻하네"',
       '"원래 열두 시였대요" 도현이 말했다 "막차 바뀌고 나선 애들 나오기 전에 끝나 버린 거죠 저도 그게 이거였는지는 오늘 알았어요"',
       '"엄마도 아직 모를 거야 막차 바뀐 거"',
