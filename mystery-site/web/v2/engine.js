@@ -344,7 +344,7 @@ async function main() {
     // 왼쪽: 장치
     const node = el('section', 'v2-device');
     const head = el('div', 'v2-device-head');
-    head.append(el('p', 'v2-eyebrow', (solved ? '해결한 장치 · ' : '') + (dev.hintCode || '')));
+    head.append(el('p', 'v2-eyebrow', [solved ? '해결한 장치' : '', dev.hintCode || ''].filter(Boolean).join(' · ')));
     head.append(el('h2', 'v2-doc-title', dev.title));
     head.append(el('p', 'v2-device-intro', dev.intro));
     let hintBlock = null;
