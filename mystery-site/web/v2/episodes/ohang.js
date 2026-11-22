@@ -148,9 +148,10 @@ function slipHtml(profile) {
   const seed = E[profile.seed];
   const fills = { blue: '#5f9e9a', red: '#b8433a', yellow: '#d2a84a', white: '#eee8dc', black: '#2e2e2e' };
   const r = reading(profile);
+  const cols = Math.max(4, ...(profile.counts || [])); // 점 칸 수: 4칸, 한 빛이 5개 이상이면 모든 줄을 그 수에 맞춘다
   return `<p class="slip-head">할머니가 세는 법대로</p>
 <div class="pillars">${(profile.pillars || []).map((p) => `<div class="pillar"><small>${p.label}</small><b>${p.text}</b><span>${p.elements.map((i) => E[i].han).join('') || '—'}</span></div>`).join('')}</div>
-<div class="counts">${E.map((e, i) => `<div class="count"><i style="background:${fills[e.id]}"></i><b>${e.han}</b><span>${'●'.repeat(profile.counts[i])}${'○'.repeat(Math.max(0, 4 - profile.counts[i]))}</span><small>${profile.counts[i]}</small></div>`).join('')}</div>
+<div class="counts">${E.map((e, i) => `<div class="count"><i style="background:${fills[e.id]}"></i><b>${e.han}</b><span>${'●'.repeat(profile.counts[i])}${'○'.repeat(Math.max(0, cols - profile.counts[i]))}</span><small>${profile.counts[i]}</small></div>`).join('')}</div>
 <p class="slip-light">네 빛은 <b style="color:${fills[seed.id] === '#eee8dc' ? '#6b6248' : fills[seed.id]}">${seed.han} ${seed.el} · ${seed.color}색</b> <small>(태어난 날의 천간)</small></p>
 <p class="slip-light">가장 많은 빛은 <b>${r.tops.map((t) => `${t.han} ${t.el}`).join(' · ')}</b>${profile.unknown ? ' <small>(시각을 몰라 시주는 뺐다)</small>' : ' <small>(난 시각은 30분 빼고 셌다 서울 시계가 해보다 30분 빠르다)</small>'}${profile.ambiguous ? ' <small>(절기 바뀌는 날이라 연·월은 미확정)</small>' : ''}</p>
 <div class="slip-reading"><p class="slip-sub">할머니라면 이렇게 읽는다</p><p>${r.me}</p><p>${r.many}</p><p>${r.none}</p><p class="slip-note">좋고 나쁜 건 없다 할머니는 이 빛으로 차를 골랐고, 오늘은 이 빛이 열쇠가 된다 나머지 풀이는 가게 안에 있다</p></div>`;
@@ -258,12 +259,12 @@ export default {
         ? '문은 열려 있다 들었다 놓은 화분이 조금 비뚤게 앉아 있다 문에는 할머니가 붙여 둔 종이가 그대로'
         : '문은 잠겨 있고, 문에는 할머니가 오래전에 붙여 둔 종이가 그대로다 섬돌 위 화분 다섯 처마 끝에서 빗물이 한 방울씩 떨어진다',
       // 할머니 문자는 처음부터 소지품에 있다 (주머니 속 휴대폰은 그림에 없으니 누름 자리를 두지 않는다)
-      // 화분 다섯은 그림에서 x 28.3·39.7·50·60.5·71.4 (몸통은 y 87 대사창 자리라 위로 솟은 잎 쪽을 누른다) 어느 화분을 눌러도 화분 장치가 열린다
+      // 화분 다섯은 그림에서 x 28.3·39.7·50·60.5·71.4 · 잎 y 70~81, 몸통 y 81~92 → 누름 자리는 잎과 몸통을 같이 덮게 y 81 · r 11 (대사창이 떠 있을 땐 대사창이 위, 접히면 화분 몸통도 눌린다) 어느 화분을 눌러도 화분 장치가 열린다
       // 접수표 묶음은 문 오른쪽 살창에 끼워 둔 종이 (그림에 그려 넣음, 가운데 77.3 · 46.5)
       hotspots: [
         { id: 'paper', x: 50, y: 38, label: '문에 붙은 종이', kind: 'doc', doc: 'doorpaper', r: 10 },
-        ...[28.3, 39.7, 50, 60.5, 71.4].map((x, i) => ({ id: 'pots-' + E[i].id, x, y: 77, label: E[i].pot, kind: 'device', device: 'pots', r: 9 })),
-        { id: 'myslip', x: 77.3, y: 46.5, label: '살창에 끼워 둔 내 접수표', kind: 'doc', doc: 'myslip', r: 7 },
+        ...[28.3, 39.7, 50, 60.5, 71.4].map((x, i) => ({ id: 'pots-' + E[i].id, x, y: 81, label: E[i].pot, kind: 'device', device: 'pots', r: 11 })),
+        { id: 'myslip', x: 77.3, y: 46.5, label: '살창에 끼워 둔 내 접수표', kind: 'doc', doc: 'myslip', r: 10 },
       ],
     },
     {
@@ -340,7 +341,7 @@ export default {
     oldphoto: {
       title: '벽에 걸린 사진',
       kind: '어릴 때 · 찻집에서',
-      html: (S) => { const p = photoRow(S), t = seedOf(S); return `<figure class="prop oldphoto"><img src="${P}props/oldphoto${t.id === 'red' ? '' : '-' + t.id}.webp" alt="찻집에서 할머니와 찻잔을 든 어린 지원, 탁자에 ${t.tea} 유리 주전자와 수박" decoding="async"></figure><p>액자를 뒤집으니 뒷면에 할머니 글씨</p><blockquote class="hand">${p.a}살 ${p.m}월, 지원이<br>제 빛 차 세 잔째 수박은 안 먹고 차만 마심</blockquote><p class="aside">이날은 할머니가 내 빛 차를 따로 끓여 줬다 찻값은 한 번도 안 받고, 대신 장부에 적었다</p>`; },
+      html: (S) => { const p = photoRow(S), t = seedOf(S); const aged = 2026 - ageOf(S) + p.a < 1992; /* 1990년대 초보다 앞서 찍힌 사진이면 빛바랜 색으로 (나이 많은 손님) */ return `<figure class="prop oldphoto${aged ? ' aged' : ''}"><img src="${P}props/oldphoto${t.id === 'red' ? '' : '-' + t.id}.webp" alt="찻집에서 할머니와 찻잔을 든 어린 지원, 탁자에 ${t.tea} 유리 주전자와 수박" decoding="async"></figure><p>액자를 뒤집으니 뒷면에 할머니 글씨</p><blockquote class="hand">${p.a}살 ${p.m}월, 지원이<br>제 빛 차 세 잔째 수박은 안 먹고 차만 마심</blockquote><p class="aside">이날은 할머니가 내 빛 차를 따로 끓여 줬다 찻값은 한 번도 안 받고, 대신 장부에 적었다</p>`; },
     },
     board: {
       title: '메뉴판',
@@ -424,7 +425,7 @@ export default {
     bowls: {
       title: '찬장과 다섯 그릇',
       scene: 'inside',
-      intro: '벽 찬장 칸의 주전자와 항아리를 다 내려놓으니 열십자로 다섯 칸이 비었다 칸 바닥마다 홈이 파여 있다 아래 반닫이에서 보자기에 싼 그릇 다섯을 꺼냈다 보자기 위 그릇을 누르면 집고, 빈 칸을 누르면 거기 놓는다 놓은 그릇을 누르면 도로 집는다',
+      intro: '벽 찬장 칸의 주전자와 항아리를 다 내려놓으니 열십자로 다섯 칸이 비었다 칸 바닥마다 홈이 파여 있다 아래 반닫이에서 보자기에 싼 그릇 다섯을 꺼냈다 보자기 위 그릇을 누르면 집고, 빈 칸을 누르면 거기 놓는다 놓은 그릇을 누르면 도로 집고, 그릇을 든 채 찬 칸을 누르면 서로 바꾼다',
       docs: ['memo', 'doorpaper'],
       hintCode: 'O-S02',
       hints: [
@@ -446,19 +447,30 @@ export default {
         ];
         const wrap = el('div', 'bowls-wrap');
         const cab = el('div', 'prop cabinet'); const im = el('img'); im.src = P + 'props/cabinet.webp'; im.alt = '벽에 열십자로 판 찬장 칸 다섯, 그 아래 반닫이'; cab.append(im);
+        // 칸 누르기: 빈 칸엔 든 그릇을 놓고, 찬 칸은 그릇을 집되 든 그릇이 있으면 서로 바꾼다
+        const tap = (n) => {
+          if (solved) return;
+          const bid = d.placed[n.id];
+          if (bid) { if (d.held) d.placed[n.id] = d.held; else delete d.placed[n.id]; d.held = bid; save(); return; }
+          if (d.held) { d.placed[n.id] = d.held; d.held = null; save(); }
+        };
+        // 휴대폰: 사진 속 칸이 작아서(360폭 40px) 사진 아래에 같은 열십자 모양 큰 버튼을 같이 둔다
+        const cross = el('div', 'niche-cross mobile-only');
         NICHES.forEach((n) => {
           const bid = d.placed[n.id];
           const b = el('button', 'niche' + (bid ? ' filled' : '') + (d.held && !bid ? ' open' : '')); b.type = 'button'; b.style.left = n.x + '%'; b.style.top = n.y + '%';
           b.setAttribute('aria-label', `${n.label}${bid ? ': ' + byId[bid].name : ' (비어 있음)'}`);
           if (bid) { const bi = el('img', 'bowl-img'); bi.src = P + 'props/bowl-' + bid + '.webp'; bi.alt = byId[bid].name; b.append(bi); }
-          b.onclick = () => {
-            if (solved) return;
-            if (bid) { delete d.placed[n.id]; d.held = bid; save(); return; }
-            if (d.held) { d.placed[n.id] = d.held; d.held = null; save(); }
-          };
+          b.onclick = () => tap(n);
           cab.append(b);
+          const m = el('button', 'niche-big ' + n.id + (bid ? ' filled' : '') + (d.held && !bid ? ' open' : '')); m.type = 'button';
+          m.setAttribute('aria-label', `${n.label}${bid ? ': ' + byId[bid].name : ' (비어 있음)'}`);
+          if (bid) { const bi = el('img'); bi.src = P + 'props/bowl-' + bid + '.webp'; bi.alt = ''; m.append(bi); }
+          m.append(el('span', '', n.label));
+          m.onclick = () => tap(n);
+          cross.append(m);
         });
-        wrap.append(cab);
+        wrap.append(cab, cross);
         const tray = el('div', 'bowl-tray');
         const left = E.filter((e) => !Object.values(d.placed).includes(e.id));
         left.forEach((e) => {
@@ -468,7 +480,7 @@ export default {
           tray.append(b);
         });
         if (!left.length) tray.append(el('p', 'tray-empty', '보자기 위가 비었다'));
-        wrap.append(el('p', 'pick-label', solved ? '그릇 다섯이 홈에 맞아 눌려 있다' : d.held ? `${js(byId[d.held].name, '을', '를')} 들었다 놓을 칸을 누르자` : '보자기 위 그릇을 집은 다음 찬장 칸을 누른다'), tray);
+        wrap.append(el('p', 'pick-label', solved ? '그릇 다섯이 홈에 맞아 눌려 있다' : d.held ? `${js(byId[d.held].name, '을', '를')} 들었다 빈 칸에 놓거나 찬 칸 그릇과 바꾼다` : '보자기 위 그릇을 집은 다음 찬장 칸을 누른다'), tray);
         return wrap;
       },
       commitLabel: '서랍 쇠 당겨 보기',
@@ -592,7 +604,7 @@ export default {
     brew: {
       title: '고름차 달이기',
       scene: 'inside',
-      intro: '선반 맨 앞줄 차 통 다섯 앞에 물 받은 주전자를 놨다 통을 한 번 누를 때마다 그 차가 한 숟갈씩 주전자에 들어간다 잘못 넣었으면 주전자를 비우고 처음부터 다시 넣는다',
+      intro: '선반 맨 앞줄 차 통 다섯 앞에 물 받은 주전자를 놨다 통을 한 번 누를 때마다 그 차가 한 숟갈씩 주전자에 들어간다 잘못 넣었으면 한 숟갈씩 덜어 내거나 주전자를 비우고 처음부터 다시 넣는다',
       docs: ['final', 'myslip', 'board'],
       hintCode: 'O-S05',
       hints: (S) => { const w = brewWant(S); return [
@@ -600,7 +612,7 @@ export default {
         '제일 많은 빛 수를 기준으로 다른 빛이 몇씩 모자란지 세어 봐라 차 이름과 빛은 메뉴판에 짝지어 있다',
         E.filter((e) => w[e.id] > 0).map((e) => `${e.tea} ${w[e.id]}숟갈`).join(' · ') + ' (나머지 통은 안 넣는다)',
       ]; },
-      initial: () => ({ spoons: {} }),
+      initial: () => ({ spoons: {}, order: [] }),
       render(ctx) {
         const { d, el, save, S } = ctx;
         const solved = S.solved.includes('brew');
@@ -614,7 +626,7 @@ export default {
           const b = el('button', 'tin scoop' + (n ? ' used' : '')); b.type = 'button';
           b.setAttribute('aria-label', `${e.tea} 한 숟갈 넣기${n ? ' (지금 ' + n + '숟갈)' : ''}`);
           b.innerHTML = `<i class="tin-lid"></i><span class="tin-label">${e.tea}</span>${n ? `<b class="spoon-badge">${n}</b>` : ''}`;
-          b.onclick = () => { if (solved) return; if ((d.spoons[id] || 0) >= 9) return; d.spoons[id] = (d.spoons[id] || 0) + 1; save(); };
+          b.onclick = () => { if (solved) return; if ((d.spoons[id] || 0) >= 9) return; d.spoons[id] = (d.spoons[id] || 0) + 1; d.order = [...(d.order || []), id]; save(); };
           shelf.append(b);
         });
         const pot = el('div', 'brew-pot' + (solved ? ' steaming' : ''));
@@ -628,8 +640,18 @@ export default {
         wrap.append(el('p', 'pick-label', solved ? '고름차를 보온병에 담았다' : total ? `주전자에 ${total}숟갈 · ${list}` : '차 통을 누르면 한 숟갈씩 주전자에 들어간다'));
         if (!solved) {
           const row = el('div', 'pick-row');
-          const reset = el('button', 'chip', '주전자 비우기'); reset.type = 'button'; reset.onclick = () => { d.spoons = {}; save(); };
-          row.append(reset); wrap.append(row);
+          // 한 숟갈 덜기: 마지막에 넣은 숟갈부터 하나씩 덜어 낸다 (넣은 순서 기록이 없으면 선반 오른쪽 통부터)
+          const undo = el('button', 'chip', '한 숟갈 덜기'); undo.type = 'button'; undo.disabled = !total;
+          undo.onclick = () => {
+            const ord = (d.order || []).filter((id) => d.spoons[id] > 0);
+            const id = ord.length ? ord[ord.length - 1] : [...ORDER].reverse().find((k) => d.spoons[k] > 0);
+            if (!id) return;
+            const at = ord.lastIndexOf(id); if (at >= 0) ord.splice(at, 1);
+            d.spoons[id] -= 1; if (!d.spoons[id]) delete d.spoons[id];
+            d.order = ord; save();
+          };
+          const reset = el('button', 'chip', '주전자 비우기'); reset.type = 'button'; reset.disabled = !total; reset.onclick = () => { d.spoons = {}; d.order = []; save(); };
+          row.append(undo, reset); wrap.append(row);
         }
         return wrap;
       },
