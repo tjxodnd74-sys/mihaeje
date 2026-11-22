@@ -79,7 +79,21 @@ const FRAMES = [
   { t: '22:00', img: 'rear-3', n: 3 },
   { t: '23:00', img: 'rear-0', n: 0 },
 ];
-const rearPhoto = (f) => `<figure class="prop rearphoto"><img src="${P}props/${f.img}.webp" alt="둑길에서 찍은 미루연립 A동 뒤편 사진 · 불 켜진 창 ${f.n}개" decoding="async"><figcaption>${f.t}</figcaption></figure>`;
+const rearPhoto = (f) => `<figure class="prop rearphoto"><button type="button" class="apt-zoom-btn" data-cap="${f.t}" aria-label="${f.t} 사진 크게 보기"><img src="${P}props/${f.img}.webp" alt="둑길에서 찍은 미루연립 A동 뒤편 사진 · 불 켜진 창 ${f.n}개" decoding="async"><span class="apt-zoom-tip" aria-hidden="true">크게 보기</span></button><figcaption>${f.t}</figcaption></figure>`;
+// 커뮤니티 사진은 휴대폰에서 창 한 칸이 10px 남짓이라 눌러서 화면 가득(세로 화면은 옆으로 눕혀) 크게 본다 — 열린 자료 창(dialog) 안에 덮개를 붙여야 맨 위에 보인다
+if (typeof document !== 'undefined' && !window.__aptZoom) {
+  window.__aptZoom = true;
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest?.('.apt-zoom-btn'); if (!b || !document.documentElement.matches('[data-case="apartment"]')) return;
+    const img = b.querySelector('img'); if (!img) return;
+    const cover = document.createElement('button'); cover.type = 'button'; cover.className = 'apt-zoom'; cover.setAttribute('aria-label', '크게 본 사진 닫기');
+    const big = document.createElement('img'); big.src = img.currentSrc || img.src; big.alt = img.alt;
+    const cap = document.createElement('span'); cap.className = 'apt-zoom-cap'; cap.textContent = (b.dataset.cap || '') + ' · 누르면 닫힘';
+    cover.append(big, cap);
+    cover.onclick = (ev) => { ev.stopPropagation(); cover.remove(); b.focus?.(); };
+    (b.closest('dialog') || document.body).append(cover); cover.focus();
+  });
+}
 
 // 우편함: 현관 사진 속 그 우편함을 반듯하게 편 것 6칸 × 5줄 (왼쪽 네 칸이 01~04호, 위 줄이 5층)
 // 문짝 테두리(그림에서 잰 값): 가운데 x · 폭 · 가운데 y (높이 17.8%)
@@ -112,17 +126,20 @@ const pinKey = (p) => ['L', 'M', 'R'].map((k) => [...(p[k] || [])].sort().join('
 
 function sectionSvg() {
   const ink = '#2b3340';
-  const tx = (x, y, s, t, a = 'middle') => `<text x="${x}" y="${y}" font-size="${s}" text-anchor="${a}" fill="${ink}" font-family="SUIT, sans-serif">${t}</text>`;
-  return `<svg viewBox="0 0 120 74" class="section-svg" role="img" aria-label="A동 단면도: 정문 쪽은 길과 1층 바닥이 같고, 미루천 쪽 뒤편은 땅이 한 층 낮아 반지하가 드러난다">
-  ${tx(60, 6.5, 3.2, 'A동 단면 (철거 안내판 부분)')}
-  <path d="M2 50 H34" fill="none" stroke="${ink}" stroke-width=".5"/>
-  <path d="M70 61 H118" fill="none" stroke="${ink}" stroke-width=".5"/>
-  ${[1, 2, 3, 4, 5].map((f) => `<rect x="34" y="${50 - f * 7}" width="36" height="7" fill="#fbfaf4" stroke="${ink}" stroke-width=".5"/>`).join('')}
-  <rect x="34" y="50" width="36" height="11" fill="#e9e3d2" stroke="${ink}" stroke-width=".5"/>
-  ${[1, 2, 3, 4, 5].map((f) => tx(52, 50 - (f - 1) * 7 - 2.4, 2.8, f + '층')).join('')}${tx(52, 56.6, 2.8, '반지하 창고')}
-  <rect x="70" y="53" width="2.6" height="4.5" fill="#9fb6c8" stroke="${ink}" stroke-width=".3"/>
-  ${tx(18, 47, 3, '정문 · 미루새길')}${tx(97, 58, 3, '뒤편 · 둑길 쪽')}${tx(97, 67, 2.6, '미루천')}
-  <path d="M84 70 q3 -2 6 0 t6 0 t6 0" fill="none" stroke="#5b86b0" stroke-width=".5"/>
+  // 글자 크기는 style 로 (공통 CSS 의 휴대폰 .section-svg text 규칙이 속성 크기를 덮지 않게)
+  const tx = (x, y, s, t, a = 'middle') => `<text x="${x}" y="${y}" style="font-size:${s}px" text-anchor="${a}" fill="${ink}" font-family="SUIT, sans-serif">${t}</text>`;
+  // 휴대폰 폭(340px 남짓)에서도 글자가 15px 넘게 보이도록 그림을 좁게(가로 100) 잡고 길 이름은 두 줄로
+  return `<svg viewBox="0 0 100 84" class="section-svg" role="img" aria-label="A동 단면도: 정문 쪽은 길과 1층 바닥이 같고, 미루천 쪽 뒤편은 땅이 한 층 낮아 반지하가 드러난다">
+  ${tx(50, 7, 4.4, 'A동 단면 (철거 안내판 부분)')}
+  <path d="M1 54 H30" fill="none" stroke="${ink}" stroke-width=".6"/>
+  <path d="M62 67 H99" fill="none" stroke="${ink}" stroke-width=".6"/>
+  ${[1, 2, 3, 4, 5].map((f) => `<rect x="30" y="${54 - f * 8}" width="32" height="8" fill="#fbfaf4" stroke="${ink}" stroke-width=".6"/>`).join('')}
+  <rect x="30" y="54" width="32" height="13" fill="#e9e3d2" stroke="${ink}" stroke-width=".6"/>
+  ${[1, 2, 3, 4, 5].map((f) => tx(46, 54 - (f - 1) * 8 - 2.6, 4.4, f + '층')).join('')}${tx(46, 62, 4.4, '반지하 창고')}
+  <rect x="62" y="57.5" width="2.8" height="5.5" fill="#9fb6c8" stroke="${ink}" stroke-width=".35"/>
+  ${tx(15, 45.5, 4.6, '정문')}${tx(15, 51, 4.6, '미루새길')}
+  ${tx(81.5, 58.5, 4.6, '뒤편')}${tx(81.5, 64, 4.6, '둑길 쪽')}${tx(81.5, 75, 4.2, '미루천')}
+  <path d="M71 79.5 q3.5 -2.2 7 0 t7 0 t7 0" fill="none" stroke="#5b86b0" stroke-width=".6"/>
   </svg>`;
 }
 function planSvg() {
@@ -135,7 +152,7 @@ function planSvg() {
   <path d="M16 10 h12 M44 10 h12 M72 10 h12" stroke="#5b86b0" stroke-width="2.2"/>
   ${tx(50, 6.5, 2.8, '창 (북쪽 · 미루천)')}
   <path d="M48 58 h8" stroke="#c0362a" stroke-width="2"/><circle cx="52" cy="60.4" r=".9" fill="#c0362a"/>${tx(52, 66, 2.8, '현관 · 지금 여기')}
-  ${tx(50, 72, 2.4, '301호 · 비상시 현관으로 대피')}
+  ${tx(50, 72, 2.8, '301호 · 비상시 현관으로 대피')}
   </svg>`;
 }
 // 열쇠 그림 (손에 든 것)
@@ -147,8 +164,8 @@ const WIRES = [
   { from: 'R', d: 'M783 0 C783 130 300 110 250 225 S720 320 610 420 S440 500 500 560' },
 ];
 const wireSvg = () => `<svg viewBox="0 0 1000 600" class="wire-svg" role="img" aria-label="타이머 셋에서 나온 검은 연장선 세 가닥이 엉켜 아래로 내려간다 선 끝마다 테이프가 붙어 있다">
-  ${WIRES.map((w) => `<path d="${w.d}" fill="none" stroke="#d9cfb9" stroke-width="22" stroke-linecap="round"/><path d="${w.d}" fill="none" stroke="#17181b" stroke-width="11" stroke-linecap="round"/>`).join('')}
-  ${[['2', 200], ['4', 500], ['5', 800]].map(([n, x]) => `<rect x="${x - 42}" y="538" width="84" height="58" rx="3" fill="#efe2b8" transform="rotate(-3 ${x} 567)"/><text x="${x}" y="584" font-size="46" text-anchor="middle" fill="#2b3570" font-family="MihaejeHand, sans-serif">${n}</text>`).join('')}
+  ${WIRES.map((w) => `<path d="${w.d}" fill="none" stroke="#d9cfb9" stroke-width="28" stroke-linecap="round"/><path d="${w.d}" fill="none" stroke="#17181b" stroke-width="11" stroke-linecap="round"/>`).join('')}
+  ${[['2', 200], ['4', 500], ['5', 800]].map(([n, x]) => `<rect x="${x - 54}" y="526" width="108" height="72" rx="3" fill="#efe2b8" transform="rotate(-3 ${x} 562)"/><text x="${x}" y="585" font-size="62" text-anchor="middle" fill="#2b3570" font-family="MihaejeHand, sans-serif">${n}</text>`).join('')}
 </svg>`;
 
 // 뒤편 반지하 철문 넷 (뒤에서 본 왼→오 = B04 · B03 · B02 · B01) 철거 업체 락카 번호는 뒤에서 왼쪽부터 1 2 3 4 (함정)
@@ -211,7 +228,7 @@ export default {
         const cellar = S.solved.includes('box') && !S.solved.includes('cellar') ? ' 개울 건너 건물 맨 아래, 반지하 철문들은 가로등 빛이 안 닿아 새까맣다' : '';
         if (S.solved.includes('wires')) return '3층 그 집 창 셋이 다 켜져 있다 열 시다 벤치 위 종이컵은 이제 식었다' + cellar;
         if (ev(S, 'anbang')) return '3층 그 집 창이 하나 더 켜져 있다 벤치는 비어 있는데 그 위에 종이컵 하나 김이 아직 오른다 아까는 없었다' + cellar;
-        return '가로등 아래 벤치는 비어 있다 개울 건너 A동 뒤편 벽에 빨간 락카로 커다란 X 표 창은 다 까만데 오른쪽 끝 창 하나만 노랗다 가로등 기둥엔 철거 안내판이 묶여 있다';
+        return (phoneOnBench(S) ? '가로등 아래 벤치엔 아까 올려 둔 내 휴대폰뿐' : '가로등 아래 벤치는 비어 있다') + ' 개울 건너 A동 뒤편 벽에 빨간 락카로 커다란 X 표 창은 다 까만데 오른쪽 끝 창 하나만 노랗다 가로등 기둥엔 철거 안내판이 묶여 있다';
       },
       get overlays() {
         const S = cur();
@@ -240,6 +257,7 @@ export default {
     },
     {
       id: 'entrance',
+      focusX: 27,
       name: 'A동 현관',
       image: P + 'entrance.webp',
       arrive: (S) => {
@@ -277,7 +295,7 @@ export default {
         { id: 'storage', x: 34.5, y: 21, label: '벽에 붙은 창고 배정표', kind: 'doc', doc: 'storage' },
         { id: 'calendar', x: 78, y: 22, label: '벽 달력', kind: 'doc', doc: 'calendar' },
         { id: 'phone', x: 71, y: 63, r: 9, label: '전화기 옆 통화 메모', kind: 'doc', doc: 'phone' },
-        { id: 'receipt', x: 64, y: 79, r: 9, label: '책상 서랍', kind: 'doc', doc: 'receipt' },
+        { id: 'receipt', x: 65, y: 86, r: 8, label: '책상 서랍', kind: 'doc', doc: 'receipt' },
         { id: 'cctv', x: 92.5, y: 56, r: 10, label: '구석 모니터', kind: 'doc', doc: 'cctv' },
         { id: 'hooks', x: 53, y: 22, r: 15, label: '열쇠함', kind: 'device', device: 'hooks' },
         { id: 'back2', x: 12, y: 70, label: '현관으로', kind: 'travel', to: 'entrance' },
@@ -285,6 +303,7 @@ export default {
     },
     {
       id: 'unit',
+      focusX: 73,
       name: '301호',
       image: P + 'unit.webp',
       unlockedBy: 'hooks',
@@ -295,7 +314,7 @@ export default {
             say(ANBANG_LINE);
             setTimeout(() => { if (document.querySelector('.v2-stage')?.dataset.scene === 'unit') say(COMMENT_LINE); }, 6500);
           });
-          return '현관 앞 바닥에 작은 랜턴 하나 창에서 먼 자리다 짐은 거의 상자에 들어갔다 안방 문이 열려 있고 안은 깜깜하다 스위치마다 종이테이프';
+          return '현관 앞 바닥에 작은 랜턴 하나 창에서 먼 자리다 짐은 거의 상자에 들어갔다 안방 문이 열려 있고 안은 깜깜하다 스위치마다 종이테이프 오른쪽 부엌 싱크대 밑 문이 조금 열려 있다';
         }
         if (S.solved.includes('wires') && !S.solved.includes('cellar')) return '거실 창가 등까지 켜졌다 열 시다 타이머 셋이 째깍거린다 영감님 계실 때 가계부는 뒤편 반지하 창고에 있다고 했다';
         if (S.solved.includes('wires')) return '거실 창가 등까지 켜졌다 밖에서 보면 지금 이 집 창이 셋 다 켜져 있을 거다 창고에서 꺼낸 가계부를 상자 옆에 펼쳤다 타이머 셋이 째깍거린다';
@@ -325,6 +344,9 @@ export default {
         { id: 'timers', x: 89, y: 62, r: 15, label: '상자 속 타이머 셋', kind: 'device', device: 'timers', visible: (S) => S.solved.includes('wires') && S.solved.includes('cellar') },
         { id: 'mnote', x: 80, y: 75.7, r: 8, label: '상자 안 쪽지', kind: 'doc', doc: 'mnote', visible: (S) => S.solved.includes('box') },
         { id: 'book', x: 19.6, y: 47.8, r: 10, label: '상자 위 가계부', kind: 'doc', doc: 'book', visible: (S) => S.solved.includes('box') },
+        // 현관 앞 바닥의 랜턴 = 현관 문 앞 (계단으로 내려간다)
+        { id: 'downBank', x: 23, y: 69, r: 9, label: '현관 랜턴 · 계단 내려가 둑길로', kind: 'travel', to: 'bank', visible: (S) => S.solved.includes('box') && !S.solved.includes('cellar') },
+        { id: 'down', x: 23, y: 69, r: 9, label: '현관 랜턴 · 계단 내려가기', kind: 'travel', to: 'entrance', visible: (S) => !S.solved.includes('box') || S.solved.includes('cellar') },
       ],
     },
   ],
@@ -627,8 +649,11 @@ export default {
       reveal: {
         title: '5 · 2 · 4',
         text: '왼쪽 타이머는 5 거실, 가운데 파란 타이머는 2 안방, 오른쪽 타이머는 4 작은방 테이프를 다 붙였을 때 왼쪽 타이머가 딸깍 넘어갔다',
-        scene: ['거실 창가에서 스탠드가 켜졌다 열 시다 지금 둑에서 보면 이 집 창이 셋 다 노랗겠다', '타이머 둘레에 핀이 촘촘히 박혀 있다 내려간 핀만큼 불이 켜진다'],
-        unlock: null,
+        get scene() {
+          const toCellar = !(cur().solved || []).includes('cellar');
+          return ['거실 창가에서 스탠드가 켜졌다 열 시다 지금 둑에서 보면 이 집 창이 셋 다 노랗겠다', '타이머 둘레에 핀이 촘촘히 박혀 있다 내려간 핀만큼 불이 켜진다', ...(toCellar ? ['영감님 계실 때 가계부는 뒤편 반지하 B01 창고에 있다고 했다 계단을 내려가 둑길 쪽으로 돌아가 본다'] : [])];
+        },
+        get unlock() { return (cur().solved || []).includes('cellar') ? null : 'bank'; },
       },
     },
 
@@ -682,7 +707,7 @@ export default {
       reveal: {
         title: 'B01',
         text: '맨 오른쪽 철문이 끼익 열렸다 선반 맨 위 과자 상자에 할머니 글씨로 「가계부」 해마다 한 권씩 꽂혀 있다',
-        scene: ['2009년 것을 꺼냈다 23년 장마 때 젖었다 마른 자국 그대로다 3월 둘째 장 여백, 줄 가운데 글씨가 번져 있다', '철문을 잠그고 돌아서는데 개울 건너 둑 아래 풀숲에서 누가 기침을 했다 손전등을 돌렸을 땐 갈대만 흔들렸다'],
+        scene: ['2009년 것을 꺼냈다 23년 장마 때 젖었다 마른 자국 그대로다 3월 둘째 장 여백, 줄 가운데 글씨가 번져 있다', '철문을 잠그고 돌아서는데 개울 건너 둑길 갈대숲에서 누가 기침을 했다 손전등을 돌렸을 땐 갈대만 흔들렸다'],
         unlockDoc: 'book09',
         unlock: 'unit',
       },
@@ -742,7 +767,7 @@ export default {
   ending: {
     image: P + 'ending.webp',
     imageAlt: '둑길 벤치에 나란히 앉은 두 사람의 뒷모습 개울 건너 A동 뒤편 3층 오른쪽 창 셋만 노랗게 켜져 있다',
-    eyebrow: '2026/10/24 토요일 · 밤 9시',
+    eyebrow: '2026/10/24 토요일 · 밤 9시부터',
     title: '404호에는 불이 켜지지 않았다',
     // 두 장면(모니터 속 벤치 · 산책러2 댓글)은 장치를 풀 때 꼭 보게 되지만, 옛 저장으로 이어 하는 사람을 위해 본 것만 꺼낸다
     paragraphs: (S) => {
@@ -756,7 +781,7 @@ export default {
         '"거실이네" 할머니 목소리가 달라졌다',
         '아홉 시 반에 오른쪽 작은방이, 열 시 반에 왼쪽 안방이 켜졌다 셋 다 켜진 창을 할아버지는 아무 말 없이 한참 봤다',
         '할아버지가 보온병 뚜껑에 커피를 따라 줬다' + (who.length ? ' ' + who.join('도, ') + '도 할아버지였다' : ''),
-        '"아홉 시부터 열한 시까지 매일 여기 앉아서 봤어 불 잘 켜지나 어젯밤엔 3층에 웬 불빛이 왔다 갔다 하길래 도둑인 줄 알고 둑 아래로 내려가 숨었지' + (note ? ' 거기서 댓글도 달았지 뒤쪽 땅 낮다고 적은 것도 나야 아무도 안 믿더만"' : '"'),
+        '"아홉 시부터 열한 시까지 매일 여기 앉아서 봤어 불 잘 켜지나 어젯밤엔 3층에 웬 불빛이 왔다 갔다 하길래 도둑인 줄 알고 둑길 갈대 뒤에 숨었지' + (note ? ' 거기서 댓글도 달았지 뒤쪽 땅 낮다고 적은 것도 나야 아무도 안 믿더만"' : '"'),
         '열한 시에 셋이 같이 꺼졌다 "잘 자요 할머니" "그래 자네도"',
       ];
     },

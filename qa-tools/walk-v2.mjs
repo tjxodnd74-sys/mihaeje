@@ -1132,10 +1132,18 @@ async function apartment({ mobile = false } = {}) {
     await setTapes({ L: '4', M: '2', R: '5' }); await commit(page); L.check((await status(page)).includes('맞지 않는다'), 'wires: copying the lock code is wrong');
     L.check(!(await page.evaluate(() => document.querySelector('dialog[open] .pick-label')?.textContent || '')).includes('집었다'), 'wires: no stale holding line after a miss');
     await setTapes({ L: '5', M: '2', R: '4' }); await shot(page, 'a-wires'); await commit(page); L.check(await dlgHas(page, '5 · 2 · 4'), 'wires solved');
+    // 창고를 아직 안 갔으면 보상 창이 둑길로 보낸다 (301호에 나가는 길이 없어 갇히던 문제)
+    L.check(await dlgHas(page, 'B01 창고') && (await L.buttons(page)).includes('미루천 둑길로 →'), 'wires reveal points to the cellar with a way out');
     await L.closeDialog(page); await L.sleep(300);
+    L.check(await page.evaluate(() => document.querySelector('.v2-stage')?.dataset.scene === 'bank'), 'wires reveal closes onto the bank');
+    L.check(await page.evaluate(() => document.querySelectorAll('.apt-win.on').length === 2), 'bank: living room window on after wires');
+    L.check((await L.mainText(page)).includes('반지하 철문'), 'bank: scene line points to the cellar');
+    await goPlace(page, '4. 301호'); await L.sleep(300);
     L.check(await page.evaluate(() => !!document.querySelector('.apt-living.on')), '301: living room lamp on after wires');
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '상자 속 타이머 셋'))), 'timers wait for the 2009 book from the cellar');
     L.check((await L.mainText(page)).includes('반지하 창고'), '301: scene line points to the cellar');
+    await tapSpot(page, '현관 랜턴 · 계단 내려가 둑길로'); await L.sleep(300);
+    L.check(await page.evaluate(() => document.querySelector('.v2-stage')?.dataset.scene === 'bank'), '301: lantern exit goes down to the bank');
     // 새 장치: 뒤편 반지하 철문 (손전등으로 비춰 흔적 찾기 → 맨 오른쪽 B01)
     await goPlace(page, '1. 미루천 둑길'); await L.sleep(300);
     L.check(!(await page.evaluate(() => !!document.querySelector('.apt-phone'))), 'bank: my phone is no longer on the bench');
