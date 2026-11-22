@@ -5,13 +5,13 @@
     "title": "마지막 정비소",
     "subtitle": "사라진 SD카드",
     "genre": "추리 · 알리바이",
-    "minutes": 50,
+    "minutes": 55,
     "difficulty": "★★★★★",
     "image": "assets/covers/garage-v1.webp",
     "href": "play.html?case=garage",
     "storageKey": "mihaeje-v2-garage",
-    "description": "폐업 전날 밤 사라진 고객의 SD카드\n시계가 틀린 블랙박스, 잠긴 두 줄, 끊긴 면담 영상, 찢긴 지시서를 대조합니다",
-    "docCount": 12,
+    "description": "폐업 전날 밤 사라진 고객의 SD카드\n시계가 틀린 블랙박스, 잠긴 두 줄, 끊긴 면담 영상, 찢긴 지시서와 갈아 낸 디스크를 대조합니다",
+    "docCount": 13,
     "docNames": {
       "brief": "서연과 주고받은 문자",
       "people": "조사 수첩 · 세 사람 진술",
@@ -24,7 +24,8 @@
       "locker": "직원 보관함과 SD 슬롯",
       "lockerlog": "백업 단말의 보관함 기록",
       "safedoc": "금고 안의 봉투들",
-      "workorder": "붙여 놓은 작업 지시서"
+      "workorder": "붙여 놓은 작업 지시서",
+      "disc": "회수한 앞 디스크"
     },
     "fragment": {
       "label": "분류 조각 M",
