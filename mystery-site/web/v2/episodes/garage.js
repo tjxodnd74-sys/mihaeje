@@ -192,7 +192,7 @@ export default {
       arrive: (S) => {
         pocket(S);
         if (S.solved.includes('terminal') && !S.solved.includes('jackets')) return '그사이 누가 사무실에 다녀갔다 재킷이 걸린 고리 하나가 아직 달랑거린다 책상 위엔 민호가 맡기고 간 휴대폰이 놓여 있다';
-        return '모니터에 출입 서버 화면이 떠 있고, 벽에는 재킷 세 벌과 기념패가 걸려 있다 책상 밑에 작은 금고, 휴지통 맨 위엔 오늘 새벽 찢은 듯한 종이';
+        return '모니터엔 출입 서버 화면, 벽엔 재킷 세 벌과 기념패 책상 밑엔 작은 금고, 휴지통 맨 위엔 찢은 종이';
       },
       // 단말을 맞춘 뒤 민호가 책상 위에 휴대폰을 두고 간다 (그때부터 그림에도 보이게)
       overlays: [{ cls: 'g-phone', x: 42.58, y: 52.33, w: 10.16, h: 5.81, html: `<img src="${P}props/office-phone.webp" alt="">` }],
@@ -370,7 +370,7 @@ export default {
     terminal: {
       title: '보관함 백업 단말',
       scene: 'shop',
-      intro: '블랙박스 기록을 물리면 시간 축 두 줄이 뜬다 위는 블랙박스 표시 시각 그대로, 아래는 출입 서버 기록이다 블랙박스 시계를 몇 분 옮겨야 서버와 맞는지 정해서 맞추기를 누른다 세 번 틀리면 단말이 1분 동안 잠긴다',
+      intro: '블랙박스 기록을 물리면 시간 축 두 줄이 뜬다 블랙박스 줄은 표시 시각 그대로, 출입 서버 줄은 서버 기록이다 블랙박스 시계를 몇 분 옮겨야 서버와 맞는지 정해서 맞추기를 누른다 세 번 틀리면 단말이 1분 동안 잠긴다',
       docs: ['receipt', 'server'],
       hintCode: 'G-S02',
       hints: [
@@ -393,7 +393,7 @@ export default {
         const shown = done ? SYNC_ANSWER : 0; // 맞추기 전에는 두 줄을 있는 그대로만 보여 준다 (눌러 보며 겹치는 걸 볼 수 없게)
         const sign = (v) => (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v);
         // 읽는 법은 화면 안 맨 위에 (버튼과 맞추기 사이에 글줄이 끼지 않게)
-        const screen = el('div', 'term-screen sync-screen'); screen.innerHTML = `<p class="term-line">BACKUP TERMINAL · CLOCK SYNC</p><p class="term-line sync-legend">숫자 = 블랙박스 프레임 번호 / 서버 카드 번호 · ↓ 들어감 ↑ 나감</p>${syncSvg(shown)}${syncSvgV(shown)}<p class="term-line sync-off">${done ? 'SYNC OK · 블랙박스 시계 ' + sign(SYNC_ANSWER) + '분' : '옮길 차이 · 블랙박스 시계 <b>' + sign(d.off) + '분</b>'}</p>`;
+        const screen = el('div', 'term-screen sync-screen'); screen.innerHTML = `<p class="term-line">BACKUP TERMINAL · CLOCK SYNC</p><p class="term-line sync-legend">숫자 = 프레임 번호 / 카드 번호 · ↓ 들어감 ↑ 나감</p>${syncSvg(shown)}${syncSvgV(shown)}<p class="term-line sync-off">${done ? 'SYNC OK · 블랙박스 시계 ' + sign(SYNC_ANSWER) + '분' : '옮길 차이 · 블랙박스 시계 <b>' + sign(d.off) + '분</b>'}</p>`;
         wrap.append(screen);
         if (!done) {
           const row = el('div', 'sync-row');
