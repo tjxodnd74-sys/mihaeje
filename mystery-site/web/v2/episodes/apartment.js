@@ -35,15 +35,6 @@ function soon(name, scene, ms, run) {
 const CCTV_LINE = '모니터가 지지직 넘어갔다 CH2 둑길 가로등 아까 내가 서 있던 그 벤치에 누가 앉아 있다 이쪽 건물을 보고';
 const ANBANG_LINE = '딸깍 안방에서 소리가 났다 문 너머가 노랗게 밝아졌다 단전된 집이다 안에는 아무도 없다';
 const COMMENT_LINE = '주머니 속 휴대폰이 짧게 떨렸다 아까 그 커뮤니티 글에 새 댓글 산책러2 「지금 3층에 누가 서 있음 손전등 든 사람」';
-// 휴대폰에서 이 장면에 처음 왔을 때 그림의 어느 가로 위치(fx, 0~1)를 화면 가운데에 둘지 (엔진은 저장된 S.pan 이 없으면 그림 한가운데를 보여 준다)
-// 둑길은 켜진 3층 창이 그림 오른쪽 끝(88%)이라 한가운데로 열면 안 보인다
-function firstLook(S, id, fx) {
-  try {
-    if (window.innerWidth > 640 || S.pan?.[id] != null) return;
-    const h = Math.min(window.innerHeight * 0.74, 640), w = h * 1024 / 688;
-    S.pan = S.pan || {}; S.pan[id] = Math.max(0, Math.round(w * fx - window.innerWidth / 2));
-  } catch {}
-}
 const fire = (S, k) => { S.ev = S.ev || {}; if (S.ev[k]) return false; S.ev[k] = true; S.ev[k + 'Late'] = true; return true; };
 
 // ---------- 마구 눌러 보기 막기: 두 번까지는 그냥, 그다음부터 틀릴 때마다 기다리는 시간이 늘어난다 ----------
@@ -202,10 +193,10 @@ export default {
   scenes: [
     {
       id: 'bank',
+      focusX: 76,
       name: '미루천 둑길',
       image: P + 'bank.webp',
       arrive: (S) => {
-        firstLook(S, 'bank', 0.76);
         if (S.solved.includes('wires')) return '3층 그 집 창 셋이 다 켜져 있다 열 시다 벤치 위 종이컵은 이제 식었다 휴대폰 속 커뮤니티 글에 댓글이 더 붙었을까';
         if (ev(S, 'anbang')) return '3층 그 집 창이 하나 더 켜져 있다 벤치는 비어 있는데 그 위에 종이컵 하나 김이 아직 오른다 아까는 없었다';
         return '가로등 아래 벤치는 비어 있다 개울 건너 A동 뒤편 벽에 빨간 락카로 커다란 X 표 창은 다 까만데 3층 오른쪽 창 하나만 노랗다 가로등 기둥엔 철거 안내판이 묶여 있다';

@@ -30,7 +30,7 @@ for(const page of ['index','case','episode','studio','ohang']){
  // compiled CSS to avoid a second cold hosting request on the critical path.
  // Relative assets keep resolving at the site root; the CSS file remains as a
  // compatible build artifact for older cached documents.
- html=html.replace('</head>','<script>'+entry.replaceAll('</script','<\\/script')+'</script><style>'+compiled.code.replaceAll('</style','<\\/style')+'</style><script defer src="game-bundles/'+page+'-v53.js?v='+jsHash+'"></script></head>');
+ html=html.replace('</head>','<script>'+entry.replaceAll('</script','<\\/script')+'</script><style>'+compiled.code.replace(/url\((['"]?)\.\.\/assets\//g,'url($1assets/').replaceAll('</style','<\\/style')+'</style><script defer src="game-bundles/'+page+'-v53.js?v='+jsHash+'"></script></head>');
  fs.writeFileSync(path.join(out,page+'.html'),html);
  summary[page]={classicScripts:classic.length,moduleEntries:modules.length,jsBytes:fs.statSync(path.join(out,page+'-v53.js')).size,cssBytes:compiled.code.length};
 }

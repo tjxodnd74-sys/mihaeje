@@ -574,7 +574,7 @@ async function main() {
     node.append(el('h2', 'v2-doc-title', '의견 남기기'));
     node.append(el('p', 'v2-feedback-lead', '막힌 곳, 이상한 문장, 재미없던 장치, 뭐든 좋습니다 만든 사람이 직접 읽습니다'));
     const ta = el('textarea', 'v2-textarea'); ta.rows = 6; ta.maxLength = 2000; ta.placeholder = '예: 보관함 숫자를 어디서 세는지 한참 헤맸어요'; ta.setAttribute('aria-label', '의견');
-    const contact = el('input', 'v2-input'); contact.type = 'text'; contact.maxLength = 120; contact.placeholder = '답장 받을 이메일이나 연락처 (선택)'; contact.setAttribute('aria-label', '연락처(선택)');
+    const contact = el('input', 'v2-input'); contact.type = 'text'; contact.maxLength = 120; contact.placeholder = '답장 받을 이메일 (선택)'; contact.setAttribute('aria-label', '이메일(선택)');
     const status = el('p', 'v2-status'); status.setAttribute('role', 'status');
     const send = btn('v2-primary', '보내기', async () => {
       const text = ta.value.trim();

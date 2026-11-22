@@ -594,3 +594,4 @@ html[data-theme] body dialog.inspection-dialog[data-surface] .story-device .stor
 .v2-vault em{grid-column:1/-1;font-style:normal;font-size:13px;opacity:.85}
 .v2-vault li.doing a{border-color:#d9b46a}
 .v2-vault li.done em{color:#9fd3a8}
+footer .privacy-link{display:inline-flex;align-items:center;min-height:40px;font-size:14px;color:#b4b7be;text-decoration:none}footer .privacy-link:active{opacity:.7}
