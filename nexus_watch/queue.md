@@ -5,7 +5,7 @@
 - AI타임스·긱뉴스 17:23 이후 새 소비자 소식 없음(긱뉴스 Show GN AS 스크리너·CalcSpin — 개발자용 제외)
 - 48시간 🔥: AI 숏드라마·쇼츠 제작 6곳(이종범·찍봇·AI하쥬·AI아스트라·조팀장·AI리더스랩 — 일부 광고성), 최신 모델 비교 3곳(이종범·AI아스트라·AI하쥬)
 
-## 2026-11-21 17:23 — [제작 요청됨 2026-11-21 17:23] 🔥바로제작(내일 1순위) 🔥릴스 우선 ① 제미나이 앱 GIF 만들기 출시(한국 포함) — 챗GPT GIF(11/5) 이후 2주 만
+## 2026-11-21 17:23 — [완료 카드뉴스] [제작 요청됨 2026-11-21 17:23] 🔥바로제작(내일 1순위) 🔥릴스 우선 ① 제미나이 앱 GIF 만들기 출시(한국 포함) — 챗GPT GIF(11/5) 이후 2주 만
 - 출처: https://x.com/GeminiApp/status/2123813017855103449 · https://www.aitimes.com/news/articleList.html?view_type=sm (AI타임스 11-21 16:39) · https://www.androidauthority.com/gemini-gif-generation-rollout-3737901/ · https://wisevoter.com/world/2026/11/20/google-gemini-gif-generation-rollout
 - 내용: 11/20(현지) 구글 공식 X 발표. Gemini Omni 1.2 Flash 기반, 문장 입력 → 약 3초 반복 GIF. 미·영·캐·호·독·일·한 7개국(보도). 무료/유료·플랫폼 미명시
 - 오늘 인스타 이미 2편(12:51 게시·19:03 예약) → 카드뉴스 작업은 내일 1순위로 넘길 예정
