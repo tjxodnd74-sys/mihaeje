@@ -140,7 +140,7 @@
     "title": "반송된 편지",
     "subtitle": "다섯 번 돌아온 봉투",
     "genre": "우체국 · 주소 추적",
-    "minutes": 30,
+    "minutes": 35,
     "difficulty": "★★★",
     "image": "assets/covers/letter-v1.webp",
     "href": "play.html?case=letter",

@@ -1857,6 +1857,50 @@ html[data-case="letter"] .rack-slot.picking .rack-label{color:#9e2418}
   html[data-case="letter"] .v2-where b{font-size:16px;line-height:1.2;word-break:keep-all}
   html[data-case="letter"] .v2-where small,html[data-case="letter"] .v2-where .caret{flex:none;white-space:nowrap}
 }
+/* v136 최종 점검: 대장의 손글씨 칸(처리일·번지)이 손글씨 글꼴이라 실제로 10px 남짓으로 보였음 — 17-14/17-4/71-4 를 구별해야 하는 칸 */
+html[data-case="letter"] .ledger-table td.hand-cell,html[data-case="letter"] .paper-table td.hand-cell{font-size:21px;line-height:1.25}
+/* 2023 봉투: 소인 도장 가운데를 가린 끝 두 자리(.inked) 위에 맞추고 글자는 흐리게 — 「352」 위에 날짜 글자가 겹쳐 지저분하던 것 (자리는 봉투 폭 % 로 재서 맞춤) */
+html[data-case="letter"] .lenv.y2023 .lenv-mark.at-zip{left:calc(20.6% - 6cqw);top:calc(27.6% - 6cqw);width:12cqw;height:12cqw;font-size:1.35cqw;color:rgba(28,28,40,.38);border-color:rgba(28,28,40,.6)}
+/* 순로표 순번(124 등)이 휴대폰에서 12/4 로 끊기던 것 */
+html[data-case="letter"] .paper-table td.mono{white-space:nowrap}
+/* 새 장치: 할머니의 우표 깡통 */
+html[data-case="letter"] .stamp-wrap{display:grid;gap:10px;max-width:640px;margin:0 auto}
+html[data-case="letter"] .lenv.reply.stamped{margin:0}
+html[data-case="letter"] .lenv.reply.stamped .lenv-to.written{left:19%;top:38%;font-size:3.6cqw;gap:.6cqw}
+html[data-case="letter"] .lenv.reply.stamped .lenv-to b{font-weight:400}
+html[data-case="letter"] .st-corner{position:absolute;right:18%;top:31%;display:flex;gap:1cqw;align-items:flex-start;min-width:9cqw;min-height:11cqw}
+html[data-case="letter"] .st-corner .stamp{width:max(9cqw,40px);height:max(11.2cqw,50px);padding:3px;font-size:max(2.2cqw,13px)}
+html[data-case="letter"] .st-corner .stamp .st-v{left:5px;top:4px}
+html[data-case="letter"] .st-corner .stamp .st-k{display:none}
+html[data-case="letter"] .st-corner .st-empty{display:grid;place-items:center;width:9cqw;height:11cqw;border:.25cqw dashed rgba(60,60,70,.45);font-family:var(--sans);font-size:max(1.6cqw,13px);color:#55524a;line-height:1.2;text-align:center}
+html[data-case="letter"] .st-sum{margin:0;text-align:center;font-family:var(--sans);font-weight:700;font-size:15px;color:var(--soft)}
+html[data-case="letter"] .st-tin{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center;padding:12px;border-radius:14px;background:linear-gradient(160deg,#a9473a,#7e2c24 55%,#5d1f1a);box-shadow:inset 0 0 0 3px rgba(240,210,150,.55),inset 0 0 0 6px rgba(0,0,0,.18)}
+html[data-case="letter"] .st-lid{display:grid;place-items:center;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 35%,#e9e3d6,#bdb5a3 70%,#8f8778);box-shadow:inset 0 0 0 4px #9b9383,0 2px 6px rgba(0,0,0,.35)}
+html[data-case="letter"] .st-lid span{background:#f7f1dc;padding:6px 8px;transform:rotate(-6deg);font-family:var(--hand);font-size:21px;line-height:1.15;color:#2b3570;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.25);max-width:84%;word-break:keep-all}
+html[data-case="letter"] .st-tray{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+html[data-case="letter"] .stamp{position:relative;display:grid;grid-template-rows:1fr auto;width:66px;height:82px;min-height:0;margin:0;box-sizing:border-box;padding:5px;border:0;cursor:pointer;background:#fbf7ec;font-family:var(--sans);font-size:15px;color:#2a2620;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,radial-gradient(circle 2.6px,transparent 96%,#000) 0 0/7px 7px round;mask:linear-gradient(#000 0 0) content-box,radial-gradient(circle 2.6px,transparent 96%,#000) 0 0/7px 7px round;filter:drop-shadow(0 1px 1px rgba(0,0,0,.3));touch-action:manipulation}
+html[data-case="letter"] .stamp .st-art{display:block;border-radius:1px;min-height:0}
+html[data-case="letter"] .stamp .st-v{position:absolute;left:8px;top:7px;font-weight:800;font-size:1em;line-height:1.2;color:#fff;background:rgba(22,20,17,.78);padding:0 4px;border-radius:2px}
+html[data-case="letter"] .stamp .st-k{font-size:.62em;letter-spacing:.12em;text-align:center;color:#6b665a;padding-top:2px}
+html[data-case="letter"] .st-s380 .st-art{background:linear-gradient(160deg,#e88fa6,#c2507a 60%,#7b2f55)}
+html[data-case="letter"] .st-s330 .st-art{background:linear-gradient(170deg,#9fd0e6,#4b8fb5 55%,#2f6a4f)}
+html[data-case="letter"] .st-s300 .st-art{background:linear-gradient(170deg,#f0d27a,#d08b2c 60%,#8a4b18)}
+html[data-case="letter"] .st-s100 .st-art{background:linear-gradient(170deg,#b9d98a,#6a9a3c 60%,#3d5f22)}
+html[data-case="letter"] .st-s10 .st-art{background:linear-gradient(170deg,#c9c1e8,#7f6fb8 60%,#4a3f7a)}
+html[data-case="letter"] .st-s430 .st-art{background:linear-gradient(170deg,#f5b48a,#d9663a 55%,#8c3a20)}
+html[data-case="letter"] .stamp.used .st-pm{position:absolute;left:28%;top:6%;width:96%;height:62%;pointer-events:none;background:
+  radial-gradient(circle at 26% 50%,transparent 0 33%,rgba(25,25,35,.78) 34% 39%,transparent 40%),
+  repeating-linear-gradient(180deg,transparent 0 5px,rgba(25,25,35,.72) 5px 7px) 46% 0/60% 100% no-repeat}
+html[data-case="letter"] .st-tray .stamp:focus-visible,html[data-case="letter"] .st-corner .stamp:focus-visible{outline:2px solid #fff;outline-offset:2px}
+@media (max-width:640px),(orientation:landscape) and (max-height:500px){
+  html[data-case="letter"] .st-tin{grid-template-columns:1fr;justify-items:center}
+  html[data-case="letter"] .st-lid{width:150px}
+  html[data-case="letter"] .st-tray{gap:12px}
+  html[data-case="letter"] .st-tray .stamp{width:76px;height:94px;font-size:16px}
+  html[data-case="letter"] .lenv.reply.stamped .lenv-to.written{left:19%;top:38%;font-size:3.9cqw}
+  html[data-case="letter"] .st-corner{right:16%;top:28%}
+}
 
 /* 404호의 불빛: 철거 현장 · 락카 빨강 · 비상등 */
 html[data-case="apartment"]{
