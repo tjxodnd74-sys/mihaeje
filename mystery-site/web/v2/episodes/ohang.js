@@ -168,7 +168,7 @@ export default {
   minutes: 35,
   difficulty: 3,
   cover: P + 'cover.webp',
-  coverAlt: '비 오는 저녁, 불 켜진 오행당 문 앞에 선 사람',
+  coverAlt: '비 오는 밤, 닫힌 오행당 문 앞 섬돌 위 다섯 화분',
   music: 'assets/music/ohang-v33.mp3',
   tagline: '접수표부터 써라 너도 오늘은 손님이다\n생일하고 난 시 적으면 네 빛이 나온다',
   blurb: '외할머니가 평생 지킨 약차집 오행당\n입원한 할머니의 문자 한 통에 지원은 오랜만에 그 골목으로 갑니다\n당신의 생년월일시로 다섯 빛을 세고, 그 빛대로 화분과 차 통과 등이 열립니다',
@@ -652,7 +652,7 @@ export default {
 
   ending: {
     image: P + 'ending.webp',
-    imageAlt: '매화가 핀 병실 창가에서 할머니에게 찻잔을 건네는 지원',
+    imageAlt: '매화가 핀 병실 창가에서 할머니 찻잔에 보온병 차를 따르는 손',
     eyebrow: '3월 3일, 아침',
     title: '돌아오는 계절',
     paragraphs: (S) => {
