@@ -1,11 +1,12 @@
 // 끝나지 않은 방송 — ★5 안내 없음, 힌트 2단계(정답 없음), 오답은 장치마다 한 줄 중립 문구
 // 2년 전 폐국 날 1시 58분, 송신기를 내린 건 나였다 그 뒤에도 녹음기는 돌았다
 // 선배는 10월부터 밤마다 이 건물에 들어와 옛 방송을 오려 붙였고, 오늘 밤 내내 문 하나 사이에 있었다
-// 손동작: 도어락 번호 누르기 → 버저 짧게·길게 두드리기 → 선반에서 테이프 한 통 → 카운터 바퀴 → 알림에 순서 붙이기 → 패치 케이블
+// 손동작: 도어락 번호 누르기 → 판 뒤집고 톤암 옮겨 바늘 내리기 → 버저 짧게·길게 두드리기 → 선반에서 테이프 한 통 → 카운터 바퀴 → 알림에 순서 붙이기 → 패치 케이블
 const P = 'assets/v2/radio/';
 
 // ON AIR 깜빡임: 4719를 반복, 휴대폰 기록은 「1」부터 찍혀서 처음부터 읽으면 1947로 보인다
-// 사보 표는 0~4만 남았다 5~9는 점 개수 규칙(뒤 다섯은 줄이 앞에서부터 늘어남)으로 짐작해야 한다
+// 사보 표는 0~5만 남았다 6~9는 규칙(뒤 다섯은 줄이 앞에서부터 늘어남)으로 짐작해야 한다
+// (0~4만 두면 '거꾸로'를 9−n 쪽으로 읽어 7은 같고 9가 5로 나오는 답 하나가 더 생긴다 → 5를 남겨 한 가지로 묶음)
 const MORSE = { 0: '-----', 1: '.----', 2: '..---', 3: '...--', 4: '....-', 5: '.....', 6: '-....', 7: '--...', 8: '---..', 9: '----.' };
 function blinkSvg() {
   const seq = ['1', '9', 'L', '4', '7', '1', '9', 'L', '4', '7'];
@@ -50,6 +51,38 @@ function liveBlinkCss() {
 const stateNow = () => { try { return window.MihaejeV2?.state || JSON.parse(localStorage.getItem('mihaeje-v2-radio') || '{}'); } catch { return {}; } };
 const morseRow = (n) => `<tr><td>${n}</td><td class="mc">${MORSE[n].replace(/\./g, '●').replace(/-/g, '━')}</td></tr>`;
 
+// B실 턴테이블 (선배가 콘솔 빠진 자리에 가져다 둔 것) 판은 B면이 위로 놓여 있다
+// 클로징곡은 「먼 불빛」 노래 없는 쪽(사보) → A면 둘째 곡 · 함정 B면 둘째 「먼 불빛」 노래 서윤
+// 띠 폭은 곡 길이에 비례 (A2 5분 14초 = 자동 송출 목록의 클로징음악 길이와 같다)
+const LP = {
+  A: [['첫 차', 242], ['먼 불빛', 314], ['비 오는 골목', 220], ['겨울 창가', 365], ['잠들지 않는 도시', 270]],
+  B: [['새벽 세 시', 300], ['먼 불빛', 288, '노래 서윤'], ['돌아오는 길', 235], ['마지막 버스', 380]],
+};
+const LP_OK = { side: 'A', pos: 2 };
+const NTH = ['', '첫째', '둘째', '셋째', '넷째', '다섯째'];
+function lpSvg(side, pos, onPick) {
+  // 위에서 내려다본 판 (viewBox 0~200) 바깥 반지름 96 · 라벨 34 · 띠는 곡 길이 비례, 사이 홈 1.2
+  const tr = LP[side]; const total = tr.reduce((a, t) => a + t[1], 0);
+  const R0 = 95, R1 = 38, span = R0 - R1 - 1.2 * (tr.length - 1);
+  let r = R0; const bands = [];
+  tr.forEach((t, i) => { const w = span * t[1] / total; bands.push([r, r - w, i + 1]); r -= w + 1.2; });
+  let g = `<svg class="lp-svg" viewBox="0 0 200 200" role="img" aria-label="${side}면이 위로 놓인 판 띠 ${tr.length}개">`;
+  g += '<circle cx="100" cy="100" r="99" fill="#2a2522"/><circle cx="100" cy="100" r="97" fill="#0c0b0c"/>';
+  bands.forEach(([a, b, n]) => {
+    const mid = (a + b) / 2, w = a - b;
+    g += `<circle class="lp-band${pos === n ? ' on' : ''}" data-n="${n}" cx="100" cy="100" r="${mid.toFixed(2)}" fill="none" stroke="#17151a" stroke-width="${w.toFixed(2)}"/>`;
+    for (let k = 1; k < 5; k++) g += `<circle cx="100" cy="100" r="${(b + w * k / 5).toFixed(2)}" fill="none" stroke="#222026" stroke-width=".35" pointer-events="none"/>`;
+  });
+  g += '<path d="M100 100 m-80 -30 a85 85 0 0 1 52 -52" fill="none" stroke="rgba(255,120,100,.09)" stroke-width="8" pointer-events="none"/>';
+  g += `<circle cx="100" cy="100" r="${R1 - 2}" fill="#6b241d"/><text x="100" y="86" text-anchor="middle" font-size="9.5" fill="#f0dcc8" font-family="SUIT, sans-serif" pointer-events="none">밤의 창가</text><text x="100" y="121" text-anchor="middle" font-size="15" font-weight="800" fill="#f0dcc8" font-family="SUIT, sans-serif" pointer-events="none">${side}</text><circle cx="100" cy="100" r="2.4" fill="#cfcac4"/>`;
+  // 톤암: 오른쪽 위 받침에서 바늘 자리까지 (0이면 받침대에 걸려 있음)
+  const nr = pos ? bands[pos - 1][0] - 0.8 : 104;
+  const ang = -0.5 + (pos ? 0.05 * pos : -0.35);
+  const tx = 100 + nr * Math.cos(ang), ty = 100 + nr * Math.sin(ang);
+  g += `<line x1="190" y1="20" x2="${tx.toFixed(1)}" y2="${ty.toFixed(1)}" stroke="#bdb8b2" stroke-width="2.4" stroke-linecap="round" pointer-events="none"/><circle cx="190" cy="20" r="6" fill="#55504c" pointer-events="none"/><rect x="${(tx - 3).toFixed(1)}" y="${(ty - 3).toFixed(1)}" width="6" height="6" rx="1" fill="#e9e4dc" pointer-events="none"/>`;
+  return g + '</svg>';
+}
+
 // 헤드폰 큐 채널: 선배가 옛 방송에서 한 마디씩 오려 붙인 말, 붙인 순서가 거꾸로 나온다
 const CUE = '하 람 아 보 관 실 뒷 문 은 클 로 징 곡 길 이 를 두 드 려 분 초 순 서 로'.split(' ').reverse();
 const TAP_OK = ['.....' + '.----' + '....-', '-----' + '.....' + '.----' + '....-']; // 5분 14초 → 5 1 4 (앞의 0은 있어도 된다)
@@ -79,12 +112,13 @@ const camFig = (k, extra = '') => `<figure class="cctv-frame"><img src="${P}prop
 // 패치베이 (props/patch.webp 에서 잰 잭 구멍 가운데 · 라벨 띠 가운데 %)
 const JX = [13.2, 23.8, 34.3, 44.75, 55.2, 65.7, 76.15, 86.7], JY_OUT = 33.7, JY_IN = 69.7, LY_OUT = 19.6, LY_IN = 55.6;
 const cableCol = (out) => (out === 4 ? '#d2382c' : '#3d72b8'); // 장면 그림의 랙처럼 빨강·파랑 (데크 선만 빨강)
+const PER_OUT = 3; // 출력 잭 하나에서 나눠 뽑을 수 있는 케이블 수
 const ARROW = '<svg class="pb-arrow" viewBox="0 0 16 10" aria-hidden="true"><path d="M1 5h12M9 1l4 4-4 4"/></svg>';
 const OUTS = ['MIC A', 'MIC B', 'TAPE A', 'TAPE B', 'PGM A', 'PGM B', 'AUTO PC', 'TONE'];
 const INS = ['TX MAIN', 'TX 예비', 'MON 로비', 'REC A', 'REC B', 'MON 대기실', 'CON A1', 'AUTO IN'];
 function patchOk(c) {
   // 데크(출력 4) → 실제 예비 송신기(입력 1) · 녹음 REC B(5) · 선배가 있는 대기실(6)
-  // 남는 잭에 더 꽂힌 선은 소리를 나눠 보낼 뿐이라 판정에 넣지 않는다 (장치 안내에 적어 둠) 송신기 줄은 데크만 받을 수 있다
+  // 출력 하나에 세 가닥까지라(장치 안내에 적어 둠) 데크 선은 정확히 이 셋이 된다 다른 출력에서 남은 선(AUTO PC → 로비)은 판정에 넣지 않는다
   return c[1] === 4 && c[5] === 4 && c[6] === 4;
 }
 
@@ -101,7 +135,7 @@ export default {
   title: '끝나지 않은 방송',
   subtitle: '「새벽 두 시, 미루」는 꺼진 적이 없다',
   genre: '방송 미스터리 · 송출 추적',
-  minutes: 55,
+  minutes: 60,
   difficulty: 5,
   mood: 'horror',
   cover: P + 'lobby.webp',
@@ -126,6 +160,7 @@ export default {
 
   traces: [
     { device: 'keypad', label: 'B실 문' },
+    { device: 'lp', label: '클로징곡' },
     { device: 'tapdoor', label: '보관실 뒷문' },
     { device: 'reel', label: '마지막 날 2부' },
     { device: 'deck', label: '1시 58분 그 뒤' },
@@ -161,14 +196,19 @@ export default {
       unlockedBy: 'keypad',
       arrive: (S) => S.solved.includes('tapdoor')
         ? '뒷문이 열려 있다 계단 아래에서 테이프 냄새가 올라온다 헤드폰은 아직 같은 말을 되풀이한다'
-        : '콘솔이 빠진 자리에 먼지 자국이 네모나다 그 먼지 위에 손바닥 자국 하나 아직 먼지가 앉지 않았다 켜진 모니터 하나, 책상 위 헤드폰에서 뭔가 새어 나온다',
+        : S.solved.includes('lp')
+          ? '판이 돈다 피아노 소리 사이로 책상 위 헤드폰에서 선배 목소리가 끊겨 새어 나온다 흡음판 옆 작은 상자에 불이 들어와 있다'
+          : '콘솔이 빠진 자리에 먼지 자국이 네모나다 그 위에 턴테이블과 LP 재킷이 놓였고 둘레 먼지에 손자국이 아직 선명하다 켜진 모니터 하나, 헤드폰은 조용하다',
       hotspots: [
         { id: 'auto', x: 92, y: 38, label: '자동 송출 PC 화면', kind: 'doc', doc: 'auto', r: 9 },
         // 노란 쪽지는 모니터 왼쪽 아래 모서리 (그림에서 옮겨 붙임, 가운데 87.5 · 56.4)
         { id: 'enote', x: 87.5, y: 56.5, label: '모니터에 붙은 쪽지', kind: 'doc', doc: 'enote', r: 6 },
         { id: 'sched', x: 8.5, y: 32, label: '벽의 편성 변경 알림', kind: 'doc', doc: 'sched' },
-        { id: 'cue', x: 76, y: 66, label: '책상 위 헤드폰', kind: 'doc', doc: 'cue' },
-        { id: 'tapdoor', x: 25, y: 35, label: '흡음판 옆 보관실 뒷문', kind: 'device', device: 'tapdoor' },
+        // 턴테이블·재킷은 콘솔 빠진 먼지 자리 위 (PIL로 그려 넣음, 가운데 48.1·62.4 / 36.2·59.7)
+        { id: 'sleeve', x: 36.2, y: 59.5, label: 'LP 재킷', kind: 'doc', doc: 'sleeve', r: 6 },
+        { id: 'lp', x: 48.5, y: 62, label: '턴테이블', kind: 'device', device: 'lp', r: 8 },
+        { id: 'cue', x: 76, y: 66, label: '책상 위 헤드폰', kind: 'doc', doc: 'cue', visible: (S) => S.solved.includes('lp') },
+        { id: 'tapdoor', x: 25, y: 35, label: '흡음판 옆 보관실 뒷문', kind: 'device', device: 'tapdoor', visible: (S) => S.solved.includes('lp') },
       ],
     },
     {
@@ -223,7 +263,7 @@ export default {
     notes: {
       title: '모니터 스피커 받아쓰기',
       kind: '내 수첩 · 오늘 밤',
-      html: `<blockquote class="hand">23:30 순찰 2층부터 지하까지 23:55 데스크로<br>00:00 B실 문 위 ON AIR 불이 혼자 들어옴 꺼 둔 스피커에서 시그널 「새벽 두 시, 미루」 선배 목소리<br>사연 셋 다 예전에 읽었던 거 (제빵사 아저씨, 야간 병동 간호사, 만석이 형)<br>문장마다 목소리 결이 조금씩 다르다 녹음한 해가 다른 것처럼 숨 쉬는 자리가 어색하게 끊긴다<br>신청곡 둘<br>01:57 「오늘이 마지막」까지 하고 끊김<br>2년 전이랑 같은 자리<br>그 뒤로 ON AIR가 깜빡이기 시작</blockquote>`,
+      html: `<blockquote class="hand">23:30 순찰 2층부터 지하까지 23:55 데스크로<br>00:00 B실 문 위 ON AIR 불이 혼자 들어옴 꺼 둔 스피커에서 시그널 「새벽 두 시, 미루」 선배 목소리<br>사연 셋 다 예전에 읽었던 거 (제빵사 아저씨, 야간 병동 간호사, 만석이 형)<br>문장마다 목소리 결이 조금씩 다르다 녹음한 해가 다른 것처럼 숨 쉬는 자리가 어색하게 끊긴다<br>신청곡 둘<br>01:58 「오늘이 마지막」까지 하고 끊김<br>2년 전이랑 같은 자리<br>그 뒤로 ON AIR가 깜빡이기 시작</blockquote>`,
     },
     blink: {
       title: '깜빡이는 ON AIR',
@@ -233,7 +273,7 @@ export default {
     zine: {
       title: '벽에 걸린 옛 사보',
       kind: '미루FM 사보 2015년 봄호',
-      html: `<div class="zine"><p class="zine-head">유리창 너머의 모스 부호</p><p>새벽 두 시 진행자 백은수 씨와 막내 기술 정하람 씨는 방송 중에 말을 주고받을 수 없다 둘은 부조정실 ON AIR 스위치로 모스 부호를 보낸다 「곡 2분 남음」 「커피」 같은 것들</p><p>은수 씨는 신호 하나를 다 보내면 꼭 한참 쉬었다가 처음부터 다시 보낸다 정하람 씨는 “선배는 쉼표가 길다”고 했다</p><p>숫자는 다섯 칸짜리라 반만 외우면 된다고 한다 나머지 반은 거꾸로 가니까</p><div class="morse-torn"><table class="morse-table"><tr><th colspan="2">숫자 모스 부호 · 중계소 식별용</th></tr>${[0, 1, 2, 3, 4].map(morseRow).join('')}</table><p class="torn-edge">아래는 찢겨 나갔다</p></div><p class="zine-foot">● 짧게 · ━ 길게 (짧은 것의 세 배)</p></div>`,
+      html: `<div class="zine"><p class="zine-head">유리창 너머의 모스 부호</p><p>새벽 두 시 진행자 백은수 씨와 막내 기술 정하람 씨는 방송 중에 말을 주고받을 수 없다 둘은 부조정실 ON AIR 스위치로 모스 부호를 보낸다 「곡 2분 남음」 「커피」 같은 것들</p><p>은수 씨는 신호 하나를 다 보내면 꼭 한참 쉬었다가 처음부터 다시 보낸다 정하람 씨는 “선배는 쉼표가 길다”고 했다</p><p>둘이 처음부터 바꾸지 않은 게 하나 더 있다 마지막 곡 정윤재 트리오 「먼 불빛」 진행자 끝인사 밑에 깔아야 해서 노래가 없는 쪽만 쓴다</p><p>숫자는 다섯 칸짜리라 반만 외우면 된다고 한다 나머지 반은 거꾸로 가니까</p><div class="morse-torn"><table class="morse-table"><tr><th colspan="2">숫자 모스 부호 · 중계소 식별용</th></tr>${[0, 1, 2, 3, 4, 5].map(morseRow).join('')}</table><p class="torn-edge">아래는 찢겨 나갔다</p></div><p class="zine-foot">● 짧게 · ━ 길게 (짧은 것의 세 배)</p></div>`,
     },
     guardlog: {
       title: '안내 데스크 관리 일지',
@@ -250,12 +290,17 @@ export default {
       kind: 'B실',
       html: `<div class="term-screen auto"><p class="term-line">MIRU AUTO · 예약 재생 목록</p><p class="term-sub">예약 2026-10-31 00:00 한 번 · 등록 2026-10-29 03:12 · 사용자 eunsoo</p><table class="term-table"><tr><th>시작</th><th>파일</th></tr>${[
         ['00:00:00', '시그널_새벽두시'], ['00:00:14', '오프닝_2009-03-02'], ['00:04:40', '사연_제빵사_2013-11-20'], ['00:21:05', '신청곡소개_2017-06-11'], ['00:47:30', '사연_간호사_2019-02-27'], ['01:12:18', '신청곡소개_2011-09-30'], ['01:31:02', '사연_택시_2015-01-08'], ['01:52:30', '클로징음악'], ['01:57:44', '마지막방송_2024-10-31_조각'],
-      ].map(([t, f]) => `<tr><td>${t}</td><td>${f}</td></tr>`).join('')}<tr class="term-err"><td>01:58:12</td><td>마지막인사 · 파일 없음 · 송출 정지</td></tr></table><p class="term-sub">큐 채널 · 하람에게 · 반복 재생 중</p></div>`,
+      ].map(([t, f]) => `<tr><td>${t}</td><td>${f}</td></tr>`).join('')}<tr class="term-err"><td>01:58:12</td><td>마지막인사 · 파일 없음 · 송출 정지</td></tr></table><p class="term-sub">큐 채널 · 하람에게 · 턴테이블 입력에 클로징 곡이 걸리면 반복 재생</p></div>`,
     },
     cue: {
       title: '책상 위 헤드폰',
       kind: 'B실 · 자동 송출 PC 큐 채널',
       html: `<p>헤드폰을 썼다 선배 목소리가 한 마디씩 끊겨 나온다 마디마다 목소리 결이 다르다 어떤 건 스무 살 목소리, 어떤 건 쉰 목소리 들리는 대로 받아 적었다</p><div class="cue-strip" role="img" aria-label="받아 적은 마디 ${CUE.length}개">${CUE.map((c) => `<span>${c}</span>`).join('')}</div><p>마지막 마디 뒤에 숨 들이쉬는 소리가 한 번 나고, 처음부터 다시 나온다 몇 번을 들어도 같다</p>`,
+    },
+    sleeve: {
+      title: 'LP 재킷 뒷면',
+      kind: 'B실 · 턴테이블 옆',
+      html: `<div class="lp-sleeve"><p class="lp-sleeve-head">정윤재 트리오 · 밤의 창가</p><div class="lp-sides">${['A', 'B'].map((sd) => `<div><p class="lp-side-lab">${sd}면</p><ol>${LP[sd].map((t) => `<li>${t[0]}${t[2] ? ` <small>${t[2]}</small>` : ''}</li>`).join('')}</ol></div>`).join('')}</div><p class="lp-credit">피아노 정윤재 · 베이스 한도운 · 드럼 마경수</p></div>`,
     },
     enote: {
       title: '모니터에 붙은 쪽지',
@@ -290,7 +335,7 @@ export default {
     cctvlog: {
       title: '녹화기 알림 네 장',
       kind: '휴대폰 · 이어 붙인 순서',
-      html: `<div class="cctv-log">${CAM_OK.map((k) => camFig(k, `${CAMS[k].t} · ${CAMS[k].real}`)).join('')}</div><p class="term-sub">01:59:30 이후 움직임 알림 없음</p>`,
+      html: `<div class="cctv-log">${CAM_OK.map((k) => camFig(k, `${CAMS[k].t} · ${CAMS[k].real}`)).join('')}</div><p class="term-sub">CAM4 대기실 01:59:30 뒤로 움직임 알림 없음</p>`,
     },
     final: {
       title: '선배의 문자',
@@ -355,6 +400,53 @@ export default {
         text: '딸깍 4719 선배 사번이다',
         scene: ['문 안쪽 ON AIR 스위치 줄에 전기 타이머를 뜯어 고친 상자가 물려 있다 선배 글씨로 「깜빡이」 플러그를 뽑자 불이 켜진 채로 멎었다'],
         unlock: 'studioB',
+      },
+    },
+
+    lp: {
+      title: '턴테이블',
+      scene: 'studioB',
+      intro: '선배가 가져다 둔 턴테이블 판이 B면으로 놓여 돌고 있다 판은 뒤집을 수 있다 바늘은 바깥 가장자리에서 안쪽으로 읽어 들어간다 톤암을 곡 띠 들머리에 옮기거나 판의 띠를 누른 뒤 바늘을 내린다',
+      docs: ['sleeve', 'auto', 'zine'],
+      hintCode: 'R-S07',
+      hints: [
+        '자동 송출 PC가 턴테이블에서 무엇을 기다리는지 화면 맨 아래 줄을 보자 그 곡이 무엇이었는지는 로비 사보에 있다',
+        '재킷에 같은 제목이 두 번 나온다 그 곡을 왜 골랐는지 사보에 적혀 있다 띠는 바깥부터 센다',
+      ],
+      initial: () => ({ side: 'B', pos: 0 }),
+      render(ctx) {
+        const { d, el, save, S } = ctx;
+        const solved = S.solved.includes('lp');
+        if (solved) { d.side = LP_OK.side; d.pos = LP_OK.pos; }
+        const n = LP[d.side].length;
+        if (d.pos > n) d.pos = 0;
+        const wrap = el('div', 'lp-deck');
+        wrap.innerHTML = lpSvg(d.side, d.pos);
+        wrap.querySelectorAll('.lp-band').forEach((c) => { c.addEventListener('click', () => { if (solved) return; d.pos = +c.dataset.n; save(); }); });
+        const row = el('div', 'lp-row');
+        const flip = el('button', 'chip lp-btn', '판 뒤집기'); flip.type = 'button'; flip.setAttribute('aria-label', `판 뒤집기 (지금 ${d.side}면이 위)`);
+        flip.onclick = () => { if (solved) return; d.side = d.side === 'A' ? 'B' : 'A'; d.pos = 0; save(); };
+        const out = el('button', 'chip lp-btn', '◀ 바깥으로'); out.type = 'button'; out.setAttribute('aria-label', '톤암 바깥으로 한 띠');
+        out.onclick = () => { if (solved) return; d.pos = Math.max(0, d.pos - 1); save(); };
+        const inn = el('button', 'chip lp-btn', '안쪽으로 ▶'); inn.type = 'button'; inn.setAttribute('aria-label', '톤암 안쪽으로 한 띠');
+        inn.onclick = () => { if (solved) return; d.pos = Math.min(n, d.pos + 1); save(); };
+        row.append(flip, out, inn);
+        const line = solved ? '「먼 불빛」이 돈다' : d.pos ? `${d.side}면이 위 · 바늘은 바깥에서 ${NTH[d.pos]} 띠 들머리 위` : `${d.side}면이 위 · 톤암은 받침대에 걸려 있다`;
+        const box = el('div', 'mail-wrap lp-wrap'); box.append(wrap, row, el('p', 'pick-label', line));
+        return box;
+      },
+      commitLabel: '바늘 내리기',
+      canCommit: (d) => d.pos > 0,
+      check(d) {
+        if (d.side === LP_OK.side && d.pos === LP_OK.pos) return { ok: true };
+        d.pos = 0;
+        return { ok: false, msg: '바늘을 내렸다 곡은 흐르는데 헤드폰은 조용하다 톤암을 도로 올렸다' };
+      },
+      reveal: {
+        title: '「먼 불빛」',
+        text: '피아노 첫 마디가 흘렀다 2년 전까지 밤마다 1시 52분이면 깔리던 그 곡 곡이 시작되자 책상 위 헤드폰에서 선배 목소리가 끊겨 새어 나오기 시작했다',
+        scene: ['흡음판 옆 좁은 문 손잡이 옆, 작은 상자에 빨간 불이 들어왔다'],
+        unlockDoc: 'cue',
       },
     },
 
@@ -500,7 +592,7 @@ export default {
       reveal: {
         title: '58:22',
         text: '5초 안에 그 자리가 지나갔다 거기서부터 끝까지 다시 틀었다 「오늘이 마지막」 그리고 송신이 끊긴 자리에서 2초 동안 아무 소리도 나지 않았다 테이프 잡음조차 그 다음 숨소리 선배는 꺼진 마이크에 대고 계속 말했다 40초',
-        scene: ['선배 말이 끝나고도 테이프는 한참 조용히 돌았다 그때 의자 위에 올려 둔 휴대폰이 떨기 시작했다 건물 녹화기 알림이다'],
+        scene: ['선배 말이 끝나고도 테이프는 한참 조용히 돌았다 그때 의자 위에 올려 둔 휴대폰이 떨기 시작했다 건물 녹화기가 밤새 밀린 알림을 이제야 한꺼번에 보낸다'],
         unlockDoc: 'tape',
       },
     },
@@ -508,7 +600,7 @@ export default {
     cctv: {
       title: '녹화기 알림',
       scene: 'studioA',
-      intro: '건물 녹화기가 휴대폰으로 보낸 움직임 알림 네 장 전부 오늘 밤 것인데 날짜 칸은 오래전에 나갔다 알림을 누르면 순서 번호가 붙고, 다시 누르면 빠진다 일어난 순서대로 붙여 이어 본다',
+      intro: '건물 녹화기가 밤새 밀린 움직임 알림을 한꺼번에 보냈다 순찰 도는 내가 찍힌 것들을 넘기니 네 장이 남는다 전부 오늘 밤 것인데 날짜 칸은 오래전에 나갔다 알림을 누르면 순서 번호가 붙고, 다시 누르면 빠진다 일어난 순서대로 붙여 이어 본다',
       docs: ['notes', 'mchat', 'guardlog'],
       hintCode: 'R-S05',
       hints: [
@@ -531,7 +623,7 @@ export default {
         });
         const wrap = el('div', 'mail-wrap cctv-wrap'); wrap.append(el('p', 'cctv-head', 'MIRU 녹화기 · 움직임 감지 4건'), grid);
         const foot = el('div', 'cctv-foot');
-        foot.append(el('p', 'pick-label', solved ? '01:59:30 이후 움직임 알림 없음' : d.order.length ? `${d.order.length}장에 번호를 붙였다` : '알림을 눌러 번호를 붙인다'));
+        foot.append(el('p', 'pick-label', solved ? 'CAM4 대기실 01:59:30 뒤로 움직임 알림 없음' : d.order.length ? `${d.order.length}장에 번호를 붙였다` : '알림을 눌러 번호를 붙인다'));
         if (!solved && d.order.length) { const clr = el('button', 'chip', '번호 다 떼기'); clr.type = 'button'; clr.onclick = () => { d.order = []; save(); }; foot.append(clr); }
         wrap.append(foot);
         return wrap;
@@ -543,8 +635,8 @@ export default {
         return { ok: false, msg: '화면이 지직거린다 이 순서로는 앞뒤가 이어지지 않는다' };
       },
       reveal: {
-        title: '01:59 이후 움직임 없음',
-        text: '알림을 이어 붙이자 한 사람이 밤새 이 건물을 돈 길이 됐다 내가 순찰 도는 사이 정문으로 들어와 B실, 지하 보관실, 그리고 A실 앞 대기실 벤치 마지막 알림 뒤로는 아무것도 없다',
+        title: '대기실 01:59 뒤로 움직임 없음',
+        text: '알림을 이어 붙이자 한 사람이 밤새 이 건물을 돈 길이 됐다 내가 순찰 도는 사이 정문으로 들어와 B실, 지하 보관실, 그리고 A실 앞 대기실 벤치 대기실 카메라엔 그 뒤로 아무것도 찍히지 않았다',
         scene: ['A실 앞문은 대기실 쪽으로 나 있다 문 하나 사이다 숨을 죽이고 들어 봐도 너머에서는 아무 소리도 나지 않는다'],
         unlockDoc: 'cctvlog',
       },
@@ -553,7 +645,7 @@ export default {
     patch: {
       title: '패치베이',
       scene: 'studioA',
-      intro: '윗줄은 소리가 나오는 곳, 아랫줄은 소리가 들어갈 곳 출력을 누르고 입력을 누르면 케이블이 이어진다 꽂힌 입력을 다시 누르면 뽑힌다 케이블 둘은 내가 오기 전부터 꽂혀 있었다 남는 잭에 선이 더 꽂혀 있어도 송출은 된다 소리가 거기로도 갈 뿐이다',
+      intro: '윗줄은 소리가 나오는 곳, 아랫줄은 소리가 들어갈 곳 출력을 누르고 입력을 누르면 케이블이 이어진다 꽂힌 입력을 다시 누르면 뽑힌다 케이블 둘은 내가 오기 전부터 꽂혀 있었다 출력 잭 하나에서는 케이블을 세 가닥까지만 나눠 뽑을 수 있다',
       docs: ['wiring', 'enote', 'cctvlog'],
       hintCode: 'R-S06',
       hints: [
@@ -582,7 +674,10 @@ export default {
         const pickOut = (n) => { if (solved) return; d.sel = d.sel === n ? null : n; save(); };
         const pressIn = (n) => {
           if (solved) return;
-          if (d.sel) { d.cables[n] = d.sel; d.sel = null; save(); return; }
+          if (d.sel) {
+            if (d.cables[n] !== d.sel && Object.values(d.cables).filter((o) => o === d.sel).length >= PER_OUT) { ctx.status(`출력 ${d.sel}에서는 세 가닥을 다 뽑았다 하나를 먼저 뽑는다`); return; }
+            d.cables[n] = d.sel; d.sel = null; save(); return;
+          }
           if (d.cables[n]) { delete d.cables[n]; save(); return; }
           ctx.status('먼저 윗줄 출력을 하나 고른다');
         };
