@@ -1109,17 +1109,36 @@ html[data-case="ohang"] .reading-item b{font-size:14px}
 html[data-case="ohang"] .notecard.backlit figcaption{font-size:13px}
 /* 휴대폰 문자: 날짜 띠·안 읽음 1·시각 글자 대비와 크기 */
 html[data-case="ohang"] .chat-head .chat-icons{opacity:.85}
-html[data-case="ohang"] .chat-date{background:rgba(0,0,0,.5);font-size:12.5px}
+html[data-case="ohang"] .chat-date{background:rgba(0,0,0,.5);font-size:13px}
 html[data-case="ohang"] .chat-avatar{color:#5a3700}
-html[data-case="ohang"] .chat-time,html[data-case="ohang"] .chat-meta{font-size:12px}
-html[data-case="ohang"] .chat-meta i{color:#5a3400;text-shadow:none;font-size:12px}
+html[data-case="ohang"] .chat-time,html[data-case="ohang"] .chat-meta{font-size:13px}
+html[data-case="ohang"] .chat-meta i{color:#5a3400;text-shadow:none;font-size:13px}
+html[data-case="ohang"] .slip-reading .slip-sub{font-size:13px}
+/* 문 종이 아래 큰 글자 표 (휴대폰에서만 · 종이 위 손글씨 범례가 작아서) */
+html[data-case="ohang"] .door-legend{margin:10px 0 4px;border-collapse:collapse;width:100%;font-size:15px;color:#2b2620}
+html[data-case="ohang"] .door-legend th,html[data-case="ohang"] .door-legend td{padding:6px 4px;border-bottom:1px solid #d9d0bb;text-align:left;white-space:nowrap}
+html[data-case="ohang"] .door-legend th{font-family:serif;font-weight:400;font-size:17px}
+html[data-case="ohang"] .door-legend i{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.35);margin-right:6px;vertical-align:-1px}
+html[data-case="ohang"] .door-legend caption{caption-side:top;text-align:left;font-size:13px;color:#6f6553;padding-bottom:4px}
 @media (max-width:640px){
   html[data-case="ohang"] .tin-shelf{gap:6px;padding:16px 6px 0}
   html[data-case="ohang"] .tin{height:120px}
   html[data-case="ohang"] .tin-label{top:36px;bottom:18px;font-size:16px}
-  html[data-case="ohang"] .season-cal b{font-size:17px}
-  html[data-case="ohang"] .season-cal span{font-size:13px}
+  /* 철 나누기: 다섯 칸에 손글씨 달이 너무 작고 겨울 달이 두 줄로 갈라져서, 휴대폰에서는 철마다 한 줄 */
+  html[data-case="ohang"] .season-cal{grid-template-columns:1fr;gap:0;padding:8px 14px}
+  html[data-case="ohang"] .season-cal p:not(.season-head){grid-template-columns:5.5em 1fr;justify-items:start;align-items:baseline;gap:10px;padding:2px 2px;line-height:1.25;border-left:0;border-top:1px dashed #cfc3a8}
+  html[data-case="ohang"] .season-cal p:nth-child(2){border-top:0}
+  html[data-case="ohang"] .season-cal b{font-size:20px}
+  html[data-case="ohang"] .season-cal span{font-size:18px;text-align:left}
   html[data-case="ohang"] .slip-reading p{font-size:20px}
+  /* 접수표: 위 여백을 줄여 날짜·시각 고르는 판이 올라와도 입력칸과 내기 버튼이 위쪽에 남게 */
+  html[data-case="ohang"] .v2-intake{padding-top:6px}
+  html[data-case="ohang"] .v2-intake .v2-paper{margin-top:0;padding:14px 14px 18px}
+  html[data-case="ohang"] .v2-intake .slip-form{padding:12px 14px 10px;margin:6px 0 10px}
+  html[data-case="ohang"] .v2-intake .slip-form .slip-note{margin:4px 0 6px;line-height:1.4}
+  html[data-case="ohang"] .v2-intake .slip-row{margin:4px 0;grid-template-columns:84px 1fr}
+  html[data-case="ohang"] .v2-intake .slip-row input{scroll-margin:90px 0 140px}
+  html[data-case="ohang"] .v2-intake .slip-err:empty{min-height:0;margin:0}
 }
 
 /* 첫 번째 보호자: 동물병원 진료 카드 · 하늘색 괘선 · 초록 */
@@ -2071,10 +2090,12 @@ html[data-case="radio"] .term-screen.auto .term-sub{font-size:13px;opacity:.85}
 html[data-case="radio"] .zine-foot,html[data-case="radio"] .morse-table th,html[data-case="radio"] .torn-edge{font-size:13px}
 html[data-case="radio"] .v2-dialog .pick-label{font-size:14px;color:var(--soft-2)}
 html[data-case="radio"] .chat-head .chat-icons{opacity:.85}
-html[data-case="radio"] .chat-date{background:rgba(0,0,0,.5);font-size:12.5px}
+html[data-case="radio"] .chat-date{background:rgba(0,0,0,.5);font-size:13px}
+html[data-case="radio"] .paper-table .pt-foot{font-size:13px}
+@media (max-width:380px){html[data-case="radio"] .blink-svg text{font-size:3.8px}html[data-case="radio"] .blinkfig{padding:8px 6px 3px}}
 html[data-case="radio"] .chat-avatar{color:#5a3700}
-html[data-case="radio"] .chat-time,html[data-case="radio"] .chat-meta{font-size:12px}
-html[data-case="radio"] .chat-meta i{color:#5a3400;text-shadow:none;font-size:12px}
+html[data-case="radio"] .chat-time,html[data-case="radio"] .chat-meta{font-size:13px}
+html[data-case="radio"] .chat-meta i{color:#5a3400;text-shadow:none;font-size:13px}
 @media (max-width:640px){
   html[data-case="radio"] .patchphoto .pb-lab{font-size:max(13px,3.6cqw)}
   html[data-case="radio"] .patchphoto .pb-name{display:none}
@@ -2093,8 +2114,10 @@ html[data-case="radio"] .chat-meta i{color:#5a3400;text-shadow:none;font-size:12
   html[data-case="radio"] .kp-pad .ctl.kp-clear{font-size:15px;padding:0;letter-spacing:-.02em}
 }
 @media (max-width:640px){
-  html[data-case="radio"] .blink-svg text{font-size:2.7px}
-  html[data-case="radio"] .cctv-frame figcaption{font-size:13px;flex-direction:column;align-items:flex-start;gap:0;text-align:left}
+  html[data-case="radio"] .blink-svg text{font-size:3.4px}
+  /* 휴대폰: 두 줄 시각 글자가 사진 위쪽(로비 ON AIR 간판 자리)을 덮지 않게 사진 위 검은 띠로 뺀다 */
+  html[data-case="radio"] .cctv-frame figcaption{position:static;font-size:13px;flex-direction:column;align-items:flex-start;gap:0;text-align:left;padding:4px 6px 5px;background:#0b0e0c;text-shadow:none;border-top:1px solid #2c3530}
+  html[data-case="radio"] .cctv-no{top:8px;bottom:auto}
   html[data-case="radio"] .reel-chips{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:10px}
   html[data-case="radio"] .reel-chip{min-width:0;padding:8px 2px;border-radius:6px;font-size:13px;letter-spacing:-.05em;white-space:nowrap;text-align:center;min-height:42px}
   html[data-case="radio"] .reel-chip.empty{display:grid;place-items:center;border:1px dashed var(--line);color:var(--soft-3)}
@@ -2104,7 +2127,8 @@ html[data-case="radio"] .chat-meta i{color:#5a3400;text-shadow:none;font-size:12
   html[data-case="radio"] .pb-row .pb-chip{display:grid;justify-items:center;gap:0;min-width:0;min-height:46px;padding:5px 2px;border-radius:8px;line-height:1.15}
   html[data-case="radio"] .pb-chip b{font-size:15px}
   html[data-case="radio"] .pb-chip small{font-size:13px;white-space:nowrap;letter-spacing:-.05em}
-  html[data-case="radio"] .pb-chip i{font-style:normal;font-size:12px;color:var(--lamp)}
+  html[data-case="radio"] .pb-chip i{font-style:normal;font-size:13px;color:var(--lamp)}
+  html[data-case="radio"] .term-table th{font-size:13px}
   html[data-case="radio"] .pb-chip.on i{color:#8a1d14}
 }
 
