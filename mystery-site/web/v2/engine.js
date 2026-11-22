@@ -57,11 +57,25 @@ async function main() {
 
   const KEY = ep.storageKey || 'mihaeje-v2-' + ep.id;
   const fresh = () => ({ v: 2, screen: 'intro', scene: ep.scenes[0].id, read: [], visited: [], solved: [], drafts: {}, hints: {}, seen: [] });
+  // 저장: 본 키는 예전 모양 그대로, 백업·막힘·깨짐 처리는 store.js (막혀도 메모리로 계속)
+  const { openStore, askPersist, encodeCode, decodeCode, copyText, note } = await import(`./store.js?v=${VER}`);
+  const isSave = (o) => !!o && typeof o === 'object' && !Array.isArray(o) && o.v === 2;
+  const tidy = (raw) => {
+    const s = { ...fresh(), ...raw };
+    ['read', 'visited', 'seen'].forEach((k) => { if (!Array.isArray(s[k])) s[k] = []; });
+    ['drafts', 'hints'].forEach((k) => { if (!s[k] || typeof s[k] !== 'object' || Array.isArray(s[k])) s[k] = {}; });
+    if (s.found !== undefined && !Array.isArray(s.found)) delete s.found;
+    if (s.solved !== true && !Array.isArray(s.solved)) s.solved = [];
+    if (!ep.scenes.some((x) => x.id === s.scene)) s.scene = ep.scenes[0].id;
+    // 예전 저장본은 엔딩에서 solved를 true로 덮어썼다 — 배열로 되돌린다
+    if (!Array.isArray(s.solved)) { s.ended = true; s.solved = Object.keys(ep.devices); }
+    return s;
+  };
   let S = fresh();
-  try { const raw = JSON.parse(localStorage.getItem(KEY) || 'null'); if (raw && raw.v === 2) S = { ...fresh(), ...raw }; } catch {}
-  // 예전 저장본은 엔딩에서 solved를 true로 덮어썼다 — 배열로 되돌린다
-  if (!Array.isArray(S.solved)) { S.ended = true; S.solved = Object.keys(ep.devices); }
-  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
+  // 처음 열 때 저장이 막혀 있으면 표지의 안내 줄이 대신 말한다 (같은 말 두 번 띄우지 않기)
+  const store = openStore(KEY, { valid: isSave, onTrouble: (kind, text) => { if (kind === 'blocked' && S.screen === 'intro') return; note(text); } });
+  { const raw = store.load(); if (raw) S = tidy(raw); }
+  const save = () => { store.save(S); if (S.visited.length || S.solved.length) askPersist(); };
 
   const docIds = Object.keys(ep.docs);
   const openDocs = () => docIds.filter((d) => !ep.docs[d].locked || S.screen === 'ending' || S.ended);
@@ -150,9 +164,41 @@ async function main() {
     if (started) row.append(btn('v2-primary', '이어서 하기', () => { S.screen = 'play'; save(); render(); }));
     row.append(btn(started ? 'v2-secondary' : 'v2-primary', '처음부터 하기', () => { if (started && !confirm('지금까지의 진행을 지우고 처음부터 할까요?')) return; S = fresh(); S.screen = 'opening'; S.started = true; save(); render(); }));
     card.append(row);
-    card.append(el('p', 'v2-fine', '가상의 이야기 · 진행은 이 브라우저에 저장됩니다'));
+    card.append(el('p', 'v2-fine', store.mode === 'memory' ? '가상의 이야기 · 이 브라우저는 저장이 막혀 있어 창을 닫으면 진행이 사라져요 아래 진행 코드로 옮겨 둘 수 있어요' : '가상의 이야기 · 진행은 이 브라우저에 저장됩니다'));
+    card.append(transfer(started));
     sec.append(card);
     return sec;
+  }
+
+  // 다른 기기·앱으로 진행 옮기기 (접힌 칸)
+  function transfer(started) {
+    const box = el('details', 'v2-transfer');
+    box.append(el('summary', '', '다른 기기에서 이어하기'));
+    const body = el('div', 'v2-transfer-body');
+    const status = el('p', 'v2-transfer-status'); status.setAttribute('role', 'status');
+    const say = (m, bad) => { status.textContent = m; status.classList.toggle('wrong', !!bad); };
+    if (started) {
+      body.append(el('p', 'v2-transfer-help', '지금 진행을 코드로 옮겨 다른 기기나 앱의 이 편 처음 화면에 붙여 넣으면 이어서 할 수 있어요'));
+      const out = el('input', 'v2-transfer-code'); out.type = 'text'; out.readOnly = true; out.setAttribute('aria-label', '내 진행 코드'); out.spellcheck = false;
+      const copy = btn('v2-secondary', '코드 복사', async () => { if (!out.value) return; say(await copyText(out.value, out) ? '복사했어요 다른 기기에서 붙여 넣어 주세요' : '코드 칸을 길게 눌러 직접 복사해 주세요'); });
+      copy.disabled = true;
+      const line = el('div', 'v2-transfer-line'); line.append(out, copy);
+      body.append(line);
+      box.addEventListener('toggle', async () => { if (!box.open || out.value) return; try { out.value = await encodeCode(ep.id, S); copy.disabled = false; } catch { say('코드를 만들지 못했어요 잠시 뒤 다시 열어 주세요', true); } });
+    }
+    const inp = el('input', 'v2-transfer-code'); inp.type = 'text'; inp.placeholder = '받은 코드 붙여 넣기'; inp.setAttribute('aria-label', '받은 진행 코드'); inp.spellcheck = false; inp.autocomplete = 'off'; inp.autocapitalize = 'off';
+    const load = btn('v2-secondary', '이 코드로 이어하기', async () => {
+      const r = await decodeCode(inp.value, ep.id, isSave);
+      if (r.error) { say(r.error, true); return; }
+      if (started && !confirm('이 기기의 지금 진행을 코드의 진행으로 바꿀까요?')) return;
+      S = tidy(r.state); S.screen = 'intro'; save(); render();
+      note('진행을 불러왔어요 이어서 하기를 눌러 주세요', 5000);
+    });
+    inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') load.click(); });
+    const line2 = el('div', 'v2-transfer-line'); line2.append(inp, load);
+    body.append(line2, status);
+    box.append(body);
+    return box;
   }
 
   // ---------- 2. 오프닝 ----------
