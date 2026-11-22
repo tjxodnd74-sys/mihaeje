@@ -1,0 +1,169 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#444;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.k{width:1080px;height:1350px;position:relative;overflow:hidden;background:#FFF8EC;margin-bottom:20px}
+.hd{height:140px;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.hd .t{font-size:46px;font-weight:900;letter-spacing:-.04em;color:#1E2A3A}
+.hd .t em{font-style:normal;color:#F2545B}
+.hd .c{font-size:26px;font-weight:800;color:#fff;background:#F2545B;border-radius:40px;padding:10px 22px}
+.pn{position:absolute;left:20px;width:1040px;height:580px;border:6px solid #1E2A3A;border-radius:18px;overflow:hidden;background:#ddd}
+.pn img{width:1028px;height:568px;object-fit:cover;display:block}
+.p1{top:140px}.p2{top:732px}
+.b{position:absolute;z-index:3;background:#fff;border:4px solid #1E2A3A;border-radius:34px;padding:18px 26px;font-size:36px;font-weight:800;line-height:1.32;letter-spacing:-.035em;color:#1E2A3A;box-shadow:0 6px 0 rgba(43,26,20,.25);max-width:560px}
+.b.pg{background:#DDF5EC}
+.b small{display:block;font-size:28px;font-weight:700;color:#1F8A6A;margin-top:6px}
+.b:after{content:"";position:absolute;width:26px;height:26px;background:inherit;border-right:4px solid #1E2A3A;border-bottom:4px solid #1E2A3A;bottom:-16px;transform:rotate(45deg)}
+.b.tl:after{left:60px}.b.tr:after{right:60px}
+.b.no:after{display:none}
+.ft{position:absolute;bottom:6px;right:30px;font-size:22px;font-weight:700;color:#8FA3B5}
+/* cover */
+#k1{background:#13202E}
+#k1 .img{position:absolute;left:0;top:0;width:1080px;height:860px;overflow:hidden}
+#k1 .img img{width:1080px;height:860px;object-fit:cover;object-position:50% 0;display:block}
+#k1 .img:after{content:"";position:absolute;left:0;right:0;bottom:0;height:320px;background:linear-gradient(transparent,#13202E)}
+#k1 .tag{position:absolute;left:60px;top:46px;background:#FFD43B;color:#111;font-size:30px;font-weight:900;padding:8px 18px;border-radius:10px;letter-spacing:-.02em;z-index:2}
+#k1 .tt{position:absolute;left:56px;right:40px;top:770px;font-size:136px;font-weight:900;line-height:1.1;letter-spacing:-.055em;color:#fff;text-shadow:0 6px 24px rgba(0,0,0,.7)}
+#k1 .tt em{font-style:normal;color:#FFD43B}
+#k1 .hd2{position:absolute;left:60px;right:60px;bottom:44px;display:flex;justify-content:space-between;font-size:26px;font-weight:700;color:#7FE3FF}
+
+/* info */
+#k6{background:#FFFFFF}
+#k6 .in{padding:66px 60px 0}
+#k6 .lab{font-size:28px;font-weight:800;color:#F2545B;letter-spacing:.08em}
+#k6 .h{font-size:88px;font-weight:900;line-height:1.14;letter-spacing:-.045em;margin-top:14px;color:#1E2A3A}
+#k6 .h .v{color:#F2545B}
+#k6 .when{display:inline-block;background:#1E2A3A;color:#fff;font-size:32px;font-weight:900;padding:8px 18px;border-radius:12px;margin-top:26px}
+#k6 .phone{margin-top:30px;border:4px solid #1E2A3A;border-radius:28px;background:#F4F6F9;padding:26px 28px}
+#k6 .typed{font-size:44px;font-weight:800;color:#1E2A3A;letter-spacing:-.035em;line-height:1.35;height:120px;overflow:hidden}
+#k6 .typed span{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;animation:type 6s steps(16) infinite both;border-right:5px solid #F2545B}
+#k6 .typed span.l2{animation-name:type2}
+@keyframes type{0%{width:0}35%,to{width:15em}}
+@keyframes type2{0%,35%{width:0;border-color:transparent}36%{border-color:#F2545B}70%,to{width:13em}}
+#k6 .wave{display:flex;align-items:center;gap:8px;height:70px;margin-top:14px}
+#k6 .wave i{display:block;width:12px;border-radius:6px;background:#F2545B;animation:wv 1s ease-in-out infinite}
+@keyframes wv{0%,to{height:16px}50%{height:62px}}
+#k6 .wave .mic{margin-left:auto;font-size:28px;font-weight:900;color:#fff;background:#F2545B;border-radius:30px;padding:8px 20px}
+#k6 .rows{margin-top:30px}
+#k6 .r{display:flex;align-items:center;gap:22px;padding:20px 0;border-top:2px solid #EEE}
+#k6 .r .kk{width:200px;flex:none;font-size:38px;font-weight:900;color:#F2545B;letter-spacing:-.04em}
+#k6 .r .v2{font-size:42px;font-weight:800;color:#1E2A3A;letter-spacing:-.035em;line-height:1.3}
+#k6 .r .v2 s{color:#9AA6B5}
+#k6 .src{position:absolute;left:60px;right:60px;bottom:36px;font-size:22px;font-weight:600;color:#8A97A8;line-height:1.5}
+#k6 .gifbox{margin-top:30px;display:flex;gap:22px;align-items:center}
+#k6 .gif{width:300px;height:220px;border:4px solid #1E2A3A;border-radius:24px;background:#E9F7FF;position:relative;overflow:hidden;flex:none}
+#k6 .gif .ball{position:absolute;left:118px;width:64px;height:64px;border-radius:50%;background:#F2545B;animation:bounce .9s cubic-bezier(.5,0,.5,1) infinite alternate}
+@keyframes bounce{from{top:20px}to{top:140px;transform:scaleX(1.15) scaleY(.85)}}
+#k6 .gif .loop{position:absolute;left:0;bottom:0;height:10px;background:#FFD43B;animation:lp 3s linear infinite}
+@keyframes lp{from{width:0}to{width:292px}}
+#k6 .gif .bd{position:absolute;right:12px;top:10px;font-size:24px;font-weight:900;color:#fff;background:#1E2A3A;border-radius:10px;padding:2px 10px}
+#k6 .sec{font-size:150px;font-weight:900;color:#F2545B;letter-spacing:-.05em;line-height:1}
+#k6 .sec small{display:block;font-size:34px;color:#1E2A3A;letter-spacing:-.03em;margin-top:8px;font-weight:800}
+/* last */
+#k7{background:#1E2A3A;color:#fff}
+#k7 .in{padding:90px 64px 0}
+#k7 .lab{font-size:26px;font-weight:800;color:#7FE3FF;letter-spacing:.08em}
+#k7 h1{font-size:104px;font-weight:900;line-height:1.15;letter-spacing:-.045em;margin-top:18px}
+#k7 h1 em{font-style:normal;color:#FFD43B}
+#k7 .row{display:flex;gap:14px;flex-wrap:wrap;margin-top:44px}
+#k7 .chip{background:#2E3D52;border-radius:18px;padding:16px 22px;font-size:34px;font-weight:800}
+#k7 .chip i{font-style:normal;color:#7FE3FF;margin-right:10px}
+#k7 .copy{width:952px;margin-top:110px;border:3px dashed #7FE3FF;border-radius:24px;padding:36px 36px 30px;position:relative;background:#26344A}
+#k7 .copy .tg{position:absolute;top:-20px;left:30px;background:#7FE3FF;color:#1E2A3A;font-size:24px;font-weight:900;padding:4px 16px;border-radius:10px}
+#k7 .copy p{font-size:50px;font-weight:700;line-height:1.5;letter-spacing:-.03em}
+#k7 .copy p b{color:#FFD43B}
+#k7 .bot{position:absolute;left:64px;right:64px;bottom:50px;display:flex;align-items:flex-end;justify-content:space-between}
+#k7 .bot .tx{font-size:38px;font-weight:800;line-height:1.4}
+#k7 .bot .tx span{display:block;font-size:26px;color:#A9B8CC;font-weight:700;margin-top:10px}
+#k7 .bot img{width:230px}
+.b{animation:pop .5s cubic-bezier(.3,1.6,.5,1) both}
+.b.d2{animation-delay:.5s}
+@keyframes pop{from{transform:scale(.9)}to{transform:scale(1)}}
+.st{position:absolute;z-index:4;background:#1E2A3A;color:#FFD43B;font-size:40px;font-weight:900;padding:14px 24px;border-radius:14px;transform:rotate(-3deg);box-shadow:0 6px 0 rgba(0,0,0,.25);letter-spacing:-.03em;animation:stamp 6s ease-out infinite both;animation-delay:.8s}
+@keyframes stamp{0%{transform:rotate(-3deg) scale(1)}3%{transform:rotate(-3deg) scale(1.2)}7%,to{transform:rotate(-3deg) scale(1)}}
+</style></head><body>
+
+<div class="k" id="k1">
+ <div class="img"><img src="cover.png"></div>
+ <div class="tag">AI 공감툰</div>
+ <div class="tt">단톡방이<br><em>움짤</em>로<br>도배됐어요</div>
+ <div class="hd2"><span>@nexus_studio.kr</span><span>끝까지 보세요</span></div>
+</div>
+<div class="k" id="k2">
+ <div class="hd"><div class="t"><em>짤 폭격기</em> 김 대리</div><div class="c">CASE 1</div></div>
+ <div class="pn p1"><img src="p1.png"></div>
+ <div class="b tl" style="top:166px;left:44px">이제 답장은<br>전부 움짤로 한다!</div>
+ <div class="b pg tr d2" style="top:172px;right:44px">3초짜리<br>바로 뽑을게요</div>
+ <div class="pn p2"><img src="p2.png"></div>
+ <div class="b tl" style="top:752px;left:40px">회의 몇 시냐고<br>물어봤을 뿐인데…</div>
+ <div class="b pg tr d2" style="top:760px;right:40px">답은 움짤<br>12개 안에 있어요</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+<div class="k" id="k3">
+ <div class="hd"><div class="t"><em>고르기 장인</em> 수아 씨</div><div class="c">CASE 2</div></div>
+ <div class="pn p1"><img src="p3.png"></div>
+ <div class="b tl" style="top:166px;left:44px">친구 생일 축하,<br>딱 맞는 움짤 하나만</div>
+ <div class="b pg tr d2" style="top:172px;right:44px">어떤 느낌으로<br>할까요?</div>
+ <div class="pn p2"><img src="p4.png"></div>
+ <div class="b tl" style="top:740px;left:26px;width:292px;height:196px;padding:30px 36px;font-size:42px;border-radius:60px">이것도<br>아니야…</div>
+ <div class="st" style="top:775px;left:345px">새벽 2시 · 37번째</div>
+ <div class="b pg tr d2" style="top:740px;right:26px;width:300px;height:196px;padding:30px 36px;font-size:42px;border-radius:60px">친구는<br>이미 자요 zZ</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+<div class="k" id="k4">
+ <div class="hd"><div class="t"><em>새벽 6시</em> 우리 아빠</div><div class="c">CASE 3</div></div>
+ <div class="pn p1"><img src="p5.png"></div>
+ <div class="b tl" style="top:166px;left:44px">'좋은 아침' 꽃 사진,<br>이제 움직이게!</div>
+ <div class="b pg tr d2" style="top:172px;right:44px">꽃잎 흩날리게<br>해 드릴게요</div>
+ <div class="pn p2"><img src="p6.png"></div>
+ <div class="b tl" style="top:752px;left:40px">내일은<br>춤추는 장미다!</div>
+ <div class="b pg tr d2" style="top:760px;right:40px">아빠… 매일 6시에<br>반짝반짝해…</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+<div class="k" id="k5">
+ <div class="hd"><div class="t"><em>반전</em> 공지 담당 지우 씨</div><div class="c">CASE 4</div></div>
+ <div class="pn p1"><img src="p7.png"></div>
+ <div class="b tl" style="top:166px;left:44px">공지 올려도<br>아무도 안 읽어…</div>
+ <div class="b pg tr d2" style="top:172px;right:44px">맨 위에 3초짜리<br>하나만 붙여 봐요</div>
+ <div class="pn p2"><img src="p8.png"></div>
+ <div class="b tl" style="top:752px;left:40px">마감이<br>내일이었어?!</div>
+ <div class="b pg tr d2" style="top:760px;right:40px">짧게 반복되면<br>눈에 걸려요 👍</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+<div class="k" id="k6">
+ <div class="in">
+  <div class="lab">REAL NEWS · 진짜 나온 기능</div>
+  <div class="h">제미나이로<br><span class="v">움짤(GIF)</span> 만들기</div>
+  <div class="when">11월 20일(미국) · 구글 발표</div>
+  <div class="gifbox">
+   <div class="gif"><div class="ball"></div><div class="bd">GIF</div><div class="loop"></div></div>
+   <div class="sec">약 3초<small>문장 한 줄 → 반복 재생</small></div>
+  </div>
+  <div class="rows">
+   <div class="r"><div class="kk">쓰는 법</div><div class="v2">채팅에 'GIF로 만들어 줘'<br>또는 만들기 메뉴에서 GIF</div></div>
+   <div class="r"><div class="kk">나라</div><div class="v2">한국 포함 8개국 순차 배포</div></div>
+   <div class="r"><div class="kk">요금제</div><div class="v2">도움말엔 <b style="color:#F2545B">Google AI 요금제</b> 필요<br>무료 계정은 안 보일 수 있어요</div></div>
+  </div>
+ </div>
+ <div class="src">출처: 구글 제미나이 공식 X(2026.11.20), 디지털트렌드·안드로이드퓨어 보도(11.21) · 모델: Gemini Omni 1.2 Flash<br>만화 속 상황은 웃자고 만든 이야기예요. 그림은 AI로 만들었어요.</div>
+</div>
+<div class="k" id="k7">
+ <div class="in">
+  <div class="lab">HOW TO · 3초 움짤 공식</div>
+  <h1>동작은 <em>하나</em>,<br>끝은 처음으로</h1>
+  <div class="row">
+   <div class="chip"><i>①</i>주인공</div><div class="chip"><i>②</i>동작 하나</div><div class="chip"><i>③</i>반복되게</div>
+  </div>
+  <div class="copy"><div class="tg">COPY · PASTE</div>
+   <p>(주인공)이 (동작 하나) 하는<br><b>3초 GIF</b>. 끝이 처음과 이어지게,<br>배경은 단순하게, <b>글자는 빼 줘</b>.</p>
+  </div>
+ </div>
+ <div class="bot">
+  <div class="tx">생일 축하·공지·응원<br>움짤 하나면 끝!<span>📌 저장해 두고 움짤 만들 때 꺼내 보세요<br>@nexus_studio.kr</span></div>
+  <img src="heart.png">
+ </div>
+</div>
+</body></html>
