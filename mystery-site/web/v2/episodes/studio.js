@@ -406,7 +406,7 @@ export default {
 
   ending: {
     image: P + 'ending.webp',
-    imageAlt: '붉은 안전등 아래 트레이 속 사진을 들여다보는 할아버지, 윤서, 손주',
+    imageAlt: '사진 벽 아래 줄 빈 액자 옆에 나란히 선 할아버지와 윤서 씨, 앞에서 카메라를 든 손주의 손',
     eyebrow: '같은 날 밤',
     title: '비가 그친 사진관',
     paragraphs: [
