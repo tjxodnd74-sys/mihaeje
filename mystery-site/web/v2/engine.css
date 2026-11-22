@@ -226,7 +226,7 @@ a{color:inherit}
   .v2-travel-row{position:static;padding:8px 0 0;pointer-events:auto}
   .v2-talk{left:2%;right:2%;bottom:3%;padding:12px 12px 8px}
   .v2-talk-line{font-size:14px;line-height:1.55;max-height:4.8em}
-  .v2-talk-who{font-size:12px}
+  .v2-talk-who{font-size:13px}
   .v2-edge{width:40px;height:72px;margin-top:-36px}
   .v2-hotspot{--hit:15%}
   .v2-stage-box.side-talk,.v2-stage-box.side-talk.has-travel{display:grid;grid-template-columns:auto minmax(200px,300px);gap:6px 12px;align-items:start;justify-content:center;max-width:none}
