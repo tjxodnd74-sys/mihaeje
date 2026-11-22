@@ -288,7 +288,7 @@ export default {
     notice: {
       title: '승강장 개편 안내',
       kind: '게시물 · 2025년 3월',
-      html: `<figure class="prop noticephoto"><img src="assets/v2/station/props/notice.webp" alt="승강장 번호 변경 안내: 옛 3번은 현재 2번(북행), 옛 2번은 현재 1번(남행), 옛 1번은 폐쇄" decoding="async"></figure><p class="aside">옛 3번은 지금 2번(북행), 옛 2번은 지금 1번(남행), 옛 1번은 폐쇄 안내판은 글자판을 한 칸씩 끼우는 옛날식이라 바꾸는 동안 안내가 뒤섞일 수 있다고 적혀 있다</p>`,
+      html: `<figure class="prop noticephoto"><img src="assets/v2/station/props/notice.webp" alt="승강장 번호 변경 안내: 옛 3번은 현재 2번(북행), 옛 2번은 현재 1번(남행), 옛 1번은 폐쇄" decoding="async"></figure><p class="aside">옛 3번은 지금 2번(북행), 옛 2번은 지금 1번(남행), 옛 1번은 없어졌다 대합실 안내판은 글자판을 한 칸씩 끼우는 옛날식이라 바꾸는 동안 안내가 뒤섞일 수 있다고 적혀 있다</p>`,
     },
     brief: {
       title: '민서와 나',

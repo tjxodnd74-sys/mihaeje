@@ -122,6 +122,9 @@ const REPORT = [
   { id: 'why', label: '⑤ 사진이 넘어가면 곤란했던 이유', opts: [['jisu', '지수가 몰래 부품을 바꿔서'], ['boss', '교체를 사장이 지시해서'], ['minho', '인수 일정이 늦어져서']], ans: 'boss' },
 ];
 const PRE_REPORT = ['cam', 'terminal', 'safe', 'strips', 'video', 'jackets'];
+// 여섯 장치를 다 풀면 마지막 보상 창에서 바로 앞마당(보고 자리)으로 가는 길을 준다 (사무실에 남아 다음 할 일을 못 찾는 일 방지)
+const stateNow = () => { try { return window.MihaejeV2?.state || JSON.parse(localStorage.getItem('mihaeje-v2-garage') || '{}'); } catch { return {}; } };
+const toReport = () => (PRE_REPORT.every((x) => (stateNow().solved || []).includes(x)) ? 'yard' : null);
 
 // 내 휴대폰 문자와 조사 수첩은 처음부터 소지품에 있다
 const pocket = (S) => { S.found = S.found || []; ['brief', 'people'].forEach((x) => { if (!S.found.includes(x)) S.found.push(x); }); };
@@ -363,7 +366,7 @@ export default {
         title: '21:53:20 → 21:55:20',
         text: '표시 시각 21:53:20에 측문으로 들어가 21:55:20에 나왔다 안에 있던 건 2분 남짓',
         scene: ['화면 구석 시각은 블랙박스 시계다 이 두 장면이 출입 서버의 어느 줄인지는 아직 모른다 작업장 보관함 옆 백업 단말에 이 기록을 물려 볼 수 있을 것 같다'],
-        unlock: null,
+        get unlock() { return toReport(); },
       },
     },
 
@@ -422,7 +425,7 @@ export default {
         title: 'SYNC OK',
         text: '블랙박스 장면 셋이 서버 출입 셋과 겹쳤다 남은 두 장면은 서버가 잠긴 자리에 떨어졌다 잠긴 두 줄이 풀렸다',
         scene: ['단말이 삑 하고 길게 울렸다 휴게실 쪽에서 의자 끄는 소리가 났다가 멎었다 누군가 이쪽 소리를 듣고 있었다'],
-        unlock: null,
+        get unlock() { return toReport(); },
         unlockDoc: 'lockerlog',
       },
     },
@@ -457,7 +460,7 @@ export default {
         title: '0407',
         text: '손잡이가 내려갔다 봉투 넷 중 「07-A 분실 · 9/18 보관」 봉투만 비어 있다',
         scene: ['봉투는 손대지 않고 금고 문을 다시 닫아 두었다', '번호 규칙은 인계 문서에 적혀 있다 그 문서를 쓴 사람도, 읽은 사람도 열 수 있다 금고만으로는 사람이 안 나온다'],
-        unlock: null,
+        get unlock() { return toReport(); },
         unlockDoc: 'safedoc',
       },
     },
@@ -508,7 +511,7 @@ export default {
         title: '작업 지시서 · 9/12',
         text: '차량 서연 검은 세단 앞 디스크·패드 교체 고객 통화 하지 말 것 지시 박정호 작업 지수',
         scene: ['종이 끝이 아직 빳빳하다 오늘 새벽 누군가 이걸 찢어 사무실 휴지통 맨 위에 버렸다'],
-        unlock: null,
+        get unlock() { return toReport(); },
         unlockDoc: 'workorder',
       },
     },
@@ -549,7 +552,7 @@ export default {
         title: '차 안의 강민호',
         text: '영상은 21:47:34에 돌아왔다 그때부터 민호는 줄곧 차 안 화면에 있었고, 07-A는 21:48:20까지 정비소 안에 있었다',
         scene: ['서연: "그럼 민호 씨는 아니네요 끊긴 1분 반은 그냥 끊긴 거고요"', '휴대폰을 돌려주자 민호가 작게 말했다 "인계 문서에 금고 번호 적은 거 저예요 그거 때문에 저도 의심받을 줄 알았어요"'],
-        unlock: null,
+        get unlock() { return toReport(); },
       },
     },
 
@@ -595,7 +598,7 @@ export default {
         title: '소매의 반사띠',
         text: '소매에 반사띠가 붙은 회색 재킷 칼라 이름표는 박정호 안주머니는 비어 있다',
         scene: ['이름표만으로는 약하다 남의 재킷을 걸쳐 입을 수도 있으니까 이 재킷이 블랙박스에 또 찍혔다면, 그때 서버에 누구 카드가 찍혔는지가 답이다'],
-        unlock: null,
+        get unlock() { return toReport(); },
       },
     },
 

@@ -1023,6 +1023,12 @@ html[data-case="station"] .gate-chip small{white-space:nowrap}
 html[data-case="station"] .grille-ticket .tprint{left:56.6%;width:min-content;white-space:normal;text-align:center;font-size:2.9cqw;line-height:1.15;padding:.3cqw 1cqw}
 html[data-case="station"] .ticket .ticket-print{left:55.5%;font-size:2.8cqw}
 html[data-case="station"] .ticket .ticket-hand{left:55.5%;width:19%;font-size:4cqw}
+/* 휴대폰 가로: 장치 사진이 창보다 커서 글자판 위쪽과 화살표, 다이얼 사진과 버튼을 한 화면에 못 보던 것 → 사진 폭을 남은 높이에 맞춘다 */
+@media (orientation:landscape) and (max-height:500px){
+  html[data-case="station"] .grille-frame{width:min(100%,calc((100svh - 160px) * 1.49))}
+  html[data-case="station"] .mirror-glass{max-width:min(320px,calc(100svh - 150px))}
+  html[data-case="station"] .locker2{max-width:min(520px,calc((100svh - 150px) * 1.49))}
+}
 
 /* 고양이: 오후 햇살 포장 가게 · 리본 · 편지지 */
 html[data-case="cat-invite"]{
