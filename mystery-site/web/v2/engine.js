@@ -632,8 +632,8 @@ async function main() {
     row.append(btn('v2-secondary', '자료 다시 보기', () => openIndex()));
     row.append(btn('v2-secondary', '의견 남기기', () => openFeedback()));
     row.append(btn('v2-secondary subtle', '처음 화면', () => { S.screen = 'intro'; save(); render(); }));
+    if (e.next?.line) paper.append(el('p', 'v2-fine v2-next-line', e.next.line));
     paper.append(row);
-    if (e.next?.line) paper.append(el('p', 'v2-fine', e.next.line));
     sec.append(paper);
     return sec;
   }
