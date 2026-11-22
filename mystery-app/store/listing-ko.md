@@ -98,7 +98,7 @@
 - **앱 종류:** 게임
 - **카테고리:** 퍼즐 (1순위) — 손으로 푸는 장치와 자료 대조가 중심이라
   - 다른 안: 어드벤처 (이야기·장소 이동 비중을 앞세우고 싶을 때)
-- **연락처 정보:** 이메일 [사용자 확인 필요], 웹사이트 https://tjxodnd74-sys.github.io/mihaeje/ , 개인정보처리방침 https://tjxodnd74-sys.github.io/mihaeje/privacy.html (배포 뒤 주소 확인)
+- **연락처 정보:** 이메일 [사용자 확인 필요], 웹사이트 https://mihaeje.com/ , 개인정보처리방침 https://mihaeje.com/privacy.html (배포 뒤 주소 확인)
 
 ## 태그 (플레이 콘솔 '스토어 설정 → 태그'에서 목록 중 5개까지 고름)
 

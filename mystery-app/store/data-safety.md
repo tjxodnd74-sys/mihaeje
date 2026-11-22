@@ -2,7 +2,7 @@
 
 플레이 콘솔 → 앱 콘텐츠 → 데이터 보안에 넣을 답입니다
 근거 코드: `web/v2/engine.js`(진행 저장 · 「의견 남기기」 전송), `web/v2/feedback-config.js`(구글 설문지 주소), `web/v2/episodes/ohang.js`(생년월일 입력), 허브의 `beta-ui.js`·`audio-ui.js`·`background-music.js`
-개인정보처리방침: `mystery-site/web/privacy.html` (배포 뒤 주소 https://tjxodnd74-sys.github.io/mihaeje/privacy.html)
+개인정보처리방침: `mystery-site/web/privacy.html` (배포 뒤 주소 https://mihaeje.com/privacy.html)
 
 ## 결론 먼저
 

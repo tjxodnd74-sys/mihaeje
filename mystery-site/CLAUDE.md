@@ -210,3 +210,9 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
 - 빌드 버그 고침: 로비에 인라인한 CSS 의 url(../assets/…) 가 /mihaeje/ 밖을 가리켜 글꼴 404 → 인라인 때 url(assets/…)로
 - 앱: mystery-app/ (Capacitor 8, app-info.json 한 곳에서 id·이름·버전, MainActivity 뒤로 버튼·화면 켜둠·상태바) · .github/workflows/android.yml 이 APK·AAB 를 만듦 (이 컨테이너는 dl.google.com 등 막혀 로컬 빌드 불가) · mystery-app/store/ 스토어 자료
 - 출시 전략은 Claude Docs 문서 '미해제 앱 출시 전략' (조직 계정+D-U-N-S, 2편 무료+8편 해제, 안드로이드 12월 넷째 주 목표)
+
+## v132 — 주소 mihaeje.com
+- 2026/11/22 Cloudflare 에서 mihaeje.com 구매 (계정 Tjxodnd74@gmail.com's Account, 넥서스 nexus-studio.kr 와 같은 계정)
+- DNS: A @ 185.199.108~111.153 4줄 + CNAME www → tjxodnd74-sys.github.io, 전부 DNS 전용(회색 구름). 주황 구름(프록시)으로 바꾸면 GitHub 인증서 발급이 꼬인다
+- mystery-site/web/CNAME (내용 mihaeje.com) 이 빌드 때 dist 로 복사돼 gh-pages 에 올라간다. 지우면 사용자 지정 도메인이 풀린다
+- 옛 주소 tjxodnd74-sys.github.io/mihaeje/ 는 GitHub 가 새 주소로 넘겨준다. 다만 브라우저 저장(진행 상황)은 주소별이라 옛 주소 기록은 따라오지 않는다
