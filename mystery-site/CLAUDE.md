@@ -190,3 +190,7 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
 - 사진 위 꼬리표·선택 테두리는 그림 속 실제 물건 픽셀을 재서 맞춘다(눈대중 % 금지) · 누르는 것은 40px 이상, 보조 글자 13px 이상 · 대화창 닫기 줄은 불투명
 - .v2-pan 은 aspect-ratio 1024/688 고정 — 장면 좌표는 이 비율 기준
 - 공용 미리보기 서버를 pkill 하지 않는다 (다른 직원 서버까지 죽음) 자기 PORT 로 띄우고 자기 것만 끈다
+- v128 새 그림 11장(nano_banana_2, 재시도 포함 15장·21 크레딧): 사진관 엔딩(빈 액자 옆 둘 + 카메라 든 손) · 404호 엔딩(둑길 벤치 뒷모습, 3층 오른쪽 창 셋만 PIL로 정리)·CCTV · 승강장 의자 위 휴대폰(카톡 화면 PIL 원근 합성, 대합실에 휴대폰 그려 넣음) · 보호자 엔딩(표지 루미 얼굴) · 정비소 블랙박스 6컷(cam-f0~f5, 같은 차·같은 건물, PIL로 블박 화질·OSD)
+  - 방법: 직원이 편마다 명세(spec.json: 프롬프트·참고 그림·글과 맞출 점) → 참고 그림은 gh-pages 주소를 media_import_url → 같은 장소 여러 컷은 앞 컷 job_id 를 참고로 이어 만듦 → 결과는 sandbox 에서 1200폭 JPEG(<250KB) image_paths 로 받아 md5 확인 → 직원이 넣고 PC 캡처로 확인
+  - AI는 창 개수·건물 폭 같은 '개수'를 못 맞춘다 → 받은 뒤 PIL로 켜진 창을 끄고 켜서 퍼즐과 맞춤
+  - sparse worktree: `git worktree add --no-checkout` + `sparse-checkout set --no-cone /mystery-site/ /qa-tools/` + node_modules 심볼릭 링크 → 한 개 94MB (전체 checkout 은 디스크가 터짐)
