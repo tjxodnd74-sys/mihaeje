@@ -116,10 +116,10 @@ export default {
         if (S.solved.includes('print')) return '정착 트레이 안에 사진이 잠겨 있다 붉은 등 아래 세 사람 얼굴이 또렷하다 접수실 쪽에서 목소리가 들린다';
         return '작은 열쇠가 돌아갔다 약품 냄새 붉은 안전등만 켜져 있고 흰 불 스위치는 문 옆이다 확대기 밑 이젤은 날이 풀려 있고, 옆에 타이머, 그 옆에 트레이 셋 라벨은 다 떨어졌다';
       },
-      overlays: [{ x: 41.5, y: 17, w: 4.6, h: 9.5, cls: 'st-chart', html: '<i></i>' }, { x: 4.2, y: 26.6, w: 4.4, h: 7.2, cls: 'st-memo', html: '<i></i>' }],
+      // v136: 순서표·약품 메모는 그림 안 종이로 (CSS 종이 상자 overlays 삭제)
       hotspots: [
-        { id: 'chart', x: 43.8, y: 21.8, r: 9, label: '벽의 순서표', kind: 'doc', doc: 'chart' },
-        { id: 'memo', x: 6.6, y: 30.2, r: 9, label: '선반의 약품 메모', kind: 'doc', doc: 'memo' },
+        { id: 'chart', x: 44.1, y: 22.1, r: 9, label: '벽의 순서표', kind: 'doc', doc: 'chart' },
+        { id: 'memo', x: 7.4, y: 30.1, r: 9, label: '선반의 약품 메모', kind: 'doc', doc: 'memo' },
         // 이젤(확대기 밑 받침판) 날을 먼저 맞춰야 확대기·트레이로 인화한다
         { id: 'easel', x: 24, y: 62.5, r: 9, label: '확대기 밑 이젤', kind: 'device', device: 'easel' },
         { id: 'print', x: 22, y: 40, r: 12, label: '확대기', kind: 'device', device: 'print', visible: (S) => S.solved.includes('easel') },
