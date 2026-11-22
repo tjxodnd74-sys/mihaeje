@@ -36,7 +36,7 @@ async function station({ mobile = false } = {}) {
     L.check(await page.evaluate(() => { const f = document.querySelector('dialog[open] .grille-flash'); return !!f && f.textContent.includes('3번 승강장') && !f.textContent.includes('수림'); }), 'grille: board flash shows no destination');
     await L.closeDialog(page);
     // read docs in hall
-    for (const [h, d] of [['의자에 앉아 다시 연 휴대폰', '민서의 마지막 메시지'], ['벽에 기댄 옛 표지판', '벽에 기댄 옛 표지판'], ['매표창구의 역무원', '네 시 반 첫 열차'], ['승강장 개편 안내', '승강장 개편 안내']]) { await hotspot(page, h); L.check(await dlgHas(page, d), 'doc opens: ' + h); await L.closeDialog(page); }
+    for (const [h, d] of [['옆자리에 내려놓은 휴대폰', '민서의 마지막 메시지'], ['벽에 기댄 옛 표지판', '벽에 기댄 옛 표지판'], ['매표창구의 역무원', '네 시 반 첫 열차'], ['승강장 개편 안내', '승강장 개편 안내']]) { await hotspot(page, h); L.check(await dlgHas(page, d), 'doc opens: ' + h); await L.closeDialog(page); }
     L.check(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot:not(.go)')].every((b) => { const x = parseFloat(b.style.left), y = parseFloat(b.style.top); return y <= 80 && x >= 6 && x <= 94; })), 'hall: hotspots clear of dialogue and edges');
     await shot(page, 'hall');
     // unread nudge in index

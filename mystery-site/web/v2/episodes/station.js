@@ -216,7 +216,7 @@ export default {
         { id: 'clerk', x: 67, y: 42, label: '매표창구의 역무원', kind: 'doc', doc: 'clerk' },
         { id: 'notice', x: 13, y: 34, label: '승강장 개편 안내', kind: 'doc', doc: 'notice' },
         { id: 'board', x: 42, y: 24, label: '열차 안내판', kind: 'device', device: 'grille' },
-        { id: 'tophone', x: 61, y: 62, label: '의자에 앉아 다시 연 휴대폰', kind: 'doc', doc: 'message' },
+        { id: 'tophone', x: 63, y: 66, label: '옆자리에 내려놓은 휴대폰', kind: 'doc', doc: 'message' },
       ],
     },
     {
@@ -263,7 +263,7 @@ export default {
     message: {
       title: '민서의 마지막 메시지',
       kind: '휴대폰 · 01:14',
-      html: `<div class="chat"><div class="chat-head"><span class="chat-back">‹</span><b>민서</b><span class="chat-icons">☰</span></div><div class="chat-date">2026년 8월 14일 금요일</div>
+      html: `<figure class="prop phonephoto"><img src="assets/v2/station/props/phone.webp" srcset="assets/v2/station/props/phone-960.webp 960w, assets/v2/station/props/phone.webp 1024w" sizes="(max-width: 640px) 100vw, 360px" alt="대합실 파란 의자 위에 놓인 휴대폰, 화면에 민서와의 대화가 켜져 있음" decoding="async"></figure><p class="aside">의자에 앉아 대화창을 다시 열었다<br>내가 보낸 말 옆엔 아직 1이 그대로다</p><div class="chat"><div class="chat-head"><span class="chat-back">‹</span><b>민서</b><span class="chat-icons">☰</span></div><div class="chat-date">2026년 8월 14일 금요일</div>
 <div class="chat-row them"><span class="chat-avatar">★</span><div class="chat-col"><span class="chat-name">민서</span><div class="chat-bubble photo"><img src="assets/v2/station/cover-960.webp" alt="비에 젖은 승강장 벤치 옆, 낡은 3번 승강장 표지판 사진" decoding="async"></div><div class="chat-bubble">여기서 시작</div><div class="chat-bubble">찾아와</div></div><span class="chat-time">오전 1:14</span></div>
 <div class="chat-row me"><span class="chat-meta"><i>1</i>오전 1:15</span><div class="chat-bubble">뭐야 이 시간에</div></div>
 <div class="chat-row me"><span class="chat-meta"><i>1</i>오전 1:15</span><div class="chat-bubble">민서야 어디야</div></div>
