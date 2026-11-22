@@ -1,6 +1,11 @@
 // 세 번째 승강장 — 이야기·자료·장치가 전부 이 파일에 있습니다
 // 엔진(v2/engine.js)은 이 파일의 구조만 알고, 내용은 모릅니다
 
+// 지금 저장 상태 (엔진은 scene.image 에 S 를 넘기지 않아서 직접 읽는다)
+const stateNow = () => { try { return window.MihaejeV2?.state || JSON.parse(localStorage.getItem('mihaeje-v2-station') || '{}') || {}; } catch { return {}; } };
+// 잠김 남은 초를 1초마다 고쳐 쓴다 (창이 닫히거나 다시 그려지면 멈춤)
+function countdown(node, until, fmt) { const tick = () => { if (!node.isConnected) return; const s = Math.ceil((until - Date.now()) / 1000); if (s <= 0) { node.textContent = fmt(0); return; } node.textContent = fmt(s); setTimeout(tick, 1000); }; setTimeout(tick, 1000); }
+
 const BOARD = [
   // 열차 안내판 7×7 글자판 구간권의 구멍을 겹쳐 읽습니다
   ['미', '루', '행', '0', '6', '1', '5'],
@@ -49,7 +54,8 @@ const TRAINS_ALL = [...TRAINS_2, ...TRAINS_1].sort((a, b) => a.time.localeCompar
 const STRIP_BACK = '우리 처음 만난 그 열차 9시 40분 종점에서 내려 할머니 동네야';
 // 볼록거울 받침대 눈금(0~10) 중 빨간 페인트가 칠해진 칸 사진을 거울과 같은 기울기로 들어야 비친 글씨가 바로 선다
 const MIRROR_MARK = 7;
-const tiltOk = (t) => Math.abs((t ?? 0) - MIRROR_MARK * 10) <= 4;
+// 화면에 보이는 눈금(반올림)이 7이면 맞은 것으로 본다 (6.5~7.4)
+const tiltOk = (t) => Math.round((t ?? 0) / 10) === MIRROR_MARK;
 
 // 마을 지도: 역에서 출발, 갈림길마다 왼쪽/오른쪽/직진 정답 경로 → 다리 건너 왼쪽 길 → 감나무 옆 파란 대문(H3)
 // 좌표는 SVG(0~100) 기준 역은 아래쪽, 북쪽이 위
@@ -96,18 +102,38 @@ const LANES = {
   FL: { name: '동쪽 언덕길', from: 'F', dir: 'N', houses: ['H11', 'H12'], sound: '언덕 위로 올라갈수록 매미 소리가 멀어졌다' },
 };
 const ANSWER_HOUSE = 'H3';
-// 쪽지 세 장: 정확히 하나만 거짓 → 가와 다는 서로 붙잡고 있어서 하나가 거짓이면 둘 다 거짓 → 거짓은 나
+// 쪽지 세 장: 정확히 하나만 거짓 → 가는 다를 믿고, 다가 거짓이면 가도 거짓 / 가가 거짓이면 다도 거짓 → 거짓은 나
+// '나는 거짓말이야'는 '나(1인칭)는'으로도 읽혀서 '나 쪽지는'으로 적는다
 const NOTES = [
-  { id: '가', text: '다는 참말이야' },
+  { id: '가', text: '다 쪽지는 참말이야' },
   { id: '나', text: '우리 집 대문은 파란색이 아니야' },
-  { id: '다', text: '나는 거짓말이야' },
+  { id: '다', text: '나 쪽지는 거짓말이야' },
 ];
 
-// 민서의 편지 글 (사진 위 손글씨 + 휴대폰에서 크게 옮겨 적은 것)
-const LETTER_1 = `<p>왔네</p><p>여기까지 왔으면 반은 온 거야 열쇠는 우리 집 대문 열쇠고, 지도는 내가 그렸는데 좀 못 그렸어</p><p>역을 등지고 서 그 상태에서 <b>왼쪽</b>으로 가<br><b>두 번째 골목</b>에서 <b>오른쪽</b>으로 꺾어<br>다리를 건너 건너자마자 <b>왼쪽</b><br>그 길에 집이 <b>네 채</b> 우리 집 뒤엔 <b>감나무</b>가 있어 지도에도 그렸어</p><p>대문 색은 지도에 안 그렸어 쪽지 세 장 중에 <b>하나만 거짓말</b>이야 우리 통학열차에서 하던 거</p><p class="sign">— 민서</p>`;
-const LETTER_2 = `<p>할머니가 겨울에 넘어지셨어 아무한테도 말 안 하고 혼자 석 달을 누워 계셨대 그 얘기를 듣고 그날 사표 냈어</p><p>전화를 끈 건 도망친 거야 네 목소리 들으면 다 무너질 것 같았어 그건 내가 잘못한 거고 핑계 없어</p><p>이 길은 한참 뒤에, 좀 괜찮아지고 나서 만들었어 사과를 말로 하기엔 너무 늦은 것 같아서 통학열차에서 하던 쪽지 놀이로 한 번만 불러 보고 싶었어 안 왔어도 원망 안 했을 거야 진짜로</p><p>수박 잘라 놨어</p>`;
-const postcardImg = `<figure class="postcard-photo"><img src="assets/v2/station/postcard.webp" srcset="assets/v2/station/postcard-960.webp 960w, assets/v2/station/postcard.webp 1024w" sizes="(max-width: 640px) 100vw, 640px" alt="엽서 사진: 작은 역사, 벤치에 앉은 민서, 하늘의 새, 양쪽 가로등" decoding="async"><figcaption>수림역 네가 내릴 역 — 민서</figcaption></figure>`;
+// 민서 휴대폰 잠금 패턴: 숫자 3을 위에서부터 그린다 (점 번호 1~9, 왼쪽 위부터 가로로)
+// 단서 ① 「민서와 나」: 숫자 하나를 그리는 잠금, 무슨 숫자냐면 우리 처음 만난 데 → 3번 승강장 → 3
+// 단서 ② 창빛에 비친 화면의 손가락 기름 자국: 1-2-3 · 3-5 · 5-9 · 9-8-7 선과 1에 꾹 누른 둥근 자국
+// 함정: 화면을 쓸어 넘긴 긴 줄(점과 점을 잇지 않고 화면 끝까지 감) · 거꾸로 7에서 시작
+const PATTERN = [1, 2, 3, 5, 9, 8, 7];
+const PDOT = (n) => ({ x: 50 + ((n - 1) % 3) * 100, y: 50 + Math.floor((n - 1) / 3) * 100 });
+const PAT_NAME = ['', '왼쪽 위', '가운데 위', '오른쪽 위', '왼쪽 가운데', '한가운데', '오른쪽 가운데', '왼쪽 아래', '가운데 아래', '오른쪽 아래'];
+function patAdd(path, n) {
+  // 실제 휴대폰처럼 지나친 가운데 점은 저절로 이어지고, 한 번 이은 점은 다시 못 잇는다
+  if (path.includes(n)) return;
+  const last = path[path.length - 1];
+  if (last) {
+    const a = PDOT(last), b = PDOT(n), mid = (a.x + b.x) / 2 === Math.round((a.x + b.x) / 2) ? [1, 2, 3, 4, 5, 6, 7, 8, 9].find((k) => { const m = PDOT(k); return m.x === (a.x + b.x) / 2 && m.y === (a.y + b.y) / 2; }) : null;
+    if (mid && !path.includes(mid)) path.push(mid);
+  }
+  path.push(n);
+}
 
+// 민서의 편지 글 (사진 위 손글씨 + 휴대폰에서 크게 옮겨 적은 것)
+const LETTER_1 = `<p>왔네</p><p>여기까지 왔으면 반은 온 거야 열쇠는 우리 집 대문 열쇠고, 지도는 내가 그렸는데 좀 못 그렸어</p><p>역을 등지고 서 그 상태에서 <b>왼쪽</b>으로 가<br><b>두 번째 골목</b>에서 <b>오른쪽</b>으로 꺾어<br>다리를 건너 건너자마자 <b>왼쪽</b><br>그 길에 집이 <b>네 채</b> 우리 집 마당엔 <b>감나무</b>가 있어 지도에도 그렸어</p><p>대문 색은 지도에 안 그렸어 쪽지 세 장 중에 <b>하나만 거짓말</b>이야 우리 통학열차에서 하던 거</p><p class="sign">— 민서</p>`;
+const LETTER_2 = `<p>할머니가 겨울에 넘어지셨어 아무한테도 말 안 하고 혼자 석 달을 누워 계셨대 그 얘기를 듣고 그날 사표 냈어</p><p>전화를 끈 건 도망친 거야 네 목소리 들으면 다 무너질 것 같았어 그건 내가 잘못한 거고 핑계 없어</p><p>이 길은 한참 뒤에, 좀 괜찮아지고 나서 만들었어 사과를 말로 하기엔 너무 늦은 것 같아서 통학열차에서 하던 쪽지 놀이로 한 번만 불러 보고 싶었어 안 왔어도 원망 안 했을 거야 진짜로</p><p>수박 잘라 놨어</p>`;
+const postcardImg = `<figure class="postcard-photo" onclick="this.classList.toggle('big')"><img src="assets/v2/station/postcard.webp" srcset="assets/v2/station/postcard-960.webp 960w, assets/v2/station/postcard.webp 1024w" sizes="(max-width: 640px) 100vw, 640px" alt="엽서 사진: 작은 역사, 벤치에 앉은 민서, 하늘의 새, 양쪽 가로등" decoding="async"><figcaption>수림역 네가 내릴 역 — 민서<span class="pc-zoom mobile-only">사진을 누르면 크게, 옆으로 밀어 보기</span></figcaption></figure>`;
+
+let arrivedLane = false;
 const LANE_END = { L: { x: 0, y: 30 }, R: { x: 78, y: 30 }, GL: { x: 56, y: 58 }, X: { x: 2, y: 76 }, FL: { x: 88, y: 50 } };
 // 볼펜으로 종이봉투 조각에 그린 손지도 길·집 좌표는 WALK/LANES 판정과 같아야 합니다
 const INK = '#2f3a7a';
@@ -135,7 +161,10 @@ function svgMap(path = [], picked = null, lane = null) {
     const sel = picked === h.id ? `<circle cx="${h.x}" cy="${h.y}" r="${w * 0.8}" fill="none" stroke="#d9872b" stroke-width="1.2" stroke-dasharray="2 1"/>` : '';
     // 집이 늘어선 길에 들어서면 들어선 쪽에서 가까운 집부터 연필로 번호를 적는다
     const k = lane ? LANES[lane].houses.indexOf(h.id) : -1;
-    const num = k >= 0 ? `<g class="map-num"><circle cx="${h.x}" cy="${h.y + hh / 2 + 4.2}" r="3" fill="#fbf3dc" stroke="#d9872b" stroke-width=".7"/><text x="${h.x}" y="${h.y + hh / 2 + 5.6}" font-size="4.2" text-anchor="middle" fill="#a85a12" font-family="sans-serif" font-weight="700">${k + 1}</text></g>` : '';
+    // 번호는 집 밑에 적되, 바로 밑에 같은 길의 다른 집이 있으면(동쪽 언덕길) 지붕 위에 적어 겹치지 않게
+    const under = k >= 0 && LANES[lane].houses.some((o) => { const q = MAP.houses.find((x) => x.id === o); return o !== h.id && q.x === h.x && q.y > h.y; });
+    const ny = under ? y - r - 4.4 : h.y + hh / 2 + 4.2;
+    const num = k >= 0 ? `<g class="map-num"><circle cx="${h.x}" cy="${ny}" r="3" fill="#fbf3dc" stroke="#d9872b" stroke-width=".7"/><text x="${h.x}" y="${ny + 1.4}" font-size="4.2" text-anchor="middle" fill="#a85a12" font-family="sans-serif" font-weight="700">${k + 1}</text></g>` : '';
     return `<g class="map-house${picked === h.id ? ' picked' : ''}">${num}${sel}${pen(`M${x} ${y} h${w} v${hh} h${-w} z`, 0.7)}${pen(roof, 0.8)}${pen(hatch, 0.35)}${pen(`M${x + w - 2.2} ${y + 1} h1.4 v1.2 h-1.4 z`, 0.4)}</g>`;
   };
   const houses = MAP.houses.map(house).join('');
@@ -172,7 +201,7 @@ export default {
   title: '세 번째 승강장',
   subtitle: '없는 승강장에서 온 사진',
   genre: '실종 미스터리 · 길 찾기',
-  minutes: 35,
+  minutes: 40,
   difficulty: 3,
   mood: 'horror',
   cover: 'assets/v2/station/cover.webp',
@@ -201,6 +230,7 @@ export default {
     { device: 'grille', label: '구멍 뚫린 구간권' },
     { device: 'mirror', label: '네컷사진' },
     { device: 'locker', label: '파란 리본 열쇠' },
+    { device: 'phone', label: '민서의 휴대폰' },
     { device: 'notes', label: '거짓말 쪽지' },
     { device: 'walk', label: '파란 대문' },
   ],
@@ -221,8 +251,10 @@ export default {
     },
     {
       id: 'platform',
-      name: '2번 승강장 · 둘째 기둥',
+      name: '2번 승강장',
       image: 'assets/v2/station/platform.webp',
+      // 휴대폰 첫 화면에 네컷사진·시각표가 붙은 기둥이 보이게
+      focusX: 22,
       unlockedBy: 'grille',
       arrive: '안개가 선로 위에 낮게 깔려 있었다 머리 위 스피커가 지직거리더니 옛날 녹음 같은 목소리가 한 줄 새어 나왔다 「3번 승강장에 열차가…」 그리고 끊겼다 기둥에 네컷사진이 붙어 있다',
       hotspots: [
@@ -235,20 +267,22 @@ export default {
     {
       id: 'surim',
       name: '수림역 · 보관함',
-      image: 'assets/v2/station/surim.webp',
+      // 보관함을 열면 5번 칸 문이 열리고 안쪽 벽에 기대 둔 휴대폰이 보이는 그림으로
+      get image() { return (stateNow().solved || []).includes('locker') ? 'assets/v2/station/surim-open.webp' : 'assets/v2/station/surim.webp'; },
       unlockedBy: 'mirror',
-      arrive: '수림역엔 역무원이 없었다 문 옆에 열두 칸짜리 보관함이 있고, 가운데 줄 한 칸에 노란 별 스티커가 붙어 있다 민서는 뭐든 별을 붙이는 애였다',
+      arrive: (S) => S.solved.includes('locker') ? '5번 칸 문이 열린 채다 편지 뭉치는 꺼냈고, 칸 안쪽 벽에 꺼진 휴대폰이 화면을 벽으로 돌린 채 기대 있다' : '수림역엔 역무원이 없었다 문 옆에 열두 칸짜리 보관함이 있고, 위에서 둘째 줄 가운데 칸에 노란 별 스티커가 붙어 있다 민서는 뭐든 별을 붙이는 애였다',
       hotspots: [
         { id: 'postcard', x: 87, y: 23, label: '게시판의 그림엽서', kind: 'doc', doc: 'postcard' },
         { id: 'lockerrule', x: 35.4, y: 23.7, label: '벽에 붙은 보관함 안내문', kind: 'doc', doc: 'lockerrule' },
-        { id: 'locker', x: 55.2, y: 38, label: '별 스티커가 붙은 보관함', kind: 'device', device: 'locker' },
+        { id: 'locker', x: 55.2, y: 38, label: '별 스티커가 붙은 보관함', kind: 'device', device: 'locker', visible: (S) => !S.solved.includes('locker') },
+        { id: 'phone', x: 53.8, y: 41, label: '5번 칸 속 민서의 휴대폰', kind: 'device', device: 'phone', visible: (S) => S.solved.includes('locker') },
       ],
     },
     {
       id: 'village',
       name: '수림 마을길',
       image: 'assets/v2/station/village.webp',
-      unlockedBy: 'locker',
+      unlockedBy: 'phone',
       arrive: '역 앞에 나와 편지와 손지도와 쪽지 세 장을 길바닥에 펴 놓고 돌멩이로 눌렀다 어디선가 개가 짖었다 길 저 앞 대문도 파란색이다 이 동네엔 파란 대문이 흔한 모양이다',
       hotspots: [
         { id: 'letter', x: 39.6, y: 73.4, r: 8.5, label: '민서의 편지', kind: 'doc', doc: 'letter' },
@@ -278,12 +312,12 @@ export default {
     sign: {
       title: '벽에 기댄 옛 표지판',
       kind: '법랑 · 모서리가 깨짐',
-      html: `<p>흰 바탕에 검은 글씨로 <b>3번 승강장</b> 법랑이 군데군데 떨어져 녹이 올라와 있고, 바닥 쪽 모서리엔 아직 빗물이 남아 있다</p><p>뒷면에 투명 테이프로 구간권 한 장이 붙어 있었다 떼어서 창구 턱에 올려놓고 봤다 네모난 구멍이 여섯 개, 여백에 민서 글씨가 있다</p><figure class="prop ticket"><img src="assets/v2/station/props/ticket.webp" alt="창구 턱에 올려놓은 구멍 뚫린 구간권" decoding="async"><div class="ticket-holes">${HOLES.map(([r, c]) => `<i style="--r:${r};--c:${c}"></i>`).join('')}</div><span class="ticket-print">미루선 구간권<br>800원</span><span class="ticket-hand">안내판에 대 봐</span></figure><p class="aside">구멍 한 칸은 대합실 열차 안내판 글자판 한 칸과 크기가 같다 어느 방향으로 대라는 말은 없다</p>`,
+      html: `<p>흰 바탕에 검은 글씨로 <b>3번 승강장</b> 법랑이 군데군데 떨어져 녹이 올라와 있고, 바닥 쪽 모서리엔 아직 빗물이 남아 있다</p><p>뒷면에 테이프로 구간권 한 장이 붙어 있었다 떼어서 창구 턱에 올려놓고 봤다 네모난 구멍이 여섯 개, 여백에 민서 글씨가 있다</p><figure class="prop ticket"><img src="assets/v2/station/props/ticket.webp" alt="창구 턱에 올려놓은 구멍 뚫린 구간권" decoding="async"><div class="ticket-holes">${HOLES.map(([r, c]) => `<i style="--r:${r};--c:${c}"></i>`).join('')}</div><span class="ticket-print">미루선 구간권<br>800원</span><span class="ticket-hand">안내판에 대 봐</span></figure><p class="ticket-plain mobile-only">구간권 여백 민서 글씨 「안내판에 대 봐」</p><p class="aside">구멍 한 칸은 대합실 열차 안내판 글자판 한 칸과 크기가 같다 어느 방향으로 대라는 말은 없다</p>`,
     },
     clerk: {
       title: '매표창구의 역무원',
       kind: '박종길 · 야간 근무',
-      html: `<p>창구 안의 남자는 커피를 반쯤 남긴 채 신문을 접었다</p><blockquote>“저거요? 개편 때 떼어서 창고에 넣어 둔 거예요 근데 새벽 순찰 돌 때 보니 밖에, 승강장 벤치 옆에 나와 있더라고요 여자분 하나가 그 앞에 한참 서 있었고요”</blockquote><blockquote>“창고 열쇠는 나만 있는데 말이에요 무거워서 안으로 들여놨어요 뒤에 뭘 붙여 놨길래 떼려다가 뒀습니다 ‘사람이 올 거예요’ 하길래”</blockquote><blockquote>“그 여자분 새벽 네 시 반 첫 열차로 북쪽 갔어요 표는 편도로 끊었고요 승강장 기둥에도 뭘 붙이고 갔을 거예요 테이프 뜯는 소리가 났으니까 번호는 저기 안내문 보시고요”</blockquote>`,
+      html: `<p>창구 안의 남자는 커피를 반쯤 남긴 채 신문을 접었다</p><blockquote>“저거요? 개편 때 떼어서 창고에 넣어 둔 거예요 근데 새벽 순찰 돌 때 보니 밖에, 승강장 벤치 옆에 나와 있더라고요 여자분 하나가 그 앞에 한참 서 있었고요”</blockquote><blockquote>“창고 열쇠는 나만 있는데 말이에요 무거워서 안으로 들여놨어요 앞에 표 한 장을 붙여 놨길래 떼려다가 뒤로 옮겨 붙여 뒀습니다 ‘사람이 올 거예요’ 하길래”</blockquote><blockquote>“그 여자분 새벽 네 시 반 첫 열차로 북쪽 갔어요 표는 편도로 끊었고요 승강장 기둥에도 뭘 붙이고 갔을 거예요 테이프 뜯는 소리가 났으니까 번호는 저기 안내문 보시고요”</blockquote>`,
     },
     notice: {
       title: '승강장 개편 안내',
@@ -293,7 +327,7 @@ export default {
     brief: {
       title: '민서와 나',
       kind: '내 기억',
-      html: `<p>스무 살 때 매일 아침 같은 통학열차 둘째 칸을 탔는데, 어느 날 내 자리에 모르는 애가 앉아 있었다 비켜 달라고 했더니 “자리에 이름 적혀 있어?” 하고 되물었고, 그게 민서였다</p><p>민서는 노트든 휴대폰이든 내 가방이든 뭐든 별 스티커를 붙였고, 중학교 때부터 쪽지를 거울 글씨로 쓰는 버릇이 있었다 선생님이 못 읽게 하려고 시작한 거라고 했다 통학열차에서는 쪽지 세 장 중 하나만 거짓말인 놀이를 자주 했다 늘 민서가 냈고 늘 민서가 먼저 웃었다</p><p>수림 산골에 혼자 사신다는 외할머니 얘기를 자주 했다 여름마다 갔는데 작년부터는 못 갔다고 했다</p><p>회사를 그만둔 뒤로 연락이 뜸해졌지만 괜찮냐고 묻지 않았다 묻지 않는 게 배려라고 생각했다</p>`,
+      html: `<p>스무 살 때 매일 아침 같은 통학열차 둘째 칸을 탔는데, 어느 날 내 자리에 모르는 애가 앉아 있었다 비켜 달라고 했더니 “자리에 이름 적혀 있어?” 하고 되물었고, 그게 민서였다</p><p>민서는 노트든 휴대폰이든 내 가방이든 뭐든 별 스티커를 붙였고, 중학교 때부터 쪽지를 거울 글씨로 쓰는 버릇이 있었다 선생님이 못 읽게 하려고 시작한 거라고 했다 휴대폰은 숫자 하나를 그려서 여는 잠금이었는데, 무슨 숫자냐고 물으면 “우리 처음 만난 데” 하고 웃기만 했다 통학열차에서는 쪽지 세 장 중 하나만 거짓말인 놀이를 자주 했다 늘 민서가 냈고 늘 민서가 먼저 웃었다</p><p>수림 산골에 혼자 사신다는 외할머니 얘기를 자주 했다 여름마다 갔는데 작년부터는 못 갔다고 했다</p><p>회사를 그만둔 뒤로 연락이 뜸해졌지만 괜찮냐고 묻지 않았다 묻지 않는 게 배려라고 생각했다</p>`,
     },
     strip: {
       title: '기둥에 붙은 네컷사진',
@@ -303,7 +337,7 @@ export default {
     timetable: {
       title: '기둥의 출발 시각표',
       kind: '2번 승강장 · 북행',
-      html: `<figure class="prop laminated"><img src="assets/v2/station/props/timetable.webp" alt="기둥에 핀으로 꽂힌 시각표" decoding="async"><div class="laminated-sheet"><p class="sheet-title">2번 승강장 출발 시각 (북행 · 09시 이후)</p><table><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_2.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="sheet-title dim">맞은편 1번 승강장 (남행)</p><table class="dim"><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_1.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="sheet-foot">미루선 · 수림역무관리소</p></div></figure><div class="paper-table mobile-only"><p class="pt-head">같은 시각표 글자로 옮겨 적은 것</p><table class="nwcells"><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr>${TRAINS_2.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</table><p class="pt-foot">맞은편 1번 승강장 (남행) ${TRAINS_1.map((t) => `${t.time} ${t.to}행 ${t.stops}`).join(' · ')}</p></div>`,
+      html: `<figure class="prop laminated"><img src="assets/v2/station/props/timetable.webp" alt="기둥에 핀으로 꽂힌 시각표" decoding="async"><div class="laminated-sheet"><p class="sheet-title">2번 승강장 출발 시각 (북행 · 09시 이후)</p><table><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_2.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="sheet-title dim">맞은편 1번 승강장 (남행)</p><table class="dim"><thead><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr></thead><tbody>${TRAINS_1.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</tbody></table><p class="sheet-foot">미루선 · 중앙역 역무관리소</p></div></figure><div class="paper-table mobile-only"><p class="pt-head">같은 시각표 글자로 옮겨 적은 것</p><table class="nwcells"><tr><th>출발</th><th>행선</th><th>정차</th><th>종별</th></tr>${TRAINS_2.map((t) => `<tr><td>${t.time}</td><td>${t.to}행</td><td>${t.stops}</td><td>${t.kind}</td></tr>`).join('')}</table><p class="pt-foot">맞은편 1번 승강장 (남행) ${TRAINS_1.map((t) => `${t.time} ${t.to}행 ${t.stops}`).join(' · ')}</p></div>`,
     },
     postcard: {
       title: '게시판의 그림엽서',
@@ -313,7 +347,7 @@ export default {
     lockerrule: {
       title: '보관함 이용 안내',
       kind: '수림역 · 보관함 옆 벽',
-      html: `<div class="sticker"><b>보관함 이용 안내</b><ol><li>숫자 네 자리를 맞추고 손잡이를 당기세요</li><li>세 번 틀리면 30초 동안 잠깁니다</li><li>물건은 7일까지 보관됩니다</li></ol><small>칸 번호는 왼쪽 위 칸부터 가로로 셉니다 · 수림역 무인역 관리 041-000-0000</small></div><p class="aside">별 스티커가 붙은 칸은 5번 맡긴 날짜 칸에 볼펜으로 2026/8/14 05:50</p>`,
+      html: `<div class="sticker"><b>보관함 이용 안내</b><ol><li>숫자 네 자리를 맞추고 손잡이를 당기세요</li><li>세 번 틀리면 30초 동안 잠깁니다</li><li>물건은 7일까지 보관됩니다</li></ol><small>칸 번호는 왼쪽 위 칸부터 가로로 셉니다 · 수림역 무인역 관리 041-000-0000</small></div><p class="aside">별 스티커가 붙은 칸은 5번 맡긴 날짜 칸에 볼펜으로 2026/8/14 05:58</p>`,
     },
     letter: {
       title: '민서의 편지',
@@ -402,12 +436,15 @@ export default {
       commitLabel: '그 기둥으로 가기',
       check(d) {
         if (!d.platform || !d.pillar) return { ok: false, msg: '승강장과 기둥을 하나씩 골라야 한다' };
-        if (readHoles(d) === GRILLE_READ && d.platform === 2 && d.pillar === 2) return { ok: true };
-        return { ok: false, msg: '그 기둥엔 아무것도 붙어 있지 않았다 개찰구로 다시 나와 구간권을 안내판에 대 본다' };
+        if (readHoles(d) !== GRILLE_READ) return { ok: false, msg: '구멍 사이 글자가 지금은 말이 안 된다 어디로 가라는 건지 구간권부터 다시 대 본다' };
+        if (d.platform === 2 && d.pillar === 2) return { ok: true };
+        if (d.platform !== 2 && d.pillar === 2) return { ok: false, msg: '그 승강장 둘째 기둥엔 아무것도 붙어 있지 않았다 민서가 쓴 승강장 번호가 지금도 같은 번호인지 다시 본다' };
+        if (d.platform === 2) return { ok: false, msg: '그 기둥엔 아무것도 붙어 있지 않았다 구멍 글자가 몇째 기둥이라고 했는지 다시 본다' };
+        return { ok: false, msg: '그 기둥엔 아무것도 붙어 있지 않았다 승강장 번호와 기둥을 구멍 글자와 다시 맞춰 본다' };
       },
       reveal: {
         title: '2번 승강장, 둘째 기둥',
-        text: '민서는 끝까지 옛 번호로 썼다 옛 3번이 지금 2번이다 역무원이 개찰구를 열어 주며 말했다 “북쪽 가는 쪽이요 기둥은 선로 쪽에서 세요”',
+        text: '민서는 끝까지 옛 번호로 썼다 옛 3번이 지금 2번이다 역무원이 개찰구를 열어 주며 말했다 “북쪽 가는 쪽이요 기둥은 개찰구 쪽부터 세요”',
         scene: [
           '구간권을 주머니에 넣다가, 민서가 새벽 한 시에 혼자 이 구멍 여섯 개를 칼로 하나씩 오리고 있었을 모습이 떠올랐다',
           '개찰구를 지나는데 역무원이 덧붙였다 “그 여자분 가방이 컸어요 멀리 가는 사람 가방” 나는 못 들은 척했다',
@@ -425,7 +462,7 @@ export default {
       hints: [
         '네컷사진 뒷면은 거울 글씨라 그냥은 안 읽힙니다 거울 앞에 들고, 사진을 거울이 달린 기울기와 똑같이 맞추면 비친 글씨가 바로 섭니다 거울이 몇 칸 기울어 있는지는 거울 받침대에 남아 있습니다',
         '비친 문장에서 시각을 읽고, 할머니 동네가 어디인지는 「민서와 나」에서 찾으세요 같은 시각에 떠나는 열차가 여럿이면 종점으로, 같은 종점 열차가 여럿이면 시각으로 좁혀집니다',
-        '받침대 빨간 눈금 7에 맞추면 「9시 40분 그 열차 종점에서 내려 할머니 동네야」 → 09:40 수림행 급행 (종점 수림 = 외할머니 동네)',
+        '받침대 빨간 눈금 7에 맞추면 「우리 처음 만난 그 열차 9시 40분 종점에서 내려 할머니 동네야」 → 09:40 수림행 급행 (종점 수림 = 외할머니 동네)',
       ],
       initial: () => ({ held: false, tilt: 0, train: null }),
       render(ctx) {
@@ -512,7 +549,7 @@ export default {
         }
         wrap.append(row);
         const now = Date.now();
-        if (d.lockedUntil > now) wrap.append(el('p', 'locker-note', `잠겨 있다 · ${Math.ceil((d.lockedUntil - now) / 1000)}초 뒤에 다시`));
+        if (d.lockedUntil > now) { const fmt = (s) => (s > 0 ? `잠겨 있다 · ${s}초 뒤에 다시` : '잠금이 풀렸다 다시 당겨 볼 수 있다'); const note = el('p', 'locker-note', fmt(Math.ceil((d.lockedUntil - now) / 1000))); countdown(note, d.lockedUntil, fmt); wrap.append(note); }
         return wrap;
       },
       commitLabel: '손잡이 당기기',
@@ -527,11 +564,95 @@ export default {
       },
       reveal: {
         title: '3 · 2 · 4 · 1',
-        text: '문이 열렸다 파란 리본을 맨 열쇠, 편지, 쪽지 세 장, 접힌 종이봉투 조각, 그리고 전원이 꺼진 민서의 휴대폰',
+        text: '문이 열렸다 열쇠 하나와 풀린 파란 리본, 편지, 쪽지 세 장, 접힌 종이봉투 조각, 그리고 전원이 꺼진 민서의 휴대폰',
         scene: [
           '맨 밑에 사원증이 엎어져 있었다 뒤집어 보니 민서 이름 위에 볼펜으로 줄이 두 번 그어져 있었다',
           '오려 낸 셋째 칸은 없었다 그 자리에 민서 글씨 쪽지만 「셋째 칸은 내가 가져가 네가 오면 돌려줄게」',
-          '휴대폰은 켜지 않았다 켜면 내가 건 열한 통이 뜰 텐데, 그걸 내 눈으로 보고 싶지 않았다',
+          '편지와 열쇠, 쪽지와 봉투 조각은 꺼내 들었다 휴대폰은 칸 안쪽 벽에 기대 둔 채로 한참 봤다 켜면 내가 건 열한 통이 뜰 텐데, 그걸 내 눈으로 보고 싶지 않았다',
+        ],
+        unlock: null,
+      },
+    },
+
+    phone: {
+      title: '민서의 휴대폰',
+      scene: 'surim',
+      intro: '전원을 길게 눌러 켰다 잠금 화면에 점 아홉 개 점을 손가락으로 이어 그리거나, 점을 하나씩 눌러 잇고 풀기를 누른다 휴대폰을 창 쪽으로 기울이면 화면이 빛에 비친다',
+      docs: ['brief'],
+      hintCode: 'T-S04',
+      hints: [
+        '휴대폰을 창 쪽으로 기울여 화면에 남은 손가락 자국을 보세요 잠금 패턴은 점과 점을 곧게 잇는 선입니다',
+        '점을 벗어나 화면 끝까지 길게 이어진 줄은 화면을 쓸어 넘긴 자국이라 패턴이 아닙니다 남은 선이 무슨 모양인지, 어느 끝에서 그리기 시작했는지는 「민서와 나」의 잠금 얘기와 둥근 자국에서 찾으세요',
+        '숫자 3을 위에서부터 → 왼쪽 위 · 가운데 위 · 오른쪽 위 · 한가운데 · 오른쪽 아래 · 가운데 아래 · 왼쪽 아래',
+      ],
+      initial: () => ({ path: [], tilt: false, fails: 0, lockedUntil: 0 }),
+      render(ctx) {
+        const { d, el, save } = ctx;
+        const wrap = el('div', 'pat');
+        const phone = el('div', 'pat-phone' + (d.tilt ? ' tilted' : ''));
+        const top = el('div', 'pat-top'); top.innerHTML = '<span>10:46</span><span>8월 14일 금요일</span>';
+        const noti = el('p', 'pat-noti', '부재중 전화 11통');
+        const now = Date.now();
+        const locked = d.lockedUntil > now;
+        // 틀렸을 때는 실제 휴대폰처럼 이 자리에 빨간 글씨로
+        const sayFmt = (s) => (s > 0 ? `${s}초 후에 다시 시도하세요` : '패턴을 그려 잠금 해제');
+        const say = el('p', 'pat-say' + (locked || d.err ? ' wrong' : ''), locked ? sayFmt(Math.ceil((d.lockedUntil - now) / 1000)) : (d.err || '패턴을 그려 잠금 해제'));
+        if (locked) countdown(say, d.lockedUntil, (s) => { if (s <= 0) say.classList.remove('wrong'); return sayFmt(s); });
+        const pad = el('div', 'pat-pad');
+        // 창빛에 비친 기름 자국 (기울였을 때만)
+        const seg = (a, b) => { const p = PDOT(a), q = PDOT(b); return `M${p.x} ${p.y} L${q.x} ${q.y}`; };
+        const smudge = `<g class="pat-smudge" filter="url(#patBlur)"><path d="${[[1, 3], [3, 5], [5, 9], [9, 7]].map(([a, b]) => seg(a, b)).join(' ')}" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="50" r="21" fill="#fff" fill-opacity=".3"/><path d="M196 -40 C 212 90, 186 210, 204 345" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="22" stroke-linecap="round"/></g>`;
+        const drawn = (p) => p.length ? `<polyline class="pat-line" points="${p.map((n) => `${PDOT(n).x},${PDOT(n).y}`).join(' ')}" fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>` : '';
+        // 그리는 동안 마지막 점에서 손가락까지 늘어나는 선
+        let finger = null;
+        const tail = () => (finger && d.path.length ? `<line class="pat-line tail" x1="${PDOT(d.path[d.path.length - 1]).x}" y1="${PDOT(d.path[d.path.length - 1]).y}" x2="${finger.x.toFixed(1)}" y2="${finger.y.toFixed(1)}" stroke-width="9" stroke-linecap="round"/>` : '');
+        // 잡힌 점은 크게 + 둘레 고리
+        const dots = () => [1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (d.path.includes(n) ? `<circle class="pat-ring" cx="${PDOT(n).x}" cy="${PDOT(n).y}" r="24"/><circle class="pat-dot on" cx="${PDOT(n).x}" cy="${PDOT(n).y}" r="13"/>` : `<circle class="pat-dot" cx="${PDOT(n).x}" cy="${PDOT(n).y}" r="8"/>`)).join('');
+        const svg = () => `<svg viewBox="0 0 300 300" aria-hidden="true"><defs><filter id="patBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3.2"/></filter></defs>${d.tilt ? smudge : ''}${drawn(d.path)}${tail()}${dots()}</svg>`;
+        const art = el('div', 'pat-art'); pad.append(art);
+        art.innerHTML = svg();
+        // 손가락으로 이어 그리기 (끄는 동안은 화면만 고치고, 손을 떼면 바로 풀어 본다)
+        let stroke = null;
+        const at = (e) => { const r = pad.getBoundingClientRect(); return { x: Math.max(0, Math.min(300, (e.clientX - r.left) / r.width * 300)), y: Math.max(0, Math.min(300, (e.clientY - r.top) / r.height * 300)) }; };
+        const hit = (e) => { const { x, y } = at(e); return [1, 2, 3, 4, 5, 6, 7, 8, 9].find((n) => Math.hypot(PDOT(n).x - x, PDOT(n).y - y) < 38); };
+        const clearErr = () => { if (!d.err) return; d.err = ''; say.textContent = '패턴을 그려 잠금 해제'; say.classList.remove('wrong'); };
+        pad.addEventListener('pointerdown', (e) => { if (locked) return; const n = hit(e); if (!n) return; e.preventDefault(); pad.setPointerCapture?.(e.pointerId); stroke = { moved: false }; clearErr(); patAdd(d.path, n); finger = at(e); art.innerHTML = svg(); });
+        pad.addEventListener('pointermove', (e) => { if (!stroke) return; finger = at(e); const n = hit(e); if (n && !d.path.includes(n)) { patAdd(d.path, n); stroke.moved = true; } art.innerHTML = svg(); });
+        const end = () => { if (!stroke) return; const moved = stroke.moved; stroke = null; finger = null; art.innerHTML = svg(); if (moved && d.path.length > 1) ctx.commit?.(); else save(); };
+        pad.addEventListener('pointerup', end); pad.addEventListener('pointercancel', end);
+        // 점 하나씩 누르기 (키보드·탭) — 사진 위 같은 자리의 큰 누름 칸
+        const keys = el('div', 'pat-keys');
+        [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach((n) => { const b = el('button', 'pat-key'); b.type = 'button'; b.setAttribute('aria-label', `점 ${PAT_NAME[n]}`); b.onclick = (e) => { if (e.detail > 0 || locked) return; d.err = ''; patAdd(d.path, n); save(); }; keys.append(b); });
+        pad.append(keys);
+        phone.append(top, noti, say, pad);
+        wrap.append(phone);
+        const row = el('div', 'pat-row');
+        const tilt = el('button', 'ctl wide', d.tilt ? '휴대폰 바로 들기' : '창 쪽으로 기울여 보기'); tilt.type = 'button'; tilt.onclick = () => { d.tilt = !d.tilt; save(); };
+        const clear = el('button', 'ctl', '지우기'); clear.type = 'button'; clear.onclick = () => { d.path = []; d.err = ''; save(); };
+        row.append(tilt, clear);
+        wrap.append(row);
+        wrap.append(el('p', 'pat-cap', d.tilt ? '창빛에 화면이 번들거린다 손가락 기름 자국이 그대로 남아 있다' : '화면이 까맣게 반짝일 뿐 아무 자국도 안 보인다'));
+        return wrap;
+      },
+      commitLabel: '이대로 풀기',
+      canCommit: (d) => d.path.length > 0,
+      check(d) {
+        const now = Date.now();
+        if (d.lockedUntil > now) return { ok: false, msg: `${Math.ceil((d.lockedUntil - now) / 1000)}초 후에 다시 시도하세요` };
+        if (d.path.length < 4) { d.path = []; d.err = '점을 4개 이상 연결하세요'; return { ok: false, msg: '점을 4개 이상 연결하세요' }; }
+        if (d.path.join() === PATTERN.join()) { d.err = ''; return { ok: true }; }
+        d.path = [];
+        d.fails = (d.fails || 0) + 1;
+        if (d.fails >= 5) { d.fails = 0; d.err = ''; d.lockedUntil = now + 30000; return { ok: false, msg: '패턴을 5번 잘못 그렸습니다 30초 후에 다시 시도하세요' }; }
+        d.err = '잘못된 패턴입니다';
+        return { ok: false, msg: '잘못된 패턴입니다 화면이 한 번 떨렸다' };
+      },
+      reveal: {
+        title: '잠금 해제',
+        text: '그 숫자는 3이었다 화면이 열리자 부재중 전화 열한 통이 한꺼번에 떴다 전부 내 이름이었다',
+        scene: [
+          '그 밑에 메모장이 열려 있었다 「8/14 05:52 수림 도착 5번 칸 걔 오면 역 앞에서 편지랑 지도랑 쪽지 다 같이 펴 놓고 보라고 하기」 한 줄 띄우고 「무서워하겠지」',
+          '휴대폰을 다시 끄고 칸 안쪽 벽에 기대 두었다 이건 민서가 직접 들고 나와야 하는 거였다 역 앞으로 나갔다',
         ],
         unlock: 'village',
       },
@@ -542,10 +663,10 @@ export default {
       scene: 'village',
       intro: '보관함에서 나온 쪽지 세 장 편지대로면 셋 중 하나만 거짓말이다 쪽지를 누르면 거짓말 표시가 붙는다',
       docs: ['letter'],
-      hintCode: 'T-S04',
+      hintCode: 'T-S05',
       hints: [
         '쪽지 하나를 거짓이라고 놓고, 나머지 둘이 정말 둘 다 참일 수 있는지 봅니다 거짓이 둘이 되면 그 가정은 틀린 겁니다',
-        '가와 다는 서로를 가리킵니다 둘 중 하나가 거짓이면 다른 하나는 어떻게 되는지 따라가 보세요',
+        '가는 다를 두고 하는 말이고, 다는 나를 두고 하는 말입니다 가가 거짓이면 다는 어떻게 되는지, 다가 거짓이면 가는 어떻게 되는지 따라가 보세요',
         '거짓말은 나 (그러니 대문은 파란색)',
       ],
       initial: () => ({ lie: null }),
@@ -571,7 +692,7 @@ export default {
       },
       reveal: {
         title: '거짓말은 나',
-        text: '가와 다는 서로를 붙잡고 있었다 하나가 거짓이면 다른 하나도 같이 거짓이 된다 거짓말이 꼭 하나라면 남는 건 나뿐이다',
+        text: '가는 다 편이었다 가가 거짓이면 다도 거짓, 다가 거짓이면 가도 거짓이 된다 거짓말이 꼭 하나라면 남는 건 나뿐이다',
         scene: [
           '통학열차에서 이 놀이를 할 때 나는 한 번도 민서보다 먼저 푼 적이 없었다 이번엔 민서가 옆에 없었고, 혼자 풀었다 하나도 기쁘지 않았다',
         ],
@@ -584,16 +705,16 @@ export default {
       scene: 'village',
       intro: '갈림길마다 갈 쪽을 누른다 걸어온 길은 지도에 형광펜으로 남는다 집이 늘어선 길에 닿으면 대문을 하나 골라 열쇠를 넣는다 막히면 역 앞으로 되돌아갈 수 있다',
       docs: ['letter', 'handmap'],
-      hintCode: 'T-S05',
+      hintCode: 'T-S06',
       hints: [
         '“역을 등지고”는 역을 뒤에 두고 선다는 뜻입니다 지도는 위가 북쪽이고 역은 아래에 있습니다',
         '편지를 한 줄씩 끊어서 갈림길마다 지금 어느 쪽을 보고 있는지 따져 보세요 집은 지도의 감나무와 쪽지에서 나온 대문 색을 같이 맞춰야 하나로 좁혀집니다',
-        '왼쪽 → 직진 → 오른쪽 → 직진(다리) → 왼쪽 → 감나무 뒤에 있는 파란 대문 = 셋째 집',
+        '왼쪽 → 직진 → 오른쪽 → 직진(다리) → 왼쪽 → 감나무가 있는 집 중 파란 대문 = 셋째 집',
       ],
       initial: () => ({ at: 'S', heading: 'N', path: [], lane: null, house: null }),
       render(ctx) {
         const { d, el, save } = ctx;
-        const wrap = el('div', 'walk');
+        const wrap = el('div', 'walk' + (d.lane ? ' at-lane' : ''));
         const segs = d.path.map(([a, b]) => [MAP.nodes[a] || LANE_END[a], MAP.nodes[b] || LANE_END[b]]);
         const mapBox = el('div', 'walk-map');
         mapBox.innerHTML = `<img src="assets/v2/station/props/kraft.webp" alt="" decoding="async"><div class="kraft-map">${svgMap(segs, d.house, d.lane)}</div>`; mapBox.classList.add('prop', 'kraft');
@@ -609,17 +730,19 @@ export default {
             const col = GATE[hid];
             const b = el('button', 'gate-chip' + (d.house === hid ? ' on' : '')); b.type = 'button';
             b.setAttribute('aria-label', `${['첫', '둘', '셋', '넷'][i]}째 집 ${col} 대문`);
-            b.innerHTML = `<i style="--gate:${GATE_CSS[col]}"></i><span>${['첫', '둘', '셋', '넷'][i]}째 집</span><small>${col} 대문</small>`;
+            b.innerHTML = `<i style="--gate:${GATE_CSS[col]}"></i><span><em class="gate-num" aria-hidden="true">${i + 1}</em>${['첫', '둘', '셋', '넷'][i]}째 집</span><small>${col} 대문</small>`;
             b.onclick = () => { d.house = hid; save(); };
             row.append(b);
           });
           wrap.append(row);
+          // 길 끝에 막 닿았으면 지도 맨 위부터 보이게 (휴대폰에서 감나무와 대문 카드를 한 화면에)
+          if (arrivedLane) { arrivedLane = false; requestAnimationFrame(() => mapBox.scrollIntoView({ block: 'start' })); }
         } else {
           const node = WALK[d.at];
           here.innerHTML = `<b>${PLACE_NAMES[d.at] || '갈림길'}</b> — ${d.path.length ? '지금까지 ' + d.path.length + '번 움직였다 ' : ''}보는 방향: ${headingName}${d.at === 'D' ? ' 앞에 개울과 다리가 있다' : ''}`;
           wrap.append(here);
           const row = el('div', 'pick-row');
-          node.choices.forEach((c) => { const b = el('button', 'chip', c.dir + (c.bridge ? ' (다리 건너기)' : '')); b.type = 'button'; b.onclick = () => { d.path.push([d.at, c.to]); if (LANES[c.to]) { d.lane = c.to; } else { d.at = c.to; } d.heading = c.heading; save(); }; row.append(b); });
+          node.choices.forEach((c) => { const b = el('button', 'chip', c.dir + (c.bridge ? ' (다리 건너기)' : '')); b.type = 'button'; b.onclick = () => { d.path.push([d.at, c.to]); if (LANES[c.to]) { d.lane = c.to; arrivedLane = true; } else { d.at = c.to; } d.heading = c.heading; save(); }; row.append(b); });
           wrap.append(row);
         }
         const back = el('button', 'ctl wide', '역 앞으로 되돌아가기'); back.type = 'button'; back.onclick = () => { Object.assign(d, { at: 'S', heading: 'N', path: [], lane: null, house: null }); save(); };

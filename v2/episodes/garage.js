@@ -36,6 +36,12 @@ const camMarks = (off, pos, near) => {
   ms.forEach((m, k) => { const prev = ms[k - 1], next = ms[k + 1]; m.shift = next && next.p - m.p < near ? -1 : prev && m.p - prev.p < near ? 1 : 0; });
   return ms;
 };
+// 출입 방향: 화살표 글자(↓↑)는 휴대폰 글꼴에 따라 꺾쇠(∨∧)처럼 보여서 작은 삼각형으로 그린다 (▼ 들어감 ▲ 나감)
+const tri = (cx, cy, s, down, fill) => { const h = s * 0.87; return down ? `<path d="M${(cx - s / 2).toFixed(2)} ${(cy - h / 2).toFixed(2)}h${s}L${cx.toFixed(2)} ${(cy + h / 2).toFixed(2)}Z" fill="${fill}"/>` : `<path d="M${(cx - s / 2).toFixed(2)} ${(cy + h / 2).toFixed(2)}h${s}L${cx.toFixed(2)} ${(cy - h / 2).toFixed(2)}Z" fill="${fill}"/>`; };
+const markW = (txt, fs) => [...txt].reduce((a, c) => a + (c === '-' ? 0.4 : 0.6), 0) * fs + fs * 0.3 + fs * 0.62;
+// 글자(왼쪽 끝 left, 글자 바닥 y) + 바로 뒤에 방향 삼각형
+const mark = (left, y, txt, fs, down, fill) => { const nw = markW(txt, fs) - fs * 0.3 - fs * 0.62, s = fs * 0.62; return `<text x="${left.toFixed(2)}" y="${y.toFixed(2)}" font-size="${fs}" fill="${fill}" font-family="SUIT,sans-serif">${txt}</text>` + tri(left + nw + fs * 0.3 + s / 2, y - fs * 0.36, s, down, fill); };
+const TRI_LEGEND = '<svg class="tri-ico" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 2h8L5 9Z" fill="currentColor"/></svg> 들어감 <svg class="tri-ico" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 8h8L5 1Z" fill="currentColor"/></svg> 나감';
 function syncSvg(off) {
   const t0 = toSec('21:26:00'), span = 56 * 60;
   const X = (sec) => 4 + ((sec - t0) / span) * 92;
@@ -43,8 +49,8 @@ function syncSvg(off) {
   s += '<line x1="4" y1="22" x2="96" y2="22" stroke="#4a5560" stroke-width=".3"/>';
   for (let m = 30; m <= 80; m += 5) { const sec = toSec('21:00:00') + m * 60; const x = X(sec); const hh = 21 + Math.floor(m / 60), mm = m % 60; s += `<line x1="${x}" y1="21" x2="${x}" y2="23" stroke="#6b7782" stroke-width=".25"/><text x="${x}" y="26.4" font-size="2" text-anchor="middle" fill="#8d979f" font-family="ui-monospace,monospace">${hh}:${String(mm).padStart(2, '0')}</text>`; }
   s += `<text x="4" y="4" font-size="2.4" fill="#f2b134" font-family="SUIT,sans-serif">블랙박스 (${off ? '시계를 맞춘 뒤' : '표시 시각 그대로'})</text>` + '<text x="4" y="42.5" font-size="2.4" fill="#9be8a5" font-family="SUIT,sans-serif">출입 서버</text>';
-  camMarks(off, X, 4.5).forEach(({ i, dir, p: x, shift }) => { if (x < 2 || x > 98) return; const tx = x + shift * 0.5, anchor = shift < 0 ? 'end' : shift > 0 ? 'start' : 'middle'; s += `<line x1="${x}" y1="9" x2="${x}" y2="20" stroke="#f2b134" stroke-width=".5"/><text x="${tx}" y="8.2" font-size="2.3" text-anchor="${anchor}" fill="#f2b134" font-family="SUIT,sans-serif">${i + 1}${dir === '입' ? '↓' : '↑'}</text>`; });
-  SRV.forEach(([t, dir, card]) => { const x = X(toSec(t)); s += `<line x1="${x}" y1="28" x2="${x}" y2="35" stroke="#9be8a5" stroke-width=".5"/><text x="${x}" y="38.2" font-size="2.1" text-anchor="middle" fill="#9be8a5" font-family="SUIT,sans-serif">${card}${dir === '입' ? '↓' : '↑'}</text>`; });
+  camMarks(off, X, 4.5).forEach(({ i, dir, p: x, shift }) => { if (x < 2 || x > 98) return; const tx = x + shift * 0.5, w = markW(String(i + 1), 2.3); s += `<line x1="${x}" y1="9" x2="${x}" y2="20" stroke="#f2b134" stroke-width=".5"/>` + mark(shift < 0 ? tx - w : shift > 0 ? tx : tx - w / 2, 8.2, String(i + 1), 2.3, dir === '입', '#f2b134'); });
+  SRV.forEach(([t, dir, card]) => { const x = X(toSec(t)); s += `<line x1="${x}" y1="28" x2="${x}" y2="35" stroke="#9be8a5" stroke-width=".5"/>` + mark(x - markW(card, 2.1) / 2, 38.2, card, 2.1, dir === '입', '#9be8a5'); });
   return s + '</svg>';
 }
 // 모바일: 같은 시간 축을 세로로 세운다 (옆으로 밀지 않아도 한눈에, 맞추기 버튼까지 한 화면에 들어오게 낮게)
@@ -54,9 +60,9 @@ function syncSvgV(off) {
   let s = '<svg viewBox="0 0 80 92" class="sync-svg-v mobile-only" role="img" aria-label="왼쪽은 블랙박스 출입, 오른쪽은 출입 서버 기록 같은 시간 축">';
   s += '<text x="33" y="4.4" font-size="3.3" text-anchor="end" fill="#f2b134" font-family="SUIT,sans-serif">블랙박스</text><text x="44" y="4.4" font-size="3.3" fill="#9be8a5" font-family="SUIT,sans-serif">출입 서버</text>';
   s += '<line x1="39" y1="7" x2="39" y2="91" stroke="#4a5560" stroke-width=".4"/>';
-  for (let m = 30; m <= 80; m += 5) { const y = Y(toSec('21:00:00') + m * 60); const hh = 21 + Math.floor(m / 60), mm = m % 60; s += `<line x1="37.6" y1="${y}" x2="40.4" y2="${y}" stroke="#6b7782" stroke-width=".3"/><text x="1" y="${y + 1.1}" font-size="3" fill="#8d979f" font-family="ui-monospace,monospace">${hh}:${String(mm).padStart(2, '0')}</text>`; }
-  camMarks(off, Y, 4).forEach(({ i, dir, p: y, shift }) => { if (y < 6 || y > 91) return; s += `<line x1="26" y1="${y}" x2="37" y2="${y}" stroke="#f2b134" stroke-width=".6"/><text x="25" y="${y + 1.2 + shift * 1.1}" font-size="3.3" text-anchor="end" fill="#f2b134" font-family="SUIT,sans-serif">${i + 1}${dir === '입' ? '↓' : '↑'}</text>`; });
-  SRV.forEach(([t, dir, card]) => { const y = Y(toSec(t)); s += `<line x1="41" y1="${y}" x2="52" y2="${y}" stroke="#9be8a5" stroke-width=".6"/><text x="53" y="${y + 1.2}" font-size="3.3" fill="#9be8a5" font-family="SUIT,sans-serif">${card}${dir === '입' ? '↓' : '↑'}</text>`; });
+  for (let m = 30; m <= 80; m += 5) { const y = Y(toSec('21:00:00') + m * 60); const hh = 21 + Math.floor(m / 60), mm = m % 60; s += `<line x1="37.6" y1="${y}" x2="40.4" y2="${y}" stroke="#6b7782" stroke-width=".3"/><text x="1" y="${y + 1.2}" font-size="3.3" fill="#a3adb5" font-family="ui-monospace,monospace">${hh}:${String(mm).padStart(2, '0')}</text>`; }
+  camMarks(off, Y, 4).forEach(({ i, dir, p: y, shift }) => { if (y < 6 || y > 91) return; s += `<line x1="26" y1="${y}" x2="37" y2="${y}" stroke="#f2b134" stroke-width=".6"/>` + mark(25 - markW(String(i + 1), 3.3), y + 1.2 + shift * 1.1, String(i + 1), 3.3, dir === '입', '#f2b134'); });
+  SRV.forEach(([t, dir, card]) => { const y = Y(toSec(t)); s += `<line x1="41" y1="${y}" x2="52" y2="${y}" stroke="#9be8a5" stroke-width=".6"/>` + mark(53, y + 1.2, card, 3.3, dir === '입', '#9be8a5'); });
   return s + '</svg>';
 }
 const SAFE_CODE = [0, 4, 0, 7]; // 처음 문 연 날 2009/4/7 (사업자등록 3/30 · 다시 연 날 10/3은 함정)
@@ -76,6 +82,36 @@ function stripNode(el, s) {
   if (RING[s.id]) n.style.setProperty('--ring', RING[s.id]);
   s.rows.forEach((r, i) => { const row = el('span', 'wo-row' + (i === 0 ? ' head' : '')); r.forEach((c) => row.append(el('span', 'wo-cell', c === ' ' ? ' ' : c))); n.append(row); });
   return n;
+}
+
+// 폐부품 카트 옆 바닥의 갈아 낸 앞 디스크 셋 (꼬리표: 차 번호 · 날짜 · 자리) 캘리퍼스로 물리면 눈금이 보인다
+// 서연 차는 영수증의 37마 4182, 지시서의 9/12 앞 → 다 (26.4mm, 한계 25) · 가는 번호 끝 두 자리가 바뀐 다른 차(22.8) · 나는 다른 날 다른 차(23.6)
+const DISCS = [
+  { id: 'a', plate: '37마 4128', when: '9/12 앞', mm: 22.8, rust: '#7a5a44' },
+  { id: 'b', plate: '51허 0917', when: '9/5 앞', mm: 23.6, rust: '#6c5240' },
+  { id: 'c', plate: '37마 4182', when: '9/12 앞', mm: 26.4, rust: '#8a6a50' },
+];
+const DISC_ANSWER = { id: 'c', mm: '26.4' };
+// 버니어 눈금 확대: 위는 본척(1mm), 아래는 아들자(0.9mm 간격 열 칸, 0.1mm 읽기)
+function vernierSvg(mm) {
+  const lo = 22, hi = 36, u = 24, ox = 12;
+  const X = (v) => ox + (v - lo) * u;
+  let s = `<svg viewBox="0 0 360 112" class="vern-svg" role="img" aria-label="캘리퍼스 눈금 확대, 위는 큰 눈금 아래는 작은 눈금">`;
+  s += '<rect x="0" y="0" width="360" height="58" fill="#d9dcdf"/><rect x="0" y="58" width="360" height="54" fill="#b9bec4"/>';
+  for (let v = lo; v <= hi; v++) {
+    const x = X(v), long = v % 5 === 0;
+    s += `<line x1="${x}" y1="58" x2="${x}" y2="${long ? 30 : 42}" stroke="#15181b" stroke-width="1"/>`;
+    if (long) s += `<text x="${x}" y="24" font-size="15" text-anchor="middle" fill="#15181b" font-family="SUIT,sans-serif" font-weight="700">${v}</text>`;
+  }
+  for (let k = 0; k <= 10; k++) {
+    const x = X(mm + 0.9 * k), long = k % 5 === 0;
+    s += `<line x1="${x.toFixed(2)}" y1="58" x2="${x.toFixed(2)}" y2="${long ? 84 : 74}" stroke="#15181b" stroke-width="1"/>`;
+    if (long) s += `<text x="${x.toFixed(2)}" y="101" font-size="14" text-anchor="middle" fill="#15181b" font-family="SUIT,sans-serif" font-weight="700">${k}</text>`;
+  }
+  return s + '</svg>';
+}
+function discSvg(d) {
+  return `<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="${d.rust}"/><circle cx="50" cy="50" r="44" fill="none" stroke="#a9998a" stroke-width="10" opacity=".55"/><circle cx="50" cy="50" r="24" fill="#4b4038"/><circle cx="50" cy="50" r="8" fill="#1b1714"/>${[0, 72, 144, 216, 288].map((a) => { const r = (a * Math.PI) / 180; return `<circle cx="${(50 + 15 * Math.cos(r)).toFixed(1)}" cy="${(50 + 15 * Math.sin(r)).toFixed(1)}" r="3" fill="#1b1714"/>`; }).join('')}</svg>`;
 }
 
 // 강민호 본사 면담 녹화 (서버 시각, 5초 간격으로 넘겨 봄)
@@ -121,8 +157,8 @@ const REPORT = [
   { id: 'who', label: '④ 카드를 꺼낸 사람', opts: [['jisu', '한지수'], ['minho', '강민호'], ['boss', '박정호']], ans: 'boss' },
   { id: 'why', label: '⑤ 사진이 넘어가면 곤란했던 이유', opts: [['jisu', '지수가 몰래 부품을 바꿔서'], ['boss', '교체를 사장이 지시해서'], ['minho', '인수 일정이 늦어져서']], ans: 'boss' },
 ];
-const PRE_REPORT = ['cam', 'terminal', 'safe', 'strips', 'video', 'jackets'];
-// 여섯 장치를 다 풀면 마지막 보상 창에서 바로 앞마당(보고 자리)으로 가는 길을 준다 (사무실에 남아 다음 할 일을 못 찾는 일 방지)
+const PRE_REPORT = ['cam', 'terminal', 'safe', 'strips', 'disc', 'video', 'jackets'];
+// 보고 앞 장치를 다 풀면 마지막 보상 창에서 바로 앞마당(보고 자리)으로 가는 길을 준다 (사무실에 남아 다음 할 일을 못 찾는 일 방지)
 const stateNow = () => { try { return window.MihaejeV2?.state || JSON.parse(localStorage.getItem('mihaeje-v2-garage') || '{}'); } catch { return {}; } };
 const toReport = () => (PRE_REPORT.every((x) => (stateNow().solved || []).includes(x)) ? 'yard' : null);
 
@@ -135,7 +171,7 @@ export default {
   title: '마지막 정비소',
   subtitle: '사라진 SD카드',
   genre: '추리 · 알리바이',
-  minutes: 50,
+  minutes: 55,
   difficulty: 5,
   cover: P + 'yard.webp',
   coverAlt: '비 온 밤, 셔터가 반쯤 열린 정비소 앞에 선 차',
@@ -164,6 +200,7 @@ export default {
     { device: 'terminal', label: '두 시계' },
     { device: 'safe', label: '금고' },
     { device: 'strips', label: '지시서' },
+    { device: 'disc', label: '디스크' },
     { device: 'video', label: '면담 영상' },
     { device: 'jackets', label: '재킷' },
     { device: 'report', label: '보고' },
@@ -174,6 +211,8 @@ export default {
       id: 'yard',
       name: '앞마당',
       image: P + 'yard.webp',
+      // 휴대폰 첫 위치: 블랙박스·영수증·작업장 입구가 한 화면에, 보고만 남으면 트렁크 쪽
+      focusX: (S) => (PRE_REPORT.every((x) => (S.solved || []).includes(x)) ? 32 : 42),
       arrive: (S) => {
         pocket(S);
         if (PRE_REPORT.every((x) => S.solved.includes(x))) return '서연 차 트렁크에 수첩을 펴 놓았다 불 켜진 창 너머로 세 사람이 이쪽을 보고 있다 이제 보고만 남았다';
@@ -209,7 +248,7 @@ export default {
         { id: 'video', x: 48, y: 55, r: 5, label: '책상 위 민호의 휴대폰', kind: 'device', device: 'video', visible: (S) => S.solved.includes('terminal') },
         { id: 'safe', x: 37, y: 74, r: 8, label: '책상 밑 금고', kind: 'device', device: 'safe', visible: (S) => !S.solved.includes('safe') },
         { id: 'safeopen', x: 37, y: 74, r: 8, label: '다시 닫아 둔 금고', kind: 'doc', doc: 'safedoc', visible: (S) => S.solved.includes('safe') },
-        { id: 'strips', x: 81, y: 80, r: 7, label: '휴지통의 찢긴 종이', kind: 'device', device: 'strips' },
+        { id: 'strips', x: 81, y: 77, r: 9, label: '휴지통의 찢긴 종이', kind: 'device', device: 'strips' },
         { id: 'go-shop', x: 16, y: 16, r: 9, label: '작업장으로', kind: 'travel', to: 'shop' },
       ],
     },
@@ -217,8 +256,11 @@ export default {
       id: 'shop',
       name: '작업장',
       image: P + 'shop.webp',
+      // 휴대폰 첫 위치: 보관함·단말 쪽, 지시서를 맞춘 뒤엔 왼쪽 카트 쪽
+      focusX: (S) => (S.solved.includes('strips') && !S.solved.includes('disc') ? 20 : 80),
       arrive: (S) => {
         pocket(S);
+        if (S.solved.includes('strips') && !S.solved.includes('disc')) return '리프트 옆 카트 아래 바닥에 갈아 낸 디스크가 몇 장 기대 세워져 있다 꼬리표가 철사로 묶여 있다';
         if (S.solved.includes('terminal')) return '단말 화면에 초록 글씨로 SYNC OK 보관함 서랍은 아까 그대로 열려 있다 휴게실 쪽 문이 조금 열려 있다';
         return '리프트 위에 손님 차 한 대 벽 쪽 철제 보관함 아래 서랍이 열려 있고, 옆 벽에 손바닥만 한 단말이 붙어 있다 화면에 「LOCKED」';
       },
@@ -226,6 +268,7 @@ export default {
       overlays: [{ cls: 'g-term', x: 90.33, y: 33.0, w: 3.22, h: 4.1, html: '<b class="lk">LOCKED</b><b class="ok">SYNC<br>OK</b>' }],
       hotspots: [
         { id: 'locker', x: 76, y: 65, r: 8, label: '직원 보관함과 SD 슬롯', kind: 'doc', doc: 'locker' },
+        { id: 'disc', x: 10, y: 77, r: 8, label: '폐부품 카트', kind: 'device', device: 'disc', visible: (S) => S.solved.includes('strips') },
         { id: 'terminal', x: 93, y: 38, r: 7, label: '보관함 백업 단말', kind: 'device', device: 'terminal' },
         { id: 'go-yard', x: 9, y: 42, r: 9, label: '앞마당으로', kind: 'travel', to: 'yard' },
       ],
@@ -252,7 +295,7 @@ export default {
     receipt: {
       title: '차 안의 점검 영수증',
       kind: '미루정비소 장비 점검 · 2026/9/18',
-      html: `<div class="paper-table"><p class="pt-head">장비 점검 영수증 · 2026/9/18 20:00</p><table><tr><th>항목</th><td>주차 차량 블랙박스 시각 점검 (고객 차량 · 앞유리 회전형)</td></tr><tr><th>점검 결과</th><td>블랙박스 시계가 서버 시각과 맞지 않음 (빠름)</td></tr><tr><th>조치</th><td>시계 수정 미실시 폐업 일정으로 보류</td></tr><tr><th>비고</th><td>오차는 자정까지 일정함 (수정 전 기록은 표시 시각 그대로 남음)</td></tr></table></div>`,
+      html: `<div class="paper-table"><p class="pt-head">장비 점검 영수증 · 2026/9/18 20:00</p><table><tr><th>항목</th><td>주차 차량 블랙박스 시각 점검 (고객 차량 37마 4182 · 앞유리 회전형)</td></tr><tr><th>점검 결과</th><td>블랙박스 시계가 서버 시각과 맞지 않음 (빠름)</td></tr><tr><th>조치</th><td>시계 수정 미실시 폐업 일정으로 보류</td></tr><tr><th>비고</th><td>오차는 자정까지 일정함 (수정 전 기록은 표시 시각 그대로 남음)</td></tr></table></div>`,
     },
     server: {
       title: '출입 서버 화면',
@@ -305,11 +348,16 @@ export default {
       kind: '휴지통에서 · 테이프로 이음',
       html: () => `<div class="wo-sheet joined">${STRIP_ORDER.map((id) => stripNode((t, c, x) => { const n = document.createElement(t); if (c) n.className = c; if (x !== undefined) n.textContent = x; return n; }, STRIPS.find((s) => s.id === id)).outerHTML).join('')}</div><p>찢긴 자리가 맞물렸다 남은 한 조각은 다른 손님 차 지시서였다</p>`,
     },
+    disc: {
+      title: '회수한 앞 디스크',
+      kind: '작업장 폐부품 카트 · 꼬리표째',
+      html: `<div class="paper-table"><p class="pt-head">갈아 낸 앞 브레이크 디스크</p><table><tr><th>꼬리표</th><td>37마 4182 · 9/12 앞</td></tr><tr><th>찍힌 글자</th><td>MIN TH 25 (이보다 얇으면 교체)</td></tr><tr><th>잰 두께</th><td>26.4mm</td></tr><tr><th>꼬리표 뒤</th><td class="hand-note">버리지 말 것 — 지수</td></tr></table></div>`,
+    },
     final: {
       title: '서연에게 보낸 보고',
       kind: '조사 결과',
       locked: true,
-      html: `<blockquote>서연 씨께<br><br>카드를 꺼낸 사람은 사장 박정호입니다<br>블랙박스는 7분 빠릅니다 표시 21:53:20 입장은 서버 21:46:20이고, 그 시각에 쓰인 카드는 지수 씨가 잃어버려 금고 봉투에 들어 있던 07-A입니다 금고 번호는 인계 문서에 적혀 있어서 사장만 열 수 있었다고는 못 합니다 그래서 재킷을 봤습니다<br>들어간 사람은 소매에 반사띠가 있는 회색 재킷을 입었고, 같은 재킷이 서버 21:40 퇴장과 22:00 입장 때도 찍혔습니다 두 줄 다 09 카드, 사장 본인입니다<br>민호 씨는 영상이 끊겼다 돌아온 21:47:34 뒤로 차 안 화면에 있었고, 그때 07-A는 아직 정비소 안에 있었습니다<br>휴지통에서 나온 작업 지시서에 교체 지시 박정호라고 적혀 있습니다 사진이 인수 쪽에 넘어가면 그 지시가 드러납니다<br>— 조사원</blockquote>`,
+      html: `<blockquote>서연 씨께<br><br>카드를 꺼낸 사람은 사장 박정호입니다<br>블랙박스는 7분 빠릅니다 표시 21:53:20 입장은 서버 21:46:20이고, 그 시각에 쓰인 카드는 지수 씨가 잃어버려 금고 봉투에 들어 있던 07-A입니다 금고 번호는 인계 문서에 적혀 있어서 사장만 열 수 있었다고는 못 합니다 그래서 재킷을 봤습니다<br>들어간 사람은 소매에 반사띠가 있는 회색 재킷을 입었고, 같은 재킷이 서버 21:40 퇴장과 22:00 입장 때도 찍혔습니다 두 줄 다 09 카드, 사장 본인입니다<br>민호 씨는 영상이 끊겼다 돌아온 21:47:34 뒤로 차 안 화면에 있었고, 그때 07-A는 아직 정비소 안에 있었습니다<br>휴지통에서 나온 작업 지시서에 교체 지시 박정호라고 적혀 있습니다 지수 씨가 버리지 않고 둔 앞 디스크는 26.4mm로, 한계 25mm까지 남아 있었습니다 갈 필요가 없던 부품입니다 사진이 인수 쪽에 넘어가면 그 지시가 드러납니다<br>— 조사원</blockquote>`,
     },
   },
 
@@ -364,7 +412,7 @@ export default {
       },
       reveal: {
         title: '21:53:20 → 21:55:20',
-        text: '표시 시각 21:53:20에 측문으로 들어가 21:55:20에 나왔다 안에 있던 건 2분 남짓',
+        text: '표시 시각 21:53:20에 측문으로 들어가 21:55:20에 나왔다 안에 있던 건 딱 2분',
         scene: ['화면 구석 시각은 블랙박스 시계다 이 두 장면이 출입 서버의 어느 줄인지는 아직 모른다 작업장 보관함 옆 백업 단말에 이 기록을 물려 볼 수 있을 것 같다'],
         get unlock() { return toReport(); },
       },
@@ -396,9 +444,11 @@ export default {
         const shown = done ? SYNC_ANSWER : 0; // 맞추기 전에는 두 줄을 있는 그대로만 보여 준다 (눌러 보며 겹치는 걸 볼 수 없게)
         const sign = (v) => (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v);
         // 읽는 법은 화면 안 맨 위에 (버튼과 맞추기 사이에 글줄이 끼지 않게)
-        const screen = el('div', 'term-screen sync-screen'); screen.innerHTML = `<p class="term-line">BACKUP TERMINAL · CLOCK SYNC</p><p class="term-line sync-legend">숫자 = 프레임 번호 / 카드 번호 · ↓ 들어감 ↑ 나감</p>${syncSvg(shown)}${syncSvgV(shown)}<p class="term-line sync-off">${done ? 'SYNC OK · 블랙박스 시계 ' + sign(SYNC_ANSWER) + '분' : '옮길 차이 · 블랙박스 시계 <b>' + sign(d.off) + '분</b>'}</p>`;
+        const screen = el('div', 'term-screen sync-screen'); screen.innerHTML = `<p class="term-line">BACKUP TERMINAL · CLOCK SYNC</p><p class="term-line sync-legend">숫자 = 프레임 번호 / 카드 번호 · ${TRI_LEGEND}</p>${syncSvg(shown)}${syncSvgV(shown)}${done ? '<p class="term-line sync-off">SYNC OK · 블랙박스 시계 ' + sign(SYNC_ANSWER) + '분</p>' : ''}`;
         wrap.append(screen);
         if (!done) {
+          // 누를 때마다 바뀌는 차이는 버튼 바로 위에 크게 (그래프는 맞추기 전까지 그대로라 '아무 일도 없다'로 보이지 않게)
+          const big = el('p', 'sync-off sync-big'); big.innerHTML = `옮길 차이 · 블랙박스 시계 <b>${sign(d.off)}분</b>`; wrap.append(big);
           const row = el('div', 'sync-row');
           [[-5, '−5분'], [-1, '−1분'], [1, '+1분'], [5, '+5분']].forEach(([v, lab]) => { const b = el('button', 'ctl', lab); b.type = 'button'; b.setAttribute('aria-label', `블랙박스 시계 ${lab}`); b.onclick = () => { d.off = Math.max(-15, Math.min(15, d.off + v)); save(); }; row.append(b); });
           wrap.append(row);
@@ -510,9 +560,81 @@ export default {
       reveal: {
         title: '작업 지시서 · 9/12',
         text: '차량 서연 검은 세단 앞 디스크·패드 교체 고객 통화 하지 말 것 지시 박정호 작업 지수',
-        scene: ['종이 끝이 아직 빳빳하다 오늘 새벽 누군가 이걸 찢어 사무실 휴지통 맨 위에 버렸다'],
+        scene: ['종이 끝이 아직 빳빳하다 오늘 새벽 누군가 이걸 찢어 사무실 휴지통 맨 위에 버렸다', '갈아 낸 디스크는 어디 갔을까 폐업 정리 중이라 아직 고물상에 넘기진 않았을 거다'],
         get unlock() { return toReport(); },
         unlockDoc: 'workorder',
+      },
+    },
+
+    disc: {
+      title: '폐부품 카트의 디스크',
+      scene: 'shop',
+      intro: '카트 옆 바닥에 갈아 낸 앞 브레이크 디스크 셋이 겹쳐 기대 세워져 있다 꼬리표가 철사로 묶여 있다 디스크를 누르면 캘리퍼스로 두께를 물려 본다 서연 차에서 나온 디스크면 잰 두께를 숫자판으로 꼬리표에 적는다',
+      docs: ['receipt', 'workorder'],
+      hintCode: 'G-S08',
+      hints: [
+        '서연 차를 언제 무슨 부품을 갈았는지는 지시서에, 차 번호는 앞마당 영수증에 있어요 꼬리표는 한 글자씩 맞춰 봐요',
+        '큰 눈금에서 아래 0이 막 지난 숫자가 mm, 작은 눈금 가운데 위 줄과 딱 이어지는 줄 번호가 소수점 아래예요 디스크에 찍힌 MIN 숫자는 잰 값이 아니에요',
+      ],
+      initial: () => ({ pick: null, val: '' }),
+      render(ctx) {
+        const { d, el, save } = ctx;
+        if (typeof d.val !== 'string') d.val = '';
+        const wrap = el('div', 'disc-wrap');
+        const row = el('div', 'disc-row');
+        DISCS.forEach((x, i) => {
+          const b = el('button', 'disc-btn' + (d.pick === x.id ? ' on' : '')); b.type = 'button';
+          b.setAttribute('aria-label', `디스크 ${'가나다'[i]} 캘리퍼스로 재기 (꼬리표 ${x.plate} ${x.when})`); b.setAttribute('aria-pressed', String(d.pick === x.id));
+          b.innerHTML = `${discSvg(x)}<span class="disc-tag"><b>${x.plate}</b><span>${x.when}</span></span><small>${'가나다'[i]}</small>`;
+          b.onclick = () => { d.pick = x.id; save(); };
+          row.append(b);
+        });
+        wrap.append(row);
+        const cur = DISCS.find((x) => x.id === d.pick);
+        const box = el('div', 'vern-box');
+        if (cur) {
+          wrap.append(el('p', 'vern-cap', `디스크 ${'가나다'[DISCS.indexOf(cur)]} · 안쪽 테에 찍힌 글자 「MIN TH 25」 · 캘리퍼스 눈금 확대 (mm)`));
+          box.innerHTML = vernierSvg(cur.mm);
+          box.classList.add('has-scale');
+          // 휴대폰에선 눈금이 상자보다 넓다: 처음엔 아들자 0 조금 앞부터 보이게
+          requestAnimationFrame(() => { const sv = box.querySelector('.vern-svg'); if (sv && sv.getBoundingClientRect().width > box.clientWidth + 2) box.scrollLeft = Math.max(0, ((12 + (cur.mm - 2 - 22) * 24) / 360) * sv.getBoundingClientRect().width); });
+        } else box.append(el('p', 'vern-cap empty', '디스크를 하나 골라 캘리퍼스를 물린다'));
+        wrap.append(box);
+        // 휴대폰: 눈금 상자는 옆으로 밀린다는 표시
+        if (cur) wrap.append(el('p', 'vern-swipe mobile-only', '← 눈금은 옆으로 밀어 볼 수 있다 →'));
+        // 숫자판: 꼬리표에 적을 두께
+        const tag = el('div', 'disc-write'); tag.append(el('span', '', '꼬리표에 적을 두께'), el('b', 'disc-val', (d.val || '　') + ' mm'));
+        wrap.append(tag);
+        const pad = el('div', 'disc-pad');
+        ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '←'].forEach((k) => {
+          const b = el('button', 'ctl' + (k === '←' ? ' del' : ''), k); b.type = 'button';
+          // 지우기 키: '←' 글자가 꺾쇠(<)처럼 보여서 지우기 모양 그림으로
+          if (k === '←') b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5H20v14H8.5L3 12Z"/><path d="m11.5 9 5 6m0-6-5 6"/></svg>';
+          b.setAttribute('aria-label', k === '←' ? '한 자 지우기' : k === '.' ? '소수점 적기' : `${k} 적기`);
+          b.onclick = () => {
+            if (k === '←') d.val = d.val.slice(0, -1);
+            else if (k === '.') { if (!d.val.includes('.') && d.val) d.val += '.'; }
+            else if (d.val.replace('.', '').length < 4) d.val += k;
+            save();
+          };
+          pad.append(b);
+        });
+        wrap.append(pad);
+        return wrap;
+      },
+      commitLabel: '꼬리표에 적어 두기',
+      canCommit: (d) => !!d.pick && !!d.val,
+      check(d) {
+        const v = Number(d.val);
+        if (d.pick === DISC_ANSWER.id && Number.isFinite(v) && Math.abs(v - Number(DISC_ANSWER.mm)) < 1e-9) return { ok: true };
+        return { ok: false, msg: '꼬리표에 적고 보니 서연 차 기록과 맞지 않는다' };
+      },
+      reveal: {
+        title: '26.4mm',
+        text: '서연 차에서 떼어 낸 앞 디스크 한계 두께 25mm까지 아직 1.4mm 남아 있었다 갈 때가 안 된 디스크다',
+        scene: ['꼬리표 뒤에 다른 글씨가 있었다 「버리지 말 것 — 지수」 사진만 남겨 둔 게 아니었다'],
+        get unlock() { return toReport(); },
+        unlockDoc: 'disc',
       },
     },
 
@@ -551,7 +673,7 @@ export default {
       reveal: {
         title: '차 안의 강민호',
         text: '영상은 21:47:34에 돌아왔다 그때부터 민호는 줄곧 차 안 화면에 있었고, 07-A는 21:48:20까지 정비소 안에 있었다',
-        scene: ['서연: "그럼 민호 씨는 아니네요 끊긴 1분 반은 그냥 끊긴 거고요"', '휴대폰을 돌려주자 민호가 작게 말했다 "인계 문서에 금고 번호 적은 거 저예요 그거 때문에 저도 의심받을 줄 알았어요"'],
+        scene: ['서연: "그럼 민호 씨는 아니네요 끊긴 1분 반은 그냥 끊긴 거고요"', '휴대폰을 돌려주자 민호가 작게 말했다 "인계 문서에 금고 번호 정하는 법 적은 거 저예요 그거 때문에 저도 의심받을 줄 알았어요"'],
         get unlock() { return toReport(); },
       },
     },
@@ -606,7 +728,7 @@ export default {
       title: '서연에게 보고',
       scene: 'yard',
       intro: '서연에게 보낼 보고서 칸마다 맞는 것을 누른다 ③은 해당하는 것을 모두 누른다 하나라도 틀리면 서연은 경찰을 못 부른다',
-      docs: ['lockerlog', 'safedoc', 'server', 'workorder'],
+      docs: ['lockerlog', 'safedoc', 'server', 'workorder', 'disc'],
       hintCode: 'G-S07',
       hints: [
         '카드는 단말 기록과 분실 신고서, 금고 봉투를 이어서 봐요 이유는 휴지통에서 나왔죠',
@@ -639,7 +761,7 @@ export default {
       },
       reveal: {
         title: '보고 완료',
-        text: '서연이 답장을 보냈다 「경찰 불렀어요 사장님 차 글로브박스에서 카드 나왔대요 07-A라고 적힌 출입 카드도 같이요」',
+        text: '서연이 답장을 보냈다 「경찰 불렀어요 금방 온대요 저도 지금 가요」',
         scene: ['사장은 셔터 앞 상자에 앉아 고개를 숙이고 있었다 회색 작업복 차림 그대로였다 휴게실 문이 열리고 지수가 나왔다'],
         ending: true,
         endingLabel: '열 시, 셔터가 내려간다',
@@ -653,11 +775,11 @@ export default {
     eyebrow: '9월 19일, 오전 열 시',
     title: '마지막 정비소',
     paragraphs: [
-      '사장은 21:40에 나가기 전 금고에서 07-A를 꺼내 주머니에 넣었다 이관 작업으로 기록이 잠기는 21:45를 넘겨 측문으로 들어가 슬롯에서 카드를 빼고 나왔다 혹시 잠긴 줄이 풀려도 거기 찍히는 건 지수가 잃어버린 카드였다 22:00에 09로 다시 들어가 "없어졌다"고 했다',
-      '"교체는 내가 시켰어요" 사장이 말했다 "인수 쪽에 그 사진이 지시서랑 같이 넘어가면 계약이 깨져요 지수한테 뒤집어씌울 생각까진 없었는데 말이 그렇게 나가더라고" 내가 작업장 단말을 보는 사이 사무실에 들어가 재킷을 만진 것도 사장이었다 띠가 안 보이게 돌려 걸려다 단말 우는 소리에 그만뒀다고 했다',
+      '경찰은 사장 차 글로브박스에서 SD카드와 07-A 출입 카드를 같이 꺼냈다 사장은 21:40에 나가기 전 금고에서 07-A를 꺼내 주머니에 넣었다 이관 작업으로 기록이 잠기는 21:45를 넘겨 측문으로 들어가 슬롯에서 카드를 빼고 나왔다 혹시 잠긴 줄이 풀려도 거기 찍히는 건 지수가 잃어버린 카드였다 22:00에 09로 다시 들어가 "없어졌다"고 했다',
+      '"교체는 내가 시켰어요 아직 쓸 만한 디스크였는데" 사장이 말했다 "인수 쪽에 그 사진이 지시서랑 같이 넘어가면 계약이 깨져요 지수한테 뒤집어씌울 생각까진 없었는데 말이 그렇게 나가더라고" 내가 작업장 단말을 보는 사이 사무실에 들어가 재킷을 만진 것도 사장이었다 띠가 안 보이게 돌려 걸려다 단말 우는 소리에 그만뒀다고 했다',
       '지수가 사장 앞에 섰다 "그 사진 저도 찍기 싫었어요 근데 안 찍어 두면 나중에 제가 한 걸로 될 것 같았어요"',
       '민호는 인계 문서 메모 줄에 두 줄을 긋고 다시 썼다 「교체 지시 박정호 사진은 고객에게 반환」',
-      '서연은 카드를 받아 들고 한참 보더니 주머니에 넣었다 "이 정비소, 내일부터는 없는 거죠"',
+      '서연은 SD카드를 받아 들고 한참 보더니 주머니에 넣었다 "이 정비소, 내일부터는 없는 거죠"',
       '열 시에 셔터가 끝까지 내려갔다 블랙박스는 그때도 7분 빠른 시각을 찍고 있었다',
     ],
     afterword: '정비소에서는 끝내 아무도 블랙박스 시계를 고치지 않았다 서연이 그날 저녁 집 앞에서 직접 맞췄다',

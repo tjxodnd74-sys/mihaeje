@@ -4,7 +4,7 @@
 // v126: 기록 사본 줄은 센터 서식 순서(일어난 차례와 다름) → 날짜만 줄 세워서는 통 번호가 안 나오고, 물건 뒷면(도장·글씨)으로 줄을 맞춰야 한다
 //       정류장 이야기 하나로: 유나가 전화 → 엄마가 정류장에 나가 사진을 찍음 → 다음 날 엄마와 병원 (엄마는 십 년 뒤 누가 전화했는지 가물가물)
 const P = 'assets/v2/pet-home/';
-const small = () => typeof matchMedia === 'function' && matchMedia('(max-width:640px)').matches;
+const small = () => typeof matchMedia === 'function' && matchMedia('(max-width:640px), (orientation:landscape) and (max-height:500px)').matches; // 가로 휴대폰도 휴대폰
 
 const REG = '941372608154902'; // 루미 동물등록번호 (게임 속 가상 번호)
 const STAMP = {
@@ -48,12 +48,52 @@ const cabX = (x) => ((x - CAB.x0) / CAB.w) * 100, cabY = (y) => ((y - CAB.y0) / 
 // 7-3 서랍 앞쪽에 올라온 카드 다섯 V-6384가 셋, 계약서 등록번호까지 맞는 건 하나
 // x·y·rot = drawer.webp 에서 잰 색 표 가운데와 기울기 (표를 감싸는 선택 테두리가 표 위에 딱 맞게)
 const CARDS = [
-  { id: 'blue', tab: '파란', x: 32.6, y: 35.6, rot: -17, v: 'V-6381', name: '보리', date: '2016/7/15', reg: '941372608154209' },
-  { id: 'green', tab: '초록', x: 39.4, y: 28.9, rot: -10, v: 'V-6384', name: '콩이', date: '2016/7/17', reg: '941372608145902' },
-  { id: 'yellow', tab: '노란', x: 47.8, y: 25.0, rot: -3, v: 'V-6384', name: '콩이', date: '2016/7/17', reg: '941372608154902' },
-  { id: 'orange', tab: '주황', x: 55.4, y: 23.3, rot: 4, v: 'V-6384', name: '콩', date: '2016/7/17', reg: '941372680154902' },
-  { id: 'red', tab: '빨간', x: 63.3, y: 23.1, rot: 6, v: 'V-6385', name: '코코', date: '2016/7/18', reg: '941327608154902' },
+  { id: 'blue', tab: '파란', x: 32.6, y: 35.6, rot: -17, v: 'V-6381', name: '보리', date: '2016/7/15', reg: '941372608154209', tel: '010-0257-9364' },
+  { id: 'green', tab: '초록', x: 39.4, y: 28.9, rot: -10, v: 'V-6384', name: '콩이', date: '2016/7/17', reg: '941372608145902', tel: '010-0395-1127' },
+  { id: 'yellow', tab: '노란', x: 47.8, y: 25.0, rot: -3, v: 'V-6384', name: '콩이', date: '2016/7/17', reg: '941372608154902', tel: null },
+  { id: 'orange', tab: '주황', x: 55.4, y: 23.3, rot: 4, v: 'V-6384', name: '콩', date: '2016/7/17', reg: '941372680154902', tel: null }, // 같은 날 센터로 넘긴 다른 강아지 — 연락처가 지워진 카드가 노란 표 하나만이 아니게 (지운 자국만 보고 고르는 지름길 막기)
+  { id: 'red', tab: '빨간', x: 63.3, y: 23.1, rot: 6, v: 'V-6385', name: '코코', date: '2016/7/18', reg: '941327608154902', tel: '010-0861-4430' },
 ];
+const telOf = (c) => (c.tel ? c.tel : '<span class="erased">지우개로 지운 자국</span>');
+
+// v136 새 장치 · 연필 문지르기: 노란 표 카드의 지운 연락처 칸 (게임 속 가상 번호 · 앞자리 0 이라 실제로 걸리지 않는 형식)
+// 칸에는 자국이 셋 겹쳐 있다 — 지우개로 지운 연필 번호(가장 흐림) + 그 위에 쌓아 놓고 쓴 초록·빨간 표 카드의 볼펜 자국
+// 답 = 다섯 카드 어디에도 없는 번호 = 우리 집 전화 (가장 또렷한 줄을 고르면 틀린다)
+const HOME_TEL = '031-047-2816';
+const RUB_LINES = [ // 문지른 종이 위 좌표(320×110 기준) · a = 자국 깊이(밝기)
+  { t: '010-0395-1127', x: 18, y: 35, rot: -0.03, a: 0.95, size: 31 },
+  { t: HOME_TEL, x: 52, y: 65, rot: 0.015, a: 0.52, size: 29 },
+  { t: '010-0861-4430', x: 30, y: 96, rot: 0.035, a: 0.9, size: 31 },
+];
+const RUB = { W: 320, H: 110, COLS: 16, ROWS: 5, R: 19 };
+let rubBase = null; // 흑연 바탕 + 하얀 자국 (한 번만 그림)
+function rubBaseCanvas() {
+  if (rubBase) return rubBase;
+  // 손글씨 글꼴이 아직 안 왔으면 받은 뒤 다시 그린다 (그 전 그림은 잠깐만 쓴다)
+  const fontReady = !document.fonts || document.fonts.check('20px MihaejeHand');
+  if (!fontReady) document.fonts.load('20px MihaejeHand').then(() => { rubBase = null; document.querySelectorAll('.rub-canvas').forEach((cv) => cv._cells && rubPaint(cv, cv._cells)); }).catch(() => {});
+  const k = 2, c = document.createElement('canvas'); c.width = RUB.W * k; c.height = RUB.H * k; const g = c.getContext('2d');
+  g.fillStyle = '#5d6066'; g.fillRect(0, 0, c.width, c.height);
+  let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  g.lineWidth = 1.4;
+  for (let i = 0; i < 1400; i++) { const x = rnd() * c.width, y = rnd() * c.height, l = 6 + rnd() * 14; g.strokeStyle = rnd() < 0.5 ? 'rgba(30,31,36,.35)' : 'rgba(150,152,158,.25)'; g.beginPath(); g.moveTo(x, y); g.lineTo(x + l, y - l * 0.55); g.stroke(); }
+  RUB_LINES.forEach((l) => { g.save(); g.translate(l.x * k, l.y * k); g.rotate(l.rot); g.font = `${l.size * k}px MihaejeHand, "Nanum Pen Script", serif`; g.fillStyle = `rgba(246,243,233,${l.a})`; g.fillText(l.t, 0, 0); g.restore(); });
+  if (fontReady) rubBase = c;
+  return c;
+}
+function rubPaint(cv, cells) {
+  cv._cells = cells;
+  const g = cv.getContext('2d'); const W = cv.width, H = cv.height, k = W / RUB.W;
+  g.clearRect(0, 0, W, H);
+  g.fillStyle = 'rgba(253,251,245,.94)'; g.fillRect(0, 0, W, H); // 카드 위에 덮은 얇은 메모지
+  if (!cells.size) return;
+  const m = document.createElement('canvas'); m.width = W; m.height = H; const mg = m.getContext('2d');
+  const cw = RUB.W / RUB.COLS, ch = RUB.H / RUB.ROWS;
+  cells.forEach((i) => { const cx = ((i % RUB.COLS) + 0.5) * cw * k, cy = (Math.floor(i / RUB.COLS) + 0.5) * ch * k, r = RUB.R * k; const gr = mg.createRadialGradient(cx, cy, 0, cx, cy, r); gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(0.55, 'rgba(0,0,0,.92)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); mg.fillStyle = gr; mg.fillRect(cx - r, cy - r, r * 2, r * 2); });
+  mg.globalCompositeOperation = 'source-in'; mg.drawImage(rubBaseCanvas(), 0, 0, W, H);
+  g.drawImage(m, 0, 0);
+}
+
 const CARD_ANSWER = 'yellow';
 
 // 엄마 사진 상자 속 명찰 넷 — 끈 색은 학년마다 다르다(학교 안내문) 파랑 = 2학년
@@ -100,7 +140,7 @@ export default {
   title: '첫 번째 보호자',
   subtitle: '파란 끈을 버리지 않은 이유',
   genre: '반려동물 · 가족 미스터리',
-  minutes: 22,
+  minutes: 26,
   difficulty: 3,
   cover: P + 'cover.webp',
   coverAlt: '목줄에 파란 끈을 단 노견 루미',
@@ -125,6 +165,7 @@ export default {
   traces: [
     { device: 'box', label: '기념품 넷' },
     { device: 'cards', label: '진료 카드' },
+    { device: 'rub', label: '지운 연락처' },
     { device: 'strap', label: '끈의 주인' },
   ],
 
@@ -147,25 +188,30 @@ export default {
       name: '담담동물병원',
       image: P + 'clinic.webp',
       unlockedBy: 'box',
-      arrive: '접수증의 병원은 아직 같은 자리에 있었다 "2016년이요? 그때 쓰던 접수 프로그램 회사가 문을 닫아서 옛날 건 카드로만 남았어요 저기 서랍장 오른쪽 위 열두 칸이요" 수의사가 접수대 너머 벽을 가리켰다',
+      arrive: (S) => (S.solved.includes('rub')
+        ? '노란 표 카드는 수의사한테 돌려줬다 연필 가루가 묻은 메모지는 접어서 가방에 넣었다'
+        : S.solved.includes('cards')
+          ? '노란 표 카드를 접수대에 올려놓았다 연락처 칸만 지우개 자국으로 허옇다 수의사가 연필꽂이를 내 쪽으로 밀어 줬다'
+          : '접수증의 병원은 아직 같은 자리에 있었다 "2016년이요? 그땐 전산 들이기 전이라 옛날 건 카드로만 남았어요 저기 서랍장 오른쪽 위 열두 칸이요" 수의사가 접수대 너머 벽을 가리켰다'),
       hotspots: [
         { id: 'vet', x: 38, y: 53, label: '접수대에서 들은 말', kind: 'doc', doc: 'vet' },
         { id: 'rule', x: 86, y: 25, r: 10, label: '게시판의 카드 보관 안내', kind: 'doc', doc: 'rule' },
         { id: 'cabinet', x: 42, y: 24, r: 9, label: '카드 서랍장 오른쪽 위 열두 칸', kind: 'device', device: 'cards' },
+        { id: 'pencil', x: 44, y: 38.5, r: 6, label: '접수대 연필꽂이와 노란 표 카드', kind: 'device', device: 'rub', visible: (S) => S.solved.includes('cards') },
       ],
     },
     {
       id: 'mom',
       name: '엄마 집',
       image: P + 'mom.webp',
-      unlockedBy: 'cards',
+      unlockedBy: 'rub',
       arrive: (S) => (S.solved.includes('strap')
         ? '엄마는 일기 한 장을 손바닥으로 펴 주고 보리차를 따랐다 사진 상자 뚜껑이 열린 채로 있다'
         : '다음 날 엄마 집 식탁에 앨범이 펼쳐져 있다 엄마는 보리차를 끓이며 "그해 여름이면 서진이가 우리 집에 있을 때다" 했다 식탁 끝엔 엄마가 못 버리는 사진 상자'),
       hotspots: [
         { id: 'phone', x: 53.7, y: 78.5, r: 7, label: '엄마와 주고받은 문자', kind: 'doc', doc: 'momchat' },
         { id: 'album', x: 44, y: 58, r: 13, label: '펼쳐 둔 앨범', kind: 'doc', doc: 'album' },
-        { id: 'guide', x: 93.5, y: 19, r: 8, label: '장식장 위 서류철', kind: 'doc', doc: 'guide' },
+        { id: 'guide', x: 93.5, y: 19, r: 8, label: '장식장 위 납작한 상자', kind: 'doc', doc: 'guide' },
         { id: 'strap', x: 89, y: 64, r: 10, label: '엄마의 사진 상자', kind: 'device', device: 'strap', visible: (S) => !S.solved.includes('strap') },
         { id: 'diary', x: 89, y: 64, r: 10, label: '사진 상자 밑의 일기 한 장', kind: 'doc', doc: 'diary', visible: (S) => S.solved.includes('strap') },
       ],
@@ -183,7 +229,7 @@ export default {
       kind: '보호센터 접수 27번 · 2016년',
       html: `<div class="paper-table"><p class="pt-head">햇살구 동물보호센터 · 접수번호 27</p><table><tr><th>날짜</th><th>도장</th><th>처리</th><th>담당</th></tr>
 ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}">${s.shown}</td><td class="nw">${stampSvg(s.stamp, 'ink')} <span class="stamp-name">${STAMP[s.stamp].name}</span></td><td>${s.name.replace(/ 날$/, '\u00a0날')}</td><td>${s.who}</td></tr>`).join('')}
-</table><p class="pt-foot">※ 원본에는 신고자가 「보호자 동반 학생」으로만 적혀 있음 · 진료 연계는 담담동물병원 · 줄은 센터 서식 순서</p></div><p>네 줄 다 접수번호 27이다 줄은 센터 서식 순서대로라 일어난 차례와는 다르다 복사가 잘못돼서 날짜 끝자리가 세 줄이나 뭉개졌다 처음 발견한 사람 칸만 이름이 없다</p><p class="aside">사본 밑에 자물쇠 달린 양철통이 하나 더 있었다 정우 씨 글씨로 「통 번호는 네 날의 끝자리, 이 사본 줄 순서대로 위에서부터」</p>`,
+</table><p class="pt-foot">※ 원본에는 신고자가 「보호자 동반 학생」으로만 적혀 있음 · 진료 연계는 담담동물병원 · 줄은 센터 서식 순서</p></div><p>네 줄 다 접수번호 27이다 줄은 센터 서식 순서대로라 일어난 차례와는 다르다 복사가 잘못돼서 날짜 뒤쪽이 세 줄이나 뭉개졌다 처음 발견한 사람 칸만 이름이 없다</p><p class="aside">사본 밑에 자물쇠 달린 양철통이 하나 더 있었다 정우 씨 글씨로 「통 번호는 네 날의 끝자리, 이 사본 줄 순서대로 위에서부터」</p>`,
     },
     contract: {
       title: '입양 계약서 봉투',
@@ -205,11 +251,16 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
       kind: '오래된 안내문',
       html: `<div class="paper-table"><p class="pt-head">진료 카드 보관 안내 (2014~2018 전산 전 기록 · 벽 서랍장 오른쪽 위 열두 칸)</p><table><tr><th>서랍</th><th>번호</th></tr>${DRAWERS.map(([id, r]) => `<tr><td>${id}</td><td class="mono">${r}</td></tr>`).join('')}</table><p class="pt-foot hand-note">※ 2017년 정리 — 7-2가 꽉 차서 V-6350 이후는 7-3 앞쪽으로 옮겨 꽂음 (손글씨 추가)</p></div><p>카드 앞면에는 V 번호, 이름, 첫 진료일, 동물등록번호, 뒷면에는 메모</p>`,
     },
+    cardshot: {
+      title: '휴대폰으로 찍어 둔 카드 다섯 장',
+      kind: '7-3 서랍 앞쪽 · 내가 찍은 것',
+      html: `<ul class="shot-list">${CARDS.map((c) => `<li><b>${c.tab} 표</b><span class="mono">${c.v}</span><span>${c.name}</span><span class="nw">${c.date}</span><span class="nw mono">${telOf(c)}</span></li>`).join('')}</ul><p>서랍에 도로 꽂기 전에 다섯 장 앞면을 다 찍어 뒀다</p>`,
+    },
     momchat: {
       title: '엄마와 주고받은 문자',
       kind: '10월 10일 낮',
       html: `<div class="chat"><div class="chat-head"><span class="chat-back">‹</span><b>엄마</b><span class="chat-icons">☰</span></div><div class="chat-date">2026년 10월 10일 토요일</div>
-<div class="chat-row me"><span class="chat-meta">오후 1:12</span><div class="chat-bubble">엄마 2016년 여름에 햇살동 정류장에서 강아지 주운 거 기억나?</div></div>
+<div class="chat-row me"><span class="chat-meta">오후 1:12</span><div class="chat-bubble">엄마 2016년 여름에 강아지 주워서 병원 데려간 적 있지? 병원 카드에 우리 집 전화번호가 있어</div></div>
 <div class="chat-row them"><span class="chat-avatar">엄</span><div class="chat-col"><span class="chat-name">엄마</span><div class="chat-bubble">갑자기 왠 강아지</div><div class="chat-bubble">기억나지 콩알만한거</div><div class="chat-bubble">정류장에서 전화와서 엄마가 나갔잖아 사진도 그때 찍었고</div></div><span class="chat-time">오후 1:30</span></div>
 <div class="chat-row me"><span class="chat-meta">오후 1:31</span><div class="chat-bubble">누가 전화했는데?</div></div>
 <div class="chat-row them"><span class="chat-avatar">엄</span><div class="chat-col"><span class="chat-name">엄마</span><div class="chat-bubble">그게 가물가물해</div><div class="chat-bubble">그해 서진이가 우리집에서 학교 다닐때라 둘이 맨날 붙어다녔잖아</div><div class="chat-bubble">센터 데려다주고 둘다 울었지</div><div class="chat-bubble">와서 봐 앨범 꺼내놓을게 서진이 물건도 아직 사진상자에 있다</div></div><span class="chat-time">오후 1:33</span></div>
@@ -222,13 +273,13 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
     },
     guide: {
       title: '햇살중 생활 안내',
-      kind: '장식장 위 서류철 · 2016학년도',
-      html: `<div class="paper-table"><p class="pt-head">2016학년도 햇살중학교 생활 안내 (가정통신문)</p><table><tr><th>교복</th><td>하복 6월 ~ 9월</td></tr><tr><th>명찰</th><td>학년마다 새로 나눠 줌 학교 안에서는 늘 목에 걸 것</td></tr><tr><th>명찰 끈 색</th><td class="nw">1학년 빨강 · 2학년 파랑 · 3학년 초록</td></tr><tr><th>분실</th><td>교무실에서 같은 색으로 다시 받음</td></tr></table><p class="pt-foot">햇살중학교장</p></div><p>엄마는 가정통신문을 한 장도 안 버렸다 2015년 것과 2017년 것도 같은 서류철에 순서대로 꽂혀 있다</p>`,
+      kind: '장식장 위 납작한 상자 · 2016학년도',
+      html: `<div class="paper-table"><p class="pt-head">2016학년도 햇살중학교 생활 안내 (가정통신문)</p><table><tr><th>교복</th><td>하복 6월 ~ 9월</td></tr><tr><th>명찰</th><td>학년마다 새로 나눠 줌 학교 안에서는 늘 목에 걸 것</td></tr><tr><th>명찰 끈 색</th><td class="nw">1학년 빨강 · 2학년 파랑 · 3학년 초록</td></tr><tr><th>분실</th><td>교무실에서 같은 색으로 다시 받음</td></tr></table><p class="pt-foot">햇살중학교장</p></div><p>엄마는 가정통신문을 한 장도 안 버렸다 2015년 것과 2017년 것도 같은 상자에 순서대로 포개져 있다</p>`,
     },
     diary: {
       title: '사진 상자 밑의 일기 한 장',
       kind: '2016년 7월 16일 · 내 글씨',
-      html: `<figure class="prop oldphoto"><img src="${P}props/photo2016.webp" alt="2016년 정류장에서 강아지를 안은 중학생 유나, 강아지 목에 파란 끈" decoding="async"></figure><p>일기 사이에 사진 한 장이 끼워져 있었다 정류장 벤치 앞에 쪼그려 앉은 중학생이 손바닥만 한 강아지를 안고 있다 강아지 목에 파란 끈 뒷면에 엄마 글씨로 「2016/7/16 햇살동 정류장 유나 콩이」</p><blockquote class="hand">7월 16일 토 맑음 너무 더움<br>학원 가는 길에 정류장 벤치 밑에 강아지가 있었다 손바닥만 하다 엄마한테 전화했더니 엄마가 정류장으로 나왔다 데려가자고 해서 명찰 끈 풀어서 목에 묶었다 명찰은 빼서 주머니에 넣음 엄마가 사진 찍어 줌<br>이름은 콩이로 정했다 콩같이 생겨서<br>저녁에 서진 오빠가 와서 자기가 키우겠다고 우겼다 둘 다 안 된대 (아빠)<br>내일 병원 데려간대<br>— 햇살중 2학년 3반 김유나</blockquote><p>콩이라는 이름을 지은 것도 나였다 그 이름을 십 년 동안 까맣게 잊고 있었다</p>`,
+      html: `<figure class="prop oldphoto"><img src="${P}props/photo2016.webp" alt="2016년 정류장에서 강아지를 안은 중학생 유나, 강아지 목에 파란 끈" decoding="async"></figure><p>일기 사이에 사진 한 장이 끼워져 있었다 정류장 벤치 앞에 쪼그려 앉은 중학생이 손바닥만 한 강아지를 안고 있다 강아지 목에 파란 끈 뒷면에 엄마 글씨로 「2016/7/16 햇살동 정류장 유나 콩이」</p><blockquote class="hand">7월 16일 토 맑음 너무 더움<br>토요 방과후 끝나고 오는 길에 정류장 벤치 밑에 강아지가 있었다 손바닥만 하다 엄마한테 전화했더니 엄마가 정류장으로 나왔다 데려가자고 해서 명찰 끈 풀어서 목에 묶었다 명찰은 빼서 주머니에 넣음 엄마가 사진 찍어 줌<br>이름은 콩이로 정했다 콩같이 생겨서<br>저녁에 서진 오빠가 와서 자기가 키우겠다고 우겼다 둘 다 안 된대 (아빠)<br>내일 병원 데려간대<br>— 햇살중 2학년 3반 김유나</blockquote><p>콩이라는 이름을 지은 것도 나였다 그 이름을 십 년 동안 까맣게 잊고 있었다</p>`,
     },
     final: {
       title: '정우가 남긴 편지',
@@ -269,7 +320,7 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
         left.append(box);
         if (d.flip) {
           const it = ITEMS.find((x) => x.id === d.flip);
-          const back = el('div', 'prop keep-back'); back.innerHTML = `<img src="${P}props/${it.img}.webp" alt="${it.name} 뒷면" decoding="async"><div class="keep-back-note ${it.id}">${it.stamp ? stampSvg(it.stamp, 'ink big') : ''}<span class="keep-date">${it.date || ''}</span>${it.id === 'envelope' ? '<span class="keep-sub">접수 27 · 진료 V-6384 · 담담동물병원</span>' : ''}${it.id === 'blanket' ? '<span class="smudge" aria-hidden="true"></span>' : ''}</div>`;
+          const back = el('div', 'prop keep-back'); back.innerHTML = `<img src="${P}props/${it.img}.webp" alt="${it.name} 뒷면" decoding="async"><div class="keep-back-note ${it.id}">${it.stamp ? stampSvg(it.stamp, 'ink big') : ''}<span class="keep-date">${it.date || ''}</span>${it.id === 'envelope' ? '<span class="keep-sub">접수 27 · 진료 <span class="nw">V-6384</span> · 담담동물병원</span>' : ''}${it.id === 'blanket' ? '<span class="smudge" aria-hidden="true"></span>' : ''}</div>`;
           const card = el('div', 'keep-backcard'); card.append(back, el('p', 'pick-label', `${it.name} 뒷면 — ${it.date ? it.date + ' · ' : ''}${it.back}`));
           left.append(card);
         }
@@ -305,7 +356,7 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
       },
       reveal: {
         title: '양철통이 열렸다',
-        text: '자물쇠가 툭 하고 빠졌다 양철통 안에는 병원 접수증 원본과 사진 한 장 접수증에 「V-6384 · 카드실 보관」 사진은 센터에서 찍은 어린 콩이, 목에 파란 끈',
+        text: '자물쇠가 툭 하고 빠졌다 양철통 안에는 병원 접수증 원본과 사진 한 장 접수증에 「V-\u20606384\u00a0·\u00a0카드실\u00a0보관」 사진은 센터에서 찍은 어린 콩이, 목에 파란 끈',
         scene: ['접수증의 병원은 햇살동에 아직 있다 루미를 데리고 갈까 하다가, 열 살짜리를 끌고 다니기 미안해서 혼자 나섰다'],
         unlock: 'clinic',
       },
@@ -319,7 +370,7 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
       hintCode: 'P-S02',
       hints: [
         '봉투에 적힌 V 번호가 어느 서랍에 있을지 게시판 안내를 끝까지 읽어 보세요',
-        '같은 V 번호가 여러 장이면, 수의사 말대로 다른 번호까지 서류와 한 자리씩 대 봐야 합니다',
+        '같은 V 번호가 여러 장이면, 수의사 말대로 다른 번호까지 서류와 한 자리씩 대 봐야 해요',
         '7-3 서랍 · 노란 표 카드 (V-6384 · 콩이 · 941372608154902)',
       ],
       initial: () => ({ drawer: null, open: null }),
@@ -367,7 +418,7 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
         if (d.open) {
           const c = CARDS.find((x) => x.id === d.open);
           const card = el('div', 'index-card');
-          card.innerHTML = `<p class="ic-head">담담동물병원 진료 카드 · ${c.tab} 표</p><div class="ic-row"><span>번호</span><b class="mono">${c.v}</b></div><div class="ic-row"><span>이름</span><b>${c.name}</b></div><div class="ic-row"><span>첫 진료</span><b>${c.date}</b></div><div class="ic-row"><span>동물등록번호</span><b class="mono reg">${c.reg.replace(/(\d{3})(?=\d)/g, '$1 ')}</b></div>`;
+          card.innerHTML = `<p class="ic-head">담담동물병원 진료 카드 · ${c.tab} 표</p><div class="ic-row"><span>번호</span><b class="mono">${c.v}</b></div><div class="ic-row"><span>이름</span><b>${c.name}</b></div><div class="ic-row"><span>첫 진료</span><b>${c.date}</b></div><div class="ic-row"><span>동물등록번호</span><b class="mono reg">${c.reg.replace(/(\d{3})(?=\d)/g, '$1 ')}</b></div><div class="ic-row"><span>연락처</span><b class="mono">${telOf(c)}</b></div>`;
           wrap.append(card); bringIntoView(d, d.drawer + d.open, card);
         } else { wrap.append(el('p', 'pick-label', '올라와 있는 카드를 누르면 앞면이 보인다')); bringIntoView(d, d.drawer, tail); }
         return wrap;
@@ -380,8 +431,87 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
       },
       reveal: {
         title: '콩이 = 루미',
-        text: '카드를 뒤집었다 「신고자: 햇살중 학생 (어머니 동반) · 명찰 끈을 임시 목줄로 사용 · 사진 1매는 어머니가 촬영」 학생 이름 칸은 비어 있다 등록번호는 계약서와 한 자리도 안 틀렸다 콩이가 루미다',
-        scene: ['햇살중이면 우리 동네 학교다 나도 다녔고, 2016년 그 여름엔 우리 집에 와 있던 사촌 서진 오빠도 다녔다 엄마 집에 내일 가 보기로 했다'],
+        text: '등록번호는 계약서와 한 자리도 안 틀렸다 콩이가 루미다 카드를 뒤집었다 「신고자: 햇살중 학생 (어머니 동반) · 명찰 끈을 임시 목줄로 사용 · 사진 1매는 어머니가 촬영」 학생 이름 칸은 비어 있고, 앞면 연락처 칸은 지우개로 지운 자국뿐이다',
+        scene: ['"센터로 넘긴 애들은 신고자 연락처를 지웠어요 신고자 번호는 연필로 받아 적었거든요 카드는 몇 장씩 쌓아 놓고 볼펜으로 꾹꾹 눌러 썼고요" 수의사가 접수대 연필꽂이를 가리켰다', '서랍에 도로 꽂기 전에 다섯 장 앞면을 휴대폰으로 찍어 뒀다'],
+        unlockDoc: 'cardshot',
+      },
+    },
+
+    rub: {
+      title: '노란 표 카드 연락처 칸',
+      scene: 'clinic',
+      intro: '카드 위에 얇은 메모지를 대고 연필을 눕혀 연락처 칸을 문지른다 (손가락이나 마우스로 끌기, 또는 「연필로 한 번 쓱」) 눌린 자국은 하얗게 남는다 남긴 번호를 알아내면 내 휴대폰으로 걸어 본다',
+      docs: ['cardshot', 'vet'],
+      hintCode: 'P-S04',
+      hints: [
+        '메모지를 칸 전체에 고르게 문질러 보세요 하얗게 떠오른 자국을 위에서부터 읽어요',
+        '떠오른 번호가 전부 이 카드에 쓴 건 아니에요 그 위에 쌓아 놓고 쓴 카드 자국도 눌려 있어요 찍어 둔 카드 다섯 장과 대 보세요',
+        '031-047-2816 (초록 표·빨간 표 카드 번호를 빼고 남는 흐린 줄)',
+      ],
+      initial: () => ({ cells: [], num: '' }),
+      render(ctx) {
+        const { d, el, save } = ctx;
+        const wrap = el('div', 'rub-wrap');
+        const c = CARDS.find((x) => x.id === CARD_ANSWER);
+        const card = el('div', 'index-card rub-card');
+        card.innerHTML = `<p class="ic-head">담담동물병원 진료 카드 · ${c.tab} 표</p><div class="ic-row"><span>번호</span><b class="mono">${c.v}</b></div><div class="ic-row"><span>이름</span><b>${c.name}</b></div><div class="ic-row"><span>첫 진료</span><b>${c.date}</b></div><div class="ic-row rub-label"><span>연락처</span><span class="rub-note">지우개 자국 위에 메모지를 댔다</span></div>`;
+        const cv = document.createElement('canvas'); cv.className = 'rub-canvas'; cv.width = RUB.W * 2; cv.height = RUB.H * 2;
+        cv.setAttribute('role', 'img'); cv.setAttribute('aria-label', '연락처 칸 위에 댄 메모지 끌어서 연필로 문지르기');
+        const live = new Set(d.cells);
+        let on = false;
+        const mark = (e) => {
+          const r = cv.getBoundingClientRect(); const x = ((e.clientX - r.left) / r.width) * RUB.W, y = ((e.clientY - r.top) / r.height) * RUB.H;
+          const cw = RUB.W / RUB.COLS, ch = RUB.H / RUB.ROWS; let added = false;
+          for (let i = 0; i < RUB.COLS * RUB.ROWS; i++) { const cx = ((i % RUB.COLS) + 0.5) * cw, cy = (Math.floor(i / RUB.COLS) + 0.5) * ch; if (!live.has(i) && Math.hypot(cx - x, cy - y) < RUB.R) { live.add(i); added = true; } }
+          if (added) rubPaint(cv, live);
+        };
+        cv.addEventListener('pointerdown', (e) => { on = true; cv.setPointerCapture?.(e.pointerId); mark(e); e.preventDefault(); });
+        cv.addEventListener('pointermove', (e) => { if (on) mark(e); });
+        const end = () => { if (!on) return; on = false; if (live.size !== d.cells.length) { d.cells = [...live]; save(); } };
+        cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end); cv.addEventListener('lostpointercapture', end);
+        card.append(cv);
+        rubPaint(cv, live);
+        const total = RUB.COLS * RUB.ROWS;
+        const tools = el('div', 'rub-tools');
+        const nextRow = [...Array(RUB.ROWS).keys()].find((r) => [...Array(RUB.COLS).keys()].some((col) => !live.has(r * RUB.COLS + col)));
+        const once = el('button', 'chip rub-once', nextRow === undefined ? '다 문질렀다' : '연필로 한 번 쓱'); once.type = 'button'; once.disabled = nextRow === undefined;
+        once.setAttribute('aria-label', '연필로 메모지를 한 줄 문지르기');
+        once.onclick = () => { for (let col = 0; col < RUB.COLS; col++) live.add(nextRow * RUB.COLS + col); d.cells = [...live]; save(); };
+        tools.append(once);
+        wrap.append(card, tools);
+        if (live.size >= total * 0.6) wrap.append(el('p', 'pick-label rub-read', `하얗게 떠오른 번호 셋 (위에서부터) ${RUB_LINES.map((l) => l.t).join(' · ')}`));
+        else wrap.append(el('p', 'pick-label', live.size ? '자국이 조금씩 올라온다 칸 끝까지 문질러 본다' : '메모지 밑으로 지우개 자국만 비친다'));
+        // 내 휴대폰 전화 키패드
+        const phone = el('div', 'rub-phone');
+        const fmt = (n) => (n.startsWith('010') ? [n.slice(0, 3), n.slice(3, 7), n.slice(7)] : [n.slice(0, 3), n.slice(3, 6), n.slice(6)]).filter(Boolean).join('-');
+        const screen = el('div', 'rub-screen'); screen.append(el('span', 'rub-num' + (d.num ? '' : ' empty'), d.num ? fmt(d.num) : '번호 누르기'));
+        screen.setAttribute('aria-live', 'polite');
+        const pad = el('div', 'rub-pad');
+        ['1', '2', '3', '4', '5', '6', '7', '8', '9', '지움', '0', '⌫'].forEach((k) => {
+          const b = el('button', 'rub-key' + (k.length > 1 || k === '⌫' ? ' fn' : ''), k); b.type = 'button';
+          b.setAttribute('aria-label', k === '⌫' ? '한 자리 지우기' : k === '지움' ? '번호 다 지우기' : k);
+          b.onclick = () => { if (k === '⌫') d.num = d.num.slice(0, -1); else if (k === '지움') d.num = ''; else if (d.num.length < 11) d.num += k; save(); };
+          pad.append(b);
+        });
+        // v137: 통화 버튼은 휴대폰 틀 안 키패드 밑 가운데 (엔진 확인 버튼 대신 ctx.commit)
+        const ready = d.num.length >= 9;
+        const call = el('button', 'rub-call', '통화'); call.type = 'button'; call.setAttribute('aria-label', '통화 걸기');
+        call.classList.toggle('off', !ready);
+        call.onclick = () => { if (d.num.length >= 9) ctx.commit?.(); else ctx.status(d.num ? '번호를 끝까지 누른다' : '번호부터 누른다'); };
+        phone.append(el('p', 'pick-label', '내 휴대폰'), screen, pad, call);
+        wrap.append(phone);
+        return wrap;
+      },
+      commitLabel: '통화',
+      canCommit: (d) => d.num.length >= 9,
+      check(d) {
+        if (d.num === HOME_TEL.replace(/-/g, '')) return { ok: true };
+        return { ok: false, msg: '신호만 몇 번 가다 끊겼다 남긴 번호가 이게 맞을까' };
+      },
+      reveal: {
+        title: '엄마 집',
+        text: '통화 버튼을 누르자 화면 위에 이름이 떴다 「엄마 집」 이 번호를 마지막으로 누른 게 언제였는지 모르겠다 신호만 가고 아무도 안 받는다 엄마는 낮엔 늘 밖에 있다',
+        scene: ['햇살중 학생이 어머니랑 와서 남긴 번호가 우리 집 전화다 그해 여름 그 집에서 햇살중에 다닌 건 나하고, 우리 집에 와 있던 사촌 서진 오빠 둘이다 내일 엄마 집에 가 보기로 했다'],
         unlock: 'mom',
       },
     },
@@ -394,7 +524,7 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
       hintCode: 'P-S03',
       hints: [
         '끈에 이름은 안 남았어요 끈에서 알 수 있는 건 색이에요',
-        '그 색 끈을 받은 사람이 누구였을지 서류철 안내문과 명찰의 학년을 맞춰 보세요',
+        '그 색 끈을 받은 사람이 누구였을지 가정통신문과 명찰의 학년을 맞춰 보세요',
         '햇살중 2학년 3반 김유나 명찰',
       ],
       initial: () => ({ pick: null }),
@@ -466,6 +596,6 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
     ],
     afterword: '엄마는 그 사진을 내 집 현관에 걸어 줬다 루미 방석에서 보이는 자리다',
     unlockDoc: 'final',
-    next: { href: 'play.html?case=studio', title: '비가 그친 사진관', line: '다음은 오래된 사진관 이야기입니다' },
+    next: { href: 'play.html?case=studio', title: '비가 그친 사진관' }, // 설명 줄은 엔진이 버튼 줄 밑(처음 화면 아래)에 붙여서 뺌 — 버튼 글이 이미 '다음 이야기 · 비가 그친 사진관'
   },
 };
