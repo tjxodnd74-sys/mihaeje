@@ -4,7 +4,7 @@
 // v126: 기록 사본 줄은 센터 서식 순서(일어난 차례와 다름) → 날짜만 줄 세워서는 통 번호가 안 나오고, 물건 뒷면(도장·글씨)으로 줄을 맞춰야 한다
 //       정류장 이야기 하나로: 유나가 전화 → 엄마가 정류장에 나가 사진을 찍음 → 다음 날 엄마와 병원 (엄마는 십 년 뒤 누가 전화했는지 가물가물)
 const P = 'assets/v2/pet-home/';
-const small = () => typeof matchMedia === 'function' && matchMedia('(max-width:640px)').matches;
+const small = () => typeof matchMedia === 'function' && matchMedia('(max-width:640px), (orientation:landscape) and (max-height:500px)').matches; // 가로 휴대폰도 휴대폰
 
 const REG = '941372608154902'; // 루미 동물등록번호 (게임 속 가상 번호)
 const STAMP = {
@@ -211,7 +211,7 @@ export default {
       hotspots: [
         { id: 'phone', x: 53.7, y: 78.5, r: 7, label: '엄마와 주고받은 문자', kind: 'doc', doc: 'momchat' },
         { id: 'album', x: 44, y: 58, r: 13, label: '펼쳐 둔 앨범', kind: 'doc', doc: 'album' },
-        { id: 'guide', x: 93.5, y: 19, r: 8, label: '장식장 위 서류철', kind: 'doc', doc: 'guide' },
+        { id: 'guide', x: 93.5, y: 19, r: 8, label: '장식장 위 납작한 상자', kind: 'doc', doc: 'guide' },
         { id: 'strap', x: 89, y: 64, r: 10, label: '엄마의 사진 상자', kind: 'device', device: 'strap', visible: (S) => !S.solved.includes('strap') },
         { id: 'diary', x: 89, y: 64, r: 10, label: '사진 상자 밑의 일기 한 장', kind: 'doc', doc: 'diary', visible: (S) => S.solved.includes('strap') },
       ],
@@ -273,8 +273,8 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
     },
     guide: {
       title: '햇살중 생활 안내',
-      kind: '장식장 위 서류철 · 2016학년도',
-      html: `<div class="paper-table"><p class="pt-head">2016학년도 햇살중학교 생활 안내 (가정통신문)</p><table><tr><th>교복</th><td>하복 6월 ~ 9월</td></tr><tr><th>명찰</th><td>학년마다 새로 나눠 줌 학교 안에서는 늘 목에 걸 것</td></tr><tr><th>명찰 끈 색</th><td class="nw">1학년 빨강 · 2학년 파랑 · 3학년 초록</td></tr><tr><th>분실</th><td>교무실에서 같은 색으로 다시 받음</td></tr></table><p class="pt-foot">햇살중학교장</p></div><p>엄마는 가정통신문을 한 장도 안 버렸다 2015년 것과 2017년 것도 같은 서류철에 순서대로 꽂혀 있다</p>`,
+      kind: '장식장 위 납작한 상자 · 2016학년도',
+      html: `<div class="paper-table"><p class="pt-head">2016학년도 햇살중학교 생활 안내 (가정통신문)</p><table><tr><th>교복</th><td>하복 6월 ~ 9월</td></tr><tr><th>명찰</th><td>학년마다 새로 나눠 줌 학교 안에서는 늘 목에 걸 것</td></tr><tr><th>명찰 끈 색</th><td class="nw">1학년 빨강 · 2학년 파랑 · 3학년 초록</td></tr><tr><th>분실</th><td>교무실에서 같은 색으로 다시 받음</td></tr></table><p class="pt-foot">햇살중학교장</p></div><p>엄마는 가정통신문을 한 장도 안 버렸다 2015년 것과 2017년 것도 같은 상자에 순서대로 포개져 있다</p>`,
     },
     diary: {
       title: '사진 상자 밑의 일기 한 장',
@@ -356,7 +356,7 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
       },
       reveal: {
         title: '양철통이 열렸다',
-        text: '자물쇠가 툭 하고 빠졌다 양철통 안에는 병원 접수증 원본과 사진 한 장 접수증에 「V-6384 · 카드실 보관」 사진은 센터에서 찍은 어린 콩이, 목에 파란 끈',
+        text: '자물쇠가 툭 하고 빠졌다 양철통 안에는 병원 접수증 원본과 사진 한 장 접수증에 「V-\u20606384\u00a0·\u00a0카드실\u00a0보관」 사진은 센터에서 찍은 어린 콩이, 목에 파란 끈',
         scene: ['접수증의 병원은 햇살동에 아직 있다 루미를 데리고 갈까 하다가, 열 살짜리를 끌고 다니기 미안해서 혼자 나섰다'],
         unlock: 'clinic',
       },
@@ -493,7 +493,12 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
           b.onclick = () => { if (k === '⌫') d.num = d.num.slice(0, -1); else if (k === '지움') d.num = ''; else if (d.num.length < 11) d.num += k; save(); };
           pad.append(b);
         });
-        phone.append(el('p', 'pick-label', '내 휴대폰'), screen, pad);
+        // v137: 통화 버튼은 휴대폰 틀 안 키패드 밑 가운데 (엔진 확인 버튼 대신 ctx.commit)
+        const ready = d.num.length >= 9;
+        const call = el('button', 'rub-call', '통화'); call.type = 'button'; call.setAttribute('aria-label', '통화 걸기');
+        call.classList.toggle('off', !ready);
+        call.onclick = () => { if (d.num.length >= 9) ctx.commit?.(); else ctx.status(d.num ? '번호를 끝까지 누른다' : '번호부터 누른다'); };
+        phone.append(el('p', 'pick-label', '내 휴대폰'), screen, pad, call);
         wrap.append(phone);
         return wrap;
       },
@@ -519,7 +524,7 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
       hintCode: 'P-S03',
       hints: [
         '끈에 이름은 안 남았어요 끈에서 알 수 있는 건 색이에요',
-        '그 색 끈을 받은 사람이 누구였을지 서류철 안내문과 명찰의 학년을 맞춰 보세요',
+        '그 색 끈을 받은 사람이 누구였을지 가정통신문과 명찰의 학년을 맞춰 보세요',
         '햇살중 2학년 3반 김유나 명찰',
       ],
       initial: () => ({ pick: null }),
@@ -591,6 +596,6 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
     ],
     afterword: '엄마는 그 사진을 내 집 현관에 걸어 줬다 루미 방석에서 보이는 자리다',
     unlockDoc: 'final',
-    next: { href: 'play.html?case=studio', title: '비가 그친 사진관', line: '다음은 오래된 사진관 이야기입니다' },
+    next: { href: 'play.html?case=studio', title: '비가 그친 사진관' }, // 설명 줄은 엔진이 버튼 줄 밑(처음 화면 아래)에 붙여서 뺌 — 버튼 글이 이미 '다음 이야기 · 비가 그친 사진관'
   },
 };
