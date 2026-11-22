@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 아이콘 바탕 (사이트 favicon 과 같은 색) — scripts/make-icons.py 의 BG 와 맞출 것 -->
+    <color name="ic_launcher_background">#1E2422</color>
+</resources>
