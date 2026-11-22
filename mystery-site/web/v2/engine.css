@@ -1602,7 +1602,7 @@ html[data-case="garage"] .cam-thumb span{font-size:13px;letter-spacing:-.04em;wh
 html[data-case="garage"] .sync-lock{color:#ffb4a0}
 /* v126 디테일: 작업장 그림 속 단말 화면 글자 (맞추기 전 LOCKED · 뒤 SYNC OK) */
 html[data-case="garage"] .v2-stage-ov.g-term{display:grid;place-items:center;border-radius:.15cqw;background:linear-gradient(#24459c,#173276);box-shadow:inset 0 0 .4cqw rgba(0,0,0,.6)}
-html[data-case="garage"] .v2-stage-ov.g-term b{font:800 .62cqw/1.05 ui-monospace,Menlo,monospace;letter-spacing:.02em;text-align:center}
+html[data-case="garage"] .v2-stage-ov.g-term b{font:800 .8cqw/1.05 ui-monospace,Menlo,monospace;letter-spacing:-.05em;text-align:center}
 html[data-case="garage"] .v2-stage-ov.g-term .lk{color:#ffb0a4}
 html[data-case="garage"] .v2-stage-ov.g-term .ok{display:none;color:#a8f0b0}
 html[data-case="garage"] .v2-pan:has(.v2-hotspot.done[aria-label="보관함 백업 단말"]) .v2-stage-ov.g-term{background:linear-gradient(#123a25,#0b2617)}
@@ -1632,6 +1632,15 @@ html[data-case="garage"] .sync-legend{font-size:13px;opacity:.75;letter-spacing:
 /* 한글이 든 줄은 고정폭 글꼴에서 글자 사이가 벌어지므로 본문 글꼴 + 숫자 폭만 고정 */
 html[data-case="garage"] .sync-legend,html[data-case="garage"] .sync-off,html[data-case="garage"] .vid-time{font-family:var(--sans);font-variant-numeric:tabular-nums;letter-spacing:0}
 html[data-case="garage"] .sync-off b{color:#ffe08a}
+/* 휴대폰 기록: 누른 차이를 버튼 바로 위에 크게 · 출입 방향 삼각형 */
+html[data-case="garage"] .sync-big{margin:10px 0 6px;text-align:center;font-size:18px;font-weight:700;color:#9be8a5}
+html[data-case="garage"] .sync-big b{font-size:22px}
+html[data-case="garage"] .tri-ico{display:inline-block;width:.75em;height:.75em;vertical-align:-.02em}
+html[data-case="garage"] .paper-table .pt-foot{font-size:13px;color:#615a4b}
+html[data-case="garage"] .chat-time,html[data-case="garage"] .chat-meta,html[data-case="garage"] .chat-meta i{font-size:13px}
+html[data-case="garage"] .disc-pad .ctl.del{display:grid;place-items:center}
+html[data-case="garage"] .disc-pad .ctl.del svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}
+html[data-case="garage"] .vern-swipe{margin:-4px 0 6px;text-align:center;font-size:13px;color:var(--soft-2)}
 html[data-case="garage"] .sync-row{margin-top:2px}
 /* 금고: 문을 가까이 잘라 보이고(290~770 × 130~450px), 번호 바퀴 위에 지금 숫자 */
 html[data-case="garage"] .safedoor{max-width:520px;margin:0 auto 4px;aspect-ratio:3/2}
@@ -1689,6 +1698,9 @@ html[data-case="garage"] .disc-pad .ctl{min-height:44px;font-size:18px;font-weig
   /* 휴대폰: 눈금 사이 0.1mm 차이가 보이게 크게 그리고 옆으로 밀어 본다 */
   html[data-case="garage"] .vern-svg{min-width:620px}
   html[data-case="garage"] .vid-osd,html[data-case="garage"] .vid-ends{font-size:13px}
+  /* 녹화 막대: 손가락으로 잡기 쉽게 누름 높이를 키운다 */
+  html[data-case="garage"] .vid-range{height:36px;margin-top:8px}
+  html[data-case="garage"] .paper-table th{font-size:13px}
   html[data-case="garage"] .safedoor .knob{font-size:4cqw}
   /* 휴대폰 점검: 재킷 칩 줄이 .mobile-only(block)에 덮여 칩끼리 붙던 것 · 면담 기록 항목 칸이 두 줄로 깨지던 것 */
   html[data-case="garage"] .jackets-wrap .pick-row.mobile-only{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 8px}
