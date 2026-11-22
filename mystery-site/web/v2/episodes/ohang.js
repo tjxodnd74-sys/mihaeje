@@ -30,28 +30,36 @@ const controlOrder = (id) => { const out = [id]; while (out.length < 5) out.push
 const SEASON_OF = { 3: 'blue', 4: 'blue', 5: 'red', 6: 'red', 7: 'yellow', 8: 'yellow', 9: 'white', 10: 'white', 11: 'black', 12: 'black', 1: 'black', 2: 'black' };
 const birthSeason = (S) => byId[SEASON_OF[S.profile?.month || 5]];
 // 장부: 태어난 철에는 한 번도 안 왔다 (생일상은 늘 집에서) 나이로 적어서 생년과 어긋나지 않게
+// 플레이어는 9살(2016년생)~66살(1960년생) · 어린 플레이어도 태어난 철을 뺀 네 철이 장부에 다 나오게 채운다
+const ageOf = (S) => S.profile?.age ?? 36;
+const youngOf = (S) => ageOf(S) < 18;
 function ledger(S) {
   const bs = SEASON_OF[S.profile?.month || 5];
-  const A = S.profile?.age ?? 36;
+  const A = ageOf(S);
+  // 마지막 방문: 어른은 여섯 해 전, 10대는 세 해 전, 더 어리면 두 해 전 (오프닝은 '요 몇 해 뜸했다'로 나이 중립)
+  const last = A - (A >= 20 ? 6 : A >= 14 ? 3 : 2);
+  const lastM = [10, 4, 1, 6].find((m) => SEASON_OF[m] !== bs);
+  // 사진 속 여름 (사진 아이는 아홉 살 남짓 · 어린 플레이어면 마지막 방문 전 해로)
+  const photo = { a: Math.min(9, last - 1), m: bs === 'yellow' ? 6 : 8, t: bs === 'yellow' ? '제 빛 차 세 잔째 수박은 안 먹음' : '방학 내내 있음 제 빛 차 세 잔째 수박은 안 먹음', photo: true };
   const pool = [
     { a: 7, m: 12, t: '감기 기운 생강차 안 마시려고 울었음' },
     { a: 8, m: 3, t: '입학 선물 받으러 옴 유자차 반 잔' },
-    bs === 'yellow' ? { a: 9, m: 6, t: '제 빛 차 세 잔째 수박은 안 먹음', photo: true } : { a: 9, m: 8, t: '방학 내내 있음 제 빛 차 세 잔째 수박은 안 먹음', photo: true },
     { a: 10, m: 6, t: '기말 끝났다고 옴 오미자차 찬 걸로 두 잔' },
     { a: 11, m: 7, t: '방학 숙제 안 함 대추차 먹고 낮잠' },
     { a: 12, m: 9, t: '추석에 옴 송편만 열 개' },
     { a: 13, m: 2, t: '졸업했다고 옴 쌍화차 노른자는 내가 먹음' },
     { a: 16, m: 4, t: '꽃 보러 왔다가 차 안 마시고 감' },
-  ].filter((x) => SEASON_OF[x.m] !== bs);
-  // 마지막 방문은 여섯 해 전 (오프닝) 취직 소식, 달은 태어난 철을 피한다
-  const lastM = [10, 4, 1, 6].find((m) => SEASON_OF[m] !== bs);
-  // 접수표는 스무 살부터 받으므로(intake) 마지막 방문은 열네 살 이후 그보다 어린 줄만 남긴다 (나이를 줄여 끼워 맞추지 않는다)
-  const last = Math.max(A - 6, 14);
-  const rows = pool.filter((x) => x.a < last);
-  const why = last < 19 ? '혼자 버스 타고 옴' : last < 35 ? '취직했다고 옴' : last < 55 ? '이사했다고 옴' : '일 그만뒀다고 옴';
+  ].filter((x) => SEASON_OF[x.m] !== bs && x.a < last && x.a !== photo.a);
+  const rows = [photo, ...pool];
+  // 어려서 빠진 철은 나이 상관없는 줄로 채운다 (마지막 방문 전 해부터 거꾸로, 네 살 아래로는 안 내려감)
+  const FILL = { blue: { m: 4, t: '꽃 보러 왔다가 차 안 마시고 감' }, red: { m: 6, t: '덥다고 옴 오미자차 찬 걸로 두 잔' }, yellow: { m: 7, t: '대추차 먹고 낮잠' }, white: { m: 9, t: '추석에 옴 송편만 열 개' }, black: { m: 1, t: '눈 온다고 옴 쌍화차 노른자는 내가 먹음' } };
+  const has = (id) => rows.some((x) => SEASON_OF[x.m] === id) || SEASON_OF[lastM] === id;
+  let k = 1;
+  E.forEach((e) => { if (e.id === bs || has(e.id)) return; rows.push({ a: Math.max(4, last - k), ...FILL[e.id] }); k += 1; });
+  const why = last < 12 ? '용돈 모았다고 옴' : last < 19 ? '혼자 버스 타고 옴' : last < 35 ? '취직했다고 옴' : last < 55 ? '이사했다고 옴' : '일 그만뒀다고 옴';
   rows.push({ a: last, m: lastM, t: `${why} 처음으로 찻값 내려고 함 안 받음` });
   rows.sort((p, q) => p.a - q.a || ((p.m + 9) % 12) - ((q.m + 9) % 12));
-  rows[0] = { ...rows[0], t: '혼자 온 첫날 ' + rows[0].t };
+  rows[0] = { ...rows[0], t: '이날부터 적음 ' + rows[0].t };
   return rows;
 }
 const photoRow = (S) => ledger(S).find((x) => x.photo) || ledger(S)[0];
@@ -163,7 +171,7 @@ export default {
   coverAlt: '비 오는 저녁, 불 켜진 오행당 문 앞에 선 사람',
   music: 'assets/music/ohang-v33.mp3',
   tagline: '접수표부터 써라 너도 오늘은 손님이다\n생일하고 난 시 적으면 네 빛이 나온다',
-  blurb: '외할머니가 마흔 해 넘게 지킨 약차집 오행당\n입원한 할머니의 문자 한 통에 지원은 여섯 해 만에 그 골목으로 갑니다\n당신의 생년월일시로 다섯 빛을 세고, 그 빛대로 화분과 차 통과 등이 열립니다',
+  blurb: '외할머니가 평생 지킨 약차집 오행당\n입원한 할머니의 문자 한 통에 지원은 오랜만에 그 골목으로 갑니다\n당신의 생년월일시로 다섯 빛을 세고, 그 빛대로 화분과 차 통과 등이 열립니다',
   hintTitle: '할머니의 귀띔',
   storageKey: 'mihaeje-v2-ohang',
   tracesLabel: '할머니가 남긴 것',
@@ -172,7 +180,7 @@ export default {
     eyebrow: '3월 2일, 저녁',
     paragraphs: [
       '할머니가 넘어졌다는 연락은 이모한테서 왔고, 할머니한테서는 문자가 왔다. 가게 좀 봐 달라는 거였다. 찬장 맨 아래 서랍에 둔 걸 꼭 가져오라고.',
-      '오행당. 외할머니가 마흔 해 넘게 약차를 끓인 가게다. 손님이 오면 생일하고 난 시부터 묻고, 다섯 빛을 세어서 차를 골라 줬다. 어릴 때는 틈만 나면 거기서 살았는데, 크고 나서는 뜸해졌고, 마지막으로 간 게 여섯 해 전이다.',
+      '오행당. 외할머니가 평생 약차를 끓인 가게다. 손님이 오면 생일하고 난 시부터 묻고, 다섯 빛을 세어서 차를 골라 줬다. 예전엔 틈만 나면 거기서 살다시피 했는데, 요 몇 해는 발길이 뜸했다.',
       '열쇠는 늘 두던 데 있다고 했다. 어디였더라, 되물으려는데 할머니 휴대폰이 꺼졌다.',
       '이모는 전화 끝에 한마디를 덧붙였다. 가게, 이번 달 안에 정리할 거라고. 할머니도 이제 못 한다고.',
       '골목에 비가 조금 왔다. 문 앞 섬돌에 화분 다섯 개가 그대로 있고, 문 옆 살창에 접수표 묶음이 끼워져 있었다. 손님은 먼저 접수표부터 쓴다. 할머니 가게의 규칙이다.',
@@ -196,7 +204,7 @@ export default {
         const sheet = el('div', 'slip-form');
         sheet.innerHTML = `<p class="slip-head">오행당 접수표</p>
 <p class="slip-note">손님 생일과 난 시를 적는다 할머니는 이걸로 다섯 빛을 센다<br><small>적은 날짜는 그대로 남기지 않는다 센 결과와 나이, 태어난 달만 이 브라우저에 남는다</small></p>
-<label class="slip-row"><span>생일 (양력)<small>예 1998/3/15</small></span><input type="date" name="date" min="1901-01-02" max="2006-03-02" required aria-label="생일 (양력) 연 월 일"></label>
+<label class="slip-row"><span>생일 (양력)<small>예 1998/3/15</small></span><input type="date" name="date" min="1960-01-01" max="2016-12-31" required aria-label="생일 (양력) 연 월 일"></label>
 <label class="slip-row"><span>난 시각<small>예 오후 2:30</small></span><input type="time" name="time" aria-label="난 시각"></label>
 <label class="slip-check"><input type="checkbox" name="unknown"> 시각은 모름</label>
 <p class="slip-err" aria-live="polite"></p>`;
@@ -208,8 +216,8 @@ export default {
             if (!window.Solar) await new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'vendor/lunar-1.7.7.js'; sc.onload = res; sc.onerror = () => rej(Error('달력 자료를 불러오지 못했다 잠시 뒤 다시')); document.head.append(sc); });
             const dv = sheet.querySelector('[name=date]').value; if (!dv) throw Error('생일을 적어야 한다');
             const [y, m, d] = dv.split('-').map(Number);
-            // 이 이야기의 지원은 어른이다 (장부·도입부가 여섯 해 전 마지막 방문을 전제로 한다)
-            if (y > 2006 || (y === 2006 && (m > 3 || (m === 3 && d > 2)))) throw Error('이 이야기 속 나(지원)는 이미 스무 살이 넘었다 2006/3/2까지 태어난 날로 적거나, 아래 예시 손님으로 해 보자');
+            // 생일은 1960/1/1~2016/12/31 (장부가 나이에 맞춰 바뀐다 · 너무 이르면 할머니 나이가 이야기와 안 맞는다)
+            if (y < 1960 || y > 2016) throw Error('생일은 1960/1/1부터 2016/12/31까지 적을 수 있다 그 밖이면 아래 예시 손님으로 해 보자');
             let input = { year: y, month: m, day: d, hour: null, minute: 0 };
             if (!unk.checked) {
               if (!time.value) throw Error('난 시각을 적거나, 모름에 표시한다');
@@ -365,7 +373,7 @@ export default {
     final: {
       title: '접수함 속 접수표',
       kind: '받는 사람: 지원',
-      html: (S) => { const r = reading(S.profile), e = r.seed, bt = birthSeason(S); return `<figure class="prop slips"><img src="${P}props/slips.webp" alt="접수표" decoding="async"></figure><blockquote class="hand">접수 · 2026년 3월<br>받는 사람 지원 · 빛 ${e.han} ${e.el}<br><br>너는 ${r.me}<br>${r.many}<br>${r.none}<br>${r.relation}<br><br>그래서 네 차는 ${e.tea}다 ${r.tea}<br>${e.gift} 챙겨 뒀다 접수함 밑에 있다<br>${e.giftLine}<br><br>네 생일 철엔 너는 한 번도 안 왔다 생일상은 너희 집에서 받았으니까<br>그 철엔 ${bt.tea} 끓여 놓고 기다렸다<br><br>서랍 것은 가게 열쇠 뭉치하고 등기부다<br>이모가 가게 팔자고 한 지 삼 년 됐다<br>그래도 네가 올 거라 생각해서 안 팔았다<br>어릴 땐 틈만 나면 왔고, 커서도 뜸하게나마 결국 왔으니까<br><br>가게는 네 거다 하고 싶으면 해라<br>하기 싫으면 열쇠만 갖고 있어라<br>그래도 계절 돌면 한 번씩은 와라<br><br>내일 올 때 차 한 병 달여 와라 할미 식 고름차다<br>네 접수표 다섯 빛 수를 봐라 제일 많은 빛에 나머지 빛을 모자란 만큼 채워 맞춘다<br>한 숟갈이 빛 하나다 차 통은 가게 선반 맨 앞줄에 있다<br><br>등은 끄고 가라 전기세 나온다</blockquote>`; },
+      html: (S) => { const r = reading(S.profile), e = r.seed, bt = birthSeason(S); return `<figure class="prop slips"><img src="${P}props/slips.webp" alt="접수표" decoding="async"></figure><blockquote class="hand">접수 · 2026년 3월<br>받는 사람 지원 · 빛 ${e.han} ${e.el}<br><br>너는 ${r.me}<br>${r.many}<br>${r.none}<br>${r.relation}<br><br>그래서 네 차는 ${e.tea}다 ${r.tea}<br>${e.gift} 챙겨 뒀다 접수함 밑에 있다<br>${e.giftLine}<br><br>네 생일 철엔 너는 한 번도 안 왔다 생일상은 너희 집에서 받았으니까<br>그 철엔 ${bt.tea} 끓여 놓고 기다렸다<br><br>서랍 것은 가게 열쇠 뭉치하고 등기부다<br>이모가 가게 팔자고 한 지 삼 년 됐다<br>그래도 네가 올 거라 생각해서 안 팔았다<br>예전엔 틈만 나면 왔고, 요새는 뜸해도 결국 왔으니까<br><br>${youngOf(S) ? '가게는 네 거다 크면 하고 싶을 때 해라<br>그때까진 열쇠만 갖고 있어라' : '가게는 네 거다 하고 싶으면 해라<br>하기 싫으면 열쇠만 갖고 있어라'}<br>그래도 계절 돌면 한 번씩은 와라<br><br>내일 올 때 차 한 병 달여 와라 할미 식 고름차다<br>네 접수표 다섯 빛 수를 봐라 제일 많은 빛에 나머지 빛을 모자란 만큼 채워 맞춘다<br>한 숟갈이 빛 하나다 차 통은 가게 선반 맨 앞줄에 있다<br><br>등은 끄고 가라 전기세 나온다</blockquote>`; },
     },
   },
 
@@ -658,7 +666,7 @@ export default {
         `"니 생일 철엔 니가 한 번도 안 왔잖아 그 철엔 그거 끓여 놓고 기다렸다"${bt.id === 'blue' ? ' 할머니가 창밖 매화를 봤다 "올해는 왔네"' : ''}`,
         '"접수표는 썼고?"',
         `"썼어 ${e.han}, ${js(e.el, '이래', '래')}"`,
-        `"그래, 애 때부터 ${js(e.el, '이었다', '였다')}" 할머니는 내 빛을 알고 있었다 평생 손님 빛을 세던 사람이 손녀 빛을 모를 리가 없었다`,
+        `"그래, 아기 때부터 ${js(e.el, '이었다', '였다')}" 할머니는 내 빛을 알고 있었다 평생 손님 빛을 세던 사람이 손녀 빛을 모를 리가 없었다`,
         `"${hj(e.id, '은', '는')} 말이다" 할머니가 찻잔을 든 채로 접수표에 쓴 풀이를 처음부터 다시 했다 토씨 하나 안 틀렸다 병실 옆 침대 아주머니가 듣다가 웃었다 "손녀 사주를 병실에서 보시네"`,
         '"접수표에 다 적어 놓고 왜 또 해"',
         `"적은 거랑 듣는 건 다르다" ${r.missing.length ? '없는 빛 얘기를 할 때 할머니는 목소리를 낮췄다' : '다섯이 다 있다는 대목에서 할머니는 조금 자랑스러워 보였다'} 내 빛 얘기를 다 하고 나서야 찻잔을 비웠다 ${tasteLine(S)}`,
@@ -667,7 +675,7 @@ export default {
       if (!S.choice) return base;
       const prevPot = byId[PREV[e.id]].pot;
       const tail = {
-        keep: [`접수표 마지막 장에 적었다 「${e.gift} 받음 계절 돌면 또 온다」 할머니가 들여다보더니 한마디 했다 "글씨는 나 닮았네"`, '이모는 가게를 한 해만 더 두자고 했다 계절이 바뀌는 첫 주말마다 오행당 문을 연다 할머니 자리에 앉아 남쪽을 보고 차를 끓이고, 접수표 묶음에 내 이름이 한 장씩 늘어난다'],
+        keep: [`접수표 마지막 장에 적었다 「${e.gift} 받음 계절 돌면 또 온다」 할머니가 들여다보더니 한마디 했다 "글씨는 나 닮았네"`, youngOf(S) ? '이모는 가게를 한 해만 더 두자고 했다 계절이 바뀌는 첫 주말마다 오행당에 간다 할머니 옆에 앉아 남쪽을 보고 찻물 끓이는 걸 거들고, 접수표 묶음에 내 이름이 한 장씩 늘어난다' : '이모는 가게를 한 해만 더 두자고 했다 계절이 바뀌는 첫 주말마다 오행당 문을 연다 할머니 자리에 앉아 남쪽을 보고 차를 끓이고, 접수표 묶음에 내 이름이 한 장씩 늘어난다'],
         release: ['접수표 마지막 장에 적었다 「가게는 못 하겠어 열쇠는 가지고 있을게」 할머니는 한참 보더니 접어서 내 가방에 도로 넣었다 "그것도 대답이다"', `오행당 간판은 그달 말에 내려갔다 섬돌 화분 다섯은 우리 집 베란다로 왔다 봄마다 ${prevPot}부터 물을 준다`],
         share: ['접수표 마지막 장에 적었다 「다음 손님은 내가 받을게 빛 세는 법 가르쳐 줘」 할머니가 찻잔을 내려놓았다 "퇴원하면 바로다 한 달은 걸린다"', '퇴원한 날 할머니는 접수표 묶음부터 찾았다 첫 손님은 이모였다 이모 빛은 火였고, 둘이 한참 싸웠다 가게 얘기는 그 뒤로 아무도 꺼내지 않았다'],
       }[S.choice];

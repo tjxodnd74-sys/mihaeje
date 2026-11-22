@@ -293,13 +293,13 @@ async function ohang({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('오행당 접수표') && (await L.mainText(page)).includes('예 1998/3/15'), 'intake form shown with date example');
     await L.click(page, '접수표 내기');
     L.check((await L.mainText(page)).includes('생일을 적어야'), 'intake: empty date explained');
-    // 지원은 어른이다: 스무 살이 안 되는 생일은 부드럽게 돌려보낸다 (장부·도입부가 깨지지 않게)
-    await page.fill('input[name=date]', '2016-07-01'); await page.fill('input[name=time]', '12:00'); await L.click(page, '접수표 내기'); await L.sleep(1200);
-    L.check((await L.mainText(page)).includes('스무 살이 넘었다') && (await L.mainText(page)).includes('2006/3/2') && !(await L.mainText(page)).includes('할머니가 세는 법대로'), 'intake: under-20 birth gently refused');
-    // PC는 11월생(겨울 → 쌍화차), 모바일은 예시 손님 5월생(여름 → 오미자차) — 생일 철에 따라 차 통 답이 바뀐다
+    // 생일 범위는 1960/1/1~2016/12/31 밖이면 범위만 부드럽게 알려 준다
+    await page.fill('input[name=date]', '2018-07-01'); await page.fill('input[name=time]', '12:00'); await L.click(page, '접수표 내기'); await L.sleep(1200);
+    L.check((await L.mainText(page)).includes('2016/12/31까지') && !(await L.mainText(page)).includes('할머니가 세는 법대로'), 'intake: out-of-range birth gently refused');
+    // PC는 2012년 8월생 10대(늦여름 → 대추차, 어린 장부), 모바일은 예시 손님 5월생(여름 → 오미자차) — 생일 철에 따라 차 통 답이 바뀐다
     if (mobile) { await L.click(page, '생일 대신 예시 손님으로 해 보기'); await L.sleep(1500); }
-    else { await page.fill('input[name=date]', '1987-11-20'); await page.fill('input[name=time]', '22:40'); await L.click(page, '접수표 내기'); await L.sleep(1500); }
-    const TEA = mobile ? '오미자차' : '쌍화차';
+    else { await page.fill('input[name=date]', '2012-08-20'); await page.fill('input[name=time]', '14:10'); await L.click(page, '접수표 내기'); await L.sleep(1500); }
+    const TEA = mobile ? '오미자차' : '대추차';
     const lightText = await page.evaluate(() => document.querySelector('.slip-light b')?.textContent || '');
     L.check(/[木火土金水]/.test(lightText), 'intake: light computed — ' + lightText);
     L.check((await L.mainText(page)).includes('할머니라면 이렇게 읽는다') && (await L.mainText(page)).includes('30분 빼고'), 'intake: reading shown with 30-min note');
@@ -388,6 +388,7 @@ async function ohang({ mobile = false } = {}) {
     await L.click(page, '접수함 속 접수표 보기'); L.check(await dlgHas(page, '가게는 네 거다') && await dlgHas(page, '접수함 밑에') && await dlgHas(page, TEA), 'final readable from reveal, personal');
     L.check((await L.buttons(page)).includes('← 돌아가기'), 'doc offers way back to reveal');
     L.check(await dlgHas(page, '할미 식 고름차') && await dlgHas(page, '모자란 만큼'), 'final letter carries the brew rule');
+    L.check(await dlgHas(page, mobile ? '하고 싶으면 해라' : '크면 하고 싶을 때'), 'final letter fits my age');
     L.check(!(await L.buttons(page)).some((b) => b.startsWith('다음 날 아침, 병원으로')), 'lanterns no longer end the story');
     await L.closeDialog(page); await L.sleep(400);
     // brew (고름차): 접수표 다섯 빛 수 → 제일 많은 빛에 나머지를 모자란 만큼 (사람마다 다름)
