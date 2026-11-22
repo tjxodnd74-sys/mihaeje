@@ -1048,6 +1048,10 @@ html[data-case="station"] .pat-key:focus-visible{outline:3px solid var(--lamp);o
 html[data-case="station"] .pat-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 html[data-case="station"] .pat-row .ctl{min-height:44px}
 html[data-case="station"] .pat-cap{margin:8px 0 0;text-align:center;font-size:14px;line-height:1.5;color:var(--soft)}
+/* v136: 기둥 시각표 소품을 새 그림(파란 기둥 아래 회색 판, 머리 줄 「열차 출발시간표」)으로 — 글자 칸은 머리 줄 아래 판 안에 (사진 640×820 기준) */
+html[data-case="station"] .laminated-sheet{left:8.6%;top:24.4%;width:60%;height:62.4%;padding:1.6% 2.2%;font-size:2.25cqw;transform:none}
+html[data-case="station"] .laminated-sheet .sheet-title{font-size:2.6cqw}
+html[data-case="station"] .laminated-sheet .sheet-foot{font-size:2.1cqw}
 
 /* 고양이: 오후 햇살 포장 가게 · 리본 · 편지지 */
 html[data-case="cat-invite"]{
