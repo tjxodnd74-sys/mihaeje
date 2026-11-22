@@ -1731,6 +1731,8 @@ html[data-case="letter"] .v2-paper::before{height:8px;opacity:1}
 .rack-slot.picking{box-shadow:inset 0 0 0 .55cqw var(--lamp)}
 .ledger-table td.hand-cell,.paper-table td.hand-cell{font-family:var(--hand);font-size:17px;color:#2b3570}
 .ledgerphoto,.clipphoto{max-width:520px;margin:0 auto 10px}
+html[data-case="letter"] .clipphoto.head{max-width:200px;margin:0 auto 8px}
+html[data-case="letter"] .dir-seq.empty{font-size:16px;letter-spacing:0;font-weight:600;color:var(--soft)}
 .paper-table.old{opacity:.72;background:#efe6cc}
 @media (max-width:640px){.ledger-table table{font-size:12.5px}.ledger-table td.hand-cell{font-size:15px}.ledger-table th,.ledger-table td{padding:5px 3px}}
 .envtabs{display:flex;flex-wrap:wrap;gap:6px}
@@ -1822,7 +1824,7 @@ html[data-case="letter"] .rf-in{margin:0;background:#fbfaf6;border-color:#bdb8aa
 html[data-case="letter"] .rf-in:focus{outline:2px solid var(--lamp);outline-offset:1px}
 html[data-case="letter"] .rf-in::placeholder{color:#8c887c}
 /* v127: 순로표 뒤 약도 글씨 — 휴대폰에서 1.4배 */
-@media (max-width:640px){html[data-case="letter"] .route-map{--mapk:1.35;--mapmin:4.4px}html[data-case="letter"] .routemap{padding:2px}}
+@media (max-width:640px),(orientation:landscape) and (max-height:500px){html[data-case="letter"] .route-map{--mapk:1.35;--mapmin:4.4px}html[data-case="letter"] .routemap{padding:2px}}
 /* v127: PC에서 자물쇠 사진 옆에 조작을 두어 확인 버튼이 첫 화면에 들어오게 */
 @media (min-width:900px){
   html[data-case="letter"] .letterlock-wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:20px;align-items:center;max-width:none}
@@ -1838,7 +1840,8 @@ html[data-case="letter"] .rf-in::placeholder{color:#8c887c}
   html[data-case="letter"] .reply-wrap>.reply-form{grid-column:1/-1}
 }
 /* v127: 휴대폰 글자 13px 아래로 내려가지 않게 (대장 작은 글씨·표 꼬리말·메시지 시각·구분함 이름표 버튼) */
-@media (max-width:640px){
+@media (max-width:640px),(orientation:landscape) and (max-height:500px){
+  html[data-case="letter"] .ledger-compact,html[data-case="letter"] .ledger-compact td,html[data-case="letter"] .ledger-compact th{font-size:13px}
   html[data-case="letter"] .ledger-compact td small{font-size:13px}
   html[data-case="letter"] .paper-table .pt-foot{font-size:13px}
   html[data-case="letter"] .rack-chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
@@ -1867,11 +1870,11 @@ html[data-case="letter"] .lenv-back{left:21%;top:37%;font-size:4.7cqw;line-heigh
 html[data-case="letter"] .rack-slot{transform:none;padding:0;display:block;border-radius:2px}
 html[data-case="letter"] .rack-slot .rack-label{position:absolute;left:var(--cx);top:var(--cy);width:var(--cw);height:var(--ch);display:grid;place-items:center;padding:0;background:none;box-shadow:none;border-radius:0;font-size:1.9cqw;line-height:1;letter-spacing:-.02em;color:#3b2a0e;white-space:nowrap}
 html[data-case="letter"] .rack-slot:focus-visible{box-shadow:inset 0 0 0 .3cqw rgba(226,85,63,.55)}@media (hover:hover){html[data-case="letter"] .rack-slot:hover{box-shadow:inset 0 0 0 .3cqw rgba(226,85,63,.55)}}
-html[data-case="letter"] .rack-slot.picking{box-shadow:inset 0 0 0 .5cqw var(--lamp),0 0 0 .2cqw rgba(0,0,0,.4)}
+html[data-case="letter"] .rack-slot.picking{box-shadow:inset 0 0 0 max(1cqw,4px) var(--lamp),0 0 0 max(.3cqw,2px) rgba(0,0,0,.55);background:rgba(255,196,90,.16)}
 html[data-case="letter"] .rack-slot.picking .rack-label{color:#9e2418}
 @media (prefers-reduced-motion:reduce){html[data-case="letter"] .v2-stage img[src*="sorting"]{animation:none}}
 /* v129 휴대폰 점검: 소반 위 답장 봉투에 적히는 글씨가 9px 남짓이라 키움 (봉투 안쪽 16~89% 안에 들어감) */
-@media (max-width:640px){
+@media (max-width:640px),(orientation:landscape) and (max-height:500px){
   html[data-case="letter"] .lenv.reply .lenv-to.written{left:19%;top:32%;gap:1cqw;font-size:5cqw}
   html[data-case="letter"] .lenv.reply .lenv-to b{min-height:5.6cqw}
   /* 360폭에서 「미루우체국 구분실」 때문에 위 줄 버튼이 다음 줄로 밀려 빈 줄이 생김 → 이름을 접고 버튼은 같은 줄에 */
@@ -1912,7 +1915,7 @@ html[data-case="letter"] .st-s300 .st-art{background:linear-gradient(170deg,#f0d
 html[data-case="letter"] .st-s100 .st-art{background:linear-gradient(170deg,#b9d98a,#6a9a3c 60%,#3d5f22)}
 html[data-case="letter"] .st-s10 .st-art{background:linear-gradient(170deg,#c9c1e8,#7f6fb8 60%,#4a3f7a)}
 html[data-case="letter"] .st-s430 .st-art{background:linear-gradient(170deg,#f5b48a,#d9663a 55%,#8c3a20)}
-html[data-case="letter"] .stamp.used .st-pm{position:absolute;left:28%;top:6%;width:96%;height:62%;pointer-events:none;background:
+html[data-case="letter"] .stamp.used .st-pm{position:absolute;left:22%;top:34%;width:96%;height:62%;pointer-events:none;background:
   radial-gradient(circle at 26% 50%,transparent 0 33%,rgba(25,25,35,.78) 34% 39%,transparent 40%),
   repeating-linear-gradient(180deg,transparent 0 5px,rgba(25,25,35,.72) 5px 7px) 46% 0/60% 100% no-repeat}
 html[data-case="letter"] .st-tray .stamp:focus-visible,html[data-case="letter"] .st-corner .stamp:focus-visible{outline:2px solid #fff;outline-offset:2px}
@@ -1921,8 +1924,22 @@ html[data-case="letter"] .st-tray .stamp:focus-visible,html[data-case="letter"] 
   html[data-case="letter"] .st-lid{width:150px}
   html[data-case="letter"] .st-tray{gap:12px}
   html[data-case="letter"] .st-tray .stamp{width:76px;height:94px;font-size:16px}
-  html[data-case="letter"] .lenv.reply.stamped .lenv-to.written{left:19%;top:38%;font-size:3.9cqw}
-  html[data-case="letter"] .st-corner{right:16%;top:28%}
+  html[data-case="letter"] .lenv.reply.stamped .lenv-to.written{left:19%;top:47%;font-size:max(3.9cqw,13px)}
+  html[data-case="letter"] .st-corner{right:16%;top:30%;gap:8px}
+  html[data-case="letter"] .st-corner .stamp{width:46px;height:56px;font-size:14px}
+  html[data-case="letter"] .st-corner .st-empty{width:46px;height:56px;font-size:13px;border-width:1.5px}
+  html[data-case="letter"] .reply-wrap .bl-hold{margin-top:14px}
+}
+/* 휴대폰 가로: 봉투(왼쪽)와 깡통(오른쪽)을 한 화면에 — 붙이고 확인하느라 위아래로 오가지 않게 */
+@media (orientation:landscape) and (max-height:500px){
+  html[data-case="letter"] .stamp-wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);max-width:none;align-items:start;column-gap:14px}
+  html[data-case="letter"] .stamp-wrap>.lenv{grid-column:1;grid-row:1}
+  html[data-case="letter"] .stamp-wrap>.st-sum{grid-column:1;grid-row:2}
+  html[data-case="letter"] .stamp-wrap>.st-tin{grid-column:2;grid-row:1/span 2;grid-template-columns:104px minmax(0,1fr);justify-items:stretch;gap:8px;padding:8px}
+  html[data-case="letter"] .st-lid{width:104px}
+  html[data-case="letter"] .st-lid span{font-size:17px;padding:4px 6px}
+  html[data-case="letter"] .st-tray{gap:8px}
+  html[data-case="letter"] .st-tray .stamp{width:58px;height:72px;font-size:14px}
 }
 
 /* 404호의 불빛: 철거 현장 · 락카 빨강 · 비상등 */

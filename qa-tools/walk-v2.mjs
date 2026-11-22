@@ -886,6 +886,9 @@ async function letter({ mobile = false } = {}) {
     await L.click(page, '처음부터 하기');
     L.check((await L.mainText(page)).includes('봉수 아저씨였다'), 'opening shown');
     await L.click(page, '구분실 불 켜기'); await L.sleep(400);
+    // 첫 화면(휴대폰은 focusX 자리)에 휴대폰·쪽지·보관함·대장이 다 들어오는지
+    if (mobile) { await L.sleep(300); L.check(await page.evaluate(() => { const sc = document.querySelector('.v2-scroll').getBoundingClientRect(); return ['봉수 아저씨 문자', '보관함 문에 붙은 쪽지', '반송 대장'].every((l) => { const b = [...document.querySelectorAll('.v2-hotspot')].find((x) => x.getAttribute('aria-label') === l).getBoundingClientRect(); const cx = b.left + b.width / 2; return cx > sc.left + 40 && cx < sc.right - 40; }); }), 'sorting: phone, note, ledger visible on the first mobile screen'); }
+    L.check(!(await page.evaluate(() => !!document.querySelector('.v2-stage-ov.le-bundle'))), 'sorting: no envelope bundle on the desk before the locker opens');
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '구분함'))), 'rack hidden before locker');
     for (const [d, t] of [['봉수 아저씨 문자', '뜯지는 말고'], ['보관함 문에 붙은 쪽지', '처음 돌아온 날'], ['반송 대장', '정○린'], ['게시판의 주소 안내', '17-4-1']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     // locker
@@ -895,6 +898,7 @@ async function letter({ mobile = false } = {}) {
     await setDial([0, 3, 1, 8]); await commit(page); L.check((await status(page)).includes('그 집 줄을 다시'), 'locker: later return neutral');
     await setDial([0, 3, 1, 9]); await shot(page, 'l-locker'); await commit(page); L.check(await dlgHas(page, '맨 아래 칸에 고무줄로'), 'locker solved');
     await L.click(page, '계속'); await L.sleep(300);
+    L.check(await page.evaluate(() => { const o = document.querySelector('.v2-stage-ov.le-bundle img'); return !!o && o.complete && o.naturalWidth > 0; }), 'sorting: bundle drawn on the desk after the locker opens');
     L.check(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot:not(.go)')].every((b) => { const x = parseFloat(b.style.left), y = parseFloat(b.style.top), r = parseFloat(b.style.getPropertyValue('--hit') || '11'); return y <= 80 && x >= 6 && x <= 94 && r >= 8; })), 'sorting: hotspots clear of dialogue, edges, not tiny');
     await hotspot(page, '다섯 통의 겉봉'); L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .lenv').length === 5), 'five envelopes rendered');
     L.check(await page.evaluate(() => { const d = document.querySelector('dialog[open]'); return !d.innerHTML.includes('35217') && !d.innerHTML.includes('352<span class="inked" aria-hidden="true">17'); }), 'envs: hidden zip digits are not in the page text');
@@ -914,6 +918,7 @@ async function letter({ mobile = false } = {}) {
     await hotspot(page, '맨 끝 사물함');
     L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].some((t) => t.textContent.includes('순로표') && !t.disabled)), 'route doc on bench');
     const push = async (seq) => { for (const k of seq) await L.click(page, { U: '위로 밀기', D: '아래로 밀기', L: '왼쪽으로 밀기', R: '오른쪽으로 밀기' }[k], { exact: true }); };
+    L.check(await dlgHas(page, '아직 밀지 않았다'), 'dirlock: empty state says nothing pushed yet (no dot count)');
     await push('URU'); await commit(page); L.check((await status(page)).includes('약도를 다시'), 'dirlock: old gate decoy neutral');
     await push('URUR'); await commit(page); L.check((await status(page)).includes('약도를 다시'), 'dirlock: wrong last turn neutral');
     await push('URUL'); await shot(page, 'l-staff'); await commit(page); L.check(await dlgHas(page, '업무 수첩'), 'staffbox solved');
@@ -921,7 +926,7 @@ async function letter({ mobile = false } = {}) {
     await L.click(page, '미루새길 골목으로'); await L.sleep(400);
     L.check((await L.mainText(page)).includes('초록 대문이 있고'), 'moved to alley');
     const spotThere = (l) => page.evaluate((l) => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === l), l);
-    L.check(!(await spotThere('할머니가 내민 빈 봉투')), 'reply hidden before meeting');
+    L.check(!(await spotThere('열린 대문 안 할머니의 빈 봉투')), 'reply hidden before meeting');
     L.check(!(await spotThere('초록 대문')), 'gate hidden before old mailbox');
     await hotspot(page, '빌라 우편함'); L.check(await dlgHas(page, '초록 대문 틈'), 'doc: villa mailboxes'); await L.closeDialog(page);
     // 옛 우편함: 둥근 다이얼 (오른쪽 3, 왼쪽 14)
@@ -939,8 +944,11 @@ async function letter({ mobile = false } = {}) {
     await L.click(page, '여섯 번째 봉투 보기'); L.check(await dlgHas(page, '왔다 갑니다'), 'sixth envelope via reveal'); await L.click(page, '← 돌아가기');
     await L.click(page, '계속'); await L.sleep(300);
     L.check(await spotThere('여섯 번째 봉투') && !(await spotThere('대문 기둥의 옛 우편함')), 'solved mailbox shows the envelope instead');
+    L.check(!(await page.evaluate(() => !!document.querySelector('.v2-stage-ov.le-gate'))), 'alley: gate closed before knocking');
     await hotspot(page, '초록 대문'); L.check(await dlgHas(page, '이번엔 돌아오지 않게') && await dlgHas(page, '여기까지 왔었네'), 'doc: gate'); await L.closeDialog(page);
-    await hotspot(page, '할머니가 내민 빈 봉투');
+    L.check(await page.evaluate(() => { const o = document.querySelector('.v2-stage-ov.le-gate img'); return !!o && o.complete && o.naturalWidth > 0; }), 'alley: gate drawn ajar after meeting grandma');
+    await hotspot(page, '열린 대문 안 할머니의 빈 봉투');
+    L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] input.rf-in')].map((i) => i.getAttribute('enterkeyhint')).join() === 'next,next,done'), 'reply: keyboard next/done hints');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .inhand-card'))), 'reply: no duplicated sender cards');
     L.check(!(await page.evaluate(() => document.querySelector('dialog[open]').innerHTML.includes('35217'))), 'reply: backlit zip not in page text before lighting');
     const inkPx = () => page.evaluate(() => { const c = document.querySelector('dialog[open] canvas.bl-zip'); if (!c || !c.width) return 0; const g = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < g.length; i += 4) if (g[i] > 40) n++; return n; });
@@ -961,13 +969,14 @@ async function letter({ mobile = false } = {}) {
     L.check((await status(page)).includes('겉봉을 다시'), 'reply: 2025 miswritten zip neutral');
     L.check(await page.evaluate(() => document.querySelector('dialog[open] input[aria-label="번지"]').value === '31-2'), 'reply: typed values kept after failure');
     await L.typeInto(page, '우편번호', '35217'); await L.click(page, '층: 1층', { exact: true }); await commit(page); L.check((await status(page)).includes('겉봉을 다시'), 'reply: old floor neutral');
-    await L.click(page, '층: 2층', { exact: true }); await L.typeInto(page, '번지', '31 - 2'); await shot(page, 'l-reply'); await commit(page);
+    await L.click(page, '층: 2층', { exact: true }); await L.typeInto(page, '번지', '31 - 2'); await shot(page, 'l-reply');
+    await page.focus('dialog[open] input[aria-label="받는 사람"]'); await page.keyboard.press('Enter'); await L.sleep(300); // 마지막 칸 Enter = 봉투 다 썼다
     L.check(await dlgHas(page, '꽉 찬 봉투') && await dlgHas(page, '과자 깡통'), 'reply solved, leads to the stamp tin');
     L.check(!(await L.buttons(page)).some((x) => x.includes('봉투를 할머니께 건네고')), 'reply is no longer the last device');
     await L.click(page, '계속'); await L.sleep(300);
-    L.check(!(await spotThere('할머니가 내민 빈 봉투')) && await spotThere('할머니의 우표 깡통'), 'stamp tin replaces the reply envelope');
+    L.check(!(await spotThere('열린 대문 안 할머니의 빈 봉투')) && await spotThere('열린 대문 안 할머니의 우표 깡통'), 'stamp tin replaces the reply envelope');
     // 새 장치: 할머니 우표 깡통 — 지금 값 430원 딱 맞게 (뚜껑 380원·소인 찍힌 430원 함정)
-    await hotspot(page, '할머니의 우표 깡통');
+    await hotspot(page, '열린 대문 안 할머니의 우표 깡통');
     L.check(!(await L.buttons(page)).includes('할머니께 보이기'), 'stamps: no commit before sticking any');
     L.check(await dlgHas(page, '편지 한 통 380원'), 'stamps: lid note (old price) shown');
     await L.click(page, '380원 우표', { exact: true }); L.check(await dlgHas(page, '1장 · 380원'), 'stamps: 380 stuck'); await commit(page);
