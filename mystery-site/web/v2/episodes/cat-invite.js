@@ -172,13 +172,13 @@ export default {
       arrive: (S) => (legacy(S), S.solved.includes('gifts')
         ? '선물 넷은 종이 가방에 챙겨 들었다 봄이가 이번엔 골목 끝 쪽으로 자꾸 고개를 돌린다'
         : S.solved.includes('seasons')
-        ? '봄이가 이번엔 빵집 쪽으로 코를 킁킁댔다 벤치 옆 바구니에서 버터 냄새가 났다'
+        ? '봄이가 이번엔 빵집 쪽으로 코를 킁킁댔다 벤치 위 바구니에서 버터 냄새가 났다'
         : '봄이가 품에서 몸을 비틀더니 병원 창턱 쪽으로 고개를 쭉 뺐다 병원은 오늘 휴진이고 빵집은 아직 준비 중이다 병원 창턱에 상자가 하나 놓여 있다'),
       hotspots: [
         { id: 'vetnote', x: 26, y: 41, r: 7, label: '병원 유리문의 쪽지', kind: 'doc', doc: 'vetnote' },
         { id: 'box', x: 8, y: 60, r: 9, label: '창턱의 상자', kind: 'device', device: 'seasons' },
-        { id: 'basket', x: 90, y: 77, r: 9, label: '빵집 앞 바구니', kind: 'device', device: 'gifts', visible: (S) => S.solved.includes('seasons') },
-        { id: 'basketnote', x: 81, y: 72, r: 6, label: '벤치 위 쪽지', kind: 'doc', doc: 'basketnote', visible: (S) => S.solved.includes('seasons') },
+        { id: 'basket', x: 89, y: 77, r: 9, label: '빵집 앞 바구니', kind: 'device', device: 'gifts', visible: (S) => S.solved.includes('seasons') },
+        { id: 'basketnote', x: 78, y: 73, r: 6, label: '벤치 위 쪽지', kind: 'doc', doc: 'basketnote', visible: (S) => S.solved.includes('seasons') },
         { id: 'back', x: 50, y: 70, r: 10, label: '가게로 돌아가기', kind: 'travel', to: 'shop' },
       ],
     },
@@ -531,11 +531,11 @@ export default {
 
   ending: {
     image: P + 'ending.webp',
-    imageAlt: '전구 아래 평상을 둘러싸고 앉은 네 이웃과, 봄이를 안고 다가가는 다은',
+    imageAlt: '전구 아래 평상 방석에 나란히 앉은 네 이웃과, 봄이를 안고 다가가는 다은',
     eyebrow: '6월 12일, 저녁 일곱 시',
     title: '고양이가 데려온 사람들',
     paragraphs: [
-      '전구가 켜진 평상을 네 사람이 둘러싸고 앉아 있었다 다들 아까 내가 자기 선물을 놓아 둔 방석 자리였다 평상 위엔 딸기 케이크와 유리컵에 든 초가 하나 있었다 은호 씨가 먼저 나를 보고 웃었다',
+      '전구가 켜진 평상에 네 사람이 방석을 깔고 나란히 앉아 있었다 아까 내가 선물을 하나씩 올려 둔 그 방석들이었다 작은 상 위엔 딸기 케이크와 유리컵에 든 초가 하나 있었다 은호 씨가 먼저 나를 보고 웃었다',
       '“봄이 생일은 아무도 모르잖아요 그래서 가족 된 날로 했어요” 소연 씨가 말했다 “작년 오늘, 다은 씨가 봄이 데려간 날”',
       '“근데 왜 저한테는 봄이 앞으로 보내요”',
       '“다은 씨 앞으로 보내면 바쁘다고 안 올 것 같아서” 지후 씨가 웃었다 “봉투는 제가 문 밑으로 넣었어요 우체부가 우편함 두고 문 밑으로 넣은 건 처음이에요 발도장은 어제 봄이가 병원 창턱에 놀러 왔을 때 은호 씨가 앞발로 받았고요 참도 그때 달았대요 봄이가 보내는 거니까”',
