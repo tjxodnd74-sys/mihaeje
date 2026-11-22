@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(Pretendard-Black.woff2) format("woff2");font-weight:900}
+@font-face{font-family:P;src:url(Pretendard-ExtraBold.woff2) format("woff2");font-weight:800}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#b9cde0;font-family:P,sans-serif;color:#fff;word-break:keep-all}
+canvas{position:absolute;inset:0}
+.ov{position:absolute;left:0;right:0;text-align:center;font-weight:900;letter-spacing:-.04em;-webkit-text-stroke:14px #000;paint-order:stroke fill;text-shadow:0 8px 24px rgba(0,0,0,.45)}
+.ov em{font-style:normal;color:#ffe14a}
+#top{top:250px;font-size:92px;line-height:1.15}
+#mid{top:700px;font-size:124px;line-height:1.08}
+#sub{top:1040px;font-size:46px;font-weight:800;-webkit-text-stroke:9px #000}
+#cap{top:1330px;font-size:60px;font-weight:800;-webkit-text-stroke:11px #000;white-space:nowrap}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#dim{position:absolute;inset:0;background:#000;opacity:0}
+.tag{position:absolute;font-weight:900;font-size:42px;padding:8px 20px;border-radius:14px;border:5px solid #000;color:#000;white-space:nowrap;transform:translate(-50%,-100%);display:none}
+#bar{position:absolute;left:0;right:0;top:250px;display:flex;justify-content:center;gap:22px;opacity:0}
+#bar div{width:150px;height:150px;border-radius:30px;border:6px solid #000;background:#2b2f36;color:#8a8f98;font-size:100px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+#bar div.on{background:#ffe14a;color:#000;transform:scale(1.12)}
+#bar div.done{background:#fff;color:#000}
+#lab{top:440px;font-size:88px}
+#grid{position:absolute;left:0;right:0;top:600px;display:grid;grid-template-columns:330px 330px;gap:30px;justify-content:center}
+#grid div{height:330px;border-radius:50px;border:8px solid #000;background:#ffe14a;color:#000;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 16px 40px rgba(0,0,0,.45);opacity:0}
+#grid div b{font-size:170px;line-height:1}
+#grid div small{font-size:50px;font-weight:900;margin-top:6px}
+#src{position:absolute;left:0;right:0;top:1460px;text-align:center;font-size:32px;font-weight:800;color:#fff;-webkit-text-stroke:7px #000;paint-order:stroke fill;opacity:0}
+</style>
+<script type="importmap">{"imports":{"three":"./three/build/three.module.js","three/addons/":"./three/examples/jsm/"}}</script>
+</head><body>
+<div id="dim"></div>
+<div id="tagA" class="tag" style="background:#ff4d4d;color:#fff"></div>
+<div id="tagI" class="tag" style="background:#bfe9ff"></div>
+<div id="tagD" class="tag" style="background:#fff"></div>
+<div id="tagB" class="tag" style="background:#22e06b"></div>
+<div id="top" class="ov"></div><div id="mid" class="ov"></div><div id="sub" class="ov"></div>
+<div id="bar"><div>1</div><div>2</div><div>3</div><div>4</div></div>
+<div id="lab" class="ov"></div>
+<div id="grid"><div><b>1</b><small>다리·터널 감속</small></div><div><b>2</b><small>거리 넓게</small></div><div><b>3</b><small>나눠 밟기</small></div><div><b>4</b><small>비상등</small></div></div>
+<div id="cap" class="ov"></div>
+<div id="src"></div><div id="flash"></div>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+const S = window.SPEC, NO = S.narrOffset, T = S.t;
+const W = 1080, H = 1920;
+await document.fonts.load('900 100px P');
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.insertBefore(renderer.domElement, document.body.firstChild);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xc4d8ea); scene.fog = new THREE.Fog(0xc4d8ea, 110, 280);
+const envScene = new THREE.Scene(); envScene.background = new THREE.Color(0xdbe8f4); const env = new THREE.PMREMGenerator(renderer).fromScene(envScene, 0.02).texture;
+const cam = new THREE.PerspectiveCamera(42, W / H, 0.1, 600);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x7a8590, 1.6));
+const sun = new THREE.DirectionalLight(0xfff4e0, 2.2); sun.position.set(-25, 45, 10); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -50, right: 50, top: 50, bottom: -50 }); scene.add(sun); scene.add(sun.target);
+const mat = (c, o = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.95, ...o });
+const plane = (w, h, c, x, z, y = 0, o) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), o && o.isMaterial ? o : mat(c, o)); m.rotation.x = -Math.PI / 2; m.position.set(x, y, z); m.receiveShadow = true; scene.add(m); return m; };
+const boxm = (w, h, d, c, x, y, z, o) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat(c, o)); m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; scene.add(m); return m; };
+// ---- world: one-way road along z, cars drive toward -z. lanes x=-1.8 / 1.8, road -3.6..3.6, shoulder to 4.5
+const BZ1 = 20, BZ2 = -140;            // bridge z range
+const TZ = -175;                        // tunnel portal
+// ground (frosty winter grass) outside bridge, river under bridge
+plane(400, 300, 0x8e9a7c, 0, BZ1 + 150);
+plane(400, 300, 0x8e9a7c, 0, BZ2 - 150);
+plane(400, BZ1 - BZ2, 0x3f6f8f, 0, (BZ1 + BZ2) / 2, -7, { roughness: 0.3, metalness: 0.2 });
+// river banks (slopes)
+for (const [z, s] of [[BZ1, 1], [BZ2, -1]]) { const b = new THREE.Mesh(new THREE.BoxGeometry(400, 10, 8), mat(0x7c8670)); b.position.set(0, -4, z - s * 2); b.rotation.x = s * 0.6; scene.add(b); }
+// road
+const L = 700, RZ = -100;
+plane(9.0, L, 0x3d4148, 0, RZ, 0.01);
+const line = (w, h, c, x, z) => plane(w, h, c, x, z, 0.03);
+line(0.2, L, 0xffffff, 3.6, RZ); line(0.2, L, 0xf2c200, -3.6, RZ);
+for (let z = 250; z > -450; z -= 9) line(0.16, 4, 0xffffff, 0, z);
+// bridge deck + piers + concrete barriers
+boxm(9.6, 1.6, BZ1 - BZ2, 0x9da3aa, 0, -0.81, (BZ1 + BZ2) / 2);
+for (let z = BZ1 - 30; z > BZ2; z -= 32) { boxm(2.2, 7, 2.2, 0x8f959c, -2.5, -4.3, z); boxm(2.2, 7, 2.2, 0x8f959c, 2.5, -4.3, z); }
+const XB = 4.75;                        // barrier center x (inner face ~4.55)
+boxm(0.4, 0.9, BZ1 - BZ2, 0xd9dcdf, XB, 0.45, (BZ1 + BZ2) / 2); boxm(0.4, 0.9, BZ1 - BZ2, 0xd9dcdf, -XB, 0.45, (BZ1 + BZ2) / 2);
+// steel guardrail off-bridge
+const railM = mat(0xd6dadf, { metalness: 0.4, roughness: 0.5 });
+for (const [z1, z2] of [[260, BZ1], [BZ2, TZ + 2]]) for (const sx of [1, -1]) { const r = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.35, z1 - z2), railM); r.position.set(sx * XB, 0.75, (z1 + z2) / 2); scene.add(r); }
+// tunnel mountain + portal
+boxm(120, 26, 90, 0x6f7d66, 0, 13, TZ - 45);
+boxm(110, 14, 70, 0x667459, 0, 30, TZ - 55);
+boxm(13, 8.4, 0.8, 0xb9bdc2, 0, 4.2, TZ + 0.2);
+const hole = new THREE.Mesh(new THREE.PlaneGeometry(10, 6.8), new THREE.MeshBasicMaterial({ color: 0x07080a })); hole.position.set(0, 3.4, TZ + 0.62); scene.add(hole);
+// shade trees near tunnel + along road
+const trunkG = new THREE.CylinderGeometry(0.25, 0.3, 2), leafG = new THREE.ConeGeometry(1.8, 4.5, 7);
+for (let i = 0; i < 120; i++) { const z = 250 - i * 3.6 - (i % 3); if (z < BZ1 + 6 && z > BZ2 - 6) continue; if (z < TZ + 3) continue; const x = (i % 2 ? 1 : -1) * (9 + (i * 37 % 10)); const tr = new THREE.Mesh(trunkG, mat(0x6b4a2e)); tr.position.set(x, 1, z); const lf = new THREE.Mesh(leafG, mat(0x3c5e45)); lf.position.set(x, 4, z); lf.castShadow = true; scene.add(tr, lf); }
+// ---- ice patches (glossy, nearly road-coloured: looks like a wet road)
+const iceM = new THREE.MeshStandardMaterial({ color: 0x5a6a78, roughness: 0.16, metalness: 0.5, envMap: env, envMapIntensity: 0.9, transparent: true, opacity: 0.82 });
+const ZC = -80;                         // crash z (front of slide)
+const ICE1 = [-12, -102];               // bridge ice z range
+plane(7.2, ICE1[0] - ICE1[1], 0, 0, (ICE1[0] + ICE1[1]) / 2, 0.022, iceM);
+const ICE2 = [178, 88];                 // comparison lane (lane 2 only)
+plane(3.4, ICE2[0] - ICE2[1], 0, 1.8, (ICE2[0] + ICE2[1]) / 2, 0.022, iceM);
+const hiM = new THREE.MeshBasicMaterial({ color: 0xff2a2a, transparent: true, opacity: 0, depthWrite: false });
+const hi1 = plane(7.6, ICE1[0] - ICE1[1], 0, 0, (ICE1[0] + ICE1[1]) / 2, 0.04, hiM);
+// glints on ice
+const glT = (() => { const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d'); const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); const t = new THREE.CanvasTexture(c); return t; })();
+const glints = []; for (let i = 0; i < 60; i++) { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glT, transparent: true, depthWrite: false })); s.userData.p = V0(); scene.add(s); glints.push(s); }
+function V0() { return null; }
+// brake-line + distance strips for comparison
+const BL = 172;                          // brake line z
+plane(7.2, 0.5, 0, 0, BL, 0.035, new THREE.MeshBasicMaterial({ color: 0xffffff }));
+const stripM1 = new THREE.MeshBasicMaterial({ color: 0x22e06b, transparent: true, opacity: 0.75, depthWrite: false });
+const stripM2 = new THREE.MeshBasicMaterial({ color: 0xff3030, transparent: true, opacity: 0.75, depthWrite: false });
+const strip1 = plane(1, 1, 0, -1.8, 0, 0.045, stripM1), strip2 = plane(1, 1, 0, 1.8, 0, 0.045, stripM2);
+const gapM = new THREE.MeshBasicMaterial({ color: 0x22e06b, transparent: true, opacity: 0.6, depthWrite: false });
+const gapS = plane(1, 1, 0, 1.8, 0, 0.045, gapM);
+// ---- models
+const loader = new GLTFLoader();
+const load = f => new Promise(r => loader.load('glb/' + f, g => r(g.scene)));
+const names = ['sedan.glb', 'suv.glb', 'hatchback-sports.glb', 'taxi.glb', 'sedan-sports.glb', 'van.glb', 'suv-luxury.glb'];
+const M = await Promise.all(names.map(load));
+const [A, C1, D1, D2, A2, B2, C2] = M;
+const dims = {};
+for (const c of M) { c.scale.setScalar(1.9); c.traverse(o => { if (o.isMesh) o.castShadow = true; }); scene.add(c); }
+const ext = c => { c.position.set(0, 0, 0); c.rotation.set(0, 0, 0); c.updateMatrixWorld(true); const b = new THREE.Box3().setFromObject(c); return { L: b.max.z - b.min.z, W: b.max.x - b.min.x, H: b.max.y - b.min.y, zmin: b.min.z, zmax: b.max.z }; };
+for (const c of M) c.userData.e = ext(c);
+// lights: brake (rear) + hazard (4 corners). front = local +z
+const sc = 1 / 1.9;
+function addLights(c) {
+  const e = c.userData.e; const mk = col => new THREE.MeshBasicMaterial({ color: col });
+  const br = [], hz = [];
+  for (const sx of [-1, 1]) {
+    const b = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.16, 0.06), mk(0x400000)); b.position.set(sx * e.W * 0.3 * sc, e.H * 0.5 * sc, e.zmin * sc - 0.02); c.add(b); br.push(b);
+    for (const fz of [e.zmin * sc - 0.03, e.zmax * sc + 0.03]) { const h = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.12, 0.06), mk(0x553300)); h.position.set(sx * e.W * 0.43 * sc, e.H * (fz > 0 ? 0.36 : 0.5) * sc + (fz > 0 ? 0 : 0.11), fz); c.add(h); hz.push(h); }
+  }
+  c.userData.br = br; c.userData.hz = hz;
+}
+const setBrake = (c, on) => c.userData.br.forEach(b => b.material.color.setHex(on ? 0xff1a1a : 0x400000));
+const setHaz = (c, on) => c.userData.hz.forEach(b => b.material.color.setHex(on ? 0xffa21a : 0x553300));
+for (const c of [A, D1, D2, A2]) addLights(c);
+// glow sprites for lights (bigger, readable from far)
+const debris = await Promise.all(['debris-bumper.glb', 'debris-plate-a.glb', 'debris-spoiler-a.glb', 'debris-plate-small-a.glb', 'debris-bolt.glb', 'debris-tire.glb'].map(load));
+debris.forEach(d => { d.scale.setScalar(1.9); d.visible = false; scene.add(d); });
+const sparks = []; for (let i = 0; i < 20; i++) { const s = new THREE.Mesh(new THREE.SphereGeometry(0.07, 6, 5), new THREE.MeshBasicMaterial({ color: 0xffc03a })); s.visible = false; scene.add(s); sparks.push(s); }
+const trailM = new THREE.MeshBasicMaterial({ color: 0xff2020, transparent: true, opacity: 0.5, depthWrite: false });
+const trail = [];
+
+const ease = p => p < 0 ? 0 : p > 1 ? 1 : 1 - Math.pow(1 - p, 3);
+const eio = p => { p = Math.max(0, Math.min(1, p)); return p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; };
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const lerp = (a, b, u) => a + (b - a) * u;
+const rnd = n => { const x = Math.sin(n * 12.9898) * 43758.5453; return x - Math.floor(x); };
+const $ = id => document.getElementById(id);
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+const proj = (x, y, z) => { const v = V(x, y, z).project(cam); return [(v.x + 1) / 2 * W, (1 - v.y) / 2 * H]; };
+const setText = (el, html, t0, t, pop = true) => { if (html == null) { el.style.opacity = 0; el.dataset.h = ''; return; } if (el.dataset.h !== html) { el.innerHTML = html; el.dataset.h = html; } const u = t - t0; el.style.opacity = clamp(u / 0.08); el.style.transform = pop ? `scale(${1 + 0.22 * (1 - ease(u / 0.18))})` : ''; };
+const tag = (id, on, x, y, z, txt) => { const el = $(id); el.style.display = on ? 'block' : 'none'; if (!on) return; if (txt != null && el.textContent !== txt) el.textContent = txt; const [px, py] = proj(x, y, z); el.style.left = px + 'px'; el.style.top = py + 'px'; };
+glints.forEach((s, i) => { s.userData.p = V((rnd(i + 2) - .5) * 6.4, 0.08, ICE1[0] - 2 - rnd(i + 11) * 40); });
+
+// ---- slide on ice: 80 km/h = 22 m/s, braking on ice ~1.5 m/s^2, 3 s slide, nose swings right into the barrier
+const AE = A.userData.e, hl = AE.L / 2, hw = AE.W / 2;
+const V0s = 22, DEC = 1.5, PHC = 0.75;
+const D3 = V0s * 3 - 0.5 * DEC * 9;
+const XC = 4.55 - (hl * Math.sin(PHC) + hw * Math.cos(PHC)) - 0.04;
+function slide(tau) {
+  if (tau <= 0) { const u = tau + 3, s = V0s * u - 0.5 * DEC * u * u, w = u / 3; return { x: 1.8 + (XC - 1.8) * w * w, z: ZC + D3 - s, yaw: Math.PI - PHC * w * w, br: true }; }
+  const e = 1 - Math.exp(-tau * 2.0), f = 1 - Math.exp(-tau * 3.0);
+  return { x: XC - 1.1 * f, z: ZC - 9 * e, yaw: Math.PI - PHC - 0.55 * f, br: true };
+}
+for (let i = 0; i < 60; i++) { const ta = -3 + i * 0.05, tb = ta + 0.05; const a = slide(ta), b = slide(tb); const len = Math.hypot(b.x - a.x, b.z - a.z); const m = new THREE.Mesh(new THREE.PlaneGeometry(1.9, len + 0.05), trailM); m.rotation.order = 'YXZ'; m.rotation.y = Math.atan2(b.x - a.x, b.z - a.z); m.rotation.x = -Math.PI / 2; m.position.set((a.x + b.x) / 2, 0.06, (a.z + b.z) / 2); m.userData.tau = tb; m.visible = false; scene.add(m); trail.push(m); }
+// ---- braking comparison (k=3): 60 km/h, dry stops in 10 m, ice in 70 m (7x). time compressed
+const VC = 16.7, DD = 7, DI = 49, TD = 1.0, TI = 3.4;
+const brakePos = (t, D, Tt) => { if (t < S.brakeAt) return BL + 8 - VC * 0.0 + (S.brakeAt - t) * VC * 0 ; const p = clamp((t - S.brakeAt) / Tt); return BL - D * (1 - (1 - p) * (1 - p)); };
+function cmp(t, D, Tt) { const pre = S.brakeAt - t; if (pre > 0) return BL + pre * VC * 0.6; const p = clamp(-pre / Tt); return BL - D * (1 - (1 - p) * (1 - p)); }
+// ---- how-to route of A2 (lane 2)
+const put = (o, s, y = 0) => { o.position.set(s.x, y, s.z); o.rotation.y = s.yaw; };
+const Z5 = 65;                           // A2 z at T5
+function routeA2(t) {
+  // k5: 22 -> 12 m/s before bridge; k6: 12 m/s following; k7: on ice pulses to slow; k8: stopped
+  const a5 = (12 - 22) / (T[6] - T[5]);
+  if (t < T[6]) { const u = t - T[5]; return { x: 1.8, z: Z5 - (22 * u + 0.5 * a5 * u * u), v: 22 + a5 * u }; }
+  const z6 = Z5 - (22 * (T[6] - T[5]) + 0.5 * a5 * (T[6] - T[5]) ** 2);
+  if (t < T[7]) { const u = t - T[6]; return { x: 1.8, z: z6 - 12 * u, v: 12 }; }
+  const z7 = z6 - 12 * (T[7] - T[6]);
+  const dur = T[8] - T[7] + 0.1; const u = Math.min(t - T[7], dur); const dec = 12 / dur;
+  return { x: 1.8, z: z7 - (12 * u - 0.5 * dec * u * u), v: Math.max(0, 12 - dec * u) };
+}
+function seg(t) { let k = 0; for (let i = 0; i < T.length; i++) if (t >= T[i]) k = i; return k; }
+
+window.seek = async t => {
+  const k = seg(t), u0 = t - T[k];
+  // ---- slide car A
+  let tau = 2.5; const crashScene = k <= 1;
+  if (k === 0) tau = t - S.crashAt;
+  else if (k === 1) { const tc = S.replayCrash; tau = t < tc ? -3 + 3 * (t - T[1]) / (tc - T[1]) : (t - tc) * 0.6; }
+  const st = slide(tau); put(A, st); A.visible = crashScene; setBrake(A, true); setHaz(A, false);
+  // lane-1 traffic, well ahead / behind, same speed (never overlaps)
+  const tz = ZC + D3 - (V0s * 2.4) * (tau + 3) / 3;
+  put(C1, { x: -1.8, z: tz - 40, yaw: Math.PI }); C1.visible = crashScene;
+  trail.forEach(m => m.visible = k === 1 && m.userData.tau <= tau + 0.001);
+  hiM.opacity = k === 1 ? 0.22 + 0.12 * Math.sin(t * 8) : (k === 2 ? 0 : 0);
+  debris.forEach((d, i) => { if (!crashScene || tau <= 0) { d.visible = false; return; } d.visible = true; const ang = -Math.PI / 2 + (rnd(i + 1) - .5) * 2.2, sp = 3 + rnd(i + 7) * 6; const e = 1 - Math.exp(-tau * 2.6);
+    d.position.set(XC + 0.3 - Math.abs(Math.cos(ang)) * sp * e * 0.5, Math.max(0, 2.0 * Math.sin(Math.min(tau, 0.7) / 0.7 * Math.PI) * (0.5 + rnd(i))), ZC - 2.5 + Math.sin(ang) * sp * e); d.rotation.set(tau * 6 * rnd(i + 3), tau * 5, tau * 4 * rnd(i + 5)); });
+  sparks.forEach((s, i) => { const on = crashScene && tau > 0 && tau < 0.6; s.visible = on; if (!on) return; const a = rnd(i + 31) * Math.PI, sp = 6 + rnd(i + 17) * 8; s.position.set(4.4 - Math.cos(a) * 0.25 * sp * tau, 0.6 + sp * tau * Math.sin(a) * 0.6 - 9 * tau * tau, ZC - 2.2 - sp * tau * 0.7); });
+  glints.forEach((s, i) => { const on = k === 2 || k === 9; s.visible = on; if (!on) return; const ph = (t * 1.3 + rnd(i + 5)) % 1; const a = Math.sin(ph * Math.PI); s.material.opacity = a * a; const sz = 0.06 + 0.16 * a; s.scale.set(sz, sz, 1); s.position.copy(s.userData.p); });
+  // ---- comparison cars
+  const cmpOn = k === 3; D1.visible = D2.visible = cmpOn;
+  const zd = cmp(t, DD, TD), zi = cmp(t, DI, TI);
+  put(D1, { x: -1.8, z: zd, yaw: Math.PI }); put(D2, { x: 1.8, z: zi, yaw: Math.PI });
+  setBrake(D1, t >= S.brakeAt); setBrake(D2, t >= S.brakeAt); setHaz(D1, false); setHaz(D2, false);
+  const l1 = Math.max(0.01, BL - zd), l2 = Math.max(0.01, BL - zi);
+  strip1.visible = strip2.visible = cmpOn && t >= S.brakeAt;
+  strip1.scale.set(0.5, l1, 1); strip1.position.set(-1.8 - 2.2, 0.045, BL - l1 / 2); strip2.scale.set(0.5, l2, 1); strip2.position.set(1.8 + 2.2, 0.045, BL - l2 / 2);
+  // ---- how-to
+  const how = k >= 4; A2.visible = how; B2.visible = how && k >= 5 && k <= 7; C2.visible = how;
+  const r = routeA2(Math.max(t, T[5])); put(A2, { x: 1.8, z: r.z, yaw: Math.PI });
+  const bz = r.z - 32 - (k === 7 ? 0 : 0);
+  const b2z = (k <= 6) ? routeA2(Math.max(t, T[5])).z - 34 : (routeA2(T[7]).z - 34) - 12 * (t - T[7]);
+  put(B2, { x: 1.8, z: k === 5 ? Math.min(b2z, 20 - 12 * (t - T[5]) - 40) : b2z, yaw: Math.PI });
+  if (k === 5) B2.visible = false;
+  put(C2, { x: -1.8, z: 200 - ((t * 20) % 420), yaw: Math.PI });
+  setBrake(A2, (k === 5 && t < T[6] - 0.3) || (k === 7 && ((t - T[7] - 0.2) % 0.7) < 0.38 && t > T[7] + 0.2) || k >= 8);
+  const hazOn = k >= 8 && t >= S.hazAt && ((t - S.hazAt) % 0.6) < 0.32; setHaz(A2, hazOn);
+  const gOn = k === 6 && t > T[6] + 0.3; gapS.visible = gOn; if (gOn) { const z1 = r.z - A2.userData.e.L / 2 - 0.5, z2 = B2.position.z + B2.userData.e.L / 2 + 0.5; const gl = Math.max(0.01, (z1 - z2) * ease((t - T[6] - 0.3) / 0.6)); gapS.scale.set(3.0, gl, 1); gapS.position.set(1.8, 0.045, z1 - gl / 2); }
+  // ---- camera
+  let cp, look, sh = 0; cam.up.set(0, 1, 0); cam.fov = 42;
+  if (k === 0) { const z = ease(t / 1.0); cp = V(-4.5 + 1.5 * z, 6.5 - 1 * z, ZC + 24 - 6 * z); look = V(3.0, 0.4, lerp(ZC + 6, ZC - 1, z)); if (t > S.crashAt && t < S.crashAt + 0.5) sh = (1 - (t - S.crashAt) / 0.5) * 0.8; }
+  else if (k === 1) { cp = V(-9, 56, ZC + 84); look = V(1.5, 0, ZC + 28); }
+  else if (k === 2) { const z = ease(u0 / (T[3] - T[2])); cp = V(-1.2, lerp(1.1, 1.6, z), ICE1[0] + lerp(8, 2, z)); look = V(0.6, 0, ICE1[0] - 26); }
+  else if (k === 3) { cp = V(-3, 17, BL + 30); look = V(0.5, 0, BL - 38); }
+  else if (k === 4) { cp = V(-14, 26, 60); look = V(1, 0, -10); }
+  else if (k === 5) { cp = V(0.2, 7.5, r.z + 16); look = V(1.0, 0, r.z - 30); }
+  else if (k === 6) { const mz = (r.z + B2.position.z) / 2; cp = V(-4, 30, r.z + 20); look = V(1.8, 0, r.z - 20); }
+  else if (k === 7) { const z = ease(u0 / 0.6); cp = V(lerp(-7, -6, z), lerp(5.5, 4.6, z), r.z + lerp(17, 13, z)); look = V(1.8, 0.8, r.z - 2); }
+  else if (k === 8) { cp = V(-1.2, 3.2, r.z + 10); look = V(1.8, 0.9, r.z - 1); }
+  else { const z = ease(u0 / 3); cp = V(lerp(-2, -12, z), lerp(4, 30, z), r.z + lerp(10, 40, z)); look = V(lerp(1.8, 0, z), 0, r.z - lerp(1, 25, z)); }
+  cam.position.copy(cp).add(V((rnd(Math.floor(t * 30)) - .5) * sh, (rnd(Math.floor(t * 30) + 9) - .5) * sh, 0)); cam.lookAt(look); cam.updateProjectionMatrix();
+  sun.position.set(look.x - 25, 45, look.z + 10); sun.target.position.set(look.x, 0, look.z);
+  renderer.render(scene, cam);
+  // ---- overlays
+  const fl = tc => (t > tc && t < tc + 0.12) ? 0.85 * (1 - (t - tc) / 0.12) : 0;
+  $('flash').style.opacity = Math.max(fl(S.crashAt), k === 1 ? fl(S.replayCrash) * 0.6 : 0);
+  const dim = k === 4 ? 0.5 * ease(u0 / 0.3) : (k === 3 && t >= S.numAt2) ? 0.35 * ease((t - S.numAt2) / 0.3) : (k === 9 && t >= S.endTilesAt) ? 0.45 * ease((t - S.endTilesAt) / 0.3) : 0;
+  $('dim').style.opacity = dim;
+  const X = S.text;
+  const topHtml = [X.hook, X.hook, X.what, t >= S.numAt2 ? X.after : X.cmp, X.intro, null, null, null, null, X.end][k];
+  const topT0 = k === 1 ? T[0] + 0.15 : k === 0 ? 0.12 : (k === 3 && t >= S.numAt2) ? S.numAt2 : T[k];
+  setText($('top'), t < 0.12 ? null : topHtml, topT0, t);
+  let mid = null, m0 = 0;
+  if (k === 3 && t >= S.numAt) { mid = t >= S.numAt2 ? X.num2 : X.num; m0 = t >= S.numAt2 ? S.numAt2 : S.numAt; }
+  setText($('mid'), mid, m0, t);
+  $('mid').style.fontSize = (k === 3 && t >= S.numAt2) ? '104px' : '124px';
+  $('mid').style.top = (k === 3 && t < S.numAt2) ? '400px' : '700px';
+  const subOn = k === 3 && t >= S.numAt + 0.4; setText($('sub'), subOn ? (t >= S.numAt2 ? X.numSub2 : X.numSub) : (k === 7 && t >= T[7] + 0.3 ? X.l3sub : null), k === 3 ? (t >= S.numAt2 ? S.numAt2 + 0.3 : S.numAt + 0.4) : T[7] + 0.3, t, false);
+  $('sub').style.top = k === 3 && t < S.numAt2 ? '545px' : k === 7 ? '570px' : '1000px';
+  const gs = $('grid').children; for (let i = 0; i < 4; i++) { const g0 = k === 4 ? S.gridAt : S.endTilesAt; const a = t - (g0 + i * 0.18); const on = (k === 4 || (k === 9 && t >= S.endTilesAt)) && a > 0; gs[i].style.opacity = on ? clamp(a / 0.08) : 0; gs[i].style.transform = on ? `scale(${1 + 0.35 * (1 - ease(a / 0.2))})` : ''; }
+  $('grid').style.top = k === 9 ? '560px' : '600px';
+  const barOn = (k >= 5 && k <= 8); $('bar').style.opacity = barOn ? 1 : 0;
+  const bs = $('bar').children; for (let i = 0; i < 4; i++) { const cur = k - 5; bs[i].className = i === cur ? 'on' : i < cur ? 'done' : ''; }
+  const labs = [X.l1, X.l2, X.l3, X.l4]; setText($('lab'), barOn ? labs[k - 5] : null, T[k], t);
+  // tags
+  tag('tagA', k === 0 && tau < 0, st.x, A.userData.e.H * 1.15, st.z, '빙판 급브레이크');
+  tag('tagI', (k === 1 && t > T[1] + 0.3) || (k === 2 && t >= S.iceAt), k === 1 ? 0 : 0.6, k === 1 ? 0.5 : 0.3, k === 1 ? ICE1[0] - 8 : ICE1[0] - 14, '블랙아이스');
+  tag('tagD', k === 2 && t < S.iceAt, 0.6, 0.3, ICE1[0] - 14, '젖은 길?');
+  tag('tagB', k === 3 && t >= S.brakeAt && t < S.numAt2, -1.8, D1.userData.e.H * 1.2, zd, '마른 길');
+  tag('tagA', (k === 3 && t >= S.brakeAt && t < S.numAt2) || (k === 0 && tau < 0), k === 3 ? 1.8 : st.x, A.userData.e.H * 1.2, k === 3 ? zi : st.z, k === 3 ? '빙판길' : '빙판 급브레이크');
+  if (k === 5) { tag('tagI', true, 0, 2.2, -45, '다리 위'); tag('tagB', t > T[5] + 0.6, 0, 3.5, TZ + 1, '터널 입구'); $('tagB').style.background = '#bfe9ff'; } else $('tagB').style.background = '#22e06b';
+  if (k === 6) tag('tagB', t > T[6] + 0.6, 1.8, 0.4, (r.z + B2.position.z) / 2, '넉넉하게');
+  if (k === 7) tag('tagD', t > T[7] + 0.2, 1.8, A2.userData.e.H * 1.3, r.z, ((t - T[7] - 0.2) % 0.7) < 0.38 ? '톡' : '·');
+  if (k === 8) tag('tagD', t >= S.hazAt, 1.8, A2.userData.e.H * 1.35, r.z, '비상등 깜빡');
+  // caption
+  let c = null, c0 = 0; for (const q of S.caps) { const a = q[0] + NO; if (t >= a) { c = q[1]; c0 = a; } }
+  const lastEnd = S.caps[S.caps.length - 1][2] + NO + 0.6;
+  setText($('cap'), (t >= NO && t < lastEnd) ? c : null, c0, t, false);
+  $('src').textContent = X.src; $('src').style.opacity = k >= 9 ? ease((t - T[9]) / 0.4) : 0;
+};
+window.ready = async () => { await document.fonts.ready; };
+window.__ok = true;
+</script></body></html>
