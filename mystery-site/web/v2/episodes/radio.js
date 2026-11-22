@@ -60,23 +60,33 @@ const LP = {
 };
 const LP_OK = { side: 'A', pos: 2 };
 const NTH = ['', '첫째', '둘째', '셋째', '넷째', '다섯째'];
-function lpSvg(side, pos, onPick) {
-  // 위에서 내려다본 판 (viewBox 0~200) 바깥 반지름 96 · 라벨 34 · 띠는 곡 길이 비례, 사이 홈 1.2
+// 띠 자리 [바깥 반지름, 안쪽 반지름, 번호] (viewBox 0~200) 판 가장자리·홈까지 누름 자리로 쓰려고 lpSvg 밖에서도 쓴다
+const LP_R0 = 96, LP_R1 = 33, LP_GAP = 1.6;
+function lpBands(side) {
+  // 띠 폭 = 반은 똑같이 + 반은 곡 길이 비례 (짧은 첫 곡도 손가락으로 누를 만하게, 긴 곡은 여전히 넓다)
   const tr = LP[side]; const total = tr.reduce((a, t) => a + t[1], 0);
-  const R0 = 95, R1 = 38, span = R0 - R1 - 1.2 * (tr.length - 1);
-  let r = R0; const bands = [];
-  tr.forEach((t, i) => { const w = span * t[1] / total; bands.push([r, r - w, i + 1]); r -= w + 1.2; });
+  const span = LP_R0 - LP_R1 - LP_GAP * (tr.length - 1);
+  let r = LP_R0; const bands = [];
+  tr.forEach((t, i) => { const w = span * (0.5 / tr.length + 0.5 * t[1] / total); bands.push([r, r - w, i + 1]); r -= w + LP_GAP; });
+  return bands;
+}
+function lpSvg(side, pos) {
+  // 위에서 내려다본 판 띠는 번갈아 조금 다른 검정, 띠 사이 홈은 밝은 선이라 휴대폰 밝기에서도 셀 수 있다
+  const tr = LP[side]; const bands = lpBands(side);
   let g = `<svg class="lp-svg" viewBox="0 0 200 200" role="img" aria-label="${side}면이 위로 놓인 판 띠 ${tr.length}개">`;
-  g += '<circle cx="100" cy="100" r="99" fill="#2a2522"/><circle cx="100" cy="100" r="97" fill="#0c0b0c"/>';
+  g += '<circle cx="100" cy="100" r="99" fill="#2a2522"/><circle cx="100" cy="100" r="97.4" fill="#0c0b0c"/>';
   bands.forEach(([a, b, n]) => {
     const mid = (a + b) / 2, w = a - b;
-    g += `<circle class="lp-band${pos === n ? ' on' : ''}" data-n="${n}" cx="100" cy="100" r="${mid.toFixed(2)}" fill="none" stroke="#17151a" stroke-width="${w.toFixed(2)}"/>`;
-    for (let k = 1; k < 5; k++) g += `<circle cx="100" cy="100" r="${(b + w * k / 5).toFixed(2)}" fill="none" stroke="#222026" stroke-width=".35" pointer-events="none"/>`;
+    g += `<circle class="lp-band${pos === n ? ' on' : ''}" data-n="${n}" cx="100" cy="100" r="${mid.toFixed(2)}" fill="none" stroke="${n % 2 ? '#1c1a20' : '#2a2630'}" stroke-width="${w.toFixed(2)}"/>`;
+    for (let k = 1; k < 4; k++) g += `<circle cx="100" cy="100" r="${(b + w * k / 4).toFixed(2)}" fill="none" stroke="rgba(255,255,255,.05)" stroke-width=".35" pointer-events="none"/>`;
+    if (n < bands.length) g += `<circle cx="100" cy="100" r="${(b - LP_GAP / 2).toFixed(2)}" fill="none" stroke="#5c5463" stroke-width=".7" pointer-events="none"/>`;
   });
   g += '<path d="M100 100 m-80 -30 a85 85 0 0 1 52 -52" fill="none" stroke="rgba(255,120,100,.09)" stroke-width="8" pointer-events="none"/>';
-  g += `<circle cx="100" cy="100" r="${R1 - 2}" fill="#6b241d"/><text x="100" y="86" text-anchor="middle" font-size="9.5" fill="#f0dcc8" font-family="SUIT, sans-serif" pointer-events="none">밤의 창가</text><text x="100" y="121" text-anchor="middle" font-size="15" font-weight="800" fill="#f0dcc8" font-family="SUIT, sans-serif" pointer-events="none">${side}</text><circle cx="100" cy="100" r="2.4" fill="#cfcac4"/>`;
+  g += `<circle cx="100" cy="100" r="${LP_R1 - 2}" fill="#6b241d"/><text x="100" y="86" text-anchor="middle" font-size="9" fill="#f0dcc8" font-family="SUIT, sans-serif" pointer-events="none">밤의 창가</text><text x="100" y="121" text-anchor="middle" font-size="15" font-weight="800" fill="#f0dcc8" font-family="SUIT, sans-serif" pointer-events="none">${side}</text><circle cx="100" cy="100" r="2.4" fill="#cfcac4"/>`;
+  // 고른 띠 위에 바깥부터 센 번호 (왼쪽, 톤암 반대편)
+  if (pos) { const [a, b] = bands[pos - 1]; const cx = 100 - (a + b) / 2; g += `<g class="lp-no" pointer-events="none"><circle cx="${cx.toFixed(2)}" cy="100" r="9" fill="#ff8f7d" stroke="#1a0806" stroke-width="1.2"/><text x="${cx.toFixed(2)}" y="104.1" text-anchor="middle" font-size="12" font-weight="800" fill="#1a0806" font-family="SUIT, sans-serif">${pos}</text></g>`; }
   // 톤암: 오른쪽 위 받침에서 바늘 자리까지 (0이면 받침대에 걸려 있음)
-  const nr = pos ? bands[pos - 1][0] - 0.8 : 104;
+  const nr = pos ? bands[pos - 1][0] - 1 : 104;
   const ang = -0.5 + (pos ? 0.05 * pos : -0.35);
   const tx = 100 + nr * Math.cos(ang), ty = 100 + nr * Math.sin(ang);
   g += `<line x1="190" y1="20" x2="${tx.toFixed(1)}" y2="${ty.toFixed(1)}" stroke="#bdb8b2" stroke-width="2.4" stroke-linecap="round" pointer-events="none"/><circle cx="190" cy="20" r="6" fill="#55504c" pointer-events="none"/><rect x="${(tx - 3).toFixed(1)}" y="${(ty - 3).toFixed(1)}" width="6" height="6" rx="1" fill="#e9e4dc" pointer-events="none"/>`;
@@ -107,6 +117,17 @@ const CAMS = {
 };
 const CAM_SHOW = ['c2', 'c4', 'c1', 'c3'];
 const CAM_OK = ['c1', 'c2', 'c3', 'c4'];
+// 알림 사진 크게 보기 (열린 장치 창 안에 덮어 띄운다 아무 데나 누르면 닫힘)
+function camBig(k, from) {
+  const host = from.closest('dialog') || document.body;
+  host.querySelector('.cctv-big')?.remove();
+  const ov = document.createElement('div'); ov.className = 'cctv-big'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-label', `${CAMS[k].cam} 사진 크게`);
+  ov.innerHTML = `<figure><img src="${P}props/${CAMS[k].img}.webp" alt="${CAMS[k].cam} 흑백 화면 크게"><figcaption><span>${CAMS[k].cam}</span><span>${CAMS[k].t}</span></figcaption></figure><button type="button" class="cctv-big-close">닫기</button>`;
+  const close = () => { ov.remove(); from.focus?.({ preventScroll: true }); };
+  ov.addEventListener('click', (e) => { e.stopPropagation(); close(); });
+  ov.addEventListener('keydown', (e) => { if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); close(); } });
+  host.append(ov); ov.querySelector('.cctv-big-close').focus({ preventScroll: true });
+}
 const camFig = (k, extra = '') => `<figure class="cctv-frame"><img src="${P}props/${CAMS[k].img}.webp" alt="${CAMS[k].cam} 흑백 화면" decoding="async"><figcaption><span>${CAMS[k].cam}</span><span>${extra || CAMS[k].t}</span></figcaption></figure>`;
 
 // 패치베이 (props/patch.webp 에서 잰 잭 구멍 가운데 · 라벨 띠 가운데 %)
@@ -230,6 +251,8 @@ export default {
       name: 'A실',
       image: P + 'studioA.webp',
       unlockedBy: 'reel',
+      // 휴대폰 첫 화면: 처음엔 왼쪽 데크, 데크 뒤엔 의자 위 휴대폰, 알림 뒤엔 오른쪽 랙의 패치베이
+      focusX: (S) => (S.solved.includes('cctv') ? 80 : S.solved.includes('deck') ? 48 : 21),
       // 데크를 돌린 뒤 녹화기 알림이 오는 동안 의자 위 휴대폰 화면이 깜빡인다 (알림을 다 이어 보면 꺼짐)
       get overlays() { const s = stateNow().solved || []; return s.includes('deck') && !s.includes('cctv') ? [{ x: 45.6, y: 68.4, w: 5.8, h: 5.6, cls: 'phone-buzz', html: '<style>@keyframes radioBuzz{0%,100%{opacity:.35}8%,22%{opacity:1}30%{opacity:.5}}.v2-stage-ov.phone-buzz{pointer-events:none;border-radius:50%;background:radial-gradient(closest-side,rgba(175,205,245,.95),rgba(120,160,225,.45) 45%,rgba(120,160,225,0));mix-blend-mode:screen;animation:radioBuzz 1.6s ease-in-out infinite}@media (prefers-reduced-motion:reduce){.v2-stage-ov.phone-buzz{animation:none;opacity:.8}}</style>' }] : []; },
       arrive: (S) => S.solved.includes('cctv')
@@ -422,7 +445,18 @@ export default {
         if (d.pos > n) d.pos = 0;
         const wrap = el('div', 'lp-deck');
         wrap.innerHTML = lpSvg(d.side, d.pos);
-        wrap.querySelectorAll('.lp-band').forEach((c) => { c.addEventListener('click', () => { if (solved) return; d.pos = +c.dataset.n; save(); }); });
+        const pick = (n) => { if (solved || !n || n === d.pos) return; d.pos = n; save(); };
+        wrap.querySelectorAll('.lp-band').forEach((c) => { c.addEventListener('click', (e) => { e.stopPropagation(); pick(+c.dataset.n); }); });
+        // 띠 사이 홈·판 가장자리를 눌러도 가장 가까운 띠로 (좁은 첫 띠도 손가락으로 잡히게)
+        const svg = wrap.querySelector('svg');
+        svg.addEventListener('click', (e) => {
+          const r = svg.getBoundingClientRect(); if (!r.width) return;
+          const k = 200 / r.width, dx = (e.clientX - r.left) * k - 100, dy = (e.clientY - r.top) * k - 100, rr = Math.hypot(dx, dy);
+          if (rr < LP_R1 || rr > 100) return;
+          const bands = lpBands(d.side); let best = 0, bd = 1e9;
+          bands.forEach(([a, b, n]) => { const dist = rr > a ? rr - a : rr < b ? b - rr : 0; if (dist < bd) { bd = dist; best = n; } });
+          pick(best);
+        });
         const row = el('div', 'lp-row');
         const flip = el('button', 'chip lp-btn', '판 뒤집기'); flip.type = 'button'; flip.setAttribute('aria-label', `판 뒤집기 (지금 ${d.side}면이 위)`);
         flip.onclick = () => { if (solved) return; d.side = d.side === 'A' ? 'B' : 'A'; d.pos = 0; save(); };
@@ -619,7 +653,12 @@ export default {
           b.setAttribute('aria-label', `${CAMS[k].cam} ${CAMS[k].t} 알림${n >= 0 ? ` (${n + 1}번째)` : ''}`);
           b.innerHTML = camFig(k) + (n >= 0 ? `<b class="cctv-no">${n + 1}</b>` : '');
           b.onclick = () => { if (solved) return; if (n >= 0) d.order.splice(n, 1); else d.order.push(k); save(); };
-          grid.append(b);
+          // 번호 붙이기와 따로, 알림 사진을 크게 본다 (휴대폰에선 칸이 작아 불빛이 안 보인다)
+          const z = el('button', 'cctv-zoom'); z.type = 'button'; z.setAttribute('aria-label', `${CAMS[k].cam} 사진 크게 보기`);
+          z.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5M10.5 8v5M8 10.5h5"/></svg>';
+          z.onclick = (e) => { e.stopPropagation(); camBig(k, z); };
+          const cell = el('div', 'cctv-cell'); cell.append(b, z);
+          grid.append(cell);
         });
         const wrap = el('div', 'mail-wrap cctv-wrap'); wrap.append(el('p', 'cctv-head', 'MIRU 녹화기 · 움직임 감지 4건'), grid);
         const foot = el('div', 'cctv-foot');

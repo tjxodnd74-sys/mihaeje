@@ -2528,6 +2528,16 @@ html[data-case="radio"] .cctv-grid{display:grid;grid-template-columns:repeat(2,m
 html[data-case="radio"] .cctv-btn{position:relative;padding:0;border:2px solid #2c3530;border-radius:3px;background:#050605;cursor:pointer;min-width:0;min-height:0;overflow:hidden}
 html[data-case="radio"] .cctv-btn:focus-visible{outline:none;border-color:#8fd19a}@media (hover:hover){html[data-case="radio"] .cctv-btn:hover{outline:none;border-color:#8fd19a}}
 html[data-case="radio"] .cctv-btn.on{border-color:var(--lamp)}
+html[data-case="radio"] .cctv-cell{position:relative;min-width:0}
+html[data-case="radio"] .cctv-cell>.cctv-btn{display:block;width:100%}
+html[data-case="radio"] .cctv-zoom{position:absolute;left:8px;bottom:8px;width:42px;height:42px;min-width:0;min-height:0;padding:0;display:grid;place-items:center;border:1px solid rgba(242,246,238,.45);border-radius:50%;background:rgba(0,0,0,.62);cursor:pointer}
+html[data-case="radio"] .cctv-zoom svg{width:22px;height:22px;fill:none;stroke:#f2f6ee;stroke-width:2;stroke-linecap:round}
+html[data-case="radio"] .cctv-zoom:focus-visible{outline:2px solid #8fd19a;outline-offset:2px}
+html[data-case="radio"] .cctv-big{position:fixed;inset:0;z-index:60;display:grid;align-content:center;justify-items:center;gap:14px;padding:calc(16px + var(--sa-t,0px)) 16px calc(16px + var(--sa-b,0px));background:rgba(0,0,0,.93);cursor:zoom-out}
+html[data-case="radio"] .cctv-big figure{position:relative;margin:0;width:min(100%,calc((100svh - 130px) * 4 / 3),960px);border:2px solid #2c3530}
+html[data-case="radio"] .cctv-big img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+html[data-case="radio"] .cctv-big figcaption{display:flex;justify-content:space-between;gap:8px;padding:6px 8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;color:#f2f6ee;background:#0b0e0c;border-top:1px solid #2c3530}
+html[data-case="radio"] .cctv-big-close{min-height:44px;min-width:96px;padding:0 18px;border:1px solid rgba(242,246,238,.5);border-radius:22px;background:#151a17;color:#f2f6ee;font-size:15px;cursor:pointer}
 html[data-case="radio"] .cctv-frame{position:relative;margin:0}
 html[data-case="radio"] .cctv-frame img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
 html[data-case="radio"] .cctv-frame::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px)}
@@ -2613,8 +2623,9 @@ html[data-case="radio"] .lp-wrap{display:grid;justify-items:center;gap:10px}
 html[data-case="radio"] .lp-deck{width:min(100%,340px);aspect-ratio:1;background:radial-gradient(closest-side,#2b221d 88%,#1a1411);border-radius:14px;padding:12px;box-sizing:border-box;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
 html[data-case="radio"] .lp-svg{display:block;width:100%;height:auto}
 html[data-case="radio"] .lp-band{cursor:pointer;transition:stroke .15s}
-html[data-case="radio"] .lp-band.on{stroke:#4d2c2c}
-@media (hover:hover){html[data-case="radio"] .lp-band:hover{stroke:#2a2430}}
+html[data-case="radio"] .lp-band.on{stroke:#6e3a33}
+@media (hover:hover){html[data-case="radio"] .lp-band:not(.on):hover{stroke:#3a3442}}
+html[data-case="radio"] .lp-svg{cursor:pointer;-webkit-tap-highlight-color:transparent}
 html[data-case="radio"] .lp-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
 html[data-case="radio"] .lp-btn{min-height:44px;min-width:44px;padding:0 14px;font-size:15px}
 html[data-case="radio"] .lp-sleeve{background:#1f2c31;color:#e9e2d4;border-radius:6px;padding:16px 18px;font-family:var(--sans)}
@@ -2641,12 +2652,17 @@ html[data-case="radio"] .lp-credit{margin:12px 0 0;font-size:13px;color:#b7b0a2}
   html[data-case="radio"] .keyphoto>.pframe>img{display:block;width:100%;height:auto}
   html[data-case="radio"] .kp-row .kp-pad{margin:0;max-width:none;width:100%}
   html[data-case="radio"] .kp-pad .ctl.kp-clear{font-size:15px;padding:0;letter-spacing:-.02em}
+  /* 사진 속 작은 숫자 버튼·잭은 장식으로만 (옆 큰 숫자판·아래 큰 칩으로 누른다 엄지가 빗나가지 않게) */
+  html[data-case="radio"] .keyphoto .kp-key,html[data-case="radio"] .patchphoto .jack{pointer-events:none}
+  html[data-case="radio"] .kp-pad{display:grid;grid-template-columns:repeat(3,1fr)}
+  html[data-case="radio"] .kp-pad .ctl{font-size:20px}
 }
 @media (max-width:640px),(orientation:landscape) and (max-height:500px){
   html[data-case="radio"] .blink-svg text{font-size:3.4px}
   /* 휴대폰: 두 줄 시각 글자가 사진 위쪽(로비 ON AIR 간판 자리)을 덮지 않게 사진 위 검은 띠로 뺀다 */
   html[data-case="radio"] .cctv-frame figcaption{position:static;font-size:13px;flex-direction:column;align-items:flex-start;gap:0;text-align:left;padding:4px 6px 5px;background:#0b0e0c;text-shadow:none;border-top:1px solid #2c3530}
   html[data-case="radio"] .cctv-no{top:8px;bottom:auto}
+  html[data-case="radio"] .cctv-zoom{top:6px;bottom:auto;left:6px}
   html[data-case="radio"] .reel-chips{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:10px}
   html[data-case="radio"] .reel-chip{min-width:0;padding:8px 2px;border-radius:6px;font-size:13px;letter-spacing:-.05em;white-space:nowrap;text-align:center;min-height:42px}
   html[data-case="radio"] .reel-chip.empty{display:grid;place-items:center;border:1px dashed var(--line);color:var(--soft-3)}
@@ -2659,6 +2675,21 @@ html[data-case="radio"] .lp-credit{margin:12px 0 0;font-size:13px;color:#b7b0a2}
   html[data-case="radio"] .pb-chip i{font-style:normal;font-size:13px;color:var(--lamp)}
   html[data-case="radio"] .term-table th{font-size:13px}
   html[data-case="radio"] .pb-chip.on i{color:#8a1d14}
+}
+/* 가로 휴대폰: 도어락은 사진 | 누른 번호 + 큰 숫자판, 턴테이블은 판 | 버튼·상태 줄 (위아래로 밀지 않고 한 화면에) */
+@media (orientation:landscape) and (max-height:500px){
+  html[data-case="radio"] .kp-wrap{display:grid;grid-template-columns:76px minmax(0,420px);grid-template-areas:"photo read" "photo pad";column-gap:16px;row-gap:8px;justify-content:center;align-items:start}
+  html[data-case="radio"] .kp-row{display:contents}
+  html[data-case="radio"] .kp-wrap .keyphoto{grid-area:photo;width:76px;align-self:center}
+  html[data-case="radio"] .kp-wrap .kp-readout{grid-area:read;margin:0;padding:6px 14px}
+  /* 숫자판 두 줄: 1~6 / 7 8 9 0 지우기 */
+  html[data-case="radio"] .kp-wrap .kp-pad{grid-area:pad;margin:0;grid-template-columns:repeat(6,minmax(0,1fr))}
+  html[data-case="radio"] .kp-pad .ctl{min-height:46px;height:46px;padding:0}
+  html[data-case="radio"] .kp-pad .ctl.kp-clear{grid-column:5 / span 2;order:2}
+  html[data-case="radio"] .lp-wrap{grid-template-columns:auto minmax(0,300px);justify-content:center;align-items:center;column-gap:20px}
+  html[data-case="radio"] .lp-deck{grid-row:1 / span 2;width:min(240px,56svh);padding:8px}
+  html[data-case="radio"] .lp-row{flex-direction:column;align-items:stretch;align-self:end}
+  html[data-case="radio"] .lp-wrap>.pick-label{align-self:start;margin:0}
 }
 
 /* v116 가독성: 기록 화면 머리글 대비, 표 안 낱말이 중간에서 끊기지 않게 */
