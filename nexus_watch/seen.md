@@ -477,3 +477,5 @@
 2026-11-22 14:23 | 조팀장 '클릭 5번이면 끝나는 AI 사극 드라마 만드는 법'(42분 전) | 유튜브 | https://www.youtube.com/@조팀장의ai공략집/videos
 2026-11-22 14:23 | 긱뉴스 빈트 서프 TCP/IP 특허·CMU 강의 유튜브·LLM 리버스 엔지니어링(알림 제외) / AI타임스 새 기사 없음 | 긱뉴스 | https://news.hada.io/
 - 2026-11-22 14:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + JSON 파싱) — 13:23 이후 새 롱폼 1개(조팀장), 새 쇼츠 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음(새 소비자 소식 없음). 인스타 브라우저 안 엶.
+2026-11-22 15:23 | AI 음성비서(경쟁 주제·@hongik.man) | 스탠퍼드 오픈소스 OpenJarvis+클로드로 자비스 만들기(22.7만·10배) | https://www.instagram.com/reel/Df89tecIQpH
+2026-11-22 15:23 | 챗GPT 마케팅(광고성 가능, 알림 제외·@ai_mst.mirr) | GPT로 팔로워 늘리기(Mirr AI 연동, 13.4만) | https://www.instagram.com/reel/Df9Q-kSvXQt
