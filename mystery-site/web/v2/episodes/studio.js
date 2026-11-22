@@ -91,7 +91,8 @@ export default {
       name: '작업대',
       image: P + 'table.webp',
       unlockedBy: 'lockers',
-      arrive: '라이트박스를 켜자 작업대가 하얗게 떴다 필름 네 줄을 올려놓았다 몇 줄은 앞뒤가 뒤집혀 있다 장갑을 끼고 루페를 집었다',
+      // 컷을 고른 뒤에는 '뒤집혀 있다'가 남지 않게
+      arrive: (S) => S.solved.includes('lightbox') ? '라이트박스는 아직 하얗게 켜져 있다 고른 컷은 슬리브에 넣었고 나머지 필름 줄은 앞뒤를 바로 놓아 두었다 암실 문은 접수실 뒤 붉은 등 밑이다' : '라이트박스를 켜자 작업대가 하얗게 떴다 필름 네 줄을 올려놓았다 몇 줄은 앞뒤가 뒤집혀 있다 장갑을 끼고 루페를 집었다',
       hotspots: [
         { id: 'lightbox', x: 43, y: 58, r: 16, label: '라이트박스 위 필름', kind: 'device', device: 'lightbox' },
         { id: 'loupe', x: 61, y: 52, r: 9, label: '루페로 본 필름 가장자리', kind: 'doc', doc: 'edge' },
