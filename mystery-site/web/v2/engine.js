@@ -501,7 +501,7 @@ async function main() {
         if (r && !S.read.includes(r)) { S.read.push(r); play('paper'); }
         save();
         [...tabs.children].forEach((t) => { if (t.disabled) return; t.classList.toggle('on', t.dataset.doc === r); t.classList.toggle('read', S.read.includes(t.dataset.doc)); });
-        if (!r) { const any = refs.some((x) => S.read.includes(x)); panel.replaceChildren(el('p', 'v2-bench-empty', any ? '위에서 자료를 고르면 여기 펼쳐집니다' : '장면에서 자료를 먼저 찾아 읽으면, 여기에 펼쳐 둘 수 있습니다')); return; }
+        if (!r) { const any = refs.some((x) => S.read.includes(x) || (S.found || []).includes(x)); panel.replaceChildren(el('p', 'v2-bench-empty', any ? '위에서 자료를 고르면 여기 펼쳐집니다' : '장면에서 자료를 먼저 찾아 읽으면, 여기에 펼쳐 둘 수 있습니다')); return; }
         const dd = ep.docs[r];
         const paper = el('div', 'v2-paper v2-bench-paper');
         paper.append(el('p', 'v2-eyebrow', dd.kind || '자료'), el('h3', 'v2-bench-title', dd.title), bust(html('div', 'v2-doc-body', typeof dd.html === 'function' ? dd.html(S) : dd.html)));
