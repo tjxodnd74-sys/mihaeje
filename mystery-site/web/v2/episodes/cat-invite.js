@@ -17,6 +17,14 @@ function foldPanelSvg(p) {
 // 예전 저장본(포장지 장치가 없던 판)에서 이미 골목 장치를 푼 사람은 포장지도 푼 것으로 본다
 const legacy = (S) => { if (!S.solved.includes('fold') && ['seasons', 'gifts', 'mailbox', 'seats'].some((d) => S.solved.includes(d))) S.solved.unshift('fold'); };
 
+// 다시 그릴 때 창이 스크롤돼 위쪽 주머니가 밀려나지 않게 (누른 순간의 스크롤 위치로 되돌림)
+function keepScroll(node, fn) {
+  const box = []; for (let n = node.parentElement; n; n = n.parentElement) if (n.scrollHeight > n.clientHeight + 1 && /(auto|scroll)/.test(getComputedStyle(n).overflowY)) box.push([n, n.scrollTop]);
+  const win = window.scrollY; fn();
+  const back = () => { box.forEach(([n, t]) => { n.scrollTop = t; }); if (window.scrollY !== win) window.scrollTo(0, win); };
+  back(); requestAnimationFrame(back);
+}
+
 // 장치 1: 봄이 사진 다섯 장을 찍은 순서(계절)대로
 const PHOTOS = [
   { id: 'kitten', label: '벚꽃 아래 B', img: P + 'props/cat-kitten.webp', season: '봄' },
@@ -114,7 +122,7 @@ function seatChart(d = {}) {
 }
 const REQUESTS = `<div class="notes-list seat-notes"><p><b>은호</b> 봄이는 분명 감나무에 올라가 있을 거예요 나무가 정면으로 보이는 자리로 주세요</p><p><b>소연</b> 은호 씨 왼손 쪽에 앉을게요 접시 건네기 편하게</p><p><b>미정</b> 가게 문이 바로 보이는 자리요 손님 오면 일어나야 해서</p><p><b>지후</b> 저는 아무 데나요 남는 자리 주세요</p></div>`;
 
-export default {
+const EP = {
   id: 'cat-invite',
   number: '009',
   title: '고양이의 초대장',
@@ -156,6 +164,7 @@ export default {
       id: 'shop',
       name: '다은의 포장 가게',
       image: P + 'shop.webp',
+      focusX: 30, // 휴대폰 첫 화면에 작업대 띠(x23)가 보이게
       arrive: '아침 해가 창턱까지 들어와 있다 봄이는 그 안에 앉아 문 밑 봉투만 보고 있다 목덜미에서 못 듣던 달각 소리가 났다',
       hotspots: [
         { id: 'envelope', x: 82, y: 80, r: 8, label: '문 밑으로 들어온 봉투', kind: 'doc', doc: 'invite' },
@@ -169,6 +178,8 @@ export default {
       name: '골목 · 동물병원과 빵집',
       image: P + 'alley.webp',
       unlockedBy: 'fold',
+      // 휴대폰 첫 화면: 처음엔 병원 창턱 상자(x8), 상자를 풀면 빵집 바구니(x89)
+      focusX: (S) => (S.solved.includes('seasons') ? 80 : 20),
       arrive: (S) => (legacy(S), S.solved.includes('gifts')
         ? '선물 넷은 종이 가방에 챙겨 들었다 봄이가 이번엔 골목 끝 쪽으로 자꾸 고개를 돌린다'
         : S.solved.includes('seasons')
@@ -177,6 +188,8 @@ export default {
       hotspots: [
         { id: 'vetnote', x: 26, y: 41, r: 7, label: '병원 유리문의 쪽지', kind: 'doc', doc: 'vetnote' },
         { id: 'box', x: 8, y: 60, r: 9, label: '창턱의 상자', kind: 'device', device: 'seasons' },
+        // 상자를 풀기 전에도 그림 속 바구니를 누르면 반응한다 (자료 목록에는 안 들어가는 짧은 쪽지)
+        { id: 'basketwait', x: 86, y: 74, r: 11, label: '벤치 위 바구니', kind: 'doc', doc: 'basketwait', visible: (S) => !S.solved.includes('seasons') },
         { id: 'basket', x: 89, y: 77, r: 9, label: '빵집 앞 바구니', kind: 'device', device: 'gifts', visible: (S) => S.solved.includes('seasons') },
         { id: 'basketnote', x: 78, y: 73, r: 6, label: '벤치 위 쪽지', kind: 'doc', doc: 'basketnote', visible: (S) => S.solved.includes('seasons') },
         { id: 'back', x: 50, y: 70, r: 10, label: '가게로 돌아가기', kind: 'travel', to: 'shop' },
@@ -187,6 +200,7 @@ export default {
       name: '골목 끝 · 꽃집과 평상',
       image: P + 'end.webp',
       unlockedBy: 'gifts',
+      focusX: (S) => (S.solved.includes('mailbox') ? 62 : 80), // 처음엔 우체통(x90), 연 뒤엔 평상
       arrive: (S) => (legacy(S), S.solved.includes('seats')
         ? '봄이는 평상 한가운데 앉아 꼬리로 바닥을 톡톡 치고 있다 평상 밑에서 나온 봉투엔 받는 사람이 「다은」이라고 적혀 있다'
         : S.solved.includes('mailbox')
@@ -252,21 +266,25 @@ export default {
       ],
       initial: () => ({ tucked: [] }),
       render(ctx) {
-        const { d, el, save } = ctx;
+        const { d, S, el, save } = ctx;
+        const solved = S.solved.includes('fold');
         if (!Array.isArray(d.tucked)) d.tucked = [];
+        if (solved) d.tucked = [...FOLD_ANSWER]; // 풀린 띠는 맞게 접힌 모양 그대로
         const wrap = el('div', 'foldwrap');
         const strip = el('div', 'fold-strip' + (d.tucked.length ? ' folded' : '')); strip.setAttribute('role', 'group'); strip.setAttribute('aria-label', '포장지 띠 일곱 칸');
         FOLD.forEach((p, i) => {
           if (d.tucked.includes(i)) return;
           const b = el('button', 'fold-panel' + (i > 0 && d.tucked.includes(i - 1) ? ' crease' : '')); b.type = 'button';
-          b.setAttribute('aria-label', `${i + 1}번째 칸 접어 넣기`);
+          b.setAttribute('aria-label', solved ? `${i + 1}번째 칸` : `${i + 1}번째 칸 접어 넣기`);
+          if (solved) b.disabled = true;
           b.innerHTML = `${foldPanelSvg(p)}<span class="fold-num">${i + 1}</span>`;
-          b.onclick = () => { d.tucked = [...d.tucked, i].sort((a, z) => a - z); save(); ctx.status(`${i + 1}번째 칸을 뒤로 접어 넣었다`); };
+          b.onclick = () => { if (solved) return; d.tucked = [...d.tucked, i].sort((a, z) => a - z); save(); ctx.status(`${i + 1}번째 칸을 뒤로 접어 넣었다`); };
           strip.append(b);
         });
         wrap.append(strip);
         const row = el('div', 'fold-undo');
-        if (d.tucked.length) {
+        if (solved) row.append(el('span', 'pick-label', '「병원 창턱」으로 읽히게 접어 둔 채다'));
+        else if (d.tucked.length) {
           row.append(el('span', 'pick-label', '접어 넣은 칸'));
           d.tucked.forEach((i) => { const b = el('button', 'chip', `${i + 1}번째 칸 펴기`); b.type = 'button'; b.onclick = () => { d.tucked = d.tucked.filter((x) => x !== i); save(); }; row.append(b); });
         } else row.append(el('span', 'pick-label', '아직 다 펼친 채다'));
@@ -311,7 +329,7 @@ export default {
           s.setAttribute('aria-label', `${i + 1}번째 주머니${pid ? ': ' + PHOTOS.find((p) => p.id === pid).label : ''}`);
           if (pid) { const ph = PHOTOS.find((p) => p.id === pid); const pi = el('img'); pi.src = ph.img; pi.alt = ph.label; s.append(pi); }
           else s.append(el('span', 'pocket-num', String(i + 1)));
-          s.onclick = () => { if (pid) { d.slots[i] = null; save(); } };
+          s.onclick = () => { if (pid) { d.slots[i] = null; keepScroll(s, save); } };
           lid.append(s);
         });
         wrap.append(lid);
@@ -322,7 +340,7 @@ export default {
           const used = d.slots.includes(p.id);
           const b = el('button', 'photo-pick' + (used ? ' used' : '')); b.type = 'button'; b.disabled = used; b.setAttribute('aria-label', p.label + (used ? ' (꽂았음)' : ' 사진 넣기'));
           const pi = el('img'); pi.src = p.img; pi.alt = p.label; b.append(pi, el('span', '', p.label));
-          b.onclick = () => { const i = d.slots.indexOf(null); if (i < 0) return; d.slots[i] = p.id; save(); ctx.status(`${p.label} 사진을 ${i + 1}번째 주머니에 꽂았다`); };
+          b.onclick = () => { const i = d.slots.indexOf(null); if (i < 0) return; d.slots[i] = p.id; keepScroll(b, save); ctx.status(`${p.label} 사진을 ${i + 1}번째 주머니에 꽂았다`); };
           tray.append(b);
         });
         wrap.append(el('p', 'pick-label', '상자 옆에 흩어진 사진'), tray);
@@ -531,11 +549,11 @@ export default {
 
   ending: {
     image: P + 'ending.webp',
-    imageAlt: '전구 아래 평상 방석에 나란히 앉은 네 이웃과, 봄이를 안고 다가가는 다은',
+    imageAlt: '전구 아래 평상에 작은 상을 두고 둘러앉은 네 이웃과, 봄이를 안고 다가가는 다은',
     eyebrow: '6월 12일, 저녁 일곱 시',
     title: '고양이가 데려온 사람들',
     paragraphs: [
-      '전구가 켜진 평상에 네 사람이 방석을 깔고 나란히 앉아 있었다 아까 내가 선물을 하나씩 올려 둔 그 방석들이었다 작은 상 위엔 딸기 케이크와 유리컵에 든 초가 하나 있었다 은호 씨가 먼저 나를 보고 웃었다',
+      '전구가 켜진 평상에 네 사람이 작은 상을 가운데 두고 방석에 둘러앉아 있었다 아까 내가 선물을 하나씩 올려 둔 그 방석들이었다 상 위엔 딸기 케이크와 유리컵에 든 초가 하나 있었다 은호 씨가 먼저 나를 보고 웃었다',
       '“봄이 생일은 아무도 모르잖아요 그래서 가족 된 날로 했어요” 소연 씨가 말했다 “작년 오늘, 다은 씨가 봄이 데려간 날”',
       '“근데 왜 저한테는 봄이 앞으로 보내요”',
       '“다은 씨 앞으로 보내면 바쁘다고 안 올 것 같아서” 지후 씨가 웃었다 “봉투는 제가 문 밑으로 넣었어요 우체부가 우편함 두고 문 밑으로 넣은 건 처음이에요 발도장은 어제 봄이가 병원 창턱에 놀러 왔을 때 은호 씨가 앞발로 받았고요 참도 그때 달았대요 봄이가 보내는 거니까”',
@@ -548,3 +566,13 @@ export default {
     next: { href: 'play.html?case=ohang', title: '돌아오는 계절', line: '다음은 오행당의 다섯 그릇 이야기입니다' },
   },
 };
+// 창턱 상자를 풀기 전 바구니를 눌렀을 때의 한 줄 (자료가 아니라서 목록·자료 수에 안 잡히게 열거되지 않는 칸으로 둔다)
+Object.defineProperty(EP.docs, 'basketwait', {
+  enumerable: false,
+  value: {
+    title: '벤치 위 바구니',
+    kind: '빵집 앞',
+    html: '<p>리본 단 선물이 바구니 가득 담겨 있고 위에 쪽지가 한 장 얹혀 있다</p><p class="aside">빵집은 아직 준비 중이라 남의 가게 앞 물건에 먼저 손대긴 그렇다 봄이가 고개를 뺀 병원 창턱 상자부터 열어 보자</p>',
+  },
+});
+export default EP;
