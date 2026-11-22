@@ -689,6 +689,22 @@ async function garage({ mobile = false } = {}) {
     await shot(page, 'g-strips'); await commit(page);
     L.check(await dlgHas(page, '작업 지시서 · 9/12'), 'strips solved');
     await L.click(page, '붙여 놓은 작업 지시서 보기'); L.check(await dlgHas(page, '찢긴 자리가 맞물렸다'), 'workorder via reveal'); await L.closeDialog(page); await L.closeDialog(page).catch(() => {}); await L.sleep(300);
+    // disc (작업장 폐부품 카트: 영수증 차 번호 + 지시서 9/12 앞 → 다, 캘리퍼스 26.4)
+    await goPlace(page, '3. 작업장');
+    L.check((await L.mainText(page)).includes('꼬리표가 철사로 묶여 있다') && await has('폐부품 카트'), 'shop: cart appears after strips');
+    await hotspot(page, '폐부품 카트');
+    const typeVal = async (v) => { for (let i = 0; i < 6; i++) await L.click(page, '한 자 지우기', { exact: true }); for (const ch of v) await L.click(page, ch === '.' ? '소수점 적기' : `${ch} 적기`, { exact: true }); };
+    L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .disc-pad .ctl')].every((b) => b.getBoundingClientRect().height >= 40 && b.getBoundingClientRect().width >= 40)), 'disc: keypad buttons 40px+');
+    await L.click(page, '디스크 가 캘리퍼스로 재기 (꼬리표 37마 4128 9/12 앞)', { exact: true }); await typeVal('22.8'); await commit(page);
+    L.check((await status(page)).includes('기록이 못 된다'), 'disc: plate trap neutral');
+    await L.click(page, '디스크 다 캘리퍼스로 재기 (꼬리표 37마 4182 9/12 앞)', { exact: true }); L.check(await dlgHas(page, 'MIN TH 25'), 'disc: stamp shown');
+    await typeVal('25'); await commit(page); L.check((await status(page)).includes('기록이 못 된다'), 'disc: MIN stamp trap neutral');
+    await typeVal('27.4'); await commit(page); L.check((await status(page)).includes('기록이 못 된다'), 'disc: misread neutral');
+    L.check(await page.evaluate(() => { const v = document.querySelector('dialog[open] .vern-box'); return !!v && v.getBoundingClientRect().right <= innerWidth + 1 && v.querySelector('.vern-svg').getBoundingClientRect().width >= (innerWidth < 640 ? 600 : 300); }), 'disc: caliper scale box fits the screen (mobile: wide scale scrolls inside)');
+    await typeVal('26.4'); await shot(page, 'g-disc'); await commit(page);
+    L.check(await dlgHas(page, '26.4mm') && await dlgHas(page, '버리지 말 것'), 'disc solved');
+    await L.click(page, '회수한 앞 디스크 보기'); L.check(await dlgHas(page, 'MIN TH 25'), 'disc doc via reveal'); await L.closeDialog(page); await L.closeDialog(page).catch(() => {}); await L.sleep(300);
+    await goPlace(page, '2. 사무실');
     // video
     await hotspot(page, '책상 위 민호의 휴대폰');
     const seek = async (k) => { await page.evaluate((k) => { const r = document.querySelector('dialog[open] .vid-range'); r.value = String(k); r.dispatchEvent(new Event('input', { bubbles: true })); r.dispatchEvent(new Event('change', { bubbles: true })); }, k); await L.sleep(150); };
