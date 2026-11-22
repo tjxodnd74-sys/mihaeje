@@ -287,13 +287,13 @@
     "title": "돌아오는 계절",
     "subtitle": "오행당에 맡겨둔 것",
     "genre": "오행 · 사주 미스터리",
-    "minutes": 30,
+    "minutes": 35,
     "difficulty": "★★★",
     "difficultyLevel": 3,
     "image": "assets/covers/ohang-v1.webp",
     "href": "play.html?case=ohang",
     "storageKey": "mihaeje-v2-ohang",
-    "description": "외할머니가 마흔 해 넘게 지킨 약차집 오행당\n생년월일시로 다섯 빛을 세고, 그 빛대로 화분과 차 통과 등이 열립니다",
+    "description": "외할머니가 평생 지킨 약차집 오행당\n생년월일시로 다섯 빛을 세고, 그 빛대로 화분과 차 통과 등이 열립니다",
     "docCount": 10,
     "docNames": {
       "myslip": "내가 쓴 접수표",
@@ -307,10 +307,10 @@
       "deskmemo": "책상 위 메모",
       "final": "접수함 속 접수표"
     },
-    "imageAlt": "비 오는 저녁, 불 켜진 오행당 문 앞에 선 사람",
+    "imageAlt": "비 오는 밤, 닫힌 오행당 문 앞 섬돌 위 다섯 화분",
     "fragment": {
       "label": "오행당 · 다시 연 날",
-      "text": "일주일 뒤 오행당은 다시 문을 열었습니다. 지원이 할머니 자리에 앉아 남쪽을 보고 차를 끓입니다"
+      "text": "접수표 묶음 마지막 장에 지원의 글씨가 한 줄 늘었습니다 할머니 자리에서 남쪽을 보고 끓인 첫 차였습니다"
     }
   }
 ]

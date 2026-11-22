@@ -293,13 +293,13 @@ async function ohang({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('오행당 접수표') && (await L.mainText(page)).includes('예 1998/3/15'), 'intake form shown with date example');
     await L.click(page, '접수표 내기');
     L.check((await L.mainText(page)).includes('생일을 적어야'), 'intake: empty date explained');
-    // 지원은 어른이다: 스무 살이 안 되는 생일은 부드럽게 돌려보낸다 (장부·도입부가 깨지지 않게)
-    await page.fill('input[name=date]', '2016-07-01'); await page.fill('input[name=time]', '12:00'); await L.click(page, '접수표 내기'); await L.sleep(1200);
-    L.check((await L.mainText(page)).includes('스무 살이 넘었다') && (await L.mainText(page)).includes('2006/3/2') && !(await L.mainText(page)).includes('할머니가 세는 법대로'), 'intake: under-20 birth gently refused');
-    // PC는 11월생(겨울 → 쌍화차), 모바일은 예시 손님 5월생(여름 → 오미자차) — 생일 철에 따라 차 통 답이 바뀐다
+    // 생일 범위는 1960/1/1~2016/12/31 밖이면 범위만 부드럽게 알려 준다
+    await page.fill('input[name=date]', '2018-07-01'); await page.fill('input[name=time]', '12:00'); await L.click(page, '접수표 내기'); await L.sleep(1200);
+    L.check((await L.mainText(page)).includes('2016/12/31까지') && !(await L.mainText(page)).includes('할머니가 세는 법대로'), 'intake: out-of-range birth gently refused');
+    // PC는 2012년 8월생 10대(늦여름 → 대추차, 어린 장부), 모바일은 예시 손님 5월생(여름 → 오미자차) — 생일 철에 따라 차 통 답이 바뀐다
     if (mobile) { await L.click(page, '생일 대신 예시 손님으로 해 보기'); await L.sleep(1500); }
-    else { await page.fill('input[name=date]', '1987-11-20'); await page.fill('input[name=time]', '22:40'); await L.click(page, '접수표 내기'); await L.sleep(1500); }
-    const TEA = mobile ? '오미자차' : '쌍화차';
+    else { await page.fill('input[name=date]', '2012-08-20'); await page.fill('input[name=time]', '14:10'); await L.click(page, '접수표 내기'); await L.sleep(1500); }
+    const TEA = mobile ? '오미자차' : '대추차';
     const lightText = await page.evaluate(() => document.querySelector('.slip-light b')?.textContent || '');
     L.check(/[木火土金水]/.test(lightText), 'intake: light computed — ' + lightText);
     L.check((await L.mainText(page)).includes('할머니라면 이렇게 읽는다') && (await L.mainText(page)).includes('30분 빼고'), 'intake: reading shown with 30-min note');
@@ -318,7 +318,7 @@ async function ohang({ mobile = false } = {}) {
     L.check(await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('mihaeje-v2-ohang') || '{}'); return ['myslip', 'chat'].every((k) => (s.found || []).includes(k)); }), 'my slip and phone are in the bag from the start');
     // 할머니 문자는 소지품에서 (주머니 속 휴대폰 누름 자리는 그림에 없어서 뺐다)
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => /휴대폰/.test(b.getAttribute('aria-label'))))), 'front: no hotspot on an undrawn pocket phone');
-    await page.evaluate(() => document.querySelector('.v2-hud-btn.bag').click()); await L.sleep(300); await L.click(page, '할머니의 문자'); L.check(await dlgHas(page, '네 빛 낳는놈 밑에'), 'doc: grandma chat from the bag'); await L.closeDialog(page);
+    await page.evaluate(() => document.querySelector('.v2-hud-btn.bag').click()); await L.sleep(300); await L.click(page, '할머니의 문자'); L.check(await dlgHas(page, '네 빛 낳아준놈 밑에'), 'doc: grandma chat from the bag'); await L.closeDialog(page);
     await hotspot(page, '문에 붙은 종이'); L.check(await dlgHas(page, '서로 낳는 순서'), 'doc: 문에 붙은 종이'); await L.closeDialog(page);
     L.check(await page.evaluate(() => ['청자 빛 화분', '붉은 화분', '노란 화분', '흰 화분', '검은 화분'].every((l) => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === l))), 'front: one hotspot per pot');
     L.check(await page.evaluate(() => !!document.querySelector('.cycle-chart')) === false, 'chart only inside dialog');
@@ -362,7 +362,7 @@ async function ohang({ mobile = false } = {}) {
     L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].some((t) => t.textContent.includes('서랍 속 접수표 묶음') && !t.disabled)), 'tins: ledger on bench');
     const wrongTea = TEA === '유자차' ? '대추차' : '유자차';
     await L.click(page, wrongTea + ' 통', { exact: true }); await commit(page);
-    L.check((await status(page)).includes('찻잎뿐'), 'tins: wrong tin neutral — ' + (await status(page)));
+    L.check((await status(page)).includes('말린 차뿐'), 'tins: wrong tin neutral — ' + (await status(page)));
     await L.click(page, TEA + ' 통', { exact: true }); await shot(page, 'ohang-tins'); await commit(page);
     L.check(await dlgHas(page, TEA + ' 통') && await dlgHas(page, '「뒷방」'), 'tins solved: ' + TEA);
     await L.closeDialog(page); await L.sleep(400);
@@ -387,12 +387,38 @@ async function ohang({ mobile = false } = {}) {
     L.check(await dlgHas(page, '내 빛에서 시작해서'), 'lanterns solved');
     await L.click(page, '접수함 속 접수표 보기'); L.check(await dlgHas(page, '가게는 네 거다') && await dlgHas(page, '접수함 밑에') && await dlgHas(page, TEA), 'final readable from reveal, personal');
     L.check((await L.buttons(page)).includes('← 돌아가기'), 'doc offers way back to reveal');
+    L.check(await dlgHas(page, '할미 식 고름차') && await dlgHas(page, '모자란 만큼'), 'final letter carries the brew rule');
+    L.check(await dlgHas(page, mobile ? '하고 싶으면 해라' : '크면 하고 싶을 때'), 'final letter fits my age');
+    L.check(!(await L.buttons(page)).some((b) => b.startsWith('다음 날 아침, 병원으로')), 'lanterns no longer end the story');
     await L.closeDialog(page); await L.sleep(400);
-    L.check((await L.buttons(page)).some((b) => b.startsWith('다음 날 아침, 병원으로')), 'ending button persists in scene after reading letter');
+    // brew (고름차): 접수표 다섯 빛 수 → 제일 많은 빛에 나머지를 모자란 만큼 (사람마다 다름)
+    L.check((await L.mainText(page)).includes('숟갈을 셀 차례'), 'moved back inside for the brew');
+    L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '선반의 차 통'))), 'tins hotspot swapped for the brew');
+    const counts = await page.evaluate(() => JSON.parse(localStorage.getItem('mihaeje-v2-ohang') || '{}').profile.counts);
+    const TEAOF = { blue: '유자차', red: '오미자차', yellow: '대추차', white: '생강차', black: '쌍화차' };
+    const ELS = ['blue', 'red', 'yellow', 'white', 'black'];
+    const mx = Math.max(...counts);
+    await hotspot(page, '차 통과 주전자');
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .tin.scoop').length === 5), 'brew: 5 tins to scoop from');
+    L.check(!(await L.buttons(page)).some((b) => b === '불 올려 달이기'), 'brew: no commit with plain water');
+    // 함정: 접수표 수를 그대로 베껴 넣기
+    for (let i = 0; i < 5; i++) for (let k = 0; k < counts[i]; k++) await L.click(page, TEAOF[ELS[i]] + ' 한 숟갈 넣기');
+    await commit(page);
+    L.check((await status(page)).includes('맛이 아니다') && !/[0-9]/.test(await status(page)), 'brew: copied counts neutral — ' + (await status(page)));
+    await L.click(page, '주전자 비우기');
+    L.check((await L.dialogText(page)).includes('맹물'), 'brew: emptied pot');
+    for (let i = 0; i < 5; i++) for (let k = 0; k < mx - counts[i]; k++) await L.click(page, TEAOF[ELS[i]] + ' 한 숟갈 넣기');
+    await shot(page, 'ohang-brew');
+    await commit(page);
+    L.check(await dlgHas(page, '할미 식 고름차'), 'brew solved: ' + ELS.map((e, i) => TEAOF[e] + (mx - counts[i])).join(' '));
+    await L.closeDialog(page); await L.sleep(400);
+    L.check((await L.buttons(page)).some((b) => b.startsWith('다음 날 아침, 병원으로')), 'ending button persists in scene after brew');
+    await goPlace(page, '3. 뒷방'); await L.sleep(300);
     L.check(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '열린 접수함')), 'open box hotspot in back room');
     await page.evaluate(() => document.querySelector('.v2-hud-btn.bag').click()); await L.sleep(300); L.check(await dlgHas(page, '접수함 속 접수표'), 'letter kept in inventory'); await L.closeDialog(page);
     await L.click(page, '다음 날 아침, 병원으로'); await L.sleep(500);
     L.check((await L.mainText(page)).includes('돌아오는 계절') && (await L.mainText(page)).includes('비어 있는 칸에') && (await L.mainText(page)).includes(TEA + ' 통에 열쇠는'), 'ending reached with choice, birth-season tea');
+    L.check((await L.mainText(page)).includes('고름차') && (await L.mainText(page)).includes('숟갈은 맞게 셌네'), 'ending: grandma tastes the brew');
     await L.click(page, '다음 손님은 내가 받을게'); await L.sleep(400);
     L.check((await L.mainText(page)).includes('첫 손님은 이모였다') && (await L.mainText(page)).includes('말이다" 할머니가 찻잔을'), 'ending varies by choice and reads my light');
     L.check(await page.evaluate(() => (document.querySelector('.v2-afterword')?.textContent || '').includes('오행당')), 'share ending: gift stays at the shop');
