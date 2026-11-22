@@ -466,6 +466,28 @@ async function petHome({ mobile = false } = {}) {
     await L.click(page, '노란 표 카드 보기', { exact: true }); await shot(page, 'pet-cards'); await commit(page);
     L.check(await dlgHas(page, '콩이 = 루미'), 'cards solved');
     L.check(!(await dlgHas(page, '내가 나온 학교')), 'cards: reveal keeps the doubt (no early confirmation)');
+    L.check(await dlgHas(page, '연필로 받아 적었거든요') && (await L.buttons(page)).some((x) => x.includes('휴대폰으로 찍어 둔 카드 다섯 장')), 'cards: reveal points to the pencil + card photo doc');
+    await L.click(page, '휴대폰으로 찍어 둔 카드 다섯 장 보기');
+    L.check(await dlgHas(page, '010-0861-4430') && await dlgHas(page, '지우개로 지운 자국'), 'cardshot doc lists the five fronts');
+    await L.click(page, '← 돌아가기');
+    await L.closeDialog(page); await L.sleep(400);
+    // v136 새 장치: 연필 문지르기 → 내 휴대폰으로 걸기 (자국 셋 중 다섯 카드에 없는 번호 = 우리 집)
+    L.check((await L.mainText(page)).includes('연필꽂이를 내 쪽으로'), 'rub: clinic line changes after the card');
+    await hotspot(page, '접수대 연필꽂이와 노란 표 카드');
+    L.check(!(await dlgHas(page, '031-047-2816')), 'rub: number not shown before rubbing');
+    L.check(!(await L.buttons(page)).some((x) => x === '통화'), 'rub: no call button before a full number');
+    {
+      const cv = await (await page.$('dialog[open] .rub-canvas')).boundingBox();
+      for (let r = 0; r < 5; r++) { const y = cv.y + cv.height * (0.1 + r * 0.2); await page.mouse.move(cv.x + 4, y); await page.mouse.down(); await page.mouse.move(cv.x + cv.width - 4, y, { steps: 14 }); await page.mouse.up(); await L.sleep(120); }
+    }
+    L.check(await dlgHas(page, '하얗게 떠오른 번호 셋') && await dlgHas(page, '031-047-2816') && await dlgHas(page, '010-0861-4430'), 'rub: pencil drag lifts three numbers');
+    const dial = async (num) => { await L.click(page, '번호 다 지우기', { exact: true }); for (const ch of num.replace(/-/g, '')) await L.click(page, ch, { exact: true }); };
+    await dial('010-0861-4430'); await commit(page);
+    L.check((await status(page)).includes('끊겼다') && !(await status(page)).includes('031'), 'rub: clearest line (red card) neutral');
+    await dial('010-0395-1127'); await commit(page);
+    L.check((await status(page)).includes('끊겼다'), 'rub: green card number neutral');
+    await dial('031-047-2816'); await shot(page, 'pet-rub'); await commit(page);
+    L.check(await dlgHas(page, '「엄마 집」'), 'rub solved (home phone)');
     await L.closeDialog(page); await L.sleep(400);
     L.check((await L.mainText(page)).includes('보리차를 끓이며'), 'moved to mom');
     // 명찰 장치는 바로 보이지만 안내문을 읽어야 색과 학년이 이어진다
