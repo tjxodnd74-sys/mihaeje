@@ -6,12 +6,13 @@ async function shot(page, name) { if (shots) await page.screenshot({ path: `${sh
 const dlgHas = async (page, text) => (await L.dialogText(page)).includes(text);
 async function commit(page) { await L.click(page, '', { within: 'dialog[open] .v2-actions' }); await L.sleep(250); }
 async function status(page) { return page.evaluate(() => document.querySelector('dialog[open] .v2-status')?.textContent.trim() || ''); }
-async function hotspot(page, label) {
+async function hotspotOnce(page, label) {
   const ok = await page.evaluate((label) => { const b = [...document.querySelectorAll('.v2-hotspot')].find((x) => x.getAttribute('aria-label') === label); if (!b) return false; b.click(); return true; }, label);
   if (!ok) throw new Error('hotspot not found ' + label);
   await page.waitForSelector('dialog[open]', { timeout: 1500 }).catch(() => {}); // 물건 쪽으로 다가간 뒤 창이 열림
   await L.sleep(120);
 }
+const hotspot = hotspotOnce;
 async function goPlace(page, label) {
   await page.evaluate(() => document.querySelector('.v2-where')?.click());
   await L.click(page, label, { within: '.v2-places', exact: true });
@@ -20,6 +21,8 @@ async function goPlace(page, label) {
 
 async function station({ mobile = false } = {}) {
   const { browser, page, errors } = await L.launch({ mobile });
+  // 창을 닫고 물러나는 동안 누른 자리는 무시될 수 있다(기계가 느릴 때) → 창이 안 열렸으면 한 번 더 누른다
+  const hotspot = async (pg, label) => { await hotspotOnce(pg, label); if (!(await pg.$('dialog[open]'))) { await L.sleep(900); await hotspotOnce(pg, label); await pg.waitForSelector('dialog[open]', { timeout: 4000 }).catch(() => {}); } };
   console.log('=== station v2' + (mobile ? ' (mobile)' : ''));
   try {
     await L.fresh(page, '/play.html?case=station');
@@ -53,7 +56,10 @@ async function station({ mobile = false } = {}) {
     await commit(page);
     L.check((await status(page)).includes('하나씩 골라야'), 'grille: empty choice explained');
     await L.click(page, '1번 승강장'); await L.click(page, '둘째 기둥'); await commit(page);
-    L.check((await status(page)).includes('구간권을 안내판에'), 'grille: unread holes neutral — ' + (await status(page)));
+    L.check((await status(page)).includes('구간권부터'), 'grille: unread holes neutral — ' + (await status(page)));
+    await L.click(page, '2번 승강장'); await commit(page);
+    L.check((await status(page)).includes('구간권부터'), 'grille: right pick without reading the ticket is not accepted, same line — ' + (await status(page)));
+    await L.click(page, '1번 승강장');
     L.check(!(await L.dialogText(page)).includes('구멍으로 보이는 글자'), 'grille: no auto-read line');
     const holesNow = () => page.evaluate(() => [...document.querySelectorAll('dialog[open] .grille-board .cell.hole')].map((c) => c.textContent).join(''));
     await L.click(page, '구간권 오른쪽으로'); await L.click(page, '구간권 아래로');
@@ -86,6 +92,8 @@ async function station({ mobile = false } = {}) {
     await commit(page);
     L.check((await status(page)).includes('비뚤다'), 'mirror: slider middle is not the answer — ' + (await status(page)));
     L.check(await dlgHas(page, '받침대 눈금'), 'mirror: bracket scale shown');
+    await L.setRange(page, '사진 기울이기', 65);
+    L.check(await page.evaluate(() => !!document.querySelector('dialog[open] .mirror-glass.aligned') && document.querySelector('dialog[open] .mirror-tilt span').textContent.includes('기울기 7')), 'mirror: shown tick 7 (65) aligns');
     await L.setRange(page, '사진 기울이기', 70);
     L.check(await page.evaluate(() => !!document.querySelector('dialog[open] .mirror-glass.aligned')), 'mirror: red mark tilt aligns');
     await train('09:58', '수림행');
@@ -116,6 +124,44 @@ async function station({ mobile = false } = {}) {
     await shot(page, 'locker');
     await commit(page);
     L.check(await dlgHas(page, '3 · 2 · 4 · 1') && await dlgHas(page, '사원증'), 'locker solved');
+    // 새 장치 v136: 민서의 휴대폰 잠금 패턴 (보관함을 열면 그 자리에 휴대폰, 마을길은 휴대폰을 연 뒤)
+    L.check(!(await dlgHas(page, '수림 마을길로')), 'locker: village not opened yet (phone first)');
+    await L.closeDialog(page); await L.sleep(400);
+    L.check(await page.evaluate(() => { const hs = [...document.querySelectorAll('.v2-hotspot')].map((b) => b.getAttribute('aria-label')); return hs.includes('5번 칸 속 민서의 휴대폰') && !hs.includes('별 스티커가 붙은 보관함'); }), 'surim: phone hotspot replaces the opened locker');
+    await hotspot(page, '5번 칸 속 민서의 휴대폰');
+    L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .pat-smudge'))), 'phone: no smudge before tilting');
+    await L.click(page, '창 쪽으로 기울여 보기');
+    L.check(await page.evaluate(() => !!document.querySelector('dialog[open] .pat-smudge')), 'phone: smudge shows when tilted');
+    await shot(page, 'phone-tilt');
+    L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .pat-key')].every((b) => { const r = b.getBoundingClientRect(); return r.width >= 40 && r.height >= 40; })), 'phone: dot targets 40px+');
+    const tapDots = async (names) => { for (const n of names) await L.click(page, '점 ' + n, { exact: true }); };
+    await tapDots(['왼쪽 위', '오른쪽 위']); await commit(page);
+    L.check((await status(page)).includes('4개 이상'), 'phone: too short neutral — ' + (await status(page)));
+    await tapDots(['왼쪽 아래', '오른쪽 아래', '한가운데', '오른쪽 위', '왼쪽 위']); // 거꾸로 그린 3 (가운데 점은 저절로)
+    L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .pat-dot.on').length === 7), 'phone: skipped middle dots join automatically');
+    await commit(page);
+    const ps = await status(page);
+    await shot(page, 'phone-wrong');
+    L.check(ps.includes('잘못된 패턴') && !/[0-9]개 맞|시작|방향/.test(ps), 'phone: reversed 3 neutral — ' + ps);
+    await tapDots(['가운데 위', '한가운데', '가운데 아래']); await tapDots(['오른쪽 아래']); await commit(page); // 쓸어 넘긴 줄 함정 비슷하게
+    L.check((await status(page)).includes('잘못된 패턴'), 'phone: scroll streak line neutral');
+    // 진짜 손가락으로 그어서 풀기 (손을 떼면 바로 풀어 본다)
+    const box = await page.evaluate(() => { const r = document.querySelector('dialog[open] .pat-pad').getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height }; });
+    const at = (n) => [box.x + box.w * (50 + ((n - 1) % 3) * 100) / 300, box.y + box.h * (50 + Math.floor((n - 1) / 3) * 100) / 300];
+    if (mobile) {
+      // 터치 끌기는 CDP 터치 이벤트로
+      const cdp = await page.context().newCDPSession(page);
+      const pts = [1, 3, 5, 9, 7].map(at);
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: pts[0][0], y: pts[0][1] }] });
+      for (let i = 1; i < pts.length; i++) for (let k = 1; k <= 8; k++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i]; await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: x0 + (x1 - x0) * k / 8, y: y0 + (y1 - y0) * k / 8 }] }); }
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    } else {
+      const [sx, sy] = at(1); await page.mouse.move(sx, sy); await page.mouse.down();
+      for (const n of [3, 5, 9, 7]) { const [x, y] = at(n); await page.mouse.move(x, y, { steps: 8 }); }
+      await page.mouse.up();
+    }
+    await L.sleep(500);
+    L.check(await dlgHas(page, '잠금 해제') && await dlgHas(page, '무서워하겠지'), 'phone solved by drawing the 3 from the top');
     await L.click(page, '수림 마을길로');
     await L.sleep(400);
     L.check((await L.mainText(page)).includes('길바닥에 펴 놓고') && !(await L.mainText(page)).includes('벤치에 보관함에서 꺼낸'), 'village: text matches empty bench');
