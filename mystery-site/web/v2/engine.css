@@ -1220,6 +1220,7 @@ html[data-case="pet-home"] .clip-on{position:absolute;left:44.2%;top:0;width:8%;
 html[data-case="pet-home"] .clip-on::after{content:"";position:absolute;left:50%;bottom:-3cqw;width:5cqw;height:5cqw;transform:translateX(-50%);border-radius:50%;border:1.2cqw solid #b8bec4;box-shadow:0 1px 2px rgba(0,0,0,.5)}
 html[data-case="pet-home"] .badge-btn{min-height:42px;min-width:120px}
 html[data-case="pet-home"] .badge-btn.on{background:var(--enamel);color:var(--ink)}
+html[data-case="pet-home"] .v2-intro-card .v2-blurb{text-wrap:pretty;word-break:keep-all} /* 휴대폰 표지 소개 줄 끝에 한 글자만 남지 않게 */
 /* v127: PC 에선 명찰 넷을 한 줄로 — 끈·명찰·'집게 물리기'가 한 화면에 (끌어다 놓는 동안 창이 밀리지 않게) */
 @media (min-width:900px){
   html[data-case="pet-home"] .badge-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
@@ -1929,6 +1930,7 @@ html[data-case="laundry"] .sg-row{font-size:2.3cqw}
 html[data-case="laundry"] .receipt{font-size:13px}
 html[data-case="laundry"] .receipt b{font-size:13px}
 html[data-case="laundry"] .v2-paper p,html[data-case="laundry"] .v2-device-intro{text-wrap:pretty;word-break:keep-all}
+html[data-case="laundry"] .v2-intro-card .v2-blurb{text-wrap:pretty;word-break:keep-all} /* 휴대폰 표지 소개 줄 끝에 한 글자만 남지 않게 */
 @media (max-width:640px){
   /* 휴대폰: 벤치 쪽을 크게 (앉았는지 서 있는지 보이게) */
   html[data-case="laundry"] .prop.cctv img,html[data-case="laundry"] .cctv-fig{transform:scale(1.45);transform-origin:46% 72%}
