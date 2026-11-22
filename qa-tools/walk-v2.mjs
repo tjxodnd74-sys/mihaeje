@@ -761,6 +761,7 @@ async function letter({ mobile = false } = {}) {
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .rack-slot').length === 16), 'rack: 16 slots');
     await L.click(page, '미루새길 9 칸', { exact: true }); await commit(page); L.check((await status(page)).includes('이름은 없다') && !(await status(page)).includes('빌라'), 'rack: villa decoy neutral');
     await L.click(page, '미루새길 11 칸', { exact: true }); await commit(page); L.check((await status(page)).includes('이름은 없다') && !(await status(page)).includes('17-14'), 'rack: 11 decoy neutral');
+    await L.click(page, '미루새길 1~7 칸', { exact: true }); await commit(page); L.check((await status(page)).includes('빈 칸이다'), 'rack: empty slot says it is empty');
     await L.click(page, '미루새길 9-1 칸', { exact: true }); await shot(page, 'l-rack'); await commit(page); L.check(await dlgHas(page, '쓴 사람은 정해린'), 'rack solved');
     await L.click(page, '9-1 칸의 쪽지 보기'); L.check(await dlgHas(page, '이제는 받겠습니다'), 'hcard via reveal'); await L.click(page, '← 돌아가기');
     await L.click(page, '집배원 휴게실로'); await L.sleep(400);
@@ -817,7 +818,24 @@ async function letter({ mobile = false } = {}) {
     L.check(await page.evaluate(() => document.querySelector('dialog[open] input[aria-label="번지"]').value === '31-2'), 'reply: typed values kept after failure');
     await L.typeInto(page, '우편번호', '35217'); await L.click(page, '층: 1층', { exact: true }); await commit(page); L.check((await status(page)).includes('겉봉을 다시'), 'reply: old floor neutral');
     await L.click(page, '층: 2층', { exact: true }); await L.typeInto(page, '번지', '31 - 2'); await shot(page, 'l-reply'); await commit(page);
-    L.check(await dlgHas(page, '꽉 찬 봉투'), 'reply solved');
+    L.check(await dlgHas(page, '꽉 찬 봉투') && await dlgHas(page, '과자 깡통'), 'reply solved, leads to the stamp tin');
+    L.check(!(await L.buttons(page)).some((x) => x.includes('봉투를 할머니께 건네고')), 'reply is no longer the last device');
+    await L.click(page, '계속'); await L.sleep(300);
+    L.check(!(await spotThere('할머니가 내민 빈 봉투')) && await spotThere('할머니의 우표 깡통'), 'stamp tin replaces the reply envelope');
+    // 새 장치: 할머니 우표 깡통 — 지금 값 430원 딱 맞게 (뚜껑 380원·소인 찍힌 430원 함정)
+    await hotspot(page, '할머니의 우표 깡통');
+    L.check(!(await L.buttons(page)).includes('할머니께 보이기'), 'stamps: no commit before sticking any');
+    L.check(await dlgHas(page, '편지 한 통 380원'), 'stamps: lid note (old price) shown');
+    await L.click(page, '380원 우표', { exact: true }); L.check(await dlgHas(page, '1장 · 380원'), 'stamps: 380 stuck'); await commit(page);
+    const stampMsg = await status(page); L.check(stampMsg.includes('고개를 젓는다') && !/430|모자|남|소인/.test(stampMsg), 'stamps: lid price neutral — ' + stampMsg);
+    await L.click(page, '붙인 380원 우표 떼기', { exact: true });
+    await L.click(page, '430원 우표 (물결 도장 자국)', { exact: true }); await commit(page); L.check((await status(page)).includes('고개를 젓는다'), 'stamps: used 430 neutral');
+    await L.click(page, '붙인 430원 우표 (물결 도장 자국) 떼기', { exact: true });
+    await L.click(page, '330원 우표', { exact: true }); await L.click(page, '100원 우표', { exact: true }); await L.click(page, '10원 우표', { exact: true }); await commit(page);
+    L.check((await status(page)).includes('고개를 젓는다'), 'stamps: overpaid 440 neutral');
+    await L.click(page, '붙인 10원 우표 떼기', { exact: true });
+    L.check(await dlgHas(page, '2장 · 430원'), 'stamps: sum shown'); await shot(page, 'l-stamps'); await commit(page);
+    L.check(await dlgHas(page, '엄지로'), 'stamps solved');
     await L.click(page, '봉투를 할머니께 건네고'); await L.sleep(500);
     L.check((await L.mainText(page)).includes('돌아오지 않을 봉투'), 'ending reached');
     await shot(page, 'l-ending');
