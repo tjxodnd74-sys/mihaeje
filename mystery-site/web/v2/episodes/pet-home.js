@@ -452,7 +452,7 @@ ${STAGES.map((s) => `<tr><td class="nw ${s.shown.includes('▒') ? 'torn' : ''}"
 
   ending: {
     image: P + 'ending.webp',
-    imageAlt: '가을 공원에서 루미를 산책시키는 유나와 정우, 목줄 손잡이에 파란 끈',
+    imageAlt: '가을 공원에서 유나와 정우 사이를 걷는 루미가 유나를 올려다본다 목줄 손잡이엔 리본으로 묶은 옛 파란 끈',
     eyebrow: '그리고 일주일',
     title: '콩이라고 불러 봤다',
     paragraphs: [
