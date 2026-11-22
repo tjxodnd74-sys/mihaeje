@@ -1256,7 +1256,19 @@ html[data-case="ohang"] .brew-beads{display:flex;flex-wrap:wrap;justify-content:
 html[data-case="ohang"] .brew-beads i{width:16px;height:16px;border-radius:50%;border:1px solid rgba(255,240,210,.55);box-shadow:inset 0 -2px 3px rgba(0,0,0,.35)}
 html[data-case="ohang"] .brew-empty{font-size:14px;color:#e8dcc4;opacity:.8}
 html[data-case="ohang"] .brew-pot.steaming::before{content:"";position:absolute;left:30%;right:30%;top:-40px;height:34px;background:radial-gradient(closest-side,rgba(255,250,240,.35),transparent);filter:blur(4px)}
+html[data-case="ohang"] .brew-wrap .chip:disabled{opacity:.45;cursor:default}
+html[data-case="ohang"] .brew-wrap .pick-row .chip{min-height:42px}
+/* 나이 많은 손님의 어릴 적 사진은 빛바랜 색으로 (사진이 찍힌 해가 1990년대 초보다 앞설 때) */
+html[data-case="ohang"] .oldphoto.aged img{filter:sepia(.55) saturate(.7) contrast(.92) brightness(1.03)}
+/* 찬장 칸 큰 버튼 (휴대폰 · 사진 아래 열십자) */
+html[data-case="ohang"] .niche-cross{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:". top ." "left center right" ". bottom .";gap:6px;max-width:360px;margin:0 auto 12px}
+html[data-case="ohang"] .niche-big{display:flex;align-items:center;justify-content:center;gap:4px;min-height:48px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--chip);color:var(--soft-2);font-size:14px;cursor:pointer;white-space:nowrap}
+html[data-case="ohang"] .niche-big img{width:34px;height:28px;object-fit:contain;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
+html[data-case="ohang"] .niche-big.open{border-color:var(--lamp);box-shadow:inset 0 0 0 1px rgba(227,166,74,.45)}
+html[data-case="ohang"] .niche-big.filled span{font-size:13px;color:var(--soft-3)}
+html[data-case="ohang"] .niche-big.top{grid-area:top}html[data-case="ohang"] .niche-big.left{grid-area:left}html[data-case="ohang"] .niche-big.center{grid-area:center}html[data-case="ohang"] .niche-big.right{grid-area:right}html[data-case="ohang"] .niche-big.bottom{grid-area:bottom}
 @media (max-width:640px),(orientation:landscape) and (max-height:500px){
+  html[data-case="ohang"] .niche-cross.mobile-only{display:grid}
   html[data-case="ohang"] .tin-shelf{gap:6px;padding:16px 6px 0}
   html[data-case="ohang"] .tin{height:120px}
   html[data-case="ohang"] .tin-label{top:36px;bottom:18px;font-size:16px}
@@ -1275,6 +1287,16 @@ html[data-case="ohang"] .brew-pot.steaming::before{content:"";position:absolute;
   html[data-case="ohang"] .v2-intake .slip-row{margin:4px 0;grid-template-columns:84px 1fr}
   html[data-case="ohang"] .v2-intake .slip-row input{scroll-margin:90px 0 140px}
   html[data-case="ohang"] .v2-intake .slip-err:empty{min-height:0;margin:0}
+}
+/* 가로 휴대폰: 장치 창이 낮아서 차 통을 납작하게(이름표는 가로로) 주전자·달이기 버튼이 덜 내려가게 */
+@media (orientation:landscape) and (max-height:500px){
+  html[data-case="ohang"] .tin{height:64px;margin-bottom:12px}
+  html[data-case="ohang"] .tin-lid{height:16px;top:-6px}
+  html[data-case="ohang"] .tin-label{top:18px;bottom:8px;writing-mode:horizontal-tb;font-size:15px;letter-spacing:0}
+  html[data-case="ohang"] .tin-shelf{padding-top:12px}
+  html[data-case="ohang"] .brew-wrap{gap:8px}
+  html[data-case="ohang"] .brew-pot{min-height:64px;padding:16px 14px 10px}
+  html[data-case="ohang"] .spoon-badge{top:-12px}
 }
 
 /* 첫 번째 보호자: 동물병원 진료 카드 · 하늘색 괘선 · 초록 */

@@ -406,8 +406,13 @@ async function ohang({ mobile = false } = {}) {
     L.check((await L.dialogText(page)).includes('보자기 위가 비었다'), 'bowls: empty tray says so');
     await commit(page);
     L.check((await status(page)).includes('꿈쩍 않는다') && !(await status(page)).includes('북쪽'), 'bowls: naive north neutral — ' + (await status(page)));
-    for (const n of ['위 칸: 검은 그릇', '왼쪽 칸: 흰 그릇', '오른쪽 칸: 청자 빛 그릇', '아래 칸: 붉은 그릇']) { await L.click(page, n, { exact: true }); await L.click(page, n.split(': ')[1] + ' 집기', { exact: true }); }
-    await put('붉은 그릇', '위 칸'); await put('청자 빛 그릇', '왼쪽 칸'); await put('흰 그릇', '오른쪽 칸'); await put('검은 그릇', '아래 칸'); await commit(page);
+    // 든 그릇으로 찬 칸을 누르면 서로 바꾼다 (위↔아래, 왼쪽↔오른쪽)
+    await L.click(page, '위 칸: 검은 그릇', { exact: true }); await L.click(page, '아래 칸: 붉은 그릇', { exact: true });
+    L.check(await page.evaluate(() => !!document.querySelector('dialog[open] .cabinet [aria-label="아래 칸: 검은 그릇"]')) && (await L.dialogText(page)).includes('붉은 그릇을 들었다'), 'bowls: held bowl swaps with a filled niche');
+    await L.click(page, '위 칸 (비어 있음)', { exact: true });
+    await L.click(page, '왼쪽 칸: 흰 그릇', { exact: true }); await L.click(page, '오른쪽 칸: 청자 빛 그릇', { exact: true }); await L.click(page, '왼쪽 칸 (비어 있음)', { exact: true });
+    if (mobile) L.check(await page.evaluate(() => { const bs = [...document.querySelectorAll('dialog[open] .niche-cross .niche-big')]; return bs.length === 5 && bs.every((b) => b.getBoundingClientRect().height >= 44 && b.getBoundingClientRect().width >= 44); }), 'bowls: big niche buttons under the photo on mobile');
+    await commit(page);
     L.check(await dlgHas(page, '남쪽을 보고 서서'), 'bowls solved');
     await shot(page, 'ohang-bowls');
     L.check(await dlgHas(page, '할머니 달력'), 'bowls reveal: drawer with ledger + calendar');
@@ -465,6 +470,9 @@ async function ohang({ mobile = false } = {}) {
     for (let i = 0; i < 5; i++) for (let k = 0; k < counts[i]; k++) await L.click(page, TEAOF[ELS[i]] + ' 한 숟갈 넣기');
     await commit(page);
     L.check((await status(page)).includes('맛이 아니다') && !/[0-9]/.test(await status(page)), 'brew: copied counts neutral — ' + (await status(page)));
+    const spoonsNow = async () => page.evaluate(() => Object.values(JSON.parse(localStorage.getItem('mihaeje-v2-ohang') || '{}').drafts?.brew?.spoons || {}).reduce((a, b) => a + b, 0));
+    const before = await spoonsNow(); await L.click(page, '한 숟갈 덜기');
+    L.check((await spoonsNow()) === before - 1, 'brew: one spoon taken out (' + before + ' → ' + (await spoonsNow()) + ')');
     await L.click(page, '주전자 비우기');
     L.check((await L.dialogText(page)).includes('맹물'), 'brew: emptied pot');
     for (let i = 0; i < 5; i++) for (let k = 0; k < mx - counts[i]; k++) await L.click(page, TEAOF[ELS[i]] + ' 한 숟갈 넣기');
