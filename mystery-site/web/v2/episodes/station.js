@@ -249,7 +249,7 @@ export default {
       name: '수림 마을길',
       image: 'assets/v2/station/village.webp',
       unlockedBy: 'locker',
-      arrive: '보관함에서 꺼낸 것들은 가방에 넣고 역 앞으로 나왔다 편지와 손지도와 쪽지 세 장은 길바닥에 펴 놓고 돌멩이로 눌렀다 매미 소리 사이로 어디선가 개가 짖었다 길 저 앞에도 파란 대문이 하나 보였다 이 동네엔 파란 대문이 흔한 모양이다',
+      arrive: '역 앞에 나와 편지와 손지도와 쪽지 세 장을 길바닥에 펴 놓고 돌멩이로 눌렀다 어디선가 개가 짖었다 길 저 앞 대문도 파란색이다 이 동네엔 파란 대문이 흔한 모양이다',
       hotspots: [
         { id: 'letter', x: 39.6, y: 73.4, r: 8.5, label: '민서의 편지', kind: 'doc', doc: 'letter' },
         { id: 'handmap', x: 48.9, y: 71.2, r: 8.5, label: '손지도', kind: 'doc', doc: 'handmap' },

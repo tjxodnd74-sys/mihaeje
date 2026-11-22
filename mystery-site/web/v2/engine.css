@@ -955,6 +955,26 @@ html[data-case="station"] .gate-chip small{white-space:nowrap}
   html[data-case="station"] .train{display:block;padding:6px 10px;line-height:1.35}
   html[data-case="station"] .train small{display:block;font-size:13px}
 }
+/* v129 휴대폰 점검: 거울 — 받침대 눈금 · 거울 · 기울기 막대를 붙여 놓아 막대를 끄는 동안 비친 글씨가 같이 보이게 */
+@media (max-width:899px){
+  html[data-case="station"] .mirror{display:flex;flex-direction:column}
+  html[data-case="station"] .mirror>.mirror-gauge-row{order:1;margin:4px auto 10px}
+  html[data-case="station"] .mirror>.mirror-glass{order:2;width:100%}
+  html[data-case="station"] .mirror>.mirror-tilt{order:3;margin:8px 0 0}
+  html[data-case="station"] .mirror>.ctl.wide{order:4;margin:10px 0 0}
+  html[data-case="station"] .mirror>.train-list{order:5;margin-top:14px}
+}
+/* v129: 휴대폰 위 줄 — 긴 장소 이름(2번 승강장 · 둘째 기둥)은 두 줄로 접고 버튼은 같은 줄에 */
+@media (max-width:640px){
+  html[data-case="station"] .v2-where-box{flex:1 1 0;min-width:0}
+  html[data-case="station"] .v2-where{max-width:100%;text-align:left}
+  html[data-case="station"] .v2-where b{font-size:16px;line-height:1.2;word-break:keep-all}
+  html[data-case="station"] .v2-where small,html[data-case="station"] .v2-where .caret{flex:none;white-space:nowrap}
+}
+/* v129: 안내판 구간권 인쇄 글씨를 두 줄로 접고 조금 오른쪽으로 — 네 방향 어디로 돌려도 구멍 글자 밑에 깔리지 않는 자리 (예전엔 처음 방향에서 루 구멍에 깔려 반쯤 안 보였음) · 표지판 뒤 구간권 여백 글씨는 표 안쪽에 */
+html[data-case="station"] .grille-ticket .tprint{left:56.6%;width:min-content;white-space:normal;text-align:center;font-size:2.9cqw;line-height:1.15;padding:.3cqw 1cqw}
+html[data-case="station"] .ticket .ticket-print{left:55.5%;font-size:2.8cqw}
+html[data-case="station"] .ticket .ticket-hand{left:55.5%;width:19%;font-size:4cqw}
 
 /* 고양이: 오후 햇살 포장 가게 · 리본 · 편지지 */
 html[data-case="cat-invite"]{
@@ -1630,6 +1650,16 @@ html[data-case="letter"] .rack-slot:hover,html[data-case="letter"] .rack-slot:fo
 html[data-case="letter"] .rack-slot.picking{box-shadow:inset 0 0 0 .5cqw var(--lamp),0 0 0 .2cqw rgba(0,0,0,.4)}
 html[data-case="letter"] .rack-slot.picking .rack-label{color:#9e2418}
 @media (prefers-reduced-motion:reduce){html[data-case="letter"] .v2-stage img[src*="sorting"]{animation:none}}
+/* v129 휴대폰 점검: 소반 위 답장 봉투에 적히는 글씨가 9px 남짓이라 키움 (봉투 안쪽 16~89% 안에 들어감) */
+@media (max-width:640px){
+  html[data-case="letter"] .lenv.reply .lenv-to.written{left:19%;top:32%;gap:1cqw;font-size:5cqw}
+  html[data-case="letter"] .lenv.reply .lenv-to b{min-height:5.6cqw}
+  /* 360폭에서 「미루우체국 구분실」 때문에 위 줄 버튼이 다음 줄로 밀려 빈 줄이 생김 → 이름을 접고 버튼은 같은 줄에 */
+  html[data-case="letter"] .v2-where-box{flex:1 1 0;min-width:0}
+  html[data-case="letter"] .v2-where{max-width:100%;text-align:left}
+  html[data-case="letter"] .v2-where b{font-size:16px;line-height:1.2;word-break:keep-all}
+  html[data-case="letter"] .v2-where small,html[data-case="letter"] .v2-where .caret{flex:none;white-space:nowrap}
+}
 
 /* 404호의 불빛: 철거 현장 · 락카 빨강 · 비상등 */
 html[data-case="apartment"]{
