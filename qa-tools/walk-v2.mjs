@@ -841,10 +841,10 @@ async function garage({ mobile = false } = {}) {
     const typeVal = async (v) => { for (let i = 0; i < 6; i++) await L.click(page, '한 자 지우기', { exact: true }); for (const ch of v) await L.click(page, ch === '.' ? '소수점 적기' : `${ch} 적기`, { exact: true }); };
     L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .disc-pad .ctl')].every((b) => b.getBoundingClientRect().height >= 40 && b.getBoundingClientRect().width >= 40)), 'disc: keypad buttons 40px+');
     await L.click(page, '디스크 가 캘리퍼스로 재기 (꼬리표 37마 4128 9/12 앞)', { exact: true }); await typeVal('22.8'); await commit(page);
-    L.check((await status(page)).includes('기록이 못 된다'), 'disc: plate trap neutral');
+    L.check((await status(page)).includes('기록과 맞지 않는다') && !(await status(page)).includes('다시 보니'), 'disc: plate trap neutral');
     await L.click(page, '디스크 다 캘리퍼스로 재기 (꼬리표 37마 4182 9/12 앞)', { exact: true }); L.check(await dlgHas(page, 'MIN TH 25'), 'disc: stamp shown');
-    await typeVal('25'); await commit(page); L.check((await status(page)).includes('기록이 못 된다'), 'disc: MIN stamp trap neutral');
-    await typeVal('27.4'); await commit(page); L.check((await status(page)).includes('기록이 못 된다'), 'disc: misread neutral');
+    await typeVal('25'); await commit(page); L.check((await status(page)).includes('기록과 맞지 않는다') && !(await status(page)).includes('다시 보니'), 'disc: MIN stamp trap neutral');
+    await typeVal('27.4'); await commit(page); L.check((await status(page)).includes('기록과 맞지 않는다') && !(await status(page)).includes('다시 보니'), 'disc: misread neutral');
     L.check(await page.evaluate(() => { const v = document.querySelector('dialog[open] .vern-box'); return !!v && v.getBoundingClientRect().right <= innerWidth + 1 && v.querySelector('.vern-svg').getBoundingClientRect().width >= (innerWidth < 640 ? 600 : 300); }), 'disc: caliper scale box fits the screen (mobile: wide scale scrolls inside)');
     await typeVal('26.4'); await shot(page, 'g-disc'); await commit(page);
     L.check(await dlgHas(page, '26.4mm') && await dlgHas(page, '버리지 말 것'), 'disc solved');

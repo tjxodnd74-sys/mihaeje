@@ -36,6 +36,12 @@ const camMarks = (off, pos, near) => {
   ms.forEach((m, k) => { const prev = ms[k - 1], next = ms[k + 1]; m.shift = next && next.p - m.p < near ? -1 : prev && m.p - prev.p < near ? 1 : 0; });
   return ms;
 };
+// 출입 방향: 화살표 글자(↓↑)는 휴대폰 글꼴에 따라 꺾쇠(∨∧)처럼 보여서 작은 삼각형으로 그린다 (▼ 들어감 ▲ 나감)
+const tri = (cx, cy, s, down, fill) => { const h = s * 0.87; return down ? `<path d="M${(cx - s / 2).toFixed(2)} ${(cy - h / 2).toFixed(2)}h${s}L${cx.toFixed(2)} ${(cy + h / 2).toFixed(2)}Z" fill="${fill}"/>` : `<path d="M${(cx - s / 2).toFixed(2)} ${(cy + h / 2).toFixed(2)}h${s}L${cx.toFixed(2)} ${(cy - h / 2).toFixed(2)}Z" fill="${fill}"/>`; };
+const markW = (txt, fs) => [...txt].reduce((a, c) => a + (c === '-' ? 0.4 : 0.6), 0) * fs + fs * 0.3 + fs * 0.62;
+// 글자(왼쪽 끝 left, 글자 바닥 y) + 바로 뒤에 방향 삼각형
+const mark = (left, y, txt, fs, down, fill) => { const nw = markW(txt, fs) - fs * 0.3 - fs * 0.62, s = fs * 0.62; return `<text x="${left.toFixed(2)}" y="${y.toFixed(2)}" font-size="${fs}" fill="${fill}" font-family="SUIT,sans-serif">${txt}</text>` + tri(left + nw + fs * 0.3 + s / 2, y - fs * 0.36, s, down, fill); };
+const TRI_LEGEND = '<svg class="tri-ico" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 2h8L5 9Z" fill="currentColor"/></svg> 들어감 <svg class="tri-ico" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 8h8L5 1Z" fill="currentColor"/></svg> 나감';
 function syncSvg(off) {
   const t0 = toSec('21:26:00'), span = 56 * 60;
   const X = (sec) => 4 + ((sec - t0) / span) * 92;
@@ -43,8 +49,8 @@ function syncSvg(off) {
   s += '<line x1="4" y1="22" x2="96" y2="22" stroke="#4a5560" stroke-width=".3"/>';
   for (let m = 30; m <= 80; m += 5) { const sec = toSec('21:00:00') + m * 60; const x = X(sec); const hh = 21 + Math.floor(m / 60), mm = m % 60; s += `<line x1="${x}" y1="21" x2="${x}" y2="23" stroke="#6b7782" stroke-width=".25"/><text x="${x}" y="26.4" font-size="2" text-anchor="middle" fill="#8d979f" font-family="ui-monospace,monospace">${hh}:${String(mm).padStart(2, '0')}</text>`; }
   s += `<text x="4" y="4" font-size="2.4" fill="#f2b134" font-family="SUIT,sans-serif">블랙박스 (${off ? '시계를 맞춘 뒤' : '표시 시각 그대로'})</text>` + '<text x="4" y="42.5" font-size="2.4" fill="#9be8a5" font-family="SUIT,sans-serif">출입 서버</text>';
-  camMarks(off, X, 4.5).forEach(({ i, dir, p: x, shift }) => { if (x < 2 || x > 98) return; const tx = x + shift * 0.5, anchor = shift < 0 ? 'end' : shift > 0 ? 'start' : 'middle'; s += `<line x1="${x}" y1="9" x2="${x}" y2="20" stroke="#f2b134" stroke-width=".5"/><text x="${tx}" y="8.2" font-size="2.3" text-anchor="${anchor}" fill="#f2b134" font-family="SUIT,sans-serif">${i + 1}${dir === '입' ? '↓' : '↑'}</text>`; });
-  SRV.forEach(([t, dir, card]) => { const x = X(toSec(t)); s += `<line x1="${x}" y1="28" x2="${x}" y2="35" stroke="#9be8a5" stroke-width=".5"/><text x="${x}" y="38.2" font-size="2.1" text-anchor="middle" fill="#9be8a5" font-family="SUIT,sans-serif">${card}${dir === '입' ? '↓' : '↑'}</text>`; });
+  camMarks(off, X, 4.5).forEach(({ i, dir, p: x, shift }) => { if (x < 2 || x > 98) return; const tx = x + shift * 0.5, w = markW(String(i + 1), 2.3); s += `<line x1="${x}" y1="9" x2="${x}" y2="20" stroke="#f2b134" stroke-width=".5"/>` + mark(shift < 0 ? tx - w : shift > 0 ? tx : tx - w / 2, 8.2, String(i + 1), 2.3, dir === '입', '#f2b134'); });
+  SRV.forEach(([t, dir, card]) => { const x = X(toSec(t)); s += `<line x1="${x}" y1="28" x2="${x}" y2="35" stroke="#9be8a5" stroke-width=".5"/>` + mark(x - markW(card, 2.1) / 2, 38.2, card, 2.1, dir === '입', '#9be8a5'); });
   return s + '</svg>';
 }
 // 모바일: 같은 시간 축을 세로로 세운다 (옆으로 밀지 않아도 한눈에, 맞추기 버튼까지 한 화면에 들어오게 낮게)
@@ -54,9 +60,9 @@ function syncSvgV(off) {
   let s = '<svg viewBox="0 0 80 92" class="sync-svg-v mobile-only" role="img" aria-label="왼쪽은 블랙박스 출입, 오른쪽은 출입 서버 기록 같은 시간 축">';
   s += '<text x="33" y="4.4" font-size="3.3" text-anchor="end" fill="#f2b134" font-family="SUIT,sans-serif">블랙박스</text><text x="44" y="4.4" font-size="3.3" fill="#9be8a5" font-family="SUIT,sans-serif">출입 서버</text>';
   s += '<line x1="39" y1="7" x2="39" y2="91" stroke="#4a5560" stroke-width=".4"/>';
-  for (let m = 30; m <= 80; m += 5) { const y = Y(toSec('21:00:00') + m * 60); const hh = 21 + Math.floor(m / 60), mm = m % 60; s += `<line x1="37.6" y1="${y}" x2="40.4" y2="${y}" stroke="#6b7782" stroke-width=".3"/><text x="1" y="${y + 1.1}" font-size="3" fill="#8d979f" font-family="ui-monospace,monospace">${hh}:${String(mm).padStart(2, '0')}</text>`; }
-  camMarks(off, Y, 4).forEach(({ i, dir, p: y, shift }) => { if (y < 6 || y > 91) return; s += `<line x1="26" y1="${y}" x2="37" y2="${y}" stroke="#f2b134" stroke-width=".6"/><text x="25" y="${y + 1.2 + shift * 1.1}" font-size="3.3" text-anchor="end" fill="#f2b134" font-family="SUIT,sans-serif">${i + 1}${dir === '입' ? '↓' : '↑'}</text>`; });
-  SRV.forEach(([t, dir, card]) => { const y = Y(toSec(t)); s += `<line x1="41" y1="${y}" x2="52" y2="${y}" stroke="#9be8a5" stroke-width=".6"/><text x="53" y="${y + 1.2}" font-size="3.3" fill="#9be8a5" font-family="SUIT,sans-serif">${card}${dir === '입' ? '↓' : '↑'}</text>`; });
+  for (let m = 30; m <= 80; m += 5) { const y = Y(toSec('21:00:00') + m * 60); const hh = 21 + Math.floor(m / 60), mm = m % 60; s += `<line x1="37.6" y1="${y}" x2="40.4" y2="${y}" stroke="#6b7782" stroke-width=".3"/><text x="1" y="${y + 1.2}" font-size="3.3" fill="#a3adb5" font-family="ui-monospace,monospace">${hh}:${String(mm).padStart(2, '0')}</text>`; }
+  camMarks(off, Y, 4).forEach(({ i, dir, p: y, shift }) => { if (y < 6 || y > 91) return; s += `<line x1="26" y1="${y}" x2="37" y2="${y}" stroke="#f2b134" stroke-width=".6"/>` + mark(25 - markW(String(i + 1), 3.3), y + 1.2 + shift * 1.1, String(i + 1), 3.3, dir === '입', '#f2b134'); });
+  SRV.forEach(([t, dir, card]) => { const y = Y(toSec(t)); s += `<line x1="41" y1="${y}" x2="52" y2="${y}" stroke="#9be8a5" stroke-width=".6"/>` + mark(53, y + 1.2, card, 3.3, dir === '입', '#9be8a5'); });
   return s + '</svg>';
 }
 const SAFE_CODE = [0, 4, 0, 7]; // 처음 문 연 날 2009/4/7 (사업자등록 3/30 · 다시 연 날 10/3은 함정)
@@ -242,7 +248,7 @@ export default {
         { id: 'video', x: 48, y: 55, r: 5, label: '책상 위 민호의 휴대폰', kind: 'device', device: 'video', visible: (S) => S.solved.includes('terminal') },
         { id: 'safe', x: 37, y: 74, r: 8, label: '책상 밑 금고', kind: 'device', device: 'safe', visible: (S) => !S.solved.includes('safe') },
         { id: 'safeopen', x: 37, y: 74, r: 8, label: '다시 닫아 둔 금고', kind: 'doc', doc: 'safedoc', visible: (S) => S.solved.includes('safe') },
-        { id: 'strips', x: 81, y: 80, r: 7, label: '휴지통의 찢긴 종이', kind: 'device', device: 'strips' },
+        { id: 'strips', x: 81, y: 77, r: 9, label: '휴지통의 찢긴 종이', kind: 'device', device: 'strips' },
         { id: 'go-shop', x: 16, y: 16, r: 9, label: '작업장으로', kind: 'travel', to: 'shop' },
       ],
     },
@@ -262,7 +268,7 @@ export default {
       overlays: [{ cls: 'g-term', x: 90.33, y: 33.0, w: 3.22, h: 4.1, html: '<b class="lk">LOCKED</b><b class="ok">SYNC<br>OK</b>' }],
       hotspots: [
         { id: 'locker', x: 76, y: 65, r: 8, label: '직원 보관함과 SD 슬롯', kind: 'doc', doc: 'locker' },
-        { id: 'disc', x: 11, y: 81, r: 6, label: '폐부품 카트', kind: 'device', device: 'disc', visible: (S) => S.solved.includes('strips') },
+        { id: 'disc', x: 10, y: 77, r: 8, label: '폐부품 카트', kind: 'device', device: 'disc', visible: (S) => S.solved.includes('strips') },
         { id: 'terminal', x: 93, y: 38, r: 7, label: '보관함 백업 단말', kind: 'device', device: 'terminal' },
         { id: 'go-yard', x: 9, y: 42, r: 9, label: '앞마당으로', kind: 'travel', to: 'yard' },
       ],
@@ -438,9 +444,11 @@ export default {
         const shown = done ? SYNC_ANSWER : 0; // 맞추기 전에는 두 줄을 있는 그대로만 보여 준다 (눌러 보며 겹치는 걸 볼 수 없게)
         const sign = (v) => (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v);
         // 읽는 법은 화면 안 맨 위에 (버튼과 맞추기 사이에 글줄이 끼지 않게)
-        const screen = el('div', 'term-screen sync-screen'); screen.innerHTML = `<p class="term-line">BACKUP TERMINAL · CLOCK SYNC</p><p class="term-line sync-legend">숫자 = 프레임 번호 / 카드 번호 · ↓ 들어감 ↑ 나감</p>${syncSvg(shown)}${syncSvgV(shown)}<p class="term-line sync-off">${done ? 'SYNC OK · 블랙박스 시계 ' + sign(SYNC_ANSWER) + '분' : '옮길 차이 · 블랙박스 시계 <b>' + sign(d.off) + '분</b>'}</p>`;
+        const screen = el('div', 'term-screen sync-screen'); screen.innerHTML = `<p class="term-line">BACKUP TERMINAL · CLOCK SYNC</p><p class="term-line sync-legend">숫자 = 프레임 번호 / 카드 번호 · ${TRI_LEGEND}</p>${syncSvg(shown)}${syncSvgV(shown)}${done ? '<p class="term-line sync-off">SYNC OK · 블랙박스 시계 ' + sign(SYNC_ANSWER) + '분</p>' : ''}`;
         wrap.append(screen);
         if (!done) {
+          // 누를 때마다 바뀌는 차이는 버튼 바로 위에 크게 (그래프는 맞추기 전까지 그대로라 '아무 일도 없다'로 보이지 않게)
+          const big = el('p', 'sync-off sync-big'); big.innerHTML = `옮길 차이 · 블랙박스 시계 <b>${sign(d.off)}분</b>`; wrap.append(big);
           const row = el('div', 'sync-row');
           [[-5, '−5분'], [-1, '−1분'], [1, '+1분'], [5, '+5분']].forEach(([v, lab]) => { const b = el('button', 'ctl', lab); b.type = 'button'; b.setAttribute('aria-label', `블랙박스 시계 ${lab}`); b.onclick = () => { d.off = Math.max(-15, Math.min(15, d.off + v)); save(); }; row.append(b); });
           wrap.append(row);
@@ -587,16 +595,21 @@ export default {
         if (cur) {
           wrap.append(el('p', 'vern-cap', `디스크 ${'가나다'[DISCS.indexOf(cur)]} · 안쪽 테에 찍힌 글자 「MIN TH 25」 · 캘리퍼스 눈금 확대 (mm)`));
           box.innerHTML = vernierSvg(cur.mm);
+          box.classList.add('has-scale');
           // 휴대폰에선 눈금이 상자보다 넓다: 처음엔 아들자 0 조금 앞부터 보이게
           requestAnimationFrame(() => { const sv = box.querySelector('.vern-svg'); if (sv && sv.getBoundingClientRect().width > box.clientWidth + 2) box.scrollLeft = Math.max(0, ((12 + (cur.mm - 2 - 22) * 24) / 360) * sv.getBoundingClientRect().width); });
         } else box.append(el('p', 'vern-cap empty', '디스크를 하나 골라 캘리퍼스를 물린다'));
         wrap.append(box);
+        // 휴대폰: 눈금 상자는 옆으로 밀린다는 표시
+        if (cur) wrap.append(el('p', 'vern-swipe mobile-only', '← 눈금은 옆으로 밀어 볼 수 있다 →'));
         // 숫자판: 꼬리표에 적을 두께
         const tag = el('div', 'disc-write'); tag.append(el('span', '', '꼬리표에 적을 두께'), el('b', 'disc-val', (d.val || '　') + ' mm'));
         wrap.append(tag);
         const pad = el('div', 'disc-pad');
         ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '←'].forEach((k) => {
-          const b = el('button', 'ctl', k); b.type = 'button';
+          const b = el('button', 'ctl' + (k === '←' ? ' del' : ''), k); b.type = 'button';
+          // 지우기 키: '←' 글자가 꺾쇠(<)처럼 보여서 지우기 모양 그림으로
+          if (k === '←') b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5H20v14H8.5L3 12Z"/><path d="m11.5 9 5 6m0-6-5 6"/></svg>';
           b.setAttribute('aria-label', k === '←' ? '한 자 지우기' : k === '.' ? '소수점 적기' : `${k} 적기`);
           b.onclick = () => {
             if (k === '←') d.val = d.val.slice(0, -1);
@@ -614,7 +627,7 @@ export default {
       check(d) {
         const v = Number(d.val);
         if (d.pick === DISC_ANSWER.id && Number.isFinite(v) && Math.abs(v - Number(DISC_ANSWER.mm)) < 1e-9) return { ok: true };
-        return { ok: false, msg: '꼬리표를 다시 보니 이 기록은 서연 차 디스크 기록이 못 된다' };
+        return { ok: false, msg: '꼬리표에 적고 보니 서연 차 기록과 맞지 않는다' };
       },
       reveal: {
         title: '26.4mm',
