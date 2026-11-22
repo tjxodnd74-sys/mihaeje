@@ -2,6 +2,21 @@
 const P = 'assets/v2/cat-invite/';
 const js = (w, a, b) => { const c = w.charCodeAt(w.length - 1); if (c < 0xac00 || c > 0xd7a3) return w + a; return w + ((c - 0xac00) % 28 ? a : b); }; // 받침 있음→a, 없음→b
 
+// 장치 0: 미정 씨가 보낸 포장지 띠 접기 (반쪽 글자 맞붙이기)
+// 칸 경계마다 글자가 반쪽씩 걸려 있다 칸을 뒤로 접어 넣으면 양옆 칸이 맞붙는다
+// 짝이 맞는 반쪽끼리만 온전한 글자가 된다 → 3·6번째 칸을 접어야 「병원창턱」 (빵·꽃·감·집 반쪽은 함정)
+const FOLD = [
+  { L: null, R: '병' }, { L: '병', R: '원' }, { L: '빵', R: '꽃' }, { L: '원', R: '창' },
+  { L: '창', R: '턱' }, { L: '감', R: '집' }, { L: '턱', R: null },
+];
+const FOLD_ANSWER = [2, 5];
+function foldPanelSvg(p) {
+  const g = (x, ch) => `<text x="${x}" y="96" font-size="84" text-anchor="middle" fill="#2f3a7a" font-family="MihaejeHand, serif">${ch}</text>`;
+  return `<svg viewBox="0 0 100 140" aria-hidden="true">${p.L ? g(0, p.L) : ''}${p.R ? g(100, p.R) : ''}</svg>`;
+}
+// 예전 저장본(포장지 장치가 없던 판)에서 이미 골목 장치를 푼 사람은 포장지도 푼 것으로 본다
+const legacy = (S) => { if (!S.solved.includes('fold') && ['seasons', 'gifts', 'mailbox', 'seats'].some((d) => S.solved.includes(d))) S.solved.unshift('fold'); };
+
 // 장치 1: 봄이 사진 다섯 장을 찍은 순서(계절)대로
 const PHOTOS = [
   { id: 'kitten', label: '벚꽃 아래 B', img: P + 'props/cat-kitten.webp', season: '봄' },
@@ -80,12 +95,12 @@ function seatChart(d = {}) {
   const ink = '#3a3a3a';
   const names = Object.fromEntries(PEOPLE.map((p) => [p.id, GIFT_OF[p.id][0]]));
   const pen = (dd, w = 1) => `<path d="${dd}" fill="none" stroke="${ink}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
-  const txt = (x, y, size, t, fill = ink) => `<text x="${x}" y="${y}" font-size="${size}" text-anchor="middle" fill="${fill}" font-family="MihaejeHand, serif">${t}</text>`;
+  const txt = (x, y, size, t, fill = ink, fit = 0) => `<text x="${x}" y="${y}" font-size="${size}" text-anchor="middle" fill="${fill}" font-family="MihaejeHand, serif"${fit ? ` textLength="${fit}" lengthAdjust="spacingAndGlyphs"` : ''}>${t}</text>`;
   const seat = (id, x, y, label) => {
     const who = d[id];
     // 선물을 놓아도 자리 이름은 작게 남는다
     // 빈 방석도 종이색으로 채워 평상 테두리 선이 이름 밑으로 지나가지 않게, 긴 이름(골목 입구 쪽)은 칸 안에 들어가게 조금 작게
-    return `<g class="seat-box${who ? ' named' : ''}" data-seat="${id}" role="button" tabindex="0" aria-label="${label} 방석${who ? ': ' + names[who] : ' (비어 있음)'}"><rect x="${x - 15}" y="${y - 8}" width="30" height="16" rx="5" fill="rgba(255,255,255,.01)"/><rect x="${x - 13}" y="${y - 6}" width="26" height="12" fill="${who ? 'rgba(255,255,255,.7)' : 'rgba(253,252,248,.94)'}"/>${pen(`M${x - 13} ${y - 6} h26 v12 h-26 z`, 1.1)}${who ? txt(x, y - 1.6, 3.4, label, '#6b6157') + txt(x, y + 4.2, 5, names[who], GIFT_OF[who][1]) : txt(x, y + 1.8, label.length > 5 ? 4.3 : 5, label)}</g>`;
+    return `<g class="seat-box${who ? ' named' : ''}" data-seat="${id}" role="button" tabindex="0" aria-label="${label} 방석${who ? ': ' + names[who] : ' (비어 있음)'}"><rect x="${x - 15}" y="${y - 8}" width="30" height="16" rx="5" fill="rgba(255,255,255,.01)"/><rect x="${x - 13}" y="${y - 6}" width="26" height="12" fill="${who ? 'rgba(255,255,255,.7)' : 'rgba(253,252,248,.94)'}"/>${pen(`M${x - 13} ${y - 6} h26 v12 h-26 z`, 1.1)}${who ? txt(x, y - 1.4, 4.7, label, '#6b6157', label.length > 5 ? 24 : 0) + txt(x, y + 4.6, 5, names[who], GIFT_OF[who][1]) : txt(x, y + 1.8, 5, label, ink, label.length > 5 ? 24 : 0)}</g>`;
   };
   return `<svg viewBox="0 0 120 100" class="seat-chart" role="img" aria-label="평상 자리표">
    ${pen('M32 34 h56 v32 h-56 z', 1.7)}${pen('M35 40 h50 M35 46 h50 M35 52 h50 M35 58 h50', 0.45)}
@@ -105,10 +120,10 @@ export default {
   title: '고양이의 초대장',
   subtitle: '봄이 앞으로 온 봉투',
   genre: '반려동물 · 따뜻한 미스터리',
-  minutes: 20,
+  minutes: 25,
   difficulty: 2,
   cover: P + 'cover.webp',
-  coverAlt: '포장 가게 창턱에 앉은 고양이와 바닥의 봉투',
+  coverAlt: '포장 가게 창턱에 엎드려 자는 고양이와 바닥의 봉투',
   music: 'assets/music/cat-invite-v33.mp3',
   tagline: '받는 사람: 봄이\n보낸 사람 자리엔 발바닥 도장 하나',
   blurb: '작년 초여름, 골목 고양이 봄이를 집에 들인 다은\n어느 아침 가게 문 밑으로 봄이 앞으로 온 봉투가 들어왔습니다',
@@ -122,13 +137,14 @@ export default {
       '가게 문을 열다가 발밑에서 봉투를 밟을 뻔했다. 받는 사람 칸에는 「봄이」라고만 적혀 있고, 보낸 사람은 없었다. 대신 빨간 잉크로 찍은 발바닥 도장이 하나 있었다.',
       '봄이는 창턱에 앉아 그 봉투만 쳐다보고 있었다. 작년 6월까지 이 골목 전체가 돌보던 고양이였고, 그 초여름에 내가 집으로 데려왔다.',
       '동물병원 은호 씨, 빵집 소연 씨, 우체부 지후 씨, 꽃집 미정 씨. 봄이 덕분에 이름을 알게 된 사람들이다.',
-      '봉투 안에는 종이 한 장. 「6월 12일 저녁 일곱 시, 봄이를 데리고 오세요. 어디로 오는지는 봄이가 알아요.」',
+      '봉투 안에는 종이가 두 장. 한 장엔 「6월 12일 저녁 일곱 시, 봄이를 데리고 오세요. 어디로 오는지는 봄이가 알아요.」 다른 한 장은 우리 가게 꽃무늬 포장지를 길게 자른 띠였다. 접는 선이 여러 줄 그어져 있었다.',
       '봄이가 알긴 뭘 알아, 하고 목덜미를 쓰다듬는데 목걸이에 못 보던 참이 달려 있었다. 봄이가 꼬리로 내 손목을 툭 쳤다.',
     ],
     cta: '가게 안을 둘러본다',
   },
 
   traces: [
+    { device: 'fold', label: '미정의 포장지' },
     { device: 'seasons', label: '은호의 상자' },
     { device: 'gifts', label: '소연의 바구니' },
     { device: 'mailbox', label: '봄이의 발도장' },
@@ -140,18 +156,20 @@ export default {
       id: 'shop',
       name: '다은의 포장 가게',
       image: P + 'shop.webp',
-      arrive: '아침 해가 창턱까지 들어와 있다 봄이는 그 안에 앉아 문 밑 봉투만 보고 있다 목덜미에서 못 듣던 딸랑 소리가 났다',
+      arrive: '아침 해가 창턱까지 들어와 있다 봄이는 그 안에 앉아 문 밑 봉투만 보고 있다 목덜미에서 못 듣던 달각 소리가 났다',
       hotspots: [
         { id: 'envelope', x: 82, y: 80, r: 8, label: '문 밑으로 들어온 봉투', kind: 'doc', doc: 'invite' },
         { id: 'charm', x: 52, y: 25, r: 9, label: '봄이 목걸이의 참', kind: 'doc', doc: 'charm' },
-        { id: 'go', x: 88, y: 45, r: 11, label: '골목으로 나가기', kind: 'travel', to: 'alley' },
+        { id: 'strip', x: 23, y: 76, r: 9, label: '작업대 위 포장지 띠', kind: 'device', device: 'fold' },
+        { id: 'go', x: 88, y: 45, r: 11, label: '골목으로 나가기', kind: 'travel', to: 'alley', visible: (S) => S.solved.includes('fold') },
       ],
     },
     {
       id: 'alley',
       name: '골목 · 동물병원과 빵집',
       image: P + 'alley.webp',
-      arrive: (S) => (S.solved.includes('gifts')
+      unlockedBy: 'fold',
+      arrive: (S) => (legacy(S), S.solved.includes('gifts')
         ? '선물 넷은 종이 가방에 챙겨 들었다 봄이가 이번엔 골목 끝 쪽으로 자꾸 고개를 돌린다'
         : S.solved.includes('seasons')
         ? '봄이가 이번엔 빵집 쪽으로 코를 킁킁댔다 벤치 옆 바구니에서 버터 냄새가 났다'
@@ -169,7 +187,9 @@ export default {
       name: '골목 끝 · 꽃집과 평상',
       image: P + 'end.webp',
       unlockedBy: 'gifts',
-      arrive: (S) => (S.solved.includes('mailbox')
+      arrive: (S) => (legacy(S), S.solved.includes('seats')
+        ? '봄이는 평상 한가운데 앉아 꼬리로 바닥을 톡톡 치고 있다 평상 밑에서 나온 봉투엔 받는 사람이 「다은」이라고 적혀 있다'
+        : S.solved.includes('mailbox')
         ? '우체통 문이 열려 있다 봄이가 내 품에서 평상 쪽으로 자꾸 몸을 내민다'
         : '가게 일을 보다 골목 끝에 닿으니 해가 기울고 있었다 평상 위로 전구가 줄줄이 걸려 있고, 빨간 우체통엔 작은 자물쇠가 달려 있다 봄이가 품에서 평상 쪽으로 코를 킁킁댔다'),
       hotspots: [
@@ -187,7 +207,7 @@ export default {
     },
     charm: {
       title: '봄이 목걸이의 참',
-      kind: '어젯밤까지 없던 것',
+      kind: '어제 아침엔 없던 것',
       html: `<figure class="prop collar"><img src="${P}props/collar.webp" alt="청진기, 빵, 꽃 모양 나무 참이 달린 가죽 목걸이" decoding="async"></figure><p>작은 나무 조각 세 개가 가죽 목걸이 고리에 나란히 달려 있다 왼쪽부터 청진기, 빵, 꽃</p><p class="aside">봄이가 작년까지 아침마다 돌던 길도 이런 순서였다</p>`,
     },
     vetnote: {
@@ -219,16 +239,66 @@ export default {
   },
 
   devices: {
+    fold: {
+      title: '작업대 위 포장지 띠',
+      scene: 'shop',
+      intro: '봉투에서 나온 꽃무늬 포장지 띠 칸 경계마다 글자가 반쪽씩 걸려 있다 칸을 누르면 그 칸이 뒤로 접혀 들어가고, 아래 펴기 버튼으로 다시 편다',
+      docs: ['invite'],
+      hintCode: 'C-S05',
+      hints: [
+        '칸을 하나 접으면 그 양옆 칸이 맞붙어요 맞붙은 자리의 반쪽 글자를 봐요',
+        '짝이 맞는 반쪽 글자가 서로 떨어져 있는 곳이 두 군데 있어요 그 사이에 낀 칸만 접어 넣어요',
+        '셋째 칸과 여섯째 칸을 접으면 「병원 창턱」',
+      ],
+      initial: () => ({ tucked: [] }),
+      render(ctx) {
+        const { d, el, save } = ctx;
+        if (!Array.isArray(d.tucked)) d.tucked = [];
+        const wrap = el('div', 'foldwrap');
+        const strip = el('div', 'fold-strip' + (d.tucked.length ? ' folded' : '')); strip.setAttribute('role', 'group'); strip.setAttribute('aria-label', '포장지 띠 일곱 칸');
+        FOLD.forEach((p, i) => {
+          if (d.tucked.includes(i)) return;
+          const b = el('button', 'fold-panel' + (i > 0 && d.tucked.includes(i - 1) ? ' crease' : '')); b.type = 'button';
+          b.setAttribute('aria-label', `${i + 1}번째 칸 접어 넣기`);
+          b.innerHTML = `${foldPanelSvg(p)}<span class="fold-num">${i + 1}</span>`;
+          b.onclick = () => { d.tucked = [...d.tucked, i].sort((a, z) => a - z); save(); ctx.status(`${i + 1}번째 칸을 뒤로 접어 넣었다`); };
+          strip.append(b);
+        });
+        wrap.append(strip);
+        const row = el('div', 'fold-undo');
+        if (d.tucked.length) {
+          row.append(el('span', 'pick-label', '접어 넣은 칸'));
+          d.tucked.forEach((i) => { const b = el('button', 'chip', `${i + 1}번째 칸 펴기`); b.type = 'button'; b.onclick = () => { d.tucked = d.tucked.filter((x) => x !== i); save(); }; row.append(b); });
+        } else row.append(el('span', 'pick-label', '아직 다 펼친 채다'));
+        wrap.append(row);
+        wrap.append(el('p', 'fold-note', '띠 귀퉁이에 작은 글씨 「포장 가게 사장님이면 이 정도는 금방 접죠? — 미정」'));
+        return wrap;
+      },
+      commitLabel: '접은 띠 읽기',
+      check(d) {
+        const t = d.tucked || [];
+        if (!t.length) return { ok: false, msg: '펼친 채로는 칸 경계마다 반쪽 글자가 엇갈려서 읽히지 않는다' };
+        if (t.length === FOLD_ANSWER.length && FOLD_ANSWER.every((i) => t.includes(i))) return { ok: true };
+        return { ok: false, msg: '접힌 자리에서 반쪽 글자가 맞물리지 않는다 이상한 글자가 생겼다' };
+      },
+      reveal: {
+        title: '미정 씨의 포장지',
+        text: '칸 둘을 뒤로 접어 넣자 반쪽 글자들이 맞붙어 한 줄이 됐다 「병원 창턱」',
+        scene: ['접어 넣은 두 칸 가장자리엔 빵, 꽃, 감, 집의 반쪽이 걸려 있었다 헷갈리라고 일부러 넣은 거다 봄이가 창턱에서 꼬리로 유리를 탁 치더니 문 쪽을 봤다'],
+        unlock: 'alley',
+      },
+    },
+
     seasons: {
       title: '창턱의 상자',
       scene: 'alley',
-      intro: '뚜껑 안쪽에 사진 주머니가 다섯 아래 사진을 누르면 왼쪽 빈 주머니부터 꽂히고, 꽂힌 사진을 누르면 빠진다 다 꽂으면 뒷면을 비춰 읽는다',
+      intro: '택배 상자를 여니 나무 사진함이 들어 있다 뚜껑 안쪽에 사진 주머니가 다섯 아래 사진을 누르면 왼쪽 빈 주머니부터 꽂히고, 꽂힌 사진을 누르면 빠진다 다 꽂으면 뒷면을 비춰 읽는다',
       docs: ['vetnote'],
       hintCode: 'C-S01',
       hints: [
         '사진마다 계절이 보여요 그리고 봄이 크기도요',
         '계절은 한 바퀴 돌아요 벚꽃 두 장은 봄이가 작은 쪽과 큰 쪽이 서로 다른 해예요',
-        '벚꽃 아래(작은 봄이) → 수박 옆 → 낙엽 위 → 눈 오는 날 → 벚꽃 아래(다 큰 봄이)',
+        '벚꽃 아래 B(작은 봄이) → 수박 옆 → 낙엽 위 → 눈 오는 날 → 벚꽃 아래 A(다 큰 봄이)',
       ],
       initial: () => ({ slots: [null, null, null, null, null] }),
       render(ctx) {
@@ -344,7 +414,7 @@ export default {
       docs: ['booklet', 'invite'],
       hintCode: 'C-S03',
       hints: [
-        '꼬리표에 번호가 뭔지 적혀 있어요 먼저 수첩 발도장 넷 중 초대장 도장과 같은 발을 찾아요',
+        '꼬리표에 번호가 뭔지 적혀 있어요 먼저 기록 종이의 발도장 넷 중 초대장 도장과 같은 발을 찾아요',
         '트레이싱지를 하나씩 얹어 봐요 발가락 하나, 패드 끝 하나까지 다 맞는 발이 있어요 그 칸 날짜가 번호예요',
         '셋째 발도장 2024/4/16 → 0416',
       ],
@@ -451,7 +521,7 @@ export default {
       reveal: {
         title: '봄이가 고른 자리',
         text: '봄이가 평상 위로 올라가 네 선물 냄새를 차례로 맡더니 한가운데 앉았다 꼬리로 바닥을 톡톡 쳤다',
-        scene: ['평상 밑에서 발도장이 찍힌 봉투가 한 장 더 나왔다 이번엔 받는 사람이 「다은」이었다 그때 골목 저쪽 전구에 하나둘 불이 들어왔다'],
+        scene: ['평상 밑에서 발도장이 찍힌 봉투가 한 장 더 나왔다 이번엔 받는 사람이 「다은」이었다 그때 꽃집 쪽에서 낯익은 목소리들이 들려왔다'],
         unlock: null,
         ending: true,
         endingLabel: '저녁 일곱 시, 평상으로',
@@ -468,7 +538,7 @@ export default {
       '전구가 켜진 평상을 네 사람이 둘러싸고 앉아 있었다 다들 아까 내가 자기 선물을 놓아 둔 방석 자리였다 평상 위엔 딸기 케이크와 유리컵에 든 초가 하나 있었다 은호 씨가 먼저 나를 보고 웃었다',
       '“봄이 생일은 아무도 모르잖아요 그래서 가족 된 날로 했어요” 소연 씨가 말했다 “작년 오늘, 다은 씨가 봄이 데려간 날”',
       '“근데 왜 저한테는 봄이 앞으로 보내요”',
-      '“다은 씨 앞으로 보내면 바쁘다고 안 올 것 같아서” 지후 씨가 웃었다 “봉투는 제가 문 밑으로 넣었어요 우체부가 우편함 두고 문 밑으로 넣은 건 처음이에요 발도장은 은호 씨가 봄이 앞발로 찍었고요 봄이가 보내는 거니까”',
+      '“다은 씨 앞으로 보내면 바쁘다고 안 올 것 같아서” 지후 씨가 웃었다 “봉투는 제가 문 밑으로 넣었어요 우체부가 우편함 두고 문 밑으로 넣은 건 처음이에요 발도장은 어제 봄이가 병원 창턱에 놀러 왔을 때 은호 씨가 앞발로 받았고요 참도 그때 달았대요 봄이가 보내는 거니까”',
       '선물을 하나씩 열었다 은호 씨 초록 봉투엔 손바닥만 하던 봄이의 첫 발도장 사본, 지후 씨 파란 상자엔 「받는 사람 봄이」라고 새긴 작은 주소 이름표가 들어 있었다 소연 씨 상자는 역시 봄이 간식이었다',
       '미정 씨가 꽃 한 송이를 더 내밀었다 역시 리본은 없었다 “작년에 봄이 데려간다고 했을 때, 우리 넷이 사실 좀 섭섭했어요 근데 그 뒤로 다은 씨 가게 앞을 지나는 게 좋더라고요”',
       '네 사람이 조금씩 당겨 앉아 내 자리를 만들었다 봄이는 내 품에서 케이크 쪽으로 고개를 쭉 내밀었다',

@@ -258,13 +258,13 @@
     "title": "고양이의 초대장",
     "subtitle": "봄이 앞으로 온 봉투",
     "genre": "반려동물 · 따뜻한 미스터리",
-    "minutes": 20,
+    "minutes": 25,
     "difficulty": "★★",
     "image": "assets/covers/cat-invite-v1.webp",
-    "description": "작년 여름, 골목 고양이 봄이를 집에 들인 다은\n어느 아침 가게 문 밑으로 봄이 앞으로 온 봉투가 들어왔습니다",
+    "description": "작년 초여름, 골목 고양이 봄이를 집에 들인 다은\n어느 아침 가게 문 밑으로 봄이 앞으로 온 봉투가 들어왔습니다",
     "fragment": {
       "label": "이웃들과 남긴 사진",
-      "text": "다은과 봄이, 네 이웃이 한 식탁에 모였습니다. 미정은 다음에도 이 자리에서 만나자며 사진을 남겼습니다."
+      "text": "다은과 봄이, 네 이웃이 전구 켜진 평상에 둘러앉았습니다 봄이 목걸이엔 주소 이름표가 하나 더 달렸습니다"
     },
     "href": "play.html?case=cat-invite",
     "storageKey": "mihaeje-v2-cat-invite",
@@ -277,7 +277,7 @@
       "booklet": "은호 씨 병원의 발도장 기록",
       "mail": "우체통의 봉투"
     },
-    "imageAlt": "포장 가게 창턱에 앉은 고양이와 바닥의 봉투",
+    "imageAlt": "포장 가게 창턱에 엎드려 자는 고양이와 바닥의 봉투",
     "difficultyLevel": 2
   },
   {

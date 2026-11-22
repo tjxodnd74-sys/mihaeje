@@ -1084,6 +1084,25 @@ html[data-case="cat-invite"] .seat-btns .chip.on{background:color-mix(in srgb,va
 html[data-case="cat-invite"] .seat-btns .chip.on b{color:var(--gc)}
 html[data-case="cat-invite"] .seat-btns .chip.on small{color:#5a4d40;opacity:1}
 html[data-case="cat-invite"] .gift-chip{min-height:48px}
+/* 최종 점검: PC에서도 보조 글자 13px 이상 · 자리표 종이 조금 크게(칸 글씨 13px) */
+html[data-case="cat-invite"] .paw-cell small,html[data-case="cat-invite"] .paw-cell em{font-size:13px}
+html[data-case="cat-invite"] .gift-chip small{font-size:13px}
+html[data-case="cat-invite"] .paperchart{max-width:520px}
+/* 포장지 띠 접기 (칸을 뒤로 접어 넣으면 양옆 칸이 맞붙는다) */
+html[data-case="cat-invite"] .foldwrap{display:grid;gap:10px;margin:0 0 6px}
+html[data-case="cat-invite"] .fold-strip{display:flex;justify-content:center;padding:14px 0 6px;container-type:inline-size}
+html[data-case="cat-invite"] .fold-panel{position:relative;flex:0 0 auto;width:min(84px,calc(100cqw / 7));aspect-ratio:100/140;padding:0;margin:0;border:0;border-radius:0;cursor:pointer;
+  background:radial-gradient(circle at 30% 22%,rgba(226,140,150,.28) 2.2px,transparent 2.8px) 0 0/22px 22px,radial-gradient(circle at 70% 66%,rgba(150,180,120,.26) 1.8px,transparent 2.4px) 0 0/22px 22px,#fbf3e8;
+  box-shadow:0 3px 6px rgba(0,0,0,.22)}
+html[data-case="cat-invite"] .fold-panel svg{position:absolute;inset:0;width:100%;height:100%;overflow:hidden}
+html[data-case="cat-invite"] .fold-panel+.fold-panel::before{content:"";position:absolute;left:0;top:4%;bottom:4%;border-left:1px dashed rgba(120,90,70,.45)}
+html[data-case="cat-invite"] .fold-panel.crease::before{border-left:2px solid rgba(90,60,40,.38);top:0;bottom:0;box-shadow:2px 0 4px rgba(90,60,40,.18)}
+html[data-case="cat-invite"] .fold-num{position:absolute;left:0;right:0;bottom:2px;text-align:center;font:13px var(--sans);color:#8a7663}
+html[data-case="cat-invite"] .fold-panel:focus-visible{outline:3px solid var(--lamp);outline-offset:-3px}
+@media (hover:hover){html[data-case="cat-invite"] .fold-panel:hover{background-color:#fff8ee;box-shadow:0 3px 6px rgba(0,0,0,.22),inset 0 -3px 0 var(--lamp)}}
+html[data-case="cat-invite"] .fold-undo{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;min-height:44px}
+html[data-case="cat-invite"] .fold-undo .chip{min-height:40px}
+html[data-case="cat-invite"] .fold-note{font-family:var(--hand);font-size:19px;color:#c2416a;margin:0;text-align:center}
 @media (max-width:640px),(orientation:landscape) and (max-height:500px){
   /* 편지지 붉은 여백 선이 휴대폰에선 글줄을 가로질러서 안쪽 여백 바깥으로 */
   html[data-case="cat-invite"]{--paper-tex:linear-gradient(90deg,transparent 9px,rgba(240,165,138,.32) 9px 10px,transparent 10px),radial-gradient(rgba(240,165,138,.10) 1px,transparent 1.3px) 0 0/9px 9px}
