@@ -46,7 +46,7 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - uses: android-actions/setup-android@v3
+      # GitHub 러너에 이미 깔린 Android SDK 를 그대로 쓴다 (라이선스 동의 단계를 따로 두지 않음)
 
       - uses: gradle/actions/setup-gradle@v4
 
