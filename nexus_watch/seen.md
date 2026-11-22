@@ -468,3 +468,4 @@
 2026-11-22 10:58 | 클로드 | 리만 가설 증명 Lean·Mathlib 인증(긱뉴스·Unite.AI·Startup Fortune, 알림·만화형 후보) / METR 40시간·손정의 SK하이닉스·머스크 우주 DC·LGU+(제외) | https://www.unite.ai/lean-and-mathlib-communities-certify-claude-assisted-riemann-proof/
 2026-11-22 10:58 | vidIQ: @korean_founders_pov 클로드→GPT 갈아타기(22만)·@jb.ai.daily 상세페이지(9.8만)·@wintergrowthdiary 공무원 출근룩(37.4만) | https://www.instagram.com/reel/Df6rOttPDEo
 - 2026-11-22 10:58: 오늘 첫 감시. 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + JSON 파싱) — 어제 18:24 이후 새 롱폼 2개. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음) + 확인 검색 2건 + vidIQ 아웃라이어 1회(5크레딧, 잔액 1369). 바로 제작 요청 없음(10:41 창 — 앱 개편 🔥바로제작 표시만). 인스타 브라우저 안 엶.
+2026-11-22 11:23 | 엔비디아·중국(알림 제외·정책) | 미국 AI 칩 규제에 중국 기업 잇단 타격(WSJ) | https://www.aitimes.com/news/articleList.html?view_type=sm
