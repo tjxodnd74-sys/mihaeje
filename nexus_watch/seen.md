@@ -483,3 +483,6 @@
 - 2026-11-22 16:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + JSON 파싱) — 15:23 이후 새 롱폼·새 쇼츠 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음(새 소비자 소식 없음, 16:41 창). 인스타 브라우저 안 엶.
 2026-11-22 17:24 | AI타임스 젠슨 황 '악수 거래' 엔비디아 경영 위험(17:17, 알림 제외·기업) / 긱뉴스 Show GN 온라인 서재 page0127(제외·홍보) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-22 17:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + JSON 파싱) — 16:24 이후 새 롱폼·새 쇼츠 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음(새 소비자 소식 없음). 인스타 브라우저 안 엶.
+2026-11-22 18:24 | CONNECT AI LAB 'The founder | AI 마케팅팀 만들기'(40분 전) / 조팀장 'AI 판타지 사극'(재업로드 추정) | 유튜브 | https://www.youtube.com/@connect-ai-lab/videos
+2026-11-22 18:24 | AI타임스 오픈AI 연구 가속 보고서(17:25)·AI 이슈트렌드(17:23)(알림 제외) / 긱뉴스 사내 Git 서버 비교·TermiPlus(제외·개발자용) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-22 18:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + JSON 파싱, /videos는 lockupViewModel 구조) — 17:24 이후 새 롱폼 1개(CONNECT), 새 쇼츠 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음(새 소비자 소식 없음). 인스타 브라우저 안 엶.
