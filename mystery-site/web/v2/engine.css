@@ -1444,7 +1444,7 @@ html[data-case="garage"] .camview>img{transition:transform .25s ease}
 html[data-case="garage"] .camview:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
 html[data-case="garage"] .term-table tr.restored td{color:#ffe08a}
 html[data-case="garage"] .sync-svg-v{width:100%;height:auto;max-width:420px;margin:4px auto}
-html[data-case="garage"] .on-plaque{gap:.3cqw;left:55%;width:29%;top:33%;height:34%}
+html[data-case="garage"] .on-plaque{gap:.1cqw;left:38.5%;width:25%;top:53.5%;height:22%}
 html[data-case="garage"] .on-plaque{color:#1e1405}
 html[data-case="garage"] .on-plaque small{opacity:1;font-weight:700}
 html[data-case="garage"] .on-plaque span:nth-of-type(2),html[data-case="garage"] .on-plaque span:nth-of-type(4){font-weight:600}
@@ -1452,9 +1452,9 @@ html[data-case="garage"] .chat-head .chat-icons{opacity:.85}
 html[data-case="garage"] .chat-date{background:rgba(0,0,0,.5)}
 html[data-case="garage"] .chat-avatar{color:#5a3700}
 html[data-case="garage"] .plaque-text{font-family:var(--serif);text-align:center;line-height:1.6;margin:0 0 8px}
-html[data-case="garage"] .on-plaque b{font-size:2.4cqw}
-html[data-case="garage"] .on-plaque span{font-size:1.6cqw;line-height:1.3;white-space:nowrap}
-html[data-case="garage"] .on-plaque span:nth-of-type(2),html[data-case="garage"] .on-plaque span:nth-of-type(4){margin-bottom:.5cqw}
+html[data-case="garage"] .on-plaque b{font-size:2.1cqw}
+html[data-case="garage"] .on-plaque span{font-size:1.45cqw;line-height:1.2;white-space:nowrap}
+html[data-case="garage"] .on-plaque span:nth-of-type(2),html[data-case="garage"] .on-plaque span:nth-of-type(4){margin-bottom:.3cqw}
 html[data-case="garage"] .collar-info{min-height:76px}
 html[data-case="garage"] .wo-wrap{max-width:640px;margin:0 auto}
 html[data-case="garage"] .wo-sheet{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:#2a2f34;padding:10px;border-radius:2px;box-shadow:inset 0 0 0 1px #3b4148;min-height:150px}
@@ -1501,7 +1501,11 @@ html[data-case="garage"] .v2-pan:has(.v2-hotspot.done[aria-label="보관함 백�
 html[data-case="garage"] .v2-pan:has(.v2-hotspot.done[aria-label="보관함 백업 단말"]) .v2-stage-ov.g-term .lk{display:none}
 html[data-case="garage"] .v2-pan:has(.v2-hotspot.done[aria-label="보관함 백업 단말"]) .v2-stage-ov.g-term .ok{display:block}
 /* 기념패: 글씨 덩어리를 황동판(550~868 × 168~463px) 한가운데로 */
-html[data-case="garage"] .on-plaque{left:55%;width:28.5%;top:26.5%;height:38.5%}
+/* 새 기념패(세로 액자 아래쪽 빈 황동판 383~660 × 362~525px / 1024×688) 안쪽 여백을 두고 */
+html[data-case="garage"] .on-plaque{left:38.5%;width:25%;top:53.5%;height:22%}
+html[data-case="garage"] .on-plaque small{font-size:1.35cqw}
+/* 판 위 글자는 그림 크기라 작다: 읽을 수 있는 글 줄을 PC에서도 그림 아래 같이 보인다 */
+html[data-case="garage"] .plaque-text.mobile-only{display:block}
 /* 서버 기록: 시각·카드·문 칸은 줄바꿈 없이, 나머지는 낱말 단위로 */
 html[data-case="garage"] .term-table td{word-break:keep-all}
 html[data-case="garage"] .term-table.log-srv td:nth-child(-n+3){white-space:nowrap}
@@ -1562,7 +1566,7 @@ html[data-case="garage"] .disc-pad .ctl{min-height:44px;font-size:18px;font-weig
   html[data-case="garage"] .wo-cell{font-size:14px}
   html[data-case="garage"] .vid-sub{font-size:13px}
   html[data-case="garage"] .vid-osd{font-size:13px}
-  html[data-case="garage"] .on-plaque span{font-size:1.75cqw}
+  html[data-case="garage"] .on-plaque span{font-size:1.5cqw}
   html[data-case="garage"] .cam-thumb img{aspect-ratio:16/9}
   html[data-case="garage"] .cam-thumb span{font-size:13px}
   html[data-case="garage"] .cam-desc{font-size:13.5px}

@@ -78,7 +78,7 @@ function stripNode(el, s) {
   return n;
 }
 
-// 폐부품 카트의 갈아 낸 앞 디스크 셋 (꼬리표: 차 번호 · 날짜 · 자리) 캘리퍼스로 물리면 눈금이 보인다
+// 폐부품 카트 옆 바닥의 갈아 낸 앞 디스크 셋 (꼬리표: 차 번호 · 날짜 · 자리) 캘리퍼스로 물리면 눈금이 보인다
 // 서연 차는 영수증의 37마 4182, 지시서의 9/12 앞 → 다 (26.4mm, 한계 25) · 가는 번호 끝 두 자리가 바뀐 다른 차(22.8) · 나는 다른 날 다른 차(23.6)
 const DISCS = [
   { id: 'a', plate: '37마 4128', when: '9/12 앞', mm: 22.8, rust: '#7a5a44' },
@@ -254,7 +254,7 @@ export default {
       focusX: (S) => (S.solved.includes('strips') && !S.solved.includes('disc') ? 20 : 80),
       arrive: (S) => {
         pocket(S);
-        if (S.solved.includes('strips') && !S.solved.includes('disc')) return '리프트 옆 카트 맨 아래 칸에 갈아 낸 디스크가 몇 장 쌓여 있다 꼬리표가 철사로 묶여 있다';
+        if (S.solved.includes('strips') && !S.solved.includes('disc')) return '리프트 옆 카트 아래 바닥에 갈아 낸 디스크가 몇 장 기대 세워져 있다 꼬리표가 철사로 묶여 있다';
         if (S.solved.includes('terminal')) return '단말 화면에 초록 글씨로 SYNC OK 보관함 서랍은 아까 그대로 열려 있다 휴게실 쪽 문이 조금 열려 있다';
         return '리프트 위에 손님 차 한 대 벽 쪽 철제 보관함 아래 서랍이 열려 있고, 옆 벽에 손바닥만 한 단말이 붙어 있다 화면에 「LOCKED」';
       },
@@ -262,7 +262,7 @@ export default {
       overlays: [{ cls: 'g-term', x: 90.33, y: 33.0, w: 3.22, h: 4.1, html: '<b class="lk">LOCKED</b><b class="ok">SYNC<br>OK</b>' }],
       hotspots: [
         { id: 'locker', x: 76, y: 65, r: 8, label: '직원 보관함과 SD 슬롯', kind: 'doc', doc: 'locker' },
-        { id: 'disc', x: 7, y: 66, r: 7, label: '폐부품 카트', kind: 'device', device: 'disc', visible: (S) => S.solved.includes('strips') },
+        { id: 'disc', x: 11, y: 81, r: 6, label: '폐부품 카트', kind: 'device', device: 'disc', visible: (S) => S.solved.includes('strips') },
         { id: 'terminal', x: 93, y: 38, r: 7, label: '보관함 백업 단말', kind: 'device', device: 'terminal' },
         { id: 'go-yard', x: 9, y: 42, r: 9, label: '앞마당으로', kind: 'travel', to: 'yard' },
       ],
@@ -561,7 +561,7 @@ export default {
     disc: {
       title: '폐부품 카트의 디스크',
       scene: 'shop',
-      intro: '카트 맨 아래 칸에 갈아 낸 앞 브레이크 디스크 셋 꼬리표가 철사로 묶여 있다 디스크를 누르면 캘리퍼스로 두께를 물려 본다 서연 차에서 나온 디스크면 잰 두께를 숫자판으로 꼬리표에 적는다',
+      intro: '카트 옆 바닥에 갈아 낸 앞 브레이크 디스크 셋이 겹쳐 기대 세워져 있다 꼬리표가 철사로 묶여 있다 디스크를 누르면 캘리퍼스로 두께를 물려 본다 서연 차에서 나온 디스크면 잰 두께를 숫자판으로 꼬리표에 적는다',
       docs: ['receipt', 'workorder'],
       hintCode: 'G-S08',
       hints: [
