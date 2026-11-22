@@ -280,6 +280,9 @@ async function main() {
     img.addEventListener('load', () => warm([...propsIn(ep.id, [...Object.values(ep.devices).filter((d) => d.scene === scene.id), ...scene.hotspots.map((h) => ep.docs[h.doc])]), ...[...ep.scenes.filter((sc) => ep.devices[sc.unlockedBy]?.scene === scene.id), ep.scenes[ep.scenes.indexOf(scene) + 1]].map((sc) => sc?.image)]), { once: true });
     (scene.overlays || []).forEach((o) => { const nn = html('div', 'v2-stage-ov ' + (o.cls || ''), o.html); nn.style.cssText = `left:${o.x}%;top:${o.y}%;width:${o.w}%;height:${o.h}%;${o.style || ''}`; nn.setAttribute('aria-hidden', 'true'); pan.append(nn); });
     const autoTravel = ep.scenes.filter((sc) => sc.unlockedBy && S.solved.includes(sc.unlockedBy) && ep.devices[sc.unlockedBy]?.scene === scene.id && !S.visited.includes(sc.id)).map((sc, i, arr) => ({ id: 'go-' + sc.id, x: arr.length > 1 ? 30 + i * (40 / (arr.length - 1)) : 50, y: 92, label: sc.name + '(으)로 가기', kind: 'travel', to: sc.id, auto: true }));
+    // 이 장소에 더 풀 장치가 없으면, 아직 안 푼 장치가 있는 열린 장소로 가는 버튼을 준다 (이미 가 본 곳이라도)
+    const openHere = Object.keys(ep.devices).some((did) => ep.devices[did].scene === scene.id && !S.solved.includes(did) && deviceShown(did));
+    if (!openHere) { const t = unlockedScenes().find((sc) => sc.id !== scene.id && Object.keys(ep.devices).some((did) => ep.devices[did].scene === sc.id && !S.solved.includes(did) && deviceShown(did))); if (t && !autoTravel.some((a) => a.to === t.id) && !scene.hotspots.some((h) => h.kind === 'travel' && h.to === t.id && (!h.visible || h.visible(S)))) autoTravel.push({ id: 'go-' + t.id, x: 50, y: 92, label: t.name + '(으)로 가기', kind: 'travel', to: t.id, auto: true }); }
     const travelRow = el('div', 'v2-travel-row');
     [...scene.hotspots, ...autoTravel].forEach((h) => {
       if (h.visible && !h.visible(S)) return;
@@ -293,6 +296,7 @@ async function main() {
       b.append(el('i'), el('span', 'v2-hotspot-label', h.label));
       pan.append(b);
     });
+    const visSig = scene.hotspots.filter((h) => !h.visible || h.visible(S)).map((h) => h.id || h.device || h.doc || h.to);
     scroller.append(pan); stage.append(scroller);
     // 새 길 버튼 줄은 무대 밖 상자에 둔다: PC는 그림 위 아래쪽에 띄우고, 휴대폰(그림을 밀어 보는 화면)은 무대 바로 아래로 빼서 누름 자리를 가리지 않게
     const stageBox = el('div', 'v2-stage-box'); stageBox.append(stage);
@@ -340,7 +344,8 @@ async function main() {
     const talkBtn = btn('v2-talk-open', '', () => { talk.classList.remove('gone'); talk.classList.add('typed'); talkBtn.hidden = true; }, '장면 설명 다시 보기');
     talkBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4V5Z"/></svg>';
     if (sceneSeen.has(scene.id) && !firstVisit) { talk.classList.add('gone', 'typed'); } else { talkBtn.hidden = true; sceneSeen.add(scene.id); const tdone = [...(line || '')].length * 28 + 300; setTimeout(() => talk.classList.add('typed'), tdone); setTimeout(() => { if (talk.isConnected && !talk.classList.contains('gone')) { talk.classList.add('gone'); talkBtn.hidden = false; } }, tdone + 6500); }
-    stage.append(talk, talkBtn);
+    // 가로로 눕힌 휴대폰: 그림이 낮아 대사창이 물건을 덮으니, 대사창을 그림 옆 칸으로 뺀다
+    if (matchMedia('(orientation:landscape) and (max-height:500px)').matches) { stageBox.classList.add('side-talk'); stage.append(talkBtn); stageBox.append(talk); } else stage.append(talk, talkBtn);
     if (ep.mood) stage.dataset.mood = ep.mood;
     sec.append(stageBox);
     // 가까이 봤던 자리에서 물러나기
@@ -349,13 +354,15 @@ async function main() {
     else requestAnimationFrame(() => {
       const max = scroller.scrollWidth - scroller.clientWidth; if (max <= 4) return;
       const fx = typeof scene.focusX === 'function' ? scene.focusX(S) : scene.focusX;
-      const x = S.pan?.[scene.id] ?? (Number.isFinite(fx) ? pan.offsetWidth * fx / 100 - scroller.clientWidth / 2 : max / 2);
+      // 밀어 둔 뒤로 이 장면에 새로 보이게 된 물건이 있으면 그 물건 쪽을 먼저 보여 준다
+      const fresh = visSig.filter((id) => S.panSig?.[scene.id] && !S.panSig[scene.id].includes(id)).map((id) => scene.hotspots.find((h) => h.id === id || (h.device || h.doc || h.to) === id)).filter(Boolean);
+      const x = fresh.length ? pan.offsetWidth * fresh[0].x / 100 - scroller.clientWidth / 2 : (S.pan?.[scene.id] ?? (Number.isFinite(fx) ? pan.offsetWidth * fx / 100 - scroller.clientWidth / 2 : max / 2));
       scroller.scrollLeft = Math.max(0, Math.min(max, x));
     });
-    scroller.addEventListener('scroll', () => { S.pan = S.pan || {}; S.pan[scene.id] = Math.round(scroller.scrollLeft); }, { passive: true });
+    scroller.addEventListener('scroll', () => { S.pan = S.pan || {}; S.pan[scene.id] = Math.round(scroller.scrollLeft); S.panSig = S.panSig || {}; S.panSig[scene.id] = visSig; }, { passive: true });
     // 마지막 장치를 풀었는데 아직 엔딩에 안 갔으면, 어떤 경로로 돌아왔든 엔딩 버튼을 계속 보여 준다
     const endDev = Object.values(ep.devices).find((dv, i) => dv.reveal?.ending && S.solved.includes(Object.keys(ep.devices)[i]));
-    if (endDev && !S.ended) sec.append(btn('v2-primary v2-endgo', (endDev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; save(); render(); window.scrollTo({ top: 0 }); }));
+    if (endDev && !S.ended) { const eb = btn('v2-primary v2-endgo', (endDev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; save(); render(); window.scrollTo({ top: 0 }); }); sec.append(eb); if (!S.endShown) { S.endShown = true; save(); setTimeout(() => { const r = eb.getBoundingClientRect(); if (r.bottom > innerHeight) eb.scrollIntoView({ block: 'end', behavior: 'smooth' }); }, 400); } }
     // 아래: 의견 · 처음 화면 (게임 화면을 가리지 않게 작게)
     const bar = el('div', 'v2-foot');
     bar.append(btn('v2-foot-btn', '의견 남기기', () => openFeedback()), btn('v2-foot-btn', '처음 화면', () => { S.screen = 'intro'; save(); render(); }));
@@ -558,7 +565,7 @@ async function main() {
       } else {
         const hs = typeof dev.hints === 'function' ? dev.hints(S) : dev.hints; for (let i = 0; i < tier; i++) box.append(html('p', 'v2-hint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${hs[i]}`));
         const maxTier = Math.min(3, hs.length);
-        if (tier < maxTier) box.append(btn('v2-secondary', ['첫 힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { S.hints[cur] = tier + 1; save(); openHints(cur); }));
+        if (tier < maxTier) { const hb = btn('v2-secondary', ['첫 힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { if (tier === 2 && !hb.dataset.sure) { hb.dataset.sure = '1'; hb.textContent = '정말 정답을 볼까요? 한 번 더 누르기'; return; } S.hints[cur] = tier + 1; save(); openHints(cur); }); box.append(hb); }
         else if (hs.length < 3) box.append(el('p', 'v2-note', '이 편은 정답 힌트가 없습니다 여기까지가 전부입니다'));
         else box.append(el('p', 'v2-note', '힌트를 전부 받았습니다'));
       }
