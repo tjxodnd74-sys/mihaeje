@@ -204,7 +204,7 @@ export default {
             const dv = sheet.querySelector('[name=date]').value; if (!dv) throw Error('생일을 적어야 한다');
             const [y, m, d] = dv.split('-').map(Number);
             // 이 이야기의 지원은 어른이다 (장부·도입부가 여섯 해 전 마지막 방문을 전제로 한다)
-            if (y > 2006 || (y === 2006 && (m > 3 || (m === 3 && d > 2)))) throw Error('지원은 이제 스무 살이 넘었다 2006/3/2까지 태어난 날로 적거나, 아래 예시 손님으로 해 보자');
+            if (y > 2006 || (y === 2006 && (m > 3 || (m === 3 && d > 2)))) throw Error('이 이야기 속 나(지원)는 이미 스무 살이 넘었다 2006/3/2까지 태어난 날로 적거나, 아래 예시 손님으로 해 보자');
             let input = { year: y, month: m, day: d, hour: null, minute: 0 };
             if (!unk.checked) {
               if (!time.value) throw Error('난 시각을 적거나, 모름에 표시한다');
@@ -608,7 +608,7 @@ export default {
         { id: 'share', label: '다음 손님은 내가 받을게' },
       ],
     },
-    afterword: (S) => { const e = seedOf(S); return `${js(e.gift, '은', '는')} ${S.choice === 'share' ? e.shopAt : e.homeAt}에 있다 ${e.giftLine}`; },
+    afterword: (S) => { const e = seedOf(S); return `${js(e.gift, '은', '는')} ${S.choice === 'share' ? e.shopAt : e.homeAt}에 있다 접수표에 적힌 할머니 말대로다 「${e.giftLine}」`; },
     unlockDoc: 'final',
     next: { href: 'play.html?case=pet-home', title: '첫 번째 보호자', line: '다음은 동물병원 접수대 이야기입니다' },
   },
