@@ -920,6 +920,8 @@ html[data-case="station"] .letter-plain .sign{text-align:right;margin:0}
 html[data-case="station"] .chat-date,html[data-case="station"] .chat-name{font-size:13px}
 html[data-case="station"] .chat-date,html[data-case="station"] .chat-sys{background:rgba(20,28,40,.5)}
 html[data-case="station"] .chat-avatar{color:#5a3800}
+html[data-case="station"] .prop.phonephoto{max-width:360px;margin:0 auto 10px}
+html[data-case="station"] .prop.phonephoto+.aside{max-width:360px;margin:0 auto 12px}
 html[data-case="station"] .ticket .ticket-print{left:56.5%;top:29%;font-size:3cqw}
 html[data-case="station"] .ticket .ticket-hand{left:56.5%;top:50%;width:24%;font-size:4.4cqw}
 /* 휴대폰 메시지: 시각·읽음 표시·안내 글자를 읽을 만하게 */
