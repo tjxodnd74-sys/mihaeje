@@ -194,3 +194,6 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
   - 방법: 직원이 편마다 명세(spec.json: 프롬프트·참고 그림·글과 맞출 점) → 참고 그림은 gh-pages 주소를 media_import_url → 같은 장소 여러 컷은 앞 컷 job_id 를 참고로 이어 만듦 → 결과는 sandbox 에서 1200폭 JPEG(<250KB) image_paths 로 받아 md5 확인 → 직원이 넣고 PC 캡처로 확인
   - AI는 창 개수·건물 폭 같은 '개수'를 못 맞춘다 → 받은 뒤 PIL로 켜진 창을 끄고 켜서 퍼즐과 맞춤
   - sparse worktree: `git worktree add --no-checkout` + `sparse-checkout set --no-cone /mystery-site/ /qa-tools/` + node_modules 심볼릭 링크 → 한 개 94MB (전체 checkout 은 디스크가 터짐)
+- v129 (2026-11-22) 루미 그림 통일(표지 기준: 거실·엔딩·2016 강아지 사진) · 404호 둑길을 엔딩과 같은 건물로(창 패치 다시) · 직원 5명 휴대폰 눈 점검(390/360/430) 손질 · 승강장 대합실 안내문
+  - 사진 속 글자 있는 물건은 **부분 다시 그리기**로: 장면을 잘라(3:2) 올리고 같은 크기 흰 사각 마스크 + nano_banana_2 is_inpaint=true, 프롬프트에 정확한 한글(짧게, 큰 글씨, 잔글씨·도장 글자 금지) → 결과를 원래 자리에 깃털 마스크로 붙임. PIL로 평면 글자를 원근 변환해 얹은 건 "더 이상하다"는 평 (너무 깨끗하고 붙여 놓은 티)
+  - 사용자 평: 그림 속 같은 대상(개·건물)은 모든 장면에서 생김새가 같아야 한다 — 새 그림을 넣을 땐 그 대상이 나오는 다른 그림을 전부 찾아 비교
