@@ -469,3 +469,6 @@
 2026-11-22 10:58 | vidIQ: @korean_founders_pov 클로드→GPT 갈아타기(22만)·@jb.ai.daily 상세페이지(9.8만)·@wintergrowthdiary 공무원 출근룩(37.4만) | https://www.instagram.com/reel/Df6rOttPDEo
 - 2026-11-22 10:58: 오늘 첫 감시. 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + JSON 파싱) — 어제 18:24 이후 새 롱폼 2개. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음) + 확인 검색 2건 + vidIQ 아웃라이어 1회(5크레딧, 잔액 1369). 바로 제작 요청 없음(10:41 창 — 앱 개편 🔥바로제작 표시만). 인스타 브라우저 안 엶.
 2026-11-22 11:23 | 엔비디아·중국(알림 제외·정책) | 미국 AI 칩 규제에 중국 기업 잇단 타격(WSJ) | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-22 12:23 | 쇼츠 첫 확인: 이종범 '네이버가 막은 AI 어사이드는 된다'·에이커 '요즘 일잘러들이 이 AI에 열광하는 이유' / 새 롱폼 없음 | 유튜브 | https://www.youtube.com/@aiadjunct/shorts
+2026-11-22 12:23 | 챗GPT | 플러스 일부에 닷츠 테스트 확대(AI타임스 11:24, 알림·참고) / GPT-라이브-1.1 API(12:01)·잉클링 2 미니(12:09)·오라클(11:53)·앨리스 황(11:36)(제외) / 긱뉴스 SimpleBench Astra 6.2 부진(알림 제외) | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-22 12:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + JSON 파싱) — 11:23 이후 새 롱폼 없음, 새 쇼츠 2개. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 요청 없음(11:23 요청 후 2시간 이내, 닷츠는 소수 테스트). 인스타 브라우저 안 엶.
