@@ -235,6 +235,7 @@ async function catInvite({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('봄이가 알아요'), 'opening shown');
     await L.click(page, '가게 안을 둘러본다'); await L.sleep(400);
     L.check((await L.mainText(page)).includes('봉투만 보고 있다'), 'shop arrive matches picture (cat awake)');
+    if (mobile) L.check(await page.evaluate(() => { const b = [...document.querySelectorAll('.v2-hotspot')].find((x) => x.getAttribute('aria-label') === '작업대 위 포장지 띠'); const r = b.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth; }), 'shop: mobile first view shows the strip on the workbench');
     await hotspot(page, '문 밑으로 들어온 봉투'); L.check(await dlgHas(page, '줄마다 글씨가 다르다') && await page.evaluate(() => !!document.querySelector('dialog[open] .stamp-zoom svg')), 'doc: invite with stamp close-up'); await L.closeDialog(page);
     await hotspot(page, '봄이 목걸이의 참'); L.check(!(await dlgHas(page, '동물병원, 빵집')), 'charm: no shop names spelled out'); await L.closeDialog(page);
     // fold: 포장지 띠 접기 (칸을 접어 넣어 반쪽 글자 맞붙이기) — 풀기 전엔 골목으로 못 나감
@@ -253,8 +254,16 @@ async function catInvite({ mobile = false } = {}) {
     await shot(page, 'cat-fold-solved');
     await L.closeDialog(page); await L.sleep(400);
     L.check((await L.mainText(page)).includes('오늘 휴진'), 'alley reached (closing fold reveal moves on)');
+    if (mobile) L.check(await page.evaluate(() => { const b = [...document.querySelectorAll('.v2-hotspot')].find((x) => x.getAttribute('aria-label') === '창턱의 상자'); const r = b.getBoundingClientRect(); return r.right > 0 && r.left < innerWidth; }), 'alley: mobile first view shows the windowsill box');
+    // 풀린 띠는 다시 열어도 더 접히지 않는다
+    await page.evaluate(() => [...document.querySelectorAll('.v2-places .v2-place')].find((b) => b.textContent.includes('포장 가게')).click()); await L.sleep(400);
+    await hotspot(page, '작업대 위 포장지 띠');
+    L.check(await page.evaluate(() => { const p = [...document.querySelectorAll('dialog[open] .fold-panel')]; return p.length === 5 && p.every((b) => b.disabled) && !document.querySelector('dialog[open] .fold-undo .chip'); }), 'fold: solved strip stays folded (no more tucking)');
+    await L.closeDialog(page); await L.sleep(300);
+    await page.evaluate(() => [...document.querySelectorAll('.v2-places .v2-place')].find((b) => b.textContent.includes('골목')).click()); await L.sleep(400);
     await hotspot(page, '병원 유리문의 쪽지'); await L.closeDialog(page);
     L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '빵집 앞 바구니'))), 'basket hidden before box');
+    await hotspot(page, '벤치 위 바구니'); L.check(await dlgHas(page, '병원 창턱 상자부터'), 'basket before box: answers with a line'); await L.closeDialog(page);
     // seasons: 뚜껑 안쪽 주머니 다섯
     await hotspot(page, '창턱의 상자');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), 'no in-device guide');

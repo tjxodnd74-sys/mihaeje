@@ -1134,7 +1134,27 @@ html[data-case="cat-invite"] .fold-panel:focus-visible{outline:3px solid var(--l
 @media (hover:hover){html[data-case="cat-invite"] .fold-panel:hover{background-color:#fff8ee;box-shadow:0 3px 6px rgba(0,0,0,.22),inset 0 -3px 0 var(--lamp)}}
 html[data-case="cat-invite"] .fold-undo{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;min-height:44px}
 html[data-case="cat-invite"] .fold-undo .chip{min-height:40px}
-html[data-case="cat-invite"] .fold-note{font-family:var(--hand);font-size:19px;color:#c2416a;margin:0;text-align:center}
+html[data-case="cat-invite"] .fold-note{font-family:var(--hand);font-size:19px;color:#ef8fab;margin:0;text-align:center}
+html[data-case="cat-invite"] .fold-panel[disabled]{cursor:default;opacity:1;color:inherit}
+/* 휴대폰 기록: 상자 뚜껑 사진은 주머니 줄만 남기고 잘라서(아래 빈 상자 속 빼기) 사진 줄을 누를 때도 주머니가 같이 보이게 */
+@media (max-width:640px),(orientation:landscape) and (max-height:500px){
+  html[data-case="cat-invite"] .boxlid{aspect-ratio:1024/344}
+  html[data-case="cat-invite"] .boxlid>img{margin-top:-13.44%}
+  html[data-case="cat-invite"] .boxlid .pocket{top:28.8%;height:42.2%}
+}
+/* 가로 휴대폰: 소품 그림이 화면을 다 덮지 않게 */
+@media (orientation:landscape) and (max-height:500px){
+  html[data-case="cat-invite"] .fold-strip{padding:4px 0 2px}
+  html[data-case="cat-invite"] .fold-panel{width:min(60px,calc(100cqw / 7))}
+  html[data-case="cat-invite"] .foldwrap{gap:6px}
+  html[data-case="cat-invite"] .fold-undo{min-height:40px}
+  html[data-case="cat-invite"] .boxlid{max-width:min(100%,560px)}
+  /* 평상: 자리표 종이는 왼쪽에 붙여 두고, 부탁·방석·선물 줄은 오른쪽에서 내려 본다 */
+  html[data-case="cat-invite"] .seats{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);column-gap:14px;align-items:start}
+  html[data-case="cat-invite"] .seats>.paperchart{grid-column:1;grid-row:1/span 4;position:sticky;top:0;max-width:100%;width:100%;margin:0}
+  html[data-case="cat-invite"] .seats>:not(.paperchart){grid-column:2}
+  html[data-case="cat-invite"] .seats .seat-notes p{font-size:16px}
+}
 @media (max-width:640px),(orientation:landscape) and (max-height:500px){
   /* 편지지 붉은 여백 선이 휴대폰에선 글줄을 가로질러서 안쪽 여백 바깥으로 */
   html[data-case="cat-invite"]{--paper-tex:linear-gradient(90deg,transparent 9px,rgba(240,165,138,.32) 9px 10px,transparent 10px),radial-gradient(rgba(240,165,138,.10) 1px,transparent 1.3px) 0 0/9px 9px}
