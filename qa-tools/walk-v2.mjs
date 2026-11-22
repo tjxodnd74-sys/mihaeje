@@ -1000,6 +1000,12 @@ async function letter({ mobile = false } = {}) {
 async function apartment({ mobile = false } = {}) {
   const { browser, page, errors } = await L.launch({ mobile });
   console.log('=== apartment v2' + (mobile ? ' (mobile)' : ''));
+  // 장면에서 물러나는(줌 아웃) 중에 누르면 가끔 안 먹는다 — 창도 안 열리고 장소도 그대로면 한 번 더 누른다
+  const tapSpot = async (pg, label) => {
+    const scene = () => pg.evaluate(() => document.querySelector('.v2-stage')?.dataset.scene || '');
+    const before = await scene(); await hotspot(pg, label);
+    if (!(await pg.$('dialog[open]')) && (await scene()) === before) { await L.sleep(800); await hotspot(pg, label); }
+  };
   const setDial = async (digits) => { for (let i = 0; i < digits.length; i++) { const cur = await page.evaluate((i) => Number(document.querySelectorAll('dialog[open] .dial .num')[i].textContent), i); const up = (digits[i] - cur + 10) % 10; for (let k = 0; k < up; k++) await L.click(page, `${i + 1}번째 다이얼 올리기`); } };
   const waitCommit = async (label, ms = 30000) => page.waitForFunction((label) => [...document.querySelectorAll('dialog[open] .v2-actions button')].some((b) => !b.hidden && b.textContent.includes(label)), label, { timeout: ms }).then(() => true).catch(() => false);
   const waitEv = async (k, ms = 20000) => page.waitForFunction((k) => !!window.MihaejeV2?.state?.ev?.[k], k, { timeout: ms }).then(() => true).catch(() => false);
@@ -1017,11 +1023,11 @@ async function apartment({ mobile = false } = {}) {
     L.check((await L.mainText(page)).includes('404호 귀신'), 'opening shown');
     await L.click(page, '둑길에서 건물 보기'); await L.sleep(400);
     L.check(await page.evaluate(() => document.querySelector('.v2-stage')?.dataset.mood === 'horror'), 'horror mood on stage');
-    for (const [d, t] of [['벤치 위 휴대폰 · 작업 지시', '민원 3건'], ['불 켜진 창 · 동네 커뮤니티 글', '404호'], ['둑길의 철거 안내판', '반지하']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    for (const [d, t] of [['벤치 위 휴대폰 · 작업 지시', '민원 3건'], ['불 켜진 창 · 동네 커뮤니티 글', '404호'], ['둑길의 철거 안내판', '반지하']]) { await tapSpot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     L.check(!(await page.evaluate(() => /손전등/.test(document.body.innerText))), 'no flashlight comment yet');
-    await hotspot(page, '건물 정문으로'); await L.sleep(400);
-    for (const [d, t] of [['우편함 위 호수 안내', '왼쪽 집부터'], ['게시판의 이주 현황', '1세대']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
-    await hotspot(page, '우편함');
+    await tapSpot(page, '건물 정문으로'); await L.sleep(400);
+    for (const [d, t] of [['우편함 위 호수 안내', '왼쪽 집부터'], ['게시판의 이주 현황', '1세대']]) { await tapSpot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+    await tapSpot(page, '우편함');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .v2-guide'))), '★4: no guide');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] .mail-slot').length === 30), 'mailbox: 30 slots like the scene');
     await L.click(page, '404 우편함', { exact: true }); await commit(page); L.check((await status(page)).includes('이사 간 집'), 'mailbox: rumor decoy');
@@ -1035,10 +1041,10 @@ async function apartment({ mobile = false } = {}) {
     L.check(!(await dlgHas(page, '문철호')), 'mailbox reveal keeps guardian hidden');
     await L.click(page, '관리실로'); await L.sleep(400);
     const doOffice = async () => {
-      for (const [d, t] of [['책상 위 근무일지', '한 고리에'], ['입주자 명부', '김순례'], ['벽에 붙은 창고 배정표', '맞바꿔'], ['벽 달력', '동그라미'], ['전화기 옆 통화 메모', '문 열자마자'], ['책상 서랍', '타이머']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+      for (const [d, t] of [['책상 위 근무일지', '한 고리에'], ['입주자 명부', '김순례'], ['벽에 붙은 창고 배정표', '맞바꿔'], ['벽 달력', '동그라미'], ['전화기 옆 통화 메모', '문 열자마자'], ['책상 서랍', '타이머']]) { await tapSpot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
     };
     const doHooks = async () => {
-      await hotspot(page, '열쇠함');
+      await tapSpot(page, '열쇠함');
       L.check(!(await L.buttons(page)).includes('이 열쇠 들고 3층으로'), 'hooks: no commit with empty hand');
       L.check(await dlgHas(page, '공용 비품'), 'hooks: intro explains the crowded front keys in the scene');
       await L.click(page, '301 고리에서 꺼내기', { exact: true }); L.check((await status(page)).includes('빈 고리'), 'hooks: empty 301');
@@ -1048,11 +1054,11 @@ async function apartment({ mobile = false } = {}) {
       await L.click(page, 'B01 고리에서 꺼내기', { exact: true }); await shot(page, 'a-hooks'); await commit(page); L.check(await dlgHas(page, '한 번에 돌아갔다'), 'hooks solved');
     };
     if (!mobile) {
-      await hotspot(page, '구석 모니터'); L.check(await dlgHas(page, 'CH1'), 'doc: 구석 모니터'); await L.closeDialog(page);
+      await tapSpot(page, '구석 모니터'); L.check(await dlgHas(page, 'CH1'), 'doc: 구석 모니터'); await L.closeDialog(page);
       await doOffice();
       L.check(await waitEv('cctv'), 'office: monitor switches to the bench by itself');
       L.check(await page.evaluate(() => !!document.querySelector('.apt-crt.on')), 'office: monitor overlay on');
-      await hotspot(page, '구석 모니터'); L.check(await dlgHas(page, '둑길 가로등'), 'doc: monitor now shows bench'); await L.closeDialog(page);
+      await tapSpot(page, '구석 모니터'); L.check(await dlgHas(page, '둑길 가로등'), 'doc: monitor now shows bench'); await L.closeDialog(page);
       await doHooks();
       L.check(!(await dlgHas(page, '열쇠를 쥐고 나서는데')), 'hooks: no late monitor line when already seen');
       await L.click(page, '301호로'); await L.sleep(400);
@@ -1064,12 +1070,12 @@ async function apartment({ mobile = false } = {}) {
     }
     L.check((await L.mainText(page)).includes('랜턴'), 'moved to 301');
     const doBox = async () => {
-      await hotspot(page, '싱크대 밑');
+      await tapSpot(page, '싱크대 밑');
       await setDial([2, 4, 5]); await commit(page); L.check((await status(page)) === '안 열린다', 'box: mirror decoy neutral');
       await setDial([4, 2, 5]); await shot(page, 'a-box'); await commit(page); L.check(await dlgHas(page, '접힌 쪽지'), 'box solved');
     };
     if (!mobile) {
-      for (const [d, t] of [['방문 옆 대피 안내도', '북쪽 벽'], ['테이프 붙은 스위치', '작은방']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+      for (const [d, t] of [['방문 옆 대피 안내도', '북쪽 벽'], ['테이프 붙은 스위치', '작은방']]) { await tapSpot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
       L.check(await waitEv('anbang'), '301: bedroom light turns on by itself');
       L.check(await page.evaluate(() => !!document.querySelector('.apt-anbang.on')), '301: bedroom glow overlay');
       await page.waitForFunction(() => /손전등/.test(document.querySelector('.v2-talk-line')?.textContent || ''), null, { timeout: 12000 }).then(() => L.check(true, '301: new comment text shown in the scene line')).catch(() => L.check(false, '301: new comment text shown in the scene line'));
@@ -1085,20 +1091,20 @@ async function apartment({ mobile = false } = {}) {
     if (mobile) {
       L.check(await page.evaluate(() => !!document.querySelector('.apt-anbang.on')), '301: bedroom glow overlay after late fire');
       await L.click(page, '자료 '); await L.click(page, '동네 커뮤니티 글'); L.check(await dlgHas(page, '손전등'), 'post: new comment after late fire'); await L.closeDialog(page);
-      for (const [d, t] of [['방문 옆 대피 안내도', '북쪽 벽'], ['테이프 붙은 스위치', '작은방']]) { await hotspot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
+      for (const [d, t] of [['방문 옆 대피 안내도', '북쪽 벽'], ['테이프 붙은 스위치', '작은방']]) { await tapSpot(page, d); L.check(await dlgHas(page, t), 'doc: ' + d); await L.closeDialog(page); }
       // 관리실에 돌아가 남은 자료와 넘어간 모니터를 본다 (현관의 계단·관리실 문으로 오간다)
       await goPlace(page, '2. A동 현관'); await L.sleep(300);
       L.check(await page.evaluate(() => ['관리실 문', '3층으로 계단'].every((l) => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === l))), 'entrance: office door and stairs stay after visiting');
-      await hotspot(page, '관리실 문'); await L.sleep(300);
+      await tapSpot(page, '관리실 문'); await L.sleep(300);
       L.check(await page.evaluate(() => !!document.querySelector('.apt-crt.on')), 'office: monitor overlay on after late fire');
-      await hotspot(page, '구석 모니터'); L.check(await dlgHas(page, '둑길 가로등'), 'doc: monitor shows bench after late fire'); await L.closeDialog(page);
+      await tapSpot(page, '구석 모니터'); L.check(await dlgHas(page, '둑길 가로등'), 'doc: monitor shows bench after late fire'); await L.closeDialog(page);
       await doOffice();
-      await goPlace(page, '2. A동 현관'); await L.sleep(300); await hotspot(page, '3층으로 계단'); await L.sleep(300);
+      await goPlace(page, '2. A동 현관'); await L.sleep(300); await tapSpot(page, '3층으로 계단'); await L.sleep(300);
     }
     L.check(await page.evaluate(() => document.querySelector('.v2-stage')?.dataset.scene === 'unit'), 'back in 301');
-    await hotspot(page, '상자 안 쪽지'); L.check(await dlgHas(page, '외국'), 'mnote reachable from scene'); await L.closeDialog(page);
-    await hotspot(page, '상자 위 가계부'); L.check(await dlgHas(page, '숙제 봐 줌'), 'doc: book'); L.check(!(await dlgHas(page, '거실 불부터')), 'book: room torn off'); await L.closeDialog(page);
-    await hotspot(page, '상자 속 엉킨 선');
+    await tapSpot(page, '상자 안 쪽지'); L.check(await dlgHas(page, '외국'), 'mnote reachable from scene'); await L.closeDialog(page);
+    await tapSpot(page, '상자 위 가계부'); L.check(await dlgHas(page, '숙제 봐 주던 방') && await dlgHas(page, '2015'), 'doc: book (2015 only on the box)'); L.check(!(await dlgHas(page, '2009')), 'book: 2009 book is not on the box'); await L.closeDialog(page);
+    await tapSpot(page, '상자 속 엉킨 선');
     L.check(!(await L.buttons(page)).includes('이대로 붙여 두기'), 'wires: no commit before three tapes');
     await setTapes({ L: '2', M: '4', R: '5' }); await commit(page); L.check((await status(page)).includes('맞지 않는다'), 'wires: positional guess wrong');
     await setTapes({ L: '4', M: '2', R: '5' }); await commit(page); L.check((await status(page)).includes('맞지 않는다'), 'wires: copying the lock code is wrong');
@@ -1106,7 +1112,26 @@ async function apartment({ mobile = false } = {}) {
     await setTapes({ L: '5', M: '2', R: '4' }); await shot(page, 'a-wires'); await commit(page); L.check(await dlgHas(page, '5 · 2 · 4'), 'wires solved');
     await L.closeDialog(page); await L.sleep(300);
     L.check(await page.evaluate(() => !!document.querySelector('.apt-living.on')), '301: living room lamp on after wires');
-    await hotspot(page, '상자 속 타이머 셋');
+    L.check(!(await page.evaluate(() => [...document.querySelectorAll('.v2-hotspot')].some((b) => b.getAttribute('aria-label') === '상자 속 타이머 셋'))), 'timers wait for the 2009 book from the cellar');
+    L.check((await L.mainText(page)).includes('반지하 창고'), '301: scene line points to the cellar');
+    // 새 장치: 뒤편 반지하 철문 (손전등으로 비춰 흔적 찾기 → 맨 오른쪽 B01)
+    await goPlace(page, '1. 미루천 둑길'); await L.sleep(300);
+    L.check(!(await page.evaluate(() => !!document.querySelector('.apt-phone'))), 'bank: my phone is no longer on the bench');
+    await tapSpot(page, '건물 뒤편 반지하 철문');
+    L.check(!(await L.buttons(page)).includes('창고 열쇠 꽂아 돌리기'), 'cellar: no commit before picking a door');
+    const doorBtn = (i) => page.evaluate((i) => { const b = document.querySelectorAll('dialog[open] .cellar-door')[i]; b.scrollIntoView({ block: 'center' }); const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }, i);
+    const cap = () => page.evaluate(() => document.querySelector('dialog[open] .cellar-cap')?.textContent || '');
+    { const p = await doorBtn(1); if (mobile) { await page.touchscreen.tap(p.x, p.y); } else { await page.mouse.move(p.x, p.y); } await L.sleep(200); }
+    L.check((await cap()).includes('물 자국'), 'cellar: flashlight shows the water line on the 2nd door');
+    { const p = await doorBtn(0); if (mobile) await page.touchscreen.tap(p.x, p.y); else await page.mouse.click(p.x, p.y); await L.sleep(250); }
+    L.check((await cap()).includes('자물쇠'), 'cellar: 1st door shows the padlock');
+    await commit(page); L.check((await status(page)) === '열쇠가 반쯤 들어가다 턱 걸린다 이 문이 아니다', 'cellar: spray-paint 1 decoy neutral');
+    { const p = await doorBtn(3); if (mobile) await page.touchscreen.tap(p.x, p.y); else await page.mouse.click(p.x, p.y); await L.sleep(250); }
+    await shot(page, 'a-cellar'); await commit(page); L.check(await dlgHas(page, '과자 상자'), 'cellar solved');
+    await L.click(page, '창고의 2009년 가계부 보기'); L.check(await dlgHas(page, '숙제 봐 줌') && !(await dlgHas(page, '거실 불부터')), 'book09: rooms smudged'); await L.click(page, '← 돌아가기');
+    await L.click(page, '301호로'); await L.sleep(400);
+    L.check(await page.evaluate(() => document.querySelector('.v2-stage')?.dataset.scene === 'unit'), 'back in 301 after the cellar');
+    await tapSpot(page, '상자 속 타이머 셋');
     L.check(await page.evaluate(() => document.querySelectorAll('dialog[open] button.pin').length === 21), 'timers: 3 timers x 7 pins');
     await commit(page); L.check((await status(page)).includes('틀렸다고 한 저녁'), 'timers: current program explained');
     await setPins({ L: [], M: ['21:00', '21:30'], R: [] }); await commit(page); L.check((await status(page)).includes('혼자 되신 뒤'), 'timers: 2015 decoy');
