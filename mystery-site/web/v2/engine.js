@@ -8,6 +8,10 @@ const btn = (cls, text, fn, aria) => { const b = el('button', cls, text); b.type
 const VER = new URL(import.meta.url).searchParams.get('v') || String(Date.now());
 const bustUrl = (u) => (/^assets\/v2\//.test(u) && !/\?/.test(u) ? u + '?v=' + VER : u);
 const pic = (img, src) => { img.src = bustUrl(src); const base = src.replace(/\.webp$/, ''); if (/assets\/v2\//.test(src)) { img.srcset = `${bustUrl(base + '-960.webp')} 960w, ${bustUrl(src)} 1024w`; img.sizes = '(max-width: 640px) 100vw, 1180px'; } return img; };
+// 한가할 때 다음 장소 그림·장치 소품 그림을 하나씩 미리 받아 둡니다 (데이터 절약 모드·2G 에서는 받지 않음)
+const warmed = new Set();
+const warm = (srcs) => { const c = navigator.connection; if (c && (c.saveData || /2g/.test(c.effectiveType || ''))) return; const dup = new Set(srcs.filter((s) => /-960\.webp$/.test(s || '')).map((s) => s.replace('-960', ''))); const list = [...new Set(srcs)].filter((s) => s && !warmed.has(s) && !dup.has(s) && !/-960\.webp$/.test(s)).slice(0, 8); const idle = window.requestIdleCallback || ((f) => setTimeout(f, 1200)); const next = () => { const s = list.shift(); if (!s) return; warmed.add(s); const im = /\/props\//.test(s) ? new Image() : pic(new Image(), s); if (!im.src) im.src = bustUrl(s); im.onload = im.onerror = () => idle(next, { timeout: 4000 }); }; (document.fonts?.ready || Promise.resolve()).then(() => idle(next, { timeout: 4000 })); };
+const propsIn = (epId, objs) => objs.filter(Boolean).flatMap((o) => [o.html, o.render].map(String).join(' ').match(/(?:assets\/v2\/[a-z-]+\/)?props\/[\w-]+\.webp/g) || []).map((s) => (s.startsWith('assets/') ? s : `assets/v2/${epId}/${s}`));
 // 사진이 바뀌어도 브라우저가 옛 파일을 쓰지 않도록 버전을 붙입니다.
 const bust = (node) => { node.querySelectorAll?.('img').forEach((i) => { const src = i.getAttribute('src') || ''; if (/^assets\/v2\//.test(src)) { i.src = bustUrl(src); const ss = i.getAttribute('srcset'); if (ss) i.srcset = ss.split(',').map((part) => { const [u, w] = part.trim().split(/\s+/); return bustUrl(u) + (w ? ' ' + w : ''); }).join(', '); } }); return node; };
 const josa = (w, a, b) => { const c = w.charCodeAt(w.length - 1); if (c < 0xac00 || c > 0xd7a3) return w + b; const t = (c - 0xac00) % 28; return w + (t === 0 || t === 8 ? b : a); }; // 받침 없음·ㄹ받침 → '로'
@@ -151,6 +155,7 @@ async function main() {
   function intro() {
     const sec = el('section', 'v2-intro');
     const cover = pic(el('img', 'v2-cover'), ep.cover); cover.alt = ep.coverAlt || ''; cover.decoding = 'async'; sec.append(cover);
+    cover.addEventListener('load', () => warm([ep.opening?.image, (sceneById(S.scene) || ep.scenes[0]).image]), { once: true });
     const card = el('div', 'v2-intro-card');
     card.append(el('p', 'v2-eyebrow', `${ep.number} · ${ep.genre}`));
     card.append(el('h1', 'v2-title', ep.title));
@@ -271,6 +276,7 @@ async function main() {
     const scroller = el('div', 'v2-scroll');
     const pan = el('div', 'v2-pan');
     const img = pic(el('img', 'v2-stage-img'), scene.image); img.alt = scene.name; img.decoding = 'async'; pan.append(img);
+    img.addEventListener('load', () => warm([...propsIn(ep.id, [...Object.values(ep.devices).filter((d) => d.scene === scene.id), ...scene.hotspots.map((h) => ep.docs[h.doc])]), ...[...ep.scenes.filter((sc) => ep.devices[sc.unlockedBy]?.scene === scene.id), ep.scenes[ep.scenes.indexOf(scene) + 1]].map((sc) => sc?.image)]), { once: true });
     (scene.overlays || []).forEach((o) => { const nn = html('div', 'v2-stage-ov ' + (o.cls || ''), o.html); nn.style.cssText = `left:${o.x}%;top:${o.y}%;width:${o.w}%;height:${o.h}%;${o.style || ''}`; nn.setAttribute('aria-hidden', 'true'); pan.append(nn); });
     const autoTravel = ep.scenes.filter((sc) => sc.unlockedBy && S.solved.includes(sc.unlockedBy) && ep.devices[sc.unlockedBy]?.scene === scene.id && !S.visited.includes(sc.id)).map((sc, i, arr) => ({ id: 'go-' + sc.id, x: arr.length > 1 ? 30 + i * (40 / (arr.length - 1)) : 50, y: 92, label: sc.name + '(으)로 가기', kind: 'travel', to: sc.id, auto: true }));
     const travelRow = el('div', 'v2-travel-row');
