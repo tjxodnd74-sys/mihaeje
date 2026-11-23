@@ -486,3 +486,7 @@
 2026-11-22 18:24 | CONNECT AI LAB 'The founder | AI 마케팅팀 만들기'(40분 전) / 조팀장 'AI 판타지 사극'(재업로드 추정) | 유튜브 | https://www.youtube.com/@connect-ai-lab/videos
 2026-11-22 18:24 | AI타임스 오픈AI 연구 가속 보고서(17:25)·AI 이슈트렌드(17:23)(알림 제외) / 긱뉴스 사내 Git 서버 비교·TermiPlus(제외·개발자용) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-22 18:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + JSON 파싱, /videos는 lockupViewModel 구조) — 17:24 이후 새 롱폼 1개(CONNECT), 새 쇼츠 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음(새 소비자 소식 없음). 인스타 브라우저 안 엶.
+2026-11-23 10:24 | AI하쥬 '시댄스 2.5로 4K영상 크레딧 아끼면서 뽑는 법'(10시간 전) / 바이브랩스 '한 달에 PR을 1만 1천 건'(7시간 전) | 유튜브 | https://www.youtube.com/@aihazoo/videos
+2026-11-23 10:24 | 쇼츠: 이너리드 GIF 프롬프트·AI어전트 '배우도 성우도 없다'·신쌤 '신청서 칸'·CONNECT 'AI로 비즈니스가' | 유튜브 | https://www.youtube.com/@innerlead/shorts
+2026-11-23 10:24 | AI타임스 오픈AI 사전학습 지표·RSI 개발 제한선 제안(07:14)·알트먼 메타 딥페이크(11/22 18:30)·RLHF 책(알림 제외) / 긱뉴스 개발자용(제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-23 10:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + JSON 파싱) — 11/22 18:24 이후 새 롱폼 2개(AI하쥬·바이브랩스). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 아웃라이어 1회(AI 주제 없음). 바로 제작 없음(새 소비자 소식 없음). 인스타 브라우저 안 엶.
