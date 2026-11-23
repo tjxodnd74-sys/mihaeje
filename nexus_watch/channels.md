@@ -16,6 +16,7 @@
 - @molo_nexttable (2026-11-15 vidIQ로 발견, 40대 AI 입문 후기)
 - @stkang24 (2026-11-17 vidIQ로 발견, AI 안경 부정행위)
 - @tori.jour (2026-11-17 vidIQ로 발견, 제미나이 API 블로그 자동화)
+- @canbus_b (2026-11-23 vidIQ로 발견, 챗GPT 활용 꿀팁·5.4만 팔로워)
 
 ## 유튜브 A조 (HOUR%3==0)
 - 조팀장의 AI 공략집

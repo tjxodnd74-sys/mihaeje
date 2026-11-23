@@ -497,3 +497,6 @@
 - 2026-11-23 13:24: 내장 브라우저로 유튜브 18개 채널 /videos(fetch + ytInitialData 파싱) — 12:24 이후 새 롱폼 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 쇼츠·vidIQ 생략(홀수 시). 바로 제작 없음(새 소비자 소식 없음). 인스타 브라우저 안 엶.
 2026-11-23 14:24 | 긱뉴스 'AI 시대 컴퓨터공학적 사고'(okky)·Show GN 티메이트·AI 의식(noema)·ClawDOS(알림 제외) / AI타임스 새 기사 없음 | 긱뉴스 | https://news.hada.io/
 - 2026-11-23 14:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 이동 후 ytInitialData 파싱, 페이지 안 fetch는 권한 거부) — 13:24 이후 새 롱폼·새 쇼츠 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음(새 소비자 소식 없음). 인스타 브라우저 안 엶.
+2026-11-23 15:23 | vidIQ: @canbus_b 챗GPT 헤어스타일 추천(19.3만)·@ai.magazine.kr OpenJarvis(4.9만)·@cutoven.ai 리얼리즘(광고성)·@ruucm 테슬라 FSD v15·@bizucafe 알렉산더 왕 취향 | 인스타(vidIQ) | https://www.instagram.com/reel/DgAVKsDvNic
+2026-11-23 15:23 | 긱뉴스 퍼플렉시티와 지능(오픈AI)·Fast-Anything(알림 제외) / AI타임스 새 기사 없음 | 긱뉴스 | https://news.hada.io/
+- 2026-11-23 15:23: 내장 브라우저로 유튜브 18개 채널 /videos(페이지 이동 후 ytInitialData 파싱) — 14:24 이후 새 롱폼 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 아웃라이어 1회(5크레딧, 잔액 1284). 바로 제작 없음(새 소비자 소식 없음). 인스타 브라우저 안 엶.
