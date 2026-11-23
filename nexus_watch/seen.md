@@ -503,3 +503,6 @@
 2026-11-23 16:24 | AI타임스 애플 뎁스 프로 2·앤트로픽 IPO 은행 오픈AI 업무 제한·크리스티아노 AI 재앙 위험 10%·AI 안경 몰래 촬영 법안·KT 수자원 피지컬AI·뷰노 브라질·한컴 빌 패닝(알림: 앞 4개 참고) / 긱뉴스 Modelflare(제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-23 16:24 | 쇼츠: 소에노 어도비 AI 신기능 퇴근·이종범 사진 4장 대사 6줄·AI리더스랩 숏드라마 3편 제작비 | 유튜브 쇼츠 | https://www.youtube.com/
 - 2026-11-23 16:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 이동 후 ytInitialData lockupViewModel 파싱) — 15:23 이후 새 롱폼 없음, 새 쇼츠 3개. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음(새 소비자 소식 없음). 인스타 브라우저 안 엶.
+2026-11-23 17:23 | AI타임스 애플 패스트프레임·엔비디아 알파마요 2 엣지·구글 AI 검색 광고 수익성·머스크 자금난(알림 제외) / 긱뉴스 Show GN 나라니(제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-23 17:23 | 롱폼: 찍봇 왕초보 AI드라마 제작 가이드 10분 몰아보기 | 유튜브 | https://www.youtube.com/@zzikbot/videos
+- 2026-11-23 17:23: 내장 브라우저로 유튜브 18개 채널 /videos(페이지 안 fetch + ytInitialData 파싱) — 16:24 이후 새 롱폼 1개(찍봇). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 쇼츠·vidIQ 생략(홀수 시). 바로 제작 없음(새 소비자 소식 없음). 인스타 브라우저 안 엶.
