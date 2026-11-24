@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(Pretendard-Black.woff2) format("woff2");font-weight:900}
+@font-face{font-family:P;src:url(Pretendard-ExtraBold.woff2) format("woff2");font-weight:800}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#9cc3e6;font-family:P,sans-serif;color:#fff;word-break:keep-all}
+canvas{position:absolute;inset:0}
+.ov{position:absolute;left:0;right:0;text-align:center;font-weight:900;letter-spacing:-.04em;-webkit-text-stroke:14px #000;paint-order:stroke fill;text-shadow:0 8px 24px rgba(0,0,0,.45)}
+.ov em{font-style:normal;color:#ffe14a}
+#top{top:250px;font-size:92px;line-height:1.15}
+#lab{top:440px;font-size:88px;line-height:1.15}
+#mid{top:760px;font-size:120px;line-height:1.1}
+#sub{top:1080px;font-size:44px;font-weight:800;-webkit-text-stroke:9px #000;line-height:1.3}
+#cap{top:1330px;font-size:60px;font-weight:800;-webkit-text-stroke:11px #000;white-space:nowrap;transform-origin:50% 50%}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#dim{position:absolute;inset:0;background:#000;opacity:0}
+.tag{position:absolute;font-weight:900;font-size:46px;padding:8px 22px;border-radius:16px;border:5px solid #000;color:#000;white-space:nowrap;transform:translate(-50%,-100%);display:none}
+#bar{position:absolute;left:0;right:0;top:250px;display:flex;justify-content:center;gap:22px;opacity:0}
+#bar div{width:170px;height:150px;border-radius:30px;border:6px solid #000;background:#2b2f36;color:#8a8f98;font-size:74px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+#bar div.on{background:#ffe14a;color:#000;transform:scale(1.1)}
+#bar div.done{background:#fff;color:#000}
+#gauge{position:absolute;left:50%;top:600px;width:760px;height:560px;margin-left:-380px;border-radius:60px;background:#0d1117;border:10px solid #000;box-shadow:0 30px 80px rgba(0,0,0,.55);opacity:0;transform-origin:50% 0}
+#summ{position:absolute;left:0;right:0;top:700px;display:flex;justify-content:center;gap:28px}
+#summ div{width:290px;height:330px;border-radius:44px;border:8px solid #000;background:#ffe14a;color:#000;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 16px 40px rgba(0,0,0,.45);opacity:0}
+#summ b{font-size:120px;line-height:1.1}
+#summ span{font-size:44px;margin-top:10px}
+#btn{position:absolute;left:50%;top:720px;width:360px;height:360px;margin-left:-180px;border-radius:50%;background:radial-gradient(circle at 50% 40%,#3a3f47,#111);border:14px solid #9aa1a8;box-shadow:0 20px 60px rgba(0,0,0,.6),inset 0 0 0 8px #000;opacity:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900}
+#btn .e{font-size:44px;color:#fff;letter-spacing:.04em}
+#btn .s{font-size:64px;color:#ff4d4d;margin-top:6px}
+#spark{position:absolute;font-size:200px;opacity:0;transform:translate(-50%,-50%)}
+#src{position:absolute;left:0;right:0;top:1460px;text-align:center;font-size:30px;font-weight:800;color:#fff;-webkit-text-stroke:7px #000;paint-order:stroke fill;opacity:0}
+</style>
+<script type="importmap">{"imports":{"three":"./three/build/three.module.js","three/addons/":"./three/examples/jsm/"}}</script>
+</head><body>
+<div id="dim"></div>
+<div id="tagX" class="tag" style="background:#ff4d4d;color:#fff">안 닿음 ✕</div>
+<div id="tagO" class="tag" style="background:#22e06b">딱 닿음 ✓</div>
+<div id="tagF" class="tag" style="background:#ffe14a">주유구</div>
+<svg id="gauge" viewBox="0 0 760 560">
+  <defs><linearGradient id="gl" x1="0" x2="1"><stop offset="0" stop-color="#ff5a4d"/><stop offset=".25" stop-color="#ffd24d"/><stop offset="1" stop-color="#5fe08a"/></linearGradient></defs>
+  <path d="M130 420 A250 250 0 0 1 630 420" fill="none" stroke="#2a313b" stroke-width="44" stroke-linecap="round"/>
+  <path d="M130 420 A250 250 0 0 1 630 420" fill="none" stroke="url(#gl)" stroke-width="20" stroke-linecap="round"/>
+  <text x="110" y="500" fill="#fff" font-size="56" font-weight="900" text-anchor="middle" font-family="P">E</text>
+  <text x="650" y="500" fill="#fff" font-size="56" font-weight="900" text-anchor="middle" font-family="P">F</text>
+  <g id="needle" transform="rotate(-50 380 420)"><rect x="372" y="200" width="16" height="230" rx="8" fill="#ff7a1a"/></g>
+  <circle cx="380" cy="420" r="30" fill="#ddd"/>
+  <g transform="translate(300 270)" fill="#fff">
+    <rect x="0" y="10" width="70" height="100" rx="10"/><rect x="12" y="24" width="46" height="30" rx="4" fill="#0d1117"/>
+    <rect x="-10" y="104" width="90" height="14" rx="5"/><path d="M70 30 L96 50 L96 96 Q96 108 86 108 Q76 108 76 96 L76 64" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+  </g>
+  <path id="arrow" d="M268 300 L228 330 L268 360 Z" fill="#ffe14a" stroke="#000" stroke-width="4"/>
+  <circle id="ring" cx="248" cy="330" r="40" fill="none" stroke="#ffe14a" stroke-width="8" opacity="0"/>
+</svg>
+<div id="btn"><div class="e">ENGINE</div><div class="e">START</div><div class="s">STOP</div></div>
+<div id="spark">⚡</div>
+<div id="bar"><div>◀</div><div>OFF</div><div>✋</div></div>
+<div id="top" class="ov"></div><div id="lab" class="ov"></div><div id="mid" class="ov"></div><div id="sub" class="ov"></div>
+<div id="summ"><div><b>◀</b><span>화살표 확인</span></div><div><b>OFF</b><span>시동 끄기</span></div><div><b>✋</b><span>패드 터치</span></div></div>
+<div id="cap" class="ov"></div>
+<div id="src"></div><div id="flash"></div>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+const S = window.SPEC, NO = S.narrOffset, T = S.t, X = S.text;
+const W = 1080, H = 1920;
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.insertBefore(renderer.domElement, document.body.firstChild);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x9cc3e6); scene.fog = new THREE.Fog(0x9cc3e6, 60, 140);
+const cam = new THREE.PerspectiveCamera(42, W / H, 0.1, 400);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x777766, 1.7));
+const sun = new THREE.DirectionalLight(0xffffff, 2.0); sun.position.set(-20, 40, 14); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -30, right: 30, top: 30, bottom: -30 }); scene.add(sun);
+const mat = (c, o = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.9, ...o });
+const box = (w, h, d, c, x, y, z, o) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat(c, o)); m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; scene.add(m); return m; };
+const plane = (w, h, c, x, z, y = 0) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat(c)); m.rotation.x = -Math.PI / 2; m.position.set(x, y, z); m.receiveShadow = true; scene.add(m); return m; };
+// ground, road, station apron
+plane(300, 300, 0x7a9c5c, 0, 0);
+plane(300, 12, 0x3b3f45, 0, -24, 0.01);
+for (let x = -140; x < 140; x += 8) plane(4, 0.25, 0xffffff, x, -24, 0.02);
+plane(26, 36, 0xb9bcc0, 0, 0, 0.012);
+for (const x of [-5.2, 5.2]) plane(0.18, 14, 0xf2c200, x, 0, 0.02);
+// canopy + pillars
+// (no canopy: keeps top-down views clear)
+// pump island at x=0
+box(1.3, 0.25, 7, 0xe8e8e8, 0, 0.125, 0);
+const pump = box(0.9, 2.0, 0.8, 0xd7262e, 0, 1.25, 0);
+box(0.92, 0.5, 0.82, 0xf4f4f4, 0, 2.0, 0);
+for (const sx of [1, -1]) { const scr = new THREE.Mesh(new THREE.PlaneGeometry(0.55, 0.32), new THREE.MeshBasicMaterial({ color: 0x3fa9ff })); scr.position.set(sx * 0.46, 1.65, 0); scr.rotation.y = sx * Math.PI / 2; scene.add(scr); }
+// static pads (yellow disc) on both sides
+const pads = [1, -1].map(sx => { const p = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.05, 24), new THREE.MeshBasicMaterial({ color: 0xffd400 })); p.rotation.z = Math.PI / 2; p.position.set(sx * 0.47, 1.2, 0.25); scene.add(p); return p; });
+const padRing = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.03, 8, 32), new THREE.MeshBasicMaterial({ color: 0xffe14a, transparent: true })); padRing.rotation.y = Math.PI / 2; padRing.position.set(0.5, 1.2, 0.25); scene.add(padRing);
+// shop building + sign
+box(10, 3.6, 6, 0xeeeeee, 0, 1.8, 14); box(10.2, 0.8, 6.2, 0xd7262e, 0, 3.8, 14);
+box(0.5, 7, 0.5, 0x888888, 11, 3.5, -16); box(3, 2.2, 0.4, 0xd7262e, 11, 7.5, -16);
+// trees
+for (let i = 0; i < 30; i++) { const x = -40 + i * 2.9, z = 26 + (i % 3) * 3; const t = new THREE.Mesh(new THREE.ConeGeometry(1.6, 4.2, 7), mat(0x3f7a3a)); t.position.set(x, 2.6, z); t.castShadow = true; scene.add(t); }
+// models
+const loader = new GLTFLoader();
+const load = f => new Promise(r => loader.load('glb/' + f, g => r(g.scene)));
+const [CAR, C2, C3] = await Promise.all(['sedan.glb', 'taxi.glb', 'suv.glb'].map(load));
+for (const c of [CAR, C2, C3]) { c.scale.setScalar(1.9); c.traverse(o => { if (o.isMesh) { o.castShadow = true; } }); scene.add(c); }
+const bb = new THREE.Box3().setFromObject(CAR); const AL = bb.max.z - bb.min.z, AW = bb.max.x - bb.min.x, AH = bb.max.y - bb.min.y;
+// fuel door on car's LEFT rear (local +x, local -z)
+const fd = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.2, 0.24), new THREE.MeshBasicMaterial({ color: 0x222222 }));
+fd.position.set(AW / 1.9 / 2 + 0.005, AH / 1.9 * 0.52, -AL / 1.9 * 0.3); CAR.add(fd);
+const fdGlow = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 12), new THREE.MeshBasicMaterial({ color: 0xffe14a, transparent: true, opacity: 0 }));
+fdGlow.position.copy(fd.position); CAR.add(fdGlow);
+// exhaust puffs
+const puffs = []; for (let i = 0; i < 10; i++) { const p = new THREE.Mesh(new THREE.SphereGeometry(0.18, 10, 8), new THREE.MeshStandardMaterial({ color: 0xdddddd, transparent: true, opacity: 0.6 })); scene.add(p); puffs.push(p); }
+// ground arrow (top-down explainer)
+const arrowShape = new THREE.Shape(); arrowShape.moveTo(0, 0); arrowShape.lineTo(1.6, 1.3); arrowShape.lineTo(1.6, 0.5); arrowShape.lineTo(3.6, 0.5); arrowShape.lineTo(3.6, -0.5); arrowShape.lineTo(1.6, -0.5); arrowShape.lineTo(1.6, -1.3); arrowShape.closePath();
+const gArrow = new THREE.Mesh(new THREE.ShapeGeometry(arrowShape), new THREE.MeshBasicMaterial({ color: 0xffe14a, transparent: true }));
+gArrow.rotation.x = -Math.PI / 2; gArrow.scale.setScalar(0.6); scene.add(gArrow);
+// person
+const P = new THREE.Group();
+const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.3, 0.85, 6, 12), mat(0x2b6fd6)); body.position.y = 1.0; P.add(body);
+const head = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 12), mat(0xf1c9a5)); head.position.y = 1.86; P.add(head);
+const arm = new THREE.Mesh(new THREE.CapsuleGeometry(0.09, 0.55, 4, 8), mat(0x2b6fd6)); arm.position.set(0, 1.35, 0); P.add(arm);
+P.traverse(o => { if (o.isMesh) o.castShadow = true; }); scene.add(P);
+// hose (rebuilt per frame)
+let hose = null; const hoseMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.6 });
+function setHose(pts) { if (hose) { scene.remove(hose); hose.geometry.dispose(); hose = null; } if (!pts) return; const c = new THREE.CatmullRomCurve3(pts.map(p => new THREE.Vector3(...p))); hose = new THREE.Mesh(new THREE.TubeGeometry(c, 40, 0.06, 8), hoseMat); hose.castShadow = true; scene.add(hose); }
+
+const ease = p => p < 0 ? 0 : p > 1 ? 1 : 1 - Math.pow(1 - p, 3);
+const eio = p => { p = Math.max(0, Math.min(1, p)); return p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; };
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const lerp = (a, b, u) => a + (b - a) * u;
+const rnd = n => { const x = Math.sin(n * 12.9898) * 43758.5453; return x - Math.floor(x); };
+const $ = id => document.getElementById(id);
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+const proj = (x, y, z) => { const v = V(x, y, z).project(cam); return [(v.x + 1) / 2 * W, (1 - v.y) / 2 * H]; };
+const setText = (el, html, t0, t, pop = true) => { if (html == null) { el.style.opacity = 0; el.dataset.h = ''; return; } if (el.dataset.h !== html) { el.innerHTML = html; el.dataset.h = html; } const u = t - t0; el.style.opacity = clamp(u / 0.08); el.style.transform = pop ? `scale(${1 + 0.2 * (1 - ease(u / 0.18))})` : ''; };
+const tag = (id, on, x, y, z, a = 1) => { const el = $(id); el.style.display = on ? 'block' : 'none'; if (!on) return; const [px, py] = proj(x, y, z); el.style.left = px + 'px'; el.style.top = py + 'px'; el.style.opacity = a; };
+function seg(t) { let k = 0; for (let i = 0; i < T.length; i++) if (t >= T[i]) k = i; return k; }
+const LX = -2.7, RX = 2.7, Y0 = 0;
+// car state per time
+function carState(t) {
+  if (t < T[3]) { const u = eio(t / 1.3); return { x: LX, z: lerp(9, 0.6, u), yaw: Math.PI, moving: t < 1.3 }; }      // wrong side (pump on its right)
+  if (t < T[3] + 1.2) { const u = eio((t - T[3]) / 1.2); return { x: LX, z: lerp(0.6, -26, u), yaw: Math.PI, moving: true }; } // drive away
+  if (t < T[3] + 3.0) { const u = eio((t - T[3] - 1.2) / 1.8); return { x: RX, z: lerp(18, 0.6, u), yaw: Math.PI, moving: u < 1 }; } // come back correct side
+  return { x: RX, z: 0.6, yaw: Math.PI, moving: false };
+}
+window.seek = async t => {
+  const k = seg(t);
+  const cs = carState(t); CAR.position.set(cs.x, 0, cs.z); CAR.rotation.y = cs.yaw;
+  const engineOn = t < S.offAt;
+  if (engineOn && !cs.moving && k >= 5) CAR.position.y = Math.sin(t * 60) * 0.012;
+  // other cars at the other pump / passing
+  C2.position.set(-2.7, 0, lerp(30, 18, clamp((t - 14.8) / 2))); C2.rotation.y = Math.PI; C2.visible = t >= T[4];
+  C3.position.set(-40 + ((t * 9) % 80), 0, -22); C3.rotation.y = Math.PI / 2;
+  // fuel door glow
+  fdGlow.material.opacity = (k === 2 || k === 3) ? 0.55 + 0.35 * Math.sin(t * 10) : 0;
+  // hose: pump nozzle holder -> fuel door (world)
+  const fdW = fd.getWorldPosition(new THREE.Vector3());
+  let hp = null;
+  if (k === 0 && t > 1.5) { // wrong side: hose goes around rear, falls short
+    const u = eio((t - 1.5) / 1.1); const nx = -0.47, ny = 1.4, nz = 0;
+    const target = V(LX + 0.4, 1.0, cs.z + AL / 2 + 0.6); // behind car corner, short of door
+    const end = V(lerp(nx, target.x, u), lerp(ny, target.y, u), lerp(nz, target.z, u));
+    hp = [[nx, ny, nz], [nx - 0.3, 0.6, 0.6], [(nx + end.x) / 2, 0.5, (nz + end.z) / 2 + 0.5], [end.x, end.y, end.z]];
+  } else if (k >= 3 && t > S.checkAt - 0.6) {
+    const u = eio((t - (S.checkAt - 0.6)) / 0.6); const nx = 0.47, ny = 1.4, nz = 0;
+    const end = V(lerp(nx, fdW.x + 0.05, u), lerp(ny, fdW.y, u), lerp(nz, fdW.z, u));
+    hp = [[nx, ny, nz], [nx + 0.25, 0.55, (nz + end.z) / 2], [end.x + 0.25, end.y - 0.2, end.z], [end.x, end.y, end.z]];
+  }
+  setHose(hp);
+  // exhaust puffs while engine on (rear = +z world since yaw PI)
+  const ex = V(cs.x - AW * 0.25, 0.35, cs.z + AL / 2 + 0.1);
+  puffs.forEach((p, i) => { const ph = ((t * 1.6 + i / puffs.length) % 1); const on = engineOn && t >= T[4] - 0.5; p.visible = on; if (!on) return;
+    p.position.set(ex.x - ph * 0.3, ex.y + ph * 1.2, ex.z + ph * 1.6); p.scale.setScalar(0.6 + ph * 2.2); p.material.opacity = 0.55 * (1 - ph); });
+  // ground arrow in k=2 : points to car's left (world -x... car left side is world -x? car faces -z, left = -x) -> fuel door side
+  gArrow.visible = k === 2; gArrow.material.opacity = ease((t - T[2]) / 0.3);
+  gArrow.position.set(cs.x - AW / 2 - 2.6, 0.06, cs.z + AL * 0.3); // tip near the door, pointing -x
+  // person: from k=6, walks from driver door (car left = -x side, near pump) to pump pad, touches it, then to nozzle
+  P.visible = k >= 6 && t < T[7];
+  { const u = eio((t - T[6]) / 2.2); const sx = RX - AW / 2 - 0.5, sz = cs.z - 0.4; const tx = 1.05, tz = 0.25;
+    P.position.set(lerp(sx, tx, u), (u > 0 && u < 1) ? Math.abs(Math.sin(t * 9)) * 0.1 : 0, lerp(sz, tz, u)); P.rotation.y = -Math.PI / 2;
+    const reach = clamp((t - (S.padAt - 0.5)) / 0.4); arm.rotation.z = -reach * 1.35; arm.position.set(-reach * 0.25, 1.35 + reach * 0.05, 0); }
+  padRing.visible = t >= S.padAt && t < S.padAt + 0.8 && k === 6; { const a = (t - S.padAt) / 0.8; padRing.scale.setScalar(1 + a * 3); padRing.material.opacity = 1 - a; }
+  // ---- camera
+  let cp, look;
+  if (k === 0) { const z = ease(t / 1.4); cp = V(lerp(-10, -8.5, z), lerp(10, 8, z), lerp(15, 11, z)); look = V(-1.4, 0.4, 2); }
+  else if (k === 1) { cp = V(-8.5, 8, 11); look = V(-1.4, 0.4, 2); }
+  else if (k === 2) { cp = V(cs.x - 0.6, 15, cs.z + 2.2); look = V(cs.x - 0.6, 0, cs.z - 0.2); }
+  else if (k === 3) { const z = ease((t - T[3]) / 1.0); cp = V(lerp(-0.6, -4, z), lerp(15, 13, z), lerp(2.8, 13, z)); look = V(lerp(-0.6, 1.0, z), 0, lerp(0.4, 0, z)); }
+  else if (k === 4) { const z = ease((t - T[4]) / 2.5); cp = V(lerp(-4, -10, z), lerp(13, 12, z), lerp(13, 18, z)); look = V(0.5, 0.5, 1); }
+  else if (k === 5) { const z = ease((t - T[5]) / 1.4); cp = V(lerp(-10, 6.5, z), lerp(12, 3.2, z), lerp(18, 10, z)); look = V(RX - 0.4, 0.8, 1.6); }
+  else if (k === 6) { const z = ease((t - T[6]) / 1.6); const zz = ease((t - S.sparkAt + 0.3) / 0.6);
+    cp = V(lerp(6.5, 2.2, z), lerp(3.2, 3.6, z), lerp(10, -8.5, z) + zz * 2.5); look = V(lerp(RX, 0.7, z), lerp(0.8, 1.1, z), lerp(1.6, 0.3, z)); }
+  else { const z = ease((t - T[7]) / 3); cp = V(lerp(2.2, -8, z), lerp(3.6, 16, z), lerp(-8.5, 20, z)); look = V(0.5, 0, 0); }
+  cam.position.copy(cp); cam.lookAt(look); renderer.render(scene, cam);
+  // ---- overlays
+  $('dim').style.opacity = k === 1 ? 0.55 * ease((t - T[1]) / 0.25) : k === 5 && t >= S.btnAt && t < S.fineAt + 2.2 ? 0.35 : k === 7 ? 0.45 * ease((t - T[7]) / 0.3) : 0;
+  // gauge
+  { const on = k === 1; const g = $('gauge'); g.style.opacity = on ? 1 : 0;
+    const small = k === 2 ? ease((t - T[2]) / 0.4) : 0; g.style.transform = `translateY(${-small * 0}px) scale(${1 - 0.45 * small}) translateY(${small * -560}px)`;
+    if (k === 1) { const a = t - T[1]; g.style.transform = `scale(${1 + 0.15 * (1 - ease(a / 0.25))})`; }
+    const pulse = t >= S.arrowAt ? 1 + 0.25 * Math.max(0, Math.sin((t - S.arrowAt) * 8)) : 1;
+    $('arrow').setAttribute('transform', `translate(248 330) scale(${pulse}) translate(-248 -330)`);
+    $('ring').setAttribute('opacity', t >= S.arrowAt && k <= 2 ? 0.5 + 0.5 * Math.sin((t - S.arrowAt) * 8) : 0);
+    $('needle').setAttribute('transform', `rotate(${lerp(-62, -40, ease((t - T[1]) / 1.5))} 380 420)`); }
+  // engine button
+  { const b = $('btn'); const a = t - S.btnAt; const on = k === 5 && a > 0 && t < S.fineAt; b.style.opacity = on ? clamp(a / 0.12) : 0;
+    const press = t >= S.offAt && t < S.offAt + 0.25 ? 0.9 : 1; b.style.transform = `scale(${press * (1 + 0.15 * (1 - ease(a / 0.25)))})`;
+    b.style.borderColor = t >= S.offAt ? '#ff4d4d' : '#9aa1a8'; }
+  // spark
+  { const s = $('spark'); const a = t - S.sparkAt; const on = k === 6 && a > 0; s.style.opacity = on ? (Math.floor(a * 12) % 2 ? 1 : 0.55) : 0;
+    if (on) { const [px, py] = proj(0.75, 1.5, -0.1); s.style.left = px + 'px'; s.style.top = py + 'px'; } }
+  // tags
+  tag('tagX', k === 0 && t > 2.6, LX + 0.4, 2.2, cs.z + AL / 2 + 0.6);
+  tag('tagO', k === 3 && t > S.checkAt, fdW.x, fdW.y + 1.2, fdW.z);
+  tag('tagF', k === 2 && t > T[2] + 0.3, fdW.x, fdW.y + 0.6, fdW.z);
+  // flash on red X
+  $('flash').style.opacity = (t > 2.6 && t < 2.72) ? 0.5 * (1 - (t - 2.6) / 0.12) : 0;
+  // bar + labels
+  const barOn = k >= 1 && k <= 6; $('bar').style.opacity = barOn ? 1 : 0;
+  const cur = k <= 4 ? 0 : k === 5 ? 1 : 2; [...$('bar').children].forEach((d, i) => d.className = i === cur ? 'on' : i < cur ? 'done' : '');
+  setText($('top'), k === 0 ? X.hook : k === 7 ? X.end : null, k === 0 ? 0 : T[7], t);
+  let lab = null, l0 = T[k];
+  if (k === 1) lab = X.g1; if (k === 2) lab = X.g2; if (k === 3) { lab = t >= S.checkAt ? X.g3b : X.g3; l0 = t >= S.checkAt ? S.checkAt : T[3]; }
+  if (k === 4) lab = X.g4; if (k === 5) lab = X.e1; if (k === 6) { lab = t >= S.sparkAt ? X.p2 : X.p1; l0 = t >= S.sparkAt ? S.sparkAt : T[6]; }
+  setText($('lab'), lab, l0, t);
+  setText($('mid'), k === 5 && t >= S.fineAt ? X.fine : null, S.fineAt, t);
+  setText($('sub'), k === 5 && t >= S.fineAt + 0.5 ? X.fineSub : null, S.fineAt + 0.5, t, false);
+  // summary
+  [...$('summ').children].forEach((d, i) => { const a = t - S.summ[i]; const on = k === 7 && a > 0; d.style.opacity = on ? clamp(a / 0.1) : 0; d.style.transform = on ? `scale(${1 + 0.3 * (1 - ease(a / 0.2))})` : ''; });
+  // caption (auto-fit)
+  let c = null, c0 = 0; for (const q of S.caps) { const a = q[0] + NO; if (t >= a) { c = q[1]; c0 = a; } }
+  const lastEnd = S.caps[S.caps.length - 1][2] + NO + 0.6; const ce = $('cap');
+  if (t >= NO && t < lastEnd && c) { if (ce.dataset.h !== c) { ce.innerHTML = '<span style="display:inline-block">' + c + '</span>'; ce.dataset.h = c; } ce.style.opacity = 1; const sp = ce.firstChild; sp.style.transform = 'scale(1)'; const w = sp.getBoundingClientRect().width; sp.style.transform = `scale(${Math.min(1, 1000 / Math.max(w, 1))})`; }
+  else ce.style.opacity = 0;
+  $('src').textContent = X.src; $('src').style.opacity = k === 7 ? ease((t - T[7]) / 0.4) : 0;
+};
+window.ready = async () => { await document.fonts.ready; };
+window.__ok = true;
+</script></body></html>
