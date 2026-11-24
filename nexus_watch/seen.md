@@ -515,3 +515,7 @@
 vidIQ 사용: 2026-11-24 10:37 5크레딧
 2026-11-24 11:23 | AI타임스 황 복귀 직원 환호·AI리더의 서가(제외) / 긱뉴스 Shirudo·FastFrames·르쿤·평가·Ladybird·매치코어·DreamSync·경영진 대화·보안 지옥(제외) | AI타임스·긱뉴스 | https://news.hada.io/
 - 2026-11-24 11:23: 내장 브라우저로 유튜브 18개 채널 /videos(페이지 안 fetch + ytInitialData 파싱) — 10:37 이후 새 롱폼 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 쇼츠·vidIQ 생략(홀수 시). 바로 제작 없음. 인스타 브라우저 안 엶.
+2026-11-24 12:23 | 챗GPT | GPT-6.2 솔 일반 채팅 탑재(유료)·GPT-5.6 솔/테라 12/23 종료(알림·🔥바로제작 요청) | https://9to5mac.com/2026/11/23/chatgpt-expands-gpt-6-2-sol-as-openai-sets-retirement-date-for-two-models/
+2026-11-24 12:23 | 쇼츠: AI리더스랩 가짜 목소리·노마드 AI 인플루언서·원카 지브리 ASMR·신쌤 유튜브 댓글 답글·찍봇 수노 6가지 | 유튜브 쇼츠 | https://www.youtube.com/@ai_leaders_lab/shorts
+2026-11-24 12:23 | AI타임스 황 복귀 의회 반발·앨리스 황·메가스피드·삼성 인사·LGU+ 익시오·한컴 HWPX(제외) / 긱뉴스 CRAMA FILE(제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-24 12:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, ytInitialData lockupMetadataViewModel 파싱) — 새 롱폼 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건. 새 소식 GPT-6.2 솔 → 긴급 제작 요청. vidIQ 생략(10·15시만). 인스타 브라우저 안 엶.
