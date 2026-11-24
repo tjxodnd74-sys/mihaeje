@@ -524,3 +524,5 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 2026-11-24 14:23 | 유튜브(알림 제외·참고) | 조팀장 '쇼핑쇼츠 왕초보 AI 자동화 40분 총정리' | https://www.youtube.com/@조팀장의ai공략집/videos
 2026-11-24 14:23 | 앤트로픽(알림 제외·벤치마크) | 벤처비트 '페이블 5.2 vs 오퍼스 5.5 버그 수정·비용 3배' | https://www.aitimes.com/news/articleList.html
 2026-11-24 14:23 | AI 안경(알림 제외·기획) | AI 안경 2027 상용화 원년 기획 | https://www.aitimes.com/news/articleList.html
+2026-11-24 15:23 | AI 탐지(알림 제외·회사 자체 발표) | GPT제로 5.0 출시, 사람 글 오판 5만 건당 1건 주장 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-24 15:23 | AI 교육(경쟁 주제·@today_issue_mag) | 수능 창시자 "AI가 푸는 수능 없애는 게 낫다"(56만 회·17.5배) | https://www.instagram.com/reel/DgESaqkhhXG
