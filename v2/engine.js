@@ -438,6 +438,7 @@ async function main() {
     const solved = S.solved.includes(did);
     S.benchTab ??= {};
     const bench = el('article', 'v2-bench');
+    const narrow = () => matchMedia('(max-width:899px)').matches && !matchMedia('(orientation:landscape) and (max-height:500px) and (min-width:700px)').matches;
     // 왼쪽: 장치
     const node = el('section', 'v2-device');
     const head = el('div', 'v2-device-head');
@@ -501,7 +502,8 @@ async function main() {
         if (r && !S.read.includes(r)) { S.read.push(r); play('paper'); }
         save();
         [...tabs.children].forEach((t) => { if (t.disabled) return; t.classList.toggle('on', t.dataset.doc === r); t.classList.toggle('read', S.read.includes(t.dataset.doc)); });
-        if (!r) { const any = refs.some((x) => S.read.includes(x) || (S.found || []).includes(x)); panel.replaceChildren(el('p', 'v2-bench-empty', any ? '위에서 자료를 고르면 여기 펼쳐집니다' : '장면에서 자료를 먼저 찾아 읽으면, 여기에 펼쳐 둘 수 있습니다')); return; }
+        side.classList.toggle('open', !!r);
+        if (!r) { const any = refs.some((x) => S.read.includes(x) || (S.found || []).includes(x)); side.classList.toggle('none', !any); panel.replaceChildren(el('p', 'v2-bench-empty', any ? (narrow() ? '자료 이름을 누르면 여기 펼쳐집니다' : '위에서 자료를 고르면 여기 펼쳐집니다') : '장면에서 자료를 먼저 찾아 읽으면, 여기에 펼쳐 둘 수 있습니다')); return; }
         const dd = ep.docs[r];
         const paper = el('div', 'v2-paper v2-bench-paper');
         paper.append(el('p', 'v2-eyebrow', dd.kind || '자료'), el('h3', 'v2-bench-title', dd.title), bust(html('div', 'v2-doc-body', typeof dd.html === 'function' ? dd.html(S) : dd.html)));
@@ -512,13 +514,19 @@ async function main() {
         const found = S.read.includes(r) || (S.found || []).includes(r);
         // 지금 갈 수 있는 곳에서 찾을 수 없는 자료는 자물쇠 칸으로도 보이지 않게 (놓친 줄 알고 헤매지 않도록)
         if (!found && !unlockedScenes().some((sc) => (sc.hotspots || []).some((h) => h.doc === r && (!h.visible || h.visible(S))))) return;
-        const t = btn('v2-bench-tab' + (found ? '' : ' locked'), found ? ep.docs[r].title : '아직 찾지 못한 자료', () => { if (!found) return; show(cur === r && window.innerWidth < 900 ? null : r); });
+        const t = btn('v2-bench-tab' + (found ? '' : ' locked'), found ? ep.docs[r].title : '아직 찾지 못한 자료', () => { if (!found) return; show(cur === r && narrow() ? null : r); });
         t.dataset.doc = r; if (!found) { t.disabled = true; const where = ep.scenes.find((sc) => sc.hotspots.some((h) => h.doc === r)); t.title = where ? where.name + '에서 찾을 수 있습니다' : ''; }
         tabs.append(t);
       });
-      side.append(el('p', 'v2-bench-label', '옆에 펼쳐 둔 자료'), tabs, panel);
+      // 휴대폰: 자료판이 창 아래에 붙어 있다가(접힘) 자료 이름을 누르면 화면 아래 절반으로 올라온다 위 절반에서 장치를 보며 조작
+      const fold = btn('v2-bench-fold', '접기 ▾', () => show(null), '자료판 접기');
+      const headRow = el('div', 'v2-bench-head');
+      headRow.append(html('p', 'v2-bench-label', '<span class="wide-only">옆에 펼쳐 둔 자료</span><span class="narrow-only">자료</span>'), tabs, fold);
+      side.append(headRow, panel);
+      bench.classList.add('has-docs');
       bench.append(side);
-      show(cur ?? (window.innerWidth >= 900 ? refs.find((x) => S.read.includes(x)) ?? null : null));
+      const lastTab = S.benchTab[did] && S.read.includes(S.benchTab[did]) ? S.benchTab[did] : null;
+      show(narrow() ? lastTab : (cur ?? refs.find((x) => S.read.includes(x)) ?? null));
     }
     openDialog(bench, { label: dev.title, wide: refs.length > 0, onClose: () => render() });
   }

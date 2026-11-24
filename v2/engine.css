@@ -444,14 +444,38 @@ a{color:inherit}
 .v2-guide{margin:0 0 12px;border:1px dashed var(--line);border-radius:6px;padding:6px 12px;color:var(--soft);font-size:14px}
 .v2-guide summary{cursor:pointer;font-weight:600;color:var(--lamp)}
 .v2-guide p{margin:6px 0 2px}
+/* 자료판: 넓은 화면은 장치 옆, 휴대폰 세로는 창 아래에 붙은 판(자료 이름을 누르면 아래 절반으로 펼쳐짐) */
+.v2-bench-fold{display:none}
+.narrow-only{display:none}
 @media (max-width:899px){
-  .v2-bench-docs{order:1;border-top:1px solid var(--line-2)}
-  .v2-bench-paper{max-height:50vh;overflow:auto}
+  .v2-bench{grid-template-columns:minmax(0,1fr)}
+  .v2-bench-docs{min-width:0;order:1;position:sticky;bottom:0;z-index:3;margin-top:14px;border-top:1px solid var(--line-2);box-shadow:0 -10px 24px rgba(0,0,0,.5);padding:8px 12px calc(10px + var(--sa-b,0px))}
+  .v2-bench-head{display:flex;align-items:center;gap:8px;min-width:0}
+  .v2-bench-label{margin:0;flex:none;font-weight:600;color:var(--soft-2)}
+  .wide-only{display:none}
+  .narrow-only{display:inline}
+  .v2-bench-tabs{flex:1;min-width:0;flex-wrap:nowrap;overflow-x:auto;margin:0;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .v2-bench-tabs::-webkit-scrollbar{display:none}
+  .v2-bench-tab{flex:none;white-space:nowrap}
+  .v2-bench-panel{display:none}
+  .v2-bench-docs.none .v2-bench-panel{display:block;margin-top:6px}
+  .v2-bench-docs.open .v2-bench-panel{display:block;height:40svh;overflow:auto;overscroll-behavior:contain;margin-top:8px;border-radius:4px}
+  .v2-bench-docs.open .v2-bench-fold{display:inline-flex;align-items:center;flex:none;min-height:40px;padding:0 12px;background:transparent;border:1px solid var(--line);border-radius:999px;color:var(--soft-2);font-size:13px}
+  .v2-bench-paper{max-height:none}
 }
-@media (min-width:900px){
+@media (min-width:900px),(orientation:landscape) and (max-height:500px) and (min-width:700px){
   .v2-bench{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:start}
-  .v2-bench-docs{border-top:0;border-left:1px solid var(--line-2);position:sticky;top:0;max-height:92vh;overflow:auto;padding-top:48px}
+  .v2-bench-docs{position:sticky;top:0;bottom:auto;margin-top:0;box-shadow:none;border-top:0;border-left:1px solid var(--line-2);max-height:92vh;overflow:auto;padding-top:48px}
+  .v2-bench-head{display:block}
+  .wide-only{display:inline}
+  .narrow-only{display:none}
+  .v2-bench-tabs{flex-wrap:wrap;overflow:visible;margin:0 0 10px}
+  .v2-bench-panel{display:block;height:auto}
+  .v2-bench-fold{display:none!important}
   .v2-device{padding-top:4px}
+}
+@media (orientation:landscape) and (max-height:500px) and (min-width:700px){
+  .v2-bench-docs{max-height:calc(100svh - 70px);padding-top:12px}
 }
 
 /* 남긴 것(이야기 진행) */
