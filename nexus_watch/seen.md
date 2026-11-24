@@ -526,3 +526,7 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 2026-11-24 14:23 | AI 안경(알림 제외·기획) | AI 안경 2027 상용화 원년 기획 | https://www.aitimes.com/news/articleList.html
 2026-11-24 15:23 | AI 탐지(알림 제외·회사 자체 발표) | GPT제로 5.0 출시, 사람 글 오판 5만 건당 1건 주장 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-24 15:23 | AI 교육(경쟁 주제·@today_issue_mag) | 수능 창시자 "AI가 푸는 수능 없애는 게 낫다"(56만 회·17.5배) | https://www.instagram.com/reel/DgESaqkhhXG
+2026-11-24 16:23 | 구글(알림·참고, 미국 추정) | 검색 AI 모드 퍼스널 인텔리전스에 월렛 연결, 드라이브·제미나이 앱 몇 주 내 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-24 16:23 | 롱폼: 에이커 '클로드가 달라졌다! 퇴근시간이 빨라지는 6가지 최신활용법' | 유튜브 | https://www.youtube.com/@에이커-돈이되는ai/videos
+2026-11-24 16:23 | AI타임스 알리바바 블랙리스트·아마존 데카르트·그록 제소·Arm 하스·오픈AI 녹음·앤트로픽 주가(제외) | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-24 16:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + ytInitialData 파싱) — 새 롱폼 1개(에이커). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음(16:41 앞뒤, 구글 소식 미국 추정·출처 1곳). 인스타 브라우저 안 엶.
