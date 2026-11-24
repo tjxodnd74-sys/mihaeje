@@ -1,0 +1,161 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#444;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.k{width:1080px;height:1350px;position:relative;overflow:hidden;background:#FFF8EC;margin-bottom:20px}
+.hd{height:140px;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.hd .t{font-size:46px;font-weight:900;letter-spacing:-.04em;color:#1E2A3A}
+.hd .t em{font-style:normal;color:#F2545B}
+.hd .c{font-size:26px;font-weight:800;color:#fff;background:#F2545B;border-radius:40px;padding:10px 22px}
+.pn{position:absolute;left:20px;width:1040px;height:580px;border:6px solid #1E2A3A;border-radius:18px;overflow:hidden;background:#ddd}
+.pn img{width:1028px;height:568px;object-fit:cover;display:block}
+.p1{top:140px}.p2{top:732px}
+.b{position:absolute;z-index:3;background:#fff;border:4px solid #1E2A3A;border-radius:34px;padding:18px 26px;font-size:36px;font-weight:800;line-height:1.32;letter-spacing:-.035em;color:#1E2A3A;box-shadow:0 6px 0 rgba(43,26,20,.25);max-width:560px}
+.b.pg{background:#DDF5EC}
+.b small{display:block;font-size:28px;font-weight:700;color:#1F8A6A;margin-top:6px}
+.b:after{content:"";position:absolute;width:26px;height:26px;background:inherit;border-right:4px solid #1E2A3A;border-bottom:4px solid #1E2A3A;bottom:-16px;transform:rotate(45deg)}
+.b.tl:after{left:60px}.b.tr:after{right:60px}
+.b.no:after{display:none}
+.ft{position:absolute;bottom:6px;right:30px;font-size:22px;font-weight:700;color:#8FA3B5}
+/* cover */
+#k1{background:#13202E}
+#k1 .img{position:absolute;left:0;top:0;width:1080px;height:860px;overflow:hidden}
+#k1 .img img{width:1080px;height:860px;object-fit:cover;object-position:50% 0;display:block}
+#k1 .img:after{content:"";position:absolute;left:0;right:0;bottom:0;height:320px;background:linear-gradient(transparent,#13202E)}
+#k1 .tag{position:absolute;left:60px;top:46px;background:#FFD43B;color:#111;font-size:30px;font-weight:900;padding:8px 18px;border-radius:10px;letter-spacing:-.02em;z-index:2}
+#k1 .tt{position:absolute;left:56px;right:40px;top:770px;font-size:136px;font-weight:900;line-height:1.1;letter-spacing:-.055em;color:#fff;text-shadow:0 6px 24px rgba(0,0,0,.7)}
+#k1 .tt em{font-style:normal;color:#FFD43B}
+#k1 .hd2{position:absolute;left:60px;right:60px;bottom:44px;display:flex;justify-content:space-between;font-size:26px;font-weight:700;color:#7FE3FF}
+
+/* info */
+#k6{background:#FFFFFF}
+#k6 .in{padding:66px 60px 0}
+#k6 .lab{font-size:28px;font-weight:800;color:#F2545B;letter-spacing:.08em}
+#k6 .h{font-size:84px;font-weight:900;line-height:1.14;letter-spacing:-.045em;margin-top:14px;color:#1E2A3A}
+#k6 .h .v{color:#F2545B}
+#k6 .when{display:inline-block;background:#1E2A3A;color:#fff;font-size:30px;font-weight:900;padding:8px 18px;border-radius:12px;margin-top:24px}
+@property --n{syntax:'<integer>';inherits:false;initial-value:0}
+#k6 .big{display:flex;align-items:flex-end;gap:24px;margin-top:26px}
+#k6 .num{font-size:190px;font-weight:900;color:#F2545B;letter-spacing:-.05em;line-height:.95;--n:470;counter-reset:n var(--n);animation:cnt 6s cubic-bezier(.2,.8,.3,1) infinite both}
+#k6 .num:before{content:counter(n)}
+@keyframes cnt{0%{--n:120}30%,to{--n:470}}
+#k6 .big small{font-size:46px;font-weight:900;color:#1E2A3A;letter-spacing:-.04em;padding-bottom:22px;line-height:1.2}
+#k6 .film{margin-top:30px;height:110px;border-radius:14px;background:#1E2A3A;overflow:hidden;position:relative}
+#k6 .film .st2{position:absolute;top:14px;left:0;display:flex;gap:14px;animation:roll 6s linear infinite}
+#k6 .film .st2 i{display:block;width:96px;height:68px;border-radius:8px;background:linear-gradient(135deg,#FFD43B,#F2545B)}
+#k6 .film .st2 i:nth-child(3n){background:linear-gradient(135deg,#7FE3FF,#5B6CF2)}
+#k6 .film .st2 i:nth-child(3n+1){background:linear-gradient(135deg,#9BE7C4,#1F8A6A)}
+@keyframes roll{from{transform:translateX(0)}to{transform:translateX(-660px)}}
+#k6 .rows{margin-top:18px}
+#k6 .r{display:flex;align-items:center;gap:22px;padding:26px 0;border-top:2px solid #EEE}
+#k6 .r .kk{width:170px;flex:none;font-size:36px;font-weight:900;color:#F2545B;letter-spacing:-.04em}
+#k6 .r .v2{font-size:40px;font-weight:800;color:#1E2A3A;letter-spacing:-.035em;line-height:1.3}
+#k6 .r .v2 s{color:#9AA6B5}
+#k6 .src{position:absolute;left:60px;right:60px;bottom:36px;font-size:22px;font-weight:600;color:#8A97A8;line-height:1.5}
+/* last */
+#k7{background:#1E2A3A;color:#fff}
+#k7 .in{padding:90px 64px 0}
+#k7 .lab{font-size:26px;font-weight:800;color:#7FE3FF;letter-spacing:.08em}
+#k7 h1{font-size:104px;font-weight:900;line-height:1.15;letter-spacing:-.045em;margin-top:18px}
+#k7 h1 em{font-style:normal;color:#FFD43B}
+#k7 .row{display:flex;gap:14px;flex-wrap:wrap;margin-top:44px}
+#k7 .chip{background:#2E3D52;border-radius:18px;padding:16px 22px;font-size:34px;font-weight:800}
+#k7 .chip i{font-style:normal;color:#7FE3FF;margin-right:10px}
+#k7 .copy{width:952px;margin-top:110px;border:3px dashed #7FE3FF;border-radius:24px;padding:36px 36px 30px;position:relative;background:#26344A}
+#k7 .copy .tg{position:absolute;top:-20px;left:30px;background:#7FE3FF;color:#1E2A3A;font-size:24px;font-weight:900;padding:4px 16px;border-radius:10px}
+#k7 .copy p{font-size:50px;font-weight:700;line-height:1.5;letter-spacing:-.03em}
+#k7 .copy p b{color:#FFD43B}
+#k7 .bot{position:absolute;left:64px;right:64px;bottom:50px;display:flex;align-items:flex-end;justify-content:space-between}
+#k7 .bot .tx{font-size:38px;font-weight:800;line-height:1.4}
+#k7 .bot .tx span{display:block;font-size:26px;color:#A9B8CC;font-weight:700;margin-top:10px}
+#k7 .bot img{width:230px}
+.b{animation:pop .5s cubic-bezier(.3,1.6,.5,1) both}
+.b.d2{animation-delay:.5s}
+@keyframes pop{from{transform:scale(.9)}to{transform:scale(1)}}
+.st{position:absolute;z-index:4;background:#1E2A3A;color:#FFD43B;font-size:40px;font-weight:900;padding:14px 24px;border-radius:14px;transform:rotate(-3deg);box-shadow:0 6px 0 rgba(0,0,0,.25);letter-spacing:-.03em;animation:stamp 6s ease-out infinite both;animation-delay:.8s}
+@keyframes stamp{0%{transform:rotate(-3deg) scale(1)}3%{transform:rotate(-3deg) scale(1.2)}7%,to{transform:rotate(-3deg) scale(1)}}
+#k7 .copy{margin-top:80px}
+</style></head><body>
+
+<div class="k" id="k1">
+ <div class="img"><img src="cover.png"></div>
+ <div class="tag">AI 공감툰</div>
+ <div class="tt"><em>AI 드라마</em><br>찍겠다던<br>친구 근황</div>
+ <div class="hd2"><span>@nexus_studio.kr</span><span>끝까지 보세요</span></div>
+</div>
+<div class="k" id="k2">
+ <div class="hd"><div class="t"><em>얼굴 바뀌는</em> 주인공</div><div class="c">CASE 1</div></div>
+ <div class="pn p1"><img src="p1.png"></div>
+ <div class="b tl" style="top:166px;left:44px">대본 한 장이면<br>나도 드라마 감독!</div>
+ <div class="b pg tr d2" style="top:172px;right:44px">6장면<br>바로 찍을게요</div>
+ <div class="pn p2"><img src="p2.png"></div>
+ <div class="b tl" style="top:752px;left:40px">여주인공이<br>장면마다 딴사람?!</div>
+ <div class="b pg tr d2" style="top:752px;right:300px">1화에 배우<br>6명 데뷔했어요</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+<div class="k" id="k3">
+ <div class="hd"><div class="t"><em>막장 작가</em> 우리 엄마</div><div class="c">CASE 2</div></div>
+ <div class="pn p1"><img src="p3.png"></div>
+ <div class="b tl" style="top:166px;left:44px">우리 가족 주인공으로<br>드라마 써 줘~</div>
+ <div class="b pg tr d2" style="top:172px;right:44px">출생의 비밀<br>넣어 볼까요?</div>
+ <div class="pn p2"><img src="p4.png"></div>
+ <div class="b tl" style="top:752px;left:40px">엄마… 내가<br>재벌 3세래</div>
+ <div class="st" style="top:1210px;left:330px">가족 단톡방 조회 47회</div>
+ <div class="b pg tr d2" style="top:752px;right:40px">2화는<br>할머니 첫사랑편</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+<div class="k" id="k4">
+ <div class="hd"><div class="t"><em>감정 과잉</em> 지훈 씨</div><div class="c">CASE 3</div></div>
+ <div class="pn p1"><img src="p5.png"></div>
+ <div class="b tl" style="top:166px;left:44px">대사는 딱 하나,<br>"밥 먹었어?"</div>
+ <div class="b pg tr d2" style="top:172px;right:44px">감정 좀<br>넣어 볼게요</div>
+ <div class="pn p2"><img src="p6.png"></div>
+ <div class="b tr" style="top:752px;right:40px">"밥 먹었어?"가<br>왜 오열이야…</div>
+ <div class="b pg tl d2" style="top:1150px;left:300px">감정 10배로 넣었어요</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+<div class="k" id="k5">
+ <div class="hd"><div class="t"><em>반전</em> 끝까지 간 소연 씨</div><div class="c">CASE 4</div></div>
+ <div class="pn p1"><img src="p7.png"></div>
+ <div class="b tl" style="top:166px;left:44px">주인공 사진<br>한 장부터 정할게</div>
+ <div class="b pg tr d2" style="top:172px;right:44px">얼굴·머리·옷<br>설정표로 적을게요</div>
+ <div class="pn p2"><img src="p8.png"></div>
+ <div class="b tl" style="top:752px;left:40px">3화까지<br>얼굴 그대로!</div>
+ <div class="b pg tr d2" style="top:752px;right:40px">설정표<br>덕분이에요 👍</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+<div class="k" id="k6">
+ <div class="in">
+  <div class="lab">REAL NEWS · 진짜 있는 일</div>
+  <div class="h">AI 숏드라마,<br>중국에선 <span class="v">하루</span></div>
+  <div class="big"><div class="num"></div><small>편씩<br>공개</small></div>
+  <div class="when">2026년 1월 하루 평균 · DataEye 집계</div>
+  <div class="film"><div class="st2"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+  <div class="rows">
+   <div class="r"><div class="kk">제작 기간</div><div class="v2"><s>3~4달</s> → 한 달 안쪽</div></div>
+   <div class="r"><div class="kk">제작비</div><div class="v2">80~90% 줄일 수 있다<br><span style="font-size:30px;color:#6B7A8C">(현지 제작사 부사장 말)</span></div></div>
+   <div class="r"><div class="kk">비결</div><div class="v2">인물·옷·장소 <b style="color:#F2545B">참고 그림</b>부터</div></div>
+  </div>
+ </div>
+ <div class="src">출처: MIT 테크놀로지 리뷰 'How Chinese short dramas became AI content machines'(2026.5.15)<br>만화 속 상황은 웃자고 만든 이야기예요. 그림은 AI로 만들었어요.</div>
+</div>
+<div class="k" id="k7">
+ <div class="in">
+  <div class="lab">HOW TO · 얼굴 안 바뀌는 공식</div>
+  <h1>대본 전에<br><em>설정표</em> 먼저</h1>
+  <div class="row">
+   <div class="chip"><i>①</i>주인공 1명</div><div class="chip"><i>②</i>장면 6개</div><div class="chip"><i>③</i>같은 문장 반복</div>
+  </div>
+  <div class="copy"><div class="tg">COPY · PASTE</div>
+   <p>이 대본을 <b>6장면</b>으로 나눠 줘.<br>장면마다 주인공 얼굴·머리·옷을<br><b>똑같은 문장</b>으로 적어 줘.</p>
+  </div>
+ </div>
+ <div class="bot">
+  <div class="tx">그대로 영상 AI에<br>붙여 넣으면 끝!<span>📌 저장해 두고 AI 드라마 만들 때 꺼내 보세요<br>@nexus_studio.kr</span></div>
+  <img src="heart.png">
+ </div>
+</div>
+</body></html>
