@@ -477,7 +477,7 @@ async function main() {
           if (tier < maxTier) {
             const b = btn('v2-dhint-btn' + (tier === 2 ? ' last' : ''), ['힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { if (tier === 2 && !b.dataset.sure) { b.dataset.sure = '1'; b.textContent = '정말 정답을 볼까요? 한 번 더 누르기'; return; } S.hints[did] = tier + 1; save(); drawHint(); keepAbove(hb.lastElementChild?.previousElementSibling || hb.lastElementChild, hb.lastElementChild); });
             hb.append(b);
-          } else if (hs.length < 3) hb.append(el('p', 'v2-dhint-note', '이 편은 정답 힌트가 없다 여기까지가 전부다'));
+          } else if (hs.length < 3) hb.append(el('p', 'v2-dhint-note', '이 편은 정답 힌트가 없습니다 여기까지가 전부입니다'));
         };
         drawHint();
         hintBlock = hb;
