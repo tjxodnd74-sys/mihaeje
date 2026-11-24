@@ -117,7 +117,9 @@ function bringIntoView(d, key, node) {
     const barB = box.querySelector('.v2-dialog-bar')?.getBoundingClientRect().bottom ?? b.top;
     const top = Math.max(b.top, barB) + 8; // 창 머리 줄(겹쳐 붙는 줄) 아래부터
     const bottom = Math.max(r.bottom, go ? go.getBoundingClientRect().bottom : 0) + 12;
-    const dy = r.top < top ? r.top - top : Math.min(bottom - b.bottom, r.top - top);
+    // 휴대폰 세로: 아래에 붙은 자료판 위까지만 보이는 자리로 친다
+    const sh = box.querySelector('.v2-bench-docs'); const floor = sh && getComputedStyle(sh).bottom === '0px' ? sh.getBoundingClientRect().top : b.bottom;
+    const dy = r.top < top ? r.top - top : Math.min(bottom - floor, r.top - top);
     if (dy > 0 || r.top < top) box.scrollBy({ top: dy, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }));
 }

@@ -311,7 +311,7 @@ export default {
             const n = st.start + k;
             const f = el('button', 'frame-btn' + (d.frame === n ? ' picking' : '')); f.type = 'button'; f.style.left = FL(v) + '%';
             f.setAttribute('aria-label', `${idx + 1}번째 줄 ${v + 1}번째 컷 루페로 보기`);
-            f.onclick = () => { d.frame = n; save(); };
+            f.onclick = () => { d.frame = n; save(); requestAnimationFrame(() => { const lp = document.querySelector('dialog[open] .st-loupe'); if (lp) ctx.keepAbove?.(lp, document.querySelector('dialog[open] .v2-actions')); }); };
             strip.append(f);
           }
           const tools = el('div', 'strip-tools');
@@ -408,13 +408,15 @@ export default {
       ],
       initial: () => ({ white: false, red: true, paper: false, focus: 20, timer: 0, exposed: false, expT: 0, baths: [], ruined: false }),
       render(ctx) {
+        // 암실 안 경고는 누른 버튼 바로 아래에 (휴대폰에서 창 맨 아래 문구는 안 보인다)
+        const say = (m) => { const n = document.querySelector('dialog[open] .dk-note'); if (n) { n.textContent = m; ctx.keepAbove?.(n); } else ctx.status(m); };
         const { d, el, save } = ctx;
         const mode = d.white ? 'white' : d.red ? 'red' : 'dark';
         const wrap = el('div', 'print-wrap st-print ' + mode);
         // 1 불
         const lights = el('div', 'light-row');
         const w = el('button', 'switch' + (d.white ? ' on' : ''), `흰 불 ${d.white ? '켜짐' : '꺼짐'}`); w.type = 'button'; w.setAttribute('aria-label', '흰 불 스위치');
-        w.onclick = () => { d.white = !d.white; const burn = d.white && d.paper && !d.baths.includes(2); if (burn) d.ruined = true; save(); if (burn) ctx.status('정착 전에 흰 불이 켜졌다 인화지가 까맣게 탔다'); };
+        w.onclick = () => { d.white = !d.white; const burn = d.white && d.paper && !d.baths.includes(2); if (burn) d.ruined = true; save(); if (burn) say('정착 전에 흰 불이 켜졌다 인화지가 까맣게 탔다'); };
         const r = el('button', 'switch red' + (d.red ? ' on' : ''), `붉은 등 ${d.red ? '켜짐' : '꺼짐'}`); r.type = 'button'; r.setAttribute('aria-label', '붉은 등 스위치'); r.onclick = () => { d.red = !d.red; save(); };
         lights.append(w, r); wrap.append(lights);
         // 2 확대기 + 확대경
@@ -425,7 +427,7 @@ export default {
         grid.append(enl, loupe); wrap.append(grid);
         const ctl = el('div', 'enl-controls');
         const paperBtn = el('button', 'chip' + (d.paper ? ' on' : ''), d.paper ? '인화지 올려짐 (8×10)' : '인화지 꺼내 올리기 (8×10)'); paperBtn.type = 'button';
-        paperBtn.onclick = () => { if (d.paper) return; if (d.white) { ctx.status('흰 불 아래서 인화지를 꺼내면 바로 타 버린다'); return; } if (!d.red) { ctx.status('깜깜해서 손이 안 보인다'); return; } d.paper = true; save(); };
+        paperBtn.onclick = () => { if (d.paper) return; if (d.white) { say('흰 불 아래서 인화지를 꺼내면 바로 타 버린다'); return; } if (!d.red) { say('깜깜해서 손이 안 보인다'); return; } d.paper = true; save(); };
         const fl = el('label', 'tilt-label'); fl.append(el('span', '', `초점 손잡이 ${d.focus}`)); const fr = el('input'); fr.type = 'range'; fr.min = 0; fr.max = 100; fr.step = 5; fr.value = d.focus; fr.setAttribute('aria-label', '초점 손잡이');
         fr.oninput = () => { d.focus = Number(fr.value); const o = Math.max(0, Math.abs(d.focus - 65) - 5); enl.querySelector('.projection').style.filter = `blur(${o / 6}px)`; loupe.querySelector('img').style.filter = `invert(1) sepia(.4) blur(${(o / 3).toFixed(1)}px)`; fl.firstChild.textContent = `초점 손잡이 ${d.focus}`; };
         fr.onchange = () => save(); fl.append(fr);
@@ -434,18 +436,18 @@ export default {
         const exp = el('button', 'chip' + (d.exposed ? ' on' : ''), d.exposed ? `노출 끝 · ${d.expT}초` : '타이머 누르기 (노출)'); exp.type = 'button'; exp.setAttribute('aria-label', '타이머 누르기');
         exp.onclick = () => {
           if (d.exposed) return;
-          if (!d.paper) { ctx.status('이젤에 인화지가 없다'); return; }
-          if (Math.abs(d.focus - 65) > 5) { ctx.status('확대경 속 상이 흐리다 이대로는 못 굽는다'); return; }
-          if (!d.timer) { ctx.status('타이머가 0초다'); return; }
+          if (!d.paper) { say('이젤에 인화지가 없다'); return; }
+          if (Math.abs(d.focus - 65) > 5) { say('확대경 속 상이 흐리다 이대로는 못 굽는다'); return; }
+          if (!d.timer) { say('타이머가 0초다'); return; }
           d.exposed = true; d.expT = d.timer; save();
         };
-        ctl.append(paperBtn, fl, tl, exp); wrap.append(ctl);
+        ctl.append(paperBtn, fl, tl, exp); wrap.append(ctl, el('p', 'dk-note'));
         // 3 트레이 (흰 불일 때만 색이 보인다)
         const trays = el('div', 'prop trays'); trays.innerHTML = `<img src="${P}props/${d.white ? 'trays-white' : 'trays'}.webp" alt="${d.white ? '흰 불 아래 트레이 셋: 오른쪽 트레이 물이 누렇고, 가운데 집게 손잡이에 파란 테이프, 왼쪽 트레이 뒤 병에 빨간 글씨 빙초산' : '붉은 등 아래 트레이 셋 다 같은 빨강이다'}" decoding="async">`;
         [1, 2, 3].forEach((n, i) => {
           const b = el('button', 'tray-btn' + (d.baths.includes(n) ? ' done' : '')); b.type = 'button'; b.style.left = [3, 35.2, 67][i] + '%';
           b.setAttribute('aria-label', `${TRAY_NAME[n]} 트레이에 담그기`); b.innerHTML = `<span>${d.baths.includes(n) ? d.baths.indexOf(n) + 1 : ''}</span>`;
-          b.onclick = () => { if (!d.exposed) { ctx.status('아직 노출 전이다'); return; } if (d.baths.includes(n)) return; d.baths.push(n); save(); };
+          b.onclick = () => { if (!d.exposed) { say('아직 노출 전이다'); return; } if (d.baths.includes(n)) return; d.baths.push(n); save(); };
           trays.append(b);
         });
         wrap.append(el('p', 'pick-label', d.exposed ? '노출한 인화지를 트레이에 차례로 담근다' : '트레이 셋'), trays);
@@ -457,7 +459,7 @@ export default {
           f.innerHTML = `<div class="st-fail-img"><img src="${P}props/print.webp" alt="" decoding="async"><i></i></div><figcaption>${failText(d.fail)}</figcaption>`;
           wrap.append(f);
         }
-        const reset = el('button', 'chip', '인화지 버리고 처음부터'); reset.type = 'button'; reset.onclick = () => { Object.assign(d, { paper: false, exposed: false, expT: 0, baths: [], ruined: false, fail: null }); save(); ctx.status('새 인화지는 붉은 등 아래서 다시 꺼내 올린다'); };
+        const reset = el('button', 'chip', '인화지 버리고 처음부터'); reset.type = 'button'; reset.onclick = () => { Object.assign(d, { paper: false, exposed: false, expT: 0, baths: [], ruined: false, fail: null }); save(); say('새 인화지는 붉은 등 아래서 다시 꺼내 올린다'); };
         wrap.append(reset);
         return wrap;
       },

@@ -440,12 +440,23 @@ async function main() {
   // ---------- 장치 ----------
   function openDevice(did, opts = {}) {
     const dev = deviceOf(did); if (!dev) return;
+    // resetOnOpen: 창을 다시 열면 손잡이·누름 순서가 처음으로 (방향 자물쇠처럼 '누른 기록'이 눈에 안 보이는 장치)
+    if (dev.resetOnOpen && !S.solved.includes(did)) S.drafts[did] = dev.initial();
     S.drafts[did] ??= dev.initial();
     const d = S.drafts[did];
     const solved = S.solved.includes(did);
     S.benchTab ??= {};
     const bench = el('article', 'v2-bench');
     const narrow = () => matchMedia('(max-width:899px)').matches && !matchMedia('(orientation:landscape) and (max-height:500px) and (min-width:700px)').matches;
+    // 휴대폰: 방금 생긴 글(오답 문구·힌트)이 아래 자료판에 가리지 않게 창을 올린다
+    const keepAbove = (top, bottom) => requestAnimationFrame(() => {
+      const box = bench.closest('.v2-dialog-box'); if (!box || !narrow() || !top) return;
+      const sh = bench.querySelector('.v2-bench-docs'); const bt = box.getBoundingClientRect();
+      const limit = (sh ? sh.getBoundingClientRect().top : bt.bottom) - 12;
+      const b = (bottom || top).getBoundingClientRect().bottom, t = top.getBoundingClientRect().top;
+      if (b > limit) box.scrollBy({ top: Math.min(b - limit, t - bt.top - 56), behavior: 'smooth' });
+      else if (t < bt.top + 56) box.scrollBy({ top: t - bt.top - 56, behavior: 'smooth' });
+    });
     // 왼쪽: 장치
     const node = el('section', 'v2-device');
     const head = el('div', 'v2-device-head');
@@ -464,7 +475,7 @@ async function main() {
           for (let i = 0; i < tier; i++) hb.append(html('p', 'v2-dhint-line', `<b>${['첫 힌트', '풀이 방향', '정답'][i]}</b> ${hs[i]}`));
           const maxTier = Math.min(3, hs.length);
           if (tier < maxTier) {
-            const b = btn('v2-dhint-btn' + (tier === 2 ? ' last' : ''), ['힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { if (tier === 2 && !b.dataset.sure) { b.dataset.sure = '1'; b.textContent = '정말 정답을 볼까요? 한 번 더 누르기'; return; } S.hints[did] = tier + 1; save(); drawHint(); });
+            const b = btn('v2-dhint-btn' + (tier === 2 ? ' last' : ''), ['힌트 받기', '풀이 방향 받기', '정답 보기'][tier], () => { if (tier === 2 && !b.dataset.sure) { b.dataset.sure = '1'; b.textContent = '정말 정답을 볼까요? 한 번 더 누르기'; return; } S.hints[did] = tier + 1; save(); drawHint(); keepAbove(hb.lastElementChild?.previousElementSibling || hb.lastElementChild, hb.lastElementChild); });
             hb.append(b);
           } else if (hs.length < 3) hb.append(el('p', 'v2-dhint-note', '이 편은 정답 힌트가 없다 여기까지가 전부다'));
         };
@@ -476,7 +487,7 @@ async function main() {
     if (solved && dev.reveal?.ending && !S.ended) node.append(btn('v2-primary', (dev.reveal.endingLabel || '이야기의 끝으로') + ' →', () => { S.screen = 'ending'; S.ended = true; save(); closeDialog(); }));
     const body = el('div', 'v2-device-body');
     const status = el('p', 'v2-status'); status.setAttribute('role', 'status');
-    const ctx = { d, S, el, save: () => { save(); status.textContent = ''; status.classList.remove('wrong'); draw(); }, status: (m) => { status.textContent = m; } };
+    const ctx = { d, S, el, save: () => { save(); status.textContent = ''; status.classList.remove('wrong'); draw(); }, status: (m) => { status.textContent = m; if (m) { try { keepAbove(status, actions); } catch { keepAbove(status); } } }, keepAbove: (a, b) => keepAbove(a, b) };
     let draw = () => { body.replaceChildren(bust(dev.render(ctx))); };
     draw();
     node.append(body);
@@ -489,11 +500,11 @@ async function main() {
         if (r.ok) { solve(did); return; }
         status.textContent = r.msg; status.classList.add('wrong'); play('lock'); buzz([10, 60, 10]); draw();
         // 휴대폰에서 자료판이 펼쳐져 있어도 오답 문구와 확인 버튼이 판 위로 보이게
-        requestAnimationFrame(() => { const box = bench.closest('.v2-dialog-box'); if (!box || !narrow()) return; const sh = bench.querySelector('.v2-bench-docs'); const limit = (sh ? sh.getBoundingClientRect().top : box.getBoundingClientRect().bottom) - 12; const b = actions.getBoundingClientRect().bottom; const t = status.getBoundingClientRect().top; if (b > limit) box.scrollBy({ top: b - limit, behavior: 'smooth' }); else if (t < box.getBoundingClientRect().top + 60) box.scrollBy({ top: t - box.getBoundingClientRect().top - 60, behavior: 'smooth' }); });
+        keepAbove(status, actions);
       });
       actions.append(go);
       ctx.commit = () => go.click();
-      const gate = () => { if (dev.canCommit) { go.hidden = !dev.canCommit(d); actions.hidden = go.hidden; } };
+      const gate = () => { if (dev.canCommit) { go.hidden = !dev.canCommit(d, S); actions.hidden = go.hidden; } };
       gate(); const _draw = draw; draw = () => { _draw(); gate(); };
     }
     node.append(status, actions);
@@ -532,7 +543,9 @@ async function main() {
       // 휴대폰: 자료판이 창 아래에 붙어 있다가(접힘) 자료 이름을 누르면 화면 아래 절반으로 올라온다 위 절반에서 장치를 보며 조작
       const fold = btn('v2-bench-fold', '접기 ▾', () => show(null), '자료판 접기');
       const headRow = el('div', 'v2-bench-head');
-      headRow.append(html('p', 'v2-bench-label', '<span class="wide-only">옆에 펼쳐 둔 자료</span><span class="narrow-only">자료</span>'), tabs, fold);
+      // 자료가 길면 판을 크게 (장치는 잠깐 가려도 자료를 한눈에)
+      const grow = btn('v2-bench-grow', '크게', () => { const big = side.classList.toggle('big'); grow.textContent = big ? '작게' : '크게'; grow.setAttribute('aria-label', big ? '자료판 작게' : '자료판 크게'); requestAnimationFrame(() => bench.style.setProperty('--sheet-h', side.getBoundingClientRect().height + 12 + 'px')); }, '자료판 크게');
+      headRow.append(html('p', 'v2-bench-label', '<span class="wide-only">옆에 펼쳐 둔 자료</span><span class="narrow-only">자료</span>'), tabs, grow, fold);
       side.append(headRow, panel);
       bench.classList.add('has-docs');
       bench.append(side);

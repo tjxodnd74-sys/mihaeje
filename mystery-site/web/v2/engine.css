@@ -333,13 +333,14 @@ a{color:inherit}
 .v2-dhint-btn.last{border-style:solid;border-color:rgba(232,96,74,.6);color:#f0a08f}
 .v2-dhint-note{margin:0;font-size:13px;color:var(--soft-3)}
 .v2-refs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 16px}
-.v2-refs-label{font-size:12px;color:var(--fog)}
+.v2-refs-label{font-size:13px;color:var(--fog)}
 .v2-ref{background:transparent;border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:13px;color:var(--soft-2)}
 .v2-ref.read{border-style:dashed;color:var(--fog)}
 .v2-device-body{margin:0 0 14px}
 .v2-status:empty{margin:0}
 .v2-status{margin:10px 0;color:var(--soft-2);font-size:15px}
 .v2-status.wrong{color:var(--wrong)}
+.dk-note{margin:8px 0;color:var(--wrong);font-size:15px}.dk-note:empty{display:none}
 .v2-actions{display:flex;gap:10px;align-items:center}
 .v2-actions[hidden]{display:none}
 .v2-solved{color:var(--ok);margin:0}
@@ -399,7 +400,7 @@ a{color:inherit}
 .v2-chip.done{border-style:dashed}
 .v2-hint-box{display:grid;gap:10px}
 .v2-hint-line{margin:0;padding:10px 12px;background:#fff8;border:1px solid var(--paper-line);border-radius:3px;font-size:15px}
-.v2-hint-line b{display:block;font-size:12px;color:#7a7462;margin-bottom:2px}
+.v2-hint-line b{display:block;font-size:13px;color:#7a7462;margin-bottom:2px}
 .v2-hints .v2-secondary{justify-self:start;color:var(--paper-ink)}
 
 /* 4. 엔딩 */
@@ -454,7 +455,7 @@ a{color:inherit}
 .v2-guide summary{cursor:pointer;font-weight:600;color:var(--lamp)}
 .v2-guide p{margin:6px 0 2px}
 /* 자료판: 넓은 화면은 장치 옆, 휴대폰 세로는 창 아래에 붙은 판(자료 이름을 누르면 아래 절반으로 펼쳐짐) */
-.v2-bench-fold{display:none}
+.v2-bench-fold,.v2-bench-grow{display:none}
 .narrow-only{display:none}
 @media (max-width:899px){
   .v2-bench{grid-template-columns:minmax(0,1fr)}
@@ -469,7 +470,8 @@ a{color:inherit}
   .v2-bench-panel{display:none}
   .v2-bench-docs.none .v2-bench-panel{display:block;margin-top:6px}
   .v2-bench-docs.open .v2-bench-panel{display:block;height:36svh;overflow:auto;overscroll-behavior:contain;margin-top:8px;border-radius:4px}
-  .v2-bench-docs.open .v2-bench-fold{display:inline-flex;align-items:center;flex:none;min-height:40px;padding:0 12px;background:transparent;border:1px solid var(--line);border-radius:999px;color:var(--soft-2);font-size:13px}
+  .v2-bench-docs.open .v2-bench-fold,.v2-bench-docs.open .v2-bench-grow{display:inline-flex;align-items:center;flex:none;min-height:40px;padding:0 10px;background:transparent;border:1px solid var(--line);border-radius:999px;color:var(--soft-2);font-size:13px}
+  .v2-bench-docs.open.big .v2-bench-panel{height:62svh}
   .v2-bench-paper{max-height:none}
 }
 @media (min-width:900px),(orientation:landscape) and (max-height:500px) and (min-width:700px){
@@ -480,7 +482,7 @@ a{color:inherit}
   .narrow-only{display:none}
   .v2-bench-tabs{flex-wrap:wrap;overflow:visible;margin:0 0 10px}
   .v2-bench-panel{display:block;height:auto}
-  .v2-bench-fold{display:none!important}
+  .v2-bench-fold,.v2-bench-grow{display:none!important}
   .v2-device{padding-top:4px}
 }
 @media (orientation:landscape) and (max-height:500px) and (min-width:700px){
@@ -2330,7 +2332,8 @@ html[data-case="apartment"] .apt-zoom-btn:focus-visible{outline:2px solid var(--
 html[data-case="apartment"] .apt-zoom{position:fixed;inset:0;z-index:2147483000;margin:0;padding:0;border:0;background:rgba(4,5,7,.94);cursor:zoom-out;overflow:hidden}
 html[data-case="apartment"] .apt-zoom img{position:absolute;left:50%;top:50%;width:min(96vw,calc(88svh*1024/533));height:auto;max-width:none;transform:translate(-50%,-50%)}
 html[data-case="apartment"] .apt-zoom-cap{position:absolute;left:50%;top:max(10px,env(safe-area-inset-top));transform:translateX(-50%);font-family:var(--sans);font-size:14px;color:#f2f0ea;background:rgba(0,0,0,.6);padding:4px 10px;border-radius:2px;white-space:nowrap}
-@media (orientation:portrait) and (max-width:640px){html[data-case="apartment"] .apt-zoom img{width:min(calc(100svh - 70px),calc(94vw*1024/533));transform:translate(-50%,-50%) rotate(90deg)}}
+/* 세로 휴대폰: 돌리지 않고(좌우가 핵심인 사진) 크게 키워 옆으로 밀어 본다 */
+@media (orientation:portrait) and (max-width:640px){html[data-case="apartment"] .apt-zoom{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}html[data-case="apartment"] .apt-zoom img{left:0;width:auto;height:min(64svh,calc(100vw*2.2*533/1024));transform:translateY(-50%)}html[data-case="apartment"] .apt-zoom-cap{position:fixed}}
 @media (max-width:640px),(orientation:landscape) and (max-height:500px){
   html[data-case="apartment"] .mailwall6 .mail-slot{min-width:40px}
   html[data-case="apartment"] .keyclip .hook-tag{width:max(30px,5.6cqw);height:max(30px,5.6cqw);font-size:max(13px,2.6cqw)}

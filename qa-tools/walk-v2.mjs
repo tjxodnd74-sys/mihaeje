@@ -5,7 +5,7 @@ const shots = process.env.WALK_SHOTS; // directory for screenshots, optional
 async function shot(page, name) { if (shots) await page.screenshot({ path: `${shots}/${name}.png`, fullPage: false }); }
 const dlgHas = async (page, text) => (await L.dialogText(page)).includes(text);
 async function commit(page) { await L.click(page, '', { within: 'dialog[open] .v2-actions' }); await L.sleep(250); }
-async function status(page) { return page.evaluate(() => document.querySelector('dialog[open] .v2-status')?.textContent.trim() || ''); }
+async function status(page) { return page.evaluate(() => ((document.querySelector('dialog[open] .dk-note')?.textContent || '') + ' ' + (document.querySelector('dialog[open] .v2-status')?.textContent || '')).trim()); }
 async function hotspotOnce(page, label) {
   const ok = await page.evaluate((label) => { const b = [...document.querySelectorAll('.v2-hotspot')].find((x) => x.getAttribute('aria-label') === label); if (!b) return false; b.click(); return true; }, label);
   if (!ok) throw new Error('hotspot not found ' + label);
@@ -36,7 +36,7 @@ async function station({ mobile = false } = {}) {
     // 아직 아무것도 안 읽었을 때: 장치 옆 자료는 잠겨 있어야 함
     await hotspot(page, '열차 안내판');
     L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].every((t) => t.disabled)), 'bench docs locked before reading');
-    L.check(await page.evaluate(() => { const f = document.querySelector('dialog[open] .grille-flash'); return !!f && f.textContent.includes('3번 승강장') && !f.textContent.includes('수림'); }), 'grille: board flash shows no destination');
+    L.check(await page.evaluate(() => (document.querySelector('dialog[open]')?.innerText || '').includes('겹쳐 볼 것이 아직 손에 없다') && !document.querySelector('dialog[open] .grille-ticket') && document.querySelector('dialog[open] .v2-actions')?.hidden), 'grille: no ticket before the old sign is read');
     await L.closeDialog(page);
     // read docs in hall
     for (const [h, d] of [['옆자리에 내려놓은 휴대폰', '민서의 마지막 메시지'], ['벽에 기댄 옛 표지판', '벽에 기댄 옛 표지판'], ['매표창구의 역무원', '네 시 반 첫 열차'], ['승강장 개편 안내', '승강장 개편 안내']]) { await hotspot(page, h); L.check(await dlgHas(page, d), 'doc opens: ' + h); await L.closeDialog(page); }
@@ -53,6 +53,7 @@ async function station({ mobile = false } = {}) {
     // grille: wrong then right (읽은 자료는 옆에 펼쳐짐)
     await hotspot(page, '열차 안내판');
     L.check(await page.evaluate(() => [...document.querySelectorAll('dialog[open] .v2-bench-tab')].every((t) => !t.disabled)), 'bench docs unlocked after reading');
+    L.check(await page.evaluate(() => { const f = document.querySelector('dialog[open] .grille-flash'); return !!f && f.textContent.includes('3번 승강장') && !f.textContent.includes('수림'); }), 'grille: board flash shows no destination');
     await commit(page);
     L.check((await status(page)).includes('하나씩 골라야'), 'grille: empty choice explained');
     await L.click(page, '1번 승강장'); await L.click(page, '둘째 기둥'); await commit(page);
