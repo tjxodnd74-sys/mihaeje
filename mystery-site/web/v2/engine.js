@@ -284,9 +284,9 @@ async function main() {
     const openHere = Object.keys(ep.devices).some((did) => ep.devices[did].scene === scene.id && !S.solved.includes(did) && deviceShown(did));
     if (!openHere) { const t = unlockedScenes().find((sc) => sc.id !== scene.id && Object.keys(ep.devices).some((did) => ep.devices[did].scene === sc.id && !S.solved.includes(did) && deviceShown(did))); if (t && !autoTravel.some((a) => a.to === t.id) && !scene.hotspots.some((h) => h.kind === 'travel' && h.to === t.id && (!h.visible || h.visible(S)))) autoTravel.push({ id: 'go-' + t.id, x: 50, y: 92, label: t.name + '(으)로 가기', kind: 'travel', to: t.id, auto: true }); }
     const travelRow = el('div', 'v2-travel-row');
-    [...scene.hotspots, ...autoTravel].forEach((h) => {
+    [...scene.hotspots, ...autoTravel].forEach((h, hi) => {
       if (h.visible && !h.visible(S)) return;
-      const done = h.kind === 'doc' ? S.read.includes(h.doc) : h.kind === 'device' ? S.solved.includes(h.device) : false;
+      const done = h.kind === 'doc' ? S.read.includes(h.doc) : h.kind === 'device' ? S.solved.includes(h.device) : h.kind === 'travel' ? S.visited.includes(h.to) : false;
       if (h.auto) h.label = josa(h.label.replace('(으)로 가기', ''), '으로', '로') + ' 가기';
       // 새로 열린 장소로 가는 길은 눈에 보이는 버튼으로, 나머지는 그림 속 물건 자리에 보이지 않는 누름 자리로
       if (h.auto) { const b = btn('v2-hotspot travel go', '', () => act(h), h.label); b.append(el('span', 'v2-hotspot-label', h.label + ' →')); travelRow.append(b); return; }
@@ -294,7 +294,7 @@ async function main() {
       b.style.left = h.x + '%'; b.style.top = h.y + '%';
       if (h.r) b.style.setProperty('--hit', h.r + '%');
       // 아직 안 본 물건은 작은 빛이 가끔 반짝인다(자리마다 다른 박자)
-      b.style.setProperty('--tw', (-((h.x * 7 + h.y * 13) % 42) / 10).toFixed(1) + 's');
+      b.style.setProperty('--tw', (-((h.x * 7.3 + h.y * 3.1 + hi * 1.37) % 4.2)).toFixed(2) + 's');
       b.append(el('i'), el('span', 'v2-hotspot-label', h.label));
       pan.append(b);
     });
@@ -342,7 +342,12 @@ async function main() {
     const more = el('i', 'v2-talk-more');
     talk.append(who, say, more);
     const shut = () => { if (!talk.classList.contains('typed')) { talk.classList.add('typed'); return; } talk.classList.add('gone'); talkBtn.hidden = false; };
-    talk.onclick = shut;
+    // 대사창 아래에 물건이 있으면 한 번에: 대사창을 접고 그 물건을 연다 (두 번 눌러 접어야 하던 문제)
+    talk.onclick = (e) => {
+      talk.style.pointerEvents = 'none'; const under = document.elementFromPoint(e.clientX, e.clientY)?.closest('.v2-hotspot'); talk.style.pointerEvents = '';
+      if (under && e.clientX) { talk.classList.add('typed', 'gone'); talkBtn.hidden = false; under.click(); return; }
+      shut();
+    };
     const talkBtn = btn('v2-talk-open', '', () => { talk.classList.remove('gone'); talk.classList.add('typed'); talkBtn.hidden = true; }, '장면 설명 다시 보기');
     talkBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4V5Z"/></svg>';
     if (sceneSeen.has(scene.id) && !firstVisit) { talk.classList.add('gone', 'typed'); } else { talkBtn.hidden = true; sceneSeen.add(scene.id); const tdone = [...(line || '')].length * 28 + 300; setTimeout(() => talk.classList.add('typed'), tdone); setTimeout(() => { if (talk.isConnected && !talk.classList.contains('gone')) { talk.classList.add('gone'); talkBtn.hidden = false; } }, tdone + 6500); }
@@ -483,6 +488,8 @@ async function main() {
         const r = dev.check(d, S); save();
         if (r.ok) { solve(did); return; }
         status.textContent = r.msg; status.classList.add('wrong'); play('lock'); buzz([10, 60, 10]); draw();
+        // 휴대폰에서 자료판이 펼쳐져 있어도 오답 문구와 확인 버튼이 판 위로 보이게
+        requestAnimationFrame(() => { const box = bench.closest('.v2-dialog-box'); if (!box || !narrow()) return; const sh = bench.querySelector('.v2-bench-docs'); const limit = (sh ? sh.getBoundingClientRect().top : box.getBoundingClientRect().bottom) - 12; const b = actions.getBoundingClientRect().bottom; const t = status.getBoundingClientRect().top; if (b > limit) box.scrollBy({ top: b - limit, behavior: 'smooth' }); else if (t < box.getBoundingClientRect().top + 60) box.scrollBy({ top: t - box.getBoundingClientRect().top - 60, behavior: 'smooth' }); });
       });
       actions.append(go);
       ctx.commit = () => go.click();
@@ -505,6 +512,8 @@ async function main() {
         save();
         [...tabs.children].forEach((t) => { if (t.disabled) return; t.classList.toggle('on', t.dataset.doc === r); t.classList.toggle('read', S.read.includes(t.dataset.doc)); });
         side.classList.toggle('open', !!r);
+        if (r) { const on = [...tabs.children].find((t) => t.dataset.doc === r); on && requestAnimationFrame(() => { tabs.scrollLeft = Math.max(0, on.offsetLeft - tabs.offsetLeft - 8); }); }
+        requestAnimationFrame(() => bench.style.setProperty('--sheet-h', (narrow() ? side.getBoundingClientRect().height + 12 : 0) + 'px'));
         if (!r) { const any = refs.some((x) => S.read.includes(x) || (S.found || []).includes(x)); side.classList.toggle('none', !any); panel.replaceChildren(el('p', 'v2-bench-empty', any ? (narrow() ? '자료 이름을 누르면 여기 펼쳐집니다' : '위에서 자료를 고르면 여기 펼쳐집니다') : '장면에서 자료를 먼저 찾아 읽으면, 여기에 펼쳐 둘 수 있습니다')); return; }
         const dd = ep.docs[r];
         const paper = el('div', 'v2-paper v2-bench-paper');
