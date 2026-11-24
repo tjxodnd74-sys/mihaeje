@@ -531,3 +531,6 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 2026-11-24 16:23 | AI타임스 알리바바 블랙리스트·아마존 데카르트·그록 제소·Arm 하스·오픈AI 녹음·앤트로픽 주가(제외) | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-24 16:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + ytInitialData 파싱) — 새 롱폼 1개(에이커). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음(16:41 앞뒤, 구글 소식 미국 추정·출처 1곳). 인스타 브라우저 안 엶.
 2026-11-24 17:23 | 유튜브(찍봇, 알림 제외·광고성 가능) | 사용자 90%는 모르는, 클로드와 힉스필드mcp 조합법 | https://www.youtube.com/@zzikbot/videos
+2026-11-24 18:23 | 롱폼: 소소한AI입문노트 '2026 어도비 MAX 역대급 업데이트 공개' | 유튜브 | https://www.youtube.com/@소소한ai입문노트/videos
+2026-11-24 18:23 | AI타임스 정부 AI 예산 1.6배·GLM-5.4 루프 트랜스포머·말레이시아 데이터센터 제한·시에라 투자(제외) / 긱뉴스 HUMAN.md·Fast-Anything·orca 키트·Postgres(제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-24 18:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + ytInitialData 파싱) — 새 롱폼 1개(소소한AI입문노트 어도비 MAX). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음(새 소비자 소식 없음). 인스타 브라우저 안 엶.
