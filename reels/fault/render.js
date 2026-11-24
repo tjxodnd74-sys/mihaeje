@@ -13,7 +13,7 @@ const { spawn } = require('child_process'); const fs = require('fs');
   else {
     const N = Math.round(spec.total * 30);
     const ff = spawn('ffmpeg', ['-v', 'error', '-y', '-f', 'image2pipe', '-framerate', '30', '-i', '-', '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-pix_fmt', 'yuv420p', out], { stdio: ['pipe', 'inherit', 'inherit'] });
-    for (let f = 0; f < N; f++) { await p.evaluate(t => window.seek(t), f / 30); const buf = await p.screenshot({ type: 'jpeg', quality: 92 }); if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r)); if (f % 90 == 0) console.log('frame', f, '/', N); }
+    for (let f = Math.round((spec.start || 0) * 30); f < N; f++) { await p.evaluate(t => window.seek(t), f / 30); const buf = await p.screenshot({ type: 'jpeg', quality: 92 }); if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r)); if (f % 90 == 0) console.log('frame', f, '/', N); }
     ff.stdin.end(); await new Promise(r => ff.on('close', r));
   }
   await b.close(); srv.kill(); console.log('done');
