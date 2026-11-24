@@ -86,9 +86,10 @@ if (typeof document !== 'undefined' && !window.__aptZoom) {
   document.addEventListener('click', (e) => {
     const b = e.target.closest?.('.apt-zoom-btn'); if (!b || !document.documentElement.matches('[data-case="apartment"]')) return;
     const img = b.querySelector('img'); if (!img) return;
-    const cover = document.createElement('button'); cover.type = 'button'; cover.className = 'apt-zoom'; cover.setAttribute('aria-label', '크게 본 사진 닫기');
+    const cover = document.createElement('div'); cover.setAttribute('role', 'button'); cover.tabIndex = 0; cover.className = 'apt-zoom'; cover.setAttribute('aria-label', '크게 본 사진 닫기');
     const big = document.createElement('img'); big.src = img.currentSrc || img.src; big.alt = img.alt;
-    const cap = document.createElement('span'); cap.className = 'apt-zoom-cap'; cap.textContent = (b.dataset.cap || '') + ' · 누르면 닫힘';
+    const cap = document.createElement('span'); cap.className = 'apt-zoom-cap'; cap.textContent = (b.dataset.cap || '') + (matchMedia('(orientation:portrait) and (max-width:640px)').matches ? ' · 옆으로 밀어 보기' : '') + ' · 누르면 닫힘';
+    cover.onkeydown = (ev) => { if (ev.key === 'Escape' || ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); cover.click(); } };
     cover.append(big, cap);
     cover.onclick = (ev) => { ev.stopPropagation(); cover.remove(); b.focus?.(); };
     (b.closest('dialog') || document.body).append(cover); cover.focus();

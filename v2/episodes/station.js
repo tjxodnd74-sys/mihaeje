@@ -380,6 +380,7 @@ export default {
         '시계 방향으로 한 번 돌리고 오른쪽 1칸, 아래 1칸 → 「3번 둘째 기둥」 옛 3번은 지금 2번 → 2번 승강장 둘째 기둥',
       ],
       initial: () => ({ dx: 0, dy: 0, turn: 0, platform: null, pillar: null }),
+      canCommit: (d, S) => S.read.includes('sign'),
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'grille');
@@ -397,6 +398,8 @@ export default {
           }
           board.append(cell);
         }));
+        // 구간권은 옛 표지판 뒷면에 붙어 있다 — 떼어 오기 전엔 겹쳐 볼 것이 없다
+        if (!ctx.S.read.includes('sign')) { frame.append(board); wrap.append(frame, el('p', 'pick-label', '겹쳐 볼 것이 아직 손에 없다 대합실을 더 둘러본다')); return wrap; }
         const ticket = el('div', 'grille-ticket');
         ticket.style.setProperty('--dx', d.dx);
         ticket.style.setProperty('--dy', d.dy);
@@ -484,7 +487,8 @@ export default {
         wrap.append(glass);
         const gw = el('div', 'mirror-gauge-row'); gw.append(gauge, el('p', 'mirror-cap', '거울 기둥 받침대에 눈금이 새겨져 있다 녹이 슬어 거울이 달린 그 기울기에서 꼼짝도 하지 않는다'));
         wrap.append(gw);
-        const b = el('button', 'ctl wide', d.held ? '사진 내리기' : '네컷사진 뒷면을 거울 앞에 들기'); b.type = 'button'; b.onclick = () => { d.held = !d.held; if (d.held && d.tilt == null) d.tilt = 0; save(); };
+        const hasStrip = ctx.S.read.includes('strip');
+        const b = el('button', 'ctl wide', d.held ? '사진 내리기' : hasStrip ? '네컷사진 뒷면을 거울 앞에 들기' : '거울 앞에 들 사진이 아직 손에 없다'); b.type = 'button'; b.disabled = !hasStrip && !d.held; b.onclick = () => { d.held = !d.held; if (d.held && d.tilt == null) d.tilt = 0; save(); };
         wrap.append(b);
         if (d.held) {
           const tickNow = (t) => Math.round(t / 10);

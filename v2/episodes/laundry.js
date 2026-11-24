@@ -86,7 +86,7 @@ const PIPE = { 1: 3, 2: 0, 3: 5, 4: 1, 5: 4, 6: 2 }; // 건조기 → 천장 끝
 const WALL = { TL: 'ㅂ', TM: 'ㄹ', TR: 'ㄴ', BL: 'ㅁ', BM: 'ㄱ', BR: 'ㄷ' }; // 골목에서 본 벽
 const ANSWER_VENTS = Object.fromEntries(Object.entries(WALL).map(([v, l]) => [v, String(Object.keys(PIPE).find((n) => LETTERS[PIPE[n]] === l))]));
 
-// 뒷골목 카메라 어젯밤(월요일 밤) 녹화 10분마다 한 장 — 벤치에 앉은 사람이 있는 건 00:10, 00:20
+// 뒷골목 카메라 월요일 밤(11/2) 녹화 — 지금은 11/4 0시라 '어젯밤'이 아니다 10분마다 한 장 — 벤치에 앉은 사람이 있는 건 00:10, 00:20
 // v126: 00:10 사람은 벤치 가운데에, 앉은 사람은 머리가 낮고 허벅지·무릎이 벤치 높이에서 앞으로 나오게 (서 있는 사람과 한눈에 구분)
 const FRAMES = [
   { t: '23:50', day: '2026/11/02 월', fig: ['walker'] },
@@ -196,7 +196,7 @@ export default {
     { device: 'magnet', label: '동전 넣는 사람' },
     { device: 'coinroll', label: '도현에게 건넨 봉투' },
     { device: 'vents', label: '6번의 배기구' },
-    { device: 'cctv', label: '어젯밤 벤치' },
+    { device: 'cctv', label: '월요일 밤 벤치' },
     { device: 'sched', label: '새 예약' },
   ],
 
@@ -210,7 +210,7 @@ export default {
       // 배기구를 푼 뒤 6번은 멈췄다 → 문 유리 불을 끈 모습을 얹는다 (그림 속 6번 유리 자리 픽셀에 맞춤)
       get overlays() { return (stateNow().solved || []).includes('vents') ? [{ x: 86.72, y: 9.45, w: 12.4, h: 29.8, cls: 'drum-off', html: `<img src="${P}props/drum6-off.webp" alt="">` }] : []; },
       arrive: (S) => {
-        if (S.solved.includes('cctv')) return '단말기엔 어젯밤 벤치가 멈춰 있다 6번 패널 액정에 예약 화면이 켜져 있다';
+        if (S.solved.includes('cctv')) return '단말기엔 월요일 밤 벤치가 멈춰 있다 6번 패널 액정에 예약 화면이 켜져 있다';
         if (S.solved.includes('vents')) return '6번은 멈췄다 문 유리가 아직 따뜻하다 벽에 붙은 관리자 단말기 화면이 저 혼자 깜빡인다 뒷골목을 비추는 카메라다';
         if (S.solved.includes('panel')) return '6번은 아직 빈 통으로 돈다 패널 액정엔 ADMIN 그 아래 동전함 잠금이 풀려 있다';
         return '밖엔 비가 온다 맨 끝 6번이 빈 통으로 돌고, 안쪽 4번에선 손님이 두고 간 이불이 웅웅 돈다 6번 앞판엔 엄마 쪽지가 테이프로 붙어 있고 앞 유리 안쪽엔 엄마가 단 네온 간판';
@@ -557,7 +557,7 @@ export default {
     cctv: {
       title: '관리자 단말기 · 뒷골목 카메라',
       scene: 'hall',
-      intro: '어젯밤 녹화가 10분에 한 장씩 남아 있다 막대를 밀거나 아래 시각을 누르면 화면이 넘어간다 벤치에 사람이 앉아 있는 화면이면 「이 화면 표시」를 눌러 둔다',
+      intro: '월요일 밤 녹화가 10분에 한 장씩 남아 있다 막대를 밀거나 아래 시각을 누르면 화면이 넘어간다 벤치에 사람이 앉아 있는 화면이면 「이 화면 표시」를 눌러 둔다',
       docs: ['bus', 'log6', 'talk'],
       hintCode: 'W-S04',
       hints: [
@@ -608,9 +608,9 @@ export default {
         return { ok: false, msg: '표시한 화면을 처음부터 다시 돌려 보니 맞지 않는다' };
       },
       reveal: {
-        title: '어젯밤 벤치',
+        title: '월요일 밤 벤치',
         text: '표시한 화면을 나란히 띄웠다 원래대로라면 6번이 바람을 내보냈을 열두 시 화면엔 벤치에 고양이 한 마리뿐이다 눈만 하얗게 빛난다',
-        scene: ['어젯밤은 월요일이라 6번은 돌지도 않았다 화면 속 사람들은 어깨를 웅크린 채 버스를 기다렸다', '6번 패널 액정에 예약 화면이 켜졌다 관리자 모드가 아직 살아 있다'],
+        scene: ['월요일 밤이라 6번은 돌지도 않았다 화면 속 사람들은 어깨를 웅크린 채 버스를 기다렸다', '6번 패널 액정에 예약 화면이 켜졌다 관리자 모드가 아직 살아 있다'],
       },
     },
 

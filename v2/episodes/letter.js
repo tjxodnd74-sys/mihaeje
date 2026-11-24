@@ -400,6 +400,7 @@ export default {
         '↑ 문 나서 위로 · → 미루새길 따라 오른쪽 · ↑ 빌라 옆 골목으로 위 · ← 빌라 뒤 골목 끝 초록 대문 쪽으로 왼쪽',
       ],
       initial: () => ({ seq: [] }),
+      resetOnOpen: true,
       render(ctx) {
         const { d, el, save } = ctx;
         const wrap = el('div', 'prop staffphoto'); wrap.innerHTML = `<img src="${P}props/dirlock.webp" alt="이름표 없는 사물함과 방향 자물쇠" decoding="async">`;

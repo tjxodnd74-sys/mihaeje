@@ -164,7 +164,7 @@ const EP = {
       id: 'shop',
       name: '다은의 포장 가게',
       image: P + 'shop.webp',
-      focusX: 30, // 휴대폰 첫 화면에 작업대 띠(x23)가 보이게
+      focusX: 36, // 휴대폰 첫 화면에 작업대 띠(x23)와 봄이 목걸이 참(x52)이 같이 보이게 (Pixel 7 폭 기준)
       arrive: '아침 해가 창턱까지 들어와 있다 봄이는 그 안에 앉아 문 밑 봉투만 보고 있다 목덜미에서 못 듣던 달각 소리가 났다',
       hotspots: [
         { id: 'envelope', x: 82, y: 80, r: 8, label: '문 밑으로 들어온 봉투', kind: 'doc', doc: 'invite' },
