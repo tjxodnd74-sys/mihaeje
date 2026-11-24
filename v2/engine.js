@@ -293,6 +293,8 @@ async function main() {
       const b = btn('v2-hotspot' + (done ? ' done' : '') + (h.kind === 'device' ? ' device' : '') + (h.kind === 'travel' ? ' travel' : '') + (h.y > 76 ? ' above' : ''), '', () => act(h, b), h.label);
       b.style.left = h.x + '%'; b.style.top = h.y + '%';
       if (h.r) b.style.setProperty('--hit', h.r + '%');
+      // 아직 안 본 물건은 작은 빛이 가끔 반짝인다(자리마다 다른 박자)
+      b.style.setProperty('--tw', (-((h.x * 7 + h.y * 13) % 42) / 10).toFixed(1) + 's');
       b.append(el('i'), el('span', 'v2-hotspot-label', h.label));
       pan.append(b);
     });

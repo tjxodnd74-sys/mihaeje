@@ -1,7 +1,7 @@
 // 미해제 서비스 워커 — 홈 화면 설치 + 인터넷 없이 이어 하기
 // VERSION 은 play.html 의 ?v= 와 같은 값 (npm run build 가 play.html 을 읽어 맞춰 준다)
 // 버전이 바뀌면 sw.js 내용이 달라져 브라우저가 새 워커를 받고, 옛 캐시는 지운다
-const VERSION = '141';
+const VERSION = '142';
 const CACHE = 'mihaeje-v' + VERSION;
 const SCOPE = new URL('./', self.location).href; // GitHub Pages 에서는 …/mihaeje/
 // rec/ = 같은 gh-pages 의 다른 사이트(즉흥연기 촬영기), api/ = 의견 서버 — 손대지 않는다
