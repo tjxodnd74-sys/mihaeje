@@ -519,3 +519,5 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 2026-11-24 12:23 | 쇼츠: AI리더스랩 가짜 목소리·노마드 AI 인플루언서·원카 지브리 ASMR·신쌤 유튜브 댓글 답글·찍봇 수노 6가지 | 유튜브 쇼츠 | https://www.youtube.com/@ai_leaders_lab/shorts
 2026-11-24 12:23 | AI타임스 황 복귀 의회 반발·앨리스 황·메가스피드·삼성 인사·LGU+ 익시오·한컴 HWPX(제외) / 긱뉴스 CRAMA FILE(제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-24 12:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, ytInitialData lockupMetadataViewModel 파싱) — 새 롱폼 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건. 새 소식 GPT-6.2 솔 → 긴급 제작 요청. vidIQ 생략(10·15시만). 인스타 브라우저 안 엶.
+2026-11-24 13:24 | 긱뉴스 Show GN 뭐따지·원티켓(제외) / AI타임스 새 기사 없음 | 긱뉴스 | https://news.hada.io/
+- 2026-11-24 13:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + ytInitialData 파싱) — 12:23 이후 새 롱폼·새 쇼츠 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음(새 소식 없음, 직전 요청 2시간 안). 인스타 브라우저 안 엶.
