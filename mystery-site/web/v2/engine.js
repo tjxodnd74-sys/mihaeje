@@ -504,7 +504,7 @@ async function main() {
       });
       actions.append(go);
       ctx.commit = () => go.click();
-      const gate = () => { if (dev.canCommit) { go.hidden = !dev.canCommit(d, S); actions.hidden = go.hidden; } };
+      const gate = () => { if (dev.canCommit) { const was = go.hidden; go.hidden = !dev.canCommit(d, S); actions.hidden = go.hidden; if (was && !go.hidden && go.isConnected) keepAbove(actions); } };
       gate(); const _draw = draw; draw = () => { _draw(); gate(); };
     }
     node.append(status, actions);
@@ -549,8 +549,8 @@ async function main() {
       side.append(headRow, panel);
       bench.classList.add('has-docs');
       bench.append(side);
-      const lastTab = S.benchTab[did] && S.read.includes(S.benchTab[did]) ? S.benchTab[did] : null;
-      show(narrow() ? lastTab : (cur ?? refs.find((x) => S.read.includes(x)) ?? null));
+      // 휴대폰은 늘 접힌 채로 연다 (장치부터 보이게) 넓은 화면은 마지막에 본 자료를 펼쳐 둔다
+      show(narrow() ? null : (cur ?? refs.find((x) => S.read.includes(x)) ?? null));
     }
     openDialog(bench, { label: dev.title, wide: refs.length > 0, onClose: () => render() });
   }

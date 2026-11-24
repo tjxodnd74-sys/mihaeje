@@ -1307,7 +1307,7 @@ async function laundry({ mobile = false } = {}) {
     await L.click(page, '00:30 화면 보기'); await L.click(page, '00:30 이 화면 표시'); await commit(page);
     L.check((await status(page)).includes('맞지 않는다'), 'cctv: bus frame (standing) neutral');
     await L.click(page, '00:30 표시 지우기'); await L.click(page, '00:10 화면 보기'); await L.click(page, '00:10 이 화면 표시'); await shot(page, 'l-cctv'); await commit(page);
-    L.check(await dlgHas(page, '어젯밤 벤치'), 'cctv solved');
+    L.check(await dlgHas(page, '월요일 밤 벤치'), 'cctv solved');
     await L.closeDialog(page); await L.sleep(300);
     await hotspot(page, '6번 예약 화면');
     L.check(!(await page.evaluate(() => !!document.querySelector('dialog[open] .warm-bar'))), 'sched: no answer bar drawn');

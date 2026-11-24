@@ -232,5 +232,9 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
 ## v141 (2026-11-24) 휴대폰 자료판
 - 사용자: "PC는 장치 옆에 자료가 떠서 쉬운데 휴대폰은 밑으로 내려야 한다" → 휴대폰 세로(폭 899 이하)에서 장치 창의 자료(.v2-bench-docs)는 창 아래에 붙은 판(position:sticky bottom) — 접힌 상태는 '자료' + 자료 이름 칩 한 줄, 이름을 누르면 아래 40svh 로 펼쳐지고 위에서 장치를 보며 조작, '접기 ▾'
 - 가로 휴대폰(높이 500 이하·폭 700 이상)은 PC처럼 장치 | 자료 나란히
-- 휴대폰은 마지막으로 펼친 자료(S.benchTab)를 기억해 다음에 열 때 그대로 펼침
+- 휴대폰은 장치 창을 늘 접힌 판으로 연다(펼친 채 열면 장치가 260px만 보인다는 점검 결과) · '크게' 단추로 판을 62svh 까지
+- v143 (직원 10명 아이폰·안드로이드 점검 반영): 오답 문구·새 힌트 줄·새로 나타난 확인 버튼은 keepAbove() 로 자료판 위까지 올려 보인다(ctx.keepAbove 로 장치 코드도 사용) · 대사창 아래 물건을 누르면 대사창을 접고 바로 그 물건을 연다 · 다녀온 장소 길(travel)은 done · 휴대폰 위 줄 장소 이름 말줄임 · 남긴 것 이름 줄바꿈 금지
+- 반짝임: 아직 안 본 물건 자리에 8px 빛 점이 4.2초 주기로 (자리마다 박자 다름, 밝은 종이 위에서도 보이게 짙은 테두리) · done·살펴보기·확대 중엔 끔
+- 장치 resetOnOpen: 다시 열면 초기값 (편지 방향 자물쇠) · canCommit(d, S) 로 S 도 받음 (승강장 구간권은 옛 표지판을 읽어야 겹칠 수 있음, 볼록거울은 네컷사진을 읽어야 들 수 있음)
+- 점검 도구: play-cli 모드 iphone/android/small · playlib MIHAEJE_BROWSER=webkit MIHAEJE_DEVICE='iPhone 14' · 이 컨테이너엔 WebKit 이 없다 → Higgsfield 샌드박스에 PLAYWRIGHT_BROWSERS_PATH=/home/user/pw 로 설치하고 부족한 so 는 apt-get download(Dir::State::Lists 를 홈으로) + snapshot.debian.org libjxl0.8_0.8.2-1 + ubuntu libbacktrace0 을 minibrowser-wpe/lib 에 복사 → 실제 사이트(https://mihaeje.com)를 아이폰 사파리 엔진으로 연기 점검 (smoke.cjs)
 - 좁은 화면 grid 는 minmax(0,1fr) (칩 줄 nowrap 이 창 폭을 밀어내던 문제)
