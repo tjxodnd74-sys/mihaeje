@@ -2,7 +2,8 @@
 // Usage: NODE_PATH=<global node_modules> node qa-tools/walk-episode.mjs <case>
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { chromium } = require('playwright');
+const pw = require('playwright');
+const { chromium } = pw;
 
 export const BASE = process.env.MIHAEJE_BASE || 'http://127.0.0.1:8790';
 // 미리보기 서버가 없으면 띄웁니다(이 프로세스가 끝나도 남게).
@@ -18,8 +19,11 @@ export async function ensureServer() {
 }
 
 export async function launch({ mobile = false } = {}) {
-  const browser = await chromium.launch();
-  const ctx = await browser.newContext({
+  // MIHAEJE_BROWSER=webkit|chromium · MIHAEJE_DEVICE='iPhone 14' 등 (휴대폰 걷기를 실제 사파리 엔진으로)
+  const bt = pw[process.env.MIHAEJE_BROWSER || 'chromium'];
+  const browser = await bt.launch();
+  const dev = mobile && process.env.MIHAEJE_DEVICE ? pw.devices[process.env.MIHAEJE_DEVICE] : null;
+  const ctx = await browser.newContext(dev ? { ...dev } : {
     viewport: mobile ? { width: 375, height: 812 } : { width: 1280, height: 900 },
     isMobile: mobile,
     hasTouch: mobile,

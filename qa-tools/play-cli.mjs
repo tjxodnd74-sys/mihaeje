@@ -7,12 +7,15 @@
 // 출력: 열린 창(또는 본문) 글자, 누를 수 있는 것 목록, 장면 표시 목록, 스크린샷 경로
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { chromium } = require('playwright');
+const { chromium, devices } = require('playwright');
 const BASE = process.env.MIHAEJE_BASE || 'http://127.0.0.1:8790';
 const [profile, mode, actsRaw, shotArg] = process.argv.slice(2);
-const mobile = mode === 'mobile';
+// mode: pc | mobile(390) | iphone(iPhone 14 크기·UA) | android(Pixel 7 크기·UA) | small(갤럭시 S 작은 폭 360)
+const DEV = { iphone: devices['iPhone 14'], android: devices['Pixel 7'], small: { ...devices['Galaxy S9+'], viewport: { width: 360, height: 740 } } };
+const mobile = mode !== 'pc';
 const dir = `/tmp/mihaeje-play/${profile}-${mode}`;
-const ctx = await chromium.launchPersistentContext(dir, {
+const d = DEV[mode];
+const ctx = await chromium.launchPersistentContext(dir, d ? { viewport: d.viewport, userAgent: d.userAgent, deviceScaleFactor: d.deviceScaleFactor, isMobile: true, hasTouch: true } : {
   viewport: mobile ? { width: 390, height: 844 } : { width: 1366, height: 860 },
   isMobile: mobile, hasTouch: mobile, deviceScaleFactor: mobile ? 2 : 1,
 });

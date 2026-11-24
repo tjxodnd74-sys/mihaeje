@@ -146,6 +146,11 @@ a{color:inherit}
 .v2-hotspot:focus-visible i,.v2-stage.peek .v2-hotspot i{opacity:1;transform:none}@media (hover:hover){.v2-hotspot:hover i{opacity:1;transform:none}}
 .v2-hotspot:focus-visible .v2-hotspot-label,.v2-stage.peek .v2-hotspot-label{opacity:1}@media (hover:hover){.v2-hotspot:hover .v2-hotspot-label{opacity:1}}
 .v2-hotspot:focus-visible{outline:none}
+.v2-hotspot::before{content:'';position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:rgba(255,232,180,.95);box-shadow:0 0 7px 3px rgba(255,212,140,.5);opacity:0;animation:v2-twinkle 4.2s ease-in-out infinite;animation-delay:var(--tw,0s);pointer-events:none}
+@keyframes v2-twinkle{0%,58%,100%{opacity:0;transform:scale(.5)}72%{opacity:.9;transform:scale(1)}84%{opacity:.3;transform:scale(.85)}}
+.v2-hotspot.done::before,.v2-hotspot.go::before,.v2-stage.peek .v2-hotspot::before,.v2-stage.zoomed .v2-hotspot::before{display:none}
+@media (hover:hover){.v2-hotspot:hover::before{display:none}}
+@media (prefers-reduced-motion:reduce){.v2-hotspot::before{animation:none;opacity:.5;transform:none}}
 .v2-stage.peek .v2-hotspot.done i{border-color:rgba(160,168,176,.7);border-style:dashed}
 .v2-stage.peek .v2-hotspot.done .v2-hotspot-label{color:#a9b1ba}
 @media (hover:none){@media (hover:hover){.v2-hotspot:hover i,.v2-hotspot:hover .v2-hotspot-label{opacity:0}}.v2-stage.peek .v2-hotspot i,.v2-stage.peek .v2-hotspot-label{opacity:1}}
