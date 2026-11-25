@@ -534,3 +534,9 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 2026-11-24 18:23 | 롱폼: 소소한AI입문노트 '2026 어도비 MAX 역대급 업데이트 공개' | 유튜브 | https://www.youtube.com/@소소한ai입문노트/videos
 2026-11-24 18:23 | AI타임스 정부 AI 예산 1.6배·GLM-5.4 루프 트랜스포머·말레이시아 데이터센터 제한·시에라 투자(제외) / 긱뉴스 HUMAN.md·Fast-Anything·orca 키트·Postgres(제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-24 18:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch + ytInitialData 파싱) — 새 롱폼 1개(소소한AI입문노트 어도비 MAX). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음(새 소비자 소식 없음). 인스타 브라우저 안 엶.
+2026-11-25 14:00 | 롱폼: 에이아이하쥬 '클로드 페이블로 공포 게임'·'페이블 5.2 단독 AI 영상' | 유튜브 | https://www.youtube.com/@aihazoo/videos
+2026-11-25 14:00 | 롱폼: AI아스트라 '제미나이 네온 vs 페이블 5.2 AI 영상 프롬프트 대결' | 유튜브 | https://www.youtube.com/@aiastra0/videos
+2026-11-25 14:00 | 롱폼: AI어전트 '클로드에 제품 사진 한 장 → 15초 광고+홈페이지' | 유튜브 | https://www.youtube.com/@aiadjunct/videos
+2026-11-25 14:00 | 롱폼: 스마트대디 '챗GPT vs 클로드 턴제 RPG 게임' / 호랑웨이브 'AI버블론' / 커넥트AI랩 THE FOUNDER 논문 심사평 | 유튜브 | https://www.youtube.com/@smartdaddyai/videos
+2026-11-25 14:00 | AI타임스 AI 물 소비·MS 코드 레드·오픈AI/앤트로픽 개발 중단론·앤트로픽 공모가 붕괴·클로드 십(제외) / 긱뉴스 Tidal AI 음악 금지(제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-25 14:00: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts — 새 롱폼 7개(어제 18:23 이후). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음. 인스타 브라우저 안 엶.
