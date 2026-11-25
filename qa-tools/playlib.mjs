@@ -35,6 +35,8 @@ export async function launch({ mobile = false } = {}) {
   await ctx.route(/cloudflareinsights\.com/, (r) => r.abort());
   page.on('console', (m) => { if (m.type() === 'error' && !/cloudflareinsights/.test(m.location()?.url || '')) errors.push('CONSOLE ' + m.text()); });
   page.on('requestfailed', (r) => { const t = r.failure()?.errorText || ''; if (!/ABORTED/.test(t) && !/cloudflareinsights/.test(r.url())) errors.push('REQFAIL ' + t + ' ' + r.url()); });
+  // DUMP_STATE=<폴더>: 닫기 직전 저장 상태(localStorage)를 파일로 남긴다 (홍보 영상 촬영용 상태 만들기)
+  if (process.env.DUMP_STATE) { const close0 = browser.close.bind(browser); browser.close = async () => { try { const ls = await page.evaluate(() => JSON.stringify(Object.fromEntries(Object.keys(localStorage).map((k) => [k, localStorage.getItem(k)])))); const fs = require('fs'); fs.mkdirSync(process.env.DUMP_STATE, { recursive: true }); const id = (page.url().match(/case=([\w-]+)/) || [])[1] || 'x'; fs.writeFileSync(process.env.DUMP_STATE + '/' + id + '.json', ls); } catch {} return close0(); }; }
   return { browser, page, errors };
 }
 
