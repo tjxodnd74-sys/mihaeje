@@ -238,3 +238,9 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
 - 장치 resetOnOpen: 다시 열면 초기값 (편지 방향 자물쇠) · canCommit(d, S) 로 S 도 받음 (승강장 구간권은 옛 표지판을 읽어야 겹칠 수 있음, 볼록거울은 네컷사진을 읽어야 들 수 있음)
 - 점검 도구: play-cli 모드 iphone/android/small · playlib MIHAEJE_BROWSER=webkit MIHAEJE_DEVICE='iPhone 14' · 이 컨테이너엔 WebKit 이 없다 → Higgsfield 샌드박스에 PLAYWRIGHT_BROWSERS_PATH=/home/user/pw 로 설치하고 부족한 so 는 apt-get download(Dir::State::Lists 를 홈으로) + snapshot.debian.org libjxl0.8_0.8.2-1 + ubuntu libbacktrace0 을 minibrowser-wpe/lib 에 복사 → 실제 사이트(https://mihaeje.com)를 아이폰 사파리 엔진으로 연기 점검 (smoke.cjs)
 - 좁은 화면 grid 는 minmax(0,1fr) (칩 줄 nowrap 이 창 폭을 밀어내던 문제)
+
+## v145 (2026-11-25) 방문 통계
+- 사용자 요청(X 공유 후 방문자 수 보기): Cloudflare Web Analytics (계정 같은 곳, 사이트 mihaeje.com, 수동 JS 조각 — DNS 전용이라 자동 삽입 안 됨) · 토큰 466b97e5c8bc41a19a7865a3c90c7e1e · index/play/privacy.html </head> 앞에 beacon 스크립트 · 통계는 계정 주인만 봄 (대시보드 → 관찰 가능성 → Analytics → Web Analytics)
+- 빌드(build-performance-v53.mjs)는 http(s) 바깥 스크립트를 묶지 않고 그대로 둔다
+- 개인정보처리방침 7항·요약 고침(쿠키 없는 방문 통계, Cloudflare 미국) — 분석 도구를 더 붙이면 방침부터 고칠 것
+- playlib 는 cloudflareinsights 요청을 막는다(검사 방문이 통계에 안 잡히게)

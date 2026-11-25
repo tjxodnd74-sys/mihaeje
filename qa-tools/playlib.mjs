@@ -31,8 +31,10 @@ export async function launch({ mobile = false } = {}) {
   const page = await ctx.newPage();
   const errors = [];
   page.on('pageerror', (e) => errors.push('PAGEERROR ' + e.message));
-  page.on('console', (m) => { if (m.type() === 'error') errors.push('CONSOLE ' + m.text()); });
-  page.on('requestfailed', (r) => { const t = r.failure()?.errorText || ''; if (!/ABORTED/.test(t)) errors.push('REQFAIL ' + t + ' ' + r.url()); });
+  // 방문 통계 스크립트(cloudflareinsights)는 검사에서 막는다 — 테스트 방문이 통계에 잡히지 않게, 컨테이너에선 어차피 못 받음
+  await ctx.route(/cloudflareinsights\.com/, (r) => r.abort());
+  page.on('console', (m) => { if (m.type() === 'error' && !/cloudflareinsights/.test(m.location()?.url || '')) errors.push('CONSOLE ' + m.text()); });
+  page.on('requestfailed', (r) => { const t = r.failure()?.errorText || ''; if (!/ABORTED/.test(t) && !/cloudflareinsights/.test(r.url())) errors.push('REQFAIL ' + t + ' ' + r.url()); });
   return { browser, page, errors };
 }
 
