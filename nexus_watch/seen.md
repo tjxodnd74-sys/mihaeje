@@ -540,3 +540,5 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 2026-11-25 14:00 | 롱폼: 스마트대디 '챗GPT vs 클로드 턴제 RPG 게임' / 호랑웨이브 'AI버블론' / 커넥트AI랩 THE FOUNDER 논문 심사평 | 유튜브 | https://www.youtube.com/@smartdaddyai/videos
 2026-11-25 14:00 | AI타임스 AI 물 소비·MS 코드 레드·오픈AI/앤트로픽 개발 중단론·앤트로픽 공모가 붕괴·클로드 십(제외) / 긱뉴스 Tidal AI 음악 금지(제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-25 14:00: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts — 새 롱폼 7개(어제 18:23 이후). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음. 인스타 브라우저 안 엶.
+2026-11-25 14:24 | AI타임스 트럼프 젠슨 황 복귀 이유·과기부 미래전략회의·화웨이 유죄·딥핑소스(제외) / 긱뉴스 Bonsai 2.5·Tern·MailFlow·테그마크(제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-25 14:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 이동 후 ytInitialData 파싱) — 14:00 이후 새 롱폼 없음. AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 생략(10·15시만). 바로 제작 없음. 인스타 브라우저 안 엶.
