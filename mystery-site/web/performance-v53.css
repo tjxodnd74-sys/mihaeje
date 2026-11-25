@@ -12,3 +12,5 @@
  html[data-theme=hub] body>header>.game-audio{grid-column:2;grid-row:1;justify-self:end;padding:0!important;border:0!important;margin:0!important;min-height:40px!important}
  html[data-theme=hub] body>header>nav{grid-column:1 / 3;grid-row:2;width:100%!important;min-width:0!important;justify-content:space-between!important;gap:10px!important}
 }
+/* 로비 머리 줄의 소리 버튼(details)이 늦게 붙을 때 자주 묻는 질문용 details 여백(위아래 18px·밑줄)을 물려받아 머리가 37px 커지며 화면이 밀리던 것(CLS) — PC 에서도 여백 없이 */
+html[data-theme=hub] body>header>.game-audio{padding:0!important;border:0!important;margin:0!important}
