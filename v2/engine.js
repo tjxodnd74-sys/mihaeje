@@ -2,6 +2,8 @@
 const qs = new URLSearchParams(location.search);
 const id = (qs.get('case') || '').replace(/[^a-z-]/g, '');
 const root = document.getElementById('app');
+// 자료 글꼴을 처음 화면 때 미리 받아 둔다 — 자료 창을 처음 열 때 글꼴이 바뀌며 글이 위로 당겨지던 것(CLS) 방지
+try { document.fonts?.load('400 16px MihaejeSerif'); setTimeout(() => document.fonts?.load('400 16px MihaejeHand'), 1200); } catch {}
 
 const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; };
 const btn = (cls, text, fn, aria) => { const b = el('button', cls, text); b.type = 'button'; if (aria) b.setAttribute('aria-label', aria); b.onclick = fn; return b; };
