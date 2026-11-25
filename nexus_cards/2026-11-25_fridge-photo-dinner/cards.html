@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Regular.woff2);font-weight:400}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-SemiBold.woff2);font-weight:600}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+:root{--bg:#1B1311;--vi:#FF7A55;--am:#7BE3C0;--tx:#F7F1EC;--mu:#B8A9A2;--ln:rgba(255,255,255,.12);--red:#FF6B6B;--grn:#7BE3C0;--y:#FFD43B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#333;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.mono{font-family:'DejaVu Sans Mono',monospace;letter-spacing:.08em}
+.card{width:1080px;height:1350px;position:relative;overflow:hidden;margin:0 0 40px;color:var(--tx);
+ background:radial-gradient(900px 600px at 90% 0%,rgba(255,122,85,.20),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(123,227,192,.12),transparent 60%),var(--bg)}
+.card:before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.05) 2px,transparent 2px);background-size:40px 40px;pointer-events:none}
+.bar{position:absolute;left:64px;right:64px;top:52px;display:flex;justify-content:space-between;align-items:center;font-size:22px;color:var(--mu);padding-bottom:22px;border-bottom:2px dashed var(--ln)}
+.bar .l{display:flex;align-items:center;gap:14px}
+.bar img{width:34px;height:34px}
+.bar .r{color:var(--vi);font-weight:700}
+.wrap{position:absolute;left:64px;right:64px;top:150px}
+.lab{font-size:26px;color:var(--vi);font-weight:700;margin-bottom:22px}
+.h{font-weight:900;font-size:94px;line-height:1.12;letter-spacing:-.045em}
+.h .v{color:var(--vi)} .h .y{color:var(--y)} .h .a{color:var(--am)}
+.box{position:absolute;left:64px;right:64px;border:2px solid var(--ln);border-radius:28px;background:rgba(255,255,255,.04);padding:56px 44px 44px}
+.box .tag{position:absolute;top:-17px;left:36px;background:var(--bg);padding:0 14px;font-size:22px;color:var(--mu)}
+.foot{position:absolute;left:64px;right:64px;bottom:56px;font-size:26px;color:#8A7C76;font-weight:500;line-height:1.5}
+.tip{font-size:38px;color:#E2D6CF;line-height:1.6;font-weight:600}
+.tip b{color:var(--y)}
+
+/* cover */
+#k1{background:#2A1512}#k1:before{display:none}
+#k1 .img{position:absolute;left:0;top:0;width:1080px;height:1000px;overflow:hidden}
+#k1 .img img{position:absolute;width:1080px;left:0;top:-10px}
+#k1 .img:after{content:"";position:absolute;left:0;right:0;bottom:0;height:380px;background:linear-gradient(transparent,rgba(42,21,18,.88) 55%,#2A1512)}
+#k1 .tg{position:absolute;left:60px;top:50px;background:var(--y);color:#111;font-size:30px;font-weight:900;padding:8px 20px;border-radius:10px}
+#k1 .tt{position:absolute;left:58px;right:30px;top:830px;font-size:126px;font-weight:900;line-height:1.06;letter-spacing:-.055em;color:#fff;text-shadow:0 6px 24px rgba(0,0,0,.75)}
+#k1 .tt em{font-style:normal;color:var(--y)}
+#k1 .hd2{position:absolute;left:60px;right:60px;bottom:40px;display:flex;justify-content:space-between;font-size:24px;font-weight:700;color:#A08C84}
+
+/* photo */
+.pic{position:absolute;left:64px;right:64px;border-radius:28px;overflow:hidden;border:2px solid var(--ln)}
+.pic img{width:100%;height:100%;object-fit:cover}
+.mx .pic img{animation:zoom 6s ease-in-out infinite}
+@keyframes zoom{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.scan{position:absolute;left:0;right:0;height:8px;background:linear-gradient(90deg,transparent,var(--y),transparent);box-shadow:0 0 30px var(--y);top:10%}
+.mx .scan{animation:scan 2.4s ease-in-out infinite}
+@keyframes scan{0%{top:6%}50%{top:90%}100%{top:6%}}
+.vs{display:flex;gap:20px}
+.vs div{flex:1;text-align:center;border-radius:22px;padding:24px 10px;font-size:40px;font-weight:900;letter-spacing:-.03em;background:rgba(255,255,255,.05);border:2px solid var(--ln)}
+.vs div small{display:block;font-size:28px;color:var(--mu);font-weight:600;margin-top:6px}
+.vs div.on{border-color:var(--y);color:var(--y)}
+
+/* chat */
+.chat{display:flex;flex-direction:column;gap:26px}
+.me{align-self:flex-end;display:flex;gap:16px;align-items:flex-end}
+.me .th{width:120px;height:150px;border-radius:18px;overflow:hidden;border:3px solid rgba(255,255,255,.25)}
+.me .th img{width:100%;height:100%;object-fit:cover}
+.me .b{background:var(--vi);color:#1B1311;font-size:42px;font-weight:800;padding:24px 30px;border-radius:30px 30px 8px 30px;letter-spacing:-.03em;max-width:700px;line-height:1.35}
+.ai{align-self:flex-start;background:#2C2220;border:2px solid var(--ln);font-size:36px;font-weight:700;padding:26px 30px;border-radius:30px 30px 30px 8px;line-height:1.45;color:#E8DDD6}
+.menus{display:flex;flex-wrap:wrap;gap:16px;margin-top:6px}
+.menus span{font-size:38px;font-weight:800;padding:14px 24px;border-radius:999px;background:rgba(255,255,255,.07);border:2px solid var(--ln)}
+.mx .menus span{animation:pop 6s ease-out infinite both}
+.mx .menus span:nth-child(2){animation-delay:.25s}.mx .menus span:nth-child(3){animation-delay:.5s}.mx .menus span:nth-child(4){animation-delay:.75s}.mx .menus span:nth-child(5){animation-delay:1s}.mx .menus span:nth-child(6){animation-delay:1.25s}
+@keyframes pop{0%{transform:scale(.6);opacity:.2}8%{transform:scale(1.12);opacity:1}14%,100%{transform:scale(1);opacity:1}}
+.cnt{font-size:120px;font-weight:900;color:var(--y);letter-spacing:-.05em;line-height:1}
+
+/* strike / warn */
+.sl{display:flex;flex-direction:column;gap:28px}
+.si{border-radius:24px;padding:30px 34px;background:rgba(255,107,107,.07);border:2px solid rgba(255,107,107,.45)}
+.si .t{font-size:46px;font-weight:900;letter-spacing:-.03em}
+.si .t b{color:var(--red)}
+.si .d{font-size:32px;color:var(--mu);font-weight:600;margin-top:8px}
+
+/* conditions */
+.cond{display:flex;flex-direction:column;gap:22px}
+.cd{display:flex;align-items:center;gap:24px;font-size:46px;font-weight:800;letter-spacing:-.03em;border-radius:22px;padding:26px 30px;background:rgba(123,227,192,.07);border:2px solid rgba(123,227,192,.4)}
+.cd i{font-style:normal;flex:none;width:64px;height:64px;border-radius:50%;background:var(--am);color:#1B1311;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900}
+.mx .cd{animation:slin 6s ease-out infinite both}
+.mx .cd:nth-child(2){animation-delay:.35s}.mx .cd:nth-child(3){animation-delay:.7s}.mx .cd:nth-child(4){animation-delay:1.05s}
+@keyframes slin{0%{transform:translateX(-40px);opacity:.2}10%,100%{transform:none;opacity:1}}
+
+/* dish cards */
+.dish{display:flex;flex-direction:column;gap:26px}
+.dc{border-radius:26px;padding:32px 36px;background:rgba(255,212,59,.06);border:2px solid rgba(255,212,59,.5)}
+.dc .n{font-size:48px;font-weight:900;letter-spacing:-.035em;line-height:1.25}
+.dc .m{display:flex;align-items:center;gap:20px;margin-top:18px}
+.dc .m .tm{font-size:34px;font-weight:900;color:var(--y);flex:none}
+.dc .m .bar2{flex:1;height:16px;border-radius:8px;background:rgba(255,255,255,.1);overflow:hidden}
+.dc .m .bar2 b{display:block;height:100%;background:var(--y);border-radius:8px}
+.mx .dc .m .bar2 b{animation:fill 6s ease-out infinite}
+@keyframes fill{0%{width:0}30%,100%{width:var(--w)}}
+.dc .d{font-size:31px;color:var(--mu);font-weight:600;margin-top:12px}
+
+/* ask */
+.ask{display:flex;flex-direction:column;gap:30px}
+.aq{display:flex;align-items:center;gap:22px;font-size:46px;font-weight:800;letter-spacing:-.03em;border-radius:22px;padding:34px 32px;background:rgba(255,255,255,.05);border:2px solid var(--ln)}
+.aq em{font-style:normal;flex:none;font-size:46px;color:var(--y);font-weight:900}
+.mx .aq em{animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* copy */
+.copy{border:2px dashed rgba(255,212,59,.55);border-radius:20px;padding:40px 36px;background:rgba(255,212,59,.06);font-size:50px;line-height:1.6;font-weight:800;letter-spacing:-.03em}
+.copy .f{color:var(--y)}
+.best{position:absolute;right:40px;top:-26px;border:4px solid var(--y);color:var(--y);font-weight:900;font-size:26px;padding:4px 16px;border-radius:8px;transform:rotate(6deg);background:var(--bg);letter-spacing:.1em}
+
+/* end */
+#k9 .glow{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(255,122,85,.34) 0%,rgba(255,122,85,.12) 45%,transparent 70%)}
+#k9 .floor{position:absolute;left:50%;top:640px;transform:translateX(-50%);width:420px;height:70px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.55),transparent 70%)}
+#k9 .peng{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:300px;filter:drop-shadow(0 20px 40px rgba(255,122,85,.45))}
+#k9 .bubble{position:absolute;left:600px;top:190px;background:#fff;color:#14162A;font-weight:800;font-size:34px;padding:18px 28px;border-radius:26px 26px 26px 6px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+#k9 .c{position:absolute;left:0;right:0;top:720px;text-align:center}
+#k9 .h{font-size:88px}
+#k9 .key{display:inline-block;margin-top:40px;border:4px solid var(--y);color:var(--y);font-size:54px;font-weight:900;padding:14px 46px;border-radius:14px}
+#k9 .s{text-align:center;margin-top:36px;font-size:36px;color:#D9CCC5;font-weight:500;line-height:1.5}
+</style></head><body>
+
+<section class="card" id="k1">
+ <div class="img"><img src="cover.png"></div>
+ <div class="tg">AI 꿀팁</div>
+ <div class="tt">'뭐 해 먹지?'<br>물었더니<br><em>메뉴 6개</em></div>
+ <div class="hd2 mono"><span>@nexus_studio.kr</span><span>끝까지 보세요</span></div>
+</section>
+
+<section class="card" id="k2"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 냉장고 털기</div><div class="r">FILE 02/09</div></div>
+ <div class="wrap"><div class="lab mono">SAME PHOTO · TWO QUESTIONS</div>
+  <div class="h">같은 냉장고 사진,<br><span class="y">질문만</span> 바꿨어요</div></div>
+ <div class="pic" style="top:440px;height:560px"><img src="fridge.png" style="object-position:50% 30%"><div class="scan"></div></div>
+ <div class="vs" style="position:absolute;left:64px;right:64px;top:1040px"><div>질문 ①<small>그냥 물어보기</small></div><div class="on">질문 ②<small>조건 붙이기</small></div></div>
+</section>
+
+<section class="card" id="k3"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 냉장고 털기</div><div class="r">FILE 03/09</div></div>
+ <div class="wrap"><div class="lab mono">QUESTION 01 · JUST ASK</div>
+  <div class="h">그냥 물었더니</div></div>
+ <div class="box" style="top:390px"><div class="tag mono">클로드 · 실제 답</div>
+  <div class="chat">
+   <div class="me"><div class="b">이걸로 뭐 해 먹지?</div><div class="th"><img src="fridge.png"></div></div>
+   <div class="ai">추천 메뉴 몇 가지예요!
+    <div class="menus"><span>김치찌개</span><span>김치볶음밥</span><span>콩나물국</span><span>애호박전</span><span>달걀말이</span><span>쌈밥</span></div></div>
+  </div>
+  <div style="display:flex;align-items:baseline;gap:20px;margin-top:34px"><div class="cnt">6개</div><div class="tip">메뉴는 많은데<br><b>오늘 뭘 하지?</b></div></div>
+ </div>
+</section>
+
+<section class="card" id="k4"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 냉장고 털기</div><div class="r">FILE 04/09</div></div>
+ <div class="wrap"><div class="lab mono">QUESTION 01 · CATCH</div>
+  <div class="h">자세히 보니<br><span class="v">걸리는 것</span></div></div>
+ <div class="box" style="top:520px"><div class="tag mono">답에 있던 그대로</div>
+  <div class="sl">
+   <div class="si"><div class="t">사진에 없는 <b>들기름·고춧가루</b></div><div class="d">"없으면 식용유", "넣으면 얼큰"</div></div>
+   <div class="si"><div class="t">빨간 통은 <b>"고추장 같아요"</b></div><div class="d">확인 안 하고 짐작</div></div>
+   <div class="si"><div class="t">시간·인분 <b>기준 없음</b></div><div class="d">찌개 + 전 + 국까지 추천</div></div>
+  </div></div>
+</section>
+
+<section class="card" id="k5"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 냉장고 털기</div><div class="r">FILE 05/09</div></div>
+ <div class="wrap"><div class="lab mono">QUESTION 02 · ADD 4 RULES</div>
+  <div class="h">조건 <span class="a">4개</span>만<br>붙였더니</div></div>
+ <div class="box" style="top:520px"><div class="tag mono">같은 사진 + 이 네 줄</div>
+  <div class="cond">
+   <div class="cd"><i>1</i>장 안 봐, 기본 양념만</div>
+   <div class="cd"><i>2</i>15분, 1인분 2개</div>
+   <div class="cd"><i>3</i>빨리 먹을 재료부터</div>
+   <div class="cd"><i>4</i>모르는 건 물어봐</div>
+  </div></div>
+</section>
+
+<section class="card" id="k6"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 냉장고 털기</div><div class="r">FILE 06/09</div></div>
+ <div class="wrap"><div class="lab mono">QUESTION 02 · RESULT</div>
+  <div class="h">딱 <span class="y">2개</span>, 있는 걸로</div></div>
+ <div class="box" style="top:370px;padding-top:50px;padding-bottom:36px"><div class="tag mono">클로드 · 실제 답</div>
+  <div class="dish">
+   <div class="dc"><div class="n">햄 콩나물 김치볶음밥<br>+ 계란프라이</div><div class="m"><span class="tm">약 12분</span><span class="bar2"><b style="--w:80%"></b></span></div></div>
+   <div class="dc"><div class="n">두부 애호박 계란부침<br>+ 상추</div><div class="m"><span class="tm">약 15분</span><span class="bar2"><b style="--w:100%"></b></span></div></div>
+  </div>
+  <div class="tip" style="margin-top:30px">뜯은 <b>햄·두부</b>, 콩나물·찬밥부터 썼어요</div></div>
+ <div class="pic" style="top:1085px;height:225px"><img src="dish.png" style="object-position:50% 50%"></div>
+</section>
+
+<section class="card" id="k7"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 냉장고 털기</div><div class="r">FILE 07/09</div></div>
+ <div class="wrap"><div class="lab mono">QUESTION 02 · IT ASKED BACK</div>
+  <div class="h">짐작 대신<br><span class="v">되물어</span> 왔어요</div></div>
+ <div class="box" style="top:520px"><div class="tag mono">"확실하지 않아서 뺐어요"</div>
+  <div class="ask">
+   <div class="aq"><em>?</em>흰 종이팩 — 우유? 생크림?</div>
+   <div class="aq"><em>?</em>빨간·노란 통 — 고추장? 쌈장?</div>
+   <div class="aq"><em>?</em>유리병 흰 알갱이 — 깐마늘?</div>
+  </div>
+  <div class="tip" style="margin-top:30px">답해 주면 <b>메뉴에 넣어 준대요</b></div></div>
+</section>
+
+<section class="card" id="k8"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 냉장고 털기</div><div class="r">FILE 08/09</div></div>
+ <div class="wrap"><div class="lab mono">COPY · PASTE</div>
+  <div class="h">사진이랑<br>이대로 보내세요</div></div>
+ <div class="box" style="top:540px;padding:60px 40px 44px"><div class="tag mono">냉장고 사진 + 복사</div><div class="best mono">COPY</div>
+  <div class="copy">"장 안 보고 <span class="f">사진 속 재료 + 기본 양념</span>만. <span class="f" style="white-space:nowrap">15분, 1인분 2개</span>. 빨리 먹을 것부터, <span class="f" style="white-space:nowrap">모르는 건 물어봐</span>."</div>
+  <div class="tip" style="margin-top:34px">유통기한은 <b>직접 한 번 더</b> 확인하세요</div></div>
+ <div class="pic" style="top:1110px;height:190px;left:64px;right:auto;width:420px"><img src="fridge.png" style="object-position:50% 40%"></div>
+ <div style="position:absolute;left:520px;right:64px;top:1150px;font-size:36px;font-weight:800;color:#E2D6CF;line-height:1.45">📸 사진 한 장 +<br>위 문장 <span style="color:var(--y)">복사·붙여넣기</span></div>
+</section>
+
+<section class="card" id="k9">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 냉장고 털기</div><div class="r">END OF FILE</div></div>
+ <div class="glow"></div><div class="floor"></div><img class="peng" src="../assets/heart.png"><div class="bubble">오늘 저녁은 냉장고 털기!</div>
+ <div class="c"><div class="h">저장해 두고<br>냉장고 열 때 꺼내기</div>
+  <div class="key">📌 저장 · 팔로우</div>
+  <div class="s">직접 해 본 AI 꿀팁, 넥서스가 쉽게 정리해요<br><span class="mono" style="color:var(--vi);font-size:28px">@nexus_studio.kr</span></div></div>
+</section>
+</body></html>
