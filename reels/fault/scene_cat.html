@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(Pretendard-Black.woff2) format("woff2");font-weight:900}
+@font-face{font-family:P;src:url(Pretendard-ExtraBold.woff2) format("woff2");font-weight:800}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#b9cde0;font-family:P,sans-serif;color:#fff;word-break:keep-all}
+canvas{position:absolute;inset:0}
+.ov{position:absolute;left:0;right:0;text-align:center;font-weight:900;letter-spacing:-.04em;-webkit-text-stroke:14px #000;paint-order:stroke fill;text-shadow:0 8px 24px rgba(0,0,0,.45)}
+.ov em{font-style:normal;color:#ffe14a}
+#top{top:250px;font-size:96px;line-height:1.15}
+#lab{top:440px;font-size:88px;line-height:1.15}
+#mid{top:700px;font-size:110px;line-height:1.12}
+#cap{top:1330px;font-size:60px;font-weight:800;-webkit-text-stroke:11px #000;white-space:nowrap;transform-origin:50% 50%}
+#dim{position:absolute;inset:0;background:#000;opacity:0}
+.tag{position:absolute;font-weight:900;font-size:50px;padding:8px 24px;border-radius:18px;border:5px solid #000;color:#000;white-space:nowrap;transform:translate(-50%,-100%);display:none;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+.big{font-size:84px;padding:6px 30px;border-radius:26px}
+#bar{position:absolute;left:0;right:0;top:250px;display:flex;justify-content:center;gap:20px;opacity:0}
+#bar div{width:160px;height:140px;border-radius:30px;border:6px solid #000;background:#2b2f36;color:#8a8f98;font-size:76px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+#bar div.on{background:#ffe14a;color:#000;transform:scale(1.1)}
+#bar div.done{background:#fff;color:#000}
+#summ{position:absolute;left:0;right:0;top:700px;display:flex;justify-content:center;gap:18px}
+#summ div{width:232px;height:300px;border-radius:40px;border:8px solid #000;background:#ffe14a;color:#000;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 16px 40px rgba(0,0,0,.45);opacity:0}
+#summ b{font-size:116px;line-height:1.1}
+#summ span{font-size:40px;margin-top:12px}
+</style>
+<script type="importmap">{"imports":{"three":"./three/build/three.module.js","three/addons/":"./three/examples/jsm/"}}</script>
+</head><body>
+<div id="dim"></div>
+<div id="tagE" class="tag" style="background:#ffb347">엔진룸</div>
+<div id="tagU" class="tag" style="background:#ffb347">차 밑</div>
+<div id="tagK" class="tag big" style="background:#fff">똑똑</div>
+<div id="tagM" class="tag" style="background:#ffe14a">야옹?</div>
+<div id="tagS" class="tag big" style="background:#fff">쾅!</div>
+<div id="tagD" class="tag big" style="background:#fff">쿵쿵</div>
+<div id="tagH" class="tag big" style="background:#fff">빵~</div>
+<div id="bar"><div>똑</div><div>쾅</div><div>쿵</div><div>빵</div></div>
+<div id="top" class="ov"></div><div id="lab" class="ov"></div><div id="mid" class="ov"></div>
+<div id="summ"><div><b>똑</b><span>보닛 노크</span></div><div><b>쾅</b><span>문 닫기</span></div><div><b>쿵</b><span>발 구르기</span></div><div><b>빵</b><span>경적 살짝</span></div></div>
+<div id="cap" class="ov"></div>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+const S = window.SPEC, NO = S.narrOffset, T = S.t, X = S.text;
+const W = 1080, H = 1920;
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.insertBefore(renderer.domElement, document.body.firstChild);
+const DAY = new THREE.Color(0xb9cde0), NIGHT = new THREE.Color(0x1d2a44);
+const scene = new THREE.Scene(); scene.background = DAY.clone(); scene.fog = new THREE.Fog(DAY.clone(), 40, 110);
+const cam = new THREE.PerspectiveCamera(42, W / H, 0.1, 400);
+const hemi = new THREE.HemisphereLight(0xffffff, 0x8899aa, 1.8); scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xfff4e0, 1.7); sun.position.set(-18, 34, 20); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -25, right: 25, top: 25, bottom: -25 }); scene.add(sun);
+const mat = (c, o = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.9, ...o });
+const box = (w, h, d, c, x, y, z, o) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat(c, o)); m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; scene.add(m); return m; };
+const plane = (w, h, c, x, z, y = 0) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat(c)); m.rotation.x = -Math.PI / 2; m.position.set(x, y, z); m.receiveShadow = true; scene.add(m); return m; };
+// ground: snowy edges, asphalt lot
+plane(300, 300, 0xe9eef3, 0, 0);
+plane(30, 34, 0x55595f, 0, 2, 0.01);
+for (const [x, z, w, d] of [[-9, -4, 3, 2], [8, 6, 4, 2.5], [-6, 9, 2.5, 1.6], [5, -6, 2, 1.4], [11, -1, 3, 2]]) plane(w, d, 0xdfe6ec, x, z, 0.015);
+// parking lines (stalls face +z)
+const SPX = 3.3;
+for (const i of [-2.5, -1.5, -0.5, 0.5, 1.5, 2.5]) plane(0.14, 6.2, 0xffffff, i * SPX, -0.4, 0.02);
+plane(SPX * 5 + 0.14, 0.14, 0xffffff, 0, -3.5, 0.02);
+// snow banks along the back + apartment
+for (let i = 0; i < 14; i++) { const m = new THREE.Mesh(new THREE.SphereGeometry(1.4, 12, 8), mat(0xf4f7fa)); m.scale.set(1.4, 0.35, 1); m.position.set(-14 + i * 2.2, 0.05, -5.2 + (i % 2) * 0.3); scene.add(m); }
+const apt = box(34, 16, 6, 0xd9d2c6, 0, 8, -12);
+const wins = []; for (let r = 0; r < 5; r++) for (let c = 0; c < 12; c++) { const w = new THREE.Mesh(new THREE.PlaneGeometry(1.4, 1.1), new THREE.MeshBasicMaterial({ color: 0x5b6b7d })); w.position.set(-14.3 + c * 2.6, 3 + r * 2.8, -8.98); scene.add(w); wins.push(w); }
+box(34.4, 0.5, 6.4, 0xb8aea0, 0, 16.2, -12);
+for (let i = 0; i < 8; i++) { const t = new THREE.Mesh(new THREE.ConeGeometry(1.2, 3.6, 7), mat(0x4d7a52)); t.position.set(-16 + i * 4.6, 2.0, 16); t.castShadow = true; scene.add(t); const s = new THREE.Mesh(new THREE.ConeGeometry(0.9, 1.4, 7), mat(0xf4f7fa)); s.position.set(-16 + i * 4.6, 3.3, 16); scene.add(s); }
+// models
+const loader = new GLTFLoader();
+const load = f => new Promise(r => loader.load('glb/' + f, g => r(g.scene)));
+const [CAR, C2, C3, C4] = await Promise.all(['sedan.glb', 'suv.glb', 'hatchback-sports.glb', 'van.glb'].map(load));
+for (const c of [CAR, C2, C3, C4]) { c.scale.setScalar(1.9); c.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } }); scene.add(c); }
+const bb = new THREE.Box3().setFromObject(CAR); const AL = bb.max.z - bb.min.z, AW = bb.max.x - bb.min.x, AH = bb.max.y - bb.min.y;
+C2.position.set(-2 * SPX, 0, 0); C3.position.set(SPX, 0, 0); C4.position.set(2 * SPX, 0, 0);
+// snow on roofs of other cars
+for (const c of [C2, C3, C4]) { const b2 = new THREE.Box3().setFromObject(c); const s = box(AW * 0.62, 0.08, AL * 0.38, 0xf6f9fc, c.position.x, b2.max.y + 0.03, -0.1); }
+// car materials (own copies, for x-ray)
+const carMats = []; CAR.traverse(o => { if (o.isMesh) { o.material = o.material.clone(); carMats.push(o.material); } });
+function carAlpha(a) { for (const m of carMats) { m.transparent = a < 0.999; m.opacity = a; m.depthWrite = a >= 0.999; } CAR.traverse(o => { if (o.isMesh) o.castShadow = a > 0.9; }); }
+const FZ = AL / 2; // front of car = +z (checked in stills)
+// engine bay
+const eng = box(AW * 0.55, 0.32, AL * 0.2, 0x3a3d42, 0, AH * 0.3, FZ - AL * 0.2);
+const glow = new THREE.Mesh(new THREE.SphereGeometry(0.75, 20, 14), new THREE.MeshBasicMaterial({ color: 0xff9a3c, transparent: true, opacity: 0, depthWrite: false })); glow.position.set(0, AH * 0.42, FZ - AL * 0.2); scene.add(glow);
+// ---- cat builder
+function makeCat(col, dark) {
+  const g = new THREE.Group(); const m = mat(col), md = mat(dark);
+  const body = new THREE.Mesh(new THREE.SphereGeometry(0.2, 16, 12), m); body.scale.set(1, 0.85, 1.75); body.position.y = 0.26; g.add(body);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.135, 16, 12), m); head.position.set(0, 0.4, 0.33); g.add(head);
+  for (const s of [-1, 1]) { const e = new THREE.Mesh(new THREE.ConeGeometry(0.055, 0.11, 8), md); e.position.set(s * 0.075, 0.53, 0.33); e.rotation.z = -s * 0.25; head.parent.add(e); e.userData.ear = 1; g.userData['ear' + s] = e;
+    const eye = new THREE.Mesh(new THREE.SphereGeometry(0.02, 8, 6), mat(0x111111)); eye.position.set(s * 0.05, 0.43, 0.455); g.add(eye); g.userData['eye' + s] = eye; }
+  const legs = []; for (const [x, z] of [[-0.1, 0.17], [0.1, 0.17], [-0.1, -0.2], [0.1, -0.2]]) { const l = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.035, 0.22, 8), m); l.position.set(x, 0.11, z); g.add(l); legs.push(l); }
+  const tc = new THREE.CatmullRomCurve3([V(0, 0.3, -0.32), V(0, 0.42, -0.5), V(0.05, 0.6, -0.56), V(0.1, 0.7, -0.5)]);
+  const tail = new THREE.Mesh(new THREE.TubeGeometry(tc, 16, 0.035, 8), md); g.add(tail);
+  const tc2 = new THREE.CatmullRomCurve3([V(0, 0.2, -0.3), V(0.2, 0.15, -0.3), V(0.3, 0.12, -0.05), V(0.22, 0.12, 0.2)]);
+  const tail2 = new THREE.Mesh(new THREE.TubeGeometry(tc2, 16, 0.035, 8), md); g.add(tail2);
+  g.userData = { ...g.userData, body, head, legs, tail, tail2 };
+  g.traverse(o => { if (o.isMesh) o.castShadow = true; });
+  g.scale.setScalar(1.55); scene.add(g); return g;
+}
+function V(x, y, z) { return new THREE.Vector3(x, y, z); }
+function catPose(c, lying, headUp, run, t) {
+  const u = c.userData; u.legs.forEach((l, i) => { l.visible = !lying; l.rotation.x = run ? Math.sin(t * 22 + (i % 2 ? 0 : Math.PI) + (i > 1 ? Math.PI / 2 : 0)) * 0.7 : 0; });
+  u.tail.visible = !lying; u.tail2.visible = lying;
+  const dy = lying ? -0.13 : 0; u.body.position.y = 0.26 + dy + (run ? Math.abs(Math.sin(t * 22)) * 0.03 : 0);
+  const hy = lying ? 0.18 + headUp * 0.14 : 0.4; const hz = lying ? 0.3 : 0.33; u.head.position.set(0, hy, hz);
+  for (const s of [-1, 1]) { u['ear' + s].position.set(s * 0.075, hy + 0.13, hz); u['eye' + s].position.set(s * 0.05, hy + 0.03, hz + 0.125); }
+}
+const CAT1 = makeCat(0xf0a04b, 0xc4702a);   // engine bay cat
+const CAT2 = makeCat(0x5f6670, 0x2f343a);   // under-car cat
+// person
+const P = new THREE.Group();
+const pb = new THREE.Mesh(new THREE.CapsuleGeometry(0.3, 0.85, 6, 12), mat(0x2b6fd6)); pb.position.y = 1.0; P.add(pb);
+const ph = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 12), mat(0xf1c9a5)); ph.position.y = 1.86; P.add(ph);
+const hat = new THREE.Mesh(new THREE.SphereGeometry(0.26, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), mat(0xd8343a)); hat.position.y = 1.9; P.add(hat);
+const armP = new THREE.Group(); armP.position.set(0.32, 1.4, 0); P.add(armP);
+const arm = new THREE.Mesh(new THREE.CapsuleGeometry(0.09, 0.55, 4, 8), mat(0x2b6fd6)); arm.position.y = -0.33; armP.add(arm);
+P.traverse(o => { if (o.isMesh) o.castShadow = true; }); scene.add(P);
+// rings (sound)
+const rings = [0, 1, 2].map(() => { const r = new THREE.Mesh(new THREE.TorusGeometry(0.5, 0.05, 8, 40), new THREE.MeshBasicMaterial({ color: 0xffe14a, transparent: true, depthWrite: false })); scene.add(r); return r; });
+// falling snow
+const NS = 500, sp = new Float32Array(NS * 3); const sgeo = new THREE.BufferGeometry(); sgeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+const snow = new THREE.Points(sgeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.09, transparent: true, opacity: 0.9 })); scene.add(snow);
+
+const ease = p => p < 0 ? 0 : p > 1 ? 1 : 1 - Math.pow(1 - p, 3);
+const eio = p => { p = Math.max(0, Math.min(1, p)); return p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; };
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const lerp = (a, b, u) => a + (b - a) * u;
+const rnd = n => { const x = Math.sin(n * 12.9898) * 43758.5453; return x - Math.floor(x); };
+const $ = id => document.getElementById(id);
+const proj = (x, y, z) => { const v = V(x, y, z).project(cam); return [(v.x + 1) / 2 * W, (1 - v.y) / 2 * H]; };
+const setText = (el, html, t0, t, pop = true) => { if (html == null) { el.style.opacity = 0; el.dataset.h = ''; return; } if (el.dataset.h !== html) { el.innerHTML = html; el.dataset.h = html; } const u = t - t0; el.style.opacity = clamp(u / 0.08); el.style.transform = pop ? `scale(${1 + 0.2 * (1 - ease(u / 0.18))})` : ''; };
+const tag = (id, on, x, y, z, t0 = -9, t = 0) => { const el = $(id); el.style.display = on ? 'block' : 'none'; if (!on) return; let [px, py] = proj(x, y, z); px = clamp(px, 170, 910); py = clamp(py, 700, 1250); el.style.left = px + 'px'; el.style.top = py + 'px'; const s = 1 + 0.3 * (1 - ease((t - t0) / 0.2)); el.style.transform = `translate(-50%,-100%) scale(${s})`; };
+function seg(t) { let k = 0; for (let i = 0; i < T.length; i++) if (t >= T[i]) k = i; return k; }
+function path(pts, u) { u = clamp(u); const n = pts.length - 1; const f = u * n; const i = Math.min(n - 1, Math.floor(f)); const w = f - i; return [lerp(pts[i][0], pts[i + 1][0], w), lerp(pts[i][1], pts[i + 1][1], w)]; }
+const BAY = [0, AH * 0.43, FZ - AL * 0.2];
+const DOOR = [AW / 2 + 0.55, 0.05];
+window.seek = async t => {
+  const k = seg(t);
+  // night shift (hint for "새벽·밤")
+  const nt = (k === 6 && t >= S.nightAt) ? ease((t - S.nightAt) / 0.5) : 0;
+  scene.background.copy(DAY).lerp(NIGHT, nt); scene.fog.color.copy(scene.background);
+  hemi.intensity = lerp(1.8, 0.55, nt); sun.intensity = lerp(1.7, 0.15, nt);
+  wins.forEach((w, i) => w.material.color.setHex(nt > 0.5 && rnd(i + 3) > 0.45 ? 0xffd27a : 0x5b6b7d));
+  // car (stomp bob)
+  let bob = 0; if (t >= S.stompAt && t < S.stompAt + 1.6) bob = Math.abs(Math.sin((t - S.stompAt) * 14)) * 0.05;
+  if (t >= S.slamAt && t < S.slamAt + 0.25) bob = Math.sin((t - S.slamAt) * 60) * 0.03 * (1 - (t - S.slamAt) / 0.25);
+  CAR.position.set(0, bob, 0);
+  const xr = k <= 1 ? 0.28 : (k === 3 || k === 4) ? 0.42 : k === 5 ? (t < S.cat2At + 1.8 ? 0.4 : 1) : 1;
+  carAlpha(xr);
+  glow.material.opacity = k <= 1 ? 0.22 + 0.06 * Math.sin(t * 4) : 0;
+  // CAT1: lying in bay -> head up on knock -> drops & runs at catOut
+  { const c = CAT1; const a = t - S.catOutAt;
+    if (a < 0) { c.position.set(BAY[0], BAY[1] - 0.06 + bob, BAY[2]); c.rotation.y = Math.PI * 0.85; c.visible = true;
+      const hu = t >= S.knockAt ? ease((t - S.knockAt) / 0.3) : 0; catPose(c, true, hu, false, t); }
+    else if (a < 0.35) { const u = eio(a / 0.35); c.position.set(BAY[0], lerp(BAY[1] - 0.06, 0, u), BAY[2] + u * 0.2); c.rotation.y = 0; catPose(c, false, 0, false, t); }
+    else { const u = clamp((a - 0.35) / 1.6); const pts = [[0, BAY[2] + 0.2], [-0.3, FZ + 1.4], [-2.2, FZ + 3.4], [-7, FZ + 6]]; const [x, z] = path(pts, u); const [x2, z2] = path(pts, u + 0.02);
+      c.position.set(x, 0, z); c.rotation.y = Math.atan2(x2 - x, z2 - z); catPose(c, false, 0, u < 1, t); c.visible = u < 1; } }
+  // CAT2: lying under car -> walks out at cat2At
+  { const c = CAT2; const a = t - S.cat2At;
+    if (a < 0) { c.position.set(-0.15, 0, -0.5); c.rotation.y = -Math.PI * 0.6; catPose(c, true, t >= S.stompAt ? ease((t - S.stompAt) / 0.3) : 0, false, t); c.visible = true; }
+    else { const u = clamp(a / 2.4); const pts = [[-0.15, -0.5], [-AW / 2 - 0.7, -0.3], [-AW / 2 - 0.9, FZ + 1.2], [-5.5, FZ + 4]]; const [x, z] = path(pts, u); const [x2, z2] = path(pts, u + 0.02);
+      c.position.set(x, 0, z); c.rotation.y = Math.atan2(x2 - x, z2 - z); catPose(c, false, 0, u < 1, t); c.visible = u < 1; } }
+  // person: k3 walks to front & knocks, k4 walks to driver door, gets in at slam
+  P.visible = (k === 3 || k === 4) && t < S.slamAt - 0.15; armP.rotation.x = 0;
+  if (k === 3) { const u = eio((t - T[3]) / 1.1); const x = lerp(3.5, 0.75, u), z = lerp(FZ + 3.5, FZ + 0.75, u); P.position.set(x, u < 1 ? Math.abs(Math.sin(t * 9)) * 0.08 : 0, z); P.rotation.y = Math.PI + lerp(0.6, 0, u);
+    if (t > S.knockAt - 0.4) armP.rotation.x = -(1.25 + (t >= S.knockAt && t < S.knockAt + 1.0 ? 0.25 * Math.abs(Math.sin((t - S.knockAt) * 16)) : 0)); }
+  if (k === 4) { const u = eio((t - T[4]) / 1.3); const [x, z] = path([[0.75, FZ + 0.75], [DOOR[0] + 0.2, FZ + 0.3], [DOOR[0], DOOR[1]]], u); P.position.set(x, u < 1 ? Math.abs(Math.sin(t * 9)) * 0.08 : 0, z); P.rotation.y = u < 0.5 ? Math.PI / 2 + 0.3 : -Math.PI / 2 * 0 + Math.PI * 1.0 - 0.2; }
+  // sound rings
+  const ringAt = k === 3 ? S.knockAt : k === 4 ? S.slamAt : k === 6 ? S.hornAt : -9; const rp = k === 3 ? [0.3, AH * 0.75, FZ - 0.4] : k === 4 ? [AW / 2, 0.9, 0.05] : [0, 1.0, FZ + 0.2];
+  rings.forEach((r, i) => { const a = t - ringAt - i * 0.22; const on = a > 0 && a < 0.8 && ringAt > 0 && nt < 0.01; r.visible = on; if (!on) return; r.position.set(...rp); r.lookAt(cam.position); r.scale.setScalar(0.4 + a * 2.6); r.material.opacity = 1 - a / 0.8; });
+  // snow
+  for (let i = 0; i < NS; i++) { const fx = (rnd(i) - 0.5) * 30, fz = (rnd(i + 99) - 0.5) * 30, sp0 = 0.6 + rnd(i + 7) * 0.6; const y = 9 - ((t * sp0 + rnd(i + 51) * 9) % 9); sp[i * 3] = fx + Math.sin(t + i) * 0.3; sp[i * 3 + 1] = y; sp[i * 3 + 2] = fz; }
+  sgeo.attributes.position.needsUpdate = true;
+  // ---- camera
+  let cp, look;
+  if (k === 0) { const z = ease(t / 4); cp = V(lerp(-4.6, -3.6, z), lerp(4.4, 3.7, z), lerp(FZ + 5.2, FZ + 4.2, z)); look = V(0, 0.45, FZ - 1.0); }
+  else if (k === 1) { const z = ease((t - T[1]) / 1.4); cp = V(lerp(-3.6, -6.2, z), lerp(3.7, 2.9, z), lerp(FZ + 4.2, 1.6, z)); look = V(0, lerp(0.45, 0.3, z), lerp(FZ - 1.0, 0.5, z)); }
+  else if (k === 2) { const z = ease((t - T[2]) / 1.6); cp = V(lerp(-6.2, -7, z), lerp(2.9, 9, z), lerp(1.6, 13, z)); look = V(0, 0, lerp(0.5, 0.5, z)); }
+  else if (k === 3) { const z = ease((t - T[3]) / 1.2); cp = V(lerp(-7, -3.0, z), lerp(9, 3.3, z), lerp(13, FZ + 4.2, z)); look = V(lerp(0, 0.2, z), lerp(0, 0.7, z), lerp(0.5, FZ - 0.5, z)); }
+  else if (k === 4) { const z = ease((t - T[4]) / 1.2); cp = V(lerp(-3.0, -3.5, z), lerp(3.3, 8.5, z), lerp(FZ + 4.2, FZ + 7, z)); look = V(lerp(0.2, -0.6, z), lerp(0.7, 0, z), lerp(FZ - 0.5, FZ + 0.6, z)); }
+  else if (k === 5) { const z = ease((t - T[5]) / 1.2); cp = V(lerp(-3.5, -1.4, z), lerp(8.5, 10.5, z), lerp(FZ + 7, FZ + 3.6, z)); look = V(lerp(-0.6, -1.0, z), 0, lerp(FZ + 0.6, 0.9, z)); }
+  else if (k === 6) { const z = ease((t - T[6]) / 1.2); cp = V(lerp(-1.6, -3.6, z), lerp(10.5, 4.2, z), lerp(FZ + 3.2, FZ + 5.5, z)); look = V(lerp(-1.2, 0, z), lerp(0, 0.6, z), lerp(0.6, 0.2, z)); }
+  else { const z = ease((t - T[7]) / 3); cp = V(lerp(-3.6, -8, z), lerp(4.2, 12, z), lerp(FZ + 5.5, 16, z)); look = V(0, 0, 0); }
+  cam.position.copy(cp); cam.lookAt(look); renderer.render(scene, cam);
+  // ---- overlays
+  $('dim').style.opacity = k === 7 ? 0.45 * ease((t - T[7]) / 0.3) : k === 2 ? 0.25 * ease((t - T[2]) / 0.3) : 0;
+  tag('tagE', k <= 1 && t > 0.25, BAY[0], BAY[1] + 0.75, BAY[2], 0.25, t);
+  tag('tagU', k === 1 && t >= S.underAt, -0.15, 0.55, -0.5, S.underAt, t);
+  tag('tagK', k === 3 && t >= S.knockAt && t < S.knockAt + 1.3, 0.3, AH + 0.5, FZ - 0.3, S.knockAt, t);
+  tag('tagM', k === 3 && t >= S.meowAt, BAY[0], BAY[1] + 0.7, BAY[2], S.meowAt, t);
+  tag('tagS', k === 4 && t >= S.slamAt && t < S.slamAt + 1.3, AW / 2 + 0.3, AH + 0.4, 0.05, S.slamAt, t);
+  tag('tagD', k === 5 && t >= S.stompAt && t < S.stompAt + 1.6, 0.9, AH + 0.5, 0, S.stompAt, t);
+  tag('tagH', k === 6 && t >= S.hornAt && t < S.nightAt, 0, AH + 0.5, FZ + 0.3, S.hornAt, t);
+  const barOn = k >= 2 && k <= 6; $('bar').style.opacity = barOn ? 1 : 0;
+  const cur = k <= 2 ? -1 : k - 3; [...$('bar').children].forEach((d, i) => d.className = i === cur ? 'on' : i < cur ? 'done' : '');
+  setText($('top'), k === 0 ? X.hook : k === 7 ? X.end : null, k === 0 ? -1 : T[7], t);
+  let lab = null, l0 = T[k];
+  if (k === 1) { lab = t >= S.underAt ? X.l1b : X.l1; l0 = t >= S.underAt ? S.underAt : T[1]; }
+  if (k === 2) lab = null; if (k === 3) lab = X.l3; if (k === 4) lab = X.l4; if (k === 5) lab = X.l5;
+  if (k === 6) { lab = t >= S.nightAt ? X.l6b : X.l6; l0 = t >= S.nightAt ? S.nightAt : T[6]; }
+  setText($('lab'), lab, l0, t);
+  setText($('mid'), k === 2 ? X.l2 : null, T[2], t);
+  [...$('summ').children].forEach((d, i) => { const a = t - S.summ[i]; const on = k === 7 && a > 0; d.style.opacity = on ? clamp(a / 0.1) : 0; d.style.transform = on ? `scale(${1 + 0.3 * (1 - ease(a / 0.2))})` : ''; });
+  // caption (auto-fit)
+  let c = null; for (const q of S.caps) { const a = q[0] + NO; if (t >= a) c = q[1]; }
+  const lastEnd = S.caps[S.caps.length - 1][2] + NO + 0.6; const ce = $('cap');
+  if (t >= NO && t < lastEnd && c) { if (ce.dataset.h !== c) { ce.innerHTML = '<span style="display:inline-block">' + c + '</span>'; ce.dataset.h = c; } ce.style.opacity = 1; const sp2 = ce.firstChild; sp2.style.transform = 'scale(1)'; const w = sp2.getBoundingClientRect().width; sp2.style.transform = `scale(${Math.min(1, 1000 / Math.max(w, 1))})`; }
+  else ce.style.opacity = 0;
+};
+window.ready = async () => { await document.fonts.ready; };
+window.__ok = true;
+</script></body></html>
