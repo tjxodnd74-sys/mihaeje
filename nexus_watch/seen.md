@@ -563,3 +563,6 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 2026-11-26 15:24 | AI 가짜 의사 광고 금지 — 긴급 제작 요청 | 데일리메디 | https://dailymedi.com/news/news_view.php?wr_id=942697
 2026-11-26 15:24 | 클로드 코워크 AI 직원 만드는 법(인스타 아웃라이어, 참고) | @lije__x | https://www.instagram.com/reel/DgJ-QOqB5r8
 - 2026-11-26 15:24: 내장 브라우저로 유튜브 18개 채널 /videos(페이지 안 fetch, ytInitialData 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 14:23 이후 새 롱폼 없음. vidIQ 아웃라이어 1회(5크레딧). 인스타 브라우저 안 엶. 'AI 가짜 의사 광고 금지(11/27)' fire_trigger 긴급 제작 요청(오늘 2회차, 성공).
+2026-11-26 16:24 | 롱폼: AI 겸임교수 이종범 'AI 부업 원가 공개(힉스필드)'(광고성 가능) | 유튜브 | https://www.youtube.com/@aiadjunct/videos
+2026-11-26 16:24 | AI타임스 구글 외부 AI 에이전트 워크스페이스 요금제·구글 AI TV 특허·머스크 엔비디아 방문·중국 DC 대출(제외) / 긱뉴스 새 소비자 소식 없음 | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-26 16:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, ytInitialData 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 새 롱폼 1개. vidIQ 생략(10·15시만). 바로 제작 없음(2시간 제한·16:41 창). 인스타 브라우저 안 엶.
