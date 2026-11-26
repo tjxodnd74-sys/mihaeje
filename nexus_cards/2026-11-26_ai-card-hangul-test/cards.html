@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Regular.woff2);font-weight:400}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-SemiBold.woff2);font-weight:600}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+:root{--bg:#0F1D22;--vi:#7CC4FF;--am:#7BE3C0;--tx:#F2F6F8;--mu:#9FB3BA;--ln:rgba(255,255,255,.13);--red:#FF5A5A;--y:#FFD43B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#333;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.mono{font-family:'DejaVu Sans Mono',monospace;letter-spacing:.08em}
+.card{width:1080px;height:1350px;position:relative;overflow:hidden;margin:0 0 40px;color:var(--tx);
+ background:radial-gradient(900px 600px at 90% 0%,rgba(124,196,255,.18),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(255,212,59,.08),transparent 60%),var(--bg)}
+.card:before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 2px,transparent 2px);background-size:46px 46px;pointer-events:none}
+.bar{position:absolute;left:64px;right:64px;top:52px;display:flex;justify-content:space-between;align-items:center;font-size:22px;color:var(--mu);padding-bottom:22px;border-bottom:2px dashed var(--ln)}
+.bar .l{display:flex;align-items:center;gap:14px}
+.bar img{width:34px;height:34px}
+.bar .r{color:var(--vi);font-weight:700}
+.wrap{position:absolute;left:64px;right:64px;top:150px}
+.lab{font-size:26px;color:var(--vi);font-weight:700;margin-bottom:20px}
+.h{font-weight:900;font-size:92px;line-height:1.12;letter-spacing:-.045em}
+.h .v{color:var(--vi)} .h .y{color:var(--y)} .h .a{color:var(--am)} .h .r{color:var(--red)}
+.box{position:absolute;left:64px;right:64px;border:2px solid var(--ln);border-radius:28px;background:rgba(255,255,255,.04);padding:56px 44px 44px}
+.box .tag{position:absolute;top:-17px;left:36px;background:var(--bg);padding:0 14px;font-size:22px;color:var(--mu)}
+.tip{font-size:38px;color:#DCE6EA;line-height:1.55;font-weight:600}
+.tip b{color:var(--y)}
+
+/* cover */
+#k1{background:#1A1A1C}#k1:before{display:none}
+#k1 .img{position:absolute;left:0;top:0;width:1080px;height:1000px;overflow:hidden}
+#k1 .img img{position:absolute;width:1080px;left:0;top:0}
+#k1 .img:after{content:"";position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(transparent,rgba(26,26,28,.9) 55%,#1A1A1C)}
+#k1 .tg{position:absolute;left:60px;top:50px;background:var(--y);color:#111;font-size:30px;font-weight:900;padding:8px 20px;border-radius:10px;z-index:2}
+#k1 .tt{position:absolute;left:58px;right:30px;top:840px;font-size:122px;font-weight:900;line-height:1.06;letter-spacing:-.055em;color:#fff;text-shadow:0 6px 24px rgba(0,0,0,.75)}
+#k1 .tt em{font-style:normal;color:var(--y)}
+#k1 .hd2{position:absolute;left:60px;right:60px;bottom:40px;display:flex;justify-content:space-between;font-size:24px;font-weight:700;color:#8C979B}
+
+/* prompt bubble */
+.pr{background:var(--vi);color:#0F1D22;font-size:40px;font-weight:800;line-height:1.45;padding:30px 34px;border-radius:30px 30px 8px 30px;letter-spacing:-.03em}
+.pr b{background:#0F1D22;color:var(--y);padding:0 10px;border-radius:8px}
+.three{display:flex;gap:22px}
+.three div{flex:1;border-radius:22px;padding:26px 10px;text-align:center;font-size:38px;font-weight:900;letter-spacing:-.03em;background:rgba(255,255,255,.05);border:2px solid var(--ln)}
+.three div small{display:block;font-size:24px;color:var(--mu);font-weight:600;margin-top:8px}
+.mx .three div{animation:pop 6s ease-out infinite both}
+.mx .three div:nth-child(2){animation-delay:.3s}.mx .three div:nth-child(3){animation-delay:.6s}
+@keyframes pop{0%{transform:scale(.6);opacity:.2}8%{transform:scale(1.1);opacity:1}14%,100%{transform:scale(1);opacity:1}}
+.arrow{text-align:center;font-size:60px;color:var(--y);margin:16px 0}
+.mx .arrow{animation:bob 1.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+
+/* result card */
+.res{position:absolute;left:64px;top:390px;width:560px;height:744px;border-radius:20px;overflow:hidden;border:8px solid #fff;box-shadow:0 30px 60px rgba(0,0,0,.5);transform:rotate(-2deg)}
+.res img{width:100%;height:100%;object-fit:cover}
+.mx .res img{animation:zoom 6s ease-in-out infinite}
+@keyframes zoom{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.side{position:absolute;left:670px;right:56px;top:400px;display:flex;flex-direction:column;gap:22px}
+.ck{border-radius:22px;padding:24px 22px;font-size:34px;font-weight:800;line-height:1.35;letter-spacing:-.03em}
+.ck i{font-style:normal;display:block;font-size:52px;line-height:1;margin-bottom:8px}
+.ok{background:rgba(123,227,192,.09);border:2px solid rgba(123,227,192,.5)}
+.ok i{color:var(--am)}
+.no{background:rgba(255,90,90,.09);border:2px solid rgba(255,90,90,.55)}
+.no i{color:var(--red)}
+.mx .ck{animation:slin 6s ease-out infinite both}
+.mx .ck:nth-child(2){animation-delay:.35s}.mx .ck:nth-child(3){animation-delay:.7s}
+@keyframes slin{0%{transform:translateX(40px);opacity:.2}10%,100%{transform:none;opacity:1}}
+.mdl{position:absolute;left:64px;top:1170px;font-size:30px;color:var(--mu);font-weight:600}
+.mdl b{color:var(--tx)}
+
+/* corner marker for seedream */
+.mark{position:absolute;border:8px solid var(--red);border-radius:50%}
+.mx .mark{animation:ring 1.3s ease-in-out infinite}
+@keyframes ring{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.55}}
+
+/* zoom 2023 */
+.zm{position:absolute;left:64px;right:64px;top:930px;height:250px;border-radius:24px;overflow:hidden;border:4px solid var(--red);background:#fff}
+.zm img{width:100%;height:100%;object-fit:cover}
+.zm .o{position:absolute;left:14%;top:6%;width:44%;height:50%;border:8px solid var(--red);border-radius:50%}
+.mx .zm .o{animation:ring 1.3s ease-in-out infinite}
+
+/* score table */
+.tb{width:100%;border-collapse:separate;border-spacing:0 16px}
+.tb th{font-size:30px;color:var(--mu);font-weight:700;text-align:center;padding:0 6px}
+.tb th:first-child{text-align:left}
+.tb td{font-size:38px;font-weight:800;text-align:center;padding:22px 8px;background:rgba(255,255,255,.05)}
+.tb td:first-child{text-align:left;border-radius:18px 0 0 18px;padding-left:26px;font-size:36px}
+.tb td:last-child{border-radius:0 18px 18px 0}
+.tb .o1{color:var(--am)} .tb .x1{color:var(--red)} .tb .t1{color:var(--y)}
+.win{margin-top:24px;border:4px solid var(--y);border-radius:22px;padding:26px 30px;font-size:44px;font-weight:900;letter-spacing:-.03em;text-align:center;color:var(--y)}
+.mx .win{animation:glow 2s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 rgba(255,212,59,0)}50%{box-shadow:0 0 40px rgba(255,212,59,.45)}}
+
+/* before after */
+.ba{position:absolute;left:64px;right:64px;top:560px;display:flex;gap:28px}
+.ba .p{flex:1;position:relative}
+.ba .p .im{height:560px;border-radius:18px;overflow:hidden;border:6px solid #fff}
+.ba .p .im img{width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+.ba .p .lb{margin-top:16px;text-align:center;font-size:36px;font-weight:900;letter-spacing:-.03em}
+.ba .p.b .im{border-color:var(--red)} .ba .p.b .lb{color:var(--red)}
+.ba .p.a .im{border-color:var(--am)} .ba .p.a .lb{color:var(--am)}
+.add{position:absolute;left:64px;right:64px;top:400px;border:2px dashed rgba(255,212,59,.6);background:rgba(255,212,59,.07);border-radius:20px;padding:24px 30px;font-size:38px;font-weight:800;line-height:1.45;letter-spacing:-.03em}
+.add b{color:var(--y)}
+.add .cur{display:inline-block;width:4px;height:40px;background:var(--y);vertical-align:-6px;margin-left:4px}
+.mx .add .cur{animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* copy */
+.copy{border:2px dashed rgba(255,212,59,.6);border-radius:20px;padding:40px 36px;background:rgba(255,212,59,.06);font-size:48px;line-height:1.6;font-weight:800;letter-spacing:-.03em}
+.copy .f{color:var(--y)}
+.best{position:absolute;right:40px;top:-26px;border:4px solid var(--y);color:var(--y);font-weight:900;font-size:26px;padding:4px 16px;border-radius:8px;transform:rotate(6deg);background:var(--bg);letter-spacing:.1em}
+
+/* end */
+#k9 .glow{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(124,196,255,.32) 0%,rgba(124,196,255,.1) 45%,transparent 70%)}
+#k9 .floor{position:absolute;left:50%;top:640px;transform:translateX(-50%);width:420px;height:70px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.55),transparent 70%)}
+#k9 .peng{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:300px;filter:drop-shadow(0 20px 40px rgba(124,196,255,.45))}
+#k9 .bubble{position:absolute;left:610px;top:190px;background:#fff;color:#14162A;font-weight:800;font-size:34px;padding:18px 28px;border-radius:26px 26px 26px 6px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+#k9 .c{position:absolute;left:0;right:0;top:720px;text-align:center}
+#k9 .h{font-size:86px}
+#k9 .key{display:inline-block;margin-top:40px;border:4px solid var(--y);color:var(--y);font-size:54px;font-weight:900;padding:14px 46px;border-radius:14px}
+#k9 .s{text-align:center;margin-top:36px;font-size:36px;color:#D2DEE2;font-weight:500;line-height:1.5}
+</style></head><body>
+
+<section class="card" id="k1">
+ <div class="img"><img src="cover.png"></div>
+ <div class="tg">AI 실험</div>
+ <div class="tt">연말 카드 시켰더니<br><em>'2023'</em>이 왜 나와?</div>
+ <div class="hd2 mono"><span>@nexus_studio.kr</span><span>끝까지 보세요</span></div>
+</section>
+
+<section class="card" id="k2"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 연말 카드</div><div class="r">FILE 02/09</div></div>
+ <div class="wrap"><div class="lab mono">SAME SENTENCE · 3 IMAGE AI</div>
+  <div class="h">같은 문장 하나,<br><span class="y">AI 3개</span>에 넣었어요</div></div>
+ <div class="box" style="top:500px"><div class="tag mono">똑같이 보낸 문장</div>
+  <div class="pr">동료에게 보낼 연말 카드, 수채화, 눈 오는 창가에 머그컵 두 개. <b>가운데</b>에 '박 과장님, 올해도 고생 많으셨어요!'</div>
+  <div class="arrow">▼</div>
+  <div class="three"><div>GPT 이미지<small>오픈AI</small></div><div>나노 바나나<small>구글</small></div><div>시드림<small>바이트댄스</small></div></div>
+ </div>
+</section>
+
+<section class="card" id="k3"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 연말 카드</div><div class="r">FILE 03/09</div></div>
+ <div class="wrap"><div class="lab mono">RESULT A · GPT IMAGE 2.6</div>
+  <div class="h">시킨 <span class="a">그대로</span></div></div>
+ <div class="res"><img src="r1.jpg"></div>
+ <div class="side">
+  <div class="ck ok"><i>✓</i>한글 맞춤법 정확</div>
+  <div class="ck ok"><i>✓</i>가운데에 크게</div>
+  <div class="ck ok"><i>✓</i>안 시킨 글자 없음</div>
+ </div>
+ <div class="mdl"><b>오픈AI GPT 이미지 2.6</b> · 실제 결과</div>
+</section>
+
+<section class="card" id="k4"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 연말 카드</div><div class="r">FILE 04/09</div></div>
+ <div class="wrap"><div class="lab mono">RESULT B · SEEDREAM 5.5</div>
+  <div class="h">글자는 맞는데<br><span class="v">구석에 작게</span></div></div>
+ <div class="res" style="top:420px;height:720px"><img src="r3.jpg"><div class="mark" style="left:110px;top:510px;width:250px;height:160px"></div></div>
+ <div class="side" style="top:440px">
+  <div class="ck ok"><i>✓</i>한글 정확</div>
+  <div class="ck no"><i>✗</i>'가운데' 무시</div>
+  <div class="ck ok"><i>✓</i>안 시킨 글자 없음</div>
+ </div>
+ <div class="mdl" style="top:1190px"><b>바이트댄스 시드림 5.5</b> · 실제 결과</div>
+</section>
+
+<section class="card" id="k5"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 연말 카드</div><div class="r">FILE 05/09</div></div>
+ <div class="wrap"><div class="lab mono">RESULT C · NANO BANANA</div>
+  <div class="h">안 시킨 문장에<br><span class="r">'2023'</span>까지</div></div>
+ <div class="res" style="top:400px;left:240px;width:600px;height:500px;transform:rotate(-1.5deg)"><img src="r2.jpg" style="object-position:50% 38%"></div>
+ <div class="zm"><img src="z2023.jpg"><div class="o"></div></div>
+ <div class="mdl" style="top:1205px">2023 연말 인사 · 따뜻한 연말 보내세요 ← <b>제가 안 쓴 말</b></div>
+</section>
+
+<section class="card" id="k6"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 연말 카드</div><div class="r">FILE 06/09</div></div>
+ <div class="wrap"><div class="lab mono">SCORE · 3 CHECKS</div>
+  <div class="h">이번 문장으론<br><span class="y">GPT 이미지</span> 승</div></div>
+ <div class="box" style="top:480px;padding:40px 30px 36px"><div class="tag mono">같은 문장 · 1번씩</div>
+  <table class="tb">
+   <tr><th></th><th>GPT</th><th>나노</th><th>시드림</th></tr>
+   <tr><td>한글 정확</td><td class="o1">✓</td><td class="o1">✓</td><td class="o1">✓</td></tr>
+   <tr><td>가운데 크게</td><td class="o1">✓</td><td class="o1">✓</td><td class="x1">✗</td></tr>
+   <tr><td>안 시킨 글자</td><td class="o1">없음</td><td class="x1">있음</td><td class="o1">없음</td></tr>
+  </table>
+  <div class="win">셋 다 한글은 OK, 갈린 건 '시킨 것만'</div>
+ </div>
+</section>
+
+<section class="card" id="k7"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 연말 카드</div><div class="r">FILE 07/09</div></div>
+ <div class="wrap"><div class="lab mono">FIX · ONE MORE LINE</div>
+  <div class="h">한 줄 붙였더니<br><span class="a">사라졌어요</span></div></div>
+ <div class="add">+ "<b>이 문장 말고 다른 글자·숫자(연도 포함)는 넣지 마</b>"<span class="cur"></span></div>
+ <div class="ba">
+  <div class="p b"><div class="im"><img src="r2.jpg"></div><div class="lb">전: 2023 연말 인사</div></div>
+  <div class="p a"><div class="im"><img src="r4.jpg"></div><div class="lb">후: 시킨 문장만</div></div>
+ </div>
+</section>
+
+<section class="card" id="k8"><div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 연말 카드</div><div class="r">FILE 08/09</div></div>
+ <div class="wrap"><div class="lab mono">COPY · PASTE</div>
+  <div class="h">카드 만들 때<br>끝에 붙이세요</div></div>
+ <div class="box" style="top:500px;padding:60px 40px 44px"><div class="tag mono">요청 맨 끝에 복사</div><div class="best mono">COPY</div>
+  <div class="copy">"이 문장 말고 <span class="f">다른 글자·숫자</span>는 넣지 마. 글자는 <span class="f">가운데 크게</span>."</div>
+  <div class="tip" style="margin-top:36px">보내기 전엔 <b>확대해서</b><br>이름·받침·연도 한 번 더</div></div>
+</section>
+
+<section class="card" id="k9">
+ <div class="bar mono"><div class="l"><img src="../assets/logo3d.png">NEXUS TEST · 연말 카드</div><div class="r">END OF FILE</div></div>
+ <div class="glow"></div><div class="floor"></div><img class="peng" src="../assets/heart.png"><div class="bubble">올해 카드는 직접 만들기!</div>
+ <div class="c"><div class="h">저장해 두고<br>연말 카드 만들 때</div>
+  <div class="key">📌 저장 · 팔로우</div>
+  <div class="s">직접 해 본 AI 실험, 넥서스가 쉽게 정리해요<br><span class="mono" style="color:var(--vi);font-size:28px">@nexus_studio.kr</span></div></div>
+</section>
+</body></html>
