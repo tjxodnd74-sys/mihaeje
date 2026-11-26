@@ -560,3 +560,6 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 
 - 2026-11-26 13:24 확인: 새 항목 없음(13:21과 동일)
 2026-11-26 14:23 | 오픈AI(알림 제외·연구) | 미공개 모델로 57년 행렬 곱셈 연산 복잡도 난제 해결 주장 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-26 15:24 | AI 가짜 의사 광고 금지 — 긴급 제작 요청 | 데일리메디 | https://dailymedi.com/news/news_view.php?wr_id=942697
+2026-11-26 15:24 | 클로드 코워크 AI 직원 만드는 법(인스타 아웃라이어, 참고) | @lije__x | https://www.instagram.com/reel/DgJ-QOqB5r8
+- 2026-11-26 15:24: 내장 브라우저로 유튜브 18개 채널 /videos(페이지 안 fetch, ytInitialData 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 14:23 이후 새 롱폼 없음. vidIQ 아웃라이어 1회(5크레딧). 인스타 브라우저 안 엶. 'AI 가짜 의사 광고 금지(11/27)' fire_trigger 긴급 제작 요청(오늘 2회차, 성공).
