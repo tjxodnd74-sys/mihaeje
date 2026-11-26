@@ -552,3 +552,8 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 2026-11-25 18:23 | 롱폼: AI아스트라 'AI드라마 제작 방법 A-Z 완벽 가이드' | 유튜브 | https://www.youtube.com/@aiastra0/videos
 2026-11-25 18:23 | AI타임스 앤트로픽 사이렌·AI 작성자 실명 식별 연구·오픈AI 아테나·오픈AI·시스코 시루도·LGU+ 익시오 가족 보호 알리미(제외) / 긱뉴스 Thrupage(제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-25 18:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts — 새 롱폼 1개(AI아스트라). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 안 씀(18시)
+2026-11-26 13:21 | 롱폼: 에이아이하쥬 '힉스필드 왕초보 가이드, 7분 만에 다 알려드림'(광고성 가능) | 유튜브 | https://www.youtube.com/@aihazoo/videos
+2026-11-26 13:21 | 클로드 아티팩트 '앱으로 설치' 베타(맥·윈도, 전 요금제) — 알림·긴급 제작 요청 | AI타임스 | https://www.aitimes.com/news/articleView.html?idxno=217786
+2026-11-26 13:21 | 11/27부터 AI 가짜 의사·교수 추천 광고 금지(식약처) — 알림 | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-26 13:21 | AI타임스 챗GPT·코덱스 사용량 통합(이미 다룸)·스페이스X 스타마인드·중국 AI 격차·범정부 이미지 AI·GPT-6 단백질(제외) / 긱뉴스 앱 수익화·Aaronson·Dot Buddy(제외) | AI타임스·긱뉴스 | https://news.hada.io/
+- 2026-11-26 13:21: 내장 브라우저로 유튜브 18개 채널 /videos — 새 롱폼 1개(에이아이하쥬). AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). vidIQ 안 씀(13시). 긴급 제작 요청 1회(클로드 아티팩트 앱 설치). 인스타 브라우저 안 엶.
