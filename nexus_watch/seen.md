@@ -569,3 +569,6 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 2026-11-26 17:23 | 아마존·메타(알림 제외·업계) | AI 에이전트 '뮤즈' 아마존 접근 차단 해제 협상 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-26 17:23 | 코그니션(알림 제외·개발자) | 코딩 모델 SWE-2.1 출시 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-26 17:23 | 오픈AI(알림 제외·기업용) | '프라이빗 추론' 시험 운영 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-26 18:23 | 뉴욕주 어린이용 AI 챗봇 장난감 5년 금지(참고 알림) | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-26 18:23 | AI타임스 노엄 브라운 RSI·AI 코드 검토 보고서(제외) / 긱뉴스 새 소비자 소식 없음 | AI타임스·긱뉴스 | https://news.hada.io/
+- 2026-11-26 18:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, ytInitialData 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 17:23 이후 새 롱폼 없음. vidIQ 생략(10·15시만). 바로 제작 없음. 인스타 브라우저 안 엶.
