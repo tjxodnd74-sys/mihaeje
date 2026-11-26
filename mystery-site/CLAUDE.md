@@ -249,3 +249,7 @@ NODE_PATH=... node qa-tools/walk-episodes.mjs --mobile && node qa-tools/walk-nat
 - 로비 PC: 머리 줄 소리 버튼(details.game-audio)이 자주 묻는 질문용 details 여백(18px·밑줄)을 물려받아 늦게 붙을 때 머리가 37px 커짐 → performance-v53.css 에 PC 도 여백 0 (CLS 0.10 → 0.002)
 - 게임: 자료 글꼴 MihaejeSerif(328KB)가 첫 자료 창을 열 때에야 받아져 글이 다시 줄바꿈되며 위로 당겨짐 → play.html 에 preload + engine.js 시작 때 document.fonts.load (휴대폰 CLS 0.09 → 0)
 - 재는 법: scratchpad/cls 방식 — PerformanceObserver('layout-shift') 를 addInitScript 로 걸고 로비·게임 시작·자료 두 개 열기까지 (JS click 은 사용자 입력이 아니라 실제보다 엄하게 잡힘)
+
+## v147 (2026-11-26) 추적 꼬리표 정리
+- 모든 html <title> 앞 인라인 스크립트가 utm_*, fbclid, gclid, igshid/igsh, si, mc_*, _ga, ttclid를 주소창에서 지운다 (history.replaceState, 다른 쿼리·해시는 그대로)
+- 인스타 프로필 링크로 들어와도 주소가 https://mihaeje.com/ 로 깔끔하게 보인다
