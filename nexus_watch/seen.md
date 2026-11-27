@@ -581,3 +581,7 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 - 2026-11-27 13:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, 파서를 lockupViewModel로 갱신), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 12:23 이후 새 롱폼 없음. vidIQ 생략(10·15시만). 바로 제작 없음. 인스타 브라우저 안 엶.
 2026-11-27 14:23 | GPT-6.2 아스트라 218년 된 스케치북 작가 22분 만에 찾음(연구, 참고)·메타 AI 안경 네덜란드 판매금지 소송(제외) | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-27 14:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, ytInitialData 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 13:23 이후 새 롱폼 없음. vidIQ 생략. 바로 제작 없음. 인스타 브라우저 안 엶.
+2026-11-27 15:23 | 롱폼: 찍봇 MAGI-2 5가지 한계 테스트(MAGI-2 2곳 🔥, 제작 제외) | 유튜브 | https://www.youtube.com/@zzikbot/videos
+2026-11-27 15:23 | 모두의 AI 전화대행·통신3사/네이버 피클 고객센터 연결 제한(참고 알림, 출처 1곳) | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-27 15:23 | 개인정보 유출신고 2배(참고)·구글 코젠틱 수학 논문·래블업 AI:GO 2.0·EU 기술주권펀드(제외) | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-27 15:23: 내장 브라우저로 유튜브 18개 채널 /videos(페이지 안 fetch, ytInitialData 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 새 롱폼 1개(찍봇). vidIQ 아웃라이어 1회(5크레딧, 새 AI 주제 없음). 바로 제작 없음. 인스타 브라우저 안 엶.
