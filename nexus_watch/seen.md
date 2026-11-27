@@ -576,3 +576,6 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 2026-11-27 12:23 | 오픈AI GPT-6.2 과금 오류 수정으로 실사용량 축소(참고 알림, 출처 1곳) | 긱뉴스 | https://news.hada.io/
 2026-11-27 12:23 | 구글 Workspace 공식 MCP 의무화(2027-02-01, 개발자)·SAP 감원·스위스 AI 공격·엔비디아 동남아 출하 중단·BoE 미소스(제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-27 12:23: 오늘 첫 감시(08~11시 기록 없음). 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, ytInitialData 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 어제 18:23 이후 새 롱폼 4개. vidIQ 생략(10·15시만). 바로 제작 없음. 인스타 브라우저 안 엶.
+2026-11-27 13:23 | 앤트로픽 MCP 스킬 공개 베타(개발자, 제외)·GPT-6 아스트라 양자중력 논문(연구, 제외)·화웨이 HBM·LGU+ 로봇(제외) | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+2026-11-27 13:23 | GPT-6.2 추론 토큰 감소 분석(micjm, 참고)·State of AI 2026(제외) | 긱뉴스 | https://news.hada.io/
+- 2026-11-27 13:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, 파서를 lockupViewModel로 갱신), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 12:23 이후 새 롱폼 없음. vidIQ 생략(10·15시만). 바로 제작 없음. 인스타 브라우저 안 엶.
