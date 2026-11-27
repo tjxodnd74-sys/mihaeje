@@ -1,0 +1,170 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:P;src:url(../fonts/Pretendard-Medium.woff2);font-weight:500}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Bold.woff2);font-weight:700}
+@font-face{font-family:P;src:url(../fonts/Pretendard-ExtraBold.woff2);font-weight:800}
+@font-face{font-family:P;src:url(../fonts/Pretendard-Black.woff2);font-weight:900}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#444;font-family:P,sans-serif;-webkit-font-smoothing:antialiased}
+.k{width:1080px;height:1350px;position:relative;overflow:hidden;background:#FFF8EC;margin-bottom:20px}
+.hd{height:140px;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.hd .t{font-size:46px;font-weight:900;letter-spacing:-.04em;color:#1E2A3A}
+.hd .t em{font-style:normal;color:#F2545B}
+.hd .c{font-size:26px;font-weight:800;color:#fff;background:#F2545B;border-radius:40px;padding:10px 22px}
+.pn{position:absolute;left:20px;width:1040px;height:580px;border:6px solid #1E2A3A;border-radius:18px;overflow:hidden;background:#ddd}
+.pn img{width:1028px;height:568px;object-fit:cover;display:block}
+.p1{top:140px}.p2{top:732px}
+.b{position:absolute;z-index:3;background:#fff;border:4px solid #1E2A3A;border-radius:34px;padding:18px 26px;font-size:36px;font-weight:800;line-height:1.32;letter-spacing:-.035em;color:#1E2A3A;box-shadow:0 6px 0 rgba(43,26,20,.25);max-width:560px}
+.b.pg{background:#DDF5EC}
+.b small{display:block;font-size:28px;font-weight:700;color:#1F8A6A;margin-top:6px}
+.b:after{content:"";position:absolute;width:26px;height:26px;background:inherit;border-right:4px solid #1E2A3A;border-bottom:4px solid #1E2A3A;bottom:-16px;transform:rotate(45deg)}
+.b.tl:after{left:60px}.b.tr:after{right:60px}
+.b.no:after{display:none}
+.ft{position:absolute;bottom:6px;right:30px;font-size:22px;font-weight:700;color:#8FA3B5}
+/* cover */
+#k1{background:#1C1A20}
+#k1 .img{position:absolute;left:0;top:0;width:1080px;height:860px;overflow:hidden}
+#k1 .img img{width:1080px;height:860px;object-fit:cover;object-position:50% 0;display:block}
+#k1 .img:after{content:"";position:absolute;left:0;right:0;bottom:0;height:320px;background:linear-gradient(transparent,#1C1A20)}
+#k1 .tag{position:absolute;left:60px;top:46px;background:#FFD43B;color:#111;font-size:30px;font-weight:900;padding:8px 18px;border-radius:10px;letter-spacing:-.02em;z-index:2}
+#k1 .tt{position:absolute;left:56px;right:40px;top:770px;font-size:136px;font-weight:900;line-height:1.1;letter-spacing:-.055em;color:#fff;text-shadow:0 6px 24px rgba(0,0,0,.7)}
+#k1 .tt em{font-style:normal;color:#FFD43B}
+#k1 .hd2{position:absolute;left:60px;right:60px;bottom:44px;display:flex;justify-content:space-between;font-size:26px;font-weight:700;color:#7FE3FF}
+
+/* info */
+#k6{background:#FFFFFF}
+#k6 .in{padding:66px 60px 0}
+#k6 .lab{font-size:28px;font-weight:800;color:#F2545B;letter-spacing:.08em}
+#k6 .h{font-size:84px;font-weight:900;line-height:1.14;letter-spacing:-.045em;margin-top:14px;color:#1E2A3A}
+#k6 .h .v{color:#F2545B}
+#k6 .when{display:inline-block;background:#1E2A3A;color:#fff;font-size:30px;font-weight:900;padding:8px 18px;border-radius:12px;margin-top:24px}
+@property --n{syntax:'<integer>';inherits:false;initial-value:0}
+#k6 .big{display:flex;align-items:flex-end;gap:24px;margin-top:26px}
+#k6 .num{font-size:190px;font-weight:900;color:#F2545B;letter-spacing:-.05em;line-height:.95;--n:470;counter-reset:n var(--n);animation:cnt 6s cubic-bezier(.2,.8,.3,1) infinite both}
+#k6 .num:before{content:counter(n)}
+@keyframes cnt{0%{--n:120}30%,to{--n:470}}
+#k6 .big small{font-size:46px;font-weight:900;color:#1E2A3A;letter-spacing:-.04em;padding-bottom:22px;line-height:1.2}
+#k6 .film{margin-top:30px;height:110px;border-radius:14px;background:#1E2A3A;overflow:hidden;position:relative}
+#k6 .film .st2{position:absolute;top:14px;left:0;display:flex;gap:14px;animation:roll 6s linear infinite}
+#k6 .film .st2 i{display:block;width:96px;height:68px;border-radius:8px;background:linear-gradient(135deg,#FFD43B,#F2545B)}
+#k6 .film .st2 i:nth-child(3n){background:linear-gradient(135deg,#7FE3FF,#5B6CF2)}
+#k6 .film .st2 i:nth-child(3n+1){background:linear-gradient(135deg,#9BE7C4,#1F8A6A)}
+@keyframes roll{from{transform:translateX(0)}to{transform:translateX(-660px)}}
+#k6 .rows{margin-top:18px}
+#k6 .r{display:flex;align-items:center;gap:22px;padding:26px 0;border-top:2px solid #EEE}
+#k6 .r .kk{width:170px;flex:none;font-size:36px;font-weight:900;color:#F2545B;letter-spacing:-.04em}
+#k6 .r .v2{font-size:40px;font-weight:800;color:#1E2A3A;letter-spacing:-.035em;line-height:1.3}
+#k6 .r .v2 s{color:#9AA6B5}
+#k6 .src{position:absolute;left:60px;right:60px;bottom:36px;font-size:22px;font-weight:600;color:#8A97A8;line-height:1.5}
+/* last */
+#k7{background:#1E2A3A;color:#fff}
+#k7 .in{padding:90px 64px 0}
+#k7 .lab{font-size:26px;font-weight:800;color:#7FE3FF;letter-spacing:.08em}
+#k7 h1{font-size:104px;font-weight:900;line-height:1.15;letter-spacing:-.045em;margin-top:18px}
+#k7 h1 em{font-style:normal;color:#FFD43B}
+#k7 .row{display:flex;gap:14px;flex-wrap:wrap;margin-top:44px}
+#k7 .chip{background:#2E3D52;border-radius:18px;padding:16px 22px;font-size:34px;font-weight:800}
+#k7 .chip i{font-style:normal;color:#7FE3FF;margin-right:10px}
+#k7 .copy{width:952px;margin-top:110px;border:3px dashed #7FE3FF;border-radius:24px;padding:36px 36px 30px;position:relative;background:#26344A}
+#k7 .copy .tg{position:absolute;top:-20px;left:30px;background:#7FE3FF;color:#1E2A3A;font-size:24px;font-weight:900;padding:4px 16px;border-radius:10px}
+#k7 .copy p{font-size:50px;font-weight:700;line-height:1.5;letter-spacing:-.03em}
+#k7 .copy p b{color:#FFD43B}
+#k7 .bot{position:absolute;left:64px;right:64px;bottom:50px;display:flex;align-items:flex-end;justify-content:space-between}
+#k7 .bot .tx{font-size:38px;font-weight:800;line-height:1.4}
+#k7 .bot .tx span{display:block;font-size:26px;color:#A9B8CC;font-weight:700;margin-top:10px}
+#k7 .bot img{width:230px}
+.b{animation:pop .5s cubic-bezier(.3,1.6,.5,1) both}
+.b.d2{animation-delay:.5s}
+@keyframes pop{from{transform:scale(.9)}to{transform:scale(1)}}
+.st{position:absolute;z-index:4;background:#1E2A3A;color:#FFD43B;font-size:40px;font-weight:900;padding:14px 24px;border-radius:14px;transform:rotate(-3deg);box-shadow:0 6px 0 rgba(0,0,0,.25);letter-spacing:-.03em;animation:stamp 6s ease-out infinite both;animation-delay:.8s}
+@keyframes stamp{0%{transform:rotate(-3deg) scale(1)}3%{transform:rotate(-3deg) scale(1.2)}7%,to{transform:rotate(-3deg) scale(1)}}
+#k7 .copy{margin-top:80px}
+
+.b.bg{min-width:330px;min-height:190px;display:flex;flex-direction:column;justify-content:center}
+#k6 .dock{margin-top:30px;height:150px;border-radius:26px;background:#EEF3F8;display:flex;align-items:center;gap:22px;padding:0 30px;position:relative;overflow:hidden}
+#k6 .dock i{display:block;width:96px;height:96px;border-radius:24px;background:linear-gradient(135deg,#C9D3DE,#AEBBC9);flex:none}
+#k6 .dock i.new{background:linear-gradient(135deg,#FFD43B,#F2545B);box-shadow:0 8px 18px rgba(242,84,91,.4);animation:drop 3s cubic-bezier(.3,1.5,.5,1) infinite both}
+#k6 .dock .arr{font-size:40px;font-weight:900;color:#F2545B;margin-left:6px;animation:nudge 1s ease-in-out infinite}
+@keyframes drop{0%{transform:translateY(-130px) scale(.8)}25%,to{transform:translateY(0) scale(1)}}
+@keyframes nudge{50%{transform:translateX(-10px)}}
+#k6 .r{padding:34px 0}#k6 .r .v2{font-size:44px}#k6 .dock{margin-top:40px}
+</style></head><body>
+
+<div class="k" id="k1">
+ <div class="img"><img src="cover.png"></div>
+ <div class="tag">AI 공감툰</div>
+ <div class="tt">회사 PC가<br><em>내가 만든 앱</em>으로<br>꽉 찼다</div>
+ <div class="hd2"><span>@nexus_studio.kr</span><span>끝까지 보세요</span></div>
+</div>
+<div class="k" id="k2">
+ <div class="hd"><div class="t"><em>앱 부자</em> 김 대리</div><div class="c">CASE 1</div></div>
+ <div class="pn p1"><img src="p1.png"></div>
+ <div class="b tl" style="top:166px;left:44px">물 마시기 알림<br>앱 만들어 줘!</div>
+ <div class="b pg tr d2" style="top:166px;right:44px">앱으로 설치까지<br>해 드릴게요</div>
+ <div class="pn p2"><img src="p2.png"></div>
+ <div class="b tl bg" style="top:744px;left:32px">스트레칭·점심·<br>퇴근 알림까지…</div>
+ <div class="st" style="top:1210px;left:90px">바탕화면 앱 32개</div>
+ <div class="b pg tr d2" style="top:1120px;right:40px">오늘 알림<br>47번 울렸어요</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+<div class="k" id="k3">
+ <div class="hd"><div class="t"><em>회의 타이머</em> 만든 팀장님</div><div class="c">CASE 2</div></div>
+ <div class="pn p1"><img src="p3.png"></div>
+ <div class="b tl" style="top:166px;left:44px">회의 10분 넘으면<br>경보 울리는 앱!</div>
+ <div class="b pg tr d2" style="top:166px;right:44px">늘 맨 위에 뜨는<br>창으로 할게요</div>
+ <div class="pn p2"><img src="p4.png"></div>
+ <div class="b tl bg" style="top:744px;left:32px">그러니까 내 말은<br>이번 분기에…</div>
+ <div class="b pg tr bg d2" style="top:744px;right:32px">10분<br>지났어요 🚨</div>
+ <div class="st" style="top:1210px;left:300px">팀원 전원 설치 완료</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+<div class="k" id="k4">
+ <div class="hd"><div class="t"><em>비행기 모드</em> 수진 씨</div><div class="c">CASE 3</div></div>
+ <div class="pn p1"><img src="p5.png"></div>
+ <div class="b tl" style="top:166px;left:44px">비행기에서<br>가계부 앱 정리해야지!</div>
+ <div class="b pg tr d2" style="top:166px;right:44px">어… 거기<br>인터넷 돼요?</div>
+ <div class="pn p2"><img src="p6.png"></div>
+ <div class="b pg tl bg" style="top:744px;left:32px">인터넷·로그인<br>있어야 열려요</div>
+ <div class="b tr bg d2" style="top:744px;right:32px">앱인데<br>왜 안 열려?!</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+<div class="k" id="k5">
+ <div class="hd"><div class="t"><em>반전</em> 앱 딱 하나 민지 씨</div><div class="c">CASE 4</div></div>
+ <div class="pn p1"><img src="p7.png"></div>
+ <div class="b pg tl" style="top:166px;left:40px">매일<br>뭐 해요?</div>
+ <div class="b tl d2" style="top:166px;right:44px">매일 쓰는 거<br>딱 하나만 만들래</div>
+ <div class="pn p2"><img src="p8.png"></div>
+ <div class="b tl bg" style="top:744px;left:32px">퇴근 카운트다운<br>하나면 충분해</div>
+ <div class="b pg tr bg d2" style="top:744px;right:32px">퇴근까지<br>2시간 남았어요</div>
+ <div class="ft">@nexus_studio.kr</div>
+</div>
+<div class="k" id="k6">
+ <div class="in">
+  <div class="lab">REAL NEWS · 진짜 나온 기능</div>
+  <div class="h">클로드로 만든 걸<br><span class="v">내 PC 앱</span>으로</div>
+  <div class="when">11/24(현지) 공개 · 베타 · 무료 포함 전 요금제</div>
+  <div class="dock"><i></i><i></i><i></i><i></i><i class="new"></i><span class="arr">← 내 앱</span></div>
+  <div class="rows">
+   <div class="r"><div class="kk">방법</div><div class="v2">아티팩트 → 공유 →<br><b style="color:#F2545B">'앱으로 설치'</b></div></div>
+   <div class="r"><div class="kk">어디서</div><div class="v2">맥·윈도 (아이콘 눌러 실행)</div></div>
+   <div class="r"><div class="kk">주의</div><div class="v2">인터넷·로그인 필수<br>컴퓨터 전체 권한은 믿는 앱만</div></div>
+  </div>
+ </div>
+ <div class="src">출처: AI타임스(2026.11.26)·XDA 디벨로퍼스(11.25) 보도, 앤트로픽 발표(11.24) 인용<br>만화 속 상황은 웃자고 만든 이야기예요. 그림은 AI로 만들었어요.</div>
+</div>
+<div class="k" id="k7">
+ <div class="in">
+  <div class="lab">HOW TO · 쓸모 있는 앱 하나</div>
+  <h1>앱은 <em>매일 하는 일</em><br>딱 하나만</h1>
+  <div class="row">
+   <div class="chip"><i>①</i>매일 하는 일</div><div class="chip"><i>②</i>버튼 3개</div><div class="chip"><i>③</i>앱으로 설치</div>
+  </div>
+  <div class="copy"><div class="tg">COPY · PASTE</div>
+   <p>내가 매일 하는 <b>(일)</b>용<br>작은 앱 만들어 줘.<br>버튼은 <b>3개</b>만, 한 화면에.</p>
+  </div>
+ </div>
+ <div class="bot">
+  <div class="tx">다 되면 공유 →<br>'앱으로 설치'!<span>📌 저장해 두고 클로드 열 때 꺼내 보세요<br>@nexus_studio.kr</span></div>
+  <img src="heart.png">
+ </div>
+</div>
+</body></html>
