@@ -588,3 +588,4 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 2026-11-27 16:24 | 롱폼: 바이브랩스 클로드 데스크톱 사용법(참고) | 유튜브 | https://www.youtube.com/@바이브랩스/videos
 2026-11-27 16:24 | AI 안경 부정행위 해커톤·애플 토키 삭제·앤트로픽 뉴런 분석·뉴럴링크 임상·무디스·중국 칩(제외) | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-27 16:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, ytInitialData 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 새 롱폼 1개, 바로 제작 없음
+2026-11-27 17:24 | 브이엠에스 솔루션스 모차르트 AI 생산계획(제외) / 긱뉴스·유튜브 새 글 없음 | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
