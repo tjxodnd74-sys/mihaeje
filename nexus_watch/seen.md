@@ -572,3 +572,7 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 2026-11-26 18:23 | 뉴욕주 어린이용 AI 챗봇 장난감 5년 금지(참고 알림) | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-26 18:23 | AI타임스 노엄 브라운 RSI·AI 코드 검토 보고서(제외) / 긱뉴스 새 소비자 소식 없음 | AI타임스·긱뉴스 | https://news.hada.io/
 - 2026-11-26 18:23: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, ytInitialData 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 17:23 이후 새 롱폼 없음. vidIQ 생략(10·15시만). 바로 제작 없음. 인스타 브라우저 안 엶.
+2026-11-27 12:23 | 롱폼: 아스트라 MAGI-2·AInspire AS IF(광고성)·하쥬 얼굴 없는 AI 유튜브·커넥트AI랩 AI 글쓰기 직원 | 유튜브 | https://www.youtube.com/@aiastra0/videos
+2026-11-27 12:23 | 오픈AI GPT-6.2 과금 오류 수정으로 실사용량 축소(참고 알림, 출처 1곳) | 긱뉴스 | https://news.hada.io/
+2026-11-27 12:23 | 구글 Workspace 공식 MCP 의무화(2027-02-01, 개발자)·SAP 감원·스위스 AI 공격·엔비디아 동남아 출하 중단·BoE 미소스(제외) | AI타임스·긱뉴스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-27 12:23: 오늘 첫 감시(08~11시 기록 없음). 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, ytInitialData 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 어제 18:23 이후 새 롱폼 4개. vidIQ 생략(10·15시만). 바로 제작 없음. 인스타 브라우저 안 엶.
