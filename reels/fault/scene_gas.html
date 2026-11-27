@@ -63,6 +63,7 @@ canvas{position:absolute;inset:0}
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 const S = window.SPEC, NO = S.narrOffset, T = S.t, X = S.text;
+if (S.clean) { const st = document.createElement('style'); st.textContent = '.ov,#bar,#gauge,.tag,#btn,#spark,#summ,#cap,#src,#dim,#flash{display:none!important}'; document.head.appendChild(st); }
 const W = 1080, H = 1920;
 const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
 renderer.setPixelRatio(1); renderer.setSize(W, H); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
