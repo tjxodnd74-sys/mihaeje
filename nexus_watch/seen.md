@@ -585,3 +585,6 @@ vidIQ 사용: 2026-11-24 10:37 5크레딧
 2026-11-27 15:23 | 모두의 AI 전화대행·통신3사/네이버 피클 고객센터 연결 제한(참고 알림, 출처 1곳) | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 2026-11-27 15:23 | 개인정보 유출신고 2배(참고)·구글 코젠틱 수학 논문·래블업 AI:GO 2.0·EU 기술주권펀드(제외) | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
 - 2026-11-27 15:23: 내장 브라우저로 유튜브 18개 채널 /videos(페이지 안 fetch, ytInitialData 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 새 롱폼 1개(찍봇). vidIQ 아웃라이어 1회(5크레딧, 새 AI 주제 없음). 바로 제작 없음. 인스타 브라우저 안 엶.
+2026-11-27 16:24 | 롱폼: 바이브랩스 클로드 데스크톱 사용법(참고) | 유튜브 | https://www.youtube.com/@바이브랩스/videos
+2026-11-27 16:24 | AI 안경 부정행위 해커톤·애플 토키 삭제·앤트로픽 뉴런 분석·뉴럴링크 임상·무디스·중국 칩(제외) | AI타임스 | https://www.aitimes.com/news/articleList.html?view_type=sm
+- 2026-11-27 16:24: 내장 브라우저로 유튜브 18개 채널 /videos·/shorts(페이지 안 fetch, ytInitialData 파싱), AI타임스·긱뉴스 직접 확인 + 웹검색 3건(최근 24시간 결과 없음). 새 롱폼 1개, 바로 제작 없음
